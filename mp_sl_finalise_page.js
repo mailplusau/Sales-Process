@@ -1,13 +1,13 @@
 /**
  * Module Description
  * 
- * NSVersion    Date            		Author         
- * 1.00       	2018-04-11 15:54:16   		Ankith 
+ * NSVersion    Date                    Author         
+ * 1.00         2018-04-11 15:54:16     Ankith 
  *
  * Remarks:         
  * 
- * @Last Modified by:   ankith.ravindran
- * @Last Modified time: 2019-07-09 09:15:10
+ * @Last Modified by:   Ankith
+ * @Last Modified time: 2019-11-20 10:19:35
  *
  */
 
@@ -500,6 +500,8 @@ function main(request, response) {
 
             var recCustomer = nlapiLoadRecord('customer', custId);
             recCustomer.setFieldValue('entitystatus', 13);
+            recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
+            recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
             nlapiSubmitRecord(recCustomer);
 
             if (create_service_change == 'T') {
@@ -1372,51 +1374,51 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website)
     // col[1] = new nlobjSearchColumn('internalId');
     // var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
     // for (var i = 0; results != null && i < results.length; i++) {
-    // 	var res = results[i];
-    // 	var listValue = res.getValue('name');
-    // 	var listID = res.getValue('internalId');
-    // 	if (!isNullorEmpty(ap_mail_parcel)) {
-    // 		if (ap_mail_parcel == listID) {
-    // 			inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
-    // 		} else {
-    // 			inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 		}
-    // 	} else {
-    // 		inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 	}
+    //  var res = results[i];
+    //  var listValue = res.getValue('name');
+    //  var listID = res.getValue('internalId');
+    //  if (!isNullorEmpty(ap_mail_parcel)) {
+    //      if (ap_mail_parcel == listID) {
+    //          inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
+    //      } else {
+    //          inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //      }
+    //  } else {
+    //      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //  }
 
     // }
     // inlineQty += '</select></div></div>';
     // inlineQty += '<div class="col-xs-3 survey2"><div class="input-group"><span class="input-group-addon" id="survey2_text">Using AusPost Outlet? <span class="mandatory">*</span></span><select id="survey2" class="form-control survey2" required><option></option>';
     // for (var i = 0; results != null && i < results.length; i++) {
-    // 	var res = results[i];
-    // 	var listValue = res.getValue('name');
-    // 	var listID = res.getValue('internalId');
-    // 	if (!isNullorEmpty(ap_outlet)) {
-    // 		if (ap_outlet == listID) {
-    // 			inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
-    // 		} else {
-    // 			inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 		}
-    // 	} else {
-    // 		inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 	}
+    //  var res = results[i];
+    //  var listValue = res.getValue('name');
+    //  var listID = res.getValue('internalId');
+    //  if (!isNullorEmpty(ap_outlet)) {
+    //      if (ap_outlet == listID) {
+    //          inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
+    //      } else {
+    //          inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //      }
+    //  } else {
+    //      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //  }
     // }
     // inlineQty += '</select></div></div>';
     // inlineQty += '<div class="col-xs-4 survey3"><div class="input-group"><span class="input-group-addon" id="survey3_text">Is this Auspost outlet a LPO? <span class="mandatory">*</span></span><select id="survey3" class="form-control survey3" required><option></option>';
     // for (var i = 0; results != null && i < results.length; i++) {
-    // 	var res = results[i];
-    // 	var listValue = res.getValue('name');
-    // 	var listID = res.getValue('internalId');
-    // 	if (!isNullorEmpty(lpo_customer)) {
-    // 		if (lpo_customer == listID) {
-    // 			inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
-    // 		} else {
-    // 			inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 		}
-    // 	} else {
-    // 		inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    // 	}
+    //  var res = results[i];
+    //  var listValue = res.getValue('name');
+    //  var listID = res.getValue('internalId');
+    //  if (!isNullorEmpty(lpo_customer)) {
+    //      if (lpo_customer == listID) {
+    //          inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
+    //      } else {
+    //          inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //      }
+    //  } else {
+    //      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    //  }
     // }
     // inlineQty += '</select></div></div>';
     inlineQty += '</div>';
@@ -1549,7 +1551,7 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, r
 
     // inlineQty += '<div class="form-group container callback_section">';
     // inlineQty += '<div class="row">';
-    
+
     // inlineQty += '</div>';
     // inlineQty += '</div>';
 
@@ -1609,10 +1611,10 @@ function serviceChangeSection(resultSet_service_change) {
         var fileID = searchResult_service_change.getValue("custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null);
 
         // if (!isNullorEmpty(fileID)) {
-        // 	var fileRecord = nlapiLoadFile(fileID);
-        // 	inlineQty += '<td><a href="' + fileRecord.getURL() + '" target="_blank">' + searchResult_service_change.getText("custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null) + '</a></td>';
+        //  var fileRecord = nlapiLoadFile(fileID);
+        //  inlineQty += '<td><a href="' + fileRecord.getURL() + '" target="_blank">' + searchResult_service_change.getText("custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null) + '</a></td>';
         // } else {
-        // 	inlineQty += '<td></td>';
+        //  inlineQty += '<td></td>';
         // }
 
 

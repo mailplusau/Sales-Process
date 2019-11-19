@@ -1,13 +1,13 @@
 /**
  * Module Description
  * 
- * NSVersion    Date            		Author         
- * 1.00       	2018-04-12 09:22:33   		Ankith 
+ * NSVersion    Date                    Author         
+ * 1.00         2018-04-12 09:22:33     Ankith 
  *
  * Remarks:         
  * 
- * @Last Modified by:   ankith.ravindran
- * @Last Modified time: 2018-08-20 09:42:33
+ * @Last Modified by:   Ankith
+ * @Last Modified time: 2019-11-20 09:53:59
  *
  */
 var financialTabItemArray = [];
@@ -322,12 +322,12 @@ function submit_NoSale(reason, callnotes) {
 
 
 // function onclick_NoSale() {
-// 	if (validate()) {
-// 		updateCustomerDetails();
-// 		var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_nosale', 'customdeploy_sl_salescamp_nosale');
-// 		window.open(url, "Window", "height=300,width=420,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
+//  if (validate()) {
+//      updateCustomerDetails();
+//      var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_nosale', 'customdeploy_sl_salescamp_nosale');
+//      window.open(url, "Window", "height=300,width=420,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
 
-// 	}
+//  }
 // }
 
 function submit_Callback(date, time, callnotes) {
@@ -834,16 +834,16 @@ function validate(status) {
         return_value = false;
     }
     // if (isNullorEmpty(survey1)) {
-    // 	alertMessage += 'Please Answer Survey Information "Using AusPost for Mail & Parcel?" </br>';
-    // 	return_value = false;
+    //  alertMessage += 'Please Answer Survey Information "Using AusPost for Mail & Parcel?" </br>';
+    //  return_value = false;
     // }
     // if (isNullorEmpty(survey2)) {
-    // 	alertMessage += 'Please Answer Survey Information "Using AusPost Outlet?"</br>';
-    // 	return_value = false;
+    //  alertMessage += 'Please Answer Survey Information "Using AusPost Outlet?"</br>';
+    //  return_value = false;
     // }
     // if (isNullorEmpty(survey3)) {
-    // 	alertMessage += 'Please Answer Survey Information "Is this Auspost outlet a LPO?"</br>';
-    // 	return_value = false;
+    //  alertMessage += 'Please Answer Survey Information "Is this Auspost outlet a LPO?"</br>';
+    //  return_value = false;
     // }
 
     if (isNullorEmpty(zee)) {
