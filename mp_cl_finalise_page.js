@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-27 17:20:10
+ * @Last Modified time: 2019-12-06 16:32:27
  *
  */
 var financialTabItemArray = [];
@@ -825,6 +825,22 @@ function validate(status) {
         if (isNullorEmpty(account_email) && isNullorEmpty(daytodayemail)) {
             alertMessage += 'Please Enter either Account Email or Day-To-Day Email</br>';
             return_value = false;
+        } else {
+            if (!isNullorEmpty(daytodayemail)) {
+                var email_test = /.+@.+\..+/;
+                if (email_test.test(daytodayemail) === false) {
+                    alertMessage += 'Please check Day-To-Day Email</br>';
+                    return_value = false;
+                }
+            }
+
+            if (!isNullorEmpty(account_email)) {
+                var email_test = /.+@.+\..+/;
+                if (email_test.test(account_email) === false) {
+                    alertMessage += 'Please check Account Email </br>';
+                    return_value = false;
+                }
+            }
         }
 
     }
