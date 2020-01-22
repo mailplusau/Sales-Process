@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-20 10:19:35
+ * @Last Modified time: 2020-01-23 08:14:22
  *
  */
 
@@ -258,7 +258,11 @@ function main(request, response) {
         inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts);
 
         form.addField('shipping_state', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(shipping_state);
-        form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
+
+            form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
+         
+        
+
         form.addField('comm_reg', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(commReg);
 
         var fils = new Array();
@@ -955,9 +959,11 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_e
     nlapiLogExecution('DEBUG', 'callcenter', callcenter);
     if (isNullorEmpty(callcenter)) {
         inlineQty += '<span class="mandatory">*</span>';
+        inlineQty += '</span><input id="abn" class="form-control abn" value="' + abn + '" data-oldvalue="' + abn + '" required/></div></div>';
+    } else {
+        inlineQty += '</span><input id="abn" class="form-control abn" value="' + abn + '" data-oldvalue="' + abn + '" /></div></div>';
     }
 
-    inlineQty += '</span><input id="abn" class="form-control abn" value="' + abn + '" data-oldvalue="' + abn + '" required/></div></div>';
     inlineQty += '<div class="col-xs-6 status"><div class="input-group"><span class="input-group-addon" id="status_text">STATUS </span><input id="status" class="form-control status" readonly value="' + customer_status + '" data-oldvalue="' + customer_status + '" /></div></div>';
     inlineQty += '</div>';
     inlineQty += '</div>';
