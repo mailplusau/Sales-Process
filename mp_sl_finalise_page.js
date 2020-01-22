@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-11-20 10:19:35
+ * @Last Modified time: 2020-01-13 14:29:03
  *
  */
 
@@ -258,7 +258,11 @@ function main(request, response) {
         inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts);
 
         form.addField('shipping_state', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(shipping_state);
-        form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
+
+            form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
+         
+        
+
         form.addField('comm_reg', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(commReg);
 
         var fils = new Array();

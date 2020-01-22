@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2019-12-06 16:32:27
+ * @Last Modified time: 2020-01-13 14:28:58
  *
  */
 var financialTabItemArray = [];
@@ -67,9 +67,9 @@ $(document).on('click', '#alert .close', function(e) {
 
 function pageInit() {
 
-    if (isNullorEmpty(nlapiGetFieldValue('create_service_change'))) {
-        document.getElementById('tr_submitter').style.display = 'none';
-    }
+    // if (isNullorEmpty(nlapiGetFieldValue('create_service_change'))) {
+        // document.getElementById('tr_submitter').style.display = 'none';
+    // }
 
     var scf_upload = document.getElementsByClassName('input');
     var scf_upload_field = document.getElementsByClassName('uir-field');
