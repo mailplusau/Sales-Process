@@ -7,13 +7,15 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-01-13 14:28:58
+ * @Last Modified time: 2020-01-23 08:14:20
  *
  */
 var financialTabItemArray = [];
 var financialTabPriceArray = [];
 var serviceChgItemArray = [];
 var serviceChgPriceArray = [];
+
+var funcsubmitter = false;
 
 var updateButton = false;
 
@@ -286,6 +288,7 @@ function submit_NoAnswer(callnotes) {
     nlapiSetFieldValue('custpage_outcome', 'noanswer');
     nlapiSetFieldValue('custpage_callnotes', callnotes);
     // nlapiSetFieldValue('create_service_change', 'T');
+    funcsubmitter = true;
     document.getElementById('submitter').click();
 }
 
@@ -294,6 +297,7 @@ function onclick_Disconnected() {
         updateCustomerDetails();
         if (confirm('Outcome: Disconnected\nPress OK to continue.')) {
             nlapiSetFieldValue('custpage_outcome', 'disconnected');
+            funcsubmitter = true;
             document.getElementById('submitter').click();
         }
     }
@@ -307,6 +311,7 @@ function onclick_DoNotCall() {
         if (notes != null) {
             nlapiSetFieldValue('custpage_outcome', 'donotcall');
             nlapiSetFieldValue('custpage_callnotes', notes);
+            funcsubmitter = true;
             document.getElementById('submitter').click();
         }
     }
@@ -317,6 +322,7 @@ function submit_NoSale(reason, callnotes) {
     nlapiSetFieldValue('custpage_nosalereason', reason);
     nlapiSetFieldValue('custpage_callnotes', callnotes);
     // nlapiSetFieldValue('create_service_change', 'T');
+    funcsubmitter = true;
     document.getElementById('submitter').click();
 }
 
@@ -339,6 +345,7 @@ function submit_Callback(date, time, callnotes) {
     nlapiSetFieldValue('custpage_callbackdate', date);
     nlapiSetFieldValue('custpage_callbacktime', time);
     nlapiSetFieldValue('custpage_callnotes', callnotes);
+    funcsubmitter = true;
     document.getElementById('submitter').click();
 }
 
@@ -348,6 +355,7 @@ function submit_Reject(reason, callnotes) {
     nlapiSetFieldValue('custpage_rejectreason', reason);
     nlapiSetFieldValue('custpage_rejectnotes', callnotes);
     // nlapiSetFieldValue('create_service_change', 'T');
+    funcsubmitter = true;
     document.getElementById('submitter').click();
 }
 
@@ -498,6 +506,7 @@ function onclick_ProductSale() {
 function submit_ProductSale(callnotes) {
     nlapiSetFieldValue('custpage_outcome', 'satchelonly');
     nlapiSetFieldValue('custpage_callnotes', callnotes);
+    funcsubmitter = true;
     document.getElementById('submitter').click();
 }
 
@@ -520,7 +529,7 @@ function saveRecord() {
 
     var state_id;
 
-    if (isNullorEmpty(nlapiGetFieldValue('create_service_change')) || nlapiGetFieldValue('create_service_change') == 'F') {
+    if ((isNullorEmpty(nlapiGetFieldValue('create_service_change')) || nlapiGetFieldValue('create_service_change') == 'F') && funcsubmitter == false) {
         console.log('inside')
         switch (state) {
             case 'NSW':
