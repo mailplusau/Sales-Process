@@ -41,6 +41,8 @@ function beforeUserLoad(type, form) {
         //1007 - Operations
         var salesAdmin = [1003, 1004];
 
+        var systemAdmin = [3, 1032];
+
         var today = new Date();
         //var script = 'window.location="https://system.sandbox.netsuite.com/app/site/hosting/scriptlet.nl?script=265&deploy=1&salresrec=';
 
@@ -223,8 +225,9 @@ function beforeUserLoad(type, form) {
 
             if (status == 13 || status == 32) {
                 form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
-                if(userRole == 1003 || userRole == 1004 || userRole == 3)
-                form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
+                form.addButton('custpage_change', 'Service Change notification', getButtonScript('customer_change', null, customerRecordId));
+                if (userRole == 1003 || userRole == 1004 || userRole == 3)
+                    form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
             }
 
             if (maapnumber != null) {
@@ -338,9 +341,10 @@ function beforeUserLoad(type, form) {
                         // if quote/form is previously sent Finalise Sale button will also be available
                         // if campaign is Inbound - No Pitch - Commencement Form Receipts
                         if (quotesent == 'T' | formsent == 'T' | status == 32 | campaign == 54 | campaign == 57 | campaign == 35 | campaign == 60 | campaign == 62) {
-
-                            // form.addButton('custpage_sign', 'Finalise Sale', getButtonScript('commencement', salesrecordid, customerRecordId));
-                            form.addButton('custpage_finalisexsale', 'Finalise Sale', getButtonScript('finalisexsale', salesrecordid, customerRecordId));
+                            if (isInArray(userRole, systemAdmin)) {
+                                // form.addButton('custpage_sign', 'Finalise Sale', getButtonScript('commencement', salesrecordid, customerRecordId));
+                                form.addButton('custpage_finalisexsale', 'Finalise Sale', getButtonScript('finalisexsale', salesrecordid, customerRecordId));
+                            }
                         }
 
                         if (campaign == 56) {
@@ -351,7 +355,7 @@ function beforeUserLoad(type, form) {
                         // if last assigned is not current user and exclusive period has lapsed
                     } else {
                         // if sales admin role
-                        if (isInArray(userRole, salesAdmin)) {
+                        if (isInArray(userRole, systemAdmin)) {
                             // form.addButton('custpage_sign', 'Finalise Sale', getButtonScript('commencement', salesrecordid, customerRecordId));
                             form.addButton('custpage_finalisexsale', 'Finalise Sale', getButtonScript('finalisexsale', salesrecordid, customerRecordId));
 
@@ -537,6 +541,11 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
     }
     if (type == 'customer_coe') {
         var url = nlapiResolveURL('SUITELET', 'customscript_sl_copy_customer', 'customdeploy_sl_copy_customer');
+        url += '&custid=' + customerrecordid;
+        rtnScript = "window.location='" + url + "'";
+    }
+    if (type == 'customer_change') {
+        var url = nlapiResolveURL('SUITELET', 'customscript_sl_customer_ue_service_chan', 'customdeploy_sl_customer_ue_service_chan');
         url += '&custid=' + customerrecordid;
         rtnScript = "window.location='" + url + "'";
     }
