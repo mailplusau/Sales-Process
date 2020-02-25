@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-01-23 08:14:20
+ * @Last Modified time: 2020-02-20 14:42:47
  *
  */
 var financialTabItemArray = [];
@@ -584,14 +584,19 @@ function saveRecord() {
             var service_text = service_name_elem[i].value;
             var service_freq = service_freq_elem[i].value;
 
+            console.log(nsItem)
+            var nsTypeRec = nlapiLoadRecord('serviceitem', nsItem);
+            console.log(nsItem)
+            var serviceText = nsTypeRec.getFieldValue('itemid');
+            // var serviceTypeRec = nlapiLoadRecord('customrecord_service_type', serviceTypeId);
             // service_freq.sort(function(a, b) {
             //     return a - b
             // });
 
             if (i == 0) {
-                pricing_notes_services += '\n' + $('#commencementdate').val() + '\n' + service_text + ' - @$' + price + ' - ' + service_freq + '\n';
+                pricing_notes_services += '\n' + $('#commencementdate').val() + '\n' + serviceText + ' - @$' + price + ' - ' + service_freq + '\n';
             } else {
-                pricing_notes_services += '\n' + service_text + ' - @$' + price + ' - ' + service_freq + '\n';
+                pricing_notes_services += '\n' + serviceText + ' - @$' + price + ' - ' + service_freq + '\n';
             }
 
 
@@ -686,7 +691,6 @@ function saveRecord() {
             var price = service_price_elem[i].value;
             var descp = service_descp_elem[i].value;
 
-            var service_type = nlapiLoadRecord('customrecord_service_type', serviceTypeId);
 
             if (count_array[serviceTypeId] == undefined) {
                 count_array[serviceTypeId] = -1;
@@ -756,6 +760,7 @@ function saveRecord() {
         var customerStatus = recCustomer.getFieldValue('entitystatus');
 
         recCustomer.setFieldValue('custentity_customer_pricing_notes', pricing_notes_services);
+
 
         nlapiSubmitRecord(recCustomer);
 

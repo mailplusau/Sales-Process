@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-01-23 08:14:22
+ * @Last Modified time: 2020-02-21 11:20:29
  *
  */
 
@@ -1318,9 +1318,9 @@ function serviceDetailsSection(resultSet_service) {
 
         inlineQty += '<tr>';
 
-        inlineQty += '<td><div class="service_name_div"><input id="service_name" class="form-control service_name" data-serviceid="' + serviceId + '" data-servicetypeid="' + serviceTypeId + '" readonly value="' + serviceText + '" /></div></td>';
+        inlineQty += '<td><div class="service_name_div"><input id="service_name" class="form-control service_name_current" data-serviceid="' + serviceId + '" data-servicetypeid="' + serviceTypeId + '" readonly value="' + serviceText + '" /></div></td>';
 
-        inlineQty += '<td><div class="service_descp_div"><input class="form-control service_descp_class" disabled value="' + serviceDescp + '"  type="text" /></div></td>';
+        inlineQty += '<td><div class="service_descp_div"><input class="form-control service_descp_class_current" disabled value="' + serviceDescp + '"  type="text" /></div></td>';
 
         inlineQty += '<td><div class="service_price_div input-group"><span class="input-group-addon">$</span><input class="form-control old_service_price_class" disabled value="' + servicePrice + '"  type="number" step=".01" /></div></td>';
 
