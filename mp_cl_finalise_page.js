@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-01-23 08:14:20
+ * @Last Modified time: 2020-03-27 10:30:05
  *
  */
 var financialTabItemArray = [];
@@ -584,14 +584,19 @@ function saveRecord() {
             var service_text = service_name_elem[i].value;
             var service_freq = service_freq_elem[i].value;
 
+            console.log(nsItem)
+            var nsTypeRec = nlapiLoadRecord('serviceitem', nsItem);
+            console.log(nsItem)
+            var serviceText = nsTypeRec.getFieldValue('itemid');
+            var serviceTypeRec = nlapiLoadRecord('customrecord_service_type', serviceTypeId);
             // service_freq.sort(function(a, b) {
             //     return a - b
             // });
 
             if (i == 0) {
-                pricing_notes_services += '\n' + $('#commencementdate').val() + '\n' + service_text + ' - @$' + price + ' - ' + service_freq + '\n';
+                pricing_notes_services += '\n' + $('#commencementdate').val() + '\n' + serviceText + ' - @$' + price + ' - ' + service_freq + '\n';
             } else {
-                pricing_notes_services += '\n' + service_text + ' - @$' + price + ' - ' + service_freq + '\n';
+                pricing_notes_services += '\n' + serviceText + ' - @$' + price + ' - ' + service_freq + '\n';
             }
 
 
@@ -686,7 +691,6 @@ function saveRecord() {
             var price = service_price_elem[i].value;
             var descp = service_descp_elem[i].value;
 
-            var service_type = nlapiLoadRecord('customrecord_service_type', serviceTypeId);
 
             if (count_array[serviceTypeId] == undefined) {
                 count_array[serviceTypeId] = -1;
@@ -701,7 +705,7 @@ function saveRecord() {
                 financial_tab_price_array[initial_size_of_financial] = price;
             } else {
                 //if the size is more than 1, go through the NS array in the service type record and create the ns iitems in the financial tab respectively
-                var ns_array_items = service_type.getFieldValue('custrecord_service_type_ns_item_array');
+                var ns_array_items = serviceTypeRec.getFieldValue('custrecord_service_type_ns_item_array');
                 if (!isNullorEmpty(ns_array_items)) {
 
                     var ns_items = ns_array_items.split(",")
@@ -709,7 +713,7 @@ function saveRecord() {
                     if (count_array[serviceTypeId] < ns_items.length) {
                         initial_size_of_financial++;
                         if (count_array[serviceTypeId] == -1) {
-                            financial_tab_item_array[initial_size_of_financial] = service_type.getFieldValue('custrecord_service_type_ns_item');
+                            financial_tab_item_array[initial_size_of_financial] = serviceTypeRec.getFieldValue('custrecord_service_type_ns_item');
                             financial_tab_price_array[initial_size_of_financial] = price;
 
                             count_array[serviceTypeId] = count_array[serviceTypeId] + 1;
@@ -725,7 +729,7 @@ function saveRecord() {
                 } else if (count_array[serviceTypeId] == -1) {
 
                     initial_size_of_financial++;
-                    financial_tab_item_array[initial_size_of_financial] = service_type.getFieldValue('custrecord_service_type_ns_item');
+                    financial_tab_item_array[initial_size_of_financial] = serviceTypeRec.getFieldValue('custrecord_service_type_ns_item');
                     financial_tab_price_array[initial_size_of_financial] = price;
                     count_array[serviceTypeId] = count_array[serviceTypeId] + 1;
                 }
@@ -756,6 +760,7 @@ function saveRecord() {
         var customerStatus = recCustomer.getFieldValue('entitystatus');
 
         recCustomer.setFieldValue('custentity_customer_pricing_notes', pricing_notes_services);
+
 
         nlapiSubmitRecord(recCustomer);
 

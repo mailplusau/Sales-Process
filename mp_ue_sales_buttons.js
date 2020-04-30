@@ -126,7 +126,7 @@ function beforeUserLoad(type, form) {
 
                     var lpo_customer = customerRecord.getFieldValue('custentity_ap_lpo_customer');
 
-                    form.addButton('custpage_onboarding', 'Customer On Boarding', getButtonScript('customer_on_boarding', null, customerRecordId));
+                    // form.addButton('custpage_onboarding', 'Customer On Boarding', getButtonScript('customer_on_boarding', null, customerRecordId));
 
                     if (lpo_customer != 1) {
                         form.addButton('custpage_orderproducts', 'Order Products', getButtonScript('order_product', null, customerRecordId));
@@ -226,8 +226,8 @@ function beforeUserLoad(type, form) {
             if (status == 13 || status == 32) {
                 form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
                 form.addButton('custpage_change', 'Service Change notification', getButtonScript('customer_change', null, customerRecordId));
-                if (userRole == 1003 || userRole == 1004 || userRole == 3)
-                    form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
+                // if (userRole == 1003 || userRole == 1004 || userRole == 3)
+                    // form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
             }
 
             if (maapnumber != null) {
@@ -241,7 +241,7 @@ function beforeUserLoad(type, form) {
                     form.addButton('custpage_generatemaap', 'Generate MAAP #', getButtonScript('maapgen', null, customerRecordId));
 
                     if (status == 13 || status == 32) {
-                        form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
+                        // form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
                     }
 
                 }
