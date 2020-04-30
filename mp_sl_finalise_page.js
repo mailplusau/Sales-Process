@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-02-21 11:20:29
+ * @Last Modified time: 2020-04-29 16:14:21
  *
  */
 
@@ -259,9 +259,9 @@ function main(request, response) {
 
         form.addField('shipping_state', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(shipping_state);
 
-            form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
-         
-        
+        form.addField('create_service_change', 'text', 'Customer').setDisplayType('hidden').setDefaultValue('F');
+
+
 
         form.addField('comm_reg', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(commReg);
 
@@ -503,10 +503,17 @@ function main(request, response) {
             }
 
             var recCustomer = nlapiLoadRecord('customer', custId);
+            var partner_id = recCustomer.getFieldValue('partner');
+            var companyName = recCustomer.getFieldValue('companyname');
+            var partner_text = recCustomer.getFieldText('partner');
             recCustomer.setFieldValue('entitystatus', 13);
-            recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
+            if (isNullorEmpty(recCustomer.getFieldValue('custentity_date_prospect_opportunity'))) {
+                recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
+            }
             recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
             nlapiSubmitRecord(recCustomer);
+
+
 
             if (create_service_change == 'T') {
                 var custparam_params = {
@@ -536,6 +543,7 @@ function main(request, response) {
                  */
                 var status = nlapiScheduleScript('customscript_sc_smc_item_pricing_update', 'customdeploy1', params3);
                 if (status == 'QUEUED') {
+                    nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], 'New Customer Finalised on NetSuite', ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
                     response.sendRedirect('RECORD', 'customer', parseInt(request.getParameter('customer')), false);
                     return false;
                 }
@@ -985,7 +993,28 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_e
         return true;
     });
     inlineQty += '</select></div></div>';
-    inlineQty += '<div class="col-xs-6 leadsource_div"><div class="input-group"><span class="input-group-addon" id="leadsource_text">LEAD SOURCE </span><input id="leadsource" class="form-control leadsource" readonly value="' + lead_source + '" data-oldvalue="' + lead_source + '" required/></div></div>';
+    inlineQty += '<div class="col-xs-6 leadsource_div"><div class="input-group"><span class="input-group-addon" id="leadsource_text">LEAD SOURCE <span class="mandatory">*</span></span>';
+
+    //NetSuite Search: LEAD SOURCE
+    var searched_lead_source = nlapiLoadSearch('campaign', 'customsearch_lead_source');
+    resultSetLeadSource = searched_lead_source.runSearch();
+    inlineQty += '<select id="leadsource" class="form-control leadsource" ><option></option>';
+
+    resultSetLeadSource.forEachResult(function(searchResultLeadSource) {
+
+        var leadsourceid = searchResultLeadSource.getValue('internalid');
+        var leadsourcename = searchResultLeadSource.getValue('title');
+
+        if (leadsourceid == lead_source) {
+            inlineQty += '<option value="' + leadsourceid + '" selected>' + leadsourcename + '</option>';
+        } else {
+            inlineQty += '<option value="' + leadsourceid + '" >' + leadsourcename + '</option>';
+        }
+
+        return true;
+    });
+    inlineQty += '</select></div></div>';
+    // inlineQty += '<div class="col-xs-6 leadsource_div"><div class="input-group"><span class="input-group-addon" id="leadsource_text">LEAD SOURCE </span><input id="leadsource" class="form-control leadsource" readonly value="' + lead_source + '" data-oldvalue="' + lead_source + '" required/></div></div>';
     inlineQty += '</div>';
     inlineQty += '</div>';
 
