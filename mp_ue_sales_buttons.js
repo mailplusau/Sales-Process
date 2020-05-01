@@ -62,6 +62,8 @@ function beforeUserLoad(type, form) {
         var maapnumber = nlapiGetFieldValue('custentity_maap_bankacctno');
         var startDate = nlapiGetFieldValue('startdate');
         var userRole = parseInt(nlapiGetRole());
+        var cancellation_reason = nlapiGetFieldValue('custentity_service_cancellation_reason');
+        var new_customer_id = nlapiGetFieldValue('custentity_new_customer');
 
         // validation for button visibility
 
@@ -227,7 +229,7 @@ function beforeUserLoad(type, form) {
                 form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
                 form.addButton('custpage_change', 'Service Change notification', getButtonScript('customer_change', null, customerRecordId));
                 // if (userRole == 1003 || userRole == 1004 || userRole == 3)
-                    // form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
+                // form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
             }
 
             if (maapnumber != null) {
@@ -246,7 +248,10 @@ function beforeUserLoad(type, form) {
 
                 }
             }
-
+            //move digitalisation only if cancellation reason if COE
+            if (cancellation_reason == 28 && !isNullorEmpty(new_customer_id)) { //Change of Entity
+                form.addButton('custpage_movedigitalisation', 'Move Digitalisation', getButtonScript('move_digitalisation', null, customerRecordId));
+            }
             //if not SignStatus
         } else {
             // if user is a BDM or Sales Admin
@@ -577,6 +582,11 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
         }
 
 
+    }
+    if (type == 'move_digitalisation') {
+        var url = nlapiResolveURL('SUITELET', 'customscript_sl_move_digitalisation', 'customdeploy_sl_move_digitalisation');
+        url += '&cust_id=' + customerrecordid;
+        rtnScript = "window.location='" + url + "'";
     }
 
 
