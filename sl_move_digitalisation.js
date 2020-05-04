@@ -24,111 +24,25 @@ function moveDigitalisation(request, response) {
         inlineQty += '<div class="col-sm-6"><div class="input-group"><span class="input-group-addon" style="font-weight:bold;">MOVE DIGITALISATION FROM</span>';
         inlineQty += '<input class="form-control" type="text" value="' + entity_id + ' ' + cust_name + '" readonly/></div></div>';
         inlineQty += '<div class="col-sm-6"><div class="input-group"><span class="input-group-addon" style="font-weight:bold;">TO</span><input class="form-control" type="text" value="' + new_cust_name + '" readonly/></div></div>';
-        inlineQty += '</div></div>';
+        inlineQty += '</div>';
 
-        inlineQty += '</div>'
+        inlineQty += '</div>';
+
+        inlineQty += '<div class="form-group container">'
+        inlineQty += '<div class="row" style="margin-top:10px"><div class="col-sm-3"><input type="button" class="btn btn-warning moveServiceLegs" value="Move Service Legs and Frequencies" style="width:100%;"></div><div class="col-sm-4"><input type="text" class="form-control serviceLegsMoved hide" readonly/></div></div>';
+        inlineQty += '<div class="row" style="margin-top:10px"><div class="col-sm-3"><input type="button" class="btn btn-warning moveAppJobs" value="Move App Jobs" style="width:100%;" disabled></div><div class="col-sm-4"><input type="text" class="form-control appJobsMoved hide" readonly/></div>';
+
+        inlineQty += '</div>';
 
         form.addField('preview_table', 'inlinehtml', '').setLayoutType('startrow').setDefaultValue(inlineQty);
         form.addField('custpage_customer_id', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(cust_id);
+        form.addField('custpage_new_customer_id', 'text', 'Customer ID').setDisplayType('hidden').setDefaultValue(new_cust_id);
 
-        form.addSubmitButton('Move Digitalisation');
+        //form.addSubmitButton('Move Digitalisation');
         form.addButton('back', 'Back', 'onclick_back()');
         form.setScript('customscript_cl_move_digitalisation');
         response.writePage(form);
     } else {
-        var cust_id = request.getParameter('custpage_customer_id');
-        var customer_record = nlapiLoadRecord('customer', cust_id);
-        var new_customer_id = customer_record.getFieldValue('custentity_new_customer');
-        var run_scheduled = customer_record.getFieldValue('custentity_run_scheduled');
 
-        //LEGS & FREQUENCIES
-        var legsSearch = nlapiLoadSearch('customrecord_service_leg', 'customsearch_move_digit_legs');
-        var filterExpression = [
-            ["custrecord_service_leg_customer", "is", cust_id],
-        ];
-        legsSearch.setFilterExpression(filterExpression);
-        var legsResult = legsSearch.runSearch();
-
-
-        var old_service_id;
-        var old_leg_id;
-
-        var leg_id_array = [];
-        var freq_id_array = [];
-        var count = 0;
-        legsResult.forEachResult(function(legResult) {
-            var service_id = legResult.getValue("internalid", "CUSTRECORD_SERVICE_LEG_SERVICE", null);
-            var leg_id = legResult.getValue("internalid");
-            var freq_id = legResult.getValue("internalid", "CUSTRECORD_SERVICE_FREQ_STOP", null);
-
-            if (count > 0) {
-                if (old_leg_id != leg_id) {
-                    leg_id_array[leg_id_array.length] = old_leg_id;
-                }
-                if (old_service_id != service_id) {
-                    nlapiLogExecution('DEBUG', 'old_service_id', old_service_id);
-                    nlapiLogExecution('DEBUG', 'leg_id_array', leg_id_array);
-                    nlapiLogExecution('DEBUG', 'freq_id_array', freq_id_array);
-                    for (i = 0; i < leg_id_array.length; i++) {
-                        var leg_record = nlapiLoadRecord('customrecord_service_leg', leg_id_array[i]);
-                        var leg_zee = leg_record.getFieldValue('custrecord_service_leg_franchisee');
-                        leg_record.setFieldValue('custrecord_service_leg_customer', new_customer_id);
-                        leg_record.setFieldValue('custrecord_service_leg_service', old_service_id);
-                        leg_record.setFieldValue('custrecord_service_leg_franchisee', leg_zee); //for transfers, zee can be diff from cust zee
-                        nlapiSubmitRecord(leg_record);
-                    }
-                    for (i = 0; i < freq_id_array.length; i++) {
-                        var freq_record = nlapiLoadRecord('customrecord_service_freq', freq_id_array[i]);
-                        var freq_zee = freq_record.getFieldValue('custrecord_service_leg_franchisee');
-                        freq_record.setFieldValue('custrecord_service_freq_customer', new_customer_id);
-                        freq_record.setFieldValue('custrecord_service_leg_franchisee', freq_zee); //for transfers
-                        nlapiSubmitRecord(freq_record);
-                    }
-
-                    leg_id_array = [];
-                    freq_id_array = [];
-                }
-            }
-            freq_id_array[freq_id_array.length] = freq_id;
-
-            old_service_id = service_id;
-            old_leg_id = leg_id;
-            count++;
-            return true
-        })
-        if (count > 0) {
-            leg_id_array[leg_id_array.length] = old_leg_id;
-
-            nlapiLogExecution('DEBUG', 'old_service_id', old_service_id);
-
-            nlapiLogExecution('DEBUG', 'leg_id_array', leg_id_array);
-            nlapiLogExecution('DEBUG', 'freq_id_array', freq_id_array);
-
-            for (i = 0; i < leg_id_array.length; i++) {
-                nlapiLogExecution('DEBUG', 'leg_id_array[i]', leg_id_array[i]);
-                var leg_record = nlapiLoadRecord('customrecord_service_leg', leg_id_array[i]);
-                var leg_zee = leg_record.getFieldValue('custrecord_service_leg_franchisee');
-                leg_record.setFieldValue('custrecord_service_leg_customer', new_customer_id);
-                leg_record.setFieldValue('custrecord_service_leg_service', old_service_id);
-                leg_record.setFieldValue('custrecord_service_leg_franchisee', leg_zee); //for transfers, zee can be diff from cust zee
-                nlapiSubmitRecord(leg_record);
-            }
-            for (i = 0; i < freq_id_array.length; i++) {
-                nlapiLogExecution('DEBUG', 'freq_id_array[i]', freq_id_array[i]);
-                var freq_record = nlapiLoadRecord('customrecord_service_freq', freq_id_array[i]);
-                var freq_zee = freq_record.getFieldValue('custrecord_service_leg_franchisee');
-                freq_record.setFieldValue('custrecord_service_freq_customer', new_customer_id);
-                freq_record.setFieldValue('custrecord_service_leg_franchisee', freq_zee); //for transfers
-                nlapiSubmitRecord(freq_record);
-            }
-        }
-
-        if (!isNullorEmpty(new_customer_id)) {
-            var new_customer_record = nlapiLoadRecord('customer', new_customer_id);
-            new_customer_record.setFieldValue('custentity_run_scheduled', run_scheduled);
-            nlapiSubmitRecord(new_customer_record);
-        }
-
-        nlapiSetRedirectURL('RECORD', 'customer', cust_id);
     }
 }
