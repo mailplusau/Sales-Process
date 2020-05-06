@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-04-29 16:14:21
+ * @Last Modified time: 2020-05-05 13:42:37
  *
  */
 
@@ -538,12 +538,14 @@ function main(request, response) {
                     custscriptfinancial_tab_price_array: financial_tab_price_array.toString()
                 }
 
+                 nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], 'New Customer Finalised on NetSuite', ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+
                 /**
                  * Description - Schedule Script to create / edit / delete the financial tab items with the new details
                  */
                 var status = nlapiScheduleScript('customscript_sc_smc_item_pricing_update', 'customdeploy1', params3);
                 if (status == 'QUEUED') {
-                    nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], 'New Customer Finalised on NetSuite', ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+                   
                     response.sendRedirect('RECORD', 'customer', parseInt(request.getParameter('customer')), false);
                     return false;
                 }
