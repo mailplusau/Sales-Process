@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-05 13:42:37
+ * @Last Modified time: 2020-05-25 10:36:44
  *
  */
 
@@ -1522,7 +1522,7 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, r
             inlineQty += '<div class="form-group container info_section">';
             inlineQty += '<div class="row">';
             inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
-            // inlineQty += '<div class="col-xs-2 sendquote"><input type="button" id="sendquote" class="form-control sendquote btn btn-warning" value="SEND QUOTE" onclick="onclick_SendQuote()"/></div>';
+            inlineQty += '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
             // inlineQty += '<div class="col-xs-2 sendforms"><input type="button" id="sendforms" class="form-control sendforms btn btn-warning" value="SEND FORMS" onclick="onclick_SendForms()"/></div>';
             inlineQty += '</div>';
             inlineQty += '</div>';

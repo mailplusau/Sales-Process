@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-03-27 10:30:05
+ * @Last Modified time: 2020-05-25 10:36:48
  *
  */
 var financialTabItemArray = [];
@@ -70,7 +70,7 @@ $(document).on('click', '#alert .close', function(e) {
 function pageInit() {
 
     // if (isNullorEmpty(nlapiGetFieldValue('create_service_change'))) {
-        // document.getElementById('tr_submitter').style.display = 'none';
+    // document.getElementById('tr_submitter').style.display = 'none';
     // }
 
     var scf_upload = document.getElementsByClassName('input');
@@ -128,7 +128,7 @@ $(document).on('click', '#reviewcontacts', function(event) {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     var params = {
         custid: parseInt(nlapiGetFieldValue('customer')),
         sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
@@ -147,7 +147,7 @@ $(document).on('click', '#reviewaddress', function(event) {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     var params = {
         custid: parseInt(nlapiGetFieldValue('customer')),
         sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
@@ -168,7 +168,7 @@ $(document).on('click', '.createservicechg', function(event) {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
 
 
     var sales_record_id = parseInt(nlapiGetFieldValue('sales_record_id'));
@@ -267,7 +267,7 @@ $(document).on('click', '.edit_class', function(event) {
 function onclick_reassign() {
     if (validate()) {
 
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_sales_campaign_popup', 'customdeploy_sl_sales_campaign_popup') + '&sales_record_id=' + parseInt(nlapiGetFieldValue('sales_record_id')) + '&recid=' + parseInt(nlapiGetFieldValue('customer'));
         window.open(url, "_self", "height=300,width=300,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
     }
@@ -278,7 +278,7 @@ function onclick_reassign() {
 function onclick_NoAnswer() {
     if (validate()) {
 
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_noanswer', 'customdeploy_sl_salescamp_noanswer');
         window.open(url, "Window", "height=300,width=300,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
     }
@@ -294,7 +294,7 @@ function submit_NoAnswer(callnotes) {
 
 function onclick_Disconnected() {
     if (validate()) {
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         if (confirm('Outcome: Disconnected\nPress OK to continue.')) {
             nlapiSetFieldValue('custpage_outcome', 'disconnected');
             funcsubmitter = true;
@@ -305,7 +305,7 @@ function onclick_Disconnected() {
 
 function onclick_DoNotCall() {
     if (validate()) {
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var notes = prompt('Outcome: Do Not Call\n\nEnter call notes and press OK to continue.');
 
         if (notes != null) {
@@ -329,7 +329,7 @@ function submit_NoSale(reason, callnotes) {
 
 // function onclick_NoSale() {
 //  if (validate()) {
-//      updateCustomerDetails();
+//      updateCustomerDetails(false);
 //      var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_nosale', 'customdeploy_sl_salescamp_nosale');
 //      window.open(url, "Window", "height=300,width=420,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
 
@@ -361,7 +361,7 @@ function submit_Reject(reason, callnotes) {
 
 function onclick_Callback() {
     if (validate()) {
-        var result = updateCustomerDetails();
+        var result = updateCustomerDetails(false);
         if (result == false) {
             return false;
         }
@@ -378,9 +378,20 @@ function onclick_Callback() {
     }
 }
 
+function onclick_OffPeak() {
+    if (validate()) {
+        var result = updateCustomerDetails(true);
+        if (result == false) {
+            return false;
+        }
+        var upload_url = baseURL + '/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'));
+        window.open(upload_url, "_self", "height=750,width=650,modal=yes,alwaysRaised=yes");
+    }
+}
+
 function onclick_Reject() {
     if (validate()) {
-        var result = updateCustomerDetails();
+        var result = updateCustomerDetails(false);
         if (result == false) {
             return false;
         }
@@ -392,7 +403,7 @@ function onclick_Reject() {
 
 function onclick_Refer() {
     if (validate()) {
-        var result = updateCustomerDetails();
+        var result = updateCustomerDetails(false);
         if (result == false) {
             return false;
         }
@@ -427,7 +438,7 @@ function submit_Sale(commreg, outcome, startdate, trialperiod) {
 
 function onclick_Signed() {
     if (validate()) {
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_sale', 'customdeploy_sl_salescamp_sale') + '&custid=' + parseInt(nlapiGetFieldValue('customer'));
         window.open(url, "Window", "height=750,width=650,modal=yes,alwaysRaised=yes");
     }
@@ -435,7 +446,7 @@ function onclick_Signed() {
 
 function onclick_FreeTrial() {
     if (validate()) {
-        var result = updateCustomerDetails();
+        var result = updateCustomerDetails(false);
         if (result == false) {
             return false;
         }
@@ -446,7 +457,7 @@ function onclick_FreeTrial() {
 
 function onclick_Address() {
     if (validate()) {
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_editaddress', 'customdeploy_sl_salescamp_editaddress') + '&custid=' + parseInt(nlapiGetFieldValue('customer'));
         window.open(url, "Window", "height=550,width=800,modal=yes,alwaysRaised=yes");
     }
@@ -463,7 +474,7 @@ function onclick_SendEmail() {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     var params = {
         custid: parseInt(nlapiGetFieldValue('customer')),
         sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
@@ -480,7 +491,7 @@ function onclick_NoSale() {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     var params = {
         custid: parseInt(nlapiGetFieldValue('customer')),
         sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
@@ -497,7 +508,7 @@ function onclick_NoSale() {
 
 function onclick_ProductSale() {
     if (validate()) {
-        updateCustomerDetails();
+        updateCustomerDetails(false);
         var url = baseURL + nlapiResolveURL('suitelet', 'customscript_sl_salescamp_satchelorder', 'customdeploy_sl_salescamp_satchelorder') + '&custid=' + parseInt(nlapiGetFieldValue('customer'));
         window.open(url, "Window", "height=250,width=250,modal=yes,alwaysRaised=yes");
     }
@@ -519,7 +530,7 @@ function saveRecord() {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     console.log('after update');
     var sales_record_id = parseInt(nlapiGetFieldValue('sales_record_id'));
     var state = nlapiGetFieldValue('shipping_state');
@@ -930,7 +941,7 @@ function validate(status) {
     return return_value;
 }
 
-function updateCustomerDetails() {
+function updateCustomerDetails(offPeak) {
 
     var update_required = false;
 
@@ -983,7 +994,9 @@ function updateCustomerDetails() {
     customerRecord.setFieldValue('custentity_ap_lpo_customer', $('#survey3 option:selected').val());
     customerRecord.setFieldValue('custentity_date_reviewed_sra', getDate());
     customerRecord.setFieldValue('custentity_customer_pricing_notes', $('#pricing_notes').val())
-
+    if(offPeak == true){
+        customerRecord.setFieldValue('entitystatus', 62);
+    }
     nlapiSubmitRecord(customerRecord);
 
     if (!isNullorEmpty($('#sale_notes').val())) {
@@ -1017,7 +1030,7 @@ function onclick_Update() {
     if (result == false) {
         return false;
     }
-    updateCustomerDetails();
+    updateCustomerDetails(false);
     updateButton = true;
 
     var upload_url = baseURL + '/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'));
