@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-25 10:36:44
+ * @Last Modified time: 2020-06-09 11:56:51
  *
  */
 
@@ -102,7 +102,7 @@ function main(request, response) {
         var lpo_customer = customer_record.getFieldValue('custentity_ap_lpo_customer');
         var customer_status = customer_record.getFieldText('entitystatus');
         var customer_status_id = customer_record.getFieldValue('entitystatus');
-        var lead_source = customer_record.getFieldText('leadsource');
+        var lead_source = customer_record.getFieldValue('leadsource');
         var customer_industry = customer_record.getFieldValue('custentity_industry_category');
         ampo_price = customer_record.getFieldValue('custentity_ampo_service_price');
         ampo_time = customer_record.getFieldValue('custentity_ampo_service_time');
@@ -506,6 +506,9 @@ function main(request, response) {
             var partner_id = recCustomer.getFieldValue('partner');
             var companyName = recCustomer.getFieldValue('companyname');
             var partner_text = recCustomer.getFieldText('partner');
+            var lead_source_text = recCustomer.getFieldText('leadsource');
+            var lead_source_id = recCustomer.getFieldValue('leadsource');
+            var day_to_day_email = customer_record.getFieldValue('custentity_email_service')
             recCustomer.setFieldValue('entitystatus', 13);
             if (isNullorEmpty(recCustomer.getFieldValue('custentity_date_prospect_opportunity'))) {
                 recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
@@ -538,14 +541,25 @@ function main(request, response) {
                     custscriptfinancial_tab_price_array: financial_tab_price_array.toString()
                 }
 
-                 nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], 'New Customer Finalised on NetSuite', ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+                var email_subject = '';
+                var email_body = ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text + '';
+                if (lead_source_id == 246306) {
+                    email_subject = 'Shopify Customer Finalised on NetSuite';
+                    email_body += '</br> Email: ' + day_to_day_email;
+                    email_body += '</br> Lead Source: ' + lead_source_text;
+                } else {
+                    email_subject = 'New Customer Finalised on NetSuite';
+                }
+
+
+                nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
 
                 /**
                  * Description - Schedule Script to create / edit / delete the financial tab items with the new details
                  */
                 var status = nlapiScheduleScript('customscript_sc_smc_item_pricing_update', 'customdeploy1', params3);
                 if (status == 'QUEUED') {
-                   
+
                     response.sendRedirect('RECORD', 'customer', parseInt(request.getParameter('customer')), false);
                     return false;
                 }

@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-25 10:36:48
+ * @Last Modified time: 2020-06-09 11:56:49
  *
  */
 var financialTabItemArray = [];
@@ -974,6 +974,7 @@ function updateCustomerDetails(offPeak) {
         customerRecord.setFieldValue('altphone', $('#account_phone').val());
         customerRecord.setFieldValue('custentity_email_service', $('#daytodayemail').val());
         customerRecord.setFieldValue('phone', $('#daytodayphone').val());
+        customerRecord.setFieldValue('leadsource', $('#leadsource option:selected').val());
     }
     var multisite = $('#multisite option:selected').val();
 
