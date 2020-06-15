@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-09 11:56:51
+ * @Last Modified time: 2020-06-12 10:44:17
  *
  */
 
@@ -508,7 +508,7 @@ function main(request, response) {
             var partner_text = recCustomer.getFieldText('partner');
             var lead_source_text = recCustomer.getFieldText('leadsource');
             var lead_source_id = recCustomer.getFieldValue('leadsource');
-            var day_to_day_email = customer_record.getFieldValue('custentity_email_service')
+            var day_to_day_email = recCustomer.getFieldValue('custentity_email_service');
             recCustomer.setFieldValue('entitystatus', 13);
             if (isNullorEmpty(recCustomer.getFieldValue('custentity_date_prospect_opportunity'))) {
                 recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
@@ -552,7 +552,7 @@ function main(request, response) {
                 }
 
 
-                nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+                nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mailplus@protechly.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
 
                 /**
                  * Description - Schedule Script to create / edit / delete the financial tab items with the new details
