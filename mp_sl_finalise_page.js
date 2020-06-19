@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-12 10:44:17
+ * @Last Modified time: 2020-06-17 15:51:51
  *
  */
 
@@ -373,7 +373,7 @@ function main(request, response) {
         inlineQty += '</div></div>';
 
         if (!isNullorEmpty(callcenter) && callcenter == 'T') {
-            inlineQty += callCentreButtons(salesCampaignID, phone_call_made, customer_status_id, resultSetContacts, resultSetAddresses);
+            inlineQty += callCentreButtons(salesCampaignID, phone_call_made, customer_status_id, resultSetContacts, resultSetAddresses, lead_source);
         }
 
         //Commencement Register Details
@@ -1509,7 +1509,7 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website)
 
 
 
-function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, resultSetContacts, resultSetAddresses) {
+function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, resultSetContacts, resultSetAddresses, lead_source) {
 
     var inlineQty = '<div class="container" style="padding-top: 5%;">';
 
@@ -1535,9 +1535,14 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, r
         if (contact_count > 0 && address_count > 0) {
             inlineQty += '<div class="form-group container info_section">';
             inlineQty += '<div class="row">';
-            inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
-            inlineQty += '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
-            // inlineQty += '<div class="col-xs-2 sendforms"><input type="button" id="sendforms" class="form-control sendforms btn btn-warning" value="SEND FORMS" onclick="onclick_SendForms()"/></div>';
+            if (lead_source == 246616) {
+                inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
+                inlineQty += '<div class="col-xs-2 sendforms"><input type="button" id="quadient" class="form-control quadient btn btn-success" value="QUADIENT PROGRAM" onclick="onclick_Quadient()"/></div>';
+            } else {
+                inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
+                inlineQty += '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
+            }
+
             inlineQty += '</div>';
             inlineQty += '</div>';
         }
