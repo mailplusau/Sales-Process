@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-17 15:51:51
+ * @Last Modified time: 2020-07-15 08:23:19
  *
  */
 
@@ -255,7 +255,7 @@ function main(request, response) {
         inlineQty += customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_email, daytodayphone, daytodayemail, accounts_phone, customer_status, lead_source, customer_industry, callcenter);
 
         //Address and Contacts Details
-        inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts);
+        inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts, form);
 
         form.addField('shipping_state', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(shipping_state);
 
@@ -444,6 +444,10 @@ function main(request, response) {
         var financial_tab_price_array = request.getParameter('financial_price_array');
         var item_ids = request.getParameter('custpage_item_ids');
 
+        var connect_admin = request.getParameter('custpage_connect_admin')
+        var connect_user = request.getParameter('custpage_connect_user')
+
+
         nlapiLogExecution('DEBUG', 'file', file);
         nlapiLogExecution('DEBUG', 'commRegID', commRegID);
 
@@ -551,6 +555,13 @@ function main(request, response) {
                     email_subject = 'New Customer Finalised on NetSuite';
                 }
 
+                if (connect_user == 1 || connect_user == 1) {
+                    email_body += '</br></br> Customer Portal Access - User Details';
+                    email_body += '</br>First Name: ' + request.getParameter('custpage_connect_fn');
+                    email_body += '</br>Last Name: ' + request.getParameter('custpage_connect_ln');
+                    email_body += '</br>Email: ' + request.getParameter('custpage_connect_email');
+                    email_body += '</br>Phone: ' + request.getParameter('custpage_connect_phone');
+                }
 
                 nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mailplus@protechly.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
 
@@ -1053,7 +1064,7 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_e
 
 }
 
-function addressContactsSection(resultSetAddresses, resultSetContacts) {
+function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
     var inlineQty = '<div class="form-group container company_name_section">';
     inlineQty += '<div class="row">';
     inlineQty += '<div class="col-xs-6 heading3"><h4><span class="label label-default col-xs-12">ADDRESS DETAILS</span></h4></div>';
@@ -1117,9 +1128,28 @@ function addressContactsSection(resultSetAddresses, resultSetContacts) {
     inlineQty += '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
     resultSetContacts.forEachResult(function(searchResultContacts) {
         var contact_id = searchResultContacts.getValue('internalid');
+        var contact_fn = searchResultContacts.getValue('firstname');
+        var contact_ln = searchResultContacts.getValue('lastname');
+        var contact_phone = searchResultContacts.getValue('phone');
+        var contact_email = searchResultContacts.getValue('email');
         var contact_text = searchResultContacts.getValue('formulatext');
         var contact_role = searchResultContacts.getValue('contactrole');
         var contact_role_text = searchResultContacts.getText('contactrole');
+        var contact_connect_admin = searchResultContacts.getValue('custentity_connect_admin');
+        var contact_connect_user = searchResultContacts.getValue('custentity_connect_user');
+
+        if (contact_connect_admin == 1 || contact_connect_user == 1) {
+            form.addField('custpage_connect_admin', 'text', 'Connect Admin').setDisplayType('hidden').setDefaultValue(contact_connect_admin);
+            form.addField('custpage_connect_user', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_connect_user);
+            form.addField('custpage_connect_id', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_id);
+            form.addField('custpage_connect_fn', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_fn);
+            form.addField('custpage_connect_ln', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_ln);
+            form.addField('custpage_connect_email', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_email);
+            form.addField('custpage_connect_phone', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_phone);
+        } else {
+            form.addField('custpage_connect_admin', 'text', 'Connect Admin').setDisplayType('hidden').setDefaultValue(2);
+            form.addField('custpage_connect_user', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(2);
+        }
 
         inlineQty += '<tr class="text-center"><td>' + contact_text + '</td><td>' + contact_role_text + '</td></tr>';
 
