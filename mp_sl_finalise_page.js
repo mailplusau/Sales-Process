@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-07-15 08:23:19
+ * @Last Modified time: 2020-07-15 11:06:39
  *
  */
 
@@ -1146,11 +1146,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
             form.addField('custpage_connect_ln', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_ln);
             form.addField('custpage_connect_email', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_email);
             form.addField('custpage_connect_phone', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_phone);
-        } else {
-            form.addField('custpage_connect_admin', 'text', 'Connect Admin').setDisplayType('hidden').setDefaultValue(2);
-            form.addField('custpage_connect_user', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(2);
-        }
-
+        } 
         inlineQty += '<tr class="text-center"><td>' + contact_text + '</td><td>' + contact_role_text + '</td></tr>';
 
         contact_count++;
