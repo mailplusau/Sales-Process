@@ -6,8 +6,8 @@
  *
  * Remarks:         
  * 
- * @Last Modified by:   mailplusar
- * @Last Modified time: 2018-04-11 09:11:31
+ * @Last Modified by:   Ankith
+ * @Last Modified time: 2020-06-22 08:34:11
  *
  */
  var ctx = nlapiGetContext();
@@ -62,7 +62,7 @@ function main(request, response) {
         form.addField('industry', 'select', 'Industry', 'customlist_industry_category').setLayoutType('startrow').setMandatory(true);
         var sales_campagin_select = form.addField('campaign_type', 'select', 'Sales Campaign').setMandatory(true);
 
-        sales_campagin_select.addSelectOption('', '');
+        sales_campagin_select.addSelectOption(62, 'Field Sales');
         var i;
 
         // if (!isNullorEmpty(sales_campaign)) {

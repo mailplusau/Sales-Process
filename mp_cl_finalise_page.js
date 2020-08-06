@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-25 10:36:48
+ * @Last Modified time: 2020-06-17 15:51:55
  *
  */
 var financialTabItemArray = [];
@@ -384,6 +384,36 @@ function onclick_OffPeak() {
         if (result == false) {
             return false;
         }
+        var upload_url = baseURL + '/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'));
+        window.open(upload_url, "_self", "height=750,width=650,modal=yes,alwaysRaised=yes");
+    }
+}
+
+function onclick_Quadient() {
+    if (validate()) {
+        var result = updateCustomerDetails(false, true);
+        if (result == false) {
+            return false;
+        }
+
+        var custId = parseInt(nlapiGetFieldValue('customer'));
+
+        var recCustomer = nlapiLoadRecord('customer', custId);
+        var partner_id = recCustomer.getFieldValue('partner');
+        var companyName = recCustomer.getFieldValue('companyname');
+        var entity_id = recCustomer.getFieldValue('entityid');
+        var day_to_day_email = recCustomer.getFieldValue('custentity_email_service');
+
+        var salesRecordId = parseInt(nlapiGetFieldValue('sales_record_id'));
+        var salesRecord = nlapiLoadRecord('customrecord_sales', salesRecordId);
+        var sales_rep = salesRecord.getFieldValue('custrecord_sales_assigned');
+
+        var email_subject = 'MailPlus Quadient Program ' + entity_id + ' ' + companyName;
+
+        var email_body = 'Your opportunity for ' + companyName + ' has been successfully registered. Your reference number is ' + entity_id + '</br></br>Please contact your Account Manager for any additional information or assistance.';
+
+        nlapiSendEmail(sales_rep, day_to_day_email, email_subject, email_body, ['luke.forbes@mailplus.com.au'], sales_rep);
+
         var upload_url = baseURL + '/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'));
         window.open(upload_url, "_self", "height=750,width=650,modal=yes,alwaysRaised=yes");
     }
@@ -941,7 +971,7 @@ function validate(status) {
     return return_value;
 }
 
-function updateCustomerDetails(offPeak) {
+function updateCustomerDetails(offPeak, quadient) {
 
     var update_required = false;
 
@@ -974,6 +1004,7 @@ function updateCustomerDetails(offPeak) {
         customerRecord.setFieldValue('altphone', $('#account_phone').val());
         customerRecord.setFieldValue('custentity_email_service', $('#daytodayemail').val());
         customerRecord.setFieldValue('phone', $('#daytodayphone').val());
+        customerRecord.setFieldValue('leadsource', $('#leadsource option:selected').val());
     }
     var multisite = $('#multisite option:selected').val();
 
@@ -994,8 +1025,10 @@ function updateCustomerDetails(offPeak) {
     customerRecord.setFieldValue('custentity_ap_lpo_customer', $('#survey3 option:selected').val());
     customerRecord.setFieldValue('custentity_date_reviewed_sra', getDate());
     customerRecord.setFieldValue('custentity_customer_pricing_notes', $('#pricing_notes').val())
-    if(offPeak == true){
+    if (offPeak == true) {
         customerRecord.setFieldValue('entitystatus', 62);
+    } else if (quadient == true) {
+        customerRecord.setFieldValue('entitystatus', 63);
     }
     nlapiSubmitRecord(customerRecord);
 

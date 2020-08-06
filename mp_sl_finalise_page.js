@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith
- * @Last Modified time: 2020-05-25 10:36:44
+ * @Last Modified time: 2020-07-15 11:06:39
  *
  */
 
@@ -102,7 +102,7 @@ function main(request, response) {
         var lpo_customer = customer_record.getFieldValue('custentity_ap_lpo_customer');
         var customer_status = customer_record.getFieldText('entitystatus');
         var customer_status_id = customer_record.getFieldValue('entitystatus');
-        var lead_source = customer_record.getFieldText('leadsource');
+        var lead_source = customer_record.getFieldValue('leadsource');
         var customer_industry = customer_record.getFieldValue('custentity_industry_category');
         ampo_price = customer_record.getFieldValue('custentity_ampo_service_price');
         ampo_time = customer_record.getFieldValue('custentity_ampo_service_time');
@@ -255,7 +255,7 @@ function main(request, response) {
         inlineQty += customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_email, daytodayphone, daytodayemail, accounts_phone, customer_status, lead_source, customer_industry, callcenter);
 
         //Address and Contacts Details
-        inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts);
+        inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts, form);
 
         form.addField('shipping_state', 'text', 'Customer').setDisplayType('hidden').setDefaultValue(shipping_state);
 
@@ -373,7 +373,7 @@ function main(request, response) {
         inlineQty += '</div></div>';
 
         if (!isNullorEmpty(callcenter) && callcenter == 'T') {
-            inlineQty += callCentreButtons(salesCampaignID, phone_call_made, customer_status_id, resultSetContacts, resultSetAddresses);
+            inlineQty += callCentreButtons(salesCampaignID, phone_call_made, customer_status_id, resultSetContacts, resultSetAddresses, lead_source);
         }
 
         //Commencement Register Details
@@ -444,6 +444,10 @@ function main(request, response) {
         var financial_tab_price_array = request.getParameter('financial_price_array');
         var item_ids = request.getParameter('custpage_item_ids');
 
+        var connect_admin = request.getParameter('custpage_connect_admin')
+        var connect_user = request.getParameter('custpage_connect_user')
+
+
         nlapiLogExecution('DEBUG', 'file', file);
         nlapiLogExecution('DEBUG', 'commRegID', commRegID);
 
@@ -506,6 +510,9 @@ function main(request, response) {
             var partner_id = recCustomer.getFieldValue('partner');
             var companyName = recCustomer.getFieldValue('companyname');
             var partner_text = recCustomer.getFieldText('partner');
+            var lead_source_text = recCustomer.getFieldText('leadsource');
+            var lead_source_id = recCustomer.getFieldValue('leadsource');
+            var day_to_day_email = recCustomer.getFieldValue('custentity_email_service');
             recCustomer.setFieldValue('entitystatus', 13);
             if (isNullorEmpty(recCustomer.getFieldValue('custentity_date_prospect_opportunity'))) {
                 recCustomer.setFieldValue('custentity_date_prospect_opportunity', getDate());
@@ -538,14 +545,32 @@ function main(request, response) {
                     custscriptfinancial_tab_price_array: financial_tab_price_array.toString()
                 }
 
-                 nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mj@roundtableapps.com'], 'New Customer Finalised on NetSuite', ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+                var email_subject = '';
+                var email_body = ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text + '';
+                if (lead_source_id == 246306) {
+                    email_subject = 'Shopify Customer Finalised on NetSuite';
+                    email_body += '</br> Email: ' + day_to_day_email;
+                    email_body += '</br> Lead Source: ' + lead_source_text;
+                } else {
+                    email_subject = 'New Customer Finalised on NetSuite';
+                }
+
+                if (connect_user == 1 || connect_user == 1) {
+                    email_body += '</br></br> Customer Portal Access - User Details';
+                    email_body += '</br>First Name: ' + request.getParameter('custpage_connect_fn');
+                    email_body += '</br>Last Name: ' + request.getParameter('custpage_connect_ln');
+                    email_body += '</br>Email: ' + request.getParameter('custpage_connect_email');
+                    email_body += '</br>Phone: ' + request.getParameter('custpage_connect_phone');
+                }
+
+                nlapiSendEmail(696992, ['mailplussupport@protechly.com', 'mailplus@protechly.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
 
                 /**
                  * Description - Schedule Script to create / edit / delete the financial tab items with the new details
                  */
                 var status = nlapiScheduleScript('customscript_sc_smc_item_pricing_update', 'customdeploy1', params3);
                 if (status == 'QUEUED') {
-                   
+
                     response.sendRedirect('RECORD', 'customer', parseInt(request.getParameter('customer')), false);
                     return false;
                 }
@@ -1039,7 +1064,7 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee, accounts_e
 
 }
 
-function addressContactsSection(resultSetAddresses, resultSetContacts) {
+function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
     var inlineQty = '<div class="form-group container company_name_section">';
     inlineQty += '<div class="row">';
     inlineQty += '<div class="col-xs-6 heading3"><h4><span class="label label-default col-xs-12">ADDRESS DETAILS</span></h4></div>';
@@ -1103,10 +1128,25 @@ function addressContactsSection(resultSetAddresses, resultSetContacts) {
     inlineQty += '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
     resultSetContacts.forEachResult(function(searchResultContacts) {
         var contact_id = searchResultContacts.getValue('internalid');
+        var contact_fn = searchResultContacts.getValue('firstname');
+        var contact_ln = searchResultContacts.getValue('lastname');
+        var contact_phone = searchResultContacts.getValue('phone');
+        var contact_email = searchResultContacts.getValue('email');
         var contact_text = searchResultContacts.getValue('formulatext');
         var contact_role = searchResultContacts.getValue('contactrole');
         var contact_role_text = searchResultContacts.getText('contactrole');
+        var contact_connect_admin = searchResultContacts.getValue('custentity_connect_admin');
+        var contact_connect_user = searchResultContacts.getValue('custentity_connect_user');
 
+        if (contact_connect_admin == 1 || contact_connect_user == 1) {
+            form.addField('custpage_connect_admin', 'text', 'Connect Admin').setDisplayType('hidden').setDefaultValue(contact_connect_admin);
+            form.addField('custpage_connect_user', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_connect_user);
+            form.addField('custpage_connect_id', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_id);
+            form.addField('custpage_connect_fn', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_fn);
+            form.addField('custpage_connect_ln', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_ln);
+            form.addField('custpage_connect_email', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_email);
+            form.addField('custpage_connect_phone', 'text', 'Connect User').setDisplayType('hidden').setDefaultValue(contact_phone);
+        } 
         inlineQty += '<tr class="text-center"><td>' + contact_text + '</td><td>' + contact_role_text + '</td></tr>';
 
         contact_count++;
@@ -1495,7 +1535,7 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website)
 
 
 
-function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, resultSetContacts, resultSetAddresses) {
+function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, resultSetContacts, resultSetAddresses, lead_source) {
 
     var inlineQty = '<div class="container" style="padding-top: 5%;">';
 
@@ -1521,9 +1561,14 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status, r
         if (contact_count > 0 && address_count > 0) {
             inlineQty += '<div class="form-group container info_section">';
             inlineQty += '<div class="row">';
-            inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
-            inlineQty += '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
-            // inlineQty += '<div class="col-xs-2 sendforms"><input type="button" id="sendforms" class="form-control sendforms btn btn-warning" value="SEND FORMS" onclick="onclick_SendForms()"/></div>';
+            if (lead_source == 246616) {
+                inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
+                inlineQty += '<div class="col-xs-2 sendforms"><input type="button" id="quadient" class="form-control quadient btn btn-success" value="QUADIENT PROGRAM" onclick="onclick_Quadient()"/></div>';
+            } else {
+                inlineQty += '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
+                inlineQty += '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
+            }
+
             inlineQty += '</div>';
             inlineQty += '</div>';
         }
