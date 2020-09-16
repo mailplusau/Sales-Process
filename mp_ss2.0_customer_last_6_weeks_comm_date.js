@@ -14,8 +14,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
                 title: 'context.type',
                 details: context.type
             });
-            // if (context.type !== context.InvocationType.ON_DEMAND)
-            // 	return;
+
             var customerLast6WeeksSearch = search.load({
                 id: 'customsearch_customer_last_6_weeks'
             });
@@ -109,4 +108,5 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
         return {
             execute: execute
         };
-    });
+    }
+);
