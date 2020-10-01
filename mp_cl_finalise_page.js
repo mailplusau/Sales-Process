@@ -6,8 +6,8 @@
  *
  * Remarks:         
  * 
- * @Last Modified by:   Ankith
- * @Last Modified time: 2020-06-17 15:51:55
+ * @Last Modified by:   Anesu
+ * @Last Modified time: 2020-09-07 17:00:20
  *
  */
 var financialTabItemArray = [];
@@ -1024,7 +1024,37 @@ function updateCustomerDetails(offPeak, quadient) {
     customerRecord.setFieldValue('custentity_ap_outlet', $('#survey2 option:selected').val());
     customerRecord.setFieldValue('custentity_ap_lpo_customer', $('#survey3 option:selected').val());
     customerRecord.setFieldValue('custentity_date_reviewed_sra', getDate());
-    customerRecord.setFieldValue('custentity_customer_pricing_notes', $('#pricing_notes').val())
+    customerRecord.setFieldValue('custentity_customer_pricing_notes', $('#pricing_notes').val());
+
+    /**
+     *  Update List of MPEX Customers
+     */
+    customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $("#weekly_usage").val());
+
+    // Invoicing Cycle is the only thing listed as a result under Customer Record
+    customerRecord.setFieldValue('custentity_mpex_invoicing_cycle', $('#invoice_cycle option:selected').val());
+
+    // Minimum Float Amount
+    customerRecord.setFieldValue('custentity_mpex_500g_float', $('#min_500g').val()); // Float for min
+    customerRecord.setFieldValue('custentity_mpex_1kg_float', $('#min_1kg').val());
+    customerRecord.setFieldValue('custentity_mpex_3kg_float', $('#min_3kg').val());
+    customerRecord.setFieldValue('custentity_mpex_5kg_float', $('#min_5kg').val());
+    customerRecord.setFieldValue('custentity_mpex_b4_float', $('#min_b4').val());
+    customerRecord.setFieldValue('custentity_mpex_c5_float', $('#min_c5').val());
+    customerRecord.setFieldValue('custentity_mpex_dl_float', $('#min_dl').val());
+    // Price Point
+    var price_point_500g = $('#price_500g option:selected').val();
+    console.log(price_point_500g);
+    nlapiLogExecution('AUDIT', price_point_500g);
+
+    customerRecord.setFieldValue('custentity_mpex_500g_price_point', $('#price_500g option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_1kg_price_point', $('#price_1kg option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_3kg_price_point', $('#price_3kg option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_5kg_price_point', $('#price_5kg option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_b4_price_point', $('#price_b4 option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_c5_price_point', $('#price_c5 option:selected').val());
+    customerRecord.setFieldValue('custentity_mpex_dl_price_point', $('#price_dl option:selected').val());
+
     if (offPeak == true) {
         customerRecord.setFieldValue('entitystatus', 62);
     } else if (quadient == true) {
@@ -1053,9 +1083,6 @@ function updateCustomerDetails(offPeak, quadient) {
 
         nlapiSubmitRecord(phonecall);
     }
-
-
-
 }
 
 function onclick_Update() {
