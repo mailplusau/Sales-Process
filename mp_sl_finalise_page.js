@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-10-02 10:18:54
+ * @Last Modified time: 2020-10-07 16:33:52
  *
  */
 
@@ -593,7 +593,7 @@ function main(request, response) {
                     email_body += '</br>Phone: ' + request.getParameter('custpage_connect_phone');
                 }
 
-                nlapiSendEmail(696992, ['mailplussupport@protechly.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'])
+                nlapiSendEmail(696992, ['mailplussupport@protechly.com'], email_subject, email_body, ['raine.giderson@mailplus.com.au', 'ankith.ravindran@mailplus.com.au', 'gabrielle.bathman@mailplus.com.au'])
 
                 /**
                  * Description - Schedule Script to create / edit / delete the financial tab items with the new details
