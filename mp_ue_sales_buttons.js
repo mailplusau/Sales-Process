@@ -120,7 +120,10 @@ function beforeUserLoad(type, form) {
                     form.addButton('custpage_multisite_link', 'Retrieve Multisites Info', getButtonScript('retrieve_multisite', salesrecordid, customerRecordId));
                 }
 
-
+                if (status == 13){
+                    form.addButton('custpage_changestatus', 'Change Status', getButtonScript('changestatus', null, customerRecordId)); // getButtonScript('changestatus', null, customerRecordId)
+                }
+                
                 form.addButton('custpage_multisite_link', 'Link Multisites', getButtonScript('multisite_link', salesrecordid, customerRecordId));
 
                 // if no completed "AusPost - Product - Price Increase" sales record
@@ -589,6 +592,12 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
         rtnScript = "window.location='" + url + "'";
     }
 
+    if (type == 'changestatus'){
+        var url = nlapiResolveURL('SUITELET', 'customscript_sl_sales_campaign_status', 'customdeploy_sl_sales_campaign_status');
+        url += '&recid=' + customerrecordid + '&button=T&cust=T';
+        rtnScript = "window.location='" + url + "'";
+        nlapiLogExecution('DEBUG', 'rtnScript', rtnScript);
+    }
 
     return rtnScript;
 }
