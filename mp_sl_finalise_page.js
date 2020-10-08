@@ -372,8 +372,8 @@ function main(request, response) {
 
         inlineQty += '<li role="presentation" class="' + survey_tab + '"><a href="#survey">SURVEY INFORMATION</a></li>';
         inlineQty += '<li role="presentation" class="' + service_tab + '"><a href="#services">CURRENT SERVICES</a></li>';
-        inlineQty += '<li role="presentation" class="' + notes_tab + '"><a href="#salenotes">SALE NOTES</a></li>';
         inlineQty += '<li role="presentation" class="' + mpex_tab + '"><a href="#mpex">MPEX</a></li>'; // MPEX List Tab
+        inlineQty += '<li role="presentation" class="' + notes_tab + '"><a href="#salenotes">SALE NOTES</a></li>';
 
         inlineQty += '</ul>';
 
@@ -389,14 +389,14 @@ function main(request, response) {
         tab_content += serviceDetailsSection(resultSet_service);
         tab_content += '</div>';
 
+        //For the MPEX Tab Content
+        tab_content += '<div role="tabpanel" class="tab-pane ' + mpex_tab + '" id="mpex">';
+        tab_content += mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg);
+        tab_content += '</div>';
+
         //Sale Notes Tab Contenet
         tab_content += '<div role="tabpanel" class="tab-pane ' + notes_tab + '" id="salenotes">';
         tab_content += salesNotesSection(customer_id, customer_record);
-        tab_content += '</div>';
-
-        // //For the MPEX Tab Content
-        tab_content += '<div role="tabpanel" class="tab-pane ' + mpex_tab + '" id="mpex">';
-        tab_content += mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg);
         tab_content += '</div>';
 
         inlineQty += '<div class="tab-content" style="padding-top: 3%;">';
