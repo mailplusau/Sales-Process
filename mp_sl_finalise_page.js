@@ -116,28 +116,29 @@ function main(request, response) {
         var min_1kg = customer_record.getFieldValue('custentity_mpex_1kg_float'); //Customer Min 1Kg Float
         var min_3kg = customer_record.getFieldValue('custentity_mpex_3kg_float'); //Customer Min 3kg Float
         var min_5kg = customer_record.getFieldValue('custentity_mpex_5kg_float'); //Customer Min 5Kg Float
+        var min_500g = customer_record.getFieldValue('custentity_mpex_5kg_float'); //Customer Min 500g Float
 
         //If empty, set field to 0
         if (isNullorEmpty(min_dl)) {
-            min_dl = 0
+            min_dl = 0;
         }
         if (isNullorEmpty(min_b4)) {
-            min_b4 = 0
+            min_b4 = 0;
         }
         if (isNullorEmpty(min_c5)) {
-            min_c5 = 0
+            min_c5 = 0;
         }
         if (isNullorEmpty(min_1kg)) {
-            min_1kg = 0
+            min_1kg = 0;
         }
         if (isNullorEmpty(min_3kg)) {
-            min_3kg = 0
+            min_3kg = 0;
         }
         if (isNullorEmpty(min_5kg)) {
-            min_5kg = 0
+            min_5kg = 0;
         }
-        if (isNullorEmpty(min_5kg)) {
-            min_500g = 0
+        if (isNullorEmpty(min_500g)) {
+            min_500g = 0;
         }
 
         var multisite = customer_record.getFieldValue('custentity_category_multisite');
@@ -1895,12 +1896,12 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_dl = record.setFieldValue('custentity_mpex_dl_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
+            if (listID != 3) {
                 inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
             }
         }
@@ -1918,12 +1919,12 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_c5 = record.setFieldValue('custentity_mpex_c5_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
+            if (listID != 3) {
                 inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
             }
         }
@@ -1944,12 +1945,12 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_b4 = record.setFieldValue('custentity_mpex_b4_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
+            if (listID != 3) {
                 inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
             }
         }
@@ -1974,14 +1975,14 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_1kg = record.setFieldValue('custentity_mpex_500g_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
-                    inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-                }
+            if (listID != 3) {
+                inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+            }
         }
         return true;
     });
@@ -1997,14 +1998,14 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_1kg = record.setFieldValue('custentity_mpex_1kg_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
-                    inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-                }
+            if (listID != 3) {
+                inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+            }
         }
         return true;
     });
@@ -2020,14 +2021,14 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_3kg = record.setFieldValue('custentity_mpex_3kg_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
-                    inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-                }
+            if (listID != 3) {
+                inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+            }
         }
         return true;
     });
@@ -2043,12 +2044,12 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
                 inlineQty += '<option value="' + listID + '" selected>' + listValue + '</option>';
                 price_5kg = record.setFieldValue('custentity_mpex_5kg_price_point', listID);
             } else {
-                if (listID != 3){
+                if (listID != 3) {
                     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
                 }
             }
         } else {
-            if (listID != 3){
+            if (listID != 3) {
                 inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
             }
         }
@@ -2056,8 +2057,6 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg)
     });
     inlineQty += '</select></div></div>';
     inlineQty += '</div>';
-    inlineQty += '</div>';
-
     inlineQty += '</div>';
 
     nlapiSubmitRecord(record);
