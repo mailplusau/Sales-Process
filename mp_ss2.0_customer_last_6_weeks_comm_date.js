@@ -63,9 +63,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
                 var subject = 'MailPlus Service Call & Referral Program'
                 var emailBody = 'Dear Account Manager,\n\nPlease review customers 6 weeks MPEX usage. Place a customer service call, offer referral program and obtain a review if possible.\n';
 
-                emailBody += 'LINK: ' + customerLink;
+                emailBody += '<b><u>LINK</u></b>: ' + customerLink;
 
-                emailBody += 'Note: If above link not clickable, please copy and paste in browser.'
+                emailBody += '\n\n<b><u>Note</u></b>: If above link not clickable, please copy and paste in browser.'
 
                 log.audit({
                     title: 'Subject',
@@ -88,7 +88,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
                     author: 112209,
                     recipients: salesRep,
                     subject: subject,
-                    body: emailBody
+                    body: emailBody,
+                    cc: ['luke.forbes@mailplus.com.au'],
+                    relatedRecords: {
+                        entityId: customerInternalId,
+                    }
                 });
 
                 var customerRecord = record.load({
