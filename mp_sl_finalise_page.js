@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   ankit
- * @Last Modified time: 2020-10-07 16:33:52
+ * @Last Modified time: 2021-02-09 10:26:01
  *
  */
 
@@ -499,8 +499,10 @@ function main(request, response) {
                         var file_name = getDate() + '_' + entity_id + '.' + type;
                     } else if (type == 'PNGIMAGE') {
                         type == 'png';
+                         var file_name = getDate() + '_' + entity_id + '.' + type;
                     } else if (type == 'PJPGIMAGE') {
                         type == 'png';
+                         var file_name = getDate() + '_' + entity_id + '.' + type;
                     }
 
                     file.setName(file_name);
