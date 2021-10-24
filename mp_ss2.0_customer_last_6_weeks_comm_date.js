@@ -3,98 +3,114 @@
  *@NScriptType ScheduledScript
  */
 
-define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/log'],
-	function(ui, email, runtime, search, record, log) {
-		function execute(context) {
-			var customerLast6WeeksSearch = search.load({
-				id: 'customsearch_customer_last_6_weeks'
-			});
+define(['N/email', 'N/runtime', 'N/search', 'N/record'],
+    function(email, runtime, search, record) {
+        function execute(context) {
+            log.audit({
+                title: 'InvocationType',
+                details: context.InvocationType
+            });
+            log.audit({
+                title: 'context.type',
+                details: context.type
+            });
+            // if (context.type !== context.InvocationType.ON_DEMAND)
+            // 	return;
+            var customerLast6WeeksSearch = search.load({
+                id: 'customsearch_customer_last_6_weeks'
+            });
 
-			customerLast6WeeksSearch.run().each(function(result) {
-				var customerInternalId = result.getValue({
-					name: 'internalid'
-				});
+            customerLast6WeeksSearch.run().each(function(result) {
+                var customerInternalId = result.getValue({
+                    name: 'internalid'
+                });
 
-				var customerId = result.getValue({
-					name: 'entityid'
-				});
+                var customerId = result.getValue({
+                    name: 'entityid'
+                });
 
-				var customerName = result.getValue({
-					name: 'companyname'
-				});
+                var customerName = result.getValue({
+                    name: 'companyname'
+                });
 
-				var customerZee = result.getValue({
-					name: 'partner'
-				});
+                var customerZee = result.getValue({
+                    name: 'partner'
+                });
 
-				var customerState = result.getValue({
-					name: 'internalid',
-					join: 'partner'
-				});
+                var customerState = result.getValue({
+                    name: 'internalid',
+                    join: 'partner'
+                });
 
-				var commDate = result.getValue({
-					name: 'internalid',
-					join: 'CUSTRECORD_CUSTOMER'
-				});
+                var commDate = result.getValue({
+                    name: 'internalid',
+                    join: 'CUSTRECORD_CUSTOMER'
+                });
 
-				var signUpDate = result.getValue({
-					name: 'internalid',
-					join: 'CUSTRECORD_CUSTOMER'
-				});
+                var signUpDate = result.getValue({
+                    name: 'internalid',
+                    join: 'CUSTRECORD_CUSTOMER'
+                });
 
-				var salesRep = result.getValue({
-					name: 'internalid',
-					join: 'CUSTRECORD_CUSTOMER'
-				});
+                var salesRep = result.getValue({
+                    name: 'custrecord_salesrep',
+                    join: 'CUSTRECORD_CUSTOMER'
+                });
 
 
-				var customerLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=858&deploy=1&compid=1048144&unlayered=T&custparam_params={%22custid%22%3A' + customerInternalId + '%2C%22scriptid%22%3A%22customscript_sl_customer_list%22%2C%22deployid%22%3A%22customdeploy_sl_customer_list%22}&sorts[weekused]=-1';
+                var customerLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=858&deploy=1&compid=1048144&unlayered=T&custparam_params={%22custid%22%3A' + customerInternalId + '%2C%22scriptid%22%3A%22customscript_sl_customer_list%22%2C%22deployid%22%3A%22customdeploy_sl_customer_list%22}&sorts[weekused]=-1';
 
-				var subject = 'MailPlus Service Call & Referral Program'
-				var emailBody = 'Dear Account Manager,\n\nPlease review customers 6 weeks MPEX usage. Place a customer service call, offer referral program and obtain a review if possible.\n';
+                var subject = 'MailPlus Service Call & Referral Program'
+                var emailBody = 'Dear Account Manager,\n\nPlease review customers 6 weeks MPEX usage. Place a customer service call, offer referral program and obtain a review if possible.\n';
 
-				emailBody += customerLink;
+                emailBody += '<b><u>LINK</u></b>: ' + customerLink;
 
-				log.audit({
-					title: 'Subject',
-					details: subject
-				});
-				log.audit({
-					title: 'Email Body',
-					details: emailBody
-				});
-				log.audit({
-					title: 'Customer Internal ID',
-					details: customerInternalId
-				});
-				log.audit({
-					title: 'Sales Rep',
-					details: salesRep
-				});
+                emailBody += '\n\n<b><u>Note</u></b>: If above link not clickable, please copy and paste in browser.'
 
-				// email.send({
-				// 	author: 112209,
-				// 	recipients: salesRep,
-				// 	subject: subject,
-				// 	body: emailBody
-				// });
+                log.audit({
+                    title: 'Subject',
+                    details: subject
+                });
+                log.audit({
+                    title: 'Email Body',
+                    details: emailBody
+                });
+                log.audit({
+                    title: 'Customer Internal ID',
+                    details: customerInternalId
+                });
+                log.audit({
+                    title: 'Sales Rep',
+                    details: salesRep
+                });
 
-				// var customerRecord = record.load({
-				// 	type: record.Type.CUSTOMER,
-				// 	id: customerInternalId
-				// });
+                email.send({
+                    author: 112209,
+                    recipients: salesRep,
+                    subject: subject,
+                    body: emailBody,
+                    cc: ['luke.forbes@mailplus.com.au'],
+                    relatedRecords: {
+                        entityId: customerInternalId,
+                    }
+                });
 
-				// customerRecord.setValue({
-				// 	fieldId: 'custentity_referral_program',
-				// 	value: 1
-				// });
+                var customerRecord = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId
+                });
 
-				// customerRecord.save();
+                customerRecord.setValue({
+                    fieldId: 'custentity_referral_program',
+                    value: 1
+                });
 
-				return true;
-			});
-		}
-		return {
-			execute: execute
-		};
-	});
+                customerRecord.save();
+
+                return true;
+            });
+        }
+        return {
+            execute: execute
+        };
+    });
