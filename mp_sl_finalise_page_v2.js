@@ -7,7 +7,7 @@
  * Remarks:         
  * 
  * @Last Modified by:   Ankith Ravindran
- * @Last Modified time: 2021-10-25 14:38:15
+ * @Last Modified time: 2021-10-25 16:45:49
  *
  */
 
@@ -499,10 +499,10 @@ function main(request, response) {
                         var file_name = getDate() + '_' + entity_id + '.' + type;
                     } else if (type == 'PNGIMAGE') {
                         type == 'png';
-                         var file_name = getDate() + '_' + entity_id + '.' + type;
+                        var file_name = getDate() + '_' + entity_id + '.' + type;
                     } else if (type == 'PJPGIMAGE') {
                         type == 'png';
-                         var file_name = getDate() + '_' + entity_id + '.' + type;
+                        var file_name = getDate() + '_' + entity_id + '.' + type;
                     }
 
                     file.setName(file_name);
@@ -514,6 +514,8 @@ function main(request, response) {
 
                     commRegRecord.setFieldValue('custrecord_scand_form', id);
                     commRegRecord.setFieldValue('custrecord_trial_status', 9);
+                    commRegRecord.setFieldValue('custrecord_finalised_by', nlapiGetContext().getUser());
+                    commRegRecord.setFieldValue('custrecord_finalised_on', getDate());
 
                     nlapiSubmitRecord(commRegRecord);
 
@@ -557,14 +559,14 @@ function main(request, response) {
 
             if (create_service_change == 'T') {
                 var custparam_params = {
-                        custid: parseInt(request.getParameter('customer')),
-                        salesrecordid: sales_record_id,
-                        salesrep: 'T',
-                        commreg: commRegID,
-                        customid: 'customscript_sl_finalise_page',
-                        customdeploy: 'customdeploy_sl_finalise_page'
-                    }
-                    // custparam_params = JSON.stringify(custparam_params);
+                    custid: parseInt(request.getParameter('customer')),
+                    salesrecordid: sales_record_id,
+                    salesrep: 'T',
+                    commreg: commRegID,
+                    customid: 'customscript_sl_finalise_page',
+                    customdeploy: 'customdeploy_sl_finalise_page'
+                }
+                // custparam_params = JSON.stringify(custparam_params);
                 nlapiSetRedirectURL('SUITELET', 'customscript_sl_create_service_change', 'customdeploy_sl_create_service_change', null, custparam_params);
             } else {
                 /**
@@ -577,11 +579,11 @@ function main(request, response) {
                     custscriptfinancial_tab_array: financial_tab_item_array.toString(),
                     custscriptfinancial_tab_price_array: financial_tab_price_array.toString()
                 }
-                
+
                 var records = new Array();
                 records['entity'] = custId;
-                
-               
+
+
 
                 var email_subject = '';
                 var email_body = ' New Customer NS ID: ' + custId + '</br> New Customer: ' + entity_id + ' ' + companyName + '</br> New Customer Franchisee NS ID: ' + partner_id + '</br> New Customer Franchisee Name: ' + partner_text + '';
@@ -599,7 +601,7 @@ function main(request, response) {
                     email_body += '</br>Last Name: ' + request.getParameter('custpage_connect_ln');
                     email_body += '</br>Email: ' + request.getParameter('custpage_connect_email');
                     email_body += '</br>Phone: ' + request.getParameter('custpage_connect_phone');
-                    
+
                     var recCustomer_portalaccess = nlapiLoadRecord('customer', custId);
                     recCustomer_portalaccess.setFieldValue('custentity_portal_access', 1);
                     recCustomer_portalaccess.setFieldValue('custentity_portal_how_to_guides', 2);
