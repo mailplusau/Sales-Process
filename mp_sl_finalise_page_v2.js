@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-04T10:09:44+11:00
+ * @Last modified time: 2021-11-04T10:21:46+11:00
  *
  */
 
@@ -713,7 +713,7 @@ function main(request, response) {
           nlapiSubmitRecord(recCustomer_portalaccess);
         }
 
-        nlapiSendEmail(1132504, ['mailplussupport@protechly.com'],
+        nlapiSendEmail(ctx.getUser(), ['mailplussupport@protechly.com'],
           email_subject, email_body, ['raine.giderson@mailplus.com.au',
             'ankith.ravindran@mailplus.com.au',
             'rianne.mansell@mailplus.com.au',
