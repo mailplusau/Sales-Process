@@ -5,7 +5,7 @@
  * @Date:   2021-11-01T09:59:04+11:00
  * Module Description: Page that lists down all new customers in the last 4 months
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T07:05:36+11:00
+ * @Last modified time: 2021-11-05T08:03:39+11:00
  */
 
 
@@ -47,7 +47,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         }
 
         var form = ui.createForm({
-          title: 'MPEX New Customer List - Last 4 Months'
+          title: 'MPEX Customer List - Last 4 Months - No Usage or Below 45% Expected Usage'
         });
 
 
@@ -99,7 +99,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
           layoutType: ui.FieldLayoutType.STARTROW
         }).defaultValue = inlineHtml;
 
-        form.clientScriptFileId = 5287888;
+        form.clientScriptFileId = 5283980;
 
         context.response.writePage(form);
       } else {

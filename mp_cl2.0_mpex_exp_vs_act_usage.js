@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T07:05:09+11:00
+ * @Last modified time: 2021-11-05T08:03:37+11:00
  */
 
 
@@ -640,24 +640,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
               60 *
               60 * 24 * 7));
 
-            if (no_of_total_weeks != 0) {
-              debtDataSet.push([linkURL, debt_row.custInternalID,
-                debt_row.custEntityID,
-                debt_row.custName, debt_row.zeeName, debt_row.signUpDate,
-                debt_row.commDate, debt_row.salesRepName, debt_row.expWeeklyUsage,
-                debt_row.onlineExpWeeklyUsage, inlineHtml,
-                no_of_weeks,
-                no_of_total_weeks,
-                avg_weekly_usage, sort_cat, debt_row.mpexCustomer
-              ]);
 
-              csvSet.push([debt_row.custInternalID, debt_row.custEntityID,
-                debt_row.custName, debt_row.zeeName, debt_row.signUpDate,
-                debt_row.commDate, debt_row.salesRepName, debt_row.expWeeklyUsage,
-                debt_row.onlineExpWeeklyUsage, no_of_weeks,
-                no_of_total_weeks,
-                avg_weekly_usage, sort_cat, debt_row.mpexCustomer
-              ]);
+            if (sort_cat != '0 - Green') {
+              if (no_of_total_weeks != 0) {
+                debtDataSet.push([linkURL, debt_row.custInternalID,
+                  debt_row.custEntityID,
+                  debt_row.custName, debt_row.zeeName, debt_row.signUpDate,
+                  debt_row.commDate, debt_row.salesRepName, debt_row.expWeeklyUsage,
+                  debt_row.onlineExpWeeklyUsage, inlineHtml,
+                  no_of_weeks,
+                  no_of_total_weeks,
+                  avg_weekly_usage, sort_cat, debt_row.mpexCustomer
+                ]);
+
+                csvSet.push([debt_row.custInternalID, debt_row.custEntityID,
+                  debt_row.custName, debt_row.zeeName, debt_row.signUpDate,
+                  debt_row.commDate, debt_row.salesRepName, debt_row.expWeeklyUsage,
+                  debt_row.onlineExpWeeklyUsage, no_of_weeks,
+                  no_of_total_weeks,
+                  avg_weekly_usage, sort_cat, debt_row.mpexCustomer
+                ]);
+              }
             }
           }
 
@@ -709,7 +712,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
       Object.keys(uniqueArray).map(function(item, key) {
         series_data_v2.push((customer_count_with_no_mpex_usage[item]));
-        series_data2_v2.push((customer_count_with_mpex_usage[item]));
+        // series_data2_v2.push((customer_count_with_mpex_usage[item]));
         series_data3_v2.push((customer_count_with_orange_mpex_usage[item]));
         series_data4_v2.push((customer_count_with_white_mpex_usage[item]));
         categores_v2.push(uniqueArray[item])
@@ -720,13 +723,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       console.log(series_data_v2)
       console.log(categores)
       console.log(categores_v2)
-        // plotChart(series_data, series_data2, categores)
-      plotChartV2(series_data_v2, series_data2_v2, series_data3_v2,
+
+      plotChartV2(series_data_v2, series_data3_v2,
         series_data4_v2, categores_v2)
       return true;
     }
 
-    function plotChartV2(series_data, series_data2_v2, series_data3_v2,
+    function plotChartV2(series_data, series_data3_v2,
       series_data4_v2, categores) {
       // console.log(series_data)
       Highcharts.chart('container', {
@@ -771,13 +774,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             fontWeight: 'bold',
           }
         }, {
-          name: 'Avg Weekly Usage >= Expected Weekly Usage',
-          data: series_data2_v2,
-          color: '#1da94e80',
-          style: {
-            fontWeight: 'bold',
-          }
-        }, {
           name: 'Avg Weekly Usage < than 45% of Expected Weekly Usage',
           data: series_data3_v2,
           color: '#c9750d80',
@@ -791,64 +787,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           style: {
             fontWeight: 'bold',
           }
-        }]
-      });
-    }
-
-    function plotChart(series_data, series_data2, categores) {
-      // console.log(series_data)
-      Highcharts.chart('container', {
-        chart: {
-          height: (6 / 16 * 100) + '%',
-          backgroundColor: '#CFE0CE',
-          zoomType: 'xy'
-        },
-        xAxis: {
-          categories: categores,
-          crosshair: true,
-          style: {
-            fontWeight: 'bold',
-          }
-        },
-        yAxis: [{
-          title: {
-            text: 'Avg Actual Weekly Usage'
-          }
-        }, {
-          title: {
-            text: 'Expected Weekly Usage'
-          },
-          opposite: true
-        }],
-        plotOptions: {
-          column: {
-            colorByPoint: false
-          },
-          series: {
-            dataLabels: {
-              enabled: true,
-              align: 'right',
-              color: 'black',
-              x: -10
-            },
-            pointPadding: 0.1,
-            groupPadding: 0
-          }
-        },
-        series: [{
-          name: 'Customer Count - No Usage',
-          type: 'column',
-          yAxis: 1,
-          data: series_data,
-          color: '#108372',
-          style: {
-            fontWeight: 'bold',
-          }
-        }, {
-          name: 'Avg Actual Usage',
-          type: 'spline',
-          color: '#FBEA51',
-          data: series_data2
         }]
       });
     }
