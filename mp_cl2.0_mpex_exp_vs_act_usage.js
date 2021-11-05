@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T10:15:25+11:00
+ * @Last modified time: 2021-11-05T16:13:35+11:00
  */
 
 
@@ -245,7 +245,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         });
 
         var url = baseURL +
-          '/app/site/hosting/scriptlet.nl?script=1378&deploy=1&zee=' +
+          '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' +
           zee +
           '&start_date=&last_date=&user_id=' +
           userId
@@ -387,7 +387,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       }
 
       var url = baseURL +
-        '/app/site/hosting/scriptlet.nl?script=1378&deploy=1&zee=' + zee +
+        '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' + zee +
         '&start_date=' + start_date + '&last_date=' + last_date +
         '&user_id=' +
         userId
