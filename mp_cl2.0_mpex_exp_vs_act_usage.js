@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T08:03:37+11:00
+ * @Last modified time: 2021-11-05T10:15:25+11:00
  */
 
 
@@ -180,6 +180,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         $(".range_filter_section_top").css("padding-top", "0px");
       })
 
+      //Display the modal on click of the link on the table and prefill the fields  based on the customer record
       $(".customerModalPopUp").click(function() {
 
         console.log('inside modal')
@@ -215,13 +216,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
       });
 
+      //On click of close icon in the modal
       $('.close').click(function() {
         $("#myModal").hide();
       });
 
+      //Update the customer record on click of the button in the modal
       $('#updateCustomer').click(function() {
         var customer_id = $("#customer_id").val();
-
 
         var customer_record = record.load({
           type: record.Type.CUSTOMER,
@@ -264,7 +266,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       window.location.href = url;
     }
 
-
+    //Initialise the DataTable with headers.
     function submitSearch() {
       // duringSubmit();
 
@@ -352,6 +354,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       afterSubmit();
     }
 
+    //Function to add the filters and relaod the page
     function addFilters() {
 
 
@@ -641,7 +644,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
               60 * 24 * 7));
 
 
-            if (sort_cat != '0 - Green') {
+            if (sort_cat != '0 - Green' && sort_cat != '1 - White') {
               if (no_of_total_weeks != 0) {
                 debtDataSet.push([linkURL, debt_row.custInternalID,
                   debt_row.custEntityID,
@@ -667,8 +670,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         });
       }
       console.log('debtDataSet ' + debtDataSet)
+      console.log('uniqueArray ' + uniqueArray)
       console.log('customer_count_with_no_mpex_usage ' +
         customer_count_with_no_mpex_usage)
+      console.log('customer_count_with_orange_mpex_usage ' +
+        customer_count_with_orange_mpex_usage)
+
       var datatable = $('#customer_benchmark_preview').DataTable();
       datatable.clear();
       datatable.rows.add(debtDataSet);
@@ -714,7 +721,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         series_data_v2.push((customer_count_with_no_mpex_usage[item]));
         // series_data2_v2.push((customer_count_with_mpex_usage[item]));
         series_data3_v2.push((customer_count_with_orange_mpex_usage[item]));
-        series_data4_v2.push((customer_count_with_white_mpex_usage[item]));
+        // series_data4_v2.push((customer_count_with_white_mpex_usage[item]));
         categores_v2.push(uniqueArray[item])
       });
 
@@ -724,13 +731,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       console.log(categores)
       console.log(categores_v2)
 
-      plotChartV2(series_data_v2, series_data3_v2,
-        series_data4_v2, categores_v2)
+      plotChartV2(series_data_v2, series_data3_v2, categores_v2)
       return true;
     }
 
-    function plotChartV2(series_data, series_data3_v2,
-      series_data4_v2, categores) {
+    function plotChartV2(series_data, series_data3_v2, categores) {
       // console.log(series_data)
       Highcharts.chart('container', {
         chart: {
@@ -767,27 +772,29 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           }
         },
         series: [{
-          name: 'No Usage',
-          data: series_data,
-          color: '#d59696',
-          style: {
-            fontWeight: 'bold',
+            name: 'No Usage',
+            data: series_data,
+            color: '#d59696',
+            style: {
+              fontWeight: 'bold',
+            }
+          }, {
+            name: 'Avg Weekly Usage < than 45% of Expected Weekly Usage',
+            data: series_data3_v2,
+            color: '#c9750d80',
+            style: {
+              fontWeight: 'bold',
+            }
           }
-        }, {
-          name: 'Avg Weekly Usage < than 45% of Expected Weekly Usage',
-          data: series_data3_v2,
-          color: '#c9750d80',
-          style: {
-            fontWeight: 'bold',
-          }
-        }, {
-          name: 'Avg Weekly Usage >= 45% of Expected Usage & Avg Weekly Usage < Expected Weekly Usage',
-          data: series_data4_v2,
-          color: '#fff',
-          style: {
-            fontWeight: 'bold',
-          }
-        }]
+          // {
+          //   name: 'Avg Weekly Usage >= 45% of Expected Usage & Avg Weekly Usage < Expected Weekly Usage',
+          //   data: series_data4_v2,
+          //   color: '#fff',
+          //   style: {
+          //     fontWeight: 'bold',
+          //   }
+          // }
+        ]
       });
     }
 

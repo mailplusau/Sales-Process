@@ -3,9 +3,9 @@
  * @NScriptType Suitelet
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-01T09:59:04+11:00
- * Module Description: Page that lists down all new customers in the last 4 months
+ * Module Description: Page that lists down all new customers in the last 4 months with No Usage or 45% less than the expectedd usage. Ability for the Sales Rep to edit the expected weekly usage of the customer and edit customer to be an MPEX customer or not.
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T08:03:39+11:00
+ * @Last modified time: 2021-11-05T10:15:28+11:00
  */
 
 
@@ -62,29 +62,38 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
           displayType: ui.FieldDisplayType.HIDDEN
         });
 
-        if (role != 1000) {
-          //Search: SMC - Franchisees
-          var searchZees = search.load({
-            id: 'customsearch_smc_franchisee'
-          });
-          var resultSetZees = searchZees.run();
 
-          inlineHtml += franchiseeDropdownSection(resultSetZees, context);
-        }
+        //Search: SMC - Franchisees
+        var searchZees = search.load({
+          id: 'customsearch_smc_franchisee'
+        });
+        var resultSetZees = searchZees.run();
 
+        //Dropdown to Select the Fracnhisee
+        inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+
+        //Section to select Commencement Date From & To
         inlineHtml += dateFilterSection(start_date, last_date);
+
+        //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
         inlineHtml += userDropdownSection(userId);
+
+        //Display the modal pop-up to edit the customer details
         inlineHtml += updateCustomerMPEXModal();
+
+        //Loading Section that gets displayed when the page is being loaded
         inlineHtml += loadingSection();
         inlineHtml += '<div id="container"></div>'
         inlineHtml += dataTable();
 
+        //Button to export the table into CSV
         form.addButton({
           id: 'download_csv',
           label: 'Export as CSV',
           functionName: 'downloadCsv()'
         });
 
+        //Button to reload the page when the filters have been selected
         form.addButton({
           id: 'submit_search',
           label: 'Submit Search',
@@ -107,8 +116,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
       }
     }
 
-    function updateCustomerMPEXModal() {
 
+    /*
+     * PURPOSE : HTML code to generate the Modal Pop-up
+     *  PARAMS :  -
+     * RETURNS : HTML
+     *   NOTES :
+     */
+    function updateCustomerMPEXModal() {
 
       var yes_no_search = search.create({
         type: 'customlist107_2',
