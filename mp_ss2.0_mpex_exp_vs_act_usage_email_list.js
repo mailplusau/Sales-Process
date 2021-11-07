@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-05T10:16:06+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T15:57:10+11:00
+ * @Last modified time: 2021-11-08T10:05:26+11:00
  */
 
 
@@ -193,7 +193,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
 
           //Email Body
           var emailBody =
-            'Dear Account Manager,</br></br>Please review customers MPEX usage. Place a customer service call, offer referral program and update the expected usage of the customer.</br>';
+            'Dear Account Manager,</br></br>Please review customers MPEX usage. Place a customer service call and update the expected usage of the customer.</br>';
           emailBody += '<b><u>CUSTOMER COUNT - NO USAGE</u></b>: ' +
             customer_count_with_no_mpex_usage + '</br>';
           emailBody +=
