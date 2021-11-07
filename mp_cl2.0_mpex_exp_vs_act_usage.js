@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T17:38:50+11:00
+ * @Last modified time: 2021-11-08T10:05:23+11:00
  */
 
 
@@ -620,14 +620,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // ',%22scriptid%22:%22customscript_sl_mpex_new_cust_last_4m%22,%22deployid%22:%22customdeploy1%22}
 
             var linkURL =
-              '<button class="form-control btn btn-primary"><a data-id="' +
+              '<button class="form-control btn btn-primary" style="cursor: not-allowed !important;"><a data-id="' +
               debt_row.custInternalID +
-              '" class="customerModalPopUp" style="cursor: pointer !important;color: white;">EDIT CUSTOMER DETAILS</a></button>  </br> <button class="form-control btn" style="background-color: #0f3d39;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1269&deploy=1&customerid=' +
+              '" class="customerModalPopUp" style="cursor: pointer !important;color: white;">EDIT CUSTOMER DETAILS</a></button>  </br> <button class="form-control btn" style="background-color: #0f3d39;cursor: not-allowed !important;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1269&deploy=1&customerid=' +
               debt_row.custInternalID +
-              '&zee=&start_date=&last_date=" >MONTHLY USAGE</a></button> </br> <button class="form-control btn" style="background-color: #fbea51;"><a style="color: #0f3d39;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1217&deploy=1&customerid=' +
+              '&zee=&start_date=&last_date=" target="_blank">MONTHLY USAGE</a></button> </br> <button class="form-control btn" style="background-color: #fbea51;cursor: not-allowed !important;"><a style="color: #0f3d39;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1217&deploy=1&customerid=' +
               debt_row.custInternalID +
               '&zee=' + debt_row.zeeID +
-              '&start_date=&last_date=&invoice_type=8">MPEX MONTHLY REVENUE</a></button>';
+              '&start_date=&last_date=&invoice_type=8" target="_blank">MPEX MONTHLY REVENUE</a></button>';
 
             var commDateArray = debt_row.commDate.split('/')
             var commDateString = commDateArray[1] + '/' + commDateArray[
