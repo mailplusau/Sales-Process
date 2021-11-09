@@ -5,7 +5,7 @@
  * @Date:   2021-11-01T09:59:04+11:00
  * Module Description: Page that lists down all new customers in the last 4 months with No Usage or 45% less than the expectedd usage. Ability for the Sales Rep to edit the expected weekly usage of the customer and edit customer to be an MPEX customer or not.
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-08T17:33:16+11:00
+ * @Last modified time: 2021-11-09T13:40:51+11:00
  */
 
 
@@ -82,13 +82,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         inlineHtml += loadingSection();
         inlineHtml += '<div id="container"></div>'
         inlineHtml += dataTable();
-
-        //Button to export the table into CSV
-        form.addButton({
-          id: 'download_csv',
-          label: 'Export as CSV',
-          functionName: 'downloadCsv()'
-        });
 
         //Button to reload the page when the filters have been selected
         form.addButton({

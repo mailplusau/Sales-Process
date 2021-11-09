@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-08T19:08:18+11:00
+ * @Last modified time: 2021-11-09T13:40:49+11:00
  */
 
 
@@ -181,38 +181,47 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       })
 
       //Display the modal on click of the link on the table and prefill the fields  based on the customer record
-      $(".customerModalPopUp").click(function() {
+      $(".customerOnboardingCompleted").click(function() {
 
         console.log('inside modal')
-        var customer_id = $(this).attr("data-id");
+        var commRegInternalID = $(this).attr("data-id");
 
-        console.log(customer_id)
-
-        var customer_record = record.load({
-          type: record.Type.CUSTOMER,
-          id: customer_id,
-          isDynamic: true
+        var comm_reg_record = record.load({
+          type: 'customrecord_commencement_register',
+          id: commRegInternalID
         });
 
-        var mpex_customer_name = customer_record.getValue({
-          fieldId: 'companyname'
+        comm_reg_record.setValue({
+          fieldId: 'custrecord_mpex_cust_onboarding',
+          value: 1
+        });
+        var date = new Date();
+        var date_now = format.parse({
+          value: date,
+          type: format.Type.DATE
+        });
+        var time_now = format.parse({
+          value: date,
+          type: format.Type.TIMEOFDAY
         });
 
-        var mpex_customer = customer_record.getValue({
-          fieldId: 'custentity_mpex_customer'
+        comm_reg_record.setValue({
+          fieldId: 'custrecord_mpex_cust_onboarding_date',
+          value: date_now
         });
-        var expected_usage = customer_record.getValue({
-          fieldId: 'custentity_exp_mpex_weekly_usage'
+        comm_reg_record.setValue({
+          fieldId: 'custrecord_mpex_cust_onboarding_time',
+          value: time_now
         });
 
-        $("#customer_id").val(customer_id);
-        $("#exp_usage").val(expected_usage);
-        $("#mpex_customer").val(mpex_customer);
-        console.log(expected_usage)
-        console.log(mpex_customer)
-        $("#myModal").show();
+        comm_reg_record.save({
+          ignoreMandatoryFields: true
+        });
 
-        $('#modal-title').text('Update Customer: ' + mpex_customer_name)
+
+        var url = baseURL +
+          '/app/site/hosting/scriptlet.nl?script=1381&deploy=1';
+        window.location.href = url;
 
       });
 
@@ -274,9 +283,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         destroy: true,
         data: debtDataSet,
         pageLength: 1000,
-        order: [
-        ],
+        order: [],
         columns: [{
+          title: 'LINK'
+        }, {
           title: 'Customer Internal ID'
         }, {
           title: 'ID'
@@ -286,7 +296,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           title: 'Franchisee'
         }, {
           title: 'Source'
-        },{
+        }, {
           title: 'Sign-Up Date'
         }, {
           title: 'Commencement Date'
@@ -354,7 +364,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }));
       }
 
-      custListCommenceTodayResults.run().each(function(custListCommenceTodaySet) {
+      custListCommenceTodayResults.run().each(function(
+        custListCommenceTodaySet) {
 
         var custInternalID = custListCommenceTodaySet.getValue({
           name: 'internalid'
@@ -370,6 +381,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         });
         var zeeName = custListCommenceTodaySet.getText({
           name: 'partner'
+        });
+        var commRegInternalID = custListCommenceTodaySet.getValue({
+          name: "internalid",
+          join: "CUSTRECORD_CUSTOMER"
         });
         var signUpDate = custListCommenceTodaySet.getValue({
           name: 'custrecord_comm_date_signup',
@@ -407,6 +422,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           custName: custName,
           zeeID: zeeID,
           zeeName: zeeName,
+          commRegInternalID: commRegInternalID,
           signUpDate: signUpDate,
           commDate: commDate,
           salesRepID: salesRepID,
@@ -434,13 +450,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       if (!isNullorEmpty(debt_rows)) {
         debt_rows.forEach(function(debt_row, index) {
 
-                debtDataSet.push([debt_row.custInternalID,
-                  debt_row.custEntityID,
-                  debt_row.custName, debt_row.zeeName, debt_row.leadSource, debt_row.signUpDate,
-                  debt_row.commDate, debt_row.email,
-                  debt_row.serviceEmail,debt_row.salesRepName,
-                  debt_row.saleType
-                ]);
+          var linkURL =
+            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            debt_row.commRegInternalID +
+            '" class="customerOnboardingCompleted" style="cursor: pointer !important;color: white;">ONBOARDING COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+            debt_row.custInternalID +
+            '" target="_blank">SEND EMAIL</a></button>';
+
+          var customerIDLink =
+            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+            debt_row.custInternalID + '&whence=" target="_blank">' +
+            debt_row.custEntityID + '</a>'
+
+          debtDataSet.push([linkURL, debt_row.custInternalID,
+            customerIDLink,
+            debt_row.custName, debt_row.zeeName, debt_row.leadSource,
+            debt_row.signUpDate,
+            debt_row.commDate, debt_row.email,
+            debt_row.serviceEmail, debt_row.salesRepName,
+            debt_row.saleType
+          ]);
         });
       }
 
