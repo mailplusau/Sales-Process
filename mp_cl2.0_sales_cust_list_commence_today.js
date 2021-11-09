@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-09T13:40:49+11:00
+ * @Last modified time: 2021-11-09T15:27:40+11:00
  */
 
 
@@ -459,14 +459,38 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
           var customerIDLink =
             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-            debt_row.custInternalID + '&whence=" target="_blank">' +
-            debt_row.custEntityID + '</a>'
+            debt_row.custInternalID + '&whence=" target="_blank"><b>' +
+            debt_row.custEntityID + '</b></a>';
+
+          var commDateSplit = debt_row.commDate.split('/');
+          var signUpDateSplit = debt_row.signUpDate.split('/');
+          var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+            commDateSplit[0]);
+          var commDateParsed = format.parse({
+            value: commDate,
+            type: format.Type.DATE
+          });
+          var commDateFormatted = format.format({
+            value: commDate,
+            type: format.Type.DATE
+          });
+
+          var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
+            1, signUpDateSplit[0]);
+          var signUpDateParsed = format.parse({
+            value: signUpDate,
+            type: format.Type.DATE
+          });
+          var signUpDateFormatted = format.format({
+            value: signUpDate,
+            type: format.Type.DATE
+          });
 
           debtDataSet.push([linkURL, debt_row.custInternalID,
             customerIDLink,
             debt_row.custName, debt_row.zeeName, debt_row.leadSource,
             debt_row.signUpDate,
-            debt_row.commDate, debt_row.email,
+            commDateFormatted, debt_row.email,
             debt_row.serviceEmail, debt_row.salesRepName,
             debt_row.saleType
           ]);

@@ -3,9 +3,9 @@
  * @NScriptType Suitelet
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-01T09:59:04+11:00
- * Module Description: Page that lists down all new customers in the last 4 months with No Usage or 45% less than the expectedd usage. Ability for the Sales Rep to edit the expected weekly usage of the customer and edit customer to be an MPEX customer or not.
+ * Module Description: Page that lists customres that are commencing today or have not been onboarded. 
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-09T13:40:51+11:00
+ * @Last modified time: 2021-11-09T13:50:50+11:00
  */
 
 
