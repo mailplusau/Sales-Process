@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-08T10:05:23+11:00
+ * @Last modified time: 2021-11-09T11:23:42+11:00
  */
 
 
@@ -329,6 +329,61 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
               $('td', row).css('background-color', '#c9750d80');
             }
           }
+        },
+        footerCallback: function(row, data, start, end, display) {
+          var api = this.api(),
+            data;
+          // Remove the formatting to get integer data for summation
+          var intVal = function(i) {
+            return typeof i === 'string' ?
+              i.replace(/[\$,]/g, '') * 1 :
+              typeof i === 'number' ?
+              i : 0;
+          };
+
+          // Total Expected Usage over all pages
+          total_expected_usage = api
+            .column(8)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Page Total Expected Usage over this page
+          pageTotal_expected_usage = api
+            .column(8, {
+              page: 'current'
+            })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Total Avg Actual Usage over all pages
+          total_avg_actual_usage = api
+            .column(13)
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Page Total Avg Actual Usage over this page
+          pageTotal_avg_actual_usage = api
+            .column(13, {
+              page: 'current'
+            })
+            .data()
+            .reduce(function(a, b) {
+              return intVal(a) + intVal(b);
+            }, 0);
+
+          // Update footer
+          $(api.column(8).footer()).html(
+            pageTotal_expected_usage.toFixed(2)
+          );
+          $(api.column(13).footer()).html(
+            pageTotal_avg_actual_usage.toFixed(2)
+          );
         }
       });
 

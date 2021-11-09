@@ -5,7 +5,7 @@
  * @Date:   2021-11-01T09:59:04+11:00
  * Module Description: Page that lists down all new customers in the last 4 months with No Usage or 45% less than the expectedd usage. Ability for the Sales Rep to edit the expected weekly usage of the customer and edit customer to be an MPEX customer or not.
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T10:15:28+11:00
+ * @Last modified time: 2021-11-09T11:23:15+11:00
  */
 
 
@@ -479,7 +479,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
       inlineHtml += '</thead>';
 
       inlineHtml +=
-        '<tbody id="result_customer_benchmark" class="result-customer_benchmark"></tbody>';
+        '<tbody id="result_customer_benchmark" class="result-customer_benchmark"></tbody><tfoot><tr><th colspan="8" style="text-align:right">Total Expected Weekly  Usage:</th><th></th><th colspan="4" style="text-align:right">Total Avg. Weekly Usage: </th><th></th><th></th><th></th></tr></tfoot>';
 
       inlineHtml += '</table>';
       return inlineHtml;
