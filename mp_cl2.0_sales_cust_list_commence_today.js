@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-10T08:59:57+11:00
+ * @Last modified time: 2021-11-10T11:53:01+11:00
  */
 
 
@@ -213,6 +213,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           fieldId: 'custrecord_mpex_cust_onboarding_time',
           value: time_now
         });
+        comm_reg_record.setValue({
+          fieldId: 'custrecord_mpex_cust_onboarding_by',
+          value: runtime.getCurrentUser().id
+        });
 
         comm_reg_record.save({
           ignoreMandatoryFields: true
@@ -303,11 +307,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }, {
           title: 'Email'
         }, {
-          title: 'Accounts Email'
+          title: 'Phone Number'
         }, {
           title: 'Sales Rep'
         }, {
           title: 'Sales Type'
+        }, {
+          title: 'MPEX 500g Price Plan'
+        }, {
+          title: 'Portal Access?'
+        }, {
+          title: 'Portal Manuals Sent?'
         }],
         columnDefs: [{
           targets: [],
@@ -340,7 +350,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
     }
 
     function loadDebtRecord(zee_id, userId) {
-      //All Customer Records -  Commencing Today
+      //MPEX Customers - Commencing Today or Not Onboarded
       var custListCommenceTodayResults = search.load({
         type: 'customer',
         id: 'customsearch_cust_list_commence_today'
@@ -416,6 +426,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           name: 'leadsource'
         });
 
+        var mpex500gPricePoint = custListCommenceTodaySet.getText({
+          name: 'custentity_mpex_500g_price_point'
+        });
+
+        var portalAccess = custListCommenceTodaySet.getText({
+          name: 'custentity_portal_access'
+        });
+
+        var portalManuals = custListCommenceTodaySet.getText({
+          name: 'custentity_portal_how_to_guides'
+        });
+        var phone = custListCommenceTodaySet.getValue({
+          name: 'phone'
+        });
+
         debt_set.push({
           custInternalID: custInternalID,
           custEntityID: custEntityID,
@@ -430,7 +455,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           email: email,
           serviceEmail: serviceEmail,
           leadSource: leadSource,
-          saleType: saleType
+          saleType: saleType,
+          mpex500gPricePoint: mpex500gPricePoint,
+          portalAccess: portalAccess,
+          portalManuals: portalManuals,
+          phone: phone
         });
 
         return true;
@@ -490,9 +519,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             customerIDLink,
             debt_row.custName, debt_row.zeeName, debt_row.leadSource,
             debt_row.signUpDate,
-            commDateFormatted, debt_row.email,
-            debt_row.serviceEmail, debt_row.salesRepName,
-            debt_row.saleType
+            commDateFormatted, debt_row.serviceEmail,
+            debt_row.phone, debt_row.salesRepName,
+            debt_row.saleType, debt_row.mpex500gPricePoint, debt_row.portalAccess,
+            debt_row.portalManuals
           ]);
         });
       }

@@ -3,9 +3,9 @@
  * @NScriptType Suitelet
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-01T09:59:04+11:00
- * Module Description: Page that lists customres that are commencing today or have not been onboarded. 
+ * Module Description: Page that lists customres that are commencing today or have not been onboarded.
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-09T13:50:50+11:00
+ * @Last modified time: 2021-11-10T11:46:24+11:00
  */
 
 
@@ -47,7 +47,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         }
 
         var form = ui.createForm({
-          title: 'Customer List - Commencing Today'
+          title: 'MPEX Customers - Day 1 Onboarding Customer Service Call'
         });
 
 
