@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T07:02:48+11:00
+ * @Last modified time: 2021-11-18T09:13:03+11:00
  *
  */
 var financialTabItemArray = [];
@@ -78,6 +78,7 @@ function pageInit() {
   $("#body").css("background-color", "#CFE0CE");
 
   var scf_upload = document.getElementsByClassName('input');
+  console.log('scf_upload' + scf_upload)
   var scf_upload_field = document.getElementsByClassName('uir-field');
   $('#upload_file_1_fs_lbl_uir_label').attr("style", "padding-left:15%;");
 
@@ -946,6 +947,7 @@ function validate(status) {
   var survey3 = $('#survey3').val();
 
   var mpex_customer = $('#mpex_customer').val();
+  var portal_training = $('#portal_training').val();
   var weekly_usage = $('#weekly_usage').val();
 
 
@@ -1067,6 +1069,12 @@ function validate(status) {
       return_value = false;
     }
 
+    if (isNullorEmpty(portal_training)) {
+      alertMessage +=
+        'Please Select "Portal Training Required?" under the MPEX Tab </br>';
+      return_value = false;
+    }
+
     if (isNullorEmpty(mpex_customer)) {
       alertMessage +=
         'Please Select "Is MPEX Customer?" under the MPEX Tab </br>';
@@ -1154,9 +1162,12 @@ function updateCustomerDetails(offPeak, quadient) {
    *  Update List of MPEX Customers
    */
   var mpex_customer = $("#mpex_customer").val();
+  var portal_training = $("#portal_training").val();
 
   customerRecord.setFieldValue('custentity_mpex_customer', $(
     "#mpex_customer").val());
+  customerRecord.setFieldValue('custentity_portal_training_required', $(
+    "#portal_training").val());
 
   customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $(
     "#weekly_usage").val());

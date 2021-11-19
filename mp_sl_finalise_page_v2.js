@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-05T07:02:46+11:00
+ * @Last modified time: 2021-11-18T15:21:28+11:00
  *
  */
 
@@ -123,6 +123,10 @@ function main(request, response) {
     var min_500g = customer_record.getFieldValue('custentity_mpex_5kg_float'); //Customer Min 500g Float
     var mpex_customer = customer_record.getFieldValue(
       'custentity_mpex_customer'); //MPEX Customer
+    var portal_training = customer_record.getFieldValue(
+      'custentity_portal_training_required'); //MPEX Customer
+    var mpex_expected_usage = customer_record.getFieldValue(
+      'custentity_exp_mpex_weekly_usage'); //MPEX Customer
 
     //If empty, set field to 0
     if (isNullorEmpty(min_dl)) {
@@ -466,7 +470,7 @@ function main(request, response) {
     tab_content += '<div role="tabpanel" class="tab-pane ' + mpex_tab +
       '" id="mpex">';
     tab_content += mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg,
-      min_3kg, min_5kg, mpex_customer);
+      min_3kg, min_5kg, mpex_customer, portal_training, mpex_expected_usage);
     tab_content += '</div>';
 
     //Sale Notes Tab Contenet
@@ -2147,7 +2151,7 @@ function salesNotesSection(custId, recCustomer) {
 
 
 function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
-  mpex_customer) {
+  mpex_customer, portal_training, mpex_expected_usage) {
   // Defining Variables
   var record = nlapiLoadRecord('customer', customer_id);
   var invoice_cycle = record.getFieldValue('custentity_mpex_invoicing_cycle');
@@ -2202,7 +2206,33 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty += '</select></div></div>';
   inlineQty +=
-    '<div class="col-xs-6 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><input id="weekly_usage" class="form-control weekly_usage">';
+    '<div class="col-xs-3 portal_training"><div class="input-group"><span class="input-group-addon" id="portal_training_text">Portal Training Required?<span class="mandatory">*</span></span><select id="portal_training" class="form-control portal_training" ><option></option>';
+  var col = new Array();
+  col[0] = new nlobjSearchColumn('name');
+  col[1] = new nlobjSearchColumn('internalId');
+  var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
+
+  for (var i = 0; results != null && i < results.length; i++) {
+    var res = results[i];
+    var listValue = res.getValue('name');
+    var listID = res.getValue('internalId');
+    if (!isNullorEmpty(portal_training)) {
+      if (portal_training == listID) {
+        inlineQty += '<option value="' + listID + '" selected>' + listValue +
+          '</option>';
+      } else {
+        inlineQty += '<option value="' + listID + '">' + listValue +
+          '</option>';
+      }
+    } else {
+      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    }
+  }
+
+  inlineQty += '</select></div></div>';
+  inlineQty +=
+    '<div class="col-xs-3 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><input id="weekly_usage" class="form-control weekly_usage" value="' +
+    mpex_expected_usage + '">';
   inlineQty += '</input></div></div>';
 
   // Invoice Cycle
@@ -2385,10 +2415,11 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
     var listID = searchResult.getValue('internalId');
 
     if (!isNullorEmpty(price_500g)) {
-      if (price_1kg == listID) {
+      if (price_500g == listID) {
         inlineQty += '<option value="' + listID + '" selected>' + listValue +
           '</option>';
-        price_1kg = record.setFieldValue('custentity_mpex_500g_price_point',
+        price_500g = record.setFieldValue(
+          'custentity_mpex_500g_price_point',
           listID);
       } else {
         if (listID != 3) {
