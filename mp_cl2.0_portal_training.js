@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-19T11:55:13+11:00
+ * @Last modified time: 2021-11-19T15:14:02+11:00
  */
 
 
@@ -342,8 +342,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }, {
           title: 'Franchisee'
         }, {
-          title: 'Source'
-        }, {
           title: 'Sign-Up Date'
         }, {
           title: 'Commencement Date'
@@ -354,11 +352,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }, {
           title: 'Sales Rep'
         }, {
-          title: 'Sales Type'
-        }, {
           title: 'Portal Access?'
         }, {
           title: 'Portal Manuals Sent?'
+        }, {
+          title: 'Training Date'
+        }, {
+          title: 'Training Time'
         }],
         columnDefs: [{
           targets: [],
@@ -485,6 +485,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           name: 'internalid',
           join: 'task'
         });
+        var taskStartTime = custListCommenceTodaySet.getValue({
+          name: 'starttime',
+          join: 'task'
+        });
+        var taskDueDate = custListCommenceTodaySet.getValue({
+          name: 'duedate',
+          join: 'task'
+        });
 
         debt_set.push({
           custInternalID: custInternalID,
@@ -505,7 +513,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           portalAccess: portalAccess,
           portalManuals: portalManuals,
           phone: phone,
-          taskInternalID: taskInternalID
+          taskInternalID: taskInternalID,
+          taskStartTime: taskStartTime,
+          taskDueDate: taskDueDate
         });
 
         return true;
@@ -565,12 +575,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
           debtDataSet.push([linkURL, debt_row.custInternalID,
             customerIDLink,
-            debt_row.custName, debt_row.zeeName, debt_row.leadSource,
+            debt_row.custName, debt_row.zeeName,
             debt_row.signUpDate,
             commDateFormatted, debt_row.serviceEmail,
-            debt_row.phone, debt_row.salesRepName,
-            debt_row.saleType, debt_row.portalAccess,
-            debt_row.portalManuals
+            debt_row.phone, debt_row.salesRepName, debt_row.portalAccess,
+            debt_row.portalManuals, debt_row.taskDueDate, debt_row.taskStartTime
           ]);
         });
       }
