@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-19T15:14:02+11:00
+ * @Last modified time: 2021-11-23T08:59:32+11:00
  */
 
 
@@ -181,8 +181,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       })
 
       $(".taskModalPopUP").click(function() {
-          var taskInternalID = $(this).attr("data-id");
-          var customerInternalID = $(this).attr("data-custid");
+        var taskInternalID = $(this).attr("data-id");
+        var customerInternalID = $(this).attr("data-custid");
         console.log('inside modal')
         $("#task_id").val(taskInternalID);
         $("#customer_id").val(customerInternalID);
@@ -195,10 +195,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       $("#customerOnboardingCompleted").click(function() {
 
         console.log('on submit')
-          var taskInternalID = $("#task_id").val();
-          var customerInternalID = $("#customer_id").val();
-          var date_now = $("#date").val();
-          var time_now = $("#time").val();
+        var taskInternalID = $("#task_id").val();
+        var customerInternalID = $("#customer_id").val();
+        var date_now = $("#date").val();
+        var time_now = $("#time").val();
 
 
         console.log(taskInternalID)
@@ -209,7 +209,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         });
 
         var splitDate = date_now.split('-');
-        var callback_date = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+        var callback_date = splitDate[2] + '/' + splitDate[1] + '/' +
+          splitDate[0];
 
 
         // var time_now = format.parse({
@@ -538,9 +539,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           var linkURL =
             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
             debt_row.taskInternalID +
-            '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?id='+debt_row.taskInternalID+'&e=T&l=T" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button>  <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?id=' +
             debt_row.taskInternalID +
-            '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?id='+debt_row.taskInternalID+'&e=T&l=T" target="_blank" class="" style="cursor: pointer !important;color: white;">TRAINING COMPLETE</a></button> </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+            '&e=T&l=T" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button>  <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            debt_row.taskInternalID +
+            '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?id=' +
+            debt_row.taskInternalID +
+            '&e=T&l=T" target="_blank" class="" style="cursor: pointer !important;color: white;">TRAINING COMPLETE</a></button> </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
             debt_row.custInternalID +
             '" target="_blank">SEND EMAIL</a></button>';
 

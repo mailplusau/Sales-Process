@@ -4,7 +4,7 @@
  * @Author: Ankith Ravindran <ankithravindran>
  * @Date:   2021-11-02T08:24:43+11:00
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-18T10:40:15+11:00
+ * @Last modified time: 2021-11-24T10:22:37+11:00
  */
 
 
@@ -181,9 +181,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       })
 
       $(".2WeekCallCompletedModalPopUP").click(function() {
-          var commRegInternalID = $(this).attr("data-id");
+        var commRegInternalID = $(this).attr("data-id");
+        var type = $(this).attr("data-type");
         console.log('inside modal')
         $("#comm_reg_id").val(commRegInternalID);
+        $("#type").val(type);
         $("#myModal").show();
 
 
@@ -193,17 +195,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       $("#customerOnboardingCompleted").click(function() {
 
         console.log('inside modal')
-          var commRegInternalID = $("#comm_reg_id").val();
+        var commRegInternalID = $("#comm_reg_id").val();
+        var type = $("#type").val();
 
         var comm_reg_record = record.load({
           type: 'customrecord_commencement_register',
           id: commRegInternalID
         });
 
-        comm_reg_record.setValue({
-          fieldId: 'custrecord_2_week_call_down',
-          value: 1
+        previous_notes = comm_reg_record.getValue({
+          fieldId: 'custrecord_2_week_call_notes'
         });
+
         var date = new Date();
         var date_now = format.parse({
           value: date,
@@ -214,17 +217,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           type: format.Type.TIMEOFDAY
         });
 
-        comm_reg_record.setValue({
-          fieldId: 'custrecord_2_week_call_date',
-          value: date_now
-        });
-        comm_reg_record.setValue({
-          fieldId: 'custrecord_2_week_call_time',
-          value: time_now
-        });
+        if (type == "completed") {
+          comm_reg_record.setValue({
+            fieldId: 'custrecord_2_week_call_down',
+            value: 1
+          });
+
+          comm_reg_record.setValue({
+            fieldId: 'custrecord_2_week_call_date',
+            value: date_now
+          });
+          comm_reg_record.setValue({
+            fieldId: 'custrecord_2_week_call_time',
+            value: time_now
+          });
+        }
+
         comm_reg_record.setValue({
           fieldId: 'custrecord_2_week_call_notes',
-          value: $("#call_back_notes").val()
+          value: previous_notes + '\n Date: ' + date_now + ' Notes: ' +
+            $("#call_back_notes").val()
         });
 
 
@@ -321,10 +333,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
           title: 'Phone Number'
         }, {
           title: 'Sales Rep'
-        }, {
-          title: 'Sales Type'
-        }, {
-          title: 'MPEX 500g Price Plan'
         }, {
           title: 'Portal Access?'
         }, {
@@ -490,10 +498,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
       if (!isNullorEmpty(debt_rows)) {
         debt_rows.forEach(function(debt_row, index) {
 
+
           var linkURL =
-            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            debt_row.custInternalID +
+            '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
+            debt_row.custInternalID + '&company=' + debt_row.custInternalID +
+            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
             debt_row.commRegInternalID +
-            '" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+            '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+            debt_row.commRegInternalID +
+            '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
             debt_row.custInternalID +
             '" target="_blank">SEND EMAIL</a></button>';
 
@@ -531,8 +546,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             debt_row.custName, debt_row.zeeName, debt_row.leadSource,
             debt_row.signUpDate,
             commDateFormatted, debt_row.serviceEmail,
-            debt_row.phone, debt_row.salesRepName,
-            debt_row.saleType, debt_row.mpex500gPricePoint, debt_row.portalAccess,
+            debt_row.phone, debt_row.salesRepName, debt_row.portalAccess,
             debt_row.portalManuals
           ]);
         });

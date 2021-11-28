@@ -5,7 +5,7 @@
  * @Date:   2021-11-01T09:59:04+11:00
  * Module Description: Page that lists customres that are commencing today or have not been onboarded.
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-18T10:40:12+11:00
+ * @Last modified time: 2021-11-24T10:22:39+11:00
  */
 
 
@@ -122,7 +122,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         '<div class="form-group container mpex_customer2_section">';
       inlineHtml += '<div class="row">';
       inlineHtml +=
-        '<div class="col-xs-4 mpex_customer"><input type="text" id="comm_reg_id" value="" hidden/><div class="input-group"><span class="input-group-addon" id="notes_text">NOTES </span><textarea id="call_back_notes" name="call_back_notes" rows="4" cols="50"></textarea></div></div>';
+        '<div class="col-xs-4 mpex_customer"><input type="text" id="comm_reg_id" value="" hidden/><input type="text" id="type" value="" hidden/><div class="input-group"><span class="input-group-addon" id="notes_text">NOTES </span><textarea id="call_back_notes" name="call_back_notes" rows="4" cols="50"></textarea></div></div>';
 
       inlineHtml += '</div>';
       inlineHtml += '</div>';
