@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-18T15:21:28+11:00
+ * @Last modified time: 2022-01-13T15:23:03+11:00
  *
  */
 
@@ -715,6 +715,27 @@ function main(request, response) {
           recCustomer_portalaccess.setFieldValue(
             'custentity_portal_how_to_guides', 2);
           nlapiSubmitRecord(recCustomer_portalaccess);
+
+          var userJSON = '{';
+          userJSON += '"customer_ns_id" : "' + custId + '",'
+          userJSON += '"first_name" : "' + request.getParameter(
+            'custpage_connect_fn') + '",'
+          userJSON += '"last_name" : "' + request.getParameter(
+            'custpage_connect_ln') + '",'
+          userJSON += '"email" : "' + request.getParameter(
+            'custpage_connect_email') + '",'
+          userJSON += '"phone" : "' + request.getParameter(
+            'custpage_connect_phone') + '"'
+          userJSON += '}';
+
+          var headers = {};
+          headers['Content-Type'] = 'application/json';
+          headers['Accept'] = 'application/json';
+          headers['x-api-key'] = 'XAZkNK8dVs463EtP7WXWhcUQ0z8Xce47XklzpcBj';
+
+          nlapiRequestURL('https://mpns.protechly.com/new_staff', userJSON,
+            headers);
+
         }
 
         nlapiSendEmail(ctx.getUser(), ['mailplussupport@protechly.com'],
@@ -723,6 +744,18 @@ function main(request, response) {
             'rianne.mansell@mailplus.com.au',
             'fiona.harrison@mailplus.com.au'
           ], records, null, true)
+
+        var customerJSON = '{';
+        customerJSON += '"ns_id" : "' + custId + '"'
+        customerJSON += '}';
+
+        var headers = {};
+        headers['Content-Type'] = 'application/json';
+        headers['Accept'] = 'application/json';
+        headers['x-api-key'] = 'XAZkNK8dVs463EtP7WXWhcUQ0z8Xce47XklzpcBj';
+
+        nlapiRequestURL('https://mpns.protechly.com/new_customer', customerJSON,
+          headers);
 
         /**
          * Description - Schedule Script to create / edit / delete the financial tab items with the new details
