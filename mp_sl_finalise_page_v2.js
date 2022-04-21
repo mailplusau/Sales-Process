@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-01-13T15:23:03+11:00
+ * @Last modified time: 2022-03-24T08:53:57+11:00
  *
  */
 
@@ -329,7 +329,7 @@ function main(request, response) {
 
     //INITIALIZATION OF JQUERY AND BOOTSTRAP
     var inlineQty =
-      '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&amp;c=1048144&amp;h=9ee6accfd476c9cae718&amp;_xt=.css"><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&amp;c=1048144&amp;h=ef2cda20731d146b5e98&amp;_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&amp;c=1048144&amp;h=a0ef6ac4e28f91203dfe&amp;_xt=.css"><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&amp;c=1048144&amp;h=a0ef6ac4e28f91203dfe&amp;_xt=.css"><style>.mandatory{color:red;}</style>';
+      '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&amp;c=1048144&amp;h=9ee6accfd476c9cae718&amp;_xt=.css"><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&amp;c=1048144&amp;h=ef2cda20731d146b5e98&amp;_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&amp;c=1048144&amp;h=a0ef6ac4e28f91203dfe&amp;_xt=.css"><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&amp;c=1048144&amp;h=a0ef6ac4e28f91203dfe&amp;_xt=.css"><style>.mandatory{color:red;}</style>';
 
     inlineQty +=
       '<div class="se-pre-con"></div><div ng-app="myApp" ng-controller="myCtrl"><div class="container" style="padding-top: 3%;"><div id="alert" class="alert alert-danger fade in"></div>';
@@ -738,10 +738,9 @@ function main(request, response) {
 
         }
 
-        nlapiSendEmail(ctx.getUser(), ['mailplussupport@protechly.com'],
+        nlapiSendEmail(ctx.getUser(), ['popie.popie@mailplus.com.au'],
           email_subject, email_body, ['raine.giderson@mailplus.com.au',
             'ankith.ravindran@mailplus.com.au',
-            'rianne.mansell@mailplus.com.au',
             'fiona.harrison@mailplus.com.au'
           ], records, null, true)
 
