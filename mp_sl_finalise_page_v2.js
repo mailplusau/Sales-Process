@@ -7,7 +7,7 @@
  * Remarks:
  *
  * @Last modified by:   ankithravindran
- * @Last modified time: 2022-03-24T08:53:57+11:00
+ * @Last modified time: 2022-06-03T09:31:49+10:00
  *
  */
 
@@ -642,6 +642,9 @@ function main(request, response) {
 
       var recCustomer = nlapiLoadRecord('customer', custId);
       var partner_id = recCustomer.getFieldValue('partner');
+      var partnerRecord = nlapiLoadRecord('partner', partner_id);
+      var serviceFuelSurchargeToBeApplied = partnerRecord.getFieldValue(
+        'custentity_service_fuel_surcharge_apply');
       var companyName = recCustomer.getFieldValue('companyname');
       var partner_text = recCustomer.getFieldText('partner');
       var lead_source_text = recCustomer.getFieldText('leadsource');
@@ -655,6 +658,21 @@ function main(request, response) {
           getDate());
       }
       recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
+      if (serviceFuelSurchargeToBeApplied == 1 ||
+        serviceFuelSurchargeToBeApplied == '1') {
+        recCustomer.setFieldValue('custentity_service_fuel_surcharge', 1);
+        if (partner_id == 218 || partner_id == 469) {
+          recCustomer.setFieldValue('custentity_service_fuel_surcharge_percen',
+            '5.3');
+        } else {
+          recCustomer.setFieldValue('custentity_service_fuel_surcharge_percen',
+            '9.7');
+        }
+
+      }
+      recCustomer.setFieldValue('custentity_mpex_surcharge_rate', '19.7');
+      recCustomer.setFieldValue('custentity_mpex_surcharge', 1);
+      // recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
       nlapiSubmitRecord(recCustomer);
 
       if (create_service_change == 'T') {
