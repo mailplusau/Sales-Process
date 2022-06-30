@@ -413,7 +413,7 @@ function main(request, response) {
         inlineQty += '<td><a href="' + baseURL +
           '/app/accounting/transactions/custinvc.nl?id=' + inv_results[x].getValue(
             'internalid') + '" target="_blank">' + inv_results[x].getValue(
-            'tranid') + '</a></td>';
+              'tranid') + '</a></td>';
         inlineQty += '<td>' + inv_results[x].getValue('total') + '</td>';
         inlineQty += '<td>' + inv_results[x].getText('status') + '</td>';
         inlineQty += '</tr>';
@@ -621,7 +621,7 @@ function main(request, response) {
           searched_service_change.addFilters(newFilters);
 
           resultSet_service_change = searched_service_change.runSearch();
-          resultSet_service_change.forEachResult(function(
+          resultSet_service_change.forEachResult(function (
             searchResult_service_change) {
             var serviceChangeId = searchResult_service_change.getValue(
               'internalid');
@@ -653,7 +653,7 @@ function main(request, response) {
         'custentity_email_service');
       recCustomer.setFieldValue('entitystatus', 13);
       if (isNullorEmpty(recCustomer.getFieldValue(
-          'custentity_date_prospect_opportunity'))) {
+        'custentity_date_prospect_opportunity'))) {
         recCustomer.setFieldValue('custentity_date_prospect_opportunity',
           getDate());
       }
@@ -666,7 +666,7 @@ function main(request, response) {
             '5.3');
         } else {
           recCustomer.setFieldValue('custentity_service_fuel_surcharge_percen',
-            '9.7');
+            '9.5');
         }
 
       }
@@ -677,14 +677,14 @@ function main(request, response) {
 
       if (create_service_change == 'T') {
         var custparam_params = {
-            custid: parseInt(request.getParameter('customer')),
-            salesrecordid: sales_record_id,
-            salesrep: 'T',
-            commreg: commRegID,
-            customid: 'customscript_sl_finalise_page',
-            customdeploy: 'customdeploy_sl_finalise_page'
-          }
-          // custparam_params = JSON.stringify(custparam_params);
+          custid: parseInt(request.getParameter('customer')),
+          salesrecordid: sales_record_id,
+          salesrep: 'T',
+          commreg: commRegID,
+          customid: 'customscript_sl_finalise_page',
+          customdeploy: 'customdeploy_sl_finalise_page'
+        }
+        // custparam_params = JSON.stringify(custparam_params);
         nlapiSetRedirectURL('SUITELET', 'customscript_sl_create_service_change',
           'customdeploy_sl_create_service_change', null, custparam_params);
       } else {
@@ -758,9 +758,9 @@ function main(request, response) {
 
         nlapiSendEmail(ctx.getUser(), ['popie.popie@mailplus.com.au'],
           email_subject, email_body, ['raine.giderson@mailplus.com.au',
-            'ankith.ravindran@mailplus.com.au',
-            'fiona.harrison@mailplus.com.au'
-          ], records, null, true)
+          'ankith.ravindran@mailplus.com.au',
+          'fiona.harrison@mailplus.com.au'
+        ], records, null, true)
 
         var customerJSON = '{';
         customerJSON += '"ns_id" : "' + custId + '"'
@@ -1271,7 +1271,7 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee,
   inlineQty += '<div class="row">';
   inlineQty +=
     '<div class="col-xs-6 zee"><div class="input-group"><span class="input-group-addon" id="zee_text">FRANCHISEE <span class="mandatory">*</span></span><select id="zee" class="form-control zee" ><option value=0></option>';
-  resultSetZees.forEachResult(function(searchResultZees) {
+  resultSetZees.forEachResult(function (searchResultZees) {
 
     zeeId = searchResultZees.getValue('internalid');
     zeeName = searchResultZees.getValue('companyname');
@@ -1296,7 +1296,7 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee,
   inlineQty +=
     '<select id="leadsource" class="form-control leadsource" ><option></option>';
 
-  resultSetLeadSource.forEachResult(function(searchResultLeadSource) {
+  resultSetLeadSource.forEachResult(function (searchResultLeadSource) {
 
     var leadsourceid = searchResultLeadSource.getValue('internalid');
     var leadsourcename = searchResultLeadSource.getValue('title');
@@ -1361,7 +1361,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty +=
     '<table border="0" cellpadding="15" id="address" class="table table-responsive table-striped address tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>GEOCODED</b></th></tr></thead><tbody>';
 
-  resultSetAddresses.forEachResult(function(searchResultAddresses) {
+  resultSetAddresses.forEachResult(function (searchResultAddresses) {
     var id = searchResultAddresses.getValue('addressinternalid', 'Address',
       null);
     var addr1 = searchResultAddresses.getValue('address1', 'Address', null);
@@ -1418,7 +1418,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty += '<div class="col-xs-6 contacts_div">';
   inlineQty +=
     '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
-  resultSetContacts.forEachResult(function(searchResultContacts) {
+  resultSetContacts.forEachResult(function (searchResultContacts) {
     var contact_id = searchResultContacts.getValue('internalid');
     var contact_fn = searchResultContacts.getValue('firstname');
     var contact_ln = searchResultContacts.getValue('lastname');
@@ -1647,7 +1647,7 @@ function serviceDetailsSection(resultSet_service) {
   var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
     columns)
   var resultSetIndustry = industry_search.runSearch();
-  resultSetIndustry.forEachResult(function(searchResult) {
+  resultSetIndustry.forEachResult(function (searchResult) {
 
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
@@ -1694,7 +1694,7 @@ function serviceDetailsSection(resultSet_service) {
   var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
     columns)
   var resultSetIndustry = industry_search.runSearch();
-  resultSetIndustry.forEachResult(function(searchResult) {
+  resultSetIndustry.forEachResult(function (searchResult) {
 
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
@@ -1724,7 +1724,7 @@ function serviceDetailsSection(resultSet_service) {
   inlineQty += '<div class="col-xs-12 service_div">';
   inlineQty +=
     '<table border="0" cellpadding="15" id="service" class="table table-responsive table-striped service tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>MON</b></th><th style="vertical-align: middle;text-align: center;"><b>TUE</b></th><th style="vertical-align: middle;text-align: center;"><b>WED</b></th><th style="vertical-align: middle;text-align: center;"><b>THU</b></th><th style="vertical-align: middle;text-align: center;"><b>FRI</b></th><th style="vertical-align: middle;text-align: center;"><b>ADHOC</b></th></tr></thead><tbody>';
-  resultSet_service.forEachResult(function(searchResult_service) {
+  resultSet_service.forEachResult(function (searchResult_service) {
     var serviceId = searchResult_service.getValue('internalid');
     var serviceTypeId = searchResult_service.getText("internalid",
       "CUSTRECORD_SERVICE", null);
@@ -2052,7 +2052,7 @@ function serviceChangeSection(resultSet_service_change) {
   inlineQty +=
     '<table border="0" cellpadding="15" id="service_chg" class="table table-responsive table-striped service_chg tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr style="font-size: xx-small;"><th style="vertical-align: middle;text-align: center;"><b>ACTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>DATE EFFECTIVE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>OLD PRICE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>NEW PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>FREQUENCY</b></th></tr></thead><tbody>';
 
-  resultSet_service_change.forEachResult(function(searchResult_service_change) {
+  resultSet_service_change.forEachResult(function (searchResult_service_change) {
     var serviceChangeId = searchResult_service_change.getValue('internalid');
     var serviceId = searchResult_service_change.getValue(
       'custrecord_servicechg_service');
@@ -2136,7 +2136,7 @@ function salesNotesSection(custId, recCustomer) {
   var pricingNotes = '';
 
   if (!isNullorEmpty(recCustomer.getFieldValue(
-      'custentity_customer_pricing_notes'))) {
+    'custentity_customer_pricing_notes'))) {
     pricingNotes += recCustomer.getFieldValue(
       'custentity_customer_pricing_notes') + '\n'
   }
@@ -2177,7 +2177,7 @@ function salesNotesSection(custId, recCustomer) {
     for (x = 0; x < notesSearch.length; x++) {
 
       inlineQty += '<tr class="text-center"><td>' + notesSearch[x].getValue(
-          columns[0]) + '</td><td>' + notesSearch[x].getValue(columns[1]) +
+        columns[0]) + '</td><td>' + notesSearch[x].getValue(columns[1]) +
         '</td><td>' + notesSearch[x].getText(columns[6]) + '</td><td>' +
         notesSearch[x].getValue(columns[4]) + '</td><td>' + notesSearch[x].getValue(
           columns[5]).replace(/(\r\n|\n|\r)/gm, ", ") + '</td></tr>';
@@ -2293,7 +2293,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
     null, columns);
   resultInvoiceCycle = invoice_cycle_search.runSearch();
 
-  resultInvoiceCycle.forEachResult(function(searchResult) {
+  resultInvoiceCycle.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2366,7 +2366,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_dl"><div class="input-group"><span class="input-group-addon" id="price_dl_text">DL</span><select id="price_dl" class="form-control price_dl"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2394,7 +2394,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_c5"><div class="input-group"><span class="input-group-addon" id="price_c5_text">C5</span><select id="price_c5" class="form-control price_c5"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2422,7 +2422,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_b4"><div class="input-group"><span class="input-group-addon" id="price_b4_text">B4</span><select id="price_b4" class="form-control price_b4"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2460,7 +2460,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '<div class="row">';
   inlineQty +=
     '<div class="col-xs-3 price_500g"><div class="input-group"><span class="input-group-addon" id="price_500g_text">500g</span><select id="price_500g" class="form-control price_500g"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2489,7 +2489,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_1kg"><div class="input-group"><span class="input-group-addon" id="price_1kg_text">1Kg</span><select id="price_1kg" class="form-control price_1kg"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2517,7 +2517,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_3kg"><div class="input-group"><span class="input-group-addon" id="price_3kg_text">3Kg</span><select id="price_3kg" class="form-control price_3kg"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
@@ -2545,7 +2545,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
 
   inlineQty +=
     '<div class="col-xs-3 price_5kg"><div class="input-group"><span class="input-group-addon" id="price_5kg_text">5Kg</span><select id="price_5kg" class="form-control price_5kg"><option></option>';
-  resultPricePoint.forEachResult(function(searchResult) {
+  resultPricePoint.forEachResult(function (searchResult) {
     var listValue = searchResult.getValue('name');
     var listID = searchResult.getValue('internalId');
 
