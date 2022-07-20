@@ -25,21 +25,21 @@ if (nlapiGetContext().getEnvironment() == "SANDBOX") {
 }
 
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope) {
+app.controller('myCtrl', function ($scope) {
 
 });
 
-$(".nav-tabs").on("click", "a", function(e) {
+$(".nav-tabs").on("click", "a", function (e) {
 
   $(this).tab('show');
 });
 
-$(window).load(function() {
+$(window).load(function () {
   // Animate loader off screen
   $(".se-pre-con").fadeOut("slow");;
 });
 
-$(document).on('change', '.input', function(e) {
+$(document).on('change', '.input', function (e) {
 
   pdffile = document.getElementsByClassName("input");
 
@@ -50,7 +50,7 @@ $(document).on('change', '.input', function(e) {
 });
 
 
-$(document).on('click', '#alert .close', function(e) {
+$(document).on('click', '#alert .close', function (e) {
   $(this).parent().hide();
 });
 
@@ -63,7 +63,7 @@ function showAlert(message) {
   // $(window).scrollTop($('#alert').offset().top);
 }
 
-$(document).on('click', '#alert .close', function(e) {
+$(document).on('click', '#alert .close', function (e) {
   $(this).parent().hide();
 });
 
@@ -93,7 +93,7 @@ function pageInit() {
   $('#alert').hide();
 }
 
-$(document).on('click', '#call_accounts_phone', function(e) {
+$(document).on('click', '#call_accounts_phone', function (e) {
   window.close();
   NLDial($('#account_phone').val());
 
@@ -106,7 +106,7 @@ $(document).on('click', '#call_accounts_phone', function(e) {
   nlapiSubmitRecord(sales_record);
 
   var upload_url = baseURL + nlapiResolveURL('SUITELET',
-      'customscript_sl_finalise_page', 'customdeploy_sl_finalise_page') +
+    'customscript_sl_finalise_page', 'customdeploy_sl_finalise_page') +
     '&sales_record_id=' + parseInt(nlapiGetFieldValue('sales_record_id')) +
     '&callcenter=T&button=T&recid=' + parseInt(nlapiGetFieldValue(
       'customer'));
@@ -114,7 +114,7 @@ $(document).on('click', '#call_accounts_phone', function(e) {
 
 });
 
-$(document).on('click', '#call_daytoday_phone', function(e) {
+$(document).on('click', '#call_daytoday_phone', function (e) {
   window.close();
   NLDial($('#daytodayphone').val());
 
@@ -127,7 +127,7 @@ $(document).on('click', '#call_daytoday_phone', function(e) {
   nlapiSubmitRecord(sales_record);
 
   var upload_url = baseURL + nlapiResolveURL('SUITELET',
-      'customscript_sl_finalise_page', 'customdeploy_sl_finalise_page') +
+    'customscript_sl_finalise_page', 'customdeploy_sl_finalise_page') +
     '&sales_record_id=' + parseInt(nlapiGetFieldValue('sales_record_id')) +
     '&callcenter=T&button=T&recid=' + parseInt(nlapiGetFieldValue(
       'customer'));
@@ -137,7 +137,7 @@ $(document).on('click', '#call_daytoday_phone', function(e) {
 
 
 //On click of Review Addresses
-$(document).on('click', '#reviewcontacts', function(event) {
+$(document).on('click', '#reviewcontacts', function (event) {
 
   var result = validate('true');
   if (result == false) {
@@ -153,13 +153,13 @@ $(document).on('click', '#reviewcontacts', function(event) {
   };
   params = JSON.stringify(params);
   var upload_url = baseURL + nlapiResolveURL('suitelet',
-      'customscript_sl_conatcts_module', 'customdeploy_sl_conatcts_module') +
+    'customscript_sl_conatcts_module', 'customdeploy_sl_conatcts_module') +
     '&params=' + params;
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
 });
 
-$(document).on('click', '#reviewaddress', function(event) {
+$(document).on('click', '#reviewaddress', function (event) {
 
   var result = validate('true');
   if (result == false) {
@@ -183,7 +183,7 @@ $(document).on('click', '#reviewaddress', function(event) {
 
 
 //On click of Create Service Change
-$(document).on('click', '.createservicechg', function(event) {
+$(document).on('click', '.createservicechg', function (event) {
 
   var result = validate();
   if (result == false) {
@@ -270,7 +270,7 @@ $(document).on('click', '.createservicechg', function(event) {
 /**
  * [description] - On the click of the edit button
  */
-$(document).on('click', '.edit_class', function(event) {
+$(document).on('click', '.edit_class', function (event) {
 
   var commregid = $(this).attr('data-commreg');
   var dateEffective = $(this).attr('data-dateeffective');
@@ -285,8 +285,8 @@ $(document).on('click', '.edit_class', function(event) {
   }
   params = JSON.stringify(params);
   var upload_url = baseURL + nlapiResolveURL('SUITELET',
-      'customscript_sl_create_service_change',
-      'customdeploy_sl_create_service_change') + '&custparam_params=' +
+    'customscript_sl_create_service_change',
+    'customdeploy_sl_create_service_change') + '&custparam_params=' +
     params;
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
@@ -297,8 +297,8 @@ function onclick_reassign() {
 
     updateCustomerDetails(false);
     var url = baseURL + nlapiResolveURL('suitelet',
-        'customscript_sl_sales_campaign_popup',
-        'customdeploy_sl_sales_campaign_popup') + '&sales_record_id=' +
+      'customscript_sl_sales_campaign_popup',
+      'customdeploy_sl_sales_campaign_popup') + '&sales_record_id=' +
       parseInt(nlapiGetFieldValue('sales_record_id')) + '&recid=' + parseInt(
         nlapiGetFieldValue('customer'));
     window.open(url, "_self",
@@ -525,7 +525,7 @@ function onclick_Signed() {
   if (validate()) {
     updateCustomerDetails(false);
     var url = baseURL + nlapiResolveURL('suitelet',
-        'customscript_sl_salescamp_sale', 'customdeploy_sl_salescamp_sale') +
+      'customscript_sl_salescamp_sale', 'customdeploy_sl_salescamp_sale') +
       '&custid=' + parseInt(nlapiGetFieldValue('customer'));
     window.open(url, "Window",
       "height=750,width=650,modal=yes,alwaysRaised=yes");
@@ -539,7 +539,7 @@ function onclick_FreeTrial() {
       return false;
     }
     var url = baseURL + nlapiResolveURL('suitelet',
-        'customscript_sl_salescamp_sale', 'customdeploy_sl_salescamp_sale') +
+      'customscript_sl_salescamp_sale', 'customdeploy_sl_salescamp_sale') +
       '&custid=' + nlapiGetFieldValue('customer') + '&trial=yes';
     window.open(url, "Window",
       "height=750,width=650,modal=yes,alwaysRaised=yes");
@@ -552,7 +552,7 @@ function onclick_Address() {
     var url = baseURL + nlapiResolveURL('suitelet',
       'customscript_sl_salescamp_editaddress',
       'customdeploy_sl_salescamp_editaddress') + '&custid=' + parseInt(
-      nlapiGetFieldValue('customer'));
+        nlapiGetFieldValue('customer'));
     window.open(url, "Window",
       "height=550,width=800,modal=yes,alwaysRaised=yes");
   }
@@ -578,7 +578,7 @@ function onclick_SendEmail() {
   };
   params = JSON.stringify(params);
   var upload_url = baseURL + nlapiResolveURL('suitelet',
-      'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
+    'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
     '&params=' + params;
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
@@ -599,7 +599,7 @@ function onclick_NoSale() {
   };
   params = JSON.stringify(params);
   var upload_url = baseURL + nlapiResolveURL('suitelet',
-      'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
+    'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
     '&params=' + params;
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
@@ -613,7 +613,7 @@ function onclick_ProductSale() {
     var url = baseURL + nlapiResolveURL('suitelet',
       'customscript_sl_salescamp_satchelorder',
       'customdeploy_sl_salescamp_satchelorder') + '&custid=' + parseInt(
-      nlapiGetFieldValue('customer'));
+        nlapiGetFieldValue('customer'));
     window.open(url, "Window",
       "height=250,width=250,modal=yes,alwaysRaised=yes");
   }
@@ -646,7 +646,7 @@ function saveRecord() {
   var state_id;
 
   if ((isNullorEmpty(nlapiGetFieldValue('create_service_change')) ||
-      nlapiGetFieldValue('create_service_change') == 'F') && funcsubmitter ==
+    nlapiGetFieldValue('create_service_change') == 'F') && funcsubmitter ==
     false) {
     console.log('inside')
     switch (state) {
@@ -1042,7 +1042,7 @@ function validate(status) {
   }
 
   if (isNullorEmpty(nlapiGetFieldValue('custpage_callcenter')) && isNullorEmpty(
-      status)) {
+    status)) {
     if (isNullorEmpty(commencementdate)) {
       alertMessage += 'Please Select the Commencement Date</br>';
       return_value = false;
@@ -1177,32 +1177,32 @@ function updateCustomerDetails(offPeak, quadient) {
     '#invoice_cycle option:selected').val());
 
   // Minimum Float Amount
-  customerRecord.setFieldValue('custentity_mpex_500g_float', $('#min_500g').val()); // Float for min
-  customerRecord.setFieldValue('custentity_mpex_1kg_float', $('#min_1kg').val());
-  customerRecord.setFieldValue('custentity_mpex_3kg_float', $('#min_3kg').val());
-  customerRecord.setFieldValue('custentity_mpex_5kg_float', $('#min_5kg').val());
-  customerRecord.setFieldValue('custentity_mpex_b4_float', $('#min_b4').val());
-  customerRecord.setFieldValue('custentity_mpex_c5_float', $('#min_c5').val());
-  customerRecord.setFieldValue('custentity_mpex_dl_float', $('#min_dl').val());
+  // customerRecord.setFieldValue('custentity_mpex_500g_float', $('#min_500g').val()); // Float for min
+  // customerRecord.setFieldValue('custentity_mpex_1kg_float', $('#min_1kg').val());
+  // customerRecord.setFieldValue('custentity_mpex_3kg_float', $('#min_3kg').val());
+  // customerRecord.setFieldValue('custentity_mpex_5kg_float', $('#min_5kg').val());
+  // customerRecord.setFieldValue('custentity_mpex_b4_float', $('#min_b4').val());
+  // customerRecord.setFieldValue('custentity_mpex_c5_float', $('#min_c5').val());
+  // customerRecord.setFieldValue('custentity_mpex_dl_float', $('#min_dl').val());
   // Price Point
   var price_point_500g = $('#price_500g option:selected').val();
   console.log(price_point_500g);
   nlapiLogExecution('AUDIT', price_point_500g);
 
-  customerRecord.setFieldValue('custentity_mpex_500g_price_point', $(
-    '#price_500g option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_1kg_price_point', $(
-    '#price_1kg option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_3kg_price_point', $(
-    '#price_3kg option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_5kg_price_point', $(
-    '#price_5kg option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_b4_price_point', $(
-    '#price_b4 option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_c5_price_point', $(
-    '#price_c5 option:selected').val());
-  customerRecord.setFieldValue('custentity_mpex_dl_price_point', $(
-    '#price_dl option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_500g_price_point', $(
+  //   '#price_500g option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_1kg_price_point', $(
+  //   '#price_1kg option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_3kg_price_point', $(
+  //   '#price_3kg option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_5kg_price_point', $(
+  //   '#price_5kg option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_b4_price_point', $(
+  //   '#price_b4 option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_c5_price_point', $(
+  //   '#price_c5 option:selected').val());
+  // customerRecord.setFieldValue('custentity_mpex_dl_price_point', $(
+  //   '#price_dl option:selected').val());
 
   if (offPeak == true) {
     customerRecord.setFieldValue('entitystatus', 62);
@@ -1357,7 +1357,7 @@ function verify_abn(str) {
   }
   var weights = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19],
     checksum = str.split('').map(Number).reduce(
-      function(total, digit, index) {
+      function (total, digit, index) {
         if (!index) {
           digit--;
         }

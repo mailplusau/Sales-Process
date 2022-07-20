@@ -2206,13 +2206,13 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   var record = nlapiLoadRecord('customer', customer_id);
   var invoice_cycle = record.getFieldValue('custentity_mpex_invoicing_cycle');
   var weekly_usage = record.getFieldValue('custentity_exp_mpex_weekly_usage');
-  var price_c5 = record.getFieldValue('custentity_mpex_c5_price_point');
-  var price_dl = record.getFieldValue('custentity_mpex_dl_price_point');
-  var price_b4 = record.getFieldValue('custentity_mpex_b4_price_point');
-  var price_1kg = record.getFieldValue('custentity_mpex_1kg_price_point');
-  var price_3kg = record.getFieldValue('custentity_mpex_3kg_price_point');
-  var price_5kg = record.getFieldValue('custentity_mpex_5kg_price_point');
-  var price_500g = record.getFieldValue('custentity_mpex_500g_price_point');
+  // var price_c5 = record.getFieldValue('custentity_mpex_c5_price_point');
+  // var price_dl = record.getFieldValue('custentity_mpex_dl_price_point');
+  // var price_b4 = record.getFieldValue('custentity_mpex_b4_price_point');
+  // var price_1kg = record.getFieldValue('custentity_mpex_1kg_price_point');
+  // var price_3kg = record.getFieldValue('custentity_mpex_3kg_price_point');
+  // var price_5kg = record.getFieldValue('custentity_mpex_5kg_price_point');
+  // var price_500g = record.getFieldValue('custentity_mpex_500g_price_point');
 
   // Search Function
   var columns = new Array();
@@ -2317,261 +2317,261 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '</div>';
   inlineQty += '</div>';
 
-  // Minimum Stock Required
-  inlineQty += '<div class="form-group container company_name_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - MIN STOCK REQUIRED</span></h4></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  // // Minimum Stock Required
+  // inlineQty += '<div class="form-group container company_name_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - MIN STOCK REQUIRED</span></h4></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  inlineQty += '<div class="form-group container entityid_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-2 min_1kg"><div class="input-group"><span class="input-group-addon" id="min_1kg_text">1Kg (Pieces)</span><input id="min_1kg" class="form-control min_1kg" value="' +
-    min_1kg + '" data-oldvalue="' + min_1kg + '"/></div></div>';
-  inlineQty +=
-    '<div class="col-xs-2 min_3kg"><div class="input-group"><span class="input-group-addon" id="min_3kg_text">3Kg (Pieces)</span><input id="min_3kg" class="form-control min_3kg" value="' +
-    min_3kg + '" data-oldvalue="' + min_3kg + '"/></div></div>';
-  inlineQty +=
-    '<div class="col-xs-2 min_5kg"><div class="input-group"><span class="input-group-addon" id="min_5kg_text">5Kg (Pieces)</span><input id="min_5kg" class="form-control min_5kg" value="' +
-    min_5kg + '" data-oldvalue="' + min_5kg + '"/></div></div>';
-  inlineQty +=
-    '<div class="col-xs-2 min_b4"><div class="input-group"><span class="input-group-addon" id="min_b4_text">B4 (Pieces)</span><input id="min_b4" class="form-control min_b4" value="' +
-    min_b4 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
-  inlineQty +=
-    '<div class="col-xs-2 min_c5"><div class="input-group"><span class="input-group-addon" id="min_c5_text">C5 (Pieces)</span><input id="min_c5" class="form-control min_c5" value="' +
-    min_c5 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
-  inlineQty +=
-    '<div class="col-xs-2 min_dl"><div class="input-group"><span class="input-group-addon" id="min_dl_text">DL (Pieces)</span><input id="min_dl" class="form-control min_dl" value="' +
-    min_dl + '" data-oldvalue="' + min_dl + '"/></div></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  // inlineQty += '<div class="form-group container entityid_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_1kg"><div class="input-group"><span class="input-group-addon" id="min_1kg_text">1Kg (Pieces)</span><input id="min_1kg" class="form-control min_1kg" value="' +
+  //   min_1kg + '" data-oldvalue="' + min_1kg + '"/></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_3kg"><div class="input-group"><span class="input-group-addon" id="min_3kg_text">3Kg (Pieces)</span><input id="min_3kg" class="form-control min_3kg" value="' +
+  //   min_3kg + '" data-oldvalue="' + min_3kg + '"/></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_5kg"><div class="input-group"><span class="input-group-addon" id="min_5kg_text">5Kg (Pieces)</span><input id="min_5kg" class="form-control min_5kg" value="' +
+  //   min_5kg + '" data-oldvalue="' + min_5kg + '"/></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_b4"><div class="input-group"><span class="input-group-addon" id="min_b4_text">B4 (Pieces)</span><input id="min_b4" class="form-control min_b4" value="' +
+  //   min_b4 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_c5"><div class="input-group"><span class="input-group-addon" id="min_c5_text">C5 (Pieces)</span><input id="min_c5" class="form-control min_c5" value="' +
+  //   min_c5 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 min_dl"><div class="input-group"><span class="input-group-addon" id="min_dl_text">DL (Pieces)</span><input id="min_dl" class="form-control min_dl" value="' +
+  //   min_dl + '" data-oldvalue="' + min_dl + '"/></div></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  // Price Point
-  var price_point_search = nlapiCreateSearch('customlist_mpex_price_points',
-    null, columns);
-  resultPricePoint = price_point_search.runSearch();
+  // // Price Point
+  // var price_point_search = nlapiCreateSearch('customlist_mpex_price_points',
+  //   null, columns);
+  // resultPricePoint = price_point_search.runSearch();
 
-  inlineQty += '<div class="form-group container company_name_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - PRICE POINT</span></h4></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  // inlineQty += '<div class="form-group container company_name_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - PRICE POINT</span></h4></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  // New Div - Section for DL, C5, & B4
-  inlineQty += '<div class="form-group container sleeves_section">';
-  inlineQty += '<div class="row">';
+  // // New Div - Section for DL, C5, & B4
+  // inlineQty += '<div class="form-group container sleeves_section">';
+  // inlineQty += '<div class="row">';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_dl"><div class="input-group"><span class="input-group-addon" id="price_dl_text">DL</span><select id="price_dl" class="form-control price_dl"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_dl"><div class="input-group"><span class="input-group-addon" id="price_dl_text">DL</span><select id="price_dl" class="form-control price_dl"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_dl)) {
-      if (price_dl == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_dl = record.setFieldValue('custentity_mpex_dl_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   if (!isNullorEmpty(price_dl)) {
+  //     if (price_dl == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_dl = record.setFieldValue('custentity_mpex_dl_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_c5"><div class="input-group"><span class="input-group-addon" id="price_c5_text">C5</span><select id="price_c5" class="form-control price_c5"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_c5"><div class="input-group"><span class="input-group-addon" id="price_c5_text">C5</span><select id="price_c5" class="form-control price_c5"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_c5)) {
-      if (price_c5 == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_c5 = record.setFieldValue('custentity_mpex_c5_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   if (!isNullorEmpty(price_c5)) {
+  //     if (price_c5 == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_c5 = record.setFieldValue('custentity_mpex_c5_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_b4"><div class="input-group"><span class="input-group-addon" id="price_b4_text">B4</span><select id="price_b4" class="form-control price_b4"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_b4"><div class="input-group"><span class="input-group-addon" id="price_b4_text">B4</span><select id="price_b4" class="form-control price_b4"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_b4)) {
-      nlapiLogExecution('DEBUG', 'listID', listID);
-      nlapiLogExecution('DEBUG', 'listValue', listValue);
+  //   if (!isNullorEmpty(price_b4)) {
+  //     nlapiLogExecution('DEBUG', 'listID', listID);
+  //     nlapiLogExecution('DEBUG', 'listValue', listValue);
 
-      if (price_b4 == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_b4 = record.setFieldValue('custentity_mpex_b4_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
+  //     if (price_b4 == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_b4 = record.setFieldValue('custentity_mpex_b4_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
 
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  // Section for MPEX 500g, 1kg, 3kg, 5kg
-  inlineQty += '<div class="form-group container mpex_bag_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-3 price_500g"><div class="input-group"><span class="input-group-addon" id="price_500g_text">500g</span><select id="price_500g" class="form-control price_500g"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // // Section for MPEX 500g, 1kg, 3kg, 5kg
+  // inlineQty += '<div class="form-group container mpex_bag_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_500g"><div class="input-group"><span class="input-group-addon" id="price_500g_text">500g</span><select id="price_500g" class="form-control price_500g"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_500g)) {
-      if (price_500g == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_500g = record.setFieldValue(
-          'custentity_mpex_500g_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   if (!isNullorEmpty(price_500g)) {
+  //     if (price_500g == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_500g = record.setFieldValue(
+  //         'custentity_mpex_500g_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_1kg"><div class="input-group"><span class="input-group-addon" id="price_1kg_text">1Kg</span><select id="price_1kg" class="form-control price_1kg"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_1kg"><div class="input-group"><span class="input-group-addon" id="price_1kg_text">1Kg</span><select id="price_1kg" class="form-control price_1kg"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_1kg)) {
-      if (price_1kg == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_1kg = record.setFieldValue('custentity_mpex_1kg_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   if (!isNullorEmpty(price_1kg)) {
+  //     if (price_1kg == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_1kg = record.setFieldValue('custentity_mpex_1kg_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_3kg"><div class="input-group"><span class="input-group-addon" id="price_3kg_text">3Kg</span><select id="price_3kg" class="form-control price_3kg"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_3kg"><div class="input-group"><span class="input-group-addon" id="price_3kg_text">3Kg</span><select id="price_3kg" class="form-control price_3kg"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_3kg)) {
-      if (price_3kg == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_3kg = record.setFieldValue('custentity_mpex_3kg_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
+  //   if (!isNullorEmpty(price_3kg)) {
+  //     if (price_3kg == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_3kg = record.setFieldValue('custentity_mpex_3kg_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
 
-  inlineQty +=
-    '<div class="col-xs-3 price_5kg"><div class="input-group"><span class="input-group-addon" id="price_5kg_text">5Kg</span><select id="price_5kg" class="form-control price_5kg"><option></option>';
-  resultPricePoint.forEachResult(function (searchResult) {
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
+  // inlineQty +=
+  //   '<div class="col-xs-3 price_5kg"><div class="input-group"><span class="input-group-addon" id="price_5kg_text">5Kg</span><select id="price_5kg" class="form-control price_5kg"><option></option>';
+  // resultPricePoint.forEachResult(function (searchResult) {
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
 
-    if (!isNullorEmpty(price_5kg)) {
-      if (price_5kg == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-        price_5kg = record.setFieldValue('custentity_mpex_5kg_price_point',
-          listID);
-      } else {
-        if (listID != 3) {
-          inlineQty += '<option value="' + listID + '">' + listValue +
-            '</option>';
-        }
-      }
-    } else {
-      if (listID != 3) {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    }
-    return true;
-  });
-  inlineQty += '</select></div></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  //   if (!isNullorEmpty(price_5kg)) {
+  //     if (price_5kg == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //       price_5kg = record.setFieldValue('custentity_mpex_5kg_price_point',
+  //         listID);
+  //     } else {
+  //       if (listID != 3) {
+  //         inlineQty += '<option value="' + listID + '">' + listValue +
+  //           '</option>';
+  //       }
+  //     }
+  //   } else {
+  //     if (listID != 3) {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
   nlapiSubmitRecord(record);
 
