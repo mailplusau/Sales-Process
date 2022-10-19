@@ -1185,9 +1185,9 @@ function updateCustomerDetails(offPeak, quadient) {
   // customerRecord.setFieldValue('custentity_mpex_c5_float', $('#min_c5').val());
   // customerRecord.setFieldValue('custentity_mpex_dl_float', $('#min_dl').val());
   // Price Point
-  var price_point_500g = $('#price_500g option:selected').val();
-  console.log(price_point_500g);
-  nlapiLogExecution('AUDIT', price_point_500g);
+  // var price_point_500g = $('#price_500g option:selected').val();
+  // console.log(price_point_500g);
+  // nlapiLogExecution('AUDIT', price_point_500g);
 
   // customerRecord.setFieldValue('custentity_mpex_500g_price_point', $(
   //   '#price_500g option:selected').val());
