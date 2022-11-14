@@ -1069,22 +1069,22 @@ function validate(status) {
       return_value = false;
     }
 
-    if (isNullorEmpty(portal_training)) {
-      alertMessage +=
-        'Please Select "Portal Training Required?" under the MPEX Tab </br>';
-      return_value = false;
-    }
+    // if (isNullorEmpty(portal_training)) {
+    //   alertMessage +=
+    //     'Please Select "Portal Training Required?" under the MPEX Tab </br>';
+    //   return_value = false;
+    // }
 
     if (isNullorEmpty(mpex_customer)) {
       alertMessage +=
-        'Please Select "Is MPEX Customer?" under the MPEX Tab </br>';
+        'Please Select "Is MP Product Customer?" under the MP Products Tab </br>';
       return_value = false;
     } else if (mpex_customer == 1 || mpex_customer == '1') {
-      if (isNullorEmpty(weekly_usage)) {
-        alertMessage +=
-          'Please enter MPEX Weekly Usage </br>';
-        return_value = false;
-      }
+      // if (isNullorEmpty(weekly_usage)) {
+      //   alertMessage +=
+      //     'Please enter MPEX Weekly Usage </br>';
+      //   return_value = false;
+      // }
     }
   }
 
@@ -1162,15 +1162,15 @@ function updateCustomerDetails(offPeak, quadient) {
    *  Update List of MPEX Customers
    */
   var mpex_customer = $("#mpex_customer").val();
-  var portal_training = $("#portal_training").val();
+  // var portal_training = $("#portal_training").val();
 
   customerRecord.setFieldValue('custentity_mpex_customer', $(
     "#mpex_customer").val());
-  customerRecord.setFieldValue('custentity_portal_training_required', $(
-    "#portal_training").val());
+  // customerRecord.setFieldValue('custentity_portal_training_required', $(
+  //   "#portal_training").val());
 
-  customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $(
-    "#weekly_usage").val());
+  // customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $(
+  //   "#weekly_usage").val());
 
   // Invoicing Cycle is the only thing listed as a result under Customer Record
   customerRecord.setFieldValue('custentity_mpex_invoicing_cycle', $(

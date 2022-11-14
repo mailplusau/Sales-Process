@@ -445,7 +445,7 @@ function main(request, response) {
     inlineQty += '<li role="presentation" class="' + service_tab +
       '"><a href="#services">CURRENT SERVICES</a></li>';
     inlineQty += '<li role="presentation" class="' + mpex_tab +
-      '"><a href="#mpex">MPEX</a></li>'; // MPEX List Tab
+      '"><a href="#mpex">MP PRODUCTS</a></li>'; // MPEX List Tab
     inlineQty += '<li role="presentation" class="' + notes_tab +
       '"><a href="#salenotes">SALE NOTES</a></li>';
 
@@ -754,10 +754,26 @@ function main(request, response) {
           nlapiRequestURL('https://mpns.protechly.com/new_staff', userJSON,
             headers);
 
+          var task = nlapiCreateRecord('task');
+          task.setFieldValue('title', 'Shipping Portal - Send Invite');
+          task.setFieldValue('assigned', 1706027);
+          task.setFieldValue('company', custId);
+          task.setFieldValue('sendemail', 'T');
+          task.setFieldValue('message', notes);
+          task.setFieldText('status', 'Not Started');
+
+          nlapiSubmitRecord(task);
+
+          nlapiSendEmail(ctx.getUser(), ['laura.busse@mailplus.com.au'],
+            'New Customer Finalised - Portal Access Required', email_body, ['popie.popie@mailplus.com.au',
+            'ankith.ravindran@mailplus.com.au',
+            'fiona.harrison@mailplus.com.au'
+          ], records, null, true)
+
         }
 
         nlapiSendEmail(ctx.getUser(), ['popie.popie@mailplus.com.au'],
-          email_subject, email_body, ['raine.giderson@mailplus.com.au',
+          email_subject, email_body, [
           'ankith.ravindran@mailplus.com.au',
           'fiona.harrison@mailplus.com.au'
         ], records, null, true)
@@ -2231,7 +2247,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '<div class="form-group container entityid_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-3 mpex_customer"><div class="input-group"><span class="input-group-addon" id="mpex_customer_text">Is MPEX Customer?<span class="mandatory">*</span></span><select id="mpex_customer" class="form-control mpex_customer" ><option></option>';
+    '<div class="col-xs-6 mpex_customer"><div class="input-group"><span class="input-group-addon" id="mpex_customer_text">Is MP Products Customer?<span class="mandatory">*</span></span><select id="mpex_customer" class="form-control mpex_customer" ><option></option>';
   var col = new Array();
   col[0] = new nlobjSearchColumn('name');
   col[1] = new nlobjSearchColumn('internalId');
@@ -2255,39 +2271,39 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   }
 
   inlineQty += '</select></div></div>';
-  inlineQty +=
-    '<div class="col-xs-3 portal_training"><div class="input-group"><span class="input-group-addon" id="portal_training_text">Portal Training Required?<span class="mandatory">*</span></span><select id="portal_training" class="form-control portal_training" ><option></option>';
-  var col = new Array();
-  col[0] = new nlobjSearchColumn('name');
-  col[1] = new nlobjSearchColumn('internalId');
-  var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
+  // inlineQty +=
+  //   '<div class="col-xs-3 portal_training"><div class="input-group"><span class="input-group-addon" id="portal_training_text">Shipping Portal Required?<span class="mandatory">*</span></span><select id="portal_training" class="form-control portal_training" ><option></option>';
+  // var col = new Array();
+  // col[0] = new nlobjSearchColumn('name');
+  // col[1] = new nlobjSearchColumn('internalId');
+  // var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
 
-  for (var i = 0; results != null && i < results.length; i++) {
-    var res = results[i];
-    var listValue = res.getValue('name');
-    var listID = res.getValue('internalId');
-    if (!isNullorEmpty(portal_training)) {
-      if (portal_training == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-      } else {
-        inlineQty += '<option value="' + listID + '">' + listValue +
-          '</option>';
-      }
-    } else {
-      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-    }
-  }
+  // for (var i = 0; results != null && i < results.length; i++) {
+  //   var res = results[i];
+  //   var listValue = res.getValue('name');
+  //   var listID = res.getValue('internalId');
+  //   if (!isNullorEmpty(portal_training)) {
+  //     if (portal_training == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //     } else {
+  //       inlineQty += '<option value="' + listID + '">' + listValue +
+  //         '</option>';
+  //     }
+  //   } else {
+  //     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+  //   }
+  // }
 
-  inlineQty += '</select></div></div>';
-  inlineQty +=
-    '<div class="col-xs-3 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><input id="weekly_usage" class="form-control weekly_usage" value="' +
-    mpex_expected_usage + '">';
-  inlineQty += '</input></div></div>';
+  // inlineQty += '</select></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-3 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><input id="weekly_usage" class="form-control weekly_usage" value="' +
+  //   mpex_expected_usage + '">';
+  // inlineQty += '</input></div></div>';
 
   // Invoice Cycle
   inlineQty +=
-    '<div class="col-xs-3 invoice_cycle"><div class="input-group"><span class="input-group-addon" id="invoice_cycle_text">Invoice Cycle</span><select id="invoice_cycle" class="form-control invoice_cycle"><option></option>';
+    '<div class="col-xs-6 invoice_cycle"><div class="input-group"><span class="input-group-addon" id="invoice_cycle_text">Invoice Cycle</span><select id="invoice_cycle" class="form-control invoice_cycle"><option></option>';
 
   var invoice_cycle_search = nlapiCreateSearch('customlist_invoicing_cyle',
     null, columns);

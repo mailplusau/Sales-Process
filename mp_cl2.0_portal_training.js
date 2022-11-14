@@ -392,7 +392,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
     }
 
     function loadDebtRecord(zee_id, userId) {
-      //MPEX Customers - Commencing Today or Not Onboarded
+      //	Customer List - Shipping Portal Orientation - Tasks Created
       var custListCommenceTodayResults = search.load({
         type: 'customer',
         id: 'customsearch_cust_list_commence_today__3'
