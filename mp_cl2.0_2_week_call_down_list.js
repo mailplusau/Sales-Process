@@ -369,10 +369,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
     }
 
     function loadDebtRecord(zee_id, userId) {
-      //MPEX Customers - Commencing Today or Not Onboarded
+      //MP Products Customers -  3 Days Call Downs
       var custListCommenceTodayResults = search.load({
         type: 'customer',
-        id: 'customsearch_cust_list_commence_today_4'
+        id: 'customsearch_cust_list_3_days_call_downs'
       });
 
       if (!isNullorEmpty(zee_id)) {

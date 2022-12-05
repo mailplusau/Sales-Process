@@ -47,7 +47,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         }
 
         var form = ui.createForm({
-          title: 'MPEX Customers - 2-Week Call Down'
+          title: 'Customer List - 3 Day Call Down'
         });
 
 
