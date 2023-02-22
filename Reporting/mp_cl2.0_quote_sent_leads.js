@@ -55,6 +55,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var today_month = today.getMonth() + 1;
         var today_year = today.getFullYear();
 
+        var lee_lead_count = 0;
+        var kerina_lead_count = 0;
+        var david_lead_count = 0;
+        var belinda_lead_count = 0;
+        var total_lead_count = 0;
+
         if (today_day_in_month < 10) {
             today_day_in_month = '0' + today_day_in_month;
         }
@@ -87,6 +93,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function daysInMonth(iMonth, iYear) {
             return 32 - new Date(iYear, iMonth, 32).getDate();
         }
+
+        var debtDataSet = [];
+        var debt_set = [];
+
+        var debtDataSet2 = [];
+        var debt_set2 = [];
 
         function pageLoad() {
             $('.range_filter_section').addClass('hide');
@@ -148,8 +160,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     btn.removeClass('disabled');
                 }, fewSeconds * 1000);
 
-                debtDataSet = [];
-                debt_set = [];
+
 
                 beforeSubmit();
                 submitSearch();
@@ -171,142 +182,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var today_month = today.getMonth();
             var today_day = today.getDate();
 
-            /**
-             *  Click for Instructions Section Collapse
-             */
-            $('.collapse').on('shown.bs.collapse', function () {
-                $(".range_filter_section_top").css("padding-top", "500px");
-            })
-            $('.collapse').on('hide.bs.collapse', function () {
-                $(".range_filter_section_top").css("padding-top", "0px");
-            })
-
-            $(".2WeekCallCompletedModalPopUP").click(function () {
-                var commRegInternalID = $(this).attr("data-id");
-                var salesRecordId = $(this).attr("data-salesrecord");
-                var type = $(this).attr("data-type");
-                console.log('inside modal')
-                $("#comm_reg_id").val(commRegInternalID);
-                $("#sales_rec_id").val(salesRecordId);
-                $("#type").val(type);
-                $("#myModal").show();
 
 
-            })
-
-            //Display the modal on click of the link on the table and prefill the fields  based on the customer record
-            $("#customerOnboardingCompleted").click(function () {
-
-                console.log('inside modal')
-                var commRegInternalID = $("#comm_reg_id").val();
-                var salesRecordId = $("#sales_rec_id").val();
-                var type = $("#type").val();
-
-                var sales_record = record.load({
-                    type: 'customrecord_sales',
-                    id: salesRecordId
-                });
-
-
-                var comm_reg_record = record.load({
-                    type: 'customrecord_commencement_register',
-                    id: commRegInternalID
-                });
-
-                previous_notes = comm_reg_record.getValue({
-                    fieldId: 'custrecord_2_week_call_notes'
-                });
-
-                var date = new Date();
-                var date_now = format.parse({
-                    value: date,
-                    type: format.Type.DATE
-                });
-                var time_now = format.parse({
-                    value: date,
-                    type: format.Type.TIMEOFDAY
-                });
-
-                if (type == "completed") {
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_salesrep',
-                        value: userId
-                    });
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_commreg_sales_record',
-                        value: salesRecordId
-                    });
-
-
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_day14call',
-                        value: date_now
-                    });
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_commreg',
-                        value: commRegInternalID
-                    });
-                }
-
-
-                sales_record.setValue({
-                    fieldId: 'custrecord_sales_lastcalldate',
-                    value: date_now
-                });
-
-
-                comm_reg_record.save({
-                    ignoreMandatoryFields: true
-                });
-
-                sales_record.save({
-                    ignoreMandatoryFields: true
-                });
-
-
-                var url = baseURL +
-                    '/app/site/hosting/scriptlet.nl?script=1657&deploy=1';
-                window.location.href = url;
-
-            });
-
-            //On click of close icon in the modal
-            $('.close').click(function () {
-                $("#myModal").hide();
-            });
-
-            //Update the customer record on click of the button in the modal
-            $('#updateCustomer').click(function () {
-                var customer_id = $("#customer_id").val();
-
-                var customer_record = record.load({
-                    type: record.Type.CUSTOMER,
-                    id: customer_id,
-                    isDynamic: true
-                });
-
-                var mpex_customer = customer_record.setValue({
-                    fieldId: 'custentity_mpex_customer',
-                    value: $("#mpex_customer").val()
-                });
-                var expected_usage = customer_record.setValue({
-                    fieldId: 'custentity_exp_mpex_weekly_usage',
-                    value: $("#exp_usage").val()
-                });
-
-                var customerRecordId = customer_record.save({
-                    ignoreMandatoryFields: true
-                });
-
-                var url = baseURL +
-                    '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' +
-                    zee +
-                    '&start_date=&last_date=&user_id=' +
-                    userId
-                window.location.href = url;
-            });
         }
 
         function adhocNewCustomers() {
@@ -326,14 +203,37 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function submitSearch() {
             // duringSubmit();
 
-            dataTable = $('#customer_benchmark_preview').DataTable({
+            dataTable = $('#mpexusage-preview').DataTable({
+                destroy: true,
+                data: debtDataSet2,
+                pageLength: 1000,
+                order: [0],
+                columns: [{
+                    title: 'Calendar Week'
+                }, {
+                    title: 'Lee Russell'
+                }, {
+                    title: 'Kerina Helliwell'
+                }, {
+                    title: 'David Gdanski'
+                }, {
+                    title: 'Belinda Urbani'
+                }, {
+                    title: 'Total Lead Count'
+                }],
+                columnDefs: [{
+                    targets: [0, 5],
+                    className: 'bolded'
+                }],
+                rowCallback: function (row, data, index) { }
+            });
+
+            dataTable = $('#mpexusage-customer').DataTable({
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [],
+                order: [8],
                 columns: [{
-                    title: 'LINK'
-                }, {
                     title: 'Customer Internal ID'
                 }, {
                     title: 'ID'
@@ -342,11 +242,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Franchisee'
                 }, {
-                    title: 'Commencement Date'
+                    title: '48h Email Sent'
                 }, {
-                    title: 'Email'
+                    title: 'Sales Rep Assigned'
                 }, {
-                    title: 'Phone Number'
+                    title: 'Date Lead Entered'
+                }, {
+                    title: 'Date Quote Sent'
+                }, {
+                    title: 'Days Open'
                 }],
                 columnDefs: [{
                     targets: [],
@@ -379,10 +283,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
-            //New Customers - Auto Signed Up - All of Above
+            //Website Leads - Prospect Quote Sent
             var custListCommenceTodayResults = search.load({
                 type: 'customer',
-                id: 'customsearch_auto_signed_all_of_above'
+                id: 'customsearch_web_leads_prosp_quote_sent'
             });
 
             if (!isNullorEmpty(zee_id)) {
@@ -398,8 +302,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             if (!isNullorEmpty(userId) && role != 3) {
                 custListCommenceTodayResults.filters.push(search.createFilter({
-                    name: 'custrecord_sales_assigned',
-                    join: 'custrecord_sales_customer',
+                    name: 'custrecord_salesrep',
+                    join: 'custrecord_customer',
                     operator: search.Operator.IS,
                     values: userId
                 }));
@@ -424,20 +328,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'partner'
                 });
 
-                var commRegInternalID = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_CUSTOMER"
+                var dateLeadEntered = custListCommenceTodaySet.getValue({
+                    name: "custentity_date_lead_entered"
                 });
 
-                var salesRecordInternalId = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_SALES_CUSTOMER"
-                });
-
-
-                var commDate = custListCommenceTodaySet.getValue({
-                    name: 'custrecord_comm_date',
-                    join: 'CUSTRECORD_CUSTOMER'
+                var quoteSentDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_date_lead_quote_sent"
                 });
 
                 var email = custListCommenceTodaySet.getValue({
@@ -451,33 +347,179 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'phone'
                 });
 
+                var salesRepId = custListCommenceTodaySet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+                var salesRepText = custListCommenceTodaySet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+
+                var daysOpen = custListCommenceTodaySet.getValue({
+                    name: 'formulanumeric'
+                });
+
+                var contactid = custListCommenceTodaySet.getValue({
+                    name: 'internalid',
+                    join: 'contact'
+                });
+
+                var contactEmail = custListCommenceTodaySet.getValue({
+                    name: 'email',
+                    join: 'contact'
+                });
+
+                var email48h = custListCommenceTodaySet.getText({
+                    name: 'custentity_48h_email_sent'
+                });
+
+
                 debt_set.push({
                     custInternalID: custInternalID,
                     custEntityID: custEntityID,
                     custName: custName,
                     zeeID: zeeID,
                     zeeName: zeeName,
-                    commRegInternalID: commRegInternalID,
-                    commDate: commDate,
-                    email: email,
-                    serviceEmail: serviceEmail,
-                    phone: phone,
-                    salesRecordInternalId: salesRecordInternalId
+                    dateLeadEntered: dateLeadEntered,
+                    quoteSentDate: quoteSentDate,
+                    daysOpen: daysOpen,
+                    salesRepId: salesRepId,
+                    salesRepText: salesRepText,
+                    email48h: email48h
                 });
 
                 return true;
             });
-            console.log(debt_set)
+            console.log(debt_set);
 
-            loadDatatable(debt_set);
+
+            // Website Leads - Prospect Quote Sent - Weekly
+            var prospectListBySalesRepWeeklySearch = search.load({
+                type: 'customer',
+                id: 'customsearch_web_leads_prosp_quote_sen_3'
+            });
+
+            var count = 0;
+            var oldDate = null;
+
+
+            prospectListBySalesRepWeeklySearch.run().each(function (
+                prospectListBySalesRepWeeklyResultSet) {
+
+
+                var prospectCount = parseInt(prospectListBySalesRepWeeklyResultSet.getValue({
+                    name: 'entityid',
+                    summary: 'COUNT'
+                }));
+                var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
+                });
+                var salesRepAssigned = prospectListBySalesRepWeeklyResultSet.getValue({
+                    name: "custrecord_sales_assigned",
+                    join: "CUSTRECORD_SALES_CUSTOMER",
+                    summary: "GROUP",
+                });
+                var salesRepAssignedText = prospectListBySalesRepWeeklyResultSet.getText({
+                    name: "custrecord_sales_assigned",
+                    join: "CUSTRECORD_SALES_CUSTOMER",
+                    summary: "GROUP",
+                });
+
+                console.log('prospectCount: ' + prospectCount);
+                console.log('salesRepAssigned: ' + salesRepAssigned);
+                console.log('total_lead_count: ' + total_lead_count);
+
+                if (count == 0) {
+                    if (salesRepAssigned == 668711) { //Lee
+                        lee_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 696160) { //Kerina
+                        kerina_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 690145) { //David
+                        david_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 668712) { //Belinda
+                        belinda_lead_count = prospectCount;
+                    }
+                    total_lead_count = lee_lead_count + kerina_lead_count + david_lead_count + belinda_lead_count
+                    console.log('total_lead_count: ' + total_lead_count);
+
+                } else if (oldDate != null &&
+                    oldDate == weekLeadEntered) {
+
+                    if (salesRepAssigned == 668711) { //Lee
+                        lee_lead_count += prospectCount;
+                    } else if (salesRepAssigned == 696160) { //Kerina
+                        kerina_lead_count += prospectCount;
+                    } else if (salesRepAssigned == 690145) { //David
+                        david_lead_count += prospectCount;
+                    } else if (salesRepAssigned == 668712) { //Belinda
+                        belinda_lead_count += prospectCount;
+                    }
+
+                    total_lead_count = lee_lead_count + kerina_lead_count + david_lead_count + belinda_lead_count;
+                    console.log('total_lead_count: ' + total_lead_count);
+
+                } else if (oldDate != null &&
+                    oldDate != weekLeadEntered) {
+
+                    debt_set2.push({
+                        dateUsed: oldDate,
+                        lee_lead_count: lee_lead_count,
+                        kerina_lead_count: kerina_lead_count,
+                        david_lead_count: david_lead_count,
+                        belinda_lead_count: belinda_lead_count,
+                        total_usage: total_lead_count
+                    });
+
+                    lee_lead_count = 0;
+                    kerina_lead_count = 0;
+                    david_lead_count = 0;
+                    belinda_lead_count = 0;
+                    total_lead_count = 0;
+
+                    if (salesRepAssigned == 668711) { //Lee
+                        lee_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 696160) { //Kerina
+                        kerina_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 690145) { //David
+                        david_lead_count = prospectCount;
+                    } else if (salesRepAssigned == 668712) { //Belinda
+                        belinda_lead_count = prospectCount;
+                    }
+                    total_lead_count = lee_lead_count + kerina_lead_count + david_lead_count + belinda_lead_count
+                }
+
+                count++;
+                oldDate = weekLeadEntered;
+                return true;
+            });
+            console.log(debt_set2);
+
+            if (count > 0) {
+                debt_set2.push({
+                    dateUsed: oldDate,
+                    lee_lead_count: lee_lead_count,
+                    kerina_lead_count: kerina_lead_count,
+                    david_lead_count: david_lead_count,
+                    belinda_lead_count: belinda_lead_count,
+                    total_usage: total_lead_count
+                });
+            }
+
+            loadDatatable(debt_set, debt_set2);
             debt_set = [];
+            debt_set2 = [];
 
         }
 
-        function loadDatatable(debt_rows) {
+        function loadDatatable(debt_rows, debt_rows2) {
 
             debtDataSet = [];
             csvSet = [];
+
+            debtDataSet2 = [];
+            csvSet2 = [];
 
             if (!isNullorEmpty(debt_rows)) {
                 debt_rows.forEach(function (debt_row, index) {
@@ -489,17 +531,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
                         debt_row.custInternalID + '&company=' + debt_row.custInternalID +
                         '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
+                        debt_row.custInternalID +
+                        '"  data-type="noanswer" class="noAnswer" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        debt_row.custInternalID +
+                        '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">LOST</a></button>';
 
                     var customerIDLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
                         debt_row.custInternalID + '&whence=" target="_blank"><b>' +
                         debt_row.custEntityID + '</b></a>';
 
-                    var commDateSplit = debt_row.commDate.split('/');
+                    var sendSignUpEmail =
+                        '<a data-id="' +
+                        debt_row.custInternalID +
+                        '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" data-contact="' +
+                        debt_row.contactid +
+                        '" data-contactemail="' +
+                        debt_row.contactEmail +
+                        '" style="cursor: pointer !important;color: #095C7B !important;" class="sendEmail">SEND EMAIL</a>';
+
+                    var commDateSplit = debt_row.quoteSentDate.split('/');
 
                     var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
                         commDateSplit[0]);
@@ -513,84 +566,200 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
-                    debtDataSet.push([linkURL, debt_row.custInternalID,
-                        customerIDLink,
-                        debt_row.custName, debt_row.zeeName,
-                        commDateFormatted, debt_row.serviceEmail,
-                        debt_row.phone
+                    var dateLeadEnteredSplit = debt_row.dateLeadEntered.split('/');
+
+                    var dateLeadEnteredDate = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1,
+                        dateLeadEnteredSplit[0]);
+                    var dateLeadEnteredDateParsed = format.parse({
+                        value: dateLeadEnteredDate,
+                        type: format.Type.DATE
+                    });
+                    var dateLeadEnteredDateFormatted = format.format({
+                        value: dateLeadEnteredDate,
+                        type: format.Type.DATE
+                    });
+
+                    debtDataSet.push([debt_row.custInternalID,
+                        customerIDLink, debt_row.custName, debt_row.zeeName, debt_row.email48h, debt_row.salesRepText, dateLeadEnteredDateFormatted, commDateFormatted, debt_row.daysOpen
                     ]);
                 });
             }
 
-            var datatable = $('#customer_benchmark_preview').DataTable();
+            var datatable = $('#mpexusage-customer').DataTable();
             datatable.clear();
             datatable.rows.add(debtDataSet);
             datatable.draw();
 
+            if (!isNullorEmpty(debt_rows2)) {
+                debt_rows2.forEach(function (debt_row2, index2) {
+
+                    var month = debt_row2.dateUsed;
+                    console.log(month);
+                    var splitMonth = month.split('-');
+                    var splitMonthV2 = month.split('/');
+
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+
+                    var parsedDate = format.parse({
+                        value: month,
+                        type: format.Type.DATE
+                    });
+
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
+
+
+                    var detailedInvoiceURLMonth =
+                        '<a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1627&deploy=1&zee=' +
+                        zee + '&start_date=' + monthsStartDate + '&last_date=' + lastDate +
+                        '" target=_blank>VIEW (monthly)</a> | <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1625&deploy=1&zee=' +
+                        zee + '&start_date=' + startDate + '&last_date=' + lastDate +
+                        '" target=_blank>VIEW (daily)</a>';
+
+
+                    debtDataSet2.push([startDate,
+                        debt_row2.lee_lead_count,
+                        debt_row2.kerina_lead_count, debt_row2.david_lead_count, debt_row2.belinda_lead_count, debt_row2.total_usage
+                    ]);
+                });
+            }
+
+            var datatable2 = $('#mpexusage-preview').DataTable();
+            datatable2.clear();
+            datatable2.rows.add(debtDataSet2);
+            datatable2.draw();
+
+            var data = datatable2.rows().data();
+
+
+            var month_year = [];
+            var leeLeadCount = [];
+            var kerinaLeadCount = [];
+            var davidLeadCount = [];
+            var belindaLeadCount = [];
+            var totalUsage = [];
+
+            for (var i = 0; i < data.length; i++) {
+                month_year.push(data[i][0]);
+                leeLeadCount[data[i][0]] = data[i][1];
+                kerinaLeadCount[data[i][0]] = data[i][2];
+                davidLeadCount[data[i][0]] = data[i][3];
+                belindaLeadCount[data[i][0]] = data[i][4]; // creating
+                totalUsage[data[i][0]] = data[i][5]; //
+
+            }
+            var count = {}; // creating object for getting categories with
+            // count
+            month_year.forEach(function (i) {
+                count[i] = (count[i] || 0) + 1;
+            });
+
+            var series_data_lee = [];
+            var series_data_kerina = [];
+            var series_data_david = [];
+            var series_data_belinda = [];
+            var series_data_total = [];
+            var categores = [];
+            Object.keys(leeLeadCount).map(function (item, key) {
+                series_data_lee.push(parseInt(leeLeadCount[item]));
+                series_data_kerina.push(parseInt(kerinaLeadCount[item]));
+                series_data_david.push(parseInt(davidLeadCount[item]));
+                series_data_belinda.push(parseInt(belindaLeadCount[item]));
+                series_data_total.push(parseInt(totalUsage[item]));
+                categores.push(item)
+            });
+            plotChartSpeedUsage(series_data_lee, series_data_kerina, series_data_david, series_data_belinda, series_data_total, categores)
+
             return true;
         }
 
-        function plotChartV2(series_data, series_data3_v2, categores) {
-            // console.log(series_data)
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'column',
-                    height: (6 / 16 * 100) + '%',
-                    backgroundColor: '#CFE0CE',
-                    zoomType: 'xy'
-                },
-                xAxis: {
-                    categories: categores,
-                    crosshair: true,
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Customer Count'
+
+        function plotChartSpeedUsage(series_data_lee, series_data_kerina, series_data_david, series_data_belinda, series_data_total, categores) {
+            console.log(series_data_lee)
+            console.log(series_data_kerina)
+            console.log(series_data_david)
+            console.log(series_data_belinda)
+            console.log(categores)
+            Highcharts
+                .chart(
+                    'container_preview', {
+                    chart: {
+                        type: 'column'
                     },
-                    stackLabels: {
-                        enabled: true,
+                    xAxis: {
+                        categories: categores,
+                        crosshair: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
                         }
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Total Usage'
+                        },
+                        stackLabels: {
+                            enabled: true,
+                            style: {
+                                fontWeight: 'bold'
+                            }
                         }
-                    }
-                },
-                series: [{
-                    name: 'No Usage',
-                    data: series_data,
-                    color: '#d59696',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }, {
-                    name: 'Avg Weekly Usage < than 45% of Expected Weekly Usage',
-                    data: series_data3_v2,
-                    color: '#c9750d80',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }
-                    // {
-                    //   name: 'Avg Weekly Usage >= 45% of Expected Usage & Avg Weekly Usage < Expected Weekly Usage',
-                    //   data: series_data4_v2,
-                    //   color: '#fff',
-                    //   style: {
-                    //     fontWeight: 'bold',
-                    //   }
-                    // }
-                ]
-            });
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{point.x}</b><br/>',
+                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Lee',
+                        data: series_data_lee,
+                        // color: '#108372',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'Kerina',
+                        data: series_data_kerina,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'David',
+                        data: series_data_david,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'Belinda',
+                        data: series_data_belinda,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }]
+                });
         }
 
         /**
@@ -624,7 +793,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
 
-        function saveRecord() { }
+        function saveRecord() {
+
+            return true;
+        }
 
         /**
          * Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.

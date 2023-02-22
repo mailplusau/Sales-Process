@@ -24,7 +24,7 @@ function main(request, response) {
     recordtoCreate.setFieldValue('custrecord_sales_callbacktime', nlapiDateToString(date2.addHours(19), 'timeofday'));
 
     nlapiSubmitRecord(recordtoCreate);
-    nlapiSendEmail(112209, nlapiGetUser(), 'New Sales Record', 'New Sales Record Created', null);
+    // nlapiSendEmail(112209, nlapiGetUser(), 'New Sales Record', 'New Sales Record Created', null);
     response.sendRedirect('RECORD', 'customer', customerRecordId, false);
 
 }

@@ -131,7 +131,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
             $("#body").css("background-color", "#CFE0CE");
 
-
             debtDataSet = [];
             debt_set = [];
 
@@ -183,11 +182,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             $(".2WeekCallCompletedModalPopUP").click(function () {
                 var commRegInternalID = $(this).attr("data-id");
-                var salesRecordId = $(this).attr("data-salesrecord");
                 var type = $(this).attr("data-type");
                 console.log('inside modal')
                 $("#comm_reg_id").val(commRegInternalID);
-                $("#sales_rec_id").val(salesRecordId);
                 $("#type").val(type);
                 $("#myModal").show();
 
@@ -198,23 +195,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $("#customerOnboardingCompleted").click(function () {
 
                 console.log('inside modal')
-                var commRegInternalID = $("#comm_reg_id").val();
-                var salesRecordId = $("#sales_rec_id").val();
+                var taskInternalId = $("#comm_reg_id").val();
                 var type = $("#type").val();
 
-                var sales_record = record.load({
-                    type: 'customrecord_sales',
-                    id: salesRecordId
+                var task_record = record.load({
+                    type: record.Type.TASK,
+                    id: taskInternalId
                 });
 
-
-                var comm_reg_record = record.load({
-                    type: 'customrecord_commencement_register',
-                    id: commRegInternalID
-                });
-
-                previous_notes = comm_reg_record.getValue({
-                    fieldId: 'custrecord_2_week_call_notes'
+                previous_notes = task_record.getValue({
+                    fieldId: 'message'
                 });
 
                 var date = new Date();
@@ -228,46 +218,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 });
 
                 if (type == "completed") {
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_salesrep',
-                        value: userId
+                    task_record.setValue({
+                        fieldId: 'status',
+                        value: 'COMPLETE'
                     });
 
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_commreg_sales_record',
-                        value: salesRecordId
-                    });
-
-
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_day14call',
-                        value: date_now
-                    });
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_commreg',
-                        value: commRegInternalID
-                    });
                 }
 
-
-                sales_record.setValue({
-                    fieldId: 'custrecord_sales_lastcalldate',
-                    value: date_now
+                task_record.setValue({
+                    fieldId: 'message',
+                    value: previous_notes + '\n Date: ' + date_now + ' Notes: ' +
+                        $("#call_back_notes").val()
                 });
 
-
-                comm_reg_record.save({
-                    ignoreMandatoryFields: true
-                });
-
-                sales_record.save({
+                task_record.save({
                     ignoreMandatoryFields: true
                 });
 
 
                 var url = baseURL +
-                    '/app/site/hosting/scriptlet.nl?script=1657&deploy=1';
+                    '/app/site/hosting/scriptlet.nl?script=1671&deploy=1';
                 window.location.href = url;
 
             });
@@ -342,11 +312,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Franchisee'
                 }, {
-                    title: 'Commencement Date'
-                }, {
                     title: 'Email'
                 }, {
                     title: 'Phone Number'
+                }, {
+                    title: 'Task Title'
+                }, {
+                    title: 'Sales Rep Assigned'
+                }, {
+                    title: 'Due Date'
+                }, {
+                    title: 'Time'
                 }],
                 columnDefs: [{
                     targets: [],
@@ -355,7 +331,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 rowCallback: function (row, data, index) { }
             });
 
-            // userId = $('#user_dropdown option:selected').val();
+            userId = $('#user_dropdown option:selected').val();
             zee = $(
                 '#zee_dropdown option:selected').val();
 
@@ -369,7 +345,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function addFilters() {
 
             zee = $('#zee_dropdown option:selected').val();
-            // userId = $('#user_dropdown option:selected').val();
+            userId = $('#user_dropdown option:selected').val();
 
             var url = baseURL +
                 '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' + zee +
@@ -379,14 +355,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
-            //New Customers - Auto Signed Up - All of Above
-            var custListCommenceTodayResults = search.load({
+            //Sales Call Booked &/or Customer Upsell - Tasks 
+            var salesCallUpsellTasksSearch = search.load({
                 type: 'customer',
-                id: 'customsearch_auto_signed_all_of_above'
+                id: 'customsearch_sales_call_upsell_tasks'
             });
 
             if (!isNullorEmpty(zee_id)) {
-                custListCommenceTodayResults.filters.push(search.createFilter({
+                salesCallUpsellTasksSearch.filters.push(search.createFilter({
                     name: 'partner',
                     join: null,
                     operator: search.Operator.IS,
@@ -394,61 +370,70 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
-            console.log('userId: ' + userId)
-
             if (!isNullorEmpty(userId) && role != 3) {
-                custListCommenceTodayResults.filters.push(search.createFilter({
-                    name: 'custrecord_sales_assigned',
-                    join: 'custrecord_sales_customer',
+                salesCallUpsellTasksSearch.filters.push(search.createFilter({
+                    name: 'custrecord_salesrep',
+                    join: 'custrecord_customer',
                     operator: search.Operator.IS,
                     values: userId
                 }));
             }
 
-            custListCommenceTodayResults.run().each(function (
-                custListCommenceTodaySet) {
+            salesCallUpsellTasksSearch.run().each(function (
+                salesCallUpsellTasksResultSet) {
 
-                var custInternalID = custListCommenceTodaySet.getValue({
+                var custInternalID = salesCallUpsellTasksResultSet.getValue({
                     name: 'internalid'
                 });
-                var custEntityID = custListCommenceTodaySet.getValue({
+                var custEntityID = salesCallUpsellTasksResultSet.getValue({
                     name: 'entityid'
                 });
-                var custName = custListCommenceTodaySet.getValue({
+                var custName = salesCallUpsellTasksResultSet.getValue({
                     name: 'companyname'
                 });
-                var zeeID = custListCommenceTodaySet.getValue({
+                var zeeID = salesCallUpsellTasksResultSet.getValue({
                     name: 'partner'
                 });
-                var zeeName = custListCommenceTodaySet.getText({
+                var zeeName = salesCallUpsellTasksResultSet.getText({
                     name: 'partner'
                 });
 
-                var commRegInternalID = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_CUSTOMER"
-                });
-
-                var salesRecordInternalId = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_SALES_CUSTOMER"
-                });
-
-
-                var commDate = custListCommenceTodaySet.getValue({
-                    name: 'custrecord_comm_date',
-                    join: 'CUSTRECORD_CUSTOMER'
-                });
-
-                var email = custListCommenceTodaySet.getValue({
+                var email = salesCallUpsellTasksResultSet.getValue({
                     name: 'email'
                 });
-                var serviceEmail = custListCommenceTodaySet.getValue({
+                var serviceEmail = salesCallUpsellTasksResultSet.getValue({
                     name: 'custentity_email_service'
                 });
 
-                var phone = custListCommenceTodaySet.getValue({
+                var phone = salesCallUpsellTasksResultSet.getValue({
                     name: 'phone'
+                });
+
+                var taskInternalId = salesCallUpsellTasksResultSet.getValue({
+                    name: "internalid",
+                    join: "task"
+                });
+
+                var taskTitle = salesCallUpsellTasksResultSet.getValue({
+                    name: "title",
+                    join: "task"
+                });
+                var taskDueDate = salesCallUpsellTasksResultSet.getValue({
+                    name: "duedate",
+                    join: "task"
+                });
+                var taskTime = salesCallUpsellTasksResultSet.getValue({
+                    name: "starttime",
+                    join: "task"
+                });
+                var salesRepAssigned = salesCallUpsellTasksResultSet.getValue({
+                    name: "assigned",
+                    join: "task"
+                });
+
+                var salesRepAssignedText = salesCallUpsellTasksResultSet.getText({
+                    name: "assigned",
+                    join: "task"
                 });
 
                 debt_set.push({
@@ -457,12 +442,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     custName: custName,
                     zeeID: zeeID,
                     zeeName: zeeName,
-                    commRegInternalID: commRegInternalID,
-                    commDate: commDate,
-                    email: email,
+                    salesRepAssigned: salesRepAssigned,
+                    salesRepAssignedText: salesRepAssignedText,
                     serviceEmail: serviceEmail,
                     phone: phone,
-                    salesRecordInternalId: salesRecordInternalId
+                    taskInternalId: taskInternalId,
+                    taskTitle: taskTitle,
+                    taskDueDate: taskDueDate,
+                    taskTime: taskTime,
                 });
 
                 return true;
@@ -483,41 +470,62 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 debt_rows.forEach(function (debt_row, index) {
 
 
+                    // var linkURL =
+                    //     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                    //     debt_row.taskInternalId +
+                    //     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                    //     debt_row.taskInternalId +
+                    //     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                    //     debt_row.taskInternalId +
+                    //     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+                    //     debt_row.custInternalID +
+                    //     '" target="_blank">SEND EMAIL</a></button>';
+
                     var linkURL =
                         '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.custInternalID +
-                        '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
-                        debt_row.custInternalID + '&company=' + debt_row.custInternalID +
-                        '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
+                        debt_row.taskInternalId +
+                        '" class="" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?id=' +
+                        debt_row.taskInternalId +
+                        '&e=T&l=T" target="_blank" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        debt_row.taskInternalId +
+                        '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        debt_row.taskInternalId +
+                        '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
 
                     var customerIDLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
                         debt_row.custInternalID + '&whence=" target="_blank"><b>' +
                         debt_row.custEntityID + '</b></a>';
 
-                    var commDateSplit = debt_row.commDate.split('/');
+                    // var commDateSplit = debt_row.commDate.split('/');
+                    // var signUpDateSplit = debt_row.signUpDate.split('/');
+                    // var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+                    //     commDateSplit[0]);
+                    // var commDateParsed = format.parse({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
+                    // var commDateFormatted = format.format({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
 
-                    var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-                        commDateSplit[0]);
-                    var commDateParsed = format.parse({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
-                    var commDateFormatted = format.format({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
-
+                    // var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
+                    //     1, signUpDateSplit[0]);
+                    // var signUpDateParsed = format.parse({
+                    //     value: signUpDate,
+                    //     type: format.Type.DATE
+                    // });
+                    // var signUpDateFormatted = format.format({
+                    //     value: signUpDate,
+                    //     type: format.Type.DATE
+                    // });
 
                     debtDataSet.push([linkURL, debt_row.custInternalID,
                         customerIDLink,
-                        debt_row.custName, debt_row.zeeName,
-                        commDateFormatted, debt_row.serviceEmail,
-                        debt_row.phone
+                        debt_row.custName, debt_row.zeeName, debt_row.serviceEmail,
+                        debt_row.phone, debt_row.taskTitle, debt_row.salesRepAssignedText, debt_row.taskDueDate,
+                        debt_row.taskTime
                     ]);
                 });
             }
@@ -528,69 +536,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             datatable.draw();
 
             return true;
-        }
-
-        function plotChartV2(series_data, series_data3_v2, categores) {
-            // console.log(series_data)
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'column',
-                    height: (6 / 16 * 100) + '%',
-                    backgroundColor: '#CFE0CE',
-                    zoomType: 'xy'
-                },
-                xAxis: {
-                    categories: categores,
-                    crosshair: true,
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Customer Count'
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold'
-                        }
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                series: [{
-                    name: 'No Usage',
-                    data: series_data,
-                    color: '#d59696',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }, {
-                    name: 'Avg Weekly Usage < than 45% of Expected Weekly Usage',
-                    data: series_data3_v2,
-                    color: '#c9750d80',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }
-                    // {
-                    //   name: 'Avg Weekly Usage >= 45% of Expected Usage & Avg Weekly Usage < Expected Weekly Usage',
-                    //   data: series_data4_v2,
-                    //   color: '#fff',
-                    //   style: {
-                    //     fontWeight: 'bold',
-                    //   }
-                    // }
-                ]
-            });
         }
 
         /**

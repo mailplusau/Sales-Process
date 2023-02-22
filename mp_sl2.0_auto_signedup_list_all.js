@@ -33,17 +33,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 var last_date = context.request.parameters.last_date;
                 zee = context.request.parameters.zee;
                 userId = context.request.parameters.user_id;
-
-                var paramUserId = context.request.parameters.user;
-                if (isNullorEmpty(userId)) {
-                    userId = null;
-                }
-
-                if (isNullorEmpty(paramUserId)) {
-                    paramUserId = null;
-                } else {
-                    userId = paramUserId;
-                }
+                var showTotal = context.request.parameters.showTotal;
 
                 if (isNullorEmpty(start_date)) {
                     start_date = null;
@@ -53,10 +43,51 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     last_date = null;
                 }
 
+                if (isNullorEmpty(userId)) {
+                    userId = null;
+                }
 
+                var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+                var firstDay = new Date(y, m, 1);
+                var lastDay = new Date(y, m + 1, 0);
+
+                firstDay.setHours(0, 0, 0, 0);
+                lastDay.setHours(0, 0, 0, 0);
+
+                firstDay = GetFormattedDate(firstDay);
+                lastDay = GetFormattedDate(lastDay);
+
+                log.debug({
+                    title: 'firstDay',
+                    details: firstDay
+                });
+
+                log.debug({
+                    title: 'lastDay',
+                    details: lastDay
+                });
+
+
+                if (isNullorEmpty(start_date)) {
+                    if (showTotal == 'T') {
+                        start_date = null;
+                    } else {
+                        start_date = firstDay;
+                    }
+
+                }
+
+                if (isNullorEmpty(last_date)) {
+                    if (showTotal == 'T') {
+                        last_date = null;
+                    } else {
+                        last_date = lastDay;
+                    }
+
+                }
 
                 var form = ui.createForm({
-                    title: 'New Auto Signed Up Customer List'
+                    title: 'Auto Signed Up Customer List - All (Admin View)'
                 });
 
 
@@ -71,65 +102,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
-                form.addField({
-                    id: 'custpage_sales_rep_id',
-                    type: ui.FieldType.TEXT,
-                    label: 'Table CSV'
-                }).updateDisplayType({
-                    displayType: ui.FieldDisplayType.HIDDEN
-                }).defaultValue = paramUserId;
-
                 //Display the modal pop-up to edit the customer details
                 inlineHtml += updateCustomerModal();
 
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
-                inlineHtml += userDropdownSection(userId);
-                inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Colour Codes</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 7-9 days after commencement date</li><li><b style="color: #f76f05;">Orange</b>: 10-13 days after commencement date</li><li><b style="color: #ff2626;">Red</b>: 14 days or more after commencement date</li></ol></p></div>'
-                inlineHtml += '<div id="container"></div></br>';
-
-
-                // Tabs headers
-                inlineHtml +=
-                    '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-                inlineHtml +=
-                    '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-                inlineHtml += '</style>';
-
-                inlineHtml +=
-                    '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-
-                inlineHtml +=
-                    '<li role="presentation" class="active"><a data-toggle="tab" href="#customers"><b>CUSTOMERS AUTO SIGNED</b></a></li>';
-                inlineHtml +=
-                    '<li role="presentation" class=""><a data-toggle="tab" href="#tracking"><b>CUSTOMERS - MP PRODUCT TRACKING</b></a></li>';
-
-                inlineHtml += '</ul></div>';
-
-
-                // Tabs content
-                inlineHtml += '<div class="tab-content">';
-
-                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="customers">';
-
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_customers"></div>';
-                inlineHtml += '</figure><br></br>';
-                inlineHtml += dataTable('customers');
-                inlineHtml += '</div>';
-
-                inlineHtml += '<div role="tabpanel" class="tab-pane " id="tracking">';
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_tracking"></div>';
-                inlineHtml += '</figure><br></br>';
-                inlineHtml += dataTable('tracking');
-                inlineHtml += '</div>';
-
-
-                inlineHtml += '</div></div>';
-
+                inlineHtml += dateFilterSection(start_date, last_date);
+                inlineHtml += '<div id="container"></div>'
                 inlineHtml += dataTable();
-
 
                 //Button to reload the page when the filters have been selected
                 // form.addButton({
@@ -146,7 +126,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     layoutType: ui.FieldLayoutType.STARTROW
                 }).defaultValue = inlineHtml;
 
-                form.clientScriptFileId = 6056571;
+                form.clientScriptFileId = 6079293;
 
                 context.response.writePage(form);
             } else {
@@ -164,7 +144,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
         function updateCustomerModal() {
 
             var yes_no_search = search.create({
-                type: 'customlist107',
+                type: 'customlist107_2',
                 columns: [{
                     name: 'name'
                 }, {
@@ -183,95 +163,57 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 '<div class="form-group container mpex_customer2_section">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
-                '<div class="col-xs-4 mpex_customer"><input type="text" id="customer_id" value="" hidden/><div class="input-group"><span class="input-group-addon" id="mpex_customer_text">Remove from Tracking? </span><select id="mpex_customer" class="form-control mpex_customer_dropdown" ><option></option>';
-
-            resultSetYesNo.each(function (searchResult) {
-
-                var listValue = searchResult.getValue('name');
-                var listID = searchResult.getValue('internalId');
-
-                if (listID == 1) {
-                    inlineHtml += '<option value="' + listID + '" selected>' + listValue +
-                    '</option>';
-                } else {
-                    inlineHtml += '<option value="' + listID + '">' + listValue +
-                    '</option>';
-                }
-                
-
-                return true;
-            });
-
-            inlineHtml += '</select></div></div>';
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-
-            inlineHtml +=
-                '<div class="form-group container mpex_customer2_section">';
-            inlineHtml += '<div class="row">';
-            inlineHtml +=
                 '<div class="col-xs-4 mpex_customer"><input type="text" id="comm_reg_id" value="" hidden/><input type="text" id="sales_rec_id" value="" hidden/><input type="text" id="type" value="" hidden/><div class="input-group"><span class="input-group-addon" id="notes_text">NOTES </span><textarea id="call_back_notes" name="call_back_notes" rows="4" cols="50"></textarea></div></div>';
 
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
             inlineHtml +=
-                '</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="SAVE" class="form-control btn-primary" id="customerOnboardingCompleted" style=""/></div></div></div>';
+                '</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="Save Notes" class="form-control btn-primary" id="customerOnboardingCompleted" style=""/></div></div></div>';
 
             return inlineHtml;
 
         }
 
         /**
-* The Sales Rep dropdown field.
-* @param   {String}    date_from
-* @param   {String}    date_to
-* @return  {String}    `inlineHtml`
-*/
-        function userDropdownSection(userId) {
-
-            var searchedSalesTeam = search.load({
-                id: 'customsearch_active_employees_3'
-            });
-
-            var inlineHtml =
-                '<div class="form-group container cust_filter_section">';
+        * The date input fields to filter the invoices.
+        * Even if the parameters `date_from` and `date_to` are defined, they can't be initiated in the HTML code.
+        * They are initiated with jQuery in the `pageInit()` function.
+        * @return  {String} `inlineHtml`
+        */
+        function dateFilterSection(start_date, last_date) {
+            var inlineHtml = '<div class="form-group container date_filter_section">';
             inlineHtml += '<div class="row">';
-            inlineHtml +=
-                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES REP</span></h4></div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #103D39;">DATE FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-            inlineHtml +=
-                '<div class="form-group container cust_dropdown_section">';
+
+            // inlineHtml += periodDropdownSection(start_date, last_date);
+
+            inlineHtml += '<div class="form-group container date_filter_section">';
             inlineHtml += '<div class="row">';
-            // Period dropdown field
-            inlineHtml += '<div class="col-xs-12 cust_dropdown_div">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
             inlineHtml += '<div class="input-group">';
-            inlineHtml +=
-                '<span class="input-group-addon" id="user_dropdown_text">Sales Rep</span>';
-            inlineHtml += '<select id="user_dropdown" class="form-control">';
-            inlineHtml += '<option value=""></option>'
-            searchedSalesTeam.run().each(function (searchResult_sales) {
-                employee_id = searchResult_sales.getValue({
-                    name: 'internalid'
-                });
-                employee_name = searchResult_sales.getValue({
-                    name: 'entityid'
-                });
+            inlineHtml += '<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM</span>';
+            if (isNullorEmpty(start_date)) {
+                inlineHtml += '<input id="date_from" class="form-control date_from" type="date" />';
+            } else {
+                inlineHtml += '<input id="date_from" class="form-control date_from" type="date" value="' + start_date + '"/>';
+            }
 
-                if (userId == employee_id) {
-                    inlineHtml += '<option value="' + employee_id +
-                        '" selected="selected">' + employee_name + '</option>';
-                } else {
-                    inlineHtml += '<option value="' + employee_id + '">' +
-                        employee_name +
-                        '</option>';
-                }
+            inlineHtml += '</div></div>';
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO</span>';
+            if (isNullorEmpty(last_date)) {
+                inlineHtml += '<input id="date_to" class="form-control date_to" type="date">';
+            } else {
+                inlineHtml += '<input id="date_to" class="form-control date_to" type="date" value="' + last_date + '">';
+            }
 
-                return true;
-            });
-            inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml +=
@@ -283,59 +225,44 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" /></div>'
             inlineHtml +=
                 '<div class="col-xs-4"></div>'
+
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
+            inlineHtml +=
+                '<div class="form-group container zee_available_buttons_section">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml +=
+                '<div class="col-xs-3"></div>'
+            inlineHtml +=
+                '<div class="col-xs-6"><input type="button" value="SHOW TOTAL LEAD COUNT" class="form-control btn btn-success" id="showTotal" style="font-weight: bold;"/><p style="font-size: inherit; color: red; text-align: center"><u><b>Please Note:</b></u> This will not calculate the product usage for a customer.</br> Please click <u><b>\"TOTAL USAGE\"</b></u> button to get the usage count for a customer. </p></div>'
+            inlineHtml +=
+                '<div class="col-xs-3"></div>'
+
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
             return inlineHtml;
-
         }
 
 
-
-        // /**
-        //  * The table that will display the differents invoices linked to the franchisee and the time period.
-        //  * @return  {String}    inlineHtml
-        //  */
-        // function dataTable() {
-        //     var inlineHtml =
-        //         '<style>table#customer_benchmark_preview {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#customer_benchmark_preview th{text-align: center;} .bolded{font-weight: bold;}</style>';
-        //     inlineHtml +=
-        //         '<table id="customer_benchmark_preview" class="table table-responsive table-striped customer tablesorter hide" style="width: 100%;">';
-        //     inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
-        //     inlineHtml += '<tr class="text-center">';
-        //     inlineHtml += '</tr>';
-        //     inlineHtml += '</thead>';
-
-        //     inlineHtml +=
-        //         '<tbody id="result_customer_benchmark" class="result-customer_benchmark"></tbody>';
-
-        //     inlineHtml += '</table>';
-        //     return inlineHtml;
-        // }
-
         /**
-         * The table that will display the differents invoices linked to the
-         * franchisee and the time period.
-         *
-         * @return {String} inlineHtml
+         * The table that will display the differents invoices linked to the franchisee and the time period.
+         * @return  {String}    inlineHtml
          */
-        function dataTable(name) {
-            var inlineHtml = '<style>table#mpexusage-' +
-                name +
-                ' {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-' +
-                name +
-                ' th{text-align: center;} .bolded{font-weight: bold;}</style>';
-            inlineHtml += '<table id="mpexusage-' +
-                name +
-                '" class="table table-responsive table-striped customer tablesorter" style="width: 100%;">';
+        function dataTable() {
+            var inlineHtml =
+                '<style>table#customer_benchmark_preview {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#customer_benchmark_preview th{text-align: center;} .bolded{font-weight: bold;}</style>';
+            inlineHtml +=
+                '<table id="customer_benchmark_preview" class="table table-responsive table-striped customer tablesorter hide" style="width: 100%;">';
             inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
             inlineHtml += '<tr class="text-center">';
-
             inlineHtml += '</tr>';
             inlineHtml += '</thead>';
 
-            inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
+            inlineHtml +=
+                '<tbody id="result_customer_benchmark" class="result-customer_benchmark"></tbody>';
 
             inlineHtml += '</table>';
             return inlineHtml;
@@ -373,6 +300,18 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 });
             }
             return date_netsuite;
+        }
+
+        function GetFormattedDate(todayDate) {
+
+            var month = pad(todayDate.getMonth() + 1);
+            var day = pad(todayDate.getDate());
+            var year = (todayDate.getFullYear());
+            return year + "-" + month + "-" + day;
+        }
+
+        function pad(s) {
+            return (s < 10) ? '0' + s : s;
         }
 
         function isNullorEmpty(val) {

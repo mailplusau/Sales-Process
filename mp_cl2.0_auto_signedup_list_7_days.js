@@ -131,9 +131,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
             $("#body").css("background-color", "#CFE0CE");
 
+            var val1 = currentRecord.get();
+            paramUserId = val1.getValue({
+                fieldId: 'custpage_sales_rep_id'
+            });
+
+            $("#applyFilter").click(function () {
+
+                userId = $('#user_dropdown option:selected').val();
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1657&deploy=1&user=" + userId;
+
+
+                window.location.href = url;
+            });
+
+
+
+
 
             debtDataSet = [];
             debt_set = [];
+
+            debtDataSet2 = [];
+            debt_set2 = [];
 
             /**
              *  Submit Button Function
@@ -144,9 +165,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var btn = $(this);
                 btn.addClass('disabled');
                 // btn.addClass('')
-                setTimeout(function () {
-                    btn.removeClass('disabled');
-                }, fewSeconds * 1000);
+                // setTimeout(function () {
+                //     btn.removeClass('disabled');
+                // }, fewSeconds * 1000);
 
                 debtDataSet = [];
                 debt_set = [];
@@ -182,10 +203,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             })
 
             $(".2WeekCallCompletedModalPopUP").click(function () {
+                var customerInternalID = $(this).attr("data-custid");
                 var commRegInternalID = $(this).attr("data-id");
                 var salesRecordId = $(this).attr("data-salesrecord");
                 var type = $(this).attr("data-type");
                 console.log('inside modal')
+                $("#customer_id").val(customerInternalID);
                 $("#comm_reg_id").val(commRegInternalID);
                 $("#sales_rec_id").val(salesRecordId);
                 $("#type").val(type);
@@ -194,28 +217,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             })
 
-            //Display the modal on click of the link on the table and prefill the fields  based on the customer record
-            $("#customerOnboardingCompleted").click(function () {
+            $('.lost').click(function () {
 
-                console.log('inside modal')
-                var commRegInternalID = $("#comm_reg_id").val();
-                var salesRecordId = $("#sales_rec_id").val();
-                var type = $("#type").val();
-
-                var sales_record = record.load({
-                    type: 'customrecord_sales',
-                    id: salesRecordId
-                });
-
-
-                var comm_reg_record = record.load({
-                    type: 'customrecord_commencement_register',
-                    id: commRegInternalID
-                });
-
-                previous_notes = comm_reg_record.getValue({
-                    fieldId: 'custrecord_2_week_call_notes'
-                });
+                var customerInternalId = $(this).attr("data-id");
+                var commRegInternalID = $(this).attr("data-commreg");
+                var salesRecordId = $(this).attr("data-salesrecordid");
 
                 var date = new Date();
                 var date_now = format.parse({
@@ -227,30 +233,67 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: format.Type.TIMEOFDAY
                 });
 
-                if (type == "completed") {
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_salesrep',
-                        value: userId
-                    });
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_commreg_sales_record',
-                        value: salesRecordId
-                    });
+                var params = {
+                    custid: parseInt(customerInternalId),
+                    sales_record_id: parseInt(salesRecordId),
+                    nosale: 'T',
+                    id: 'customscript_sl_finalise_page',
+                    deploy: 'customdeploy_sl_finalise_page'
+                };
+                params = JSON.stringify(params);
 
 
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_day14call',
-                        value: date_now
-                    });
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_commreg',
-                        value: commRegInternalID
-                    });
-                }
+                var convertLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&custparam_params=' + params;
 
 
+                window.location.href = convertLink;
+            })
+
+            $('.convert').click(function () {
+
+                var customerInternalId = $(this).attr("data-id");
+                var commRegInternalID = $(this).attr("data-commreg");
+                var salesRecordId = $(this).attr("data-salesrecordid");
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+                var time_now = format.parse({
+                    value: date,
+                    type: format.Type.TIMEOFDAY
+                });
+
+                var sales_record = record.load({
+                    type: 'customrecord_sales',
+                    id: salesRecordId
+                });
+
+
+                var comm_reg_record = record.load({
+                    type: 'customrecord_commencement_register',
+                    id: commRegInternalID
+                });
+                comm_reg_record.setValue({
+                    fieldId: 'custrecord_salesrep',
+                    value: userId
+                });
+
+                comm_reg_record.setValue({
+                    fieldId: 'custrecord_commreg_sales_record',
+                    value: salesRecordId
+                });
+
+
+                sales_record.setValue({
+                    fieldId: 'custrecord_sales_day14call',
+                    value: date_now
+                });
+                sales_record.setValue({
+                    fieldId: 'custrecord_sales_commreg',
+                    value: commRegInternalID
+                });
                 sales_record.setValue({
                     fieldId: 'custrecord_sales_lastcalldate',
                     value: date_now
@@ -264,6 +307,434 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 sales_record.save({
                     ignoreMandatoryFields: true
                 });
+
+                var params = {
+                    custid: parseInt(customerInternalId),
+                    salesrecordid: parseInt(salesRecordId),
+                    salesrep: 'F',
+                    sendemail: 'T',
+                    closedwon: 'T',
+                    oppwithvalue: 'F',
+                    commreg: commRegInternalID,
+                    customid: 'customscript_sl_send_email_module',
+                    customdeploy: 'customdeploy_sl_send_email_module'
+                }
+                params = JSON.stringify(params);
+
+                var convertLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=726&deploy=1&compid=1048144&custparam_params=' + params;
+
+
+                window.location.href = convertLink;
+            })
+
+            $('.convertnofee').click(function () {
+
+                var customerInternalId = $(this).attr("data-id");
+                var commRegInternalID = $(this).attr("data-commreg");
+                var salesRecordId = $(this).attr("data-salesrecordid");
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+                var time_now = format.parse({
+                    value: date,
+                    type: format.Type.TIMEOFDAY
+                });
+
+                var sales_record = record.load({
+                    type: 'customrecord_sales',
+                    id: salesRecordId
+                });
+
+
+                var comm_reg_record = record.load({
+                    type: 'customrecord_commencement_register',
+                    id: commRegInternalID
+                });
+                comm_reg_record.setValue({
+                    fieldId: 'custrecord_salesrep',
+                    value: userId
+                });
+
+                comm_reg_record.setValue({
+                    fieldId: 'custrecord_commreg_sales_record',
+                    value: salesRecordId
+                });
+
+
+                sales_record.setValue({
+                    fieldId: 'custrecord_sales_day14call',
+                    value: date_now
+                });
+                sales_record.setValue({
+                    fieldId: 'custrecord_sales_commreg',
+                    value: commRegInternalID
+                });
+                sales_record.setValue({
+                    fieldId: 'custrecord_sales_lastcalldate',
+                    value: date_now
+                });
+
+
+                comm_reg_record.save({
+                    ignoreMandatoryFields: true
+                });
+
+                sales_record.save({
+                    ignoreMandatoryFields: true
+                });
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1657&deploy=1";
+
+
+                window.location.href = url;
+            })
+
+            $(".noanswer").click(function () {
+
+                console.log('inside no answer')
+
+                userId = $('#user_dropdown option:selected').val();
+                var customerInternalId = $(this).attr("data-id");
+                var salesrepid = $(this).attr("data-sales");
+                var contactid = $(this).attr("data-contact");
+                var contactEmail = $(this).attr("data-contactemail");
+                var salesRecordId = $(this).attr("data-salesrecordid");
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+                var time_now = format.parse({
+                    value: date,
+                    type: format.Type.TIMEOFDAY
+                });
+
+                var recSales = record.load({
+                    type: 'customrecord_sales',
+                    id: salesRecordId
+                });
+
+                var sales_campaign_name = recSales.getText({
+                    fieldId: 'custrecord_sales_campaign'
+                });
+
+                var phoneCallRecord = record.create({
+                    type: record.Type.PHONE_CALL
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'assigned',
+                    value: salesrepid
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_organiser',
+                    value: salesrepid
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'startdate',
+                    value: date_now
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'company',
+                    value: customerInternalId
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'status',
+                    value: 'COMPLETE'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_call_type',
+                    value: 2
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'title',
+                    value: sales_campaign_name + ' - No Answer - Phone Call'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'message',
+                    value: 'No answer'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_call_outcome',
+                    value: 6
+                });
+
+                phoneCallRecord.save({
+                    ignoreMandatoryFields: true
+                });
+
+
+
+
+                var dateFirstNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day0call'
+                });
+                var dateSecondNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day14call'
+                });
+                var dateThirdNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day25call'
+                });
+
+
+
+
+                if (isNullorEmpty(dateFirstNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day0call',
+                        value: date_now
+                    });
+                } else if (!isNullorEmpty(dateFirstNoContact) && isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day14call',
+                        value: date_now
+                    });
+                } else if (!isNullorEmpty(dateFirstNoContact) && !isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day25call',
+                        value: date_now
+                    });
+                }
+
+
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_completed',
+                    value: false
+                });
+
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_inuse',
+                    value: false
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_assigned',
+                    value: salesrepid
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_outcome',
+                    value: 7
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_attempt',
+                    value: parseInt(recSales.getValue({
+                        fieldId: 'custrecord_sales_attempt'
+                    })) + 1
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_lastcalldate',
+                    value: date_now
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_callbackdate',
+                    value: date_now
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_callbacktime',
+                    value: time_now
+                });
+
+                recSales.save({
+                    ignoreMandatoryFields: true
+                });
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1657&deploy=1";
+
+
+                window.location.href = url;
+
+            });
+
+            $(".noresponse").click(function () {
+
+                console.log('inside no response')
+
+                userId = $('#user_dropdown option:selected').val();
+                var customerInternalId = $(this).attr("data-id");
+                var salesrepid = $(this).attr("data-sales");
+                var contactid = $(this).attr("data-contact");
+                var contactEmail = $(this).attr("data-contactemail");
+                var salesRecordId = $(this).attr("data-salesrecordid");
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+                var time_now = format.parse({
+                    value: date,
+                    type: format.Type.TIMEOFDAY
+                });
+
+                var recSales = record.load({
+                    type: 'customrecord_sales',
+                    id: salesRecordId
+                });
+
+                var sales_campaign_name = recSales.getText({
+                    fieldId: 'custrecord_sales_campaign'
+                });
+
+                var phoneCallRecord = record.create({
+                    type: record.Type.PHONE_CALL
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'assigned',
+                    value: salesrepid
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_organiser',
+                    value: salesrepid
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'startdate',
+                    value: date_now
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'company',
+                    value: customerInternalId
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'status',
+                    value: 'COMPLETE'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_call_type',
+                    value: 2
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'title',
+                    value: sales_campaign_name + ' - No Response - Email'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'message',
+                    value: 'No Response to email'
+                });
+                phoneCallRecord.setValue({
+                    fieldId: 'custevent_call_outcome',
+                    value: 6
+                });
+
+                phoneCallRecord.save({
+                    ignoreMandatoryFields: true
+                });
+
+
+                console.log('after phone call')
+
+                var dateFirstNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day0call'
+                });
+                var dateSecondNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day14call'
+                });
+                var dateThirdNoContact = recSales.getValue({
+                    fieldId: 'custrecord_sales_day25call'
+                });
+
+
+
+
+                if (isNullorEmpty(dateFirstNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day0call',
+                        value: date_now
+                    });
+                } else if (!isNullorEmpty(dateFirstNoContact) && isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day14call',
+                        value: date_now
+                    });
+                } else if (!isNullorEmpty(dateFirstNoContact) && !isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+                    recSales.setValue({
+                        fieldId: 'custrecord_sales_day25call',
+                        value: date_now
+                    });
+                }
+
+
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_completed',
+                    value: false
+                });
+
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_inuse',
+                    value: false
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_assigned',
+                    value: salesrepid
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_outcome',
+                    value: 7
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_attempt',
+                    value: parseInt(recSales.getValue({
+                        fieldId: 'custrecord_sales_attempt'
+                    })) + 1
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_lastcalldate',
+                    value: date_now
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_callbackdate',
+                    value: date_now
+                });
+                recSales.setValue({
+                    fieldId: 'custrecord_sales_callbacktime',
+                    value: time_now
+                });
+
+                recSales.save({
+                    ignoreMandatoryFields: true
+                });
+
+                console.log('after sales record')
+
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1657&deploy=1";
+
+
+                window.location.href = url;
+
+            });
+
+            //Display the modal on click of the link on the table and prefill the fields  based on the customer record
+            $("#customerOnboardingCompleted").click(function () {
+
+                console.log('inside modal')
+                var customerInternalID = $("#customer_id").val();
+                var commRegInternalID = $("#comm_reg_id").val();
+                var salesRecordId = $("#sales_rec_id").val();
+                var type = $("#type").val();
+
+                var customer_record = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalID,
+                    isDynamic: true
+                  });
+          
+                  customer_record.setValue({
+                    fieldId: 'custentity_mpex_custocustentity_mp_product_trackingmer',
+                    value: 2
+                  });
+                  
+                  var customerRecordId = customer_record.save({
+                    ignoreMandatoryFields: true
+                  });
+          
+                  var url = baseURL +
+                    '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' +
+                    zee +
+                    '&start_date=&last_date=&user_id=' +
+                    userId
+                  window.location.href = url;
 
 
                 var url = baseURL +
@@ -326,11 +797,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function submitSearch() {
             // duringSubmit();
 
-            dataTable = $('#customer_benchmark_preview').DataTable({
+            dataTable = $('#mpexusage-customers').DataTable({
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [],
+                order: [[5, 'asc']],
                 columns: [{
                     title: 'LINK'
                 }, {
@@ -348,13 +819,118 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Phone Number'
                 }, {
-                    title: 'MP Express & Standard Usage'
+                    title: 'Sales Rep'
+                }, {
+                    title: 'Services of Interest'
+                }, {
+                    title: 'MP Product Usage/Week'
+                }, {
+                    title: 'MP Express Usage'
+                }, {
+                    title: 'MP Standard Usage'
+                }, {
+                    title: 'Total MP Express & Standard Usage'
+                }, {
+                    title: 'Track Usage'
                 }],
                 columnDefs: [{
-                    targets: [],
+                    targets: [2, 3, 4, 5, 8, 10, 11, 12, 13],
                     className: 'bolded'
                 }],
-                rowCallback: function (row, data, index) { }
+                rowCallback: function (row, data, index) {
+
+                    var commDateArray = data[5].split('-');
+                    var date7Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+                    var dateAfter7Days = date7Days;
+                    dateAfter7Days.setDate(date7Days.getDate() + 7);
+
+                    var date10Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+
+                    var dateAfter10Days = date10Days;
+                    dateAfter10Days.setDate(date10Days.getDate() + 10);
+
+                    var date14Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+
+                    var dateAfter14Days = date14Days;
+                    dateAfter14Days.setDate(date14Days.getDate() + 14);
+
+                    var today = new Date();
+                    if (today >= dateAfter14Days) {
+                        $('td', row).css('background-color', '#F7A4A4');
+                    } else if (today >= dateAfter10Days) {
+                        $('td', row).css('background-color', '#FEBE8C');
+                    } else if (today >= dateAfter7Days) {
+                        $('td', row).css('background-color', '#FFFBC1');
+                    }
+                }
+            });
+
+            dataTable = $('#mpexusage-tracking').DataTable({
+                destroy: true,
+                data: debtDataSet2,
+                pageLength: 1000,
+                order: [[5, 'asc']],
+                columns: [{
+                    title: 'LINK'
+                }, {
+                    title: 'Customer Internal ID'
+                }, {
+                    title: 'ID'
+                }, {
+                    title: 'Company Name'
+                }, {
+                    title: 'Franchisee'
+                }, {
+                    title: 'Commencement Date'
+                }, {
+                    title: 'Email'
+                }, {
+                    title: 'Phone Number'
+                }, {
+                    title: 'Sales Rep'
+                }, {
+                    title: 'Services of Interest'
+                }, {
+                    title: 'MP Product Usage/Week'
+                }, {
+                    title: 'MP Express Usage'
+                }, {
+                    title: 'MP Standard Usage'
+                }, {
+                    title: 'Total MP Express & Standard Usage'
+                }, {
+                    title: 'Track Usage'
+                }],
+                columnDefs: [{
+                    targets: [2, 3, 4, 5, 8, 10, 11, 12, 13],
+                    className: 'bolded'
+                }],
+                rowCallback: function (row, data, index) {
+
+                    // var commDateArray = data[5].split('-');
+                    // var date7Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+                    // var dateAfter7Days = date7Days;
+                    // dateAfter7Days.setDate(date7Days.getDate() + 7);
+
+                    // var date10Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+
+                    // var dateAfter10Days = date10Days;
+                    // dateAfter10Days.setDate(date10Days.getDate() + 10);
+
+                    // var date14Days = new Date(commDateArray[0], commDateArray[1] - 1, commDateArray[2])
+
+                    // var dateAfter14Days = date14Days;
+                    // dateAfter14Days.setDate(date14Days.getDate() + 14);
+
+                    // var today = new Date();
+                    // if (today >= dateAfter14Days) {
+                    //     $('td', row).css('background-color', '#F7A4A4');
+                    // } else if (today >= dateAfter10Days) {
+                    //     $('td', row).css('background-color', '#FEBE8C');
+                    // } else if (today >= dateAfter7Days) {
+                    //     $('td', row).css('background-color', '#FFFBC1');
+                    // }
+                }
             });
 
             // userId = $('#user_dropdown option:selected').val();
@@ -381,7 +957,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
-            //MP Products Customers -  3 Days Call Downs
+            //New Customers - Auto Signed Up
             var custListCommenceTodayResults = search.load({
                 type: 'customer',
                 id: 'customsearch_new_customers_auto_signed_2'
@@ -398,14 +974,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             console.log('userId: ' + userId)
 
-            // if (!isNullorEmpty(userId)) {
-            //     custListCommenceTodayResults.filters.push(search.createFilter({
-            //         name: 'custrecord_salesrep',
-            //         join: 'custrecord_customer',
-            //         operator: search.Operator.IS,
-            //         values: userId
-            //     }));
-            // }
+            if (!isNullorEmpty(paramUserId)) {
+                custListCommenceTodayResults.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: paramUserId
+                }));
+            } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                custListCommenceTodayResults.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: userId
+                }));
+            }
 
             custListCommenceTodayResults.run().each(function (
                 custListCommenceTodaySet) {
@@ -426,6 +1009,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'partner'
                 });
 
+                var servicesOfInterest = custListCommenceTodaySet.getText({
+                    name: 'custentity_services_of_interest'
+                });
+                var productUsageperWeek = custListCommenceTodaySet.getText({
+                    name: 'custentity_form_mpex_usage_per_week'
+                });
+
                 var commRegInternalID = custListCommenceTodaySet.getValue({
                     name: "internalid",
                     join: "CUSTRECORD_CUSTOMER"
@@ -434,6 +1024,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var salesRecordInternalId = custListCommenceTodaySet.getValue({
                     name: "internalid",
                     join: "CUSTRECORD_SALES_CUSTOMER"
+                });
+
+                var salesRepId = custListCommenceTodaySet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+
+
+                var salesRepName = custListCommenceTodaySet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
                 });
 
 
@@ -453,6 +1054,93 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'phone'
                 });
 
+                // Customer Product Usage - Total MP Express & Standard
+                var mpexUsageResults = search.load({
+                    type: 'customrecord_customer_product_stock',
+                    id: 'customsearch6846'
+                });
+
+
+                mpexUsageResults.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custrecord_cust_prod_stock_customer',
+                    operator: search.Operator.ANYOF,
+                    values: parseInt(custInternalID)
+                }));
+
+
+                var count = 0;
+                var oldDate = null;
+                var express_speed = 0;
+                var standard_speed = 0;
+                var total_usage = 0;
+                mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                    // var dateUsed = mpexUsageSet.getValue({
+                    //     name: 'custrecord_cust_date_stock_used',
+                    //     summary: 'GROUP'
+                    // });
+
+
+                    var deliverySpeed = mpexUsageSet.getValue({
+                        name: 'custrecord_delivery_speed',
+                        summary: 'GROUP'
+                    });
+                    var deliverySpeedText = mpexUsageSet.getText({
+                        name: 'custrecord_delivery_speed',
+                        summary: 'GROUP'
+                    });
+
+
+                    var mpexUsage = parseInt(mpexUsageSet.getValue({
+                        name: 'name',
+                        summary: 'COUNT'
+                    }));
+
+                    if (deliverySpeed == 2 ||
+                        deliverySpeedText == '- None -') {
+                        express_speed += mpexUsage;
+                    } else if (deliverySpeed == 1) {
+                        standard_speed += mpexUsage;
+                    }
+                    total_usage += express_speed + standard_speed;
+
+                    // if (count == 0) {
+                    //     if (deliverySpeed == 2 ||
+                    //         deliverySpeedText == '- None -') {
+                    //         express_speed = mpexUsage;
+                    //     } else if (deliverySpeed == 1) {
+                    //         standard_speed = mpexUsage;
+                    //     }
+                    //     total_usage = express_speed + standard_speed;
+
+                    // } else if (oldDate != null &&
+                    //     oldDate == dateUsed) {
+
+                    //     if (deliverySpeed == 2 ||
+                    //         deliverySpeedText == '- None -') {
+                    //         express_speed += mpexUsage;
+                    //     } else if (deliverySpeed == 1) {
+                    //         standard_speed += mpexUsage;
+                    //     }
+                    //     total_usage += express_speed + standard_speed;
+
+                    // } else if (oldDate != null &&
+                    //     oldDate != dateUsed) {
+
+
+
+                    // }
+
+                    count++;
+                    // oldDate = dateUsed;
+                    return true;
+                });
+
+                if (count > 0) {
+
+                }
+
                 debt_set.push({
                     custInternalID: custInternalID,
                     custEntityID: custEntityID,
@@ -464,6 +1152,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     email: email,
                     serviceEmail: serviceEmail,
                     phone: phone,
+                    salesRepId: salesRepId,
+                    salesRepName: salesRepName,
+                    servicesOfInterest: servicesOfInterest,
+                    productUsageperWeek: productUsageperWeek,
+                    express_speed: express_speed,
+                    standard_speed: standard_speed,
+                    total_usage: total_usage,
                     salesRecordInternalId: salesRecordInternalId
                 });
 
@@ -471,30 +1166,261 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
             console.log(debt_set)
 
-            loadDatatable(debt_set);
+
+            //New Customers - Auto Signed Up - Tracking Required (Sales Rep View)
+            var custListTrackingSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_new_customers_auto_signed_5'
+            });
+
+            if (!isNullorEmpty(zee_id)) {
+                custListTrackingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            console.log('userId: ' + userId)
+
+            if (!isNullorEmpty(paramUserId)) {
+                custListTrackingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: paramUserId
+                }));
+            } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                custListTrackingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: userId
+                }));
+            }
+
+            custListTrackingSearch.run().each(function (
+                custListTrackingSearchResultSet) {
+
+                var custInternalID = custListTrackingSearchResultSet.getValue({
+                    name: 'internalid'
+                });
+                var custEntityID = custListTrackingSearchResultSet.getValue({
+                    name: 'entityid'
+                });
+                var custName = custListTrackingSearchResultSet.getValue({
+                    name: 'companyname'
+                });
+                var zeeID = custListTrackingSearchResultSet.getValue({
+                    name: 'partner'
+                });
+                var zeeName = custListTrackingSearchResultSet.getText({
+                    name: 'partner'
+                });
+
+                var servicesOfInterest = custListTrackingSearchResultSet.getText({
+                    name: 'custentity_services_of_interest'
+                });
+                var productUsageperWeek = custListTrackingSearchResultSet.getText({
+                    name: 'custentity_form_mpex_usage_per_week'
+                });
+
+                var commRegInternalID = custListTrackingSearchResultSet.getValue({
+                    name: "internalid",
+                    join: "CUSTRECORD_CUSTOMER"
+                });
+
+                var salesRecordInternalId = custListTrackingSearchResultSet.getValue({
+                    name: "internalid",
+                    join: "CUSTRECORD_SALES_CUSTOMER"
+                });
+
+                var salesRepId = custListTrackingSearchResultSet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+
+
+                var salesRepName = custListTrackingSearchResultSet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+
+
+                var commDate = custListTrackingSearchResultSet.getValue({
+                    name: 'custrecord_comm_date',
+                    join: 'CUSTRECORD_CUSTOMER'
+                });
+
+                var email = custListTrackingSearchResultSet.getValue({
+                    name: 'email'
+                });
+                var serviceEmail = custListTrackingSearchResultSet.getValue({
+                    name: 'custentity_email_service'
+                });
+
+                var phone = custListTrackingSearchResultSet.getValue({
+                    name: 'phone'
+                });
+
+                // Customer Product Usage - Total MP Express & Standard
+                var mpexUsageResults = search.load({
+                    type: 'customrecord_customer_product_stock',
+                    id: 'customsearch6846'
+                });
+
+
+                mpexUsageResults.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custrecord_cust_prod_stock_customer',
+                    operator: search.Operator.ANYOF,
+                    values: parseInt(custInternalID)
+                }));
+
+
+                var count = 0;
+                var oldDate = null;
+                var express_speed = 0;
+                var standard_speed = 0;
+                var total_usage = 0;
+                mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                    // var dateUsed = mpexUsageSet.getValue({
+                    //     name: 'custrecord_cust_date_stock_used',
+                    //     summary: 'GROUP'
+                    // });
+
+
+                    var deliverySpeed = mpexUsageSet.getValue({
+                        name: 'custrecord_delivery_speed',
+                        summary: 'GROUP'
+                    });
+                    var deliverySpeedText = mpexUsageSet.getText({
+                        name: 'custrecord_delivery_speed',
+                        summary: 'GROUP'
+                    });
+
+
+                    var mpexUsage = parseInt(mpexUsageSet.getValue({
+                        name: 'name',
+                        summary: 'COUNT'
+                    }));
+
+                    if (deliverySpeed == 2 ||
+                        deliverySpeedText == '- None -') {
+                        express_speed += mpexUsage;
+                    } else if (deliverySpeed == 1) {
+                        standard_speed += mpexUsage;
+                    }
+                    total_usage += express_speed + standard_speed;
+
+                    // if (count == 0) {
+                    //     if (deliverySpeed == 2 ||
+                    //         deliverySpeedText == '- None -') {
+                    //         express_speed = mpexUsage;
+                    //     } else if (deliverySpeed == 1) {
+                    //         standard_speed = mpexUsage;
+                    //     }
+                    //     total_usage = express_speed + standard_speed;
+
+                    // } else if (oldDate != null &&
+                    //     oldDate == dateUsed) {
+
+                    //     if (deliverySpeed == 2 ||
+                    //         deliverySpeedText == '- None -') {
+                    //         express_speed += mpexUsage;
+                    //     } else if (deliverySpeed == 1) {
+                    //         standard_speed += mpexUsage;
+                    //     }
+                    //     total_usage += express_speed + standard_speed;
+
+                    // } else if (oldDate != null &&
+                    //     oldDate != dateUsed) {
+
+
+
+                    // }
+
+                    count++;
+                    // oldDate = dateUsed;
+                    return true;
+                });
+
+                if (count > 0) {
+
+                }
+
+                debt_set2.push({
+                    custInternalID: custInternalID,
+                    custEntityID: custEntityID,
+                    custName: custName,
+                    zeeID: zeeID,
+                    zeeName: zeeName,
+                    commRegInternalID: commRegInternalID,
+                    commDate: commDate,
+                    email: email,
+                    serviceEmail: serviceEmail,
+                    phone: phone,
+                    salesRepId: salesRepId,
+                    salesRepName: salesRepName,
+                    servicesOfInterest: servicesOfInterest,
+                    productUsageperWeek: productUsageperWeek,
+                    express_speed: express_speed,
+                    standard_speed: standard_speed,
+                    total_usage: total_usage,
+                    salesRecordInternalId: salesRecordInternalId
+                });
+
+                return true;
+            });
+            console.log(debt_set2)
+
+            loadDatatable(debt_set, debt_set2);
             debt_set = [];
 
         }
 
-        function loadDatatable(debt_rows) {
+        function loadDatatable(debt_rows, debt_rows2) {
 
             debtDataSet = [];
             csvSet = [];
+
+            debtDataSet2 = [];
+            csvSet2 = [];
 
             if (!isNullorEmpty(debt_rows)) {
                 debt_rows.forEach(function (debt_row, index) {
 
 
+
+
                     var linkURL =
-                        '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=740&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row.custInternalID + '&sales_record_id=' + debt_row.salesRecordInternalId +
+                        '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button></br></br><input type="button" id="" class="form-control btn btn-xs btn-success convert" data-id="' +
                         debt_row.custInternalID +
-                        '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
-                        debt_row.custInternalID + '&company=' + debt_row.custInternalID +
-                        '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        '" data-salesrecordid="' + debt_row.salesRecordInternalId + '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" data-commreg="' +
                         debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        '"  value="CONVERT"  style="cursor: pointer !important;width: fit-content;" /> </br></br><input type="button" id="" class="form-control btn btn-xs btn-danger lost" data-id="' +
+                        debt_row.custInternalID +
+                        '" data-salesrecordid="' + debt_row.salesRecordInternalId + '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" data-commreg="' +
                         debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
+                        '"  value="LOST"  style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" class="form-control btn btn-xs btn-warning noanswer" data-id="' +
+                        debt_row.custInternalID +
+                        '" data-salesrecordid="' + debt_row.salesRecordInternalId + '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" value="NO ANSWER - PHONE CALL"  style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
+                        debt_row.custInternalID +
+                        '" data-salesrecordid="' + debt_row.salesRecordInternalId + '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" style="color: black; cursor: pointer !important;width: fit-content;" />  ';
+
+
+
 
                     var customerIDLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -502,35 +1428,114 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         debt_row.custEntityID + '</b></a>';
 
                     var mpExpStdUsageLink =
-                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1663&deploy=1&custid=' + debt_row.custInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + debt_row.custInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+
+                    // var commDateSplit = debt_row.commDate.split('/');
+
+                    // var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+                    //     commDateSplit[0]);
+                    // var commDateParsed = format.parse({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
+                    // var commDateFormatted = format.format({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
 
                     var commDateSplit = debt_row.commDate.split('/');
 
-                    var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-                        commDateSplit[0]);
-                    var commDateParsed = format.parse({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
-                    var commDateFormatted = format.format({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
+                    if (parseInt(commDateSplit[1]) < 10) {
+                        commDateSplit[1] = '0' + commDateSplit[1]
+                    }
+
+                    if (parseInt(commDateSplit[0]) < 10) {
+                        commDateSplit[0] = '0' + commDateSplit[0]
+                    }
+
+                    commDateFormatted = commDateSplit[2] + '-' + commDateSplit[1] + '-' +
+                        commDateSplit[0];
 
 
                     debtDataSet.push([linkURL, debt_row.custInternalID,
                         customerIDLink,
                         debt_row.custName, debt_row.zeeName,
                         commDateFormatted, debt_row.serviceEmail,
-                        debt_row.phone, mpExpStdUsageLink
+                        debt_row.phone, debt_row.salesRepName, debt_row.servicesOfInterest, debt_row.productUsageperWeek, debt_row.express_speed, debt_row.standard_speed, debt_row.total_usage, mpExpStdUsageLink
                     ]);
                 });
             }
 
-            var datatable = $('#customer_benchmark_preview').DataTable();
+            var datatable = $('#mpexusage-customers').DataTable();
             datatable.clear();
             datatable.rows.add(debtDataSet);
             datatable.draw();
+
+
+            if (!isNullorEmpty(debt_rows2)) {
+                debt_rows2.forEach(function (debt_row2, index) {
+
+
+                    var linkURL =
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-custid="' +
+                        debt_row2.custInternalID +
+                        '" data-id="' +
+                        debt_row2.commRegInternalID +
+                        '" data-sales_rec_id="' +
+                        debt_row2.salesRecordInternalId +
+                        '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
+
+
+
+
+                    var customerIDLink =
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+                        debt_row2.custInternalID + '&whence=" target="_blank"><b>' +
+                        debt_row2.custEntityID + '</b></a>';
+
+                    var mpExpStdUsageLink =
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + debt_row2.custInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+
+                    // var commDateSplit = debt_row.commDate.split('/');
+
+                    // var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+                    //     commDateSplit[0]);
+                    // var commDateParsed = format.parse({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
+                    // var commDateFormatted = format.format({
+                    //     value: commDate,
+                    //     type: format.Type.DATE
+                    // });
+
+                    var commDateSplit = debt_row2.commDate.split('/');
+
+                    if (parseInt(commDateSplit[1]) < 10) {
+                        commDateSplit[1] = '0' + commDateSplit[1]
+                    }
+
+                    if (parseInt(commDateSplit[0]) < 10) {
+                        commDateSplit[0] = '0' + commDateSplit[0]
+                    }
+
+                    commDateFormatted = commDateSplit[2] + '-' + commDateSplit[1] + '-' +
+                        commDateSplit[0];
+
+
+                    debtDataSet2.push([linkURL, debt_row2.custInternalID,
+                        customerIDLink,
+                        debt_row2.custName, debt_row2.zeeName,
+                        commDateFormatted, debt_row2.serviceEmail,
+                        debt_row2.phone, debt_row2.salesRepName, debt_row2.servicesOfInterest, debt_row2.productUsageperWeek, debt_row2.express_speed, debt_row2.standard_speed, debt_row2.total_usage, mpExpStdUsageLink
+                    ]);
+                });
+            }
+
+            var datatable2 = $('#mpexusage-tracking').DataTable();
+            datatable2.clear();
+            datatable2.rows.add(debtDataSet2);
+            datatable2.draw();
 
             return true;
         }

@@ -64,17 +64,22 @@ function beforeUserLoad(type, form) {
         var userRole = parseInt(nlapiGetRole());
         var cancellation_reason = nlapiGetFieldValue('custentity_service_cancellation_reason');
         var new_customer_id = nlapiGetFieldValue('custentity_new_customer');
+        var salesRecordID = null;
+
+        nlapiLogExecution('AUDIT', 'status', status);
 
         // validation for button visibility
 
         // customer status is signStatus
         if (isInArray(status, signStatus)) {
 
+            form.addButton('custpage_send_email', 'Send Email', getButtonScript('customer_send_email', 'null', customerRecordId));
+
             //any SalesRole can obtain a referral
             if (isInArray(userRole, salesRoles)) {
                 var link = '/app/common/entity/custjob.nl?pf=CUSTENTITY_REF_REFERRER&pr=-2&stage=lead&pi=' + nlapiGetFieldValue('id');
                 var scrpt = "window.open('" + link + "')";
-                form.addButton('custpage_new_referral', 'New Referral', scrpt);
+                // form.addButton('custpage_new_referral', 'New Referral', scrpt);
 
                 //load Sales Record search ExCustomer Campaigns
                 var fil_sr = [];
@@ -83,6 +88,12 @@ function beforeUserLoad(type, form) {
                 fil_sr[fil_sr.length] = new nlobjSearchFilter('custrecord_sales_inuse', null, 'isnot', 'T'); // not in use
                 fil_sr[fil_sr.length] = new nlobjSearchFilter('custrecord_sales_customer', null, 'is', customerRecordId); // belongs to current customer
                 fil_sr[fil_sr.length] = new nlobjSearchFilter('custrecord_sales_deactivated', null, 'is', 'F'); // is not deactivated sales records
+
+                var fil_sr2 = [];
+                fil_sr2[fil_sr2.length] = new nlobjSearchFilter('custrecord_sales_campaign', null, 'is', 50); // AusPost - Product - Price Increase
+                fil_sr2[fil_sr2.length] = new nlobjSearchFilter('custrecord_sales_customer', null, 'is', customerRecordId); // belongs to current customer
+                fil_sr2[fil_sr2.length] = new nlobjSearchFilter('custrecord_sales_completed', null, 'is', 'T'); // completed 
+                fil_sr2[fil_sr2.length] = new nlobjSearchFilter('custrecord_sales_deactivated', null, 'is', 'F'); // is not deactivated sales records
 
                 var fil_sr2 = [];
                 fil_sr2[fil_sr2.length] = new nlobjSearchFilter('custrecord_sales_campaign', null, 'is', 50); // AusPost - Product - Price Increase
@@ -120,11 +131,11 @@ function beforeUserLoad(type, form) {
                     form.addButton('custpage_multisite_link', 'Retrieve Multisites Info', getButtonScript('retrieve_multisite', salesrecordid, customerRecordId));
                 }
 
-                if (status == 13){
-                    form.addButton('custpage_changestatus', 'Change Status', getButtonScript('changestatus', null, customerRecordId)); // getButtonScript('changestatus', null, customerRecordId)
+                if (status == 13) {
+                    // form.addButton('custpage_changestatus', 'Change Status', getButtonScript('changestatus', null, customerRecordId)); // getButtonScript('changestatus', null, customerRecordId)
                 }
-                
-                form.addButton('custpage_multisite_link', 'Link Multisites', getButtonScript('multisite_link', salesrecordid, customerRecordId));
+
+                // form.addButton('custpage_multisite_link', 'Link Multisites', getButtonScript('multisite_link', salesrecordid, customerRecordId));
 
                 // if no completed "AusPost - Product - Price Increase" sales record
                 if (res_sr2 == null) {
@@ -143,9 +154,9 @@ function beforeUserLoad(type, form) {
                         //     form.addButton('custpage_createsalesrecord', 'Create Product Sales Record', getButtonScript('cr8pdtsalesrec', null, customerRecordId));
                         // }
 
-                        if (status == 13) {
+                        // if (status == 13) {
                             form.addButton('custpage_customer_create_sales_record', 'Create Sales Record', getButtonScript('cr8custsalesrec', null, customerRecordId));
-                        }
+                        // }
 
                     } else if (res_sr.length > 1) {
 
@@ -173,6 +184,8 @@ function beforeUserLoad(type, form) {
                             form_sent = res.getValue('custrecord_sales_formsent');
 
                         }
+
+                        salesRecordID = salesrecordid;
 
                         nlapiLogExecution('DEBUG', 'salesrecordid', salesrecordid);
                         nlapiLogExecution('DEBUG', 'form_sent', form_sent);
@@ -230,11 +243,15 @@ function beforeUserLoad(type, form) {
 
             if (status == 13 || status == 32) {
                 form.addButton('custpage_cancellation', 'Cancel Customer', getButtonScript('customer_cancellation', null, customerRecordId));
-                form.addButton('custpage_change', 'Service Change notification', getButtonScript('customer_change', null, customerRecordId));
+                // form.addButton('custpage_send_email', 'Send Email', getButtonScript('customer_send_email', 'null', customerRecordId));
+
+                // form.addButton('custpage_change', 'Service Change notification', getButtonScript('customer_change', null, customerRecordId));
+                form.addButton('custpage_prod_pricing', 'Product Pricing', getButtonScript('customer_prod_pricing', null, customerRecordId));
                 // if (userRole == 1003 || userRole == 1004 || userRole == 3)
                 // form.addButton('custpage_coe', 'Change of Entity', getButtonScript('customer_coe', null, customerRecordId));
             }
 
+            
             if (maapnumber != null) {
 
                 //form.addButton('custpage_welcomepack', 'Generate Welcome Pack', script_welcomepack);
@@ -257,6 +274,9 @@ function beforeUserLoad(type, form) {
             }
             //if not SignStatus
         } else {
+            if (isInArray(userRole, systemAdmin)) {
+                form.addButton('custpage_send_email', 'Send Email', getButtonScript('customer_send_email', 'null', customerRecordId));
+            }
             // if user is a BDM or Sales Admin
             if (isInArray(userRole, salesRoles) || isInArray(userRole, salesAdmin)) {
                 // alert(23);
@@ -305,7 +325,7 @@ function beforeUserLoad(type, form) {
                     form.addButton('custpage_multisite_link', 'Retrieve Multisites Info', getButtonScript('retrieve_multisite', salesrecordid, customerRecordId));
                 }
 
-                form.addButton('custpage_multisite_link', 'Link Multisites', getButtonScript('multisite_link', salesrecordid, customerRecordId));
+                // form.addButton('custpage_multisite_link', 'Link Multisites', getButtonScript('multisite_link', salesrecordid, customerRecordId));
 
                 if (results == null) {
 
@@ -338,13 +358,11 @@ function beforeUserLoad(type, form) {
 
 
                     }
-
-                    form.addButton('custpage_unity4', 'Start Unity4 Trial', getButtonScript('unity4', salesrecordid, customerRecordId));
+                    form.addButton('custpage_callcentre', 'Call Centre', getButtonScript('xcallcentre', salesrecordid, customerRecordId));
+                    // form.addButton('custpage_unity4', 'Start Unity4 Trial', getButtonScript('unity4', salesrecordid, customerRecordId));
 
                     // if lastassigned = current user, empty, not active Call Centre button will be accessible
                     if ((lastassigned == nlapiGetUser()) || isEmpty(lastassigned) || (isInArray(lastassigned, nonActiveSalesRep))) {
-
-                        form.addButton('custpage_callcentre', 'Call Centre', getButtonScript('xcallcentre', salesrecordid, customerRecordId));
 
                         // if quote/form is previously sent Finalise Sale button will also be available
                         // if campaign is Inbound - No Pitch - Commencement Form Receipts
@@ -547,6 +565,18 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
         url += '&custid=' + customerrecordid;
         rtnScript = "window.location='" + url + "'";
     }
+    if (type == 'customer_send_email') {
+        // var params = {
+        //     custid: customerrecordid,
+        //     sales_record_id: salesrecordid,
+        //     id: 'customscript_sl_lead_capture2',
+        //     deploy: 'customdeploy_sl_lead_capture2'
+        // };
+        // params = JSON.stringify(params);
+        var url = nlapiResolveURL('SUITELET', 'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module');
+        url += '&custid=' + customerrecordid;
+        rtnScript = "window.location='" + url + "'";
+    }
     if (type == 'customer_coe') {
         var url = nlapiResolveURL('SUITELET', 'customscript_sl_copy_customer', 'customdeploy_sl_copy_customer');
         url += '&custid=' + customerrecordid;
@@ -555,6 +585,11 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
     if (type == 'customer_change') {
         var url = nlapiResolveURL('SUITELET', 'customscript_sl_customer_ue_service_chan', 'customdeploy_sl_customer_ue_service_chan');
         url += '&custid=' + customerrecordid;
+        rtnScript = "window.location='" + url + "'";
+    }
+    if (type == 'customer_prod_pricing') {
+        var url = nlapiResolveURL('SUITELET', 'customscript_sl2_prod_pricing_page', 'customdeploy1');
+        url += '&customerid=' + customerrecordid;
         rtnScript = "window.location='" + url + "'";
     }
     if (type == 'multisite_link') {
@@ -592,11 +627,10 @@ function getButtonScript(type, salesrecordid, customerrecordid) {
         rtnScript = "window.location='" + url + "'";
     }
 
-    if (type == 'changestatus'){
+    if (type == 'changestatus') {
         var url = nlapiResolveURL('SUITELET', 'customscript_sl_sales_campaign_status', 'customdeploy_sl_sales_campaign_status');
         url += '&recid=' + customerrecordid + '&button=T&cust=T';
         rtnScript = "window.location='" + url + "'";
-        nlapiLogExecution('DEBUG', 'rtnScript', rtnScript);
     }
 
     return rtnScript;

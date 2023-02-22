@@ -36,6 +36,10 @@ function saveRecord() {
             customer_rec.setFieldValue('custentity_date_suspect_reassign', getDate());
         }
 
+    } else {
+        if (customer_status == 22) {
+            customer_rec.setFieldValue('entitystatus', 6);
+        }
     }
 
 

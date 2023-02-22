@@ -182,39 +182,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             })
 
             $(".2WeekCallCompletedModalPopUP").click(function () {
-                var commRegInternalID = $(this).attr("data-id");
-                var salesRecordId = $(this).attr("data-salesrecord");
-                var type = $(this).attr("data-type");
+                var customerInternalId = $(this).attr("data-id");
                 console.log('inside modal')
-                $("#comm_reg_id").val(commRegInternalID);
-                $("#sales_rec_id").val(salesRecordId);
-                $("#type").val(type);
+                $("#customerInternalID").val(customerInternalId);
+
                 $("#myModal").show();
 
+                return false;
 
             })
 
-            //Display the modal on click of the link on the table and prefill the fields  based on the customer record
-            $("#customerOnboardingCompleted").click(function () {
+            $(".noAnswer").click(function () {
+                var customerInternalId = $(this).attr("data-id");
 
-                console.log('inside modal')
-                var commRegInternalID = $("#comm_reg_id").val();
-                var salesRecordId = $("#sales_rec_id").val();
-                var type = $("#type").val();
-
-                var sales_record = record.load({
-                    type: 'customrecord_sales',
-                    id: salesRecordId
+                var customer_record = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
                 });
 
-
-                var comm_reg_record = record.load({
-                    type: 'customrecord_commencement_register',
-                    id: commRegInternalID
+                customer_record.setValue({
+                    fieldId: 'entitystatus',
+                    value: 35
                 });
 
-                previous_notes = comm_reg_record.getValue({
-                    fieldId: 'custrecord_2_week_call_notes'
+                var customerRecordId = customer_record.save({
+                    ignoreMandatoryFields: true
+                });
+
+                var url = baseURL +
+                    '/app/site/hosting/scriptlet.nl?script=1659&deploy=1';
+                window.location.href = url;
+
+                return false;
+
+            });
+
+            $(".lost").click(function () {
+                var customerInternalId = $(this).attr("data-id");
+
+
+                var customer_record = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
+                });
+
+                customer_record.setValue({
+                    fieldId: 'entitystatus',
+                    value: 59
                 });
 
                 var date = new Date();
@@ -222,53 +238,107 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     value: date,
                     type: format.Type.DATE
                 });
-                var time_now = format.parse({
-                    value: date,
-                    type: format.Type.TIMEOFDAY
-                });
 
-                if (type == "completed") {
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_salesrep',
-                        value: userId
-                    });
-
-                    comm_reg_record.setValue({
-                        fieldId: 'custrecord_commreg_sales_record',
-                        value: salesRecordId
-                    });
-
-
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_day14call',
-                        value: date_now
-                    });
-                    sales_record.setValue({
-                        fieldId: 'custrecord_sales_commreg',
-                        value: commRegInternalID
-                    });
-                }
-
-
-                sales_record.setValue({
-                    fieldId: 'custrecord_sales_lastcalldate',
+                customer_record.setValue({
+                    fieldId: 'custentity_date_lead_lost',
                     value: date_now
                 });
 
 
-                comm_reg_record.save({
-                    ignoreMandatoryFields: true
-                });
-
-                sales_record.save({
+                var customerRecordId = customer_record.save({
                     ignoreMandatoryFields: true
                 });
 
 
                 var url = baseURL +
-                    '/app/site/hosting/scriptlet.nl?script=1657&deploy=1';
+                    '/app/site/hosting/scriptlet.nl?script=1659&deploy=1';
                 window.location.href = url;
+
+                return false;
+            });
+
+            $(".sendEmail").click(function () {
+                var customerInternalId = $(this).attr("data-id");
+                var salesrepid = $(this).attr("data-sales");
+                var contactid = $(this).attr("data-contact");
+                var contactEmail = $(this).attr("data-contactemail");
+
+                var val1 = currentRecord.get();
+
+                val1.setValue({
+                    fieldId: 'custpage_customer_id',
+                    value: customerInternalId
+                });
+
+                val1.setValue({
+                    fieldId: 'custpage_sales_rep_id',
+                    value: salesrepid
+                });
+
+                val1.setValue({
+                    fieldId: 'custpage_contact_id',
+                    value: contactid
+                });
+
+                val1.setValue({
+                    fieldId: 'custpage_contact_email',
+                    value: contactEmail
+                });
+
+                $('#submitter').trigger('click');
+
+            });
+
+            // //Display the modal on click of the link on the table and prefill the fields  based on the customer record
+            $("#customerOnboardingCompleted").click(function () {
+
+                console.log('inside modal')
+                var customerInternalId = $("#customerInternalID").val();
+                var service_cancellation_reason = $('.service_cancellation_reason').val();
+
+                var customer_record = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
+                });
+
+                customer_record.setValue({
+                    fieldId: 'entitystatus',
+                    value: 59
+                });
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+
+                customer_record.setValue({
+                    fieldId: 'custentity13',
+                    value: date_now
+                });
+
+                customer_record.setValue({
+                    fieldId: 'custentity_date_lead_lost',
+                    value: date_now
+                });
+
+                customer_record.setValue({
+                    fieldId: 'custentity_service_cancellation_reason',
+                    value: service_cancellation_reason
+                });
+
+
+                var customerRecordId = customer_record.save({
+                    ignoreMandatoryFields: true
+                });
+
+
+                var url = baseURL +
+                    '/app/site/hosting/scriptlet.nl?script=1659&deploy=1';
+                window.location.href = url;
+
+                return false
 
             });
 
@@ -277,36 +347,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 $("#myModal").hide();
             });
 
-            //Update the customer record on click of the button in the modal
-            $('#updateCustomer').click(function () {
-                var customer_id = $("#customer_id").val();
+            // //Update the customer record on click of the button in the modal
+            // $('#updateCustomer').click(function () {
+            //     var customer_id = $("#customer_id").val();
 
-                var customer_record = record.load({
-                    type: record.Type.CUSTOMER,
-                    id: customer_id,
-                    isDynamic: true
-                });
+            //     var customer_record = record.load({
+            //         type: record.Type.CUSTOMER,
+            //         id: customer_id,
+            //         isDynamic: true
+            //     });
 
-                var mpex_customer = customer_record.setValue({
-                    fieldId: 'custentity_mpex_customer',
-                    value: $("#mpex_customer").val()
-                });
-                var expected_usage = customer_record.setValue({
-                    fieldId: 'custentity_exp_mpex_weekly_usage',
-                    value: $("#exp_usage").val()
-                });
+            //     var mpex_customer = customer_record.setValue({
+            //         fieldId: 'custentity_mpex_customer',
+            //         value: $("#mpex_customer").val()
+            //     });
+            //     var expected_usage = customer_record.setValue({
+            //         fieldId: 'custentity_exp_mpex_weekly_usage',
+            //         value: $("#exp_usage").val()
+            //     });
 
-                var customerRecordId = customer_record.save({
-                    ignoreMandatoryFields: true
-                });
+            //     var customerRecordId = customer_record.save({
+            //         ignoreMandatoryFields: true
+            //     });
 
-                var url = baseURL +
-                    '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' +
-                    zee +
-                    '&start_date=&last_date=&user_id=' +
-                    userId
-                window.location.href = url;
-            });
+            //     var url = baseURL +
+            //         '/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=' +
+            //         zee +
+            //         '&start_date=&last_date=&user_id=' +
+            //         userId
+            //     window.location.href = url;
+            // });
         }
 
         function adhocNewCustomers() {
@@ -342,11 +412,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Franchisee'
                 }, {
-                    title: 'Commencement Date'
-                }, {
                     title: 'Email'
                 }, {
                     title: 'Phone Number'
+                }, {
+                    title: 'Date Quote Sent'
+                }, {
+                    title: '48h Email Sent'
+                }, {
+                    title: 'Send Sign Up Email'
                 }],
                 columnDefs: [{
                     targets: [],
@@ -379,10 +453,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
-            //New Customers - Auto Signed Up - All of Above
+            //Website Leads - Prospect Quote Sent
             var custListCommenceTodayResults = search.load({
                 type: 'customer',
-                id: 'customsearch_auto_signed_all_of_above'
+                id: 'customsearch_web_leads_prosp_quote_sent'
             });
 
             if (!isNullorEmpty(zee_id)) {
@@ -424,20 +498,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'partner'
                 });
 
-                var commRegInternalID = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_CUSTOMER"
-                });
-
-                var salesRecordInternalId = custListCommenceTodaySet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_SALES_CUSTOMER"
-                });
-
-
-                var commDate = custListCommenceTodaySet.getValue({
-                    name: 'custrecord_comm_date',
-                    join: 'CUSTRECORD_CUSTOMER'
+                var quoteSentDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_date_lead_quote_sent"
                 });
 
                 var email = custListCommenceTodaySet.getValue({
@@ -451,18 +513,40 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'phone'
                 });
 
+                var salesRepId = custListCommenceTodaySet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                });
+
+                var contactid = custListCommenceTodaySet.getValue({
+                    name: 'internalid',
+                    join: 'contact'
+                });
+
+                var contactEmail = custListCommenceTodaySet.getValue({
+                    name: 'email',
+                    join: 'contact'
+                });
+
+                var email48h = custListCommenceTodaySet.getText({
+                    name: 'custentity_48h_email_sent'
+                });
+
+
                 debt_set.push({
                     custInternalID: custInternalID,
                     custEntityID: custEntityID,
                     custName: custName,
                     zeeID: zeeID,
                     zeeName: zeeName,
-                    commRegInternalID: commRegInternalID,
-                    commDate: commDate,
+                    quoteSentDate: quoteSentDate,
                     email: email,
                     serviceEmail: serviceEmail,
                     phone: phone,
-                    salesRecordInternalId: salesRecordInternalId
+                    salesRepId: salesRepId,
+                    contactid: contactid,
+                    contactEmail: contactEmail,
+                    email48h: email48h
                 });
 
                 return true;
@@ -489,17 +573,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
                         debt_row.custInternalID + '&company=' + debt_row.custInternalID +
                         '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.commRegInternalID +
-                        '" data-salesrecord="' + debt_row.salesRecordInternalId + '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>';
+                        debt_row.custInternalID +
+                        '"  data-type="noanswer" class="noAnswer" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+                        debt_row.custInternalID +
+                        '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">LOST</a></button>';
 
                     var customerIDLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
                         debt_row.custInternalID + '&whence=" target="_blank"><b>' +
                         debt_row.custEntityID + '</b></a>';
 
-                    var commDateSplit = debt_row.commDate.split('/');
+                    var sendSignUpEmail =
+                        '<a data-id="' +
+                        debt_row.custInternalID +
+                        '" data-sales="' +
+                        debt_row.salesRepId +
+                        '" data-contact="' +
+                        debt_row.contactid +
+                        '" data-contactemail="' +
+                        debt_row.contactEmail +
+                        '" style="cursor: pointer !important;color: #095C7B !important;" class="sendEmail">SEND EMAIL</a>';
+
+                    var commDateSplit = debt_row.quoteSentDate.split('/');
 
                     var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
                         commDateSplit[0]);
@@ -516,8 +611,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     debtDataSet.push([linkURL, debt_row.custInternalID,
                         customerIDLink,
                         debt_row.custName, debt_row.zeeName,
-                        commDateFormatted, debt_row.serviceEmail,
-                        debt_row.phone
+                        debt_row.serviceEmail,
+                        debt_row.phone, commDateFormatted, debt_row.email48h, sendSignUpEmail
                     ]);
                 });
             }
@@ -624,7 +719,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
 
-        function saveRecord() { }
+        function saveRecord() {
+
+            return true;
+        }
 
         /**
          * Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.

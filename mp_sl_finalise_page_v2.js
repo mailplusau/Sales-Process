@@ -165,6 +165,9 @@ function main(request, response) {
       website = '';
     }
 
+    var service_of_interest = customer_record.getFieldValue(
+      'custentity_services_of_interest');
+
     var salesRecord = nlapiLoadRecord('customrecord_sales', sales_record_id);
     var lastOutcome = salesRecord.getFieldValue('custrecord_sales_outcome');
     var phone_call_made = salesRecord.getFieldValue(
@@ -431,23 +434,23 @@ function main(request, response) {
       var notes_tab = '';
       var mpex_tab = '';
     } else {
-      var notes_tab = 'active';
+      var notes_tab = '';
       var service_tab = '';
       var survey_tab = '';
-      var mpex_tab = '';
+      var mpex_tab = 'active';
     }
 
     inlineQty +=
       '<div class="tabs"><ul class="nav nav-tabs nav-justified" style="padding-top: 3%;">';
-
-    inlineQty += '<li role="presentation" class="' + survey_tab +
-      '"><a href="#survey">SURVEY INFORMATION</a></li>';
     inlineQty += '<li role="presentation" class="' + service_tab +
       '"><a href="#services">CURRENT SERVICES</a></li>';
     inlineQty += '<li role="presentation" class="' + mpex_tab +
       '"><a href="#mpex">MP PRODUCTS</a></li>'; // MPEX List Tab
     inlineQty += '<li role="presentation" class="' + notes_tab +
       '"><a href="#salenotes">SALE NOTES</a></li>';
+    inlineQty += '<li role="presentation" class="' + survey_tab +
+      '"><a href="#survey">SURVEY INFORMATION</a></li>';
+
 
     inlineQty += '</ul>';
 
@@ -457,7 +460,7 @@ function main(request, response) {
     tab_content += '<div role="tabpanel" class="tab-pane ' + survey_tab +
       '" id="survey">';
     tab_content += surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer,
-      multisite, website);
+      multisite, website, service_of_interest);
     tab_content += '</div>';
 
     //Service Details Tab Contenet
@@ -670,7 +673,8 @@ function main(request, response) {
         }
 
       }
-      recCustomer.setFieldValue('custentity_mpex_surcharge_rate', '19.7');
+      recCustomer.setFieldValue('custentity_mpex_surcharge_rate', '31.9');
+      recCustomer.setFieldValue('custentity_sendle_fuel_surcharge', '6.75');
       recCustomer.setFieldValue('custentity_mpex_surcharge', 1);
       // recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
       nlapiSubmitRecord(recCustomer);
@@ -811,6 +815,15 @@ function main(request, response) {
 
       var recSales = nlapiLoadRecord('customrecord_sales', parseInt(
         sales_record_id));
+
+      var dateFirstNoContact = recSales.getFieldValue(
+        'custrecord_sales_day0call');
+      var dateSecondNoContact = recSales.getFieldValue(
+        'custrecord_sales_day14call');
+      var dateThirdNoContact = recSales.getFieldValue(
+        'custrecord_sales_day25call');
+
+
       var sales_campaign_record = nlapiLoadRecord('customrecord_salescampaign',
         sales_campaign);
       var sales_campaign_type = sales_campaign_record.getFieldValue(
@@ -830,10 +843,10 @@ function main(request, response) {
       if (outcome == 'nosale') {
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 21);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - No Sale');
         } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - No Sale');
         }
 
@@ -867,16 +880,22 @@ function main(request, response) {
         } else {
           if (sales_campaign_type != 65) {
             recCustomer.setFieldValue('entitystatus', 35);
-            phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
-              ' - No Answer');
+            phonecall.setFieldValue('title', sales_campaign_name +
+              ' - No Answer - Phone Call');
           } else {
-            phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
-              ' - No Answer');
+            phonecall.setFieldValue('title', sales_campaign_name +
+              ' - No Answer - Phone Call');
           }
 
         }
 
-
+        if (isNullorEmpty(dateFirstNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day0call', getDate());
+        } else if (!isNullorEmpty(dateFirstNoContact) && isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day14call', getDate());
+        } else if (!isNullorEmpty(dateFirstNoContact) && !isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day25call', getDate());
+        }
 
         phonecall.setFieldValue('message', callnotes);
         phonecall.setFieldValue('custevent_call_outcome', 6);
@@ -891,26 +910,124 @@ function main(request, response) {
         recSales.setFieldValue('custrecord_sales_attempt', parseInt(recSales.getFieldValue(
           'custrecord_sales_attempt')) + 1);
 
-        if (parseInt(recSales.getFieldValue('custrecord_sales_attempt')) > 2) {
-          recSales.setFieldValue('custrecord_sales_outcome', 12);
-          recSales.setFieldValue('custrecord_sales_completed', "T");
-          if (sales_campaign_type != 65) {
-            recCustomer.setFieldValue('entitystatus', 36);
+        // if (parseInt(recSales.getFieldValue('custrecord_sales_attempt')) > 3) {
+        //   recSales.setFieldValue('custrecord_sales_outcome', 12);
+        //   recSales.setFieldValue('custrecord_sales_completed', "T");
+        //   if (sales_campaign_type != 65) {
+        //     recCustomer.setFieldValue('entitystatus', 36);
+        //   }
+        //   recSales.setFieldValue('custrecord_sales_callbackdate', '');
+        //   recSales.setFieldValue('custrecord_sales_callbacktime', '');
+        // }
+
+
+      } else if (outcome == 'noresponseemail') {
+        if (sales_campaign == 55) {
+
+          recCustomer.setFieldValue('entitystatus', 20);
+          phonecall.setFieldValue('title', 'Prospecting Call - GPO - No Answer');
+
+          if (!isNullorEmpty(decison_maker)) {
+            recSales.setFieldValue('custrecord_sales_dm_collected', 'T')
           }
-          recSales.setFieldValue('custrecord_sales_callbackdate', '');
-          recSales.setFieldValue('custrecord_sales_callbacktime', '');
+          if (!isNullorEmpty(site_address)) {
+            recSales.setFieldValue('custrecord_sales_streetaddress_collected',
+              'T');
+          }
+
+        } else {
+          if (sales_campaign_type != 65) {
+            recCustomer.setFieldValue('entitystatus', 35);
+            phonecall.setFieldValue('title', sales_campaign_name +
+              ' - No Response - Email');
+          } else {
+            phonecall.setFieldValue('title', sales_campaign_name +
+              ' - No Response - Email');
+          }
+
         }
 
+        if (isNullorEmpty(dateFirstNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day0call', getDate());
+        } else if (!isNullorEmpty(dateFirstNoContact) && isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day14call', getDate());
+        } else if (!isNullorEmpty(dateFirstNoContact) && !isNullorEmpty(dateSecondNoContact) && isNullorEmpty(dateThirdNoContact)) {
+          recSales.setFieldValue('custrecord_sales_day25call', getDate());
+        }
+
+        phonecall.setFieldValue('message', callnotes);
+        phonecall.setFieldValue('custevent_call_outcome', 6);
+
+        recSales.setFieldValue('custrecord_sales_completed', "F");
+        recSales.setFieldValue('custrecord_sales_inuse', "F");
+        recSales.setFieldValue('custrecord_sales_callbackdate',
+          nlapiDateToString(nlapiAddDays(nlapiStringToDate(getDate()), 5)));
+        recSales.setFieldValue('custrecord_sales_callbacktime', '10:00 AM');
+        recSales.setFieldValue('custrecord_sales_assigned', nlapiGetUser());
+        recSales.setFieldValue('custrecord_sales_outcome', 7);
+        recSales.setFieldValue('custrecord_sales_attempt', parseInt(recSales.getFieldValue(
+          'custrecord_sales_attempt')) + 1);
+
+        // if (parseInt(recSales.getFieldValue('custrecord_sales_attempt')) > 3) {
+        //   recSales.setFieldValue('custrecord_sales_outcome', 12);
+        //   recSales.setFieldValue('custrecord_sales_completed', "T");
+        //   if (sales_campaign_type != 65) {
+        //     recCustomer.setFieldValue('entitystatus', 36);
+        //   }
+        //   recSales.setFieldValue('custrecord_sales_callbackdate', '');
+        //   recSales.setFieldValue('custrecord_sales_callbacktime', '');
+        // }
+
+
+      } else if (outcome == 'noansweremail') {
+
+        recCustomer.setFieldValue('entitystatus', 59);
+        recCustomer.setFieldValue('custentity13', getDate());
+        recCustomer.setFieldValue('custentity_service_cancellation_reason', 41);
+        phonecall.setFieldValue('title', sales_campaign_name +
+          ' - No Answer Email');
+
+        phonecall.setFieldValue('message', callnotes);
+        phonecall.setFieldValue('custevent_call_outcome', 3);
+
+        recSales.setFieldValue('custrecord_sales_completed', "T");
+        recSales.setFieldValue('custrecord_sales_inuse', "F");
+        recSales.setFieldValue('custrecord_sales_completedate', getDate());
+        recSales.setFieldValue('custrecord_sales_assigned', nlapiGetUser());
+        recSales.setFieldValue('custrecord_sales_outcome', 10);
+        recSales.setFieldValue('custrecord_sales_callbackdate', '');
+        recSales.setFieldValue('custrecord_sales_callbacktime', '');
+        recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
+
+        var url =
+          'https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=395&deploy=1&compid=1048144&h=6d4293eecb3cb3f4353e&rectype=customer&template=';
+        var template_id = 154;
+        var newLeadEmailTemplateRecord = nlapiLoadRecord(
+          'customrecord_camp_comm_template', template_id);
+        var templateSubject = newLeadEmailTemplateRecord.getFieldValue(
+          'custrecord_camp_comm_subject');
+        var lostNoResponseEmailAttach = new Object();
+        lostNoResponseEmailAttach['entity'] = custId;
+
+
+        url += template_id + '&recid=' + custId + '&salesrep=' +
+          null + '&dear=' + null + '&contactid=' + null + '&userid=' +
+          encodeURIComponent(nlapiGetContext().getUser());;
+        urlCall = nlapiRequestURL(url);
+        var emailHtml = urlCall.getBody();
+
+        nlapiLogExecution('DEBUG', 'NOANSWEREMAIL - TO', recCustomer.getFieldValue('custentity_email_service'))
+
+        nlapiSendEmail(ctx.getUser(), recCustomer.getFieldValue('custentity_email_service'), templateSubject, emailHtml, [nlapiGetContext().getEmail()], null, lostNoResponseEmailAttach, null, true);
 
       } else if (outcome == 'disconnected') {
-        if (sales_campaign_type != 65) {
-          recCustomer.setFieldValue('entitystatus', 33);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
-            ' - Disconnected');
-        } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
-            ' -  Disconnected');
-        }
+
+        recCustomer.setFieldValue('entitystatus', 59);
+        recCustomer.setFieldValue('custentity13', getDate());
+        recCustomer.setFieldValue('custentity_service_cancellation_reason', 55);
+        phonecall.setFieldValue('title', sales_campaign_name +
+          ' - Not Established Business');
+
 
 
         phonecall.setFieldValue('message', callnotes);
@@ -920,17 +1037,17 @@ function main(request, response) {
         recSales.setFieldValue('custrecord_sales_inuse', "F");
         recSales.setFieldValue('custrecord_sales_completedate', getDate());
         recSales.setFieldValue('custrecord_sales_assigned', nlapiGetUser());
-        recSales.setFieldValue('custrecord_sales_outcome', 8);
+        recSales.setFieldValue('custrecord_sales_outcome', 10);
         recSales.setFieldValue('custrecord_sales_callbackdate', '');
         recSales.setFieldValue('custrecord_sales_callbacktime', '');
         recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
       } else if (outcome == 'donotcall') {
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 9);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Do Not Call');
         } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Do Not Call');
         }
 
@@ -964,10 +1081,10 @@ function main(request, response) {
         } else {
           if (sales_campaign_type != 65) {
             recCustomer.setFieldValue('entitystatus', 8);
-            phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+            phonecall.setFieldValue('title', sales_campaign_name +
               ' - Callback');
           } else {
-            phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+            phonecall.setFieldValue('title', sales_campaign_name +
               ' - Callback');
           }
 
@@ -991,10 +1108,9 @@ function main(request, response) {
 
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 42);
-          phonecall.setFieldValue('title', 'Prospecting - ' +
-            sales_campaign_name + ' - Complete');
+          phonecall.setFieldValue('title', sales_campaign_name + ' - Complete');
         } else {
-          phonecall.setFieldValue('title', 'X Sale - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Complete');
         }
 
@@ -1028,7 +1144,7 @@ function main(request, response) {
           recCustomer.setFieldValue('entitystatus', 9);
           phonecall.setFieldValue('title', 'Prospecting Call - GPO - Reject');
         } else {
-          phonecall.setFieldValue('title', 'X Sale - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Reject');
         }
 
@@ -1052,10 +1168,10 @@ function main(request, response) {
 
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 19);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Info Sent');
         } else {
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Info Sent');
         }
 
@@ -1076,10 +1192,10 @@ function main(request, response) {
 
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 51);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Forms Sent');
         } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Forms Sent');
         }
 
@@ -1100,10 +1216,10 @@ function main(request, response) {
 
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 50);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Quote Sent');
         } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Quote Sent');
         }
 
@@ -1124,10 +1240,10 @@ function main(request, response) {
 
         if (sales_campaign_type != 65) {
           recCustomer.setFieldValue('entitystatus', 29);
-          phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Referred');
         } else {
-          phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name +
+          phonecall.setFieldValue('title', sales_campaign_name +
             ' - Referred');
         }
 
@@ -1157,7 +1273,7 @@ function main(request, response) {
         recCustomer.setFieldValue('entitystatus', 13);
         recCustomer.setFieldValue('salesrep', nlapiGetUser());
 
-        phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+        phonecall.setFieldValue('title', sales_campaign_name +
           ' - Customer Signed');
         phonecall.setFieldValue('message', callnotes);
         phonecall.setFieldValue('custevent_call_outcome', 15);
@@ -1177,7 +1293,7 @@ function main(request, response) {
         }
         recCustomer.setFieldValue('salesrep', nlapiGetUser());
 
-        phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name +
+        phonecall.setFieldValue('title', sales_campaign_name +
           ' - Free Trial Accepted');
         phonecall.setFieldValue('message', callnotes);
         phonecall.setFieldValue('custevent_call_outcome', 9);
@@ -1205,7 +1321,43 @@ function main(request, response) {
                 parseInt(trialperiod) * 7) - 3)));
           }
         }
-      }
+      } else if (outcome == 'opportunity') {
+
+
+        recCustomer.setFieldValue('entitystatus', 58);
+        recCustomer.setFieldValue('salesrep', nlapiGetUser());
+
+        phonecall.setFieldValue('title', sales_campaign_name +
+          ' - Prospect Opportunity');
+        phonecall.setFieldValue('message', callnotes);
+        phonecall.setFieldValue('custevent_call_outcome', 25);
+
+        recSales.setFieldValue('custrecord_sales_completed', "F");
+        recSales.setFieldValue('custrecord_sales_inuse', "F");
+        recSales.setFieldValue('custrecord_sales_assigned', nlapiGetUser());
+        recSales.setFieldValue('custrecord_sales_outcome', 21);
+        recSales.setFieldValue('custrecord_sales_callbackdate', '');
+        recSales.setFieldValue('custrecord_sales_callbacktime', '');
+        recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
+      }else if (outcome == 'followup') {
+
+
+        recCustomer.setFieldValue('entitystatus', 18);
+        recCustomer.setFieldValue('salesrep', nlapiGetUser());
+
+        phonecall.setFieldValue('title', sales_campaign_name +
+          ' - Prospect Opportunity');
+        phonecall.setFieldValue('message', callnotes);
+        phonecall.setFieldValue('custevent_call_outcome', 25);
+
+        recSales.setFieldValue('custrecord_sales_completed', "F");
+        recSales.setFieldValue('custrecord_sales_inuse', "F");
+        recSales.setFieldValue('custrecord_sales_assigned', nlapiGetUser());
+        recSales.setFieldValue('custrecord_sales_outcome', 21);
+        recSales.setFieldValue('custrecord_sales_callbackdate', '');
+        recSales.setFieldValue('custrecord_sales_callbacktime', '');
+        recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
+      } 
 
       nlapiLogExecution('debug', '5. Ready to submit records');
 
@@ -1825,7 +1977,7 @@ function serviceDetailsSection(resultSet_service) {
   return inlineQty;
 }
 
-function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website) {
+function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website, service_of_interest) {
   var inlineQty = '<div class="form-group container survey_section">';
   inlineQty += '<div class="row">';
   // inlineQty += '<div class="col-xs-4 survey1"><div class="input-group"><span class="input-group-addon" id="survey1_text">Using AusPost for Mail & Parcel? <span class="mandatory">*</span></span><select id="survey1" class="form-control survey1" required><option></option>';
@@ -1881,13 +2033,33 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website)
   //  }
   // }
   // inlineQty += '</select></div></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
-
-  inlineQty += '<div class="form-group container multisite_section">';
-  inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-4 multisite"><div class="input-group"><span class="input-group-addon" id="multisite_text">Multisite? </span><select id="multisite" class="form-control multisite" ><option></option>';
+    '<div class="col-xs-6 services_of_interest_div"><div class="input-group"><span class="input-group-addon" id="multisite_text">Servicews of Interest </span><select id="services_of_interest" class="form-control services_of_interest_div" ><option></option>';
+  var col = new Array();
+  col[0] = new nlobjSearchColumn('name');
+  col[1] = new nlobjSearchColumn('internalId');
+  var results = nlapiSearchRecord('customlist1081', null, null, col);
+
+  for (var i = 0; results != null && i < results.length; i++) {
+    var res = results[i];
+    var listValue = res.getValue('name');
+    var listID = res.getValue('internalId');
+    if (!isNullorEmpty(service_of_interest)) {
+      if (service_of_interest == listID) {
+        inlineQty += '<option value="' + listID + '" selected>' + listValue +
+          '</option>';
+      } else {
+        inlineQty += '<option value="' + listID + '">' + listValue +
+          '</option>';
+      }
+    } else {
+      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    }
+  }
+
+  inlineQty += '</select></div></div>';
+  inlineQty +=
+    '<div class="col-xs-6 multisite"><div class="input-group"><span class="input-group-addon" id="multisite_text">Multisite? </span><select id="multisite" class="form-control multisite" ><option></option>';
   var col = new Array();
   col[0] = new nlobjSearchColumn('name');
   col[1] = new nlobjSearchColumn('internalId');
@@ -1911,6 +2083,12 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website)
   }
 
   inlineQty += '</select></div></div>';
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container multisite_section">';
+  inlineQty += '<div class="row">';
+  
   inlineQty +=
     '<div class="col-xs-6 website"><div class="input-group"><span class="input-group-addon" id="survey2_text">MULTISITE WEB LINK </span><input id="website" type="text" class="form-control website" value="' +
     website + '" /></div></div>';
@@ -1927,99 +2105,74 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
   var inlineQty = '<div class="container" style="padding-top: 5%;">';
 
   nlapiLogExecution('DEBUG', 'Status', customer_status)
-  if (customer_status == '13') {
+  // if (customer_status == '13') {
 
-    inlineQty += '<div class="form-group container info_section">';
-    inlineQty += '<div class="row">';
-    inlineQty +=
-      '<div class="col-xs-3 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-warning" value="SEND EMAIL" onclick="onclick_SendEmail();"/></div>';
-    inlineQty +=
-      '<div class="col-xs-3 callback"><input type="button" id="callback" class="form-control callback btn btn-primary" value="CALL BACK" onclick="onclick_Callback()"/></div>';
-    inlineQty += '</div>';
-    inlineQty += '</div>';
+  //   inlineQty += '<div class="form-group container info_section">';
+  //   inlineQty += '<div class="row">';
+  //   inlineQty +=
+  //     '<div class="col-xs-3 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-warning" value="SEND EMAIL" onclick="onclick_SendEmail();"/></div>';
+  //   inlineQty +=
+  //     '<div class="col-xs-3 callback"><input type="button" id="callback" class="form-control callback btn btn-primary" value="CALL BACK" onclick="onclick_Callback()"/></div>';
+  //   inlineQty += '</div>';
+  //   inlineQty += '</div>';
 
-    inlineQty += '<div class="form-group container noanswer_section">';
-    inlineQty += '<div class="row">';
-    inlineQty +=
-      '<div class="col-xs-3 noanswer"><input type="button" id="noanswer" class="form-control noanswer btn btn-danger" value="NO ANSWER" onclick="onclick_NoAnswer()" /></div>';
-    inlineQty +=
-      '<div class="col-xs-3 nosale"><input type="button" id="nosale" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
-    inlineQty += '</div>';
-    inlineQty += '</div>';
+  //   inlineQty += '<div class="form-group container noanswer_section">';
+  //   inlineQty += '<div class="row">';
+  //   inlineQty +=
+  //     '<div class="col-xs-3 noanswer"><input type="button" id="noanswer" class="form-control noanswer btn btn-danger" value="NO ANSWER" onclick="onclick_NoAnswer()" /></div>';
+  //   inlineQty +=
+  //     '<div class="col-xs-3 nosale"><input type="button" id="nosale" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
+  //   inlineQty += '</div>';
+  //   inlineQty += '</div>';
 
-  } else {
-    // if (salesCampaign_id != 55) {
-    if (contact_count > 0 && address_count > 0) {
-      inlineQty += '<div class="form-group container info_section">';
-      inlineQty += '<div class="row">';
-      if (lead_source == 246616) {
-        inlineQty +=
-          '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
-        inlineQty +=
-          '<div class="col-xs-2 sendforms"><input type="button" id="quadient" class="form-control quadient btn btn-success" value="QUADIENT PROGRAM" onclick="onclick_Quadient()"/></div>';
-      } else {
-        inlineQty +=
-          '<div class="col-xs-4 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="CLOSED WON / OPPORTUNITY WITH VALUE" onclick="onclick_SendEmail();"/></div>';
-        inlineQty +=
-          '<div class="col-xs-2 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="OFF PEAK PIPELINE" onclick="onclick_OffPeak()"/></div>';
-      }
+  // } else {
+  //   // if (salesCampaign_id != 55) {
+  //   if (contact_count > 0 && address_count > 0) {
+  //     inlineQty += '<div class="form-group container info_section">';
+  //     inlineQty += '<div class="row">';
+  //     if (lead_source == 246616) {
+  //       inlineQty +=
+  //         '<div class="col-xs-2 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="SIGNED / QUOTE" onclick="onclick_SendEmail();"/></div>';
+  //       inlineQty +=
+  //         '<div class="col-xs-2 sendforms"><input type="button" id="quadient" class="form-control quadient btn btn-success" value="QUADIENT PROGRAM" onclick="onclick_Quadient()"/></div>';
+  //     } else {
+  //       inlineQty +=
+  //         '<div class="col-xs-2 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="SIGNED / QUOTE" onclick="onclick_SendEmail();"/></div>';
+  //       inlineQty +=
+  //         '<div class="col-xs-2 noanswer"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="NO ANSWER" onclick="onclick_NoAnswer()"/></div>';
+  //       inlineQty +=
+  //         '<div class="col-xs-2 noansweremail"><input type="button" id="offpeakpipeline" class="form-control noansweremail btn btn-danger" value="NO ANSWER - EMAIL" onclick="onclick_NoAnswerEmail()"/></div>';
 
-      inlineQty += '</div>';
-      inlineQty += '</div>';
-    }
+  //     }
 
-
-    // } else {
-    //     if (phone_call_made == 'T') {
-    //         inlineQty += '<div class="form-group container complete_section">';
-    //         inlineQty += '<div class="row">';
-    //         inlineQty += '<div class="col-xs-3 complete"><input type="button" id="complete" class="form-control complete btn btn-success" value="COMPLETE" onclick="submit_Complete()"/></div>';
-    //         inlineQty += '<div class="col-xs-3 rejected"><input type="button" id="rejected" class="form-control rejected btn btn-danger" value="REJECTED" onclick="onclick_Reject()"/></div>';
-    //         inlineQty += '</div>';
-    //         inlineQty += '</div>';
-    //     }
-    // }
-
-    // if (salesCampaign_id == 55 && phone_call_made == 'T') {
-    //     inlineQty += '<div class="form-group container callback_section">';
-    //     inlineQty += '<div class="row">';
-    //     inlineQty += '<div class="col-xs-3 callback"><input type="button" id="callback" class="form-control callback btn btn-primary" value="CALL BACK" onclick="onclick_Callback()"/></div>';
-    //     inlineQty += '</div>';
-    //     inlineQty += '</div>';
-    // }
-
-    // if (salesCampaign_id != 55) {
-    // inlineQty += '<div class="form-group container callback_section">';
-    // inlineQty += '<div class="row">';
-
-    // inlineQty += '<div class="col-xs-3 refer"><input type="button" id="refer" class="form-control refer btn btn-primary" value="REFER" onclick="onclick_Refer()"/></div>';
-    // inlineQty += '</div>';
-    // inlineQty += '</div>';
-    // }
+  //     inlineQty += '</div>';
+  //     inlineQty += '</div>';
+  //   }
 
 
-    // if (salesCampaign_id == 55) {
-    //     if (phone_call_made == 'T') {
 
-    //         inlineQty += '<div class="form-group container noanswer_section">';
-    //         inlineQty += '<div class="row">';
-    //         inlineQty += '<div class="col-xs-3 noanswer"><input type="button" id="noanswer" class="form-control noanswer btn btn-danger" required value="NO ANSWER" onclick="onclick_NoAnswer()" /></div>';
-    //         inlineQty += '</div>';
-    //         inlineQty += '</div>';
-    //     }
-    // } else {
-
-    //     }
-  }
+  // }
 
   inlineQty += '<div class="form-group container callback_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
     '<div class="col-xs-2 callback"><input type="button" id="callback" class="form-control callback btn btn-info" value="UPDATE" onclick="onclick_Update()"/></div>';
   inlineQty +=
-    '<div class="col-xs-2 setAppointment"><input type="button" id="setAppointment" class="form-control setAppointment btn btn-primary" value="SET APPOINTMENT" onclick="onclick_Callback()"/></div>';
+    '<div class="col-xs-3 noanswer"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="NO ANSWER - PHONE CALL" onclick="onclick_NoAnswer()"/></div>';
+  if (customer_status != '13') {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="signed" class="form-control sendinfo btn btn-success" value="SIGNED" onclick="onclick_SendEmailSigned();" data-id="signed" /></div>';
+  } else {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="sendemail" class="form-control sendinfo btn btn-success" value="SEND EMAIL" onclick="onclick_SendEmailQuote();" data-id="sendemail" /></div>';
+  }
+
   inlineQty +=
-    '<div class="col-xs-2 reassign"><input type="button" id="reassign" class="form-control reassign btn btn-warning" value="ALLOCATE TO REP" onclick="onclick_reassign()"/></div>';
+    '<div class="col-xs-2 noansweremail"><input type="button" id="offpeakpipeline" class="form-control noansweremail btn btn-danger" value="LOST - NO RESPONSE" onclick="onclick_NoAnswerEmail()"/></div>';
+
+
+
+
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -2038,13 +2191,54 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
   inlineQty += '<div class="form-group container noanswer_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-2 noanswer"><input type="button" id="noanswer" class="form-control noanswer btn btn-danger" value="NO ANSWER" onclick="onclick_NoAnswer()" /></div>';
+    '<div class="col-xs-2 setAppointment"><input type="button" id="setAppointment" class="form-control setAppointment btn btn-primary" value="SET APPOINTMENT" onclick="onclick_Callback()"/></div>';
 
   inlineQty +=
-    '<div class="col-xs-2 disconnected"><input type="button" id="disconnected" class="form-control disconnected btn btn-danger" value="DISCONNECTED" onclick="onclick_Disconnected()"/></div>';
+    '<div class="col-xs-3 noanswer"><input type="button" id="noresponseemail" class="form-control offpeakpipeline btn btn-warning" value="NO RESPONSE - EMAIL" onclick="onclick_NoResponseEmail()"/></div>';
+  if (customer_status != '13') {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="quote" class="form-control sendinfo btn btn-success" value="QUOTE" onclick="onclick_SendEmailQuote();" data-id="quote"/></div>';
+  } else {
+    inlineQty +=
+      '<div class="col-xs-3 nosale"><input type="button" id="nocontact" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
+  }
+  inlineQty +=
+    '<div class="col-xs-2 notestablished"><input type="button" id="disconnected" class="form-control notestablished btn btn-danger" value="NOT ESTABLISHED" onclick="onclick_NotEstablished()"/></div>';
 
+
+
+
+
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container noanswer_section">';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<div class="col-xs-2 reassign"><input type="button" id="reassign" class="form-control reassign btn btn-warning" value="ASSIGN TO REP" onclick="onclick_reassign()"/></div>';
+  inlineQty +=
+    '<div class="col-xs-3 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="PARKING LOT" onclick="onclick_OffPeak()"/></div>';
+  inlineQty +=
+    '<div class="col-xs-2 sendinfo"><input type="button" id="followup" class="form-control sendinfo btn btn-success" value="FOLLOW-UP" onclick="onclick_Followup();" /></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-2 sendinfo"></div>';
   inlineQty +=
     '<div class="col-xs-2 nosale"><input type="button" id="nosale" class="form-control nosale btn btn-danger" required value="LOST" onclick="onclick_NoSale()"/></div>';
+
+
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container noanswer_section">';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<div class="col-xs-2"></div>';
+  inlineQty +=
+    '<div class="col-xs-2"></div>';
+  inlineQty +=
+    '<div class="col-xs-2"></div>';
+
+
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -2221,7 +2415,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   // Defining Variables
   var record = nlapiLoadRecord('customer', customer_id);
   var invoice_cycle = record.getFieldValue('custentity_mpex_invoicing_cycle');
-  var weekly_usage = record.getFieldValue('custentity_exp_mpex_weekly_usage');
+  var mpex_expected_usage = record.getFieldValue('custentity_form_mpex_usage_per_week');
   // var price_c5 = record.getFieldValue('custentity_mpex_c5_price_point');
   // var price_dl = record.getFieldValue('custentity_mpex_dl_price_point');
   // var price_b4 = record.getFieldValue('custentity_mpex_b4_price_point');
@@ -2239,7 +2433,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   var inlineQty = '<div class="form-group container company_name_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - EXPECTED WEEKLY USAGE | INVOICE CYCLE</span></div>'; // <h4><span class="label label-default col-xs-3">MPEX - INVOICE CYCLE</span></h4></h4>
+    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MP PRODUCTS - PORTAL REQUIRED | INVOICE CYCLE</span></div>'; // <h4><span class="label label-default col-xs-3">MPEX - INVOICE CYCLE</span></h4></h4>
   // inlineQty += '<div class="col-xs-12 heading1"></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
@@ -2247,7 +2441,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '<div class="form-group container entityid_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-6 mpex_customer"><div class="input-group"><span class="input-group-addon" id="mpex_customer_text">Is MP Products Customer?<span class="mandatory">*</span></span><select id="mpex_customer" class="form-control mpex_customer" ><option></option>';
+    '<div class="col-xs-3 mpex_customer"><div class="input-group"><span class="input-group-addon" id="mpex_customer_text">Is MP Products Customer?<span class="mandatory">*</span></span><select id="mpex_customer" class="form-control mpex_customer" ><option></option>';
   var col = new Array();
   col[0] = new nlobjSearchColumn('name');
   col[1] = new nlobjSearchColumn('internalId');
@@ -2271,39 +2465,59 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   }
 
   inlineQty += '</select></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-3 portal_training"><div class="input-group"><span class="input-group-addon" id="portal_training_text">Shipping Portal Required?<span class="mandatory">*</span></span><select id="portal_training" class="form-control portal_training" ><option></option>';
-  // var col = new Array();
-  // col[0] = new nlobjSearchColumn('name');
-  // col[1] = new nlobjSearchColumn('internalId');
-  // var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
+  inlineQty +=
+    '<div class="col-xs-3 portal_training"><div class="input-group"><span class="input-group-addon" id="portal_training_text">Shipping Portal Required?<span class="mandatory">*</span></span><select id="portal_training" class="form-control portal_training" ><option></option>';
+  var col = new Array();
+  col[0] = new nlobjSearchColumn('name');
+  col[1] = new nlobjSearchColumn('internalId');
+  var results = nlapiSearchRecord('customlist_yes_no_unsure', null, null, col);
 
-  // for (var i = 0; results != null && i < results.length; i++) {
-  //   var res = results[i];
-  //   var listValue = res.getValue('name');
-  //   var listID = res.getValue('internalId');
-  //   if (!isNullorEmpty(portal_training)) {
-  //     if (portal_training == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //     } else {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   } else {
-  //     inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
-  //   }
-  // }
+  for (var i = 0; results != null && i < results.length; i++) {
+    var res = results[i];
+    var listValue = res.getValue('name');
+    var listID = res.getValue('internalId');
+    if (!isNullorEmpty(portal_training)) {
+      if (portal_training == listID) {
+        inlineQty += '<option value="' + listID + '" selected>' + listValue +
+          '</option>';
+      } else {
+        inlineQty += '<option value="' + listID + '">' + listValue +
+          '</option>';
+      }
+    } else {
+      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    }
+  }
 
-  // inlineQty += '</select></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-3 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><input id="weekly_usage" class="form-control weekly_usage" value="' +
-  //   mpex_expected_usage + '">';
-  // inlineQty += '</input></div></div>';
+  inlineQty += '</select></div></div>';
+  var colWeeklyUsage = new Array();
+  colWeeklyUsage[0] = new nlobjSearchColumn('name');
+  colWeeklyUsage[1] = new nlobjSearchColumn('internalId');
+  var resultsWeeklyUsage = nlapiSearchRecord('customlist_form_mpex_usage_per_week', null, null, colWeeklyUsage);
+  inlineQty +=
+    '<div class="col-xs-3 weekly_usage"><div class="input-group"><span class="input-group-addon" id="weekly_usage_text">Weekly Usage</span><select id="weekly_usage" class="form-control weekly_usage" ><option></option>';
+  for (var i = 0; resultsWeeklyUsage != null && i < resultsWeeklyUsage.length; i++) {
+    var res = resultsWeeklyUsage[i];
+    var listValue = res.getValue('name');
+    var listID = res.getValue('internalId');
+    if (!isNullorEmpty(mpex_expected_usage)) {
+      if (mpex_expected_usage == listID) {
+        inlineQty += '<option value="' + listID + '" selected>' + listValue +
+          '</option>';
+      } else {
+        inlineQty += '<option value="' + listID + '">' + listValue +
+          '</option>';
+      }
+    } else {
+      inlineQty += '<option value="' + listID + '">' + listValue + '</option>';
+    }
+  }
+
+  inlineQty += '</select></div></div>';
 
   // Invoice Cycle
   inlineQty +=
-    '<div class="col-xs-6 invoice_cycle"><div class="input-group"><span class="input-group-addon" id="invoice_cycle_text">Invoice Cycle</span><select id="invoice_cycle" class="form-control invoice_cycle"><option></option>';
+    '<div class="col-xs-3 invoice_cycle"><div class="input-group"><span class="input-group-addon" id="invoice_cycle_text">Invoice Cycle</span><select id="invoice_cycle" class="form-control invoice_cycle"><option></option>';
 
   var invoice_cycle_search = nlapiCreateSearch('customlist_invoicing_cyle',
     null, columns);
@@ -2588,6 +2802,83 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   // inlineQty += '</select></div></div>';
   // inlineQty += '</div>';
   // inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container service_section">';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<div class="col-xs-12 heading3"><h4><span class="label label-default col-xs-12">PRICING STRUCTURE</span></h4></div>';
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container service_section">';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<div class="col-xs-3 "></div>';
+  inlineQty +=
+    '<div class="col-xs-6 "><input type="button" id="prodPricingUpdate" class="form-control callback btn btn-info" value="ADD/EDIT PRODUCT PRICING" onclick="onclick_ProductPricing()"/></div>';
+  inlineQty +=
+    '<div class="col-xs-3 "></div>';
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container mpex_pricing_section">';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<br><br><style>table#mpex_pricing {font-size:12px; border-color: #24385b;} </style><table border="0" cellpadding="15" id="mpex_pricing" class="tablesorter table table-striped" cellspacing="0" style="">';
+  inlineQty += '<thead style="color: white;background-color: #095c7b;">';
+  inlineQty += '<tr>';
+  inlineQty += '<th>DELIVERY SPEEDS</th><th>PRICING PLAN</th><th>B4</th><th>250G</th><th>500G</th><th>1KG</th><th>3KG</th><th>5KG</th><th>10KG</th><th>20KG</th><th>25KG</th>'
+  inlineQty += '</tr>';
+  inlineQty += '</thead>';
+
+  var productPricingSearch = nlapiLoadSearch('customrecord_product_pricing',
+    'customsearch_prod_pricing_customer_level');
+
+  var newFilters = new Array();
+  newFilters[newFilters.length] = new nlobjSearchFilter('custrecord_prod_pricing_customer', null,
+    'is', customer_id);
+
+  productPricingSearch.addFilters(newFilters);
+
+
+  productPricingSearchResultSet = productPricingSearch.runSearch();
+  productPricingSearchResultSet.forEachResult(function (result) {
+
+
+    var deliverySpeeds = result.getText("custrecord_prod_pricing_delivery_speeds");
+    var pricingPlans = result.getText("custrecord_prod_pricing_pricing_plan");
+    var pricingB4 = result.getText("custrecord_prod_pricing_b4");
+    var pricing250g = result.getText("custrecord_prod_pricing_250g");
+    var pricing500g = result.getText("custrecord_prod_pricing_500g");
+    var pricing1kg = result.getText("custrecord_prod_pricing_1kg");
+    var pricing3kg = result.getText("custrecord_prod_pricing_3kg");
+    var pricing5kg = result.getText("custrecord_prod_pricing_5kg");
+    var pricing10kg = result.getText("custrecord_prod_pricing_10kg");
+    var pricing20kg = result.getText("custrecord_prod_pricing_20kg");
+    var pricing25kg = result.getText("custrecord_prod_pricing_25kg");
+
+    inlineQty += '<tr class="dynatable-editable">';
+    inlineQty += '<td>' + deliverySpeeds + '</td>';
+    inlineQty += '<td>' + pricingPlans + '</td>';
+    inlineQty += '<td>' + pricingB4 + '</td>';
+    inlineQty += '<td>' + pricing250g + '</td>';
+    inlineQty += '<td>' + pricing500g + '</td>';
+    inlineQty += '<td>' + pricing1kg + '</td>';
+    inlineQty += '<td>' + pricing3kg + '</td>';
+    inlineQty += '<td>' + pricing5kg + '</td>';
+    inlineQty += '<td>' + pricing10kg + '</td>';
+    inlineQty += '<td>' + pricing20kg + '</td>';
+    inlineQty += '<td>' + pricing25kg + '</td>';
+    inlineQty += '</tr>';
+
+    return true;
+  });
+
+  inlineQty += '</tbody>';
+  inlineQty += '</table><br/>';
+  inlineQty += '</div>';
+  inlineQty += '</div>';
+
 
   nlapiSubmitRecord(record);
 

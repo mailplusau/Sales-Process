@@ -7,7 +7,6 @@
  * @Last modified time: 2021-11-23T08:59:32+11:00
  */
 
-
 define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
     'N/error', 'N/url', 'N/format', 'N/currentRecord'
   ],

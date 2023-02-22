@@ -306,6 +306,21 @@ function onclick_reassign() {
   }
 }
 
+function onclick_ProductPricing() {
+  if (validate()) {
+
+    updateCustomerDetails(false);
+
+
+    var url = baseURL + nlapiResolveURL('SUITELET', 'customscript_sl2_prod_pricing_page', 'customdeploy1');
+    url += '&customerid=' + parseInt(nlapiGetFieldValue('customer'));
+
+
+    window.open(url, "_self",
+      "height=300,width=300,modal=yes,alwaysRaised=yes,location=0,toolbar=0");
+  }
+}
+
 
 
 function onclick_NoAnswer() {
@@ -328,14 +343,58 @@ function submit_NoAnswer(callnotes) {
   document.getElementById('submitter').click();
 }
 
-function onclick_Disconnected() {
+function onclick_NoAnswerEmail() {
   if (validate()) {
     updateCustomerDetails(false);
-    if (confirm('Outcome: Disconnected\nPress OK to continue.')) {
+    // if (confirm('Outcome: Not Established Business\nPress OK to continue.')) {
+    nlapiSetFieldValue('custpage_outcome', 'noansweremail');
+    funcsubmitter = true;
+    document.getElementById('submitter').click();
+    // }
+  }
+}
+
+function onclick_NoResponseEmail() {
+  if (validate()) {
+    updateCustomerDetails(false);
+    // if (confirm('Outcome: Not Established Business\nPress OK to continue.')) {
+    nlapiSetFieldValue('custpage_outcome', 'noresponseemail');
+    funcsubmitter = true;
+    document.getElementById('submitter').click();
+    // }
+  }
+}
+
+function onclick_NotEstablished() {
+  if (validate()) {
+    updateCustomerDetails(false);
+    if (confirm('Outcome: Not Established Business\nPress OK to continue.')) {
       nlapiSetFieldValue('custpage_outcome', 'disconnected');
       funcsubmitter = true;
       document.getElementById('submitter').click();
     }
+  }
+}
+
+function onclick_Opportunity() {
+  if (validate()) {
+    updateCustomerDetails(false);
+    // if (confirm('Outcome: Not Established Business\nPress OK to continue.')) {
+    nlapiSetFieldValue('custpage_outcome', 'opportunity');
+    funcsubmitter = true;
+    document.getElementById('submitter').click();
+    // }
+  }
+}
+
+function onclick_Followup() {
+  if (validate()) {
+    updateCustomerDetails(false);
+    // if (confirm('Outcome: Not Established Business\nPress OK to continue.')) {
+    nlapiSetFieldValue('custpage_outcome', 'followup');
+    funcsubmitter = true;
+    document.getElementById('submitter').click();
+    // }
   }
 }
 
@@ -564,15 +623,63 @@ function submit_Address(siteAddress, billAddress, postalAddress) {
   nlapiSetFieldValue('custpage_addsummary_residential', postalAddress);
 }
 
-function onclick_SendEmail() {
+function onclick_SendEmail(type) {
   var result = validate();
   if (result == false) {
     return false;
   }
   updateCustomerDetails(false);
+  // var type = $(this).attr("data-id");
+  // console.log(type);
+  // return false;
   var params = {
     custid: parseInt(nlapiGetFieldValue('customer')),
     sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
+    id: 'customscript_sl_finalise_page',
+    deploy: 'customdeploy_sl_finalise_page'
+  };
+  params = JSON.stringify(params);
+  var upload_url = baseURL + nlapiResolveURL('suitelet',
+    'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
+    '&params=' + params;
+  window.open(upload_url, "_self",
+    "height=750,width=650,modal=yes,alwaysRaised=yes");
+}
+
+function onclick_SendEmailSigned() {
+  var result = validate();
+  if (result == false) {
+    return false;
+  }
+  updateCustomerDetails(false);
+  var type = $(this).attr("data-id");
+
+  var params = {
+    custid: parseInt(nlapiGetFieldValue('customer')),
+    sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
+    closedwon: 'T',
+    id: 'customscript_sl_finalise_page',
+    deploy: 'customdeploy_sl_finalise_page'
+  };
+  params = JSON.stringify(params);
+  var upload_url = baseURL + nlapiResolveURL('suitelet',
+    'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
+    '&params=' + params;
+  window.open(upload_url, "_self",
+    "height=750,width=650,modal=yes,alwaysRaised=yes");
+}
+
+function onclick_SendEmailQuote() {
+  var result = validate();
+  if (result == false) {
+    return false;
+  }
+  updateCustomerDetails(false);
+
+  var params = {
+    custid: parseInt(nlapiGetFieldValue('customer')),
+    sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
+    oppwithvalue: 'T',
     id: 'customscript_sl_finalise_page',
     deploy: 'customdeploy_sl_finalise_page'
   };
@@ -873,10 +980,12 @@ function saveRecord() {
     nlapiSetFieldValue('financial_price_array', financial_tab_price_array.toString());
 
     if (customerStatus == 13) {
-      phonecall.setFieldValue('title', 'X Sale - ' + sales_campaign_name +
+      phonecall.setFieldValue('title',
+        sales_campaign_name +
         ' - Signed');
     } else {
-      phonecall.setFieldValue('title', 'Sale - ' + sales_campaign_name +
+      phonecall.setFieldValue('title',
+        sales_campaign_name +
         ' - Signed');
     }
 
@@ -1124,7 +1233,6 @@ function updateCustomerDetails(offPeak, quadient) {
 
     customerRecord.setFieldValue('companyname', $('#company_name').val());
     customerRecord.setFieldValue('vatregnumber', $('#abn').val());
-    customerRecord.setFieldValue('partner', $('#zee').val());
     customerRecord.setFieldValue('email', $('#account_email').val());
     customerRecord.setFieldValue('altphone', $('#account_phone').val());
     customerRecord.setFieldValue('custentity_email_service', $('#daytodayemail')
@@ -1133,7 +1241,12 @@ function updateCustomerDetails(offPeak, quadient) {
     customerRecord.setFieldValue('leadsource', $('#leadsource option:selected')
       .val());
   }
+  customerRecord.setFieldValue('leadsource', $('#leadsource option:selected')
+    .val());
+    customerRecord.setFieldValue('partner', $('#zee').val());
   var multisite = $('#multisite option:selected').val();
+
+  var services_of_interest = $('#services_of_interest option:selected').val();
 
   if (isNullorEmpty(multisite)) {
     multisite = 'F';
@@ -1145,6 +1258,7 @@ function updateCustomerDetails(offPeak, quadient) {
     }
   }
 
+  customerRecord.setFieldValue('custentity_services_of_interest', services_of_interest);
   customerRecord.setFieldValue('custentity_category_multisite', multisite);
   customerRecord.setFieldValue('custentity_category_multisite_link', $(
     '#website').val());
@@ -1162,15 +1276,15 @@ function updateCustomerDetails(offPeak, quadient) {
    *  Update List of MPEX Customers
    */
   var mpex_customer = $("#mpex_customer").val();
-  // var portal_training = $("#portal_training").val();
+  var portal_training = $("#portal_training").val();
 
   customerRecord.setFieldValue('custentity_mpex_customer', $(
     "#mpex_customer").val());
-  // customerRecord.setFieldValue('custentity_portal_training_required', $(
-  //   "#portal_training").val());
+  customerRecord.setFieldValue('custentity_portal_access', $(
+    "#portal_training").val());
 
-  // customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $(
-  //   "#weekly_usage").val());
+  customerRecord.setFieldValue('custentity_exp_mpex_weekly_usage', $(
+    "#weekly_usage").val());
 
   // Invoicing Cycle is the only thing listed as a result under Customer Record
   customerRecord.setFieldValue('custentity_mpex_invoicing_cycle', $(
@@ -1228,7 +1342,7 @@ function updateCustomerDetails(offPeak, quadient) {
     phonecall.setFieldValue('status', 'COMPLETE');
     phonecall.setFieldValue('custevent_call_outcome', 16);
 
-    phonecall.setFieldValue('title', 'X Sale - ' + sales_campaign_name +
+    phonecall.setFieldValue('title', sales_campaign_name +
       ' - Call Notes');
 
     phonecall.setFieldValue('message', $('#sale_notes').val());

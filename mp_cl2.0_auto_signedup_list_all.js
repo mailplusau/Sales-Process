@@ -27,6 +27,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var userId = runtime.getCurrentUser().id;
         var currRec = currentRecord.get();
 
+        var date_from = null;
+        var date_to = null;
+
         var invoiceType = null;
 
         var no_of_working_days = [];
@@ -135,6 +138,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             debtDataSet = [];
             debt_set = [];
 
+            date_from = $('#date_from').val();
+            date_from = dateISOToNetsuite(date_from);
+
+            date_to = $('#date_to').val();
+            date_to = dateISOToNetsuite(date_to);
+
+
             /**
              *  Submit Button Function
              */
@@ -170,6 +180,35 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var today_year = today.getFullYear();
             var today_month = today.getMonth();
             var today_day = today.getDate();
+
+            $("#applyFilter").click(function () {
+
+                var date_from = $('#date_from').val();
+                var date_to = $('#date_to').val();
+
+                if (isNullorEmpty(date_to) || isNullorEmpty(date_from)) {
+                    alert('Please select DATE LEAD ENTERED - FROM or DATE LEAD ENTERED - TO');
+                    return false;
+                }
+
+                // date_from = dateISOToNetsuite(date_from);
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1673&deploy=1&start_date=" + date_from + '&last_date=' + date_to;
+
+
+                window.location.href = url;
+
+            });
+
+            $("#showTotal").click(function () {
+
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1673&deploy=1&showTotal=T"
+
+
+                window.location.href = url;
+
+            });
 
             /**
              *  Click for Instructions Section Collapse
@@ -330,10 +369,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [],
+                order: [[11, 'des']],
                 columns: [{
-                    title: 'LINK'
-                }, {
                     title: 'Customer Internal ID'
                 }, {
                     title: 'ID'
@@ -347,12 +384,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Email'
                 }, {
                     title: 'Phone Number'
+                }, {
+                    title: 'Services of Interest'
+                }, {
+                    title: 'MP Product Usage/Week'
+                }, {
+                    title: 'MP Express Usage'
+                }, {
+                    title: 'MP Standard Usage'
+                }, {
+                    title: 'Total MP Express & Standard Usage'
+                }, {
+                    title: 'Track Usage'
+                }, {
+                    title: 'Sales Record ID'
                 }],
                 columnDefs: [{
-                    targets: [],
+                    targets: [1, 2, 3, 4, 11],
                     className: 'bolded'
+                }, {
+                    targets: [13],
+                    visible: false
                 }],
-                rowCallback: function (row, data, index) { }
+                rowCallback: function (row, data, index) {
+
+                    if (!isNullorEmpty(data[13])) {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    }
+
+
+                }
             });
 
             // userId = $('#user_dropdown option:selected').val();
@@ -379,10 +440,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
-            //New Customers - Auto Signed Up - All of Above
+            //New Customers - Auto Signed Up (All)
             var custListCommenceTodayResults = search.load({
                 type: 'customer',
-                id: 'customsearch_auto_signed_all_of_above'
+                id: 'customsearch_new_customers_auto_signed_3'
             });
 
             if (!isNullorEmpty(zee_id)) {
@@ -391,6 +452,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.IS,
                     values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                custListCommenceTodayResults.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                custListCommenceTodayResults.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
                 }));
             }
 
@@ -424,8 +501,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'partner'
                 });
 
+                var servicesOfInterest = custListCommenceTodaySet.getText({
+                    name: 'custentity_services_of_interest'
+                });
+                var productUsageperWeek = custListCommenceTodaySet.getText({
+                    name: 'custentity_form_mpex_usage_per_week'
+                });
+
                 var commRegInternalID = custListCommenceTodaySet.getValue({
                     name: "internalid",
+                    join: "CUSTRECORD_CUSTOMER"
+                });
+
+                var commRegSalesRecordInternalId = custListCommenceTodaySet.getValue({
+                    name: "custrecord_commreg_sales_record",
                     join: "CUSTRECORD_CUSTOMER"
                 });
 
@@ -451,6 +540,95 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'phone'
                 });
 
+                var express_speed = 0;
+                var standard_speed = 0;
+                var total_usage = 0;
+                if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                    // Customer Product Usage - Total MP Express & Standard
+                    var mpexUsageResults = search.load({
+                        type: 'customrecord_customer_product_stock',
+                        id: 'customsearch6846'
+                    });
+
+
+                    mpexUsageResults.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custrecord_cust_prod_stock_customer',
+                        operator: search.Operator.ANYOF,
+                        values: parseInt(custInternalID)
+                    }));
+
+
+                    var count = 0;
+                    var oldDate = null;
+
+                    mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                        // var dateUsed = mpexUsageSet.getValue({
+                        //     name: 'custrecord_cust_date_stock_used',
+                        //     summary: 'GROUP'
+                        // });
+
+
+                        var deliverySpeed = mpexUsageSet.getValue({
+                            name: 'custrecord_delivery_speed',
+                            summary: 'GROUP'
+                        });
+                        var deliverySpeedText = mpexUsageSet.getText({
+                            name: 'custrecord_delivery_speed',
+                            summary: 'GROUP'
+                        });
+
+
+                        var mpexUsage = parseInt(mpexUsageSet.getValue({
+                            name: 'name',
+                            summary: 'COUNT'
+                        }));
+
+                        if (deliverySpeed == 2 ||
+                            deliverySpeedText == '- None -') {
+                            express_speed += mpexUsage;
+                        } else if (deliverySpeed == 1) {
+                            standard_speed += mpexUsage;
+                        }
+                        total_usage += express_speed + standard_speed;
+
+                        // if (count == 0) {
+                        //     if (deliverySpeed == 2 ||
+                        //         deliverySpeedText == '- None -') {
+                        //         express_speed = mpexUsage;
+                        //     } else if (deliverySpeed == 1) {
+                        //         standard_speed = mpexUsage;
+                        //     }
+                        //     total_usage = express_speed + standard_speed;
+
+                        // } else if (oldDate != null &&
+                        //     oldDate == dateUsed) {
+
+                        //     if (deliverySpeed == 2 ||
+                        //         deliverySpeedText == '- None -') {
+                        //         express_speed += mpexUsage;
+                        //     } else if (deliverySpeed == 1) {
+                        //         standard_speed += mpexUsage;
+                        //     }
+                        //     total_usage += express_speed + standard_speed;
+
+                        // } else if (oldDate != null &&
+                        //     oldDate != dateUsed) {
+
+
+
+                        // }
+
+                        count++;
+                        // oldDate = dateUsed;
+                        return true;
+                    });
+
+                    if (count > 0) {
+
+                    }
+                }
                 debt_set.push({
                     custInternalID: custInternalID,
                     custEntityID: custEntityID,
@@ -462,7 +640,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     email: email,
                     serviceEmail: serviceEmail,
                     phone: phone,
-                    salesRecordInternalId: salesRecordInternalId
+                    servicesOfInterest: servicesOfInterest,
+                    productUsageperWeek: productUsageperWeek,
+                    express_speed: express_speed,
+                    standard_speed: standard_speed,
+                    total_usage: total_usage,
+                    salesRecordInternalId: salesRecordInternalId,
+                    commRegSalesRecordInternalId: commRegSalesRecordInternalId
                 });
 
                 return true;
@@ -499,6 +683,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         debt_row.custInternalID + '&whence=" target="_blank"><b>' +
                         debt_row.custEntityID + '</b></a>';
 
+                    var mpExpStdUsageLink =
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + debt_row.custInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+
                     var commDateSplit = debt_row.commDate.split('/');
 
                     var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
@@ -513,11 +700,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
-                    debtDataSet.push([linkURL, debt_row.custInternalID,
+                    debtDataSet.push([debt_row.custInternalID,
                         customerIDLink,
-                        debt_row.custName, debt_row.zeeName,
+                    debt_row.custName, debt_row.zeeName,
                         commDateFormatted, debt_row.serviceEmail,
-                        debt_row.phone
+                    debt_row.phone, debt_row.servicesOfInterest, debt_row.productUsageperWeek, debt_row.express_speed, debt_row.standard_speed, debt_row.total_usage, mpExpStdUsageLink, debt_row.commRegSalesRecordInternalId
                     ]);
                 });
             }
