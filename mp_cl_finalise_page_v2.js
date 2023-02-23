@@ -243,11 +243,16 @@ $(document).on('click', '.createservicechg', function (event) {
 
   console.log(commRegId);
 
-  var splitDate = commencementdate.split('-');
-  commencementdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+  if (!isNullorEmpty(commencementdate)) {
+    var splitDate = commencementdate.split('-');
+    commencementdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+  }
 
-  var splitDate = signupdate.split('-');
-  signupdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+  if (!isNullorEmpty(signupdate)) {
+    var splitDate = signupdate.split('-');
+    signupdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+  }
+
 
   if (isNullorEmpty(commRegId)) {
     var salesRecord = nlapiLoadRecord('customrecord_sales', sales_record_id);
@@ -857,11 +862,16 @@ function saveRecord() {
     var commRegId = $('#commencementdate').attr('data-commregid');
     var signupdate = $('#signupdate').val();
 
-    var splitDate = commencementdate.split('-');
-    commencementdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+    if (!isNullorEmpty(commencementdate)) {
+      var splitDate = commencementdate.split('-');
+      commencementdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+    }
 
-    var splitDate = signupdate.split('-');
-    signupdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+    if (!isNullorEmpty(signupdate)) {
+      var splitDate = signupdate.split('-');
+      signupdate = splitDate[2] + '/' + splitDate[1] + '/' + splitDate[0];
+    }
+
 
     if (isNullorEmpty(commRegId)) {
       var salesRecord = nlapiLoadRecord('customrecord_sales', sales_record_id);
@@ -1243,7 +1253,7 @@ function updateCustomerDetails(offPeak, quadient) {
   }
   customerRecord.setFieldValue('leadsource', $('#leadsource option:selected')
     .val());
-    customerRecord.setFieldValue('partner', $('#zee').val());
+  customerRecord.setFieldValue('partner', $('#zee').val());
   var multisite = $('#multisite option:selected').val();
 
   var services_of_interest = $('#services_of_interest option:selected').val();

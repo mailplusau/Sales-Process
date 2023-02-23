@@ -104,6 +104,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var debt_setSuspectsOOT = [];
 
 
+        var debtDataSetSuspectsFollowUp = [];
+        var debt_setSuspectsFollowUp = [];
+
+
         var customerDataSet = [];
         var prospectDataSet = [];
         var prospectOpportunityDataSet = [];
@@ -111,6 +115,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var suspectLostDataSet = [];
         var suspectOffPeakDataSet = [];
         var suspectOOTDataSet = [];
+        var suspectFollowUpDataSet = [];
 
 
         var customerChildDataSet = [];
@@ -120,6 +125,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var suspectOffPeakChildDataSet = [];;
         var suspectLostChildDataSet = [];
         var suspectOOTChildDataSet = [];
+        var suspectFollowUpChildDataSet = [];
 
 
         var totalSuspectCount = 0;
@@ -322,8 +328,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             total_customer_signed = 0;
             var count_customer_signed = 0;
-            var old_customerSignedDate = null;
+            var oldCustomerSignedDate = null;
+            var oldCustomerCount = 0;
+            var oldCustomerSource = null;
 
+            var source_zee_generated = 0;
+            var source_call = 0;
+            var source_field_sales = 0;
+            var source_website = 0;
+            var total_source_count = 0;
 
             customerListBySalesRepWeeklySearch.run().each(function (
                 customerListBySalesRepWeeklySearchResultSet) {
@@ -337,6 +350,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: "custentity_date_prospect_opportunity",
                     summary: "GROUP"
                 });
+
+                var customerSource = customerListBySalesRepWeeklySearchResultSet.getValue({
+                    name: "leadsource",
+                    summary: "GROUP"
+                });
+
+                var customerSourceText = customerListBySalesRepWeeklySearchResultSet.getText({
+                    name: "leadsource",
+                    summary: "GROUP"
+                });
+
+                console.log('customerSource: ' + customerSource)
+                console.log('customerSource typeof: ' + typeof customerSource)
+                console.log('customerSourceText: ' + customerSourceText)
 
                 var splitMonthV2 = weekLeadEntered.split('/');
 
@@ -358,23 +385,146 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                     lastDay
 
-                debt_set3.push([
-                    startDate,
-                    customerCount
-                ]);
+                if (count_customer_signed == 0) {
+
+                    if (customerSource == '-4') {
+                        //ZEE GENERATED
+                        source_zee_generated += parseInt(customerCount);
+                    } else if (customerSource == '17') {
+                        //INBOUND CALL
+                        source_call += parseInt(customerCount);
+                    } else if (customerSource == '239030') {
+                        //FIELD SALES
+                        source_field_sales += parseInt(customerCount);
+                    } else if (customerSource == '254557') {
+                        //INBOUND - NEW WEBSITE
+                        source_website += parseInt(customerCount);
+                    }
+
+                    total_source_count =
+                        source_zee_generated +
+                        source_call +
+                        source_field_sales + source_website
+
+                } else if (oldCustomerSignedDate != null &&
+                    oldCustomerSignedDate == startDate) {
+
+                        if (customerSource == '-4') {
+                            //ZEE GENERATED
+                            source_zee_generated += parseInt(customerCount);
+                        } else if (customerSource == '17') {
+                            //INBOUND CALL
+                            source_call += parseInt(customerCount);
+                        } else if (customerSource == '239030') {
+                            //FIELD SALES
+                            source_field_sales += parseInt(customerCount);
+                        } else if (customerSource == '254557') {
+                            //INBOUND - NEW WEBSITE
+                            source_website += parseInt(customerCount);
+                        }
+
+                    total_source_count =
+                        source_zee_generated +
+                        source_call +
+                        source_field_sales + source_website
+
+                } else if (oldCustomerSignedDate != null &&
+                    oldCustomerSignedDate != startDate) {
+
+                    debt_set3.push({
+                        dateUsed: oldCustomerSignedDate,
+                        source_zee_generated: source_zee_generated,
+                        source_call: source_call,
+                        source_field_sales: source_field_sales,
+                        source_website: source_website,
+                        total_source_count: total_source_count
+                    });
+
+                    source_zee_generated = 0;
+                    source_call = 0;
+                    source_field_sales = 0;
+                    source_website = 0;
+                    total_source_count = 0;
 
 
+                    if (customerSource == '-4') {
+                        //ZEE GENERATED
+                        source_zee_generated += parseInt(customerCount);
+                    } else if (customerSource == '17') {
+                        //INBOUND CALL
+                        source_call += parseInt(customerCount);
+                    } else if (customerSource == '239030') {
+                        //FIELD SALES
+                        source_field_sales += parseInt(customerCount);
+                    } else if (customerSource == '254557') {
+                        //INBOUND - NEW WEBSITE
+                        source_website += parseInt(customerCount);
+                    }
+
+                    total_source_count =
+                        source_zee_generated +
+                        source_call +
+                        source_field_sales + source_website
+                }
+
+
+                // debt_set3.push([
+                //     startDate,
+                //     customerCount
+                // ]);
+
+                oldCustomerCount = customerCount;
+                oldCustomerSource = customerSource;
+                oldCustomerSignedDate = startDate;
+                count_customer_signed++;
                 return true;
             });
 
+            if (count_customer_signed > 0) {
+                debt_set3.push({
+                    dateUsed: oldCustomerSignedDate,
+                    source_zee_generated: source_zee_generated,
+                    source_call: source_call,
+                    source_field_sales: source_field_sales,
+                    source_website: source_website,
+                    total_source_count: total_source_count
+                });
+            }
+
+            var customerSignedDataSet = [];
+            if (!isNullorEmpty(debt_set3)) {
+                debt_set3
+                    .forEach(function (preview_row, index) {
+
+                        customerSignedDataSet.push([preview_row.dateUsed,
+                        preview_row.source_zee_generated,
+                        preview_row.source_call,
+                        preview_row.source_field_sales,
+                        preview_row.source_website,
+                        preview_row.total_source_count
+                        ]);
+
+                    });
+            }
+
+
             console.log('debt_set3: ' + debt_set3)
+            console.log('customerSignedDataSet: ' + customerSignedDataSet)
 
             var month_year_customer = []; // creating array for storing browser
-            var customer_signed_count = [];
+            var customer_signed_source_zee_generatedcount = [];
+            var customer_signed_source_callcount = [];
+            var customer_signed_source_field_salescount = [];
+            var customer_signed_source_websitecount = [];
+            var customer_signed_total_source_countcount = [];
 
-            for (var i = 0; i < debt_set3.length; i++) {
-                month_year_customer.push(debt_set3[i][0]);
-                customer_signed_count[debt_set3[i][0]] = debt_set3[i][1]
+            for (var i = 0; i < customerSignedDataSet.length; i++) {
+                month_year_customer.push(customerSignedDataSet[i][0]);
+                customer_signed_source_zee_generatedcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][1]
+                customer_signed_source_callcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][2]
+                customer_signed_source_field_salescount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][3]
+                customer_signed_source_websitecount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][4]
+                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][5]
 
             }
             // var count = {}; // creating object for getting categories with
@@ -385,17 +535,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             var series_data30 = [];
             var series_data31 = [];
+            var series_data32 = [];
+            var series_data33 = [];
+            var series_data34 = [];
 
 
             var categores_customer_signed_week = []; // creating empty array for highcharts
             // categories
-            Object.keys(customer_signed_count).map(function (item, key) {
-                series_data30.push(parseInt(customer_signed_count[item]));
+            Object.keys(customer_signed_source_websitecount).map(function (item, key) {
+                console.log(item)
+                series_data30.push(parseInt(customer_signed_source_zee_generatedcount[item]));
+                series_data31.push(parseInt(customer_signed_source_callcount[item]));
+                series_data32.push(parseInt(customer_signed_source_field_salescount[item]));
+                series_data33.push(parseInt(customer_signed_source_websitecount[item]));
+                series_data34.push(parseInt(customer_signed_total_source_countcount[item]));
                 categores_customer_signed_week.push(item)
             });
 
 
-            plotChartCustomerSigned(series_data30, categores_customer_signed_week);
+            plotChartCustomerSigned(series_data30, series_data31,
+                series_data32,
+                series_data33,
+                series_data34, categores_customer_signed_week);
 
             // Website New Leads - Prospect - Weekly Reporting
             var prospectWeeklyReportingSearch = search.load({
@@ -1515,6 +1676,135 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartSuspectsOOT(series_data80,
                 categores_suspects_oot);
 
+            // Website New Leads - Suspects Follow Up - Weekly Reporting
+            var suspectsFollowUpBySalesRepWeeklySearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_weekly_2__7'
+            });
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            // total_customer_signed = 0;
+            // var countSuspectsLost = 0;
+            // var oldSuspectsLostWeekLeadEntered = null;
+
+            // var total_suspect_lost_count = 0;
+            // var suspect_lost_count = 0;
+            // var suspect_customer_lost_count = 0;
+
+
+            suspectsFollowUpBySalesRepWeeklySearch.run().each(function (
+                suspectsFollowUpBySalesRepWeeklySearchResultSet) {
+
+
+                var customerCount = parseInt(suspectsFollowUpBySalesRepWeeklySearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'COUNT'
+                }));
+                var weekLeadEntered = suspectsFollowUpBySalesRepWeeklySearchResultSet.getValue({
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP"
+                });
+                var custStatus = suspectsFollowUpBySalesRepWeeklySearchResultSet.getValue({
+                    name: "entitystatus",
+                    summary: "GROUP"
+                });
+
+                var splitMonthV2 = weekLeadEntered.split('/');
+
+                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+
+                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                if (firstDay < 10) {
+                    firstDay = '0' + firstDay;
+                }
+
+                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    splitMonthV2[0];
+                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    firstDay;
+                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    lastDay
+
+
+
+                debt_setSuspectsFollowUp.push({
+                    dateUsed: startDate,
+                    suspect_follow_up_count: customerCount
+                });
+
+
+                return true;
+            });
+
+
+            var suspectsFollowUpChartDatSet = [];
+            if (!isNullorEmpty(debt_setSuspectsFollowUp)) {
+                debt_setSuspectsFollowUp
+                    .forEach(function (preview_row, index) {
+
+                        suspectsFollowUpChartDatSet.push([preview_row.dateUsed,
+                        preview_row.suspect_follow_up_count
+                        ]);
+
+                    });
+            }
+
+
+            console.log('SUSPECTS Follow Up GRAPH DATA: ' + suspectsFollowUpChartDatSet)
+
+            var month_year_suspects_follow_up = []; // creating array for storing browser
+            var suspect_follow_up_count = [];
+
+            for (var i = 0; i < suspectsFollowUpChartDatSet.length; i++) {
+
+                if (!isNullorEmpty(suspectsFollowUpChartDatSet[i][0])) {
+                    month_year_suspects_follow_up.push(suspectsFollowUpChartDatSet[i][0]);
+                    suspect_follow_up_count[suspectsFollowUpChartDatSet[i][0]] = suspectsFollowUpChartDatSet[i][1]
+                }
+
+
+            }
+
+            // var count = {}; // creating object for getting categories with
+            // // count
+            // month_year_customer.forEach(function (i) {
+            //     count[i] = (count[i] || 0) + 1;
+            // });
+
+            var series_data90 = [];
+            var series_data91 = [];
+
+
+            var categores_suspects_follow_up = []; // creating empty array for highcharts
+            // categories
+            Object.keys(suspect_follow_up_count).map(function (item, key) {
+                series_data90.push(parseInt(suspect_follow_up_count[item]));
+                categores_suspects_follow_up.push(item)
+            });
+
+
+            plotChartSuspectsFollowUp(series_data90,
+                categores_suspects_follow_up);
+
             // Website New Leads by Status - Weekly Reporting
             var leadsListBySalesRepWeeklySearch = search.load({
                 type: 'customer',
@@ -1857,25 +2147,25 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         var offPeakCol = preview_row.suspect_off_peak_pipeline + ' (' + offPeakPercentage + '%)';
 
                         var lostPercentage = parseInt((preview_row.suspect_lost / preview_row.total_leads) * 100);
-                        var lostCol = '<p style="color: #E97777;">' + preview_row.suspect_lost + ' (' + lostPercentage + '%)</p>';
+                        var lostCol = preview_row.suspect_lost + ' (' + lostPercentage + '%)';
 
                         var ootPercentage = parseInt((preview_row.suspect_oot / preview_row.total_leads) * 100);
-                        var ootCol = '<p style="color: #E97777;">' + preview_row.suspect_oot + ' (' + ootPercentage + '%)</p>';
+                        var ootCol = preview_row.suspect_oot + ' (' + ootPercentage + '%)';
 
                         var custLostPercentage = parseInt((preview_row.suspect_customer_lost / preview_row.total_leads) * 100);
                         var custLostCol = preview_row.suspect_customer_lost + ' (' + custLostPercentage + '%)';
 
                         var oppPercentage = parseInt((preview_row.prospect_opportunity / preview_row.total_leads) * 100);
-                        var oppCol = '<p style="color: #29BB89">' + preview_row.prospect_opportunity + ' (' + oppPercentage + '%)</p>';
+                        var oppCol = preview_row.prospect_opportunity + ' (' + oppPercentage + '%)';
 
                         var signedPercentage = parseInt((preview_row.customer_signed / preview_row.total_leads) * 100);
-                        var signedCol = '<p style="color:#439A97">' + preview_row.customer_signed + ' (' + signedPercentage + '%)</p>';
+                        var signedCol = preview_row.customer_signed + ' (' + signedPercentage + '%)';
 
                         var suspectFollowUpPErcentage = parseInt((preview_row.suspect_follow_up / preview_row.total_leads) * 100);
-                        var followUpCol = '<p style="">' + preview_row.suspect_follow_up + ' (' + suspectFollowUpPErcentage + '%)</p>';
+                        var followUpCol = preview_row.suspect_follow_up + ' (' + suspectFollowUpPErcentage + '%)';
 
                         var suspectNewPercentage = parseInt((preview_row.suspect_new / preview_row.total_leads) * 100);
-                        var suspectNewCol = '<p style="">' + preview_row.suspect_new + ' (' + suspectNewPercentage + '%)</p>';
+                        var suspectNewCol = preview_row.suspect_new + ' (' + suspectNewPercentage + '%)';
 
 
                         overDataSet.push([preview_row.dateUsed,
@@ -1957,7 +2247,202 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [{
                     targets: [0, 12, 13, 14],
                     className: 'bolded'
-                }]
+                }], footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    console.log('inside footer preview api: ' + api);
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        console.log('inside footer preview: ' + i);
+                        // var countArray = i.split(' (');
+                        return parseInt(i);
+                        // return typeof i === 'string' ?
+                        //     i.replace(/[\$,]/g, '') * 1 :
+                        //     typeof i === 'number' ?
+                        //         i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+                    // Total Suspect New Lead Count
+                    total_suspect_new = api
+                        .column(1)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Suspect Hot Lead Count
+                    total_suspect_hot_lead = api
+                        .column(2)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Prospect Quoite Sent
+                    total_prospect_quote_sent = api
+                        .column(3)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Suspect Reassign
+                    total_suspect_reassign = api
+                        .column(4)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Suspect Follow Up
+                    total_suspect_followup = api
+                        .column(5)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Prospect No Answer
+                    total_prospect_no_answer = api
+                        .column(6)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Prospect In Contact
+                    total_prospect_in_contact = api
+                        .column(7)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Suspect Off Peak Pipline
+                    total_suspect_off_peak_pipeline = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Suspect Lost
+                    total_suspect_lost = api
+                        .column(9)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Suspect Out of Territory
+                    total_suspect_oot = api
+                        .column(10)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Suspect Customer Lost
+                    total_suspect_customer_lost = api
+                        .column(11)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Prospect Opportunity
+                    total_prospect_opportunity = api
+                        .column(12)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Customer Signed
+                    total_customer_signed = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Lead Count
+                    total_lead = api
+                        .column(14)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // // Page Total Expected Usage over this page
+                    // page_total_monthly_service_revenue = api
+                    //     .column(16, {
+                    //         page: 'current'
+                    //     })
+                    //     .data()
+                    //     .reduce(function (a, b) {
+                    //         return intVal(a) + intVal(b);
+                    //     }, 0);
+
+
+                    // Update footer
+                    $(api.column(1).footer()).html(
+                        total_suspect_new + ' (' + ((total_suspect_new/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(2).footer()).html(
+                        total_suspect_hot_lead + ' (' + ((total_suspect_hot_lead/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(3).footer()).html(
+                        total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(4).footer()).html(
+                        total_suspect_reassign + ' (' + ((total_suspect_reassign/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(5).footer()).html(
+                        total_suspect_followup + ' (' + ((total_suspect_followup/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(6).footer()).html(
+                        total_prospect_no_answer + ' (' + ((total_prospect_no_answer/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(7).footer()).html(
+                        total_prospect_in_contact + ' (' + ((total_prospect_in_contact/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(8).footer()).html(
+                        total_suspect_off_peak_pipeline + ' (' + ((total_suspect_off_peak_pipeline/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(9).footer()).html(
+                        total_suspect_lost + ' (' + ((total_suspect_lost/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(10).footer()).html(
+                        total_suspect_oot + ' (' + ((total_suspect_oot/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(11).footer()).html(
+                        total_suspect_customer_lost + ' (' + ((total_suspect_customer_lost/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(12).footer()).html(
+                        total_prospect_opportunity + ' (' + ((total_prospect_opportunity/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(13).footer()).html(
+                        total_customer_signed + ' (' + ((total_customer_signed/total_lead)*100).toFixed(0) + '%)'
+                    );
+                    $(api.column(14).footer()).html(
+                        total_lead
+                    );
+
+                }
 
             });
 
@@ -2366,7 +2851,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 if (count == 0) {
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -2396,6 +2881,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
                             suspectActivityCount++
                             suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -2434,7 +2928,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -2464,6 +2958,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
                             suspectActivityCount++
                             suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -2501,7 +3004,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
 
-                    if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY') {
+                    if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP') {
 
                         // totalSuspectCount++;
                         // if (oldCustStatusId == 57) {
@@ -2573,7 +3076,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            suspectChildDataSet
+                            suspectLostChildDataSet
                         ]);
                     } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
@@ -2610,7 +3113,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            suspectChildDataSet
+                            suspectOffPeakChildDataSet
                         ]);
                     } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
@@ -2647,7 +3150,44 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            suspectChildDataSet
+                            suspectOOTChildDataSet
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
+
+                        // totalSuspectCount++;
+                        // if (oldcustStatus == 57) {
+                        //     //SUSPECT - HOT LEAD
+                        //     totalSuspectHotLeadCount++;
+                        // } else if (oldcustStatus == 59) {
+                        //     //SUSPECT - LOST
+                        //     totalSuspectLostCount++
+                        // } else if (oldcustStatus == 22) {
+                        //     //SUSPECT - CUSTOMER - LOST
+                        //     totalSuspectCustomerLostCount++
+                        // } else if (oldcustStatus == 57) {
+                        //     //SUSPECT - REP REASSIGN
+                        //     totalSuspectRepReassign++;
+                        // }
+
+                        suspectFollowUpDataSet.push(['',
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectFollowUpChildDataSet
                         ]);
                     } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
 
@@ -2709,7 +3249,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldDaysOpen,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            prospectChildDataSet
+                            prospectOpportunityChildDataSet
                         ]);
 
 
@@ -2810,9 +3350,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     prospectChildDataSet = [];
                     prospectOpportunityChildDataSet = [];
                     suspectChildDataSet = [];
+                    suspectFollowUpChildDataSet = [];
+                    suspectLostChildDataSet = [];
+                    suspectOOTChildDataSet = [];
+                    suspectOffPeakChildDataSet = [];
 
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -2842,6 +3386,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
                             suspectActivityCount++
                             suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -2915,7 +3468,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             if (count > 0) {
 
-                if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY') {
+                if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP') {
 
                     // totalSuspectCount++;
                     // if (oldCustStatusId == 57) {
@@ -2987,7 +3540,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        suspectChildDataSet
+                        suspectLostChildDataSet
                     ]);
                 } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
@@ -3024,7 +3577,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        suspectChildDataSet
+                        suspectOffPeakChildDataSet
                     ]);
                 } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
@@ -3061,7 +3614,44 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        suspectChildDataSet
+                        suspectOOTChildDataSet
+                    ]);
+                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
+
+                    // totalSuspectCount++;
+                    // if (oldcustStatus == 57) {
+                    //     //SUSPECT - HOT LEAD
+                    //     totalSuspectHotLeadCount++;
+                    // } else if (oldcustStatus == 59) {
+                    //     //SUSPECT - LOST
+                    //     totalSuspectLostCount++
+                    // } else if (oldcustStatus == 22) {
+                    //     //SUSPECT - CUSTOMER - LOST
+                    //     totalSuspectCustomerLostCount++
+                    // } else if (oldcustStatus == 57) {
+                    //     //SUSPECT - REP REASSIGN
+                    //     totalSuspectRepReassign++;
+                    // }
+
+                    suspectFollowUpDataSet.push(['',
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText,
+                        suspectFollowUpChildDataSet
                     ]);
                 } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
 
@@ -3122,7 +3712,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldDaysOpen,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        prospectChildDataSet
+                        prospectOpportunityChildDataSet
                     ]);
 
 
@@ -3269,6 +3859,90 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (data[18].toString() == 'false') {
                         $('td', row).css('background-color', '#ADCF9F');
                     }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total MP Express Usage
+                    total_mp_exp_usage = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Express Usage
+                    page_mp_exp_usage = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total MP Standard Usage
+                    total_mp_std_usage = api
+                        .column(9)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Standard Usage
+                    page_mp_std_usage = api
+                        .column(9, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(8).footer()).html(
+                        page_mp_exp_usage
+                    );
+                    $(api.column(9).footer()).html(
+                        page_mp_std_usage
+                    );
+
+                    // Update footer
+                    $(api.column(16).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
                 }
             });
 
@@ -3365,6 +4039,47 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
                         $('td', row).css('background-color', row_color);
                     }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(13, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(13).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
                 }
             });
 
@@ -3459,6 +4174,47 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
                         $('td', row).css('background-color', row_color);
                     }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(13, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(13).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
                 }
             });
 
@@ -3549,6 +4305,47 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         $('td', row).css('background-color', '#FF8787');
                     }
 
+
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(16).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
 
                 }
             });
@@ -3732,6 +4529,47 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
 
 
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(16).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
                 }
             });
 
@@ -3837,6 +4675,134 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 var tr = $(this).closest('tr');
                 var row = dataTable7.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+
+            console.log('suspectFollowUpDataSet: ' + suspectFollowUpDataSet);
+
+            var dataTable8 = $('#mpexusage-suspects_followup').DataTable({
+                data: suspectFollowUpDataSet,
+                pageLength: 250,
+                order: [],
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },
+                    { title: 'Internal ID' },
+                    { title: 'ID' },
+                    { title: 'Company Name' },
+                    { title: 'Franchisee' },
+                    { title: 'Status' },
+                    { title: 'Source' },
+                    { title: 'Product Weekly Usage' },
+                    { title: 'Previous Carrier' },
+                    { title: 'Date - Lead Entered' },
+                    { title: 'Date - Quote Sent' },
+                    { title: 'Date - Lead Reassigned' },
+                    { title: 'Date - Lead Lost' },
+                    { title: '48H Email Sent?' },
+                    { title: 'Days Open' },
+                    { title: 'Cancellation Reason' },
+                    { title: 'Monthly Service Value' },
+                    { title: 'Sales Rep' },
+                    { title: 'Child Table' }
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [18],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 14, 15],
+                        className: 'bolded'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    console.log(JSON.stringify(data[18]));
+                    console.log(data[18].length);
+
+                    if (isNullorEmpty(data[18])) {
+                        $('td', row).css('background-color', '#f9c67a');
+                    }
+
+
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(16).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
+                }
+            });
+
+            dataTable8.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild3(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-suspects_followup tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTable8.row(tr);
 
                 if (row.child.isShown()) {
                     // This row is already open - close it
@@ -4739,7 +5705,63 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
-        function plotChartCustomerSigned(series_data30, categores_customer_signed_week) {
+        function plotChartSuspectsFollowUp(series_data90, categores_suspects_follow_up) {
+            // console.log(series_data)
+
+            Highcharts.chart(
+                'container_suspects_followup', {
+                chart: {
+                    type: 'column',
+                    backgroundColor: '#CFE0CE',
+                }, title: {
+                    text: 'Suspects - Follow Up - Week Entered'
+                },
+                xAxis: {
+                    categories: categores_suspects_follow_up,
+                    crosshair: true,
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Lead Count'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Suspect - Follow Up',
+                    data: series_data90,
+                    color: '',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }]
+            });
+        }
+
+        function plotChartCustomerSigned(series_data30, series_data31,
+            series_data32,
+            series_data33,
+            series_data34, categores_customer_signed_week) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -4748,7 +5770,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Customer Signed - Week Signed Up'
+                    text: 'Customer Signed by Source - Week Signed Up'
                 },
                 xAxis: {
                     categories: categores_customer_signed_week,
@@ -4782,9 +5804,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 },
                 series: [{
-                    name: 'Customer - Signed',
+                    name: 'Franchisee Generated',
                     data: series_data30,
-                    color: '#439A97',
+                    color: '#FFD4B2',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },{
+                    name: 'Inbound - Call',
+                    data: series_data31,
+                    color: '#FFF6BD',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },{
+                    name: 'Field Sales',
+                    data: series_data32,
+                    color: '#CEEDC7',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },{
+                    name: 'Inbound - Website',
+                    data: series_data33,
+                    color: '#86C8BC',
                     style: {
                         fontWeight: 'bold',
                     }

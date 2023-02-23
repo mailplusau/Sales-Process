@@ -76,7 +76,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }
 
                 var form = ui.createForm({
-                    title: 'Website Lead - Reporting'
+                    title: 'Lead - Reporting'
                 });
 
 
@@ -445,6 +445,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads"><b>SUSPECTS - HOT/NEW LEAD</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup"><b>SUSPECTS - FOLLOW UP</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - OFF PEAK PIEPLINE</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost"><b>SUSPECTS - LOST</b></a></li>';
@@ -461,6 +463,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div id="container_suspects"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('suspects');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_followup">';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_suspects_followup"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('suspects_followup');
             inlineHtml += '</div>';
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
@@ -512,6 +521,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</thead>';
 
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
+
+            if (name == 'preview') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+            }
+
+            if (name == 'customer' ) {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
+            }
+            if (name == 'suspects' || name == 'suspects_lost' || name == 'suspects_followup') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
+            }
+            if (name == 'prospects_quoteSent_incontact_noanswer' || name == 'prospects_opportunites') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="13" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
+            }
+
 
             inlineHtml += '</table>';
             return inlineHtml;
