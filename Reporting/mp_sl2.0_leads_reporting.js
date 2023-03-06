@@ -35,9 +35,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var date_signed_up_from = context.request.parameters.date_signed_up_from;
                 var date_signed_up_to = context.request.parameters.date_signed_up_to;
 
+                var date_quote_sent_to = context.request.parameters.date_quote_sent_to;
+                var date_quote_sent_from = context.request.parameters.date_quote_sent_from;
+
                 var invoice_date_from = context.request.parameters.invoice_date_from;
                 var invoice_date_to = context.request.parameters.invoice_date_to;
                 var invoice_type = context.request.parameters.invoice_type;
+
+                var source = context.request.parameters.source;
 
                 zee = context.request.parameters.zee;
                 userId = context.request.parameters.user_id;
@@ -73,7 +78,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 });
 
 
-                if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from)) {
+                if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from)) {
                     if (showTotal == 'T') {
                         start_date = null;
                         date_signed_up_from = null;
@@ -85,7 +90,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 }
 
-                if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to)) {
+                if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to)) {
                     if (showTotal == 'T') {
                         last_date = null;
                         date_signed_up_to = null;
@@ -153,8 +158,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
-                inlineHtml += '<div>'
-                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type);
+                inlineHtml += '<div>';
+                inlineHtml += leadSourceFilterSection(source);
+                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from);
                 inlineHtml += '</div></br></br>'
                 inlineHtml += tabsSection();
                 // inlineHtml += '<div id="container"></div>'
@@ -302,13 +308,61 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
+        function leadSourceFilterSection(source) {
+            var inlineHtml = '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE - FILTER</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div class="form-group container source_section">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml += '<div class="col-xs-6 source">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">SOURCE</span>';
+            inlineHtml += '<select id="lead_source" class="form-control">';
+            inlineHtml += '<option></option>';
+            //NetSuite Search: LEAD SOURCE
+            var leadSourceSearch = search.load({
+                type: 'campaign',
+                id: 'customsearch_lead_source'
+            });
+
+            leadSourceSearch.run().each(function (leadSourceResultSet) {
+
+                var leadsourceid = leadSourceResultSet.getValue({
+                    name: 'internalid'
+                });
+                var leadsourcename = leadSourceResultSet.getValue({
+                    name: 'title'
+                });
+
+                if (leadsourceid == source) {
+                    inlineHtml += '<option value="' + leadsourceid + '" selected>' +
+                        leadsourcename + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + leadsourceid + '" >' +
+                        leadsourcename + '</option>';
+                }
+
+                return true;
+            });
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            return inlineHtml;
+        }
+
         /**
         * The date input fields to filter the invoices.
         * Even if the parameters `date_from` and `date_to` are defined, they can't be initiated in the HTML code.
         * They are initiated with jQuery in the `pageInit()` function.
         * @return  {String} `inlineHtml`
         */
-        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type) {
+        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from) {
             var inlineHtml = '<div class="form-group container date_filter_section">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED - FILTER</span></h4></div>';
@@ -339,6 +393,40 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<input id="date_to" class="form-control date_to" type="date">';
             } else {
                 inlineHtml += '<input id="date_to" class="form-control date_to" type="date" value="' + last_date + '">';
+            }
+
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE QUOTE SENT - FILTER</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+
+            // inlineHtml += periodDropdownSection(start_date, last_date);
+
+            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="row">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="date_quote_sent_from_text">DATE QUOTE SENT - FROM</span>';
+            if (isNullorEmpty(date_quote_sent_from)) {
+                inlineHtml += '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" />';
+            } else {
+                inlineHtml += '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" value="' + date_quote_sent_from + '"/>';
+            }
+
+            inlineHtml += '</div></div>';
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="date_quote_sent_to_text">DATE QUOTE SENT - TO</span>';
+            if (isNullorEmpty(date_quote_sent_to)) {
+                inlineHtml += '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date">';
+            } else {
+                inlineHtml += '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date" value="' + date_quote_sent_to + '">';
             }
 
             inlineHtml += '</div></div></div></div>';
@@ -685,7 +773,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
             if (name == 'customer') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'suspects' || name == 'suspects_lost' || name == 'suspects_followup') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'

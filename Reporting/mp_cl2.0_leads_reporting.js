@@ -36,11 +36,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var date_signed_up_from = null;
         var date_signed_up_to = null;
 
+        var date_quote_sent_to = null;
+        var date_quote_sent_from = null;
+
         var invoice_date_from = null;
         var invoice_date_to = null;
         var invoice_type = null;
 
         var invoiceType = null;
+        var lead_source = null;
 
         var total_months = 14;
 
@@ -212,7 +216,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             date_signed_up_to = $('#date_signed_up_to').val();
             date_signed_up_to = dateISOToNetsuite(date_signed_up_to);
 
+
+            date_quote_sent_from = $('#date_quote_sent_from').val();
+            date_quote_sent_from = dateISOToNetsuite(date_quote_sent_from);
+
+            date_quote_sent_to = $('#date_quote_sent_to').val();
+            date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
+
+            lead_source = $('#lead_source').val();
             invoice_type = $('#invoice_type').val();
+
+
+
 
             /**
              *  Submit Button Function
@@ -261,9 +276,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var date_signed_up_from = $('#date_signed_up_from').val();
                 var date_signed_up_to = $('#date_signed_up_to').val();
 
+                var date_quote_sent_from = $('#date_quote_sent_from').val();
+                var date_quote_sent_to = $('#date_quote_sent_to').val();
+
                 var invoice_date_from = $('#invoice_date_from').val();
                 var invoice_date_to = $('#invoice_date_to').val();
                 var invoice_type = $('#invoice_type').val();
+                var source = $('#lead_source').val();
 
                 if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
                     if ((isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))) {
@@ -276,13 +295,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
                 if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to;
                 } else if ((isNullorEmpty(date_to) || isNullorEmpty(date_from))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to;;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to;
                 } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to;
                 } else {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to;
                 }
 
 
@@ -360,6 +379,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('usage_date_from: ' + usage_date_from);
             console.log('usage_date_to ' + usage_date_to);
 
+            console.log('usage_date_from: ' + usage_date_from);
+            console.log('usage_date_to ' + usage_date_to);
+
+
+            console.log('date_signed_up_from: ' + date_signed_up_from);
+            console.log('date_signed_up_to ' + date_signed_up_to);
+
+            console.log('date_quote_sent_from: ' + date_quote_sent_from);
+            console.log('date_quote_sent_to ' + date_quote_sent_to);
+
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
@@ -392,6 +421,32 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
             total_customer_signed = 0;
             var count_customer_signed = 0;
             var oldCustomerSignedDate = null;
@@ -402,6 +457,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var source_call = 0;
             var source_field_sales = 0;
             var source_website = 0;
+            var source_additional_services = 0;
             var total_source_count = 0;
 
             customerListBySalesRepWeeklySearch.run().each(function (
@@ -461,12 +517,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (customerSource == '254557') {
                         //INBOUND - NEW WEBSITE
                         source_website += parseInt(customerCount);
+                    } else if (customerSource == '277970') {
+                        source_additional_services += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website
+                        source_field_sales + source_website + source_additional_services
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate == startDate) {
@@ -483,12 +541,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (customerSource == '254557') {
                         //INBOUND - NEW WEBSITE
                         source_website += parseInt(customerCount);
+                    } else if (customerSource == '277970') {
+                        source_additional_services += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website
+                        source_field_sales + source_website + source_additional_services
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate != startDate) {
@@ -499,7 +559,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_call: source_call,
                         source_field_sales: source_field_sales,
                         source_website: source_website,
-                        total_source_count: total_source_count
+                        total_source_count: total_source_count,
+                        source_additional_services: source_additional_services
                     });
 
                     source_zee_generated = 0;
@@ -507,6 +568,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     source_field_sales = 0;
                     source_website = 0;
                     total_source_count = 0;
+                    source_additional_services = 0;
 
 
                     if (customerSource == '-4') {
@@ -521,12 +583,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (customerSource == '254557') {
                         //INBOUND - NEW WEBSITE
                         source_website += parseInt(customerCount);
+                    } else if (customerSource == '277970') {
+                        source_additional_services += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website
+                        source_field_sales + source_website + source_additional_services
                 }
 
 
@@ -549,7 +613,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     source_call: source_call,
                     source_field_sales: source_field_sales,
                     source_website: source_website,
-                    total_source_count: total_source_count
+                    total_source_count: total_source_count,
+                    source_additional_services: source_additional_services
                 });
             }
 
@@ -563,6 +628,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         preview_row.source_call,
                         preview_row.source_field_sales,
                         preview_row.source_website,
+                        preview_row.source_additional_services,
                         preview_row.total_source_count
                         ]);
 
@@ -576,6 +642,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var customer_signed_source_field_salescount = [];
             var customer_signed_source_websitecount = [];
             var customer_signed_total_source_countcount = [];
+            var customer_signed_source_additional_services = [];
 
             for (var i = 0; i < customerSignedDataSet.length; i++) {
                 month_year_customer.push(customerSignedDataSet[i][0]);
@@ -583,8 +650,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 customer_signed_source_callcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][2]
                 customer_signed_source_field_salescount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][3]
                 customer_signed_source_websitecount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][4]
-                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][5]
-
+                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][6]
+                customer_signed_source_additional_services[customerSignedDataSet[i][0]] = customerSignedDataSet[i][5]
             }
 
             var series_data30 = [];
@@ -592,6 +659,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var series_data32 = [];
             var series_data33 = [];
             var series_data34 = [];
+            var series_data35 = [];
 
 
             var categores_customer_signed_week = []; // creating empty array for highcharts
@@ -603,6 +671,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data32.push(parseInt(customer_signed_source_field_salescount[item]));
                 series_data33.push(parseInt(customer_signed_source_websitecount[item]));
                 series_data34.push(parseInt(customer_signed_total_source_countcount[item]));
+                series_data35.push(parseInt(customer_signed_source_additional_services[item]));
                 categores_customer_signed_week.push(item)
             });
 
@@ -610,7 +679,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartCustomerSigned(series_data30, series_data31,
                 series_data32,
                 series_data33,
-                series_data34, categores_customer_signed_week);
+                series_data34, series_data35, categores_customer_signed_week);
 
             // Website New Leads - Prospect - Weekly Reporting
             var prospectWeeklyReportingSearch = search.load({
@@ -631,6 +700,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
                 }));
             }
 
@@ -871,6 +965,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_source)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
             var count2 = 0;
             var oldDate2 = null;
 
@@ -999,6 +1118,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
                 }));
             }
 
@@ -1216,6 +1360,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
             total_customer_signed = 0;
             var countSuspectsLost = 0;
             var oldSuspectsLostWeekLeadEntered = null;
@@ -1409,6 +1578,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
 
             suspectsOffPeakPipelineBySalesRepWeeklySearch.run().each(function (
                 suspectsLostBySalesRepWeeklySearchResultSet) {
@@ -1525,6 +1718,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
 
             suspectsOOTBySalesRepWeeklySearch.run().each(function (
                 suspectsOOTBySalesRepWeeklySearchResultSet) {
@@ -1637,6 +1855,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
                 }));
             }
 
@@ -1768,6 +2011,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
                 }));
             }
 
@@ -2507,6 +2775,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_source)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
             var oldcustInternalID = null;
             var oldcustEntityID = null;
             var oldcustName = null;
@@ -2756,6 +3049,52 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
                         dateProspectWonSplit[0];
 
+                } else if (!isNullorEmpty(quoteSentDate)) {
+                    var dateQuoteSentSplit = quoteSentDate.split('/');
+
+                    if (parseInt(dateQuoteSentSplit[1]) < 10) {
+                        dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
+                    }
+
+                    if (parseInt(dateQuoteSentSplit[0]) < 10) {
+                        dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
+
+                    var difference = quoteSentDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = quoteSentDate.getDay();
+
+                    // Remove weekend not previously removed.   
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
                 } else {
                     // var dateLeadLostSplit = dateLeadLost.split('/');
                     var dateLeadEnteredSplit = dateLeadEntered.split('/');
@@ -3833,6 +4172,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_source)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
 
             if (!isNullorEmpty(invoice_type)) {
                 if (invoice_type == '2') {
@@ -3851,6 +4199,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
             }
 
             var oldcustInternalID = null;
@@ -3888,8 +4252,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var oldInvoiceType = null;
             var oldInvoiceAmount = null;
             var oldInvoiceStatus = null;
+            var oldInvoiceItem = null;
 
             var invoiceTotal = 0.0;
+            var invoiceServiceTotal = 0.0;
+            var invoiceProductsTotal = 0.0;
+            var showInvoice = true;
 
 
             var count = 0;
@@ -3981,6 +4349,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: "transaction"
                 })
 
+                var invoiceItem = custListCommenceTodaySet.getText({
+                    name: "item",
+                    join: "transaction"
+                })
+
                 var email48h = custListCommenceTodaySet.getText({
                     name: 'custentity_48h_email_sent'
                 });
@@ -4013,11 +4386,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: "custentity_cust_monthly_service_value",
                 }));
 
+                var monthlyExtraServiceValue = (custListCommenceTodaySet.getValue({
+                    name: "custentity_monthly_extra_service_revenue",
+                }));
+
+                if (source == 'Additional Services') {
+                    monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
+                } 
+
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = parseFloat(monthlyServiceValue);
                 } else {
                     monthlyServiceValue = 0.0;
                 }
+
+                
 
 
 
@@ -4041,6 +4424,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 console.log('invoiceDate ' + invoiceDate)
                 console.log('invoiceType ' + invoiceType)
                 console.log('invoiceAmount ' + invoiceAmount)
+                console.log('invocieItem ' + invoiceItem)
 
 
                 if (!isNullorEmpty(dateLeadLost)) {
@@ -4153,6 +4537,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 }
 
+                if (!isNullorEmpty(invoiceDate)) {
+                    var invoiceDateSplit = invoiceDate.split('/');
+
+                    if (parseInt(invoiceDateSplit[1]) < 10) {
+                        invoiceDateSplit[1] = '0' + invoiceDateSplit[1]
+                    }
+
+                    if (parseInt(invoiceDateSplit[0]) < 10) {
+                        invoiceDateSplit[0] = '0' + invoiceDateSplit[0]
+                    }
+
+                    invoiceDate = invoiceDateSplit[2] + '-' + invoiceDateSplit[1] + '-' +
+                        invoiceDateSplit[0];
+                }
+
                 if (count == 0) {
                     // if (!isNullorEmpty(activityTitle)) {
                     //     if (custStage == 'CUSTOMER') {
@@ -4166,6 +4565,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     //     }
                     // }
 
+                    // if (invoiceDocumentNumber != 'Memorized' && parseFloat(invoiceAmount) > 0 && isNullorEmpty(invoiceItem)) {
+                    //     invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                    // }
+
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
 
                     console.log('oldcustInternalID: ' + oldcustInternalID)
@@ -4174,9 +4577,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     console.log('oldInvoiceType: ' + oldInvoiceType)
                     console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
 
-                    if (oldInvoiceNumber != invoiceDocumentNumber) {
+                    if (oldInvoiceNumber == invoiceDocumentNumber) {
+                        // if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && isNullorEmpty(oldInvoiceItem)) {
+                        //     invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                        // }
+                    } else if (oldInvoiceNumber != invoiceDocumentNumber) {
                         customerActivityCount++
-                        if (oldInvoiceNumber != 'Memorized') {
+                        if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
                             customerChildDataSet.push({
                                 invoiceDocumentNumber: oldInvoiceNumber,
                                 invoiceDate: oldinvoiceDate,
@@ -4186,6 +4593,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             });
 
                             invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                            if (oldInvoiceType == 'Service') {
+                                invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                            } else {
+                                invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                            }
                         }
 
                         csvCustomerSignedExport.push([
@@ -4213,14 +4625,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldInvoiceStatus
                         ]);
 
+                        console.log('customerChildDataSet: ' + JSON.stringify(customerChildDataSet))
+
+                        oldInvoiceNumber = null;
+                        oldinvoiceDate = null;
+                        oldInvoiceType = null;
+                        oldInvoiceAmount = null;
+                        oldInvoiceStatus = null;
+                        oldInvoiceItem = null;
+
+                        showInvoice = true;
+
                     }
 
-                    console.log('customerChildDataSet: ' + JSON.stringify(customerChildDataSet))
 
-                    oldInvoiceNumber = null;
-                    oldinvoiceDate = null;
-                    oldInvoiceType = null;
-                    oldInvoiceAmount = null;
 
 
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
@@ -4235,7 +4653,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         if (oldInvoiceNumber != invoiceDocumentNumber) {
                             customerActivityCount++
-                            if (oldInvoiceNumber != 'Memorized') {
+                            if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
                                 customerChildDataSet.push({
                                     invoiceDocumentNumber: oldInvoiceNumber,
                                     invoiceDate: oldinvoiceDate,
@@ -4245,6 +4663,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 });
 
                                 invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                                if (oldInvoiceType == 'Service') {
+                                    invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                                } else {
+                                    invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                                }
                             }
                         }
 
@@ -4323,7 +4746,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         console.log(oldcustName + 'MP Std: ' + standard_speed);
 
                         var mpExpStdUsageLink =
-                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                         customerDataSet.push(['',
                             oldcustInternalID,
@@ -4338,10 +4761,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             mpExpStdUsageLink,
                             olddateLeadEntered,
                             oldquoteSentDate,
-                            oldemail48h,
+                            // oldemail48h,
                             olddateProspectWon,
                             oldDaysOpen,
                             oldMonthServiceValue,
+                            invoiceServiceTotal.toFixed(2),
+                            invoiceProductsTotal.toFixed(2),
                             invoiceTotal.toFixed(2),
                             oldsalesRepText,
                             oldAutoSignUp,
@@ -4381,8 +4806,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     oldInvoiceType = null;
                     oldInvoiceStatus = null;
                     oldInvoiceAmount = 0.0;
+                    oldInvoiceItem = null;
+
+                    showInvoice = true;
 
                     invoiceTotal = 0;
+                    invoiceServiceTotal = 0.0;
+                    invoiceProductsTotal = 0.0;
                     customerChildDataSet = [];
 
                     // if (!isNullorEmpty(activityTitle)) {
@@ -4435,6 +4865,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 oldInvoiceType = invoiceType;
                 oldInvoiceAmount = invoiceAmount;
                 oldInvoiceStatus = invoiceStatus;
+                oldInvoiceItem = invoiceItem;
+
+                if (oldInvoiceItem == 'Credit Card Surcharge') {
+                    showInvoice = false;
+                }
 
                 count++
                 return true;
@@ -4445,7 +4880,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 if (oldcustStage == 'CUSTOMER') {
 
                     customerActivityCount++
-                    if (oldInvoiceNumber != 'Memorized') {
+                    if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
                         customerChildDataSet.push({
                             invoiceDocumentNumber: oldInvoiceNumber,
                             invoiceDate: oldinvoiceDate,
@@ -4455,6 +4890,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
 
                         invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                        if (oldInvoiceType == 'Service') {
+                            invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                        } else {
+                            invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                        }
                     }
 
 
@@ -4529,7 +4969,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     console.log(oldcustName + 'MP Std: ' + standard_speed);
 
                     var mpExpStdUsageLink =
-                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                     customerDataSet.push(['',
                         oldcustInternalID,
@@ -4544,10 +4984,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         mpExpStdUsageLink,
                         olddateLeadEntered,
                         oldquoteSentDate,
-                        oldemail48h,
+                        // oldemail48h,
                         olddateProspectWon,
                         oldDaysOpen,
                         oldMonthServiceValue,
+                        invoiceServiceTotal.toFixed(2),
+                        invoiceProductsTotal.toFixed(2),
                         invoiceTotal.toFixed(2),
                         oldsalesRepText,
                         oldAutoSignUp,
@@ -4590,7 +5032,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var dataTable = $('#mpexusage-customer').DataTable({
                 data: customerDataSet,
                 pageLength: 250,
-                order: [[14, 'des']],
+                order: [[13, 'des']],
                 columns: [
                     {
                         title: 'Expand',
@@ -4606,16 +5048,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'Source' },
                     { title: 'Product Weekly Usage' },
                     { title: 'Previous Carrier' },
-                    { title: 'MP Express Usage' },
-                    { title: 'MP Standard Usage' },
+                    { title: 'MP Express' },
+                    { title: 'MP Standard' },
                     { title: 'Daily Usage' },
                     { title: 'Date - Lead Entered' },
                     { title: 'Date - Quote Sent' },
-                    { title: '48h Email Sent' },
+                    // { title: '48h Email Sent' },
                     { title: 'Date - Prospect Won' },
                     { title: 'Days Open' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Total Invoice Amount' },
+                    { title: 'Expected Monthly Service' },
+                    { title: 'Total Service Invoice' },
+                    { title: 'Total Product Invoice' },
+                    { title: 'Total Invoice' },
                     { title: 'Sales Rep' },
                     { title: 'Auto Signed Up' },
                     { title: 'Child Table' }
@@ -4623,19 +5067,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [19, 20],
+                        targets: [20, 21],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 14, 16, 17],
+                        targets: [2, 3, 4, 13, 15, 16, 17, 18],
                         className: 'bolded'
                     }
                 ],
                 rowCallback: function (row, data, index) {
 
                     var row_color = ''
-                    if (!isNullorEmpty(data[20])) {
-                        data[20].forEach(function (el) {
+                    if (data[5] == 'Additional Services') {
+                        $('td', row).css('background-color', '#86A3B8');
+                     } else if (!isNullorEmpty(data[21])) {
+                        data[21].forEach(function (el) {
 
                             if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
                                 row_color = ''
@@ -4646,7 +5092,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
                         $('td', row).css('background-color', row_color);
 
-                    } else if (!isNullorEmpty(data[16])) {
+                    } else if (!isNullorEmpty(data[15])) {
                         $('td', row).css('background-color', '#ADCF9F');
                     }
                 }, footerCallback: function (row, data, start, end, display) {
@@ -4704,7 +5150,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Expected Usage over all pages
                     total_monthly_service_revenue = api
-                        .column(16)
+                        .column(15)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -4712,7 +5158,41 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Page Total Expected Usage over this page
                     page_total_monthly_service_revenue = api
+                        .column(15, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_service_invoice_amount = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_service_invoice_amount = api
                         .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_prod_nvoice_amount = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_prod_invoice_amount = api
+                        .column(17, {
                             page: 'current'
                         })
                         .data()
@@ -4722,7 +5202,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Expected Usage over all pages
                     total_invoice_amount = api
-                        .column(17)
+                        .column(18)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -4730,7 +5210,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Page Total Expected Usage over this page
                     pagetotal_invoice_amount = api
-                        .column(17, {
+                        .column(18, {
                             page: 'current'
                         })
                         .data()
@@ -4746,12 +5226,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     );
 
                     // Update footer
-                    $(api.column(16).footer()).html(
+                    $(api.column(15).footer()).html(
                         formatter.format(page_total_monthly_service_revenue)
                         // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
                     );
 
+                    $(api.column(16).footer()).html(
+                        formatter.format(pagetotal_service_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
                     $(api.column(17).footer()).html(
+                        formatter.format(pagetotal_prod_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(18).footer()).html(
                         formatter.format(pagetotal_invoice_amount)
                         // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
                     );
@@ -4931,7 +5421,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var dataTableOpportunity = $('#mpexusage-prospects_opportunites').DataTable({
                 data: prospectOpportunityDataSet,
                 pageLength: 250,
-                order: [],
+                order: [10, 'desc'],
                 columns: [
                     {
                         title: 'Expand',
@@ -5652,7 +6142,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             // console.log('customer child row: ' + row.data()[19]);
 
-            row.data()[20].forEach(function (el) {
+            row.data()[21].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
                     ]);
@@ -6574,7 +7064,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function plotChartCustomerSigned(series_data30, series_data31,
             series_data32,
             series_data33,
-            series_data34, categores_customer_signed_week) {
+            series_data34, series_data35, categores_customer_signed_week) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -6641,6 +7131,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'Inbound - Website',
                     data: series_data33,
                     color: '#86C8BC',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Additional Services',
+                    data: series_data35,
+                    color: '#86A3B8',
                     style: {
                         fontWeight: 'bold',
                     }
