@@ -673,8 +673,8 @@ function main(request, response) {
         }
 
       }
-      recCustomer.setFieldValue('custentity_mpex_surcharge_rate', '31.9');
-      recCustomer.setFieldValue('custentity_sendle_fuel_surcharge', '6.75');
+      recCustomer.setFieldValue('custentity_mpex_surcharge_rate', '31.16');
+      recCustomer.setFieldValue('custentity_sendle_fuel_surcharge', '6.95');
       recCustomer.setFieldValue('custentity_mpex_surcharge', 1);
       // recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
       nlapiSubmitRecord(recCustomer);
