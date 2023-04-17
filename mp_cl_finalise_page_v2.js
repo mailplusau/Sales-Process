@@ -663,6 +663,7 @@ function onclick_SendEmailSigned() {
     custid: parseInt(nlapiGetFieldValue('customer')),
     sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
     closedwon: 'T',
+    savecustomer: 'F',
     id: 'customscript_sl_finalise_page',
     deploy: 'customdeploy_sl_finalise_page'
   };
@@ -672,6 +673,155 @@ function onclick_SendEmailSigned() {
     '&params=' + params;
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
+}
+
+function onclick_notifyitteam() {
+
+  console.log('customer' + parseInt(nlapiGetFieldValue('customer')))
+  console.log('sales record ' + parseInt(nlapiGetFieldValue('sales_record_id')))
+  var result = validate();
+  if (result == false) {
+    return false;
+  }
+  updateCustomerDetails(false);
+  var type = $(this).attr("data-id");
+
+  var customer_record = nlapiLoadRecord('customer', parseInt(nlapiGetFieldValue('customer')));
+  var entityid = customer_record.getFieldValue('entityid');
+  var companyName = customer_record.getFieldValue('companyname');
+  // var zeeText = customer_record.getFieldV('partner');
+  customer_record.setFieldValue('custentity_customer_saved', 1);
+  customer_record.setFieldValue('custentity13', null);
+  customer_record.setFieldValue('custentity_service_cancellation_notice', null);
+  customer_record.setFieldValue('custentity_service_cancellation_reason', null);
+  customer_record.setFieldValue('custentity14', null);
+  customer_record.setFieldValue('custentity_cancel_proof', null);
+
+
+
+  var commReg;
+
+  if (!isNullorEmpty(parseInt(nlapiGetFieldValue('sales_record_id')))) {
+    //Search for Commencement Register
+    var newFiltersCommReg = new Array();
+    newFiltersCommReg[newFiltersCommReg.length] = new nlobjSearchFilter(
+      'custrecord_commreg_sales_record', null, 'anyof', parseInt(nlapiGetFieldValue('sales_record_id')));
+    newFiltersCommReg[newFiltersCommReg.length] = new nlobjSearchFilter(
+      'custrecord_customer', null, 'anyof', parseInt(nlapiGetFieldValue('customer')));
+    newFiltersCommReg[newFiltersCommReg.length] = new nlobjSearchFilter(
+      'custrecord_trial_status', null, 'anyof', [9, 10, 2]);
+
+    var col = new Array();
+    col[0] = new nlobjSearchColumn('internalId');
+    col[1] = new nlobjSearchColumn('custrecord_date_entry');
+    col[2] = new nlobjSearchColumn('custrecord_sale_type');
+    col[3] = new nlobjSearchColumn('custrecord_franchisee');
+    col[4] = new nlobjSearchColumn('custrecord_comm_date');
+    col[5] = new nlobjSearchColumn('custrecord_in_out');
+    col[6] = new nlobjSearchColumn('custrecord_customer');
+    col[7] = new nlobjSearchColumn('custrecord_trial_status');
+    col[8] = new nlobjSearchColumn('custrecord_comm_date_signup');
+
+
+    var comm_reg_results = nlapiSearchRecord(
+      'customrecord_commencement_register', null, newFiltersCommReg, col);
+
+    console.log('comm_reg_results: ' + comm_reg_results)
+
+    if (!isNullorEmpty(comm_reg_results)) {
+      nlapiLogExecution('DEBUG', 'comm_reg_results', comm_reg_results.length)
+      if (comm_reg_results.length == 1) {
+        commReg = comm_reg_results[0].getValue('internalid');
+      } else if (comm_reg_results.length > 1) {
+        for (var z = 0; z < comm_reg_results.length; z++) {
+          var tempcommReg = comm_reg_results[z].getValue('internalid');
+          var commRegStatus = comm_reg_results[z].getValue('custrecord_trial_status');
+          nlapiLogExecution('DEBUG', 'tempcommReg', tempcommReg)
+          nlapiLogExecution('DEBUG', 'commRegStatus', commRegStatus)
+          if (commRegStatus == 9) {
+            commReg = tempcommReg
+          } else {
+
+          }
+        }
+      }
+    }
+  }
+
+  //Search for Service Change related to the customer
+  var resultSet_service_change = null;
+
+  console.log('commreg: ' + commReg)
+
+  if (!isNullorEmpty(commReg)) {
+    var searched_service_change = nlapiLoadSearch('customrecord_servicechg',
+      'customsearch_salesp_service_chg');
+
+    var newFilters = new Array();
+    newFilters[newFilters.length] = new nlobjSearchFilter(
+      "custrecord_service_customer", "CUSTRECORD_SERVICECHG_SERVICE", 'is',
+      parseInt(nlapiGetFieldValue('customer')));
+    newFilters[newFilters.length] = new nlobjSearchFilter(
+      "custrecord_servicechg_comm_reg", null, 'is', commReg);
+    newFilters[newFilters.length] = new nlobjSearchFilter(
+      'custrecord_servicechg_status', null, 'anyof', [1, 2, 4]);
+
+    searched_service_change.addFilters(newFilters);
+
+    resultSet_service_change = searched_service_change.runSearch();
+
+    if (!isNullorEmpty(resultSet_service_change)) {
+      var emailBody = 'Please refinalise the below customer with the following new service changes. </br></br>Customer Internal ID: ' + parseInt(nlapiGetFieldValue('customer')) + '</br>'
+      emailBody += 'Customer Entity ID: ' + entityid + '</br>'
+      emailBody += 'Customer Name: ' + companyName + '</br></br>'
+      resultSet_service_change.forEachResult(function (searchResult_service_change) {
+        var serviceChangeId = searchResult_service_change.getValue(
+          'internalid');
+        var serviceId = searchResult_service_change.getValue(
+          'custrecord_servicechg_service');
+        var serviceText = searchResult_service_change.getText(
+          'custrecord_servicechg_service');
+        var serviceDescp = searchResult_service_change.getValue(
+          "custrecord_service_description", "CUSTRECORD_SERVICECHG_SERVICE",
+          null);
+        var oldServicePrice = searchResult_service_change.getValue(
+          "custrecord_service_price", "CUSTRECORD_SERVICECHG_SERVICE", null
+        );
+        var newServiceChangePrice = searchResult_service_change.getValue(
+          'custrecord_servicechg_new_price');
+        var dateEffective = searchResult_service_change.getValue(
+          'custrecord_servicechg_date_effective');
+        var commRegId = searchResult_service_change.getValue(
+          'custrecord_servicechg_comm_reg');
+        var serviceChangeTypeText = searchResult_service_change.getValue(
+          'custrecord_servicechg_type');
+        var serviceChangeFreqText = searchResult_service_change.getValue(
+          'custrecord_servicechg_new_freq');
+
+
+
+        emailBody += 'Service Name: ' + serviceText + '</br>';
+        emailBody += 'Service Change Type: ' + serviceChangeTypeText + '</br>';
+        emailBody += 'Date Effective: ' + dateEffective + '</br>';
+        emailBody += 'Old Price: ' + oldServicePrice + '</br>';
+        emailBody += 'New Price: ' + newServiceChangePrice + '</br></br>';
+
+
+        return true;
+      });
+      nlapiSendEmail(668712, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Save & Refinalise Customer - ' + entityid + ' ' + companyName, emailBody, [
+        'ankith.ravindran@mailplus.com.au'
+      ]);
+      nlapiSubmitRecord(customer_record)
+      var customerURL = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'))
+      window.open(customerURL, "_self",
+        "height=750,width=650,modal=yes,alwaysRaised=yes");
+    }
+
+
+  }
+
+
 }
 
 function onclick_SendEmailQuote() {
@@ -685,6 +835,30 @@ function onclick_SendEmailQuote() {
     custid: parseInt(nlapiGetFieldValue('customer')),
     sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
     oppwithvalue: 'T',
+    savecustomer: 'F',
+    id: 'customscript_sl_finalise_page',
+    deploy: 'customdeploy_sl_finalise_page'
+  };
+  params = JSON.stringify(params);
+  var upload_url = baseURL + nlapiResolveURL('suitelet',
+    'customscript_sl_send_email_module', 'customdeploy_sl_send_email_module') +
+    '&params=' + params;
+  window.open(upload_url, "_self",
+    "height=750,width=650,modal=yes,alwaysRaised=yes");
+}
+
+function onclick_SendEmailQuoteSaveCustomer() {
+  var result = validate();
+  if (result == false) {
+    return false;
+  }
+  updateCustomerDetails(false);
+
+  var params = {
+    custid: parseInt(nlapiGetFieldValue('customer')),
+    sales_record_id: parseInt(nlapiGetFieldValue('sales_record_id')),
+    oppwithvalue: 'T',
+    savecustomer: 'T',
     id: 'customscript_sl_finalise_page',
     deploy: 'customdeploy_sl_finalise_page'
   };
@@ -993,6 +1167,19 @@ function saveRecord() {
       phonecall.setFieldValue('title',
         sales_campaign_name +
         ' - Signed');
+
+      var customerCancellationOngoing = recCustomer.getFieldValue('custentity_cancel_ongoing');
+
+      if (customerCancellationOngoing == 1) {
+        customer_record.setFieldValue('custentity_customer_saved', 1);
+        customer_record.setFieldValue('custentity_customer_saved_date', getDate());
+        customer_record.setFieldValue('custentity13', null);
+        customer_record.setFieldValue('custentity_service_cancellation_notice', null);
+        customer_record.setFieldValue('custentity_service_cancellation_reason', null);
+        customer_record.setFieldValue('custentity14', null);
+        customer_record.setFieldValue('custentity_cancel_proof', null);
+      }
+
     } else {
       phonecall.setFieldValue('title',
         sales_campaign_name +
@@ -1013,6 +1200,7 @@ function saveRecord() {
       financialTabItemArray[financialTabItemArray.length] = financialTabItem;
     }
     var customerStatus = recCustomer.getFieldValue('entitystatus');
+    var saveCustomerOngoing = recCustomer.getFieldValue('custentity_cancel_ongoing');
 
     recCustomer.setFieldValue('custentity_customer_pricing_notes',
       pricing_notes_services);

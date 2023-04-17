@@ -168,6 +168,9 @@ function main(request, response) {
     var service_of_interest = customer_record.getFieldValue(
       'custentity_services_of_interest');
 
+    var saveCustomer = customer_record.getFieldValue(
+      'custentity_cancel_ongoing');
+
     var salesRecord = nlapiLoadRecord('customrecord_sales', sales_record_id);
     var lastOutcome = salesRecord.getFieldValue('custrecord_sales_outcome');
     var phone_call_made = salesRecord.getFieldValue(
@@ -277,7 +280,7 @@ function main(request, response) {
       resultServiceChange = resultSet_service_change.getResults(0, 1);
     }
     if (isNullorEmpty(callcenter)) {
-      var form = nlapiCreateForm('Finalise X Sale: ' + entityid + ' ' +
+      var form = nlapiCreateForm('Finalise Sale: ' + entityid + ' ' +
         companyName);
     } else {
       var form = nlapiCreateForm('Call Center: ' + entityid + ' ' + companyName);
@@ -435,9 +438,9 @@ function main(request, response) {
       var mpex_tab = '';
     } else {
       var notes_tab = '';
-      var service_tab = '';
+      var service_tab = 'active';
       var survey_tab = '';
-      var mpex_tab = 'active';
+      var mpex_tab = '';
     }
 
     inlineQty +=
@@ -466,7 +469,7 @@ function main(request, response) {
     //Service Details Tab Contenet
     tab_content += '<div role="tabpanel" class="tab-pane ' + service_tab +
       '" id="services">';
-    tab_content += serviceDetailsSection(resultSet_service);
+    tab_content += serviceDetailsSection(resultSet_service, resultSet_service_change, callcenter);
     tab_content += '</div>';
 
     //For the MPEX Tab Content
@@ -491,7 +494,7 @@ function main(request, response) {
     if (!isNullorEmpty(callcenter) && callcenter == 'T') {
       inlineQty += callCentreButtons(salesCampaignID, phone_call_made,
         customer_status_id, resultSetContacts, resultSetAddresses,
-        lead_source);
+        lead_source, saveCustomer);
     }
 
     //Commencement Register Details
@@ -1339,7 +1342,7 @@ function main(request, response) {
         recSales.setFieldValue('custrecord_sales_callbackdate', '');
         recSales.setFieldValue('custrecord_sales_callbacktime', '');
         recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
-      }else if (outcome == 'followup') {
+      } else if (outcome == 'followup') {
 
 
         recCustomer.setFieldValue('entitystatus', 18);
@@ -1357,7 +1360,7 @@ function main(request, response) {
         recSales.setFieldValue('custrecord_sales_callbackdate', '');
         recSales.setFieldValue('custrecord_sales_callbacktime', '');
         recSales.setFieldValue('custrecord_sales_lastcalldate', getDate());
-      } 
+      }
 
       nlapiLogExecution('debug', '5. Ready to submit records');
 
@@ -1382,7 +1385,7 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee,
   var inlineQty = '<div class="form-group container company_name_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">CUSTOMER DETAILS</span></h4></div>';
+    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">CUSTOMER DETAILS</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -1517,9 +1520,9 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   var inlineQty = '<div class="form-group container company_name_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-6 heading3"><h4><span class="label label-default col-xs-12">ADDRESS DETAILS</span></h4></div>';
+    '<div class="col-xs-6 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">ADDRESS DETAILS</span></h4></div>';
   inlineQty +=
-    '<div class="col-xs-6 heading2"><h4><span class="label label-default col-xs-12">CONTACT DETAILS</span></h4></div>';
+    '<div class="col-xs-6 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">CONTACT DETAILS</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -1527,7 +1530,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty += '<div class="row">';
   inlineQty += '<div class="col-xs-6 address_div">';
   inlineQty +=
-    '<table border="0" cellpadding="15" id="address" class="table table-responsive table-striped address tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>GEOCODED</b></th></tr></thead><tbody>';
+    '<table border="0" cellpadding="15" id="address" class="table table-responsive table-striped address tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>GEOCODED</b></th></tr></thead><tbody>';
 
   resultSetAddresses.forEachResult(function (searchResultAddresses) {
     var id = searchResultAddresses.getValue('addressinternalid', 'Address',
@@ -1585,7 +1588,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty += '</div>';
   inlineQty += '<div class="col-xs-6 contacts_div">';
   inlineQty +=
-    '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
+    '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
   resultSetContacts.forEachResult(function (searchResultContacts) {
     var contact_id = searchResultContacts.getValue('internalid');
     var contact_fn = searchResultContacts.getValue('firstname');
@@ -1630,10 +1633,10 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty += '<div class="form-group container reviewaddress_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-3 reviewaddress"><input type="button" value="ADD/EDIT ADDRESSES" class="form-control btn btn-primary" id="reviewaddress" /></div>';
+    '<div class="col-xs-3 reviewaddress"><input type="button" value="ADD/EDIT ADDRESSES" class="form-control btn btn-primary" style="background-color: #095c7b;" id="reviewaddress" /></div>';
   inlineQty += '<div class="col-xs-3 "></div>';
   inlineQty +=
-    '<div class="col-xs-3 reviewcontacts"><input type="button" value="ADD/EDIT CONTACTS" class="form-control btn btn-primary" id="reviewcontacts" /></div>';
+    '<div class="col-xs-3 reviewcontacts"><input type="button" value="ADD/EDIT CONTACTS" class="form-control btn btn-primary" style="background-color: #095c7b;" id="reviewcontacts" /></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -1666,7 +1669,7 @@ function commencementDetailsSection(commReg, resultSet_service_change,
   var inlineQty = '<div class="form-group container commencement_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading4"><h4><span class="label label-default col-xs-12">COMMENCEMENT DETAILS</span></h4></div>';
+    '<div class="col-xs-12 heading4"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">COMMENCEMENT DETAILS</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -1778,120 +1781,120 @@ function commencementDetailsSection(commReg, resultSet_service_change,
   return inlineQty;
 }
 
-function serviceDetailsSection(resultSet_service) {
+function serviceDetailsSection(resultSet_service, resultServiceChange, callcenter) {
 
   var inlineQty = '';
-  inlineQty += '<div class="form-group container ampo_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-12 heading3"><h4><span class="label label-default col-xs-12">FRANCHISEE ENTERED SERVICE DETAILS</span></h4></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  // inlineQty += '<div class="form-group container ampo_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">FRANCHISEE ENTERED SERVICE DETAILS</span></h4></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  inlineQty += '<div class="form-group container ampo_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-6 ampo_price_div"><div class="input-group"><span class="input-group-addon" id="ampo_price_text">AMPO PRICE';
-  if (role == 1000) {
-    inlineQty += ' <span class="mandatory">*</span>';
-  }
-  inlineQty += '</span><input id="ampo_price" class="form-control ampo_price" ';
-  if (role == 1000) {
-    inlineQty += 'required';
-  }
-  inlineQty += ' value="' + ampo_price + '" data-oldvalue="' + ampo_price +
-    '" /></div></div>';
-  inlineQty +=
-    '<div class="col-xs-6 ampo_time_div"><div class="input-group"><span class="input-group-addon" id="ampo_time_text">AMPO TIME ';
-  if (role == 1000) {
-    inlineQty += ' <span class="mandatory">*</span>';
-  }
-  inlineQty +=
-    '</span><select id="ampo_time" class="form-control ampo_time"><option></option>';
-  var columns = new Array();
-  columns[0] = new nlobjSearchColumn('name');
-  columns[1] = new nlobjSearchColumn('internalId');
+  // inlineQty += '<div class="form-group container ampo_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-6 ampo_price_div"><div class="input-group"><span class="input-group-addon" id="ampo_price_text">AMPO PRICE';
+  // if (role == 1000) {
+  //   inlineQty += ' <span class="mandatory">*</span>';
+  // }
+  // inlineQty += '</span><input id="ampo_price" class="form-control ampo_price" ';
+  // if (role == 1000) {
+  //   inlineQty += 'required';
+  // }
+  // inlineQty += ' value="' + ampo_price + '" data-oldvalue="' + ampo_price +
+  //   '" /></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-6 ampo_time_div"><div class="input-group"><span class="input-group-addon" id="ampo_time_text">AMPO TIME ';
+  // if (role == 1000) {
+  //   inlineQty += ' <span class="mandatory">*</span>';
+  // }
+  // inlineQty +=
+  //   '</span><select id="ampo_time" class="form-control ampo_time"><option></option>';
+  // var columns = new Array();
+  // columns[0] = new nlobjSearchColumn('name');
+  // columns[1] = new nlobjSearchColumn('internalId');
 
-  var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
-    columns)
-  var resultSetIndustry = industry_search.runSearch();
-  resultSetIndustry.forEachResult(function (searchResult) {
+  // var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
+  //   columns)
+  // var resultSetIndustry = industry_search.runSearch();
+  // resultSetIndustry.forEachResult(function (searchResult) {
 
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
-    if (!isNullorEmpty(ampo_time)) {
-      if (ampo_time == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-      }
-    }
-    inlineQty += '<option value="' + listID + '">' + listValue +
-      '</option>';
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
+  //   if (!isNullorEmpty(ampo_time)) {
+  //     if (ampo_time == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   inlineQty += '<option value="' + listID + '">' + listValue +
+  //     '</option>';
 
-    return true;
-  });
-  inlineQty += '</select></div></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
-  inlineQty += '<div class="form-group container ampo_section">';
-  inlineQty += '<div class="row">';
-  inlineQty +=
-    '<div class="col-xs-6 pmpo_price_div"><div class="input-group"><span class="input-group-addon" id="pmpo_price_text">PMPO PRICE ';
-  if (role == 1000) {
-    inlineQty += '<span class="mandatory">*</span>';
-  }
-  inlineQty += '</span><input id="pmpo_price" class="form-control pmpo_price"';
-  if (role == 1000) {
-    inlineQty += ' required ';
-  }
-  0
-  inlineQty += 'value="' + ampo_price + '" data-oldvalue="' + ampo_price +
-    '" /></div></div>';
-  inlineQty +=
-    '<div class="col-xs-6 pmpo_time_div"><div class="input-group"><span class="input-group-addon" id="pmpo_time_text">PMPO TIME ';
-  if (role == 1000) {
-    inlineQty += '<span class="mandatory">*</span>';
-  }
-  inlineQty +=
-    '</span><select id="pmpo_time" class="form-control pmpo_time"><option></option>';
-  var columns = new Array();
-  columns[0] = new nlobjSearchColumn('name');
-  columns[1] = new nlobjSearchColumn('internalId');
+  // inlineQty += '<div class="form-group container ampo_section">';
+  // inlineQty += '<div class="row">';
+  // inlineQty +=
+  //   '<div class="col-xs-6 pmpo_price_div"><div class="input-group"><span class="input-group-addon" id="pmpo_price_text">PMPO PRICE ';
+  // if (role == 1000) {
+  //   inlineQty += '<span class="mandatory">*</span>';
+  // }
+  // inlineQty += '</span><input id="pmpo_price" class="form-control pmpo_price"';
+  // if (role == 1000) {
+  //   inlineQty += ' required ';
+  // }
+  // 0
+  // inlineQty += 'value="' + ampo_price + '" data-oldvalue="' + ampo_price +
+  //   '" /></div></div>';
+  // inlineQty +=
+  //   '<div class="col-xs-6 pmpo_time_div"><div class="input-group"><span class="input-group-addon" id="pmpo_time_text">PMPO TIME ';
+  // if (role == 1000) {
+  //   inlineQty += '<span class="mandatory">*</span>';
+  // }
+  // inlineQty +=
+  //   '</span><select id="pmpo_time" class="form-control pmpo_time"><option></option>';
+  // var columns = new Array();
+  // columns[0] = new nlobjSearchColumn('name');
+  // columns[1] = new nlobjSearchColumn('internalId');
 
-  var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
-    columns)
-  var resultSetIndustry = industry_search.runSearch();
-  resultSetIndustry.forEachResult(function (searchResult) {
+  // var industry_search = nlapiCreateSearch('customlist_service_time_range', null,
+  //   columns)
+  // var resultSetIndustry = industry_search.runSearch();
+  // resultSetIndustry.forEachResult(function (searchResult) {
 
-    var listValue = searchResult.getValue('name');
-    var listID = searchResult.getValue('internalId');
-    if (!isNullorEmpty(pmpo_time)) {
-      if (pmpo_time == listID) {
-        inlineQty += '<option value="' + listID + '" selected>' + listValue +
-          '</option>';
-      }
-    }
-    inlineQty += '<option value="' + listID + '">' + listValue +
-      '</option>';
+  //   var listValue = searchResult.getValue('name');
+  //   var listID = searchResult.getValue('internalId');
+  //   if (!isNullorEmpty(pmpo_time)) {
+  //     if (pmpo_time == listID) {
+  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
+  //         '</option>';
+  //     }
+  //   }
+  //   inlineQty += '<option value="' + listID + '">' + listValue +
+  //     '</option>';
 
-    return true;
-  });
-  inlineQty += '</select></div></div>';
-  inlineQty += '</div>';
-  inlineQty += '</div>';
+  //   return true;
+  // });
+  // inlineQty += '</select></div></div>';
+  // inlineQty += '</div>';
+  // inlineQty += '</div>';
 
   inlineQty += '<div class="form-group container service_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading3"><h4><span class="label label-default col-xs-12">CURRENT SERVICES PERFORMED</span></h4></div>';
+    '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">CURRENT SERVICES PERFORMED</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
   inlineQty += '<div class="form-group container service_section">';
   inlineQty += '<div class="row">';
   inlineQty += '<div class="col-xs-12 service_div">';
   inlineQty +=
-    '<table border="0" cellpadding="15" id="service" class="table table-responsive table-striped service tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>MON</b></th><th style="vertical-align: middle;text-align: center;"><b>TUE</b></th><th style="vertical-align: middle;text-align: center;"><b>WED</b></th><th style="vertical-align: middle;text-align: center;"><b>THU</b></th><th style="vertical-align: middle;text-align: center;"><b>FRI</b></th><th style="vertical-align: middle;text-align: center;"><b>ADHOC</b></th></tr></thead><tbody>';
+    '<table border="0" cellpadding="15" id="service" class="table table-responsive table-striped service tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>MON</b></th><th style="vertical-align: middle;text-align: center;"><b>TUE</b></th><th style="vertical-align: middle;text-align: center;"><b>WED</b></th><th style="vertical-align: middle;text-align: center;"><b>THU</b></th><th style="vertical-align: middle;text-align: center;"><b>FRI</b></th><th style="vertical-align: middle;text-align: center;"><b>ADHOC</b></th></tr></thead><tbody>';
   resultSet_service.forEachResult(function (searchResult_service) {
     var serviceId = searchResult_service.getValue('internalid');
     var serviceTypeId = searchResult_service.getText("internalid",
@@ -1974,7 +1977,112 @@ function serviceDetailsSection(resultSet_service) {
   inlineQty += '</div>';
   inlineQty += '</div>';
 
+  // var searched_service_change = nlapiLoadSearch('customrecord_servicechg',
+  //   'customsearch_salesp_service_chg');
+
+  // var newFilters = new Array();
+  // newFilters[newFilters.length] = new nlobjSearchFilter(
+  //   "custrecord_service_customer", "CUSTRECORD_SERVICECHG_SERVICE", 'is',
+  //   custId);
+  // newFilters[newFilters.length] = new nlobjSearchFilter(
+  //   "custrecord_servicechg_comm_reg", null, 'is', commReg);
+  // newFilters[newFilters.length] = new nlobjSearchFilter(
+  //   'custrecord_servicechg_status', null, 'anyof', [1, 2, 4]);
+
+  // searched_service_change.addFilters(newFilters);
+
+  // resultSet_service_change = searched_service_change.runSearch();
+
+  if (!isNullorEmpty(callcenter)) {
+    inlineQty += serviceChangeSectionV2(resultServiceChange);
+  }
+
   return inlineQty;
+}
+
+function serviceChangeSectionV2(resultSet_service_change, closed_won, opp_with_value) {
+  var inlinehTML = '';
+
+  inlinehTML += '<div class="form-group container service_section">';
+  inlinehTML += '<div class="row">';
+  inlinehTML +=
+    '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">SERVICE CHANGE SCHEDULED</span></h4></div>';
+  inlinehTML += '</div>';
+  inlinehTML += '</div>';
+
+  inlinehTML += '<div class="form-group container service_chg_section">';
+  inlinehTML += '<div class="row">';
+  inlinehTML += '<div class="col-xs-12 service_chg_div">';
+  inlinehTML +=
+    '<table border="0" cellpadding="15" id="service_chg" class="table table-responsive table-striped service_chg tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>CHANGE TYPE</b></th><th style="vertical-align: middle;text-align: center;"><b>DATE EFFECTIVE</b></th><th style="vertical-align: middle;text-align: center;"><b>OLD PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>NEW PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>FREQUENCY</b></th></tr></thead><tbody>';
+  if (!isNullorEmpty(resultSet_service_change)) {
+    resultSet_service_change.forEachResult(function (searchResult_service_change) {
+      var serviceChangeId = searchResult_service_change.getValue(
+        'internalid');
+      var serviceId = searchResult_service_change.getValue(
+        'custrecord_servicechg_service');
+      var serviceText = searchResult_service_change.getText(
+        'custrecord_servicechg_service');
+      var serviceDescp = searchResult_service_change.getValue(
+        "custrecord_service_description", "CUSTRECORD_SERVICECHG_SERVICE",
+        null);
+      var oldServicePrice = searchResult_service_change.getValue(
+        "custrecord_service_price", "CUSTRECORD_SERVICECHG_SERVICE", null
+      );
+      var newServiceChangePrice = searchResult_service_change.getValue(
+        'custrecord_servicechg_new_price');
+      var dateEffective = searchResult_service_change.getValue(
+        'custrecord_servicechg_date_effective');
+      var commRegId = searchResult_service_change.getValue(
+        'custrecord_servicechg_comm_reg');
+      var serviceChangeTypeText = searchResult_service_change.getValue(
+        'custrecord_servicechg_type');
+      var serviceChangeFreqText = searchResult_service_change.getText(
+        'custrecord_servicechg_new_freq');
+
+      inlinehTML += '<tr>';
+
+      inlinehTML +=
+        '<td><input id="" class="form-control " data-serviceid="' +
+        serviceId + '" data-servicetypeid="" readonly value="' +
+        serviceText + '" /></td>';
+      inlinehTML +=
+        '<td><input id="" class="form-control " readonly value="' +
+        serviceChangeTypeText + '" /></td>';
+      inlinehTML +=
+        '<td><input id="" class="form-control " readonly value="' +
+        dateEffective + '" /></td>';
+      inlinehTML +=
+        '<td><div class="service_price_div input-group"><span class="input-group-addon">$</span><input class="form-control " disabled value="' +
+        oldServicePrice + '"  type="number" step=".01" /></div></td>';
+      inlinehTML +=
+        '<td><div class="service_price_div input-group"><span class="input-group-addon">$</span><input class="form-control " disabled value="' +
+        newServiceChangePrice + '"  type="number" step=".01" /></div></td>';
+
+      inlinehTML +=
+        '<td style="font-size: xx-small;"><input class="form-control new_service_freq" disabled value="' +
+        serviceChangeFreqText + '"/></td>';
+      var fileID = searchResult_service_change.getValue(
+        "custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null);
+
+      // if (!isNullorEmpty(fileID)) {
+      //  var fileRecord = nlapiLoadFile(fileID);
+      //  inlinehTML += '<td><a href="' + fileRecord.getURL() + '" target="_blank">' + searchResult_service_change.getText("custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null) + '</a></td>';
+      // } else {
+      //  inlinehTML += '<td></td>';
+      // }
+
+
+      inlinehTML += '</tr>';
+      return true;
+    });
+  }
+  inlinehTML += '</tbody></table>';
+  inlinehTML += '</div>';
+  inlinehTML += '</div>';
+  inlinehTML += '</div>';
+
+  return inlinehTML;
 }
 
 function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website, service_of_interest) {
@@ -2088,7 +2196,7 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website,
 
   inlineQty += '<div class="form-group container multisite_section">';
   inlineQty += '<div class="row">';
-  
+
   inlineQty +=
     '<div class="col-xs-6 website"><div class="input-group"><span class="input-group-addon" id="survey2_text">MULTISITE WEB LINK </span><input id="website" type="text" class="form-control website" value="' +
     website + '" /></div></div>';
@@ -2100,58 +2208,10 @@ function surveyInfo(ap_mail_parcel, ap_outlet, lpo_customer, multisite, website,
 }
 
 function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
-  resultSetContacts, resultSetAddresses, lead_source) {
+  resultSetContacts, resultSetAddresses, lead_source, saveCustomer) {
 
   var inlineQty = '<div class="container" style="padding-top: 5%;">';
 
-  nlapiLogExecution('DEBUG', 'Status', customer_status)
-  // if (customer_status == '13') {
-
-  //   inlineQty += '<div class="form-group container info_section">';
-  //   inlineQty += '<div class="row">';
-  //   inlineQty +=
-  //     '<div class="col-xs-3 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-warning" value="SEND EMAIL" onclick="onclick_SendEmail();"/></div>';
-  //   inlineQty +=
-  //     '<div class="col-xs-3 callback"><input type="button" id="callback" class="form-control callback btn btn-primary" value="CALL BACK" onclick="onclick_Callback()"/></div>';
-  //   inlineQty += '</div>';
-  //   inlineQty += '</div>';
-
-  //   inlineQty += '<div class="form-group container noanswer_section">';
-  //   inlineQty += '<div class="row">';
-  //   inlineQty +=
-  //     '<div class="col-xs-3 noanswer"><input type="button" id="noanswer" class="form-control noanswer btn btn-danger" value="NO ANSWER" onclick="onclick_NoAnswer()" /></div>';
-  //   inlineQty +=
-  //     '<div class="col-xs-3 nosale"><input type="button" id="nosale" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
-  //   inlineQty += '</div>';
-  //   inlineQty += '</div>';
-
-  // } else {
-  //   // if (salesCampaign_id != 55) {
-  //   if (contact_count > 0 && address_count > 0) {
-  //     inlineQty += '<div class="form-group container info_section">';
-  //     inlineQty += '<div class="row">';
-  //     if (lead_source == 246616) {
-  //       inlineQty +=
-  //         '<div class="col-xs-2 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="SIGNED / QUOTE" onclick="onclick_SendEmail();"/></div>';
-  //       inlineQty +=
-  //         '<div class="col-xs-2 sendforms"><input type="button" id="quadient" class="form-control quadient btn btn-success" value="QUADIENT PROGRAM" onclick="onclick_Quadient()"/></div>';
-  //     } else {
-  //       inlineQty +=
-  //         '<div class="col-xs-2 sendinfo"><input type="button" id="sendinfo" class="form-control sendinfo btn btn-success" value="SIGNED / QUOTE" onclick="onclick_SendEmail();"/></div>';
-  //       inlineQty +=
-  //         '<div class="col-xs-2 noanswer"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="NO ANSWER" onclick="onclick_NoAnswer()"/></div>';
-  //       inlineQty +=
-  //         '<div class="col-xs-2 noansweremail"><input type="button" id="offpeakpipeline" class="form-control noansweremail btn btn-danger" value="NO ANSWER - EMAIL" onclick="onclick_NoAnswerEmail()"/></div>';
-
-  //     }
-
-  //     inlineQty += '</div>';
-  //     inlineQty += '</div>';
-  //   }
-
-
-
-  // }
 
   inlineQty += '<div class="form-group container callback_section">';
   inlineQty += '<div class="row">';
@@ -2162,6 +2222,9 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
   if (customer_status != '13') {
     inlineQty +=
       '<div class="col-xs-2 sendinfo"><input type="button" id="signed" class="form-control sendinfo btn btn-success" value="SIGNED" onclick="onclick_SendEmailSigned();" data-id="signed" /></div>';
+  } else if (saveCustomer == 1 && customer_status == '13') {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="signed" class="form-control sendinfo btn btn-success" value="NOTIFY IT TEAM" onclick="onclick_notifyitteam();" data-id="signed" /></div>';
   } else {
     inlineQty +=
       '<div class="col-xs-2 sendinfo"><input type="button" id="sendemail" class="form-control sendinfo btn btn-success" value="SEND EMAIL" onclick="onclick_SendEmailQuote();" data-id="sendemail" /></div>';
@@ -2198,6 +2261,9 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
   if (customer_status != '13') {
     inlineQty +=
       '<div class="col-xs-2 sendinfo"><input type="button" id="quote" class="form-control sendinfo btn btn-success" value="QUOTE" onclick="onclick_SendEmailQuote();" data-id="quote"/></div>';
+  } else if (saveCustomer == 1 && customer_status == '13') {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="signed" class="form-control sendinfo btn btn-success" value="QUOTE (WIN-BACK)" onclick="onclick_SendEmailQuoteSaveCustomer();" data-id="signed" /></div>';
   } else {
     inlineQty +=
       '<div class="col-xs-3 nosale"><input type="button" id="nocontact" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
@@ -2251,7 +2317,7 @@ function serviceChangeSection(resultSet_service_change) {
     '<div class="form-group container service_chg_details_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12">SERVICE CHANGE DETAILS</span></h4></div>';
+    '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">SERVICE CHANGE DETAILS</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -2260,7 +2326,7 @@ function serviceChangeSection(resultSet_service_change) {
   inlineQty += '<div class="row">';
   inlineQty += '<div class="col-xs-12 service_chg_div">';
   inlineQty +=
-    '<table border="0" cellpadding="15" id="service_chg" class="table table-responsive table-striped service_chg tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr style="font-size: xx-small;"><th style="vertical-align: middle;text-align: center;"><b>ACTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>DATE EFFECTIVE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>OLD PRICE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>NEW PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>FREQUENCY</b></th></tr></thead><tbody>';
+    '<table border="0" cellpadding="15" id="service_chg" class="table table-responsive table-striped service_chg tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr style="font-size: xx-small;"><th style="vertical-align: middle;text-align: center;"><b>ACTION</b></th><th style="vertical-align: middle;text-align: center;"><b>SERVICE NAME</b></th><th style="vertical-align: middle;text-align: center;"><b>DESCRIPTION</b></th><th style="vertical-align: middle;text-align: center;"><b>DATE EFFECTIVE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>OLD PRICE</b></th><th class="col-xs-2" style="vertical-align: middle;text-align: center;"><b>NEW PRICE</b></th><th style="vertical-align: middle;text-align: center;"><b>FREQUENCY</b></th></tr></thead><tbody>';
 
   resultSet_service_change.forEachResult(function (searchResult_service_change) {
     var serviceChangeId = searchResult_service_change.getValue('internalid');
@@ -2320,14 +2386,6 @@ function serviceChangeSection(resultSet_service_change) {
       serviceChangeFreqText + '"/></td>';
     var fileID = searchResult_service_change.getValue(
       "custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null);
-
-    // if (!isNullorEmpty(fileID)) {
-    //  var fileRecord = nlapiLoadFile(fileID);
-    //  inlineQty += '<td><a href="' + fileRecord.getURL() + '" target="_blank">' + searchResult_service_change.getText("custrecord_scand_form", "CUSTRECORD_SERVICECHG_COMM_REG", null) + '</a></td>';
-    // } else {
-    //  inlineQty += '<td></td>';
-    // }
-
 
     inlineQty += '</tr>';
     return true;
@@ -2391,13 +2449,6 @@ function salesNotesSection(custId, recCustomer) {
         '</td><td>' + notesSearch[x].getText(columns[6]) + '</td><td>' +
         notesSearch[x].getValue(columns[4]) + '</td><td>' + notesSearch[x].getValue(
           columns[5]).replace(/(\r\n|\n|\r)/gm, ", ") + '</td></tr>';
-
-      // notesVal += notesSearch[x].getValue(columns[0]) + ' - ';
-      // notesVal += notesSearch[x].getValue(columns[1]) + ' - ';
-      // //notesVal += notesSearch[x].getText(columns[3]) + ' - ';
-      // notesVal += notesSearch[x].getText(columns[6]) + ' - ';
-      // notesVal += notesSearch[x].getValue(columns[4]) + ' - ';
-      // notesVal += notesSearch[x].getValue(columns[5]).replace(/(\r\n|\n|\r)/gm, ", ") + '\n';
     }
   }
 
@@ -2416,13 +2467,6 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   var record = nlapiLoadRecord('customer', customer_id);
   var invoice_cycle = record.getFieldValue('custentity_mpex_invoicing_cycle');
   var mpex_expected_usage = record.getFieldValue('custentity_form_mpex_usage_per_week');
-  // var price_c5 = record.getFieldValue('custentity_mpex_c5_price_point');
-  // var price_dl = record.getFieldValue('custentity_mpex_dl_price_point');
-  // var price_b4 = record.getFieldValue('custentity_mpex_b4_price_point');
-  // var price_1kg = record.getFieldValue('custentity_mpex_1kg_price_point');
-  // var price_3kg = record.getFieldValue('custentity_mpex_3kg_price_point');
-  // var price_5kg = record.getFieldValue('custentity_mpex_5kg_price_point');
-  // var price_500g = record.getFieldValue('custentity_mpex_500g_price_point');
 
   // Search Function
   var columns = new Array();
@@ -2433,7 +2477,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   var inlineQty = '<div class="form-group container company_name_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MP PRODUCTS - PORTAL REQUIRED | INVOICE CYCLE</span></div>'; // <h4><span class="label label-default col-xs-3">MPEX - INVOICE CYCLE</span></h4></h4>
+    '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">MP PRODUCTS - PORTAL REQUIRED | INVOICE CYCLE</span></div>'; // <h4><span class="label label-default col-xs-3">MPEX - INVOICE CYCLE</span></h4></h4>
   // inlineQty += '<div class="col-xs-12 heading1"></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
@@ -2547,266 +2591,11 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '</div>';
   inlineQty += '</div>';
 
-  // // Minimum Stock Required
-  // inlineQty += '<div class="form-group container company_name_section">';
-  // inlineQty += '<div class="row">';
-  // inlineQty +=
-  //   '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - MIN STOCK REQUIRED</span></h4></div>';
-  // inlineQty += '</div>';
-  // inlineQty += '</div>';
-
-  // inlineQty += '<div class="form-group container entityid_section">';
-  // inlineQty += '<div class="row">';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_1kg"><div class="input-group"><span class="input-group-addon" id="min_1kg_text">1Kg (Pieces)</span><input id="min_1kg" class="form-control min_1kg" value="' +
-  //   min_1kg + '" data-oldvalue="' + min_1kg + '"/></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_3kg"><div class="input-group"><span class="input-group-addon" id="min_3kg_text">3Kg (Pieces)</span><input id="min_3kg" class="form-control min_3kg" value="' +
-  //   min_3kg + '" data-oldvalue="' + min_3kg + '"/></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_5kg"><div class="input-group"><span class="input-group-addon" id="min_5kg_text">5Kg (Pieces)</span><input id="min_5kg" class="form-control min_5kg" value="' +
-  //   min_5kg + '" data-oldvalue="' + min_5kg + '"/></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_b4"><div class="input-group"><span class="input-group-addon" id="min_b4_text">B4 (Pieces)</span><input id="min_b4" class="form-control min_b4" value="' +
-  //   min_b4 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_c5"><div class="input-group"><span class="input-group-addon" id="min_c5_text">C5 (Pieces)</span><input id="min_c5" class="form-control min_c5" value="' +
-  //   min_c5 + '" data-oldvalue="' + min_b4 + '"/></div></div>';
-  // inlineQty +=
-  //   '<div class="col-xs-2 min_dl"><div class="input-group"><span class="input-group-addon" id="min_dl_text">DL (Pieces)</span><input id="min_dl" class="form-control min_dl" value="' +
-  //   min_dl + '" data-oldvalue="' + min_dl + '"/></div></div>';
-  // inlineQty += '</div>';
-  // inlineQty += '</div>';
-
-  // // Price Point
-  // var price_point_search = nlapiCreateSearch('customlist_mpex_price_points',
-  //   null, columns);
-  // resultPricePoint = price_point_search.runSearch();
-
-  // inlineQty += '<div class="form-group container company_name_section">';
-  // inlineQty += '<div class="row">';
-  // inlineQty +=
-  //   '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12">MPEX - PRICE POINT</span></h4></div>';
-  // inlineQty += '</div>';
-  // inlineQty += '</div>';
-
-  // // New Div - Section for DL, C5, & B4
-  // inlineQty += '<div class="form-group container sleeves_section">';
-  // inlineQty += '<div class="row">';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_dl"><div class="input-group"><span class="input-group-addon" id="price_dl_text">DL</span><select id="price_dl" class="form-control price_dl"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_dl)) {
-  //     if (price_dl == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_dl = record.setFieldValue('custentity_mpex_dl_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_c5"><div class="input-group"><span class="input-group-addon" id="price_c5_text">C5</span><select id="price_c5" class="form-control price_c5"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_c5)) {
-  //     if (price_c5 == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_c5 = record.setFieldValue('custentity_mpex_c5_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_b4"><div class="input-group"><span class="input-group-addon" id="price_b4_text">B4</span><select id="price_b4" class="form-control price_b4"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_b4)) {
-  //     nlapiLogExecution('DEBUG', 'listID', listID);
-  //     nlapiLogExecution('DEBUG', 'listValue', listValue);
-
-  //     if (price_b4 == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_b4 = record.setFieldValue('custentity_mpex_b4_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty += '</div>';
-  // inlineQty += '</div>';
-
-  // // Section for MPEX 500g, 1kg, 3kg, 5kg
-  // inlineQty += '<div class="form-group container mpex_bag_section">';
-  // inlineQty += '<div class="row">';
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_500g"><div class="input-group"><span class="input-group-addon" id="price_500g_text">500g</span><select id="price_500g" class="form-control price_500g"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_500g)) {
-  //     if (price_500g == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_500g = record.setFieldValue(
-  //         'custentity_mpex_500g_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_1kg"><div class="input-group"><span class="input-group-addon" id="price_1kg_text">1Kg</span><select id="price_1kg" class="form-control price_1kg"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_1kg)) {
-  //     if (price_1kg == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_1kg = record.setFieldValue('custentity_mpex_1kg_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_3kg"><div class="input-group"><span class="input-group-addon" id="price_3kg_text">3Kg</span><select id="price_3kg" class="form-control price_3kg"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_3kg)) {
-  //     if (price_3kg == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_3kg = record.setFieldValue('custentity_mpex_3kg_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-
-  // inlineQty +=
-  //   '<div class="col-xs-3 price_5kg"><div class="input-group"><span class="input-group-addon" id="price_5kg_text">5Kg</span><select id="price_5kg" class="form-control price_5kg"><option></option>';
-  // resultPricePoint.forEachResult(function (searchResult) {
-  //   var listValue = searchResult.getValue('name');
-  //   var listID = searchResult.getValue('internalId');
-
-  //   if (!isNullorEmpty(price_5kg)) {
-  //     if (price_5kg == listID) {
-  //       inlineQty += '<option value="' + listID + '" selected>' + listValue +
-  //         '</option>';
-  //       price_5kg = record.setFieldValue('custentity_mpex_5kg_price_point',
-  //         listID);
-  //     } else {
-  //       if (listID != 3) {
-  //         inlineQty += '<option value="' + listID + '">' + listValue +
-  //           '</option>';
-  //       }
-  //     }
-  //   } else {
-  //     if (listID != 3) {
-  //       inlineQty += '<option value="' + listID + '">' + listValue +
-  //         '</option>';
-  //     }
-  //   }
-  //   return true;
-  // });
-  // inlineQty += '</select></div></div>';
-  // inlineQty += '</div>';
-  // inlineQty += '</div>';
 
   inlineQty += '<div class="form-group container service_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
-    '<div class="col-xs-12 heading3"><h4><span class="label label-default col-xs-12">PRICING STRUCTURE</span></h4></div>';
+    '<div class="col-xs-12 heading6"><h4><span class="label label-default col-xs-12" style="background-color: #095c7b;">PRICING STRUCTURE</span></h4></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
 
@@ -2825,7 +2614,7 @@ function mpexTab(customer_id, min_c5, min_dl, min_b4, min_1kg, min_3kg, min_5kg,
   inlineQty += '<div class="row">';
   inlineQty +=
     '<br><br><style>table#mpex_pricing {font-size:12px; border-color: #24385b;} </style><table border="0" cellpadding="15" id="mpex_pricing" class="tablesorter table table-striped" cellspacing="0" style="">';
-  inlineQty += '<thead style="color: white;background-color: #095c7b;">';
+  inlineQty += '<thead style="color: white;background-color: #103d3987;">';
   inlineQty += '<tr>';
   inlineQty += '<th>DELIVERY SPEEDS</th><th>PRICING PLAN</th><th>B4</th><th>250G</th><th>500G</th><th>1KG</th><th>3KG</th><th>5KG</th><th>10KG</th><th>20KG</th><th>25KG</th>'
   inlineQty += '</tr>';
