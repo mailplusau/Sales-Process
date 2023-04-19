@@ -1012,9 +1012,27 @@ function main(request, response) {
         var lostNoResponseEmailAttach = new Object();
         lostNoResponseEmailAttach['entity'] = custId;
 
+        //Search for Contacts
+        var searchedContacts = nlapiLoadSearch('contact',
+          'customsearch_salesp_contacts');
+
+        var newFilters = new Array();
+        newFilters[newFilters.length] = new nlobjSearchFilter('company', null, 'is',
+          custId);
+
+        searchedContacts.addFilters(newFilters);
+
+        var resultSetContacts = searchedContacts.runSearch();
+        var contact_id = null;
+        resultSetContacts.forEachResult(function (searchResultContacts) {
+          contact_id = searchResultContacts.getValue('internalid');
+          contact_count++;
+          return true;
+        });
+
 
         url += template_id + '&recid=' + custId + '&salesrep=' +
-          null + '&dear=' + null + '&contactid=' + null + '&userid=' +
+          nlapiGetUser() + '&dear=' + null + '&contactid=' + contact_id + '&userid=' +
           encodeURIComponent(nlapiGetContext().getUser());;
         urlCall = nlapiRequestURL(url);
         var emailHtml = urlCall.getBody();

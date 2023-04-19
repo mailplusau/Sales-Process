@@ -1,12 +1,16 @@
 /**
  * @NApiVersion 2.0
  * @NScriptType Suitelet
- * @Author: Ankith Ravindran <ankithravindran>
- * @Date:   2021-11-01T09:59:04+11:00
- * Module Description: Page that lists customres that are commencing today or have not been onboarded.
- * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-24T10:22:39+11:00
+
+ * Author:               Ankith Ravindran
+ * Created on:           Tue Apr 18 2023
+ * Modified on:          Tue Apr 18 2023 11:23:49
+ * SuiteScript Version:  2.0 
+ * Description:          Reporting page that shows reporting based on the leads that come into the system and the customers that have been signed up based on the leads.  
+ *
+ * Copyright (c) 2023 MailPlus Pty. Ltd.
  */
+
 
 
 define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/https', 'N/log', 'N/redirect', 'N/url'],
@@ -43,6 +47,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var invoice_type = context.request.parameters.invoice_type;
 
                 var source = context.request.parameters.source;
+                var salesrep = context.request.parameters.sales_rep;
 
                 zee = context.request.parameters.zee;
                 userId = context.request.parameters.user_id;
@@ -159,7 +164,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
                 inlineHtml += '<div>';
-                inlineHtml += leadSourceFilterSection(source);
+                inlineHtml += leadSourceFilterSection(source, salesrep);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from);
                 inlineHtml += '</div></br></br>'
                 inlineHtml += tabsSection();
@@ -308,10 +313,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function leadSourceFilterSection(source) {
+        function leadSourceFilterSection(source, salesrep) {
             var inlineHtml = '<div class="form-group container date_filter_section">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE - FILTER</span></h4></div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE & SALES REP - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -349,6 +354,45 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 return true;
             });
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div>';
+
+            inlineHtml += '<div class="col-xs-6 source">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">SALES REP</span>';
+            inlineHtml += '<select id="sales_rep" class="form-control">';
+            inlineHtml += '<option></option>';
+
+            if (salesrep == '668711') {
+                inlineHtml += '<option value="668711" selected>Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            } else if (salesrep == '696160') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            } else if (salesrep == '690145') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145" selected>David Gdanski</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            } else if (salesrep == '668712') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
+            } else {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            }
+
+
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -759,7 +803,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 ' th{text-align: center;} .bolded{font-weight: bold;}</style>';
             inlineHtml += '<table id="mpexusage-' +
                 name +
-                '" class="table table-responsive table-striped customer tablesorter" style="width: 100%;">';
+                '" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
             inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
             inlineHtml += '<tr class="text-center">';
 
