@@ -653,6 +653,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<li role="presentation" class=""><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#cancellation"><b>CANCELLATIONS</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -782,8 +784,17 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('suspects_oot');
             inlineHtml += '</div>';
-
             inlineHtml += '</div></div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_cancellation"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('cancellation');
+            inlineHtml += '</div>';
+
+ 
 
             return inlineHtml;
         }
@@ -824,6 +835,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
             if (name == 'prospects_quoteSent_incontact_noanswer' || name == 'prospects_opportunites') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="13" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
+            }
+            if (name == 'cancellation') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="8" style="text-align:right">Total Saved Monthly Service Revenue:</th><th></th></tr></tfoot>'
             }
 
 

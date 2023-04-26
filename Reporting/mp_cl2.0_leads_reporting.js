@@ -126,6 +126,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var debtDataSetSuspectsFollowUp = [];
         var debt_setSuspectsFollowUp = [];
 
+        var debt_setCustomerCancellationRequest = [];
+
 
         var customerDataSet = [];
         var prospectDataSet = [];
@@ -145,6 +147,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var suspectLostChildDataSet = [];
         var suspectOOTChildDataSet = [];
         var suspectFollowUpChildDataSet = [];
+        var customerCancellationRequestDataSet = [];
 
 
         var totalSuspectCount = 0;
@@ -370,6 +373,403 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function loadDebtRecord(zee_id, userId) {
+
+            //Customer Cancellation - Requested Date - All
+            var customerCancellationRequestedDateSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_cust_cancellation_request_3'
+            });
+
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_cancellation_requested_date',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_cancellation_requested_date',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+
+            if (!isNullorEmpty(sales_rep)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            var totalCancellationRequest = 0;
+            var customerSavedCount = 0;
+            var customerNotSavedCount = 0;
+            var customerOnGoing = 0;
+            var oldRequestedDate = null;
+            var countCustomerCancellationRequest = 0;
+
+            customerCancellationRequestedDateSearch.run().each(function (
+                customerCancellationRequestedDateSearchResultSet) {
+
+                var customerCancellationCount = parseInt(customerCancellationRequestedDateSearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'COUNT'
+                }));
+                var requestedDate = customerCancellationRequestedDateSearchResultSet.getValue({
+                    name: 'custentity_cancellation_requested_date',
+                    summary: 'GROUP'
+                });
+                var customerSaved = customerCancellationRequestedDateSearchResultSet.getText({
+                    name: 'custentity_customer_saved',
+                    summary: 'GROUP'
+                });
+
+                var splitMonthV2 = requestedDate.split('/');
+
+                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+
+                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                if (firstDay < 10) {
+                    firstDay = '0' + firstDay;
+                }
+
+                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    splitMonthV2[0];
+                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    firstDay;
+                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                    lastDay
+
+                if (oldRequestedDate == null || (oldRequestedDate == startDate)) {
+                    totalCancellationRequest = totalCancellationRequest + customerCancellationCount;
+                    if (customerSaved == 'Yes') {
+                        customerSavedCount = customerSavedCount + customerCancellationCount;
+                    } else if (customerSaved == 'No') {
+                        customerNotSavedCount = customerNotSavedCount + customerCancellationCount;
+                    } else {
+                        customerOnGoing = customerOnGoing + customerCancellationCount
+                    }
+
+                } else if (oldRequestedDate != startDate) {
+                    debt_setCustomerCancellationRequest.push({
+                        requestedDate: oldRequestedDate,
+                        totalCancellationRequest: totalCancellationRequest,
+                        customerSavedCount: customerSavedCount,
+                        customerNotSavedCount: customerNotSavedCount,
+                        customerOnGoing: customerOnGoing,
+                    });
+
+                    totalCancellationRequest = 0;
+                    customerSavedCount = 0;
+                    customerNotSavedCount = 0;
+                    customerOnGoing = 0;
+
+                    totalCancellationRequest = totalCancellationRequest + customerCancellationCount;
+                    if (customerSaved == 'Yes') {
+                        customerSavedCount = customerSavedCount + customerCancellationCount;
+                    } else if (customerSaved == 'No') {
+                        customerNotSavedCount = customerNotSavedCount + customerCancellationCount;
+                    }else {
+                        customerOnGoing = customerOnGoing + customerCancellationCount
+                    }
+
+                }
+
+                oldRequestedDate = startDate;
+                countCustomerCancellationRequest++;
+                return true;
+            });
+
+            if (countCustomerCancellationRequest > 0) {
+                debt_setCustomerCancellationRequest.push({
+                    requestedDate: oldRequestedDate,
+                    totalCancellationRequest: totalCancellationRequest,
+                    customerSavedCount: customerSavedCount,
+                    customerNotSavedCount: customerNotSavedCount,
+                    customerOnGoing: customerOnGoing,
+                });
+            }
+
+            var customerCancellationRequestDateDataSet = [];
+            if (!isNullorEmpty(debt_setCustomerCancellationRequest)) {
+                debt_setCustomerCancellationRequest
+                    .forEach(function (preview_row, index) {
+
+                        customerCancellationRequestDateDataSet.push([preview_row.requestedDate,
+                        preview_row.totalCancellationRequest,
+                        preview_row.customerSavedCount,
+                        preview_row.customerNotSavedCount,
+                        preview_row.customerOnGoing,
+                        ]);
+
+                    });
+            }
+            console.log('customerCancellationRequestDateDataSet: ' + customerCancellationRequestDateDataSet)
+
+            var month_year_customer = []; // creating array for storing browser
+            var customer_cancellation_requested_date_total = [];
+            var customer_cancellation_requested_date_saved = [];
+            var customer_cancellation_requested_date_notsaved = [];
+            var customer_cancellation_requested_date_ongoing = [];
+
+            for (var i = 0; i < customerCancellationRequestDateDataSet.length; i++) {
+                month_year_customer.push(customerCancellationRequestDateDataSet[i][0]);
+                customer_cancellation_requested_date_total[customerCancellationRequestDateDataSet[i][0]] = customerCancellationRequestDateDataSet[i][1]
+                customer_cancellation_requested_date_saved[customerCancellationRequestDateDataSet[i][0]] = customerCancellationRequestDateDataSet[i][2]
+                customer_cancellation_requested_date_notsaved[customerCancellationRequestDateDataSet[i][0]] = customerCancellationRequestDateDataSet[i][3]
+                customer_cancellation_requested_date_ongoing[customerCancellationRequestDateDataSet[i][0]] = customerCancellationRequestDateDataSet[i][4]
+            }
+
+            var series_data100 = [];
+            var series_data101 = [];
+            var series_data102 = [];
+            var series_data103 = [];
+            var categores_customer_cancelled_request_week = []; // creating empty array for highcharts
+            // categories
+            Object.keys(customer_cancellation_requested_date_total).map(function (item, key) {
+                console.log(item)
+                series_data100.push(parseInt(customer_cancellation_requested_date_total[item]));
+                series_data101.push(parseInt(customer_cancellation_requested_date_saved[item]));
+                series_data102.push(parseInt(customer_cancellation_requested_date_notsaved[item]));
+                series_data103.push(parseInt(customer_cancellation_requested_date_ongoing[item]));
+                categores_customer_cancelled_request_week.push(item)
+            });
+
+
+            plotChartCustomerCanellationRequested(series_data100, series_data101,
+                series_data102, series_data103, categores_customer_cancelled_request_week);
+
+            //Customer Cancellation - Requested List - All
+            var customerCancellationRequesteSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_cust_cancellation_request_2'
+            });
+
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_cancellation_requested_date',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_cancellation_requested_date',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+
+            if (!isNullorEmpty(sales_rep)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            var totalCancellationRequest = 0;
+            var customerSavedCount = 0;
+            var customerNotSavedCount = 0;
+            var oldRequestedDate = null;
+            var countCustomerCancellationRequest = 0;
+
+            customerCancellationRequesteSearch.run().each(function (
+                customerCancellationRequesteSearchResultSet) {
+
+                var customerCancellationRequestDate = customerCancellationRequesteSearchResultSet.getValue({
+                    name: 'custentity_cancellation_requested_date'
+                });
+                var customerInternalId = customerCancellationRequesteSearchResultSet.getValue({
+                    name: 'internalid'
+                });
+                var customerEntityId = customerCancellationRequesteSearchResultSet.getValue({
+                    name: 'entityid'
+                });
+                var customerCompanyName = customerCancellationRequesteSearchResultSet.getValue({
+                    name: 'companyname'
+                });
+                var customerZee = customerCancellationRequesteSearchResultSet.getText({
+                    name: 'partner'
+                });
+                var customerCancellationReason = customerCancellationRequesteSearchResultSet.getText({
+                    name: 'custentity_service_cancellation_reason'
+                });
+                var customerCancellationOngoing = customerCancellationRequesteSearchResultSet.getText({
+                    name: 'custentity_cancel_ongoing'
+                });
+                var customerSaved = customerCancellationRequesteSearchResultSet.getText({
+                    name: 'custentity_customer_saved'
+                });
+                var customerSavedDate = customerCancellationRequesteSearchResultSet.getText({
+                    name: 'custentity_customer_saved_date'
+                });
+                var monthlyServiceRevenue = parseFloat(customerCancellationRequesteSearchResultSet.getText({
+                    name: 'custentity_monthly_reduc_service_revenue'
+                }));
+
+
+
+                var customerCancellationRequestDateSplit = customerCancellationRequestDate.split('/');
+
+                var formattedDate = dateISOToNetsuite(customerCancellationRequestDateSplit[2] + '-' + customerCancellationRequestDateSplit[1] + '-' + customerCancellationRequestDateSplit[0]);
+
+                var firstDayCustomerCancellationRequestDate = new Date(customerCancellationRequestDateSplit[0], (customerCancellationRequestDateSplit[1]), 1).getDate();
+                var lastDayCustomerCancellationRequestDate = new Date(customerCancellationRequestDateSplit[0], (customerCancellationRequestDateSplit[1]), 0).getDate();
+
+                if (firstDayCustomerCancellationRequestDate < 10) {
+                    firstDayCustomerCancellationRequestDate = '0' + firstDayCustomerCancellationRequestDate;
+                }
+
+                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var startDateCustomerCancellationRequestDate = customerCancellationRequestDateSplit[2] + '-' + customerCancellationRequestDateSplit[1] + '-' +
+                    customerCancellationRequestDateSplit[0];
+                var monthsStartDateCustomerCancellationRequestDate = customerCancellationRequestDateSplit[2] + '-' + customerCancellationRequestDateSplit[1] + '-' +
+                    firstDayCustomerCancellationRequestDate;
+                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                var lastDateCustomerCancellationRequestDate = customerCancellationRequestDateSplit[2] + '-' + customerCancellationRequestDateSplit[1] + '-' +
+                    lastDayCustomerCancellationRequestDate
+                
+                if (customerSaved == 'Yes' || customerSaved == 'No') {
+                    customerCancellationOngoing = '';
+                } else {
+                    customerCancellationOngoing = 'Yes';
+                }
+
+
+                if (!isNullorEmpty(customerSavedDate)) {
+                    var customerSavedDateDateSplit = customerSavedDate.split('/');
+
+                    var formattedDate = dateISOToNetsuite(customerSavedDateDateSplit[2] + '-' + customerSavedDateDateSplit[1] + '-' + customerSavedDateDateSplit[0]);
+
+                    var firstDayCustomerSavedDate = new Date(customerSavedDateDateSplit[0], (customerSavedDateDateSplit[1]), 1).getDate();
+                    var lastDayCustomerSavedDate = new Date(customerSavedDateDateSplit[0], (customerSavedDateDateSplit[1]), 0).getDate();
+
+                    if (firstDayCustomerSavedDate < 10) {
+                        firstDayCustomerSavedDate = '0' + firstDayCustomerSavedDate;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDateCustomerSavedDate = customerSavedDateDateSplit[2] + '-' + customerSavedDateDateSplit[1] + '-' +
+                        customerSavedDateDateSplit[0];
+                    var monthsStartDateCustomerSavedDate = customerSavedDateDateSplit[2] + '-' + customerSavedDateDateSplit[1] + '-' +
+                        firstDayCustomerSavedDate;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDateCustomerSavedDate = customerSavedDateDateSplit[2] + '-' + customerSavedDateDateSplit[1] + '-' +
+                        lastDayCustomerSavedDate
+                } else {
+                    var startDateCustomerSavedDate = '';
+                }
+
+
+                customerCancellationRequestDataSet.push([
+                    customerInternalId,
+                    customerEntityId,
+                    customerCompanyName,
+                    customerZee,
+                    startDateCustomerCancellationRequestDate,
+                    customerCancellationOngoing,
+                    customerSaved,
+                    startDateCustomerSavedDate,
+                    financial(monthlyServiceRevenue)
+                ]
+                );
+
+                return true;
+            });
+
+
+
+
+            var dataTable3 = $('#mpexusage-cancellation').DataTable({
+                data: customerCancellationRequestDataSet,
+                pageLength: 250,
+                order: [],
+                columns: [
+                    { title: 'Internal ID' },
+                    { title: 'ID' },
+                    { title: 'Company Name' },
+                    { title: 'Franchisee' },
+                    { title: 'Request Date' },
+                    { title: 'On-going' },
+                    { title: 'Saved' },
+                    { title: 'Saved Date' },
+                    { title: 'Saved Monthly Service Value' }
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [1, 2, 6, 8],
+                        className: 'bolded'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    var row_color = ''
+                    if (data[6] == 'No') {
+                        $('td', row).css('background-color', '#E97777');
+                    } else if (data[6] == 'Yes') {
+                        $('td', row).css('background-color', '#439A97');
+                    } else if (data[5] == 'Yes') {
+                        $('td', row).css('background-color', '#f9c67a');
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(8).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
+                }
+            });
+
 
 
             // Website New Leads - Signed - Weekly Reporting
@@ -6743,6 +7143,75 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     name: 'Suspect - Customer - Lost',
                     data: series_data24,
+                    color: '#E97777',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }]
+            });
+        }
+
+        function plotChartCustomerCanellationRequested(series_data100,
+            series_data101,
+            series_data102, series_data103, categores) {
+            // console.log(series_data)
+
+            Highcharts.chart(
+                'container_cancellation', {
+                chart: {
+                    type: 'column',
+                    backgroundColor: '#CFE0CE',
+                }, title: {
+                    text: 'Cancellation Request - Week Requested'
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Cancellation Request Count'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Saved',
+                    data: series_data101,
+                    color: '#439A97',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'On going',
+                    data: series_data103,
+                    color: '#f9c67a',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Not Saved',
+                    data: series_data102,
                     color: '#E97777',
                     style: {
                         fontWeight: 'bold',
