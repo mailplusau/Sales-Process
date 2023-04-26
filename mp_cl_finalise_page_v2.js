@@ -1248,6 +1248,7 @@ function validate(status) {
   var daytodayemail = $('#daytodayemail').val();
   var daytodayphone = $('#daytodayphone').val();
   var industry = $('#industry').val();
+  var account_manager = $('#account_managerr').val();
 
   var survey1 = $('#survey1').val();
   var survey2 = $('#survey2').val();
@@ -1330,6 +1331,11 @@ function validate(status) {
   if (isNullorEmpty(zee)) {
     alertMessage +=
       'Please select a Franchisee to which the customer Belongs</br>';
+    return_value = false;
+  }
+  if (isNullorEmpty(account_manager)) {
+    alertMessage +=
+      'Please select an Account Manager</br>';
     return_value = false;
   }
 
@@ -1487,6 +1493,8 @@ function updateCustomerDetails(offPeak, quadient) {
   // Invoicing Cycle is the only thing listed as a result under Customer Record
   customerRecord.setFieldValue('custentity_mpex_invoicing_cycle', $(
     '#invoice_cycle option:selected').val());
+  customerRecord.setFieldValue('custentity_mp_toll_salesrep', $(
+    '#account_manager option:selected').val());
 
   // Minimum Float Amount
   // customerRecord.setFieldValue('custentity_mpex_500g_float', $('#min_500g').val()); // Float for min

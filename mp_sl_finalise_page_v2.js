@@ -170,6 +170,8 @@ function main(request, response) {
 
     var saveCustomer = customer_record.getFieldValue(
       'custentity_cancel_ongoing');
+    var account_manager = customer_record.getFieldValue(
+      'custentity_mp_toll_salesrep');
 
     var salesRecord = nlapiLoadRecord('customrecord_sales', sales_record_id);
     var lastOutcome = salesRecord.getFieldValue('custrecord_sales_outcome');
@@ -343,7 +345,7 @@ function main(request, response) {
     //Customer Details
     inlineQty += customerDetailsSection(companyName, abn, resultSetZees, zee,
       accounts_email, daytodayphone, daytodayemail, accounts_phone,
-      customer_status, lead_source, customer_industry, callcenter);
+      customer_status, lead_source, customer_industry, callcenter, account_manager);
 
     //Address and Contacts Details
     inlineQty += addressContactsSection(resultSetAddresses, resultSetContacts,
@@ -1399,7 +1401,7 @@ function main(request, response) {
 
 function customerDetailsSection(companyName, abn, resultSetZees, zee,
   accounts_email, daytodayphone, daytodayemail, accounts_phone, customer_status,
-  lead_source, customer_industry, callcenter) {
+  lead_source, customer_industry, callcenter, account_manager) {
   var inlineQty = '<div class="form-group container company_name_section">';
   inlineQty += '<div class="row">';
   inlineQty +=
@@ -1529,6 +1531,41 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee,
     '" /><div class="input-group-btn"><button type="button" class="btn btn-success" id="call_daytoday_phone"><span class="glyphicon glyphicon-earphone"></span></button></div></div></div>';
   inlineQty += '</div>';
   inlineQty += '</div>';
+
+  inlineQty += '<div class="form-group container account_manager">';
+      inlineQty += '<div class="row">';
+      inlineQty +=
+        '<div class="col-xs-6 account_manager_div"><div class="input-group"><span class="input-group-addon" id="account_manager_span">ACCOUNT MANAGER <span class="mandatory">*</span></span><select id="account_manager" class="form-control account_manager" ><option></option>';
+      if (account_manager == '668711') {
+        inlineQty += '<option value="668711" selected>Lee Russell</option>';
+        inlineQty += '<option value="696160">Kerina Helliwell</option>';
+        inlineQty += '<option value="690145">David Gdanski</option>';
+        inlineQty += '<option value="668712">Belinda Urbani</option>';
+      } else if (account_manager == '696160') {
+        inlineQty += '<option value="668711">Lee Russell</option>';
+        inlineQty += '<option value="696160" selected>Kerina Helliwell</option>';
+        inlineQty += '<option value="690145">David Gdanski</option>';
+        inlineQty += '<option value="668712">Belinda Urbani</option>';
+      } else if (account_manager == '690145') {
+        inlineQty += '<option value="668711">Lee Russell</option>';
+        inlineQty += '<option value="696160">Kerina Helliwell</option>';
+        inlineQty += '<option value="690145" selected>David Gdanski</option>';
+        inlineQty += '<option value="668712">Belinda Urbani</option>';
+      } else if (account_manager == '668712') {
+        inlineQty += '<option value="668711">Lee Russell</option>';
+        inlineQty += '<option value="696160">Kerina Helliwell</option>';
+        inlineQty += '<option value="690145">David Gdanski</option>';
+        inlineQty += '<option value="668712" selected>Belinda Urbani</option>';
+      } else {
+        inlineQty += '<option value="668711">Lee Russell</option>';
+        inlineQty += '<option value="696160">Kerina Helliwell</option>';
+        inlineQty += '<option value="690145">David Gdanski</option>';
+        inlineQty += '<option value="668712">Belinda Urbani</option>';
+      }
+      inlineQty += '</select>';
+      inlineQty += '</div></div></div>';
+      inlineQty += '</div>';
+
 
   return inlineQty;
 
