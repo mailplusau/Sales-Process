@@ -479,7 +479,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         customerSavedCount = customerSavedCount + customerCancellationCount;
                     } else if (customerSaved == 'No') {
                         customerNotSavedCount = customerNotSavedCount + customerCancellationCount;
-                    }else {
+                    } else {
                         customerOnGoing = customerOnGoing + customerCancellationCount
                     }
 
@@ -592,34 +592,49 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 customerCancellationRequesteSearchResultSet) {
 
                 var customerCancellationRequestDate = customerCancellationRequesteSearchResultSet.getValue({
-                    name: 'custentity_cancellation_requested_date'
+                    name: 'custentity_cancellation_requested_date',
+                    summary: "GROUP",
                 });
                 var customerInternalId = customerCancellationRequesteSearchResultSet.getValue({
-                    name: 'internalid'
+                    name: 'internalid',
+                    summary: "GROUP",
                 });
                 var customerEntityId = customerCancellationRequesteSearchResultSet.getValue({
-                    name: 'entityid'
+                    name: 'entityid',
+                    summary: "GROUP",
                 });
                 var customerCompanyName = customerCancellationRequesteSearchResultSet.getValue({
-                    name: 'companyname'
+                    name: 'companyname',
+                    summary: "GROUP",
                 });
                 var customerZee = customerCancellationRequesteSearchResultSet.getText({
-                    name: 'partner'
+                    name: 'partner',
+                    summary: "GROUP",
                 });
                 var customerCancellationReason = customerCancellationRequesteSearchResultSet.getText({
-                    name: 'custentity_service_cancellation_reason'
+                    name: 'custentity_service_cancellation_reason',
+                    summary: "GROUP",
                 });
                 var customerCancellationOngoing = customerCancellationRequesteSearchResultSet.getText({
-                    name: 'custentity_cancel_ongoing'
+                    name: 'custentity_cancel_ongoing',
+                    summary: "GROUP",
                 });
                 var customerSaved = customerCancellationRequesteSearchResultSet.getText({
-                    name: 'custentity_customer_saved'
+                    name: 'custentity_customer_saved',
+                    summary: "GROUP",
                 });
                 var customerSavedDate = customerCancellationRequesteSearchResultSet.getText({
-                    name: 'custentity_customer_saved_date'
+                    name: 'custentity_customer_saved_date',
+                    summary: "GROUP",
                 });
                 var monthlyServiceRevenue = parseFloat(customerCancellationRequesteSearchResultSet.getText({
-                    name: 'custentity_monthly_reduc_service_revenue'
+                    name: 'custentity_monthly_reduc_service_revenue',
+                    summary: "GROUP",
+                }));
+                var last6MonthsAvgInvoiceValue = parseFloat(customerCancellationRequesteSearchResultSet.getValue({
+                    name: "amount",
+                    join: "transaction",
+                    summary: "AVG"
                 }));
 
 
@@ -643,7 +658,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                 var lastDateCustomerCancellationRequestDate = customerCancellationRequestDateSplit[2] + '-' + customerCancellationRequestDateSplit[1] + '-' +
                     lastDayCustomerCancellationRequestDate
-                
+
                 if (customerSaved == 'Yes' || customerSaved == 'No') {
                     customerCancellationOngoing = '';
                 } else {
@@ -685,6 +700,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     customerCancellationOngoing,
                     customerSaved,
                     startDateCustomerSavedDate,
+                    customerCancellationReason,
+                    financial(last6MonthsAvgInvoiceValue),
                     financial(monthlyServiceRevenue)
                 ]
                 );
@@ -708,12 +725,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'On-going' },
                     { title: 'Saved' },
                     { title: 'Saved Date' },
+                    { title: 'Cancellation Reason' },
+                    { title: 'Avg Invoice Value - Last 6 Months' },
                     { title: 'Saved Monthly Service Value' }
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [1, 2, 6, 8],
+                        targets: [1, 2, 6, 10],
                         className: 'bolded'
                     }
                 ],
@@ -744,16 +763,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     })
 
                     // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(8)
+                    total_avg_invoice = api
+                        .column(9)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
                     // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(8, {
+                    page_total_avg_invoice = api
+                        .column(9, {
                             page: 'current'
                         })
                         .data()
@@ -763,7 +782,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                     // Update footer
-                    $(api.column(8).footer()).html(
+                    $(api.column(9).footer()).html(
+                        formatter.format(page_total_avg_invoice)
+                    );
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(10)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(10, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(10).footer()).html(
                         formatter.format(page_total_monthly_service_revenue)
                     );
 
@@ -7023,30 +7065,54 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Website Leads - By Status - Week Entered'
+                    text: 'Website Leads - By Status - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7054,6 +7120,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7162,30 +7240,54 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Cancellation Request - Week Requested'
+                    text: 'Cancellation Request - Week Requested',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Cancellation Request Count'
+                        text: 'Total Cancellation Request Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7193,6 +7295,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7233,30 +7347,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Prospects - Weekly Quote Sent / In Contact / No Answer'
+                    text: 'Prospects - Weekly Quote Sent / In Contact / No Answer',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores5,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7301,30 +7440,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Prospects - Weekly Opportunities'
+                    text: 'Prospects - Weekly Opportunities',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores5,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7332,6 +7496,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7357,30 +7533,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Hot Lead - Week Entered'
+                    text: 'Suspects - Hot Lead - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores_suspects,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7388,6 +7589,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7425,30 +7638,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Lost - Week Entered'
+                    text: 'Suspects - Lost - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores_suspects_lost,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7456,6 +7694,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7486,30 +7736,55 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Off Peak Pipeline - Week Entered'
+                    text: 'Suspects - Off Peak Pipeline - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores_suspects_off_peak_pipeline,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7517,6 +7792,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7539,7 +7826,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Out of Territory - Week Entered'
+                    text: 'Suspects - Out of Territory - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores_suspects_oot,
@@ -7551,18 +7843,33 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7570,6 +7877,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7592,30 +7911,53 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Follow Up - Week Entered'
+                    text: 'Suspects - Follow Up - Week Entered',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
                 },
                 xAxis: {
                     categories: categores_suspects_follow_up,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold'
                         }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7623,6 +7965,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7648,30 +8002,57 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Customer Signed by Source - Week Signed Up'
+                    text: 'Customer Signed by Source - Week Signed Up',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '10px'
+                    }
                 },
                 xAxis: {
                     categories: categores_customer_signed_week,
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '10px'
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
                         }
                     }
                 },
                 tooltip: {
                     headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
                 },
                 plotOptions: {
                     column: {
@@ -7679,6 +8060,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dataLabels: {
                             enabled: true
                         }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
                     }
                 },
                 series: [{
@@ -7738,23 +8131,41 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         crosshair: true,
                         style: {
                             fontWeight: 'bold',
+                        },
+                        labels: {
+                            style: {
+                                fontSize: '10px'
+                            }
                         }
                     },
                     yAxis: {
                         min: 0,
                         title: {
-                            text: 'Total Usage'
+                            text: 'Total Usage',
+                            style: {
+                                fontWeight: 'bold',
+                                color: '#0B2447',
+                                fontSize: '10px'
+                            }
                         },
                         stackLabels: {
                             enabled: true,
                             style: {
                                 fontWeight: 'bold'
                             }
+                        },
+                        labels: {
+                            style: {
+                                fontSize: '10px'
+                            }
                         }
                     },
                     tooltip: {
                         headerFormat: '<b>{point.x}</b><br/>',
-                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                        style: {
+                            fontSize: '10px'
+                        }
                     },
                     plotOptions: {
                         column: {
@@ -7762,6 +8173,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             dataLabels: {
                                 enabled: true
                             }
+                        },
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                align: 'right',
+                                color: 'black',
+                                style: {
+                                    fontSize: '12px'
+                                }
+                            },
+                            pointPadding: 0.1,
+                            groupPadding: 0
                         }
                     },
                     series: [{
