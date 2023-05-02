@@ -1248,7 +1248,7 @@ function validate(status) {
   var daytodayemail = $('#daytodayemail').val();
   var daytodayphone = $('#daytodayphone').val();
   var industry = $('#industry').val();
-  var account_manager = $('#account_managerr').val();
+  var account_manager = $('#account_manager').val();
 
   var survey1 = $('#survey1').val();
   var survey2 = $('#survey2').val();

@@ -657,6 +657,7 @@ function main(request, response) {
       var partner_text = recCustomer.getFieldText('partner');
       var lead_source_text = recCustomer.getFieldText('leadsource');
       var lead_source_id = recCustomer.getFieldValue('leadsource');
+      var customer_service_fuel_surcharge = recCustomer.getFieldValue('custentity_service_fuel_surcharge');
       var day_to_day_email = recCustomer.getFieldValue(
         'custentity_email_service');
       recCustomer.setFieldValue('entitystatus', 13);
@@ -666,8 +667,8 @@ function main(request, response) {
           getDate());
       }
       recCustomer.setFieldValue('custentity_cust_closed_won', 'T');
-      if (serviceFuelSurchargeToBeApplied == 1 ||
-        serviceFuelSurchargeToBeApplied == '1') {
+      if ((serviceFuelSurchargeToBeApplied == 1 ||
+        serviceFuelSurchargeToBeApplied == '1') && (isNullorEmpty(customer_service_fuel_surcharge) || customer_service_fuel_surcharge == '1')) {
         recCustomer.setFieldValue('custentity_service_fuel_surcharge', 1);
         if (partner_id == 218 || partner_id == 469) {
           recCustomer.setFieldValue('custentity_service_fuel_surcharge_percen',
