@@ -670,12 +670,46 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
 
+            // Customers Tabs headers
+            inlineHtml +=
+                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            inlineHtml +=
+                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            inlineHtml += '</style>';
+
+            inlineHtml +=
+                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+            inlineHtml +=
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers"><b>NEW CUSTOMERS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers"><b>EXISTING CUSTOMERS</b></a></li>';
+
+            inlineHtml += '</ul></div>';
+
+            inlineHtml += '<div class="tab-content">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
+
             inlineHtml += '<figure class="highcharts-figure">';
             inlineHtml += '<div id="container_customer"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('customer');
             inlineHtml += '</div>';
 
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="existing_customers">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_existing_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('existing_customers');
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+
+
+            
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
 
@@ -794,7 +828,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += dataTable('cancellation');
             inlineHtml += '</div>';
 
- 
+
 
             return inlineHtml;
         }
@@ -827,7 +861,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
-            if (name == 'customer') {
+            if (name == 'customer' || name == 'existing_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'suspects' || name == 'suspects_lost' || name == 'suspects_followup') {

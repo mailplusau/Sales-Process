@@ -130,6 +130,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
         var customerDataSet = [];
+        var existingCustomerDataSet = [];
         var prospectDataSet = [];
         var prospectOpportunityDataSet = [];
         var suspectDataSet = [];
@@ -140,6 +141,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
         var customerChildDataSet = [];
+        var existingCustomerChildDataSet = [];
         var prospectChildDataSet = [];
         var prospectOpportunityChildDataSet = [];
         var suspectChildDataSet = []
@@ -4793,6 +4795,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var oldAutoSignUp = null;
             var oldPreviousCarrier = null;
             var oldMonthServiceValue = 0.0;
+            var oldMonthlyReductionServiceValue = 0.0;
+            var oldMonthlyExtraServiceValue = 0.0;
 
             var oldInvoiceNumber = null;
             var oldinvoiceDate = null;
@@ -4937,6 +4941,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: "custentity_monthly_extra_service_revenue",
                 }));
 
+                var monthlyReductionServiceValue = (custListCommenceTodaySet.getValue({
+                    name: "custentity_monthly_reduc_service_revenue",
+                }));
+
                 if (source == 'Additional Services') {
                     monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
                 }
@@ -4946,9 +4954,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 } else {
                     monthlyServiceValue = 0.0;
                 }
-
-
-
+                if (!isNullorEmpty(monthlyExtraServiceValue)) {
+                    monthlyExtraServiceValue = parseFloat(monthlyExtraServiceValue);
+                } else {
+                    monthlyExtraServiceValue = 0.0;
+                }
+                if (!isNullorEmpty(monthlyReductionServiceValue)) {
+                    monthlyReductionServiceValue = parseFloat(monthlyReductionServiceValue);
+                } else {
+                    monthlyReductionServiceValue = 0.0;
+                }
 
 
                 // if (isNullorEmpty(invoiceDocumentNumber)) {
@@ -4967,11 +4982,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 //     invoiceAmount = 'N/A'
                 // }
 
-                console.log('invoiceDocumentNumber ' + invoiceDocumentNumber)
-                console.log('invoiceDate ' + invoiceDate)
-                console.log('invoiceType ' + invoiceType)
-                console.log('invoiceAmount ' + invoiceAmount)
-                console.log('invocieItem ' + invoiceItem)
+                // console.log('invoiceDocumentNumber ' + invoiceDocumentNumber)
+                // console.log('invoiceDate ' + invoiceDate)
+                // console.log('invoiceType ' + invoiceType)
+                // console.log('invoiceAmount ' + invoiceAmount)
+                // console.log('invocieItem ' + invoiceItem)
+                console.log('custName ' + custName)
+                console.log('monthlyExtraServiceValue ' + monthlyExtraServiceValue)
+                console.log('monthlyReductionServiceValue ' + monthlyReductionServiceValue)
 
 
                 if (!isNullorEmpty(dateLeadLost)) {
@@ -5118,11 +5136,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
 
-                    console.log('oldcustInternalID: ' + oldcustInternalID)
-                    console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
-                    console.log('oldinvoiceDate: ' + oldinvoiceDate)
-                    console.log('oldInvoiceType: ' + oldInvoiceType)
-                    console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
+                    // console.log('oldcustInternalID: ' + oldcustInternalID)
+                    // console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
+                    // console.log('oldinvoiceDate: ' + oldinvoiceDate)
+                    // console.log('oldInvoiceType: ' + oldInvoiceType)
+                    // console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
 
                     if (oldInvoiceNumber == invoiceDocumentNumber) {
                         // if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && isNullorEmpty(oldInvoiceItem)) {
@@ -5192,11 +5210,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     if (oldcustStage == 'CUSTOMER') {
 
-                        console.log('oldcustInternalID: ' + oldcustInternalID)
-                        console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
-                        console.log('oldinvoiceDate: ' + oldinvoiceDate)
-                        console.log('oldInvoiceType: ' + oldInvoiceType)
-                        console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
+                        // console.log('oldcustInternalID: ' + oldcustInternalID)
+                        // console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
+                        // console.log('oldinvoiceDate: ' + oldinvoiceDate)
+                        // console.log('oldInvoiceType: ' + oldInvoiceType)
+                        // console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
 
                         if (oldInvoiceNumber != invoiceDocumentNumber) {
                             customerActivityCount++
@@ -5289,36 +5307,68 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             });
                         }
 
+                        console.log('oldcustName' + oldcustName);
                         console.log(oldcustName + 'MP Exp: ' + express_speed);
                         console.log(oldcustName + 'MP Std: ' + standard_speed);
+                        console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
+                        console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
 
                         var mpExpStdUsageLink =
                             '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
-                        customerDataSet.push(['',
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            express_speed,
-                            standard_speed,
-                            mpExpStdUsageLink,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            // oldemail48h,
-                            olddateProspectWon,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            invoiceServiceTotal.toFixed(2),
-                            invoiceProductsTotal.toFixed(2),
-                            invoiceTotal.toFixed(2),
-                            oldsalesRepText,
-                            oldAutoSignUp,
-                            customerChildDataSet
-                        ]);
+                        if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+                            existingCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                mpExpStdUsageLink,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                // oldemail48h,
+                                olddateProspectWon,
+                                oldDaysOpen,
+                                oldMonthServiceValue,
+                                invoiceServiceTotal.toFixed(2),
+                                invoiceProductsTotal.toFixed(2),
+                                invoiceTotal.toFixed(2),
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                customerChildDataSet
+                            ]);
+                        } else {
+                            customerDataSet.push(['',
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                mpExpStdUsageLink,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                // oldemail48h,
+                                olddateProspectWon,
+                                oldDaysOpen,
+                                oldMonthServiceValue,
+                                invoiceServiceTotal.toFixed(2),
+                                invoiceProductsTotal.toFixed(2),
+                                invoiceTotal.toFixed(2),
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                customerChildDataSet
+                            ]);
+                        }
+
+
 
                         csvCustomerSignedExport.push([
                             oldcustInternalID,
@@ -5406,6 +5456,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 oldAutoSignUp = autoSignUp;
                 oldPreviousCarrier = previousCarrier;
                 oldMonthServiceValue = monthlyServiceValue;
+                oldMonthlyReductionServiceValue = monthlyReductionServiceValue;
+                oldMonthlyExtraServiceValue = monthlyExtraServiceValue;
 
                 oldInvoiceNumber = invoiceDocumentNumber;
                 oldinvoiceDate = invoiceDate;
@@ -5512,36 +5564,66 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
                     }
 
+                    console.log('oldcustName' + oldcustName);
                     console.log(oldcustName + 'MP Exp: ' + express_speed);
                     console.log(oldcustName + 'MP Std: ' + standard_speed);
+                    console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
+                    console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
 
                     var mpExpStdUsageLink =
                         '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
-                    customerDataSet.push(['',
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        express_speed,
-                        standard_speed,
-                        mpExpStdUsageLink,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        // oldemail48h,
-                        olddateProspectWon,
-                        oldDaysOpen,
-                        oldMonthServiceValue,
-                        invoiceServiceTotal.toFixed(2),
-                        invoiceProductsTotal.toFixed(2),
-                        invoiceTotal.toFixed(2),
-                        oldsalesRepText,
-                        oldAutoSignUp,
-                        customerChildDataSet
-                    ]);
+                    if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+                        existingCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            mpExpStdUsageLink,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            // oldemail48h,
+                            olddateProspectWon,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            invoiceServiceTotal.toFixed(2),
+                            invoiceProductsTotal.toFixed(2),
+                            invoiceTotal.toFixed(2),
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            customerChildDataSet
+                        ]);
+                    } else {
+                        customerDataSet.push(['',
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            mpExpStdUsageLink,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            // oldemail48h,
+                            olddateProspectWon,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            invoiceServiceTotal.toFixed(2),
+                            invoiceProductsTotal.toFixed(2),
+                            invoiceTotal.toFixed(2),
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            customerChildDataSet
+                        ]);
+                    }
 
                     csvCustomerSignedExport.push([
                         oldcustInternalID,
@@ -5572,9 +5654,261 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             console.log('customerDataSet: ' + customerDataSet);
+            console.log('existingCustomerDataSet: ' + existingCustomerDataSet);
             console.log('csvCustomerSignedExport: ' + csvCustomerSignedExport);
 
             saveCustomerCsvPreview(csvCustomerSignedExport);
+
+            var dataTableExisitngCustomers = $('#mpexusage-existing_customers').DataTable({
+                data: existingCustomerDataSet,
+                pageLength: 250,
+                order: [[13, 'des']],
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },
+                    { title: 'Internal ID' },
+                    { title: 'ID' },
+                    { title: 'Company Name' },
+                    { title: 'Franchisee' },
+                    { title: 'Source' },
+                    { title: 'Product Weekly Usage' },
+                    { title: 'Previous Carrier' },
+                    { title: 'MP Express' },
+                    { title: 'MP Standard' },
+                    { title: 'Daily Usage' },
+                    { title: 'Date - Lead Entered' },
+                    { title: 'Date - Quote Sent' },
+                    // { title: '48h Email Sent' },
+                    { title: 'Date - Prospect Won' },
+                    { title: 'Days Open' },
+                    { title: 'Expected Monthly Service' },
+                    { title: 'Total Service Invoice' },
+                    { title: 'Total Product Invoice' },
+                    { title: 'Total Invoice' },
+                    { title: 'Sales Rep' },
+                    { title: 'Auto Signed Up' },
+                    { title: 'Child Table' }
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [20, 21],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 13, 15, 16, 17, 18],
+                        className: 'bolded'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+
+                    var row_color = ''
+                    if (data[5] == 'Additional Services') {
+                        $('td', row).css('background-color', '#86A3B8');
+                    } else if (!isNullorEmpty(data[21])) {
+                        data[21].forEach(function (el) {
+
+                            if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
+                                row_color = ''
+
+                            } else {
+                                row_color = '#53BF9D'
+                            }
+                        });
+                        $('td', row).css('background-color', row_color);
+
+                    } else if (!isNullorEmpty(data[15])) {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total MP Express Usage
+                    total_mp_exp_usage = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Express Usage
+                    page_mp_exp_usage = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total MP Standard Usage
+                    total_mp_std_usage = api
+                        .column(9)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Standard Usage
+                    page_mp_std_usage = api
+                        .column(9, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(15, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_service_invoice_amount = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_service_invoice_amount = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_prod_nvoice_amount = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_prod_invoice_amount = api
+                        .column(17, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_invoice_amount = api
+                        .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_invoice_amount = api
+                        .column(18, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(8).footer()).html(
+                        page_mp_exp_usage
+                    );
+                    $(api.column(9).footer()).html(
+                        page_mp_std_usage
+                    );
+
+                    // Update footer
+                    $(api.column(15).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(16).footer()).html(
+                        formatter.format(pagetotal_service_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(17).footer()).html(
+                        formatter.format(pagetotal_prod_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(18).footer()).html(
+                        formatter.format(pagetotal_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                }
+            });
+
+            dataTableExisitngCustomers.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChildExisting(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-existing_customers tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableExisitngCustomers.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
 
             var dataTable = $('#mpexusage-customer').DataTable({
                 data: customerDataSet,
@@ -6683,6 +7017,60 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function createChild(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+
+            // console.log('customer child row: ' + row.data()[19]);
+
+            row.data()[21].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    if (data[4] == 'Paid In Full') {
+                        $('td', row).css('background-color', '#C7F2A4');
+                    }
+                }
+            });
+        }
+        function createChildExisting(row) {
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
