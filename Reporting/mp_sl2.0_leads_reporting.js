@@ -52,6 +52,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 zee = context.request.parameters.zee;
                 userId = context.request.parameters.user_id;
                 var showTotal = context.request.parameters.showTotal;
+                var calcprodusage = context.request.parameters.calcprodusage;
+
+                //If role is Franchisee
+                if (role == 1000) {
+                    zee = runtime.getCurrentUser().id;
+                }
 
                 var date = new Date(), y = date.getFullYear(), m = date.getMonth();
                 var firstDay = new Date(y, m, 1);
@@ -116,8 +122,71 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                 var inlineHtml =
-                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;} @-webkit-keyframes animatetop {from {top:-300px; opacity:0} to {top:0; opacity:1}}@keyframes animatetop {from {top:-300px; opacity:0}to {top:0; opacity:1}}</style>';
+                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}</style > ';
 
+                form.addField({
+                    id: 'custpage_overview_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_existing_customer_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_prospect_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_suspect_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_suspect_lost_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_suspect_offpeak_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_suspect_followup_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_suspect_oot_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+                form.addField({
+                    id: 'custpage_prospect_opportunity_table_csv',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
                 form.addField({
                     id: 'custpage_table_csv',
                     type: ui.FieldType.TEXT,
@@ -163,25 +232,40 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
-                inlineHtml += '<div>';
-                inlineHtml += leadSourceFilterSection(source, salesrep);
-                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from);
-                inlineHtml += '</div></br></br>'
-                inlineHtml += tabsSection();
-                // inlineHtml += '<div id="container"></div>'
-                inlineHtml += dataTable();
+                inlineHtml +=
+                    '<div class="form-group container show_buttons_section hide">';
+                inlineHtml += '<div class="row">';
+                inlineHtml +=
+                    '<div class="col-xs-5"></div>'
 
-                //Button to reload the page when the filters have been selected
-                // form.addButton({
-                //   id: 'submit_search',
-                //   label: 'Submit Search',
-                //   functionName: 'addFilters()'
-                // });
+                inlineHtml +=
+                    '<div class="col-xs-2"><input type="button" value="SHOW FILTERS" class="form-control btn btn-primary" data-toggle="collapse" data-target="#collapseExample" id="show_filter" aria-expanded="false" aria-controls="collapseExample" style="background-color: #EAF044; color: #103d39" /></div>'
+                inlineHtml +=
+                    '<div class="col-xs-5"></div>'
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+                inlineHtml += '<div class="collapse" id="collapseExample"><div class="card card-body">'
+                inlineHtml += '<div>';
+                //Dropdown to Select the Fracnhisee
+                //Search: SMC - Franchisees
+                var searchZees = search.load({
+                    id: 'customsearch_smc_franchisee'
+                });
+                var resultSetZees = searchZees.run();
+                if (role != 1000) {
+                    inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+                }
+                inlineHtml += leadSourceFilterSection(source, salesrep);
+                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage);
+                inlineHtml += '</div></div></div></br></br>'
+                inlineHtml += tabsSection();
+                inlineHtml += dataTable();
 
                 form.addButton({
                     id: 'download_csv',
-                    label: 'Export Signed Customer List',
-                    functionName: 'downloadCustomerCsv()'
+                    label: 'Export All Table Data',
+                    functionName: 'downloadCsv()'
                 });
 
                 form.addField({
@@ -196,70 +280,52 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 context.response.writePage(form);
             } else {
-                var customer_id = context.request.parameters.custpage_customer_id;
-                var sales_rep_id = context.request.parameters.custpage_sales_rep_id;
-                var contact_id = context.request.parameters.custpage_contact_id;
-                var contact_email = context.request.parameters.custpage_contact_email;
+               
+            }
+        }
 
-                log.debug({
-                    title: 'customer_id id ISS',
-                    details: customer_id
-                });
+        /**
+         * The Franchisee dropdown field.
+         * @param   {zeeSearchResult}    resultSetZees
+         * @return  {String}    `inlineHtml`
+         */
+        function franchiseeDropdownSection(resultSetZees, context) {
+            var inlineHtml =
+                '<div class="form-group container zee_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">FRANCHISEE</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
-                log.debug({
-                    title: 'sales_rep_id id ISS',
-                    details: sales_rep_id
-                });
+            inlineHtml += '<div class="form-group container zee_dropdown_section hide">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 zee_dropdown_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="zee_dropdown_text">Franchisee</span>';
+            inlineHtml += '<select id="zee_dropdown" class="form-control">';
+            inlineHtml += '<option value=""></option>'
+            resultSetZees.each(function (searchResult_zee) {
+                zee_id = searchResult_zee.getValue('internalid');
+                zee_name = searchResult_zee.getValue('companyname');
 
-                log.debug({
-                    title: 'contact_id id ISS',
-                    details: contact_id
-                });
-
-                log.debug({
-                    title: 'contact_email id ISS',
-                    details: contact_email
-                });
-
-
-                var userid = encodeURIComponent(runtime.getCurrentUser().id);
-
-                var suiteletUrl = 'https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=395&deploy=1&compid=1048144&h=6d4293eecb3cb3f4353e&rectype=customer&template=148';
-                suiteletUrl += '&recid=' + customer_id + '&salesrep=' + sales_rep_id + '&dear=' + '' + '&contactid=' + contact_id + '&userid=' + userid;
-
-                var response = https.get({
-                    url: suiteletUrl
-                });
-
-                log.debug({
-                    title: 'response id ISS',
-                    details: response
-                });
-
-
-                var emailHtml = response.body;
-
-                log.debug({
-                    title: 'emailHtml',
-                    details: emailHtml
-                });
-
-                if (!isNullorEmpty(contact_email)) {
-                    email.send({
-                        author: 112209,
-                        body: emailHtml,
-                        recipients: contact_email,
-                        subject: 'Your MailPlus enquiry: Prices',
-                        relatedRecords: { entityId: customer_id },
-                    });
+                if (zee == zee_id) {
+                    inlineHtml += '<option value="' + zee_id +
+                        '" selected="selected">' + zee_name + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + zee_id + '">' + zee_name +
+                        '</option>';
                 }
 
-                redirect.toSuitelet({
-                    scriptId: 'customscript_sl2_prospect_quote_sent',
-                    deploymentId: 'customdeploy1',
-                    parameters: null
-                });
-            }
+                return true;
+            });
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            return inlineHtml;
+
         }
 
 
@@ -314,16 +380,16 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
         }
 
         function leadSourceFilterSection(source, salesrep) {
-            var inlineHtml = '<div class="form-group container date_filter_section">';
+            var inlineHtml = '<div class="form-group container source_salesrep_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE & SALES REP - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-            inlineHtml += '<div class="form-group container source_section">';
+            inlineHtml += '<div class="form-group container source_salesrep_section hide">';
             inlineHtml += '<div class="row">';
 
-            inlineHtml += '<div class="col-xs-6 source">';
+            inlineHtml += '<div class="col-xs-6 source_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SOURCE</span>';
@@ -358,7 +424,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</select>';
             inlineHtml += '</div></div>';
 
-            inlineHtml += '<div class="col-xs-6 source">';
+            inlineHtml += '<div class="col-xs-6 sales_rep_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SALES REP</span>';
@@ -406,17 +472,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
         * They are initiated with jQuery in the `pageInit()` function.
         * @return  {String} `inlineHtml`
         */
-        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from) {
-            var inlineHtml = '<div class="form-group container date_filter_section">';
+        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage) {
+            var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-
-            // inlineHtml += periodDropdownSection(start_date, last_date);
-
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container lead_entered_div hide">';
             inlineHtml += '<div class="row">';
             // Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
@@ -441,16 +504,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '</div></div></div></div>';
 
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container quote_sent_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE QUOTE SENT - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-
-            // inlineHtml += periodDropdownSection(start_date, last_date);
-
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container quote_sent_div hide">';
             inlineHtml += '<div class="row">';
             // Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
@@ -475,16 +535,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '</div></div></div></div>';
 
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container signed_up_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE SIGNED UP - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-
-            // inlineHtml += periodDropdownSection(start_date, last_date);
-
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container signed_up_div hide">';
             inlineHtml += '<div class="row">';
             // Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
@@ -511,16 +568,39 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
 
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container usage_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">MP PRODUCT USAGE DATE - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
+            inlineHtml += '<div class="form-group container calcprodusage_div hide">';
+            inlineHtml += '<div class="row">';
 
-            // inlineHtml += periodDropdownSection(start_date, last_date);
+            inlineHtml += '<div class="col-xs-12 calcprodusage">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="calcprodusage_text">CALCULATE MP PRODUCT USAGE?</span>';
+            inlineHtml += '<select id="calc_prod_usage" class="form-control">';
+            inlineHtml += '<option></option>';
 
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            if (calcprodusage == '1') {
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
+
+            } else if (calcprodusage == '2') {
+                inlineHtml += '<option value="1" >Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
+            } else {
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
+            }
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+
+
+            inlineHtml += '<div class="form-group container usage_date_div hide">';
             inlineHtml += '<div class="row">';
             // Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
@@ -545,16 +625,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '</div></div></div></div>';
 
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container invoice_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">INVOICE FILTERS</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-
-            // inlineHtml += periodDropdownSection(start_date, last_date);
-
-            inlineHtml += '<div class="form-group container date_filter_section">';
+            inlineHtml += '<div class="form-group container invoice_date_type_div hide">';
             inlineHtml += '<div class="row">';
             // Date from field
             inlineHtml += '<div class="col-xs-4 date_from">';
@@ -603,19 +680,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml +=
-                '<div class="form-group container zee_available_buttons_section">';
+                '<div class="form-group container filter_buttons_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
-                '<div class="col-xs-4"></div>'
+                '<div class="col-xs-2"></div>'
             inlineHtml +=
                 '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" style="background-color: #095C7B;" /></div>'
             inlineHtml +=
-                '<div class="col-xs-4"></div>'
+                '<div class="col-xs-4"><input type="button" value="CLEAR FILTER" class="form-control btn btn-primary" id="clearFilter" style="background-color: #F0AECB; color: #103d39;" /></div>'
+            inlineHtml +=
+                '<div class="col-xs-2"></div>'
 
             inlineHtml += '</div>';
             inlineHtml += '</div>';
-
-            // inlineHtml +=
             //     '<div class="form-group container zee_available_buttons_section">';
             // inlineHtml += '<div class="row">';
 
@@ -633,7 +710,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
         }
 
         function tabsSection() {
-            var inlineHtml = '<div >';
+            var inlineHtml = '<div class="tabs_section hide">';
 
             // Tabs headers
             inlineHtml +=
@@ -707,15 +784,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-
-
-            
-
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
-
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_prospects"></div>';
-            // inlineHtml += '</figure><br></br>';
 
             // Prospects Tabs headers
             inlineHtml +=
@@ -846,7 +915,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 ' {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-' +
                 name +
                 ' th{text-align: center;} .bolded{font-weight: bold;}</style>';
-            inlineHtml += '<table id="mpexusage-' +
+            inlineHtml += '<div class="table_section hide"><table id="mpexusage-' +
                 name +
                 '" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
             inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
@@ -864,8 +933,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (name == 'customer' || name == 'existing_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
-            if (name == 'suspects' || name == 'suspects_lost' || name == 'suspects_followup') {
+            if (name == 'suspects' || name == 'suspects_followup') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
+            }
+            if (name == 'suspects_lost') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'prospects_quoteSent_incontact_noanswer' || name == 'prospects_opportunites') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="13" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
@@ -875,7 +947,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
 
-            inlineHtml += '</table>';
+            inlineHtml += '</table></div>';
             return inlineHtml;
         }
         /**
@@ -883,34 +955,24 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
          * @returns {String} `inlineQty`
          */
         function loadingSection() {
-            var inlineHtml =
-                '<div id="loading_section" class="form-group container loading_section " style="text-align:center">';
+
+
+            var inlineHtml = '<div class="wrapper loading_section" style="height: 10em !important;left: 50px !important">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 loading_div">';
-            inlineHtml += '<h1>Loading...</h1>';
-            inlineHtml += '</div></div></div>';
+            inlineHtml += '<div class="col-xs-12 ">';
+            inlineHtml += '<h1 style="color: #095C7B;">Loading</h1>';
+            inlineHtml += '</div></div></div></br></br>';
+            inlineHtml += '<div class="wrapper loading_section">';
+            inlineHtml += '<div class="blue ball"></div>'
+            inlineHtml += '<div class="red ball"></div>'
+            inlineHtml += '<div class="yellow ball"></div>'
+            inlineHtml += '<div class="green ball"></div>'
+
+            inlineHtml += '</div>'
 
             return inlineHtml;
         }
 
-
-        /**
-         * Used to pass the values of `date_from` and `date_to` between the scripts and to Netsuite for the records and the search.
-         * @param   {String} date_iso       "2020-06-01"
-         * @returns {String} date_netsuite  "1/6/2020"
-         */
-        function dateISOToNetsuite(date_iso) {
-            var date_netsuite = '';
-            if (!isNullorEmpty(date_iso)) {
-                var date_utc = new Date(date_iso);
-                // var date_netsuite = nlapiDateToString(date_utc);
-                var date_netsuite = format.format({
-                    value: date_utc,
-                    type: format.Type.DATE
-                });
-            }
-            return date_netsuite;
-        }
 
         function GetFormattedDate(todayDate) {
 

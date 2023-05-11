@@ -50,6 +50,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var invoiceType = null;
         var lead_source = null;
         var sales_rep = null;
+        var calcprodusage = null;
 
         var total_months = 14;
 
@@ -162,40 +163,54 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
         function pageLoad() {
-            $('.range_filter_section').addClass('hide');
-            $('.range_filter_section_top').addClass('hide');
-            $('.date_filter_section').addClass('hide');
-            $('.period_dropdown_section').addClass('hide');
-
-            $('.loading_section').removeClass('hide');
-        }
-
-        function beforeSubmit() {
-            $('#customer_benchmark_preview').hide();
-            $('#customer_benchmark_preview').addClass('hide');
+            $('.zee_label_section').addClass('hide');
+            $('.zee_dropdown_section').addClass('hide');
+            $('.source_salesrep_label_section').addClass('hide');
+            $('.source_salesrep_section').addClass('hide');
 
             $('.loading_section').removeClass('hide');
         }
 
         function afterSubmit() {
-            $('.date_filter_section').removeClass('hide');
-            $('.period_dropdown_section').removeClass('hide');
+            // $('.date_filter_section').removeClass('hide');
+            // $('.period_dropdown_section').removeClass('hide');
 
+
+
+
+            // if (!isNullorEmpty($('#result_customer_benchmark').val())) {
+            //     $('#customer_benchmark_preview').removeClass('hide');
+            //     $('#customer_benchmark_preview').show();
+            // }
+
+            // $('#result_customer_benchmark').on('change', function () {
+            //     $('#customer_benchmark_preview').removeClass('hide');
+            //     $('#customer_benchmark_preview').show();
+            // });
+
+            // $('#customer_benchmark_preview').removeClass('hide');
+            // $('#customer_benchmark_preview').show();
+
+            $('.zee_label_section').removeClass('hide');
+            $('.show_buttons_section').removeClass('hide');
+            $('.zee_dropdown_section').removeClass('hide');
+            $('.source_salesrep_label_section').removeClass('hide');
+            $('.source_salesrep_section').removeClass('hide');
+            $('.lead_entered_label_section').removeClass('hide');
+            $('.lead_entered_div').removeClass('hide');
+            $('.quote_sent_label_section').removeClass('hide');
+            $('.quote_sent_div').removeClass('hide');
+            $('.signed_up_label_section').removeClass('hide');
+            $('.signed_up_div').removeClass('hide');
+            $('.usage_label_section').removeClass('hide');
+            $('.calcprodusage_div').removeClass('hide');
+            $('.usage_date_div').removeClass('hide');
+            $('.invoice_label_section').removeClass('hide');
+            $('.invoice_date_type_div').removeClass('hide');
+            $('.filter_buttons_section').removeClass('hide');
+            $('.tabs_section').removeClass('hide');
+            $('.table_section').removeClass('hide');
             $('.loading_section').addClass('hide');
-
-
-            if (!isNullorEmpty($('#result_customer_benchmark').val())) {
-                $('#customer_benchmark_preview').removeClass('hide');
-                $('#customer_benchmark_preview').show();
-            }
-
-            $('#result_customer_benchmark').on('change', function () {
-                $('#customer_benchmark_preview').removeClass('hide');
-                $('#customer_benchmark_preview').show();
-            });
-
-            $('#customer_benchmark_preview').removeClass('hide');
-            $('#customer_benchmark_preview').show();
         }
 
         function pageInit() {
@@ -203,6 +218,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $("#NS_MENU_ID0-item0").css("background-color", "#CFE0CE");
             $("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
             $("#body").css("background-color", "#CFE0CE");
+            // pageLoad();
 
 
             debtDataSet = [];
@@ -236,36 +252,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             lead_source = $('#lead_source').val();
             sales_rep = $('#sales_rep').val();
             invoice_type = $('#invoice_type').val();
-
-
-
-
-            /**
-             *  Submit Button Function
-             */
-            $('#submit').click(function () {
-                // Ajax request
-                var fewSeconds = 10;
-                var btn = $(this);
-                btn.addClass('disabled');
-                // btn.addClass('')
-                setTimeout(function () {
-                    btn.removeClass('disabled');
-                }, fewSeconds * 1000);
-
-
-
-                beforeSubmit();
-                submitSearch();
-
-                return true;
-            });
+            calcprodusage = $('#calc_prod_usage').val();
 
 
             /**
              *  Auto Load Submit Search and Load Results on Page Initialisation
              */
-            pageLoad();
+
             submitSearch();
             var dataTable = $('#customer_benchmark_preview').DataTable();
 
@@ -274,6 +267,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var today_year = today.getFullYear();
             var today_month = today.getMonth();
             var today_day = today.getDate();
+
+            $("#show_filter").click(function () {
+                if ($('#show_filter').val() == 'SHOW FILTERS') {
+                    $('#show_filter').val('HIDE FILTERS');
+                    $('#show_filter').css("background-color", "#F0AECB");
+                    $('#show_filter').css("color", "#103d39");
+                } else {
+                    $('#show_filter').val('SHOW FILTERS');
+                    $('#show_filter').css("background-color", "#EAF044 !important");
+                    $('#show_filter').css("color", "#103d39");
+                }
+
+            });
 
             $("#applyFilter").click(function () {
 
@@ -296,6 +302,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var source = $('#lead_source').val();
 
                 var sales_rep = $('#sales_rep').val();
+                calcprodusage = $('#calc_prod_usage').val();
+
+                zee = $(
+                    '#zee_dropdown option:selected').val();
 
                 if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
                     if ((isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))) {
@@ -308,14 +318,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
                 if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
                 } else if ((isNullorEmpty(date_to) || isNullorEmpty(date_from))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
                 } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
                 } else {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep;
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
                 }
+
+                window.location.href = url;
+
+            });
+
+            $("#clearFilter").click(function () {
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1"
 
                 window.location.href = url;
 
@@ -334,19 +352,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
         }
 
-        function adhocNewCustomers() {
-            if (isNullorEmpty(invoiceType)) {
-                var url = baseURL +
-                    "/app/site/hosting/scriptlet.nl?script=1226&deploy=1";
-            } else {
-                var url = baseURL +
-                    "/app/site/hosting/scriptlet.nl?script=1226&deploy=1&invoicetype=" +
-                    invoiceType;
-            }
-
-            window.location.href = url;
-        }
-
         //Initialise the DataTable with headers.
         function submitSearch() {
 
@@ -355,7 +360,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             zee = $(
                 '#zee_dropdown option:selected').val();
 
-            loadDebtRecord(zee, userId);
+            loadDatatable(zee, userId);
 
             console.log('Loaded Results');
             afterSubmit();
@@ -374,13 +379,45 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             window.location.href = url;
         }
 
-        function loadDebtRecord(zee_id, userId) {
+        function loadDatatable(zee_id, userId) {
+
+            console.log('Website New Leads - Signed - Weekly Reporting')
+            console.log('date_from: ' + date_from);
+            console.log('date_to ' + date_to);
+
+            console.log('usage_date_from: ' + usage_date_from);
+            console.log('usage_date_to ' + usage_date_to);
+
+            console.log('usage_date_from: ' + usage_date_from);
+            console.log('usage_date_to ' + usage_date_to);
+
+
+            console.log('date_signed_up_from: ' + date_signed_up_from);
+            console.log('date_signed_up_to ' + date_signed_up_to);
+
+            console.log('date_quote_sent_from: ' + date_quote_sent_from);
+            console.log('date_quote_sent_to ' + date_quote_sent_to);
+
+            console.log('lead_source ' + lead_source);
+            console.log('sales_rep ' + sales_rep);
+            console.log('invoice_type ' + invoice_type);
+
+            console.log('zee_id ' + zee_id);
 
             //Customer Cancellation - Requested Date - All
             var customerCancellationRequestedDateSearch = search.load({
                 type: 'customer',
                 id: 'customsearch_cust_cancellation_request_3'
             });
+
+            if (!isNullorEmpty(zee_id)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
 
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
@@ -406,6 +443,49 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.ANYOF,
+                    values: lead_source
                 }));
             }
 
@@ -557,6 +637,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 id: 'customsearch_cust_cancellation_request_2'
             });
 
+            if (!isNullorEmpty(zee_id)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 customerCancellationRequesteSearch.filters.push(search.createFilter({
@@ -583,6 +672,50 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     values: sales_rep
                 }));
             }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.ANYOF,
+                    values: lead_source
+                }));
+            }
+
+
 
             var totalCancellationRequest = 0;
             var customerSavedCount = 0;
@@ -625,11 +758,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'custentity_customer_saved',
                     summary: "GROUP",
                 });
-                var customerSavedDate = customerCancellationRequesteSearchResultSet.getText({
+                var customerSavedDate = customerCancellationRequesteSearchResultSet.getValue({
                     name: 'custentity_customer_saved_date',
                     summary: "GROUP",
                 });
-                var monthlyServiceRevenue = parseFloat(customerCancellationRequesteSearchResultSet.getText({
+                var monthlyServiceRevenue = parseFloat(customerCancellationRequesteSearchResultSet.getValue({
                     name: 'custentity_monthly_reduc_service_revenue',
                     summary: "GROUP",
                 }));
@@ -822,23 +955,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 id: 'customsearch_leads_reporting_weekly_2'
             });
 
-            console.log('Website New Leads - Signed - Weekly Reporting')
-            console.log('date_from: ' + date_from);
-            console.log('date_to ' + date_to);
-
-            console.log('usage_date_from: ' + usage_date_from);
-            console.log('usage_date_to ' + usage_date_to);
-
-            console.log('usage_date_from: ' + usage_date_from);
-            console.log('usage_date_to ' + usage_date_to);
-
-
-            console.log('date_signed_up_from: ' + date_signed_up_from);
-            console.log('date_signed_up_to ' + date_signed_up_to);
-
-            console.log('date_quote_sent_from: ' + date_quote_sent_from);
-            console.log('date_quote_sent_to ' + date_quote_sent_to);
-
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
@@ -892,7 +1008,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'leadsource',
                     join: null,
-                    operator: search.Operator.IS,
+                    operator: search.Operator.ANYOF,
                     values: lead_source
                 }));
             }
@@ -905,6 +1021,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     values: sales_rep
                 }));
             }
+
+            if (!isNullorEmpty(zee_id)) {
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
 
             total_customer_signed = 0;
             var count_customer_signed = 0;
@@ -1196,6 +1322,32 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+
+            if (!isNullorEmpty(zee_id)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
             var count2 = 0;
             var oldDate2 = null;
 
@@ -1467,6 +1619,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
             var count2 = 0;
             var oldDate2 = null;
 
@@ -1578,7 +1755,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             // Website New Leads - Suspects - Weekly Reporting
             var suspectsListBySalesRepWeeklySearch = search.load({
-                type: 'customer',
+                type: 'lead',
                 id: 'customsearch_leads_reporting_weekly_2__2'
             });
 
@@ -1629,6 +1806,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
                 }));
             }
 
@@ -1765,6 +1967,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 });
             }
 
+            console.log('debt_set5: ' + debt_set5)
             var suspectsChartDatSet = [];
             if (!isNullorEmpty(debt_set5)) {
                 debt_set5
@@ -1877,6 +2080,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
                 }));
             }
 
@@ -2107,6 +2335,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(zee_id)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
             suspectsOffPeakPipelineBySalesRepWeeklySearch.run().each(function (
                 suspectsLostBySalesRepWeeklySearchResultSet) {
 
@@ -2256,6 +2509,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(zee_id)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
 
             suspectsOOTBySalesRepWeeklySearch.run().each(function (
                 suspectsOOTBySalesRepWeeklySearchResultSet) {
@@ -2402,6 +2680,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
                 }));
             }
 
@@ -2567,6 +2870,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
                 }));
             }
 
@@ -3259,10 +3571,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data28,
                 series_data29, series_data31, series_data32, series_data33, series_data34, categores1)
 
-            //Website Leads - Reporting
+            
             var websiteLeadsReportingSearch = search.load({
                 type: 'customer',
-                id: 'customsearch_leads_reporting'
+                // id: 'customsearch_leads_reporting' //Website Leads - Reporting
+                id: 'customsearch_leads_reporting_5' //Website Leads - Reporting V2
             });
 
             if (!isNullorEmpty(zee_id)) {
@@ -3370,7 +3683,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var oldPreviousCarrier = null;
             var oldMonthServiceValue = 0.0;
 
+            var oldAvgInvoiceValue = 0.0;
 
+            var csvSuspectDataSet = [];
+            var csvSuspectLostDataSet = [];
+            var csvSuspectOffPeakDataSet = [];
+            var csvSuspectOOTDataSet = [];
+            var csvSuspectFollowUpDataSet = [];
+            var csvProspectDataSet = [];
+            var csvProspectOpportunityDataSet = [];
 
 
             var count = 0;
@@ -3378,136 +3699,179 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             websiteLeadsReportingSearch.run().each(function (custListCommenceTodaySet) {
 
                 var custInternalID = custListCommenceTodaySet.getValue({
-                    name: 'internalid'
+                    name: 'internalid',
+                    summary: "GROUP",
                 });
                 var custEntityID = custListCommenceTodaySet.getValue({
-                    name: 'entityid'
+                    name: 'entityid',
+                    summary: "GROUP",
                 });
                 var custName = custListCommenceTodaySet.getValue({
-                    name: 'companyname'
+                    name: 'companyname',
+                    summary: "GROUP",
                 });
                 var zeeID = custListCommenceTodaySet.getValue({
-                    name: 'partner'
+                    name: 'partner',
+                    summary: "GROUP",
                 });
                 var zeeName = custListCommenceTodaySet.getText({
-                    name: 'partner'
+                    name: 'partner',
+                    summary: "GROUP",
                 });
 
                 var custStage = (custListCommenceTodaySet.getText({
-                    name: 'stage'
+                    name: 'stage',
+                    summary: "GROUP",
                 })).toUpperCase();
 
                 var custStatusId = custListCommenceTodaySet.getValue({
-                    name: 'entitystatus'
+                    name: 'entitystatus',
+                    summary: "GROUP",
                 })
 
                 var custStatus = custListCommenceTodaySet.getText({
-                    name: 'entitystatus'
+                    name: 'entitystatus',
+                    summary: "GROUP",
                 }).toUpperCase();
 
                 var dateLeadEntered = custListCommenceTodaySet.getValue({
-                    name: "custentity_date_lead_entered"
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
                 });
 
                 var quoteSentDate = custListCommenceTodaySet.getValue({
-                    name: "custentity_date_lead_quote_sent"
+                    name: "custentity_date_lead_quote_sent",
+                    summary: "GROUP",
                 });
 
                 var dateLeadLost = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_lead_lost'
+                    name: 'custentity_date_lead_lost',
+                    summary: "GROUP",
                 });
                 var dateLeadinContact = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_prospect_in_contact'
+                    name: 'custentity_date_prospect_in_contact',
+                    summary: "GROUP",
                 });
 
                 var dateProspectWon = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_prospect_opportunity'
+                    name: 'custentity_date_prospect_opportunity',
+                    summary: "GROUP",
                 });
 
                 var dateLeadReassigned = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_suspect_reassign'
+                    name: 'custentity_date_suspect_reassign',
+                    summary: "GROUP",
                 });
 
                 var salesRepId = custListCommenceTodaySet.getValue({
                     name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
                 });
                 var salesRepText = custListCommenceTodaySet.getText({
                     name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
                 });
 
                 var activityInternalID = custListCommenceTodaySet.getValue({
                     name: "internalid",
-                    join: "activity"
+                    join: "activity",
+                    summary: "GROUP",
                 })
                 var activityStartDate = custListCommenceTodaySet.getValue({
                     name: "startdate",
                     join: "activity",
+                    summary: "GROUP",
                 })
                 var activityTitle = custListCommenceTodaySet.getValue({
                     name: "title",
-                    join: "activity"
+                    join: "activity",
+                    summary: "GROUP",
                 })
 
 
                 if (isNullorEmpty(custListCommenceTodaySet.getText({
                     name: "custevent_organiser",
-                    join: "activity"
+                    join: "activity",
+                    summary: "GROUP",
                 }))) {
                     var activityOrganiser = custListCommenceTodaySet.getText({
                         name: "assigned",
-                        join: "activity"
+                        join: "activity",
+                        summary: "GROUP",
                     })
                 } else {
                     var activityOrganiser = custListCommenceTodaySet.getText({
                         name: "custevent_organiser",
-                        join: "activity"
+                        join: "activity",
+                        summary: "GROUP",
                     })
                 }
 
 
                 var activityMessage = custListCommenceTodaySet.getValue({
                     name: "message",
-                    join: "activity"
+                    join: "activity",
+                    summary: "GROUP",
                 })
 
                 var email48h = custListCommenceTodaySet.getText({
-                    name: 'custentity_48h_email_sent'
+                    name: 'custentity_48h_email_sent',
+                    summary: "GROUP",
                 });
 
                 var daysOpen = custListCommenceTodaySet.getValue({
                     name: "formulanumeric",
+                    summary: "GROUP",
                 });
 
                 var cancellationReason = custListCommenceTodaySet.getText({
                     name: "custentity_service_cancellation_reason",
+                    summary: "GROUP",
                 });
 
                 var source = custListCommenceTodaySet.getText({
                     name: "leadsource",
+                    summary: "GROUP",
                 });
 
                 var productWeeklyUsage = custListCommenceTodaySet.getText({
                     name: "custentity_form_mpex_usage_per_week",
+                    summary: "GROUP",
                 });
 
                 var autoSignUp = custListCommenceTodaySet.getValue({
                     name: "custentity_auto_sign_up",
+                    summary: "GROUP",
                 });
 
                 var previousCarrier = custListCommenceTodaySet.getText({
                     name: "custentity_previous_carrier",
+                    summary: "GROUP",
                 });
 
                 var monthlyServiceValue = (custListCommenceTodaySet.getValue({
                     name: "custentity_cust_monthly_service_value",
+                    summary: "GROUP",
+                }));
+
+                var avgInvoiceValue = (custListCommenceTodaySet.getValue({
+                    name: "total",
+                    join: "transaction",
+                    summary: "AVG",
                 }));
 
                 if (!isNullorEmpty(monthlyServiceValue)) {
-                    monthlyServiceValue = parseFloat(monthlyServiceValue);
+                    monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
                 } else {
                     monthlyServiceValue = 0.0;
+                }
+
+                if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+                    avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+                } else {
+                    avgInvoiceValue = 0.0;
                 }
 
 
@@ -3826,21 +4190,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP') {
 
-                        // totalSuspectCount++;
-                        // if (oldCustStatusId == 57) {
-                        //     //SUSPECT - HOT LEAD
-                        //     totalSuspectHotLeadCount++;
-                        // } else if (oldCustStatusId == 6) {
-                        //     //SUSPECT - NEW
-                        //     // totalSuspect++
-                        // } else if (oldCustStatusId == 22) {
-                        //     SUSPECT - CUSTOMER - LOST
-                        //     totalSuspectCustomerLostCount++
-                        // } else if (oldcustStaoldCustStatusIdtus == 57) {
-                        //     //SUSPECT - REP REASSIGN
-                        //     totalSuspectRepReassign++;
-                        // }
-
                         suspectDataSet.push(['',
                             oldcustInternalID,
                             oldcustEntityID,
@@ -3852,7 +4201,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldquoteSentDate,
-                            olddateLeadReassigned,
+                            olddateProspectWon,
                             olddateLeadLost,
                             oldemail48h,
                             oldDaysOpen,
@@ -3861,22 +4210,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldsalesRepText,
                             suspectChildDataSet
                         ]);
+
+                        csvSuspectDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+
+
+
                     } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
 
-                        // totalSuspectCount++;
-                        // if (oldcustStatus == 57) {
-                        //     //SUSPECT - HOT LEAD
-                        //     totalSuspectHotLeadCount++;
-                        // } else if (oldcustStatus == 59) {
-                        //     //SUSPECT - LOST
-                        //     totalSuspectLostCount++
-                        // } else if (oldcustStatus == 22) {
-                        //     //SUSPECT - CUSTOMER - LOST
-                        //     totalSuspectCustomerLostCount++
-                        // } else if (oldcustStatus == 57) {
-                        //     //SUSPECT - REP REASSIGN
-                        //     totalSuspectRepReassign++;
-                        // }
 
                         suspectLostDataSet.push(['',
                             oldcustInternalID,
@@ -3889,31 +4247,35 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldquoteSentDate,
-                            olddateLeadReassigned,
+                            olddateProspectWon,
                             olddateLeadLost,
                             oldemail48h,
                             oldDaysOpen,
                             oldCancellationReason,
-                            oldMonthServiceValue,
+                            oldMonthServiceValue, oldAvgInvoiceValue,
                             oldsalesRepText,
                             suspectLostChildDataSet
                         ]);
+                        csvSuspectLostDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue, oldAvgInvoiceValue,
+                            oldsalesRepText
+                        ]);
                     } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
-
-                        // totalSuspectCount++;
-                        // if (oldcustStatus == 57) {
-                        //     //SUSPECT - HOT LEAD
-                        //     totalSuspectHotLeadCount++;
-                        // } else if (oldcustStatus == 59) {
-                        //     //SUSPECT - LOST
-                        //     totalSuspectLostCount++
-                        // } else if (oldcustStatus == 22) {
-                        //     //SUSPECT - CUSTOMER - LOST
-                        //     totalSuspectCustomerLostCount++
-                        // } else if (oldcustStatus == 57) {
-                        //     //SUSPECT - REP REASSIGN
-                        //     totalSuspectRepReassign++;
-                        // }
 
                         suspectOffPeakDataSet.push(['',
                             oldcustInternalID,
@@ -3935,22 +4297,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldsalesRepText,
                             suspectOffPeakChildDataSet
                         ]);
+                        csvSuspectOffPeakDataSet.push([,
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
                     } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
-                        // totalSuspectCount++;
-                        // if (oldcustStatus == 57) {
-                        //     //SUSPECT - HOT LEAD
-                        //     totalSuspectHotLeadCount++;
-                        // } else if (oldcustStatus == 59) {
-                        //     //SUSPECT - LOST
-                        //     totalSuspectLostCount++
-                        // } else if (oldcustStatus == 22) {
-                        //     //SUSPECT - CUSTOMER - LOST
-                        //     totalSuspectCustomerLostCount++
-                        // } else if (oldcustStatus == 57) {
-                        //     //SUSPECT - REP REASSIGN
-                        //     totalSuspectRepReassign++;
-                        // }
 
                         suspectOOTDataSet.push(['',
                             oldcustInternalID,
@@ -3972,22 +4339,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldsalesRepText,
                             suspectOOTChildDataSet
                         ]);
-                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
 
-                        // totalSuspectCount++;
-                        // if (oldcustStatus == 57) {
-                        //     //SUSPECT - HOT LEAD
-                        //     totalSuspectHotLeadCount++;
-                        // } else if (oldcustStatus == 59) {
-                        //     //SUSPECT - LOST
-                        //     totalSuspectLostCount++
-                        // } else if (oldcustStatus == 22) {
-                        //     //SUSPECT - CUSTOMER - LOST
-                        //     totalSuspectCustomerLostCount++
-                        // } else if (oldcustStatus == 57) {
-                        //     //SUSPECT - REP REASSIGN
-                        //     totalSuspectRepReassign++;
-                        // }
+                        csvSuspectOOTDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
 
                         suspectFollowUpDataSet.push(['',
                             oldcustInternalID,
@@ -4008,6 +4380,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             suspectFollowUpChildDataSet
+                        ]);
+
+                        csvSuspectFollowUpDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
                         ]);
                     } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
 
@@ -4038,6 +4430,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             prospectChildDataSet
+                        ]);
+
+                        csvProspectDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
                         ]);
 
 
@@ -4071,110 +4480,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldsalesRepText,
                             prospectOpportunityChildDataSet
                         ]);
+                        csvProspectOpportunityDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
 
 
                     }
-                    // else if (oldcustStage == 'CUSTOMER') {
 
-                    //     totalCustomerCount++;
-
-                    //     var express_speed = 0;
-                    //     var standard_speed = 0;
-                    //     var total_usage = 0;
-                    //     if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                    //         // Customer Product Usage - Total MP Express & Standard
-                    //         var mpexUsageResults = search.load({
-                    //             type: 'customrecord_customer_product_stock',
-                    //             id: 'customsearch6846'
-                    //         });
-
-
-                    //         mpexUsageResults.filters.push(search.createFilter({
-                    //             name: 'internalid',
-                    //             join: 'custrecord_cust_prod_stock_customer',
-                    //             operator: search.Operator.ANYOF,
-                    //             values: parseInt(oldcustInternalID)
-                    //         }));
-
-                    //         if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                    //             mpexUsageResults.filters.push(search.createFilter({
-                    //                 name: 'custrecord_cust_date_stock_used',
-                    //                 join: null,
-                    //                 operator: search.Operator.ONORAFTER,
-                    //                 values: usage_date_from
-                    //             }));
-                    //             mpexUsageResults.filters.push(search.createFilter({
-                    //                 name: 'custrecord_cust_date_stock_used',
-                    //                 join: null,
-                    //                 operator: search.Operator.ONORBEFORE,
-                    //                 values: usage_date_to
-                    //             }));
-
-                    //         }
-
-
-
-                    //         mpexUsageResults.run().each(function (mpexUsageSet) {
-
-                    //             var deliverySpeed = mpexUsageSet.getValue({
-                    //                 name: 'custrecord_delivery_speed',
-                    //                 summary: 'GROUP'
-                    //             });
-                    //             var deliverySpeedText = mpexUsageSet.getText({
-                    //                 name: 'custrecord_delivery_speed',
-                    //                 summary: 'GROUP'
-                    //             });
-
-
-                    //             var mpexUsage = parseInt(mpexUsageSet.getValue({
-                    //                 name: 'name',
-                    //                 summary: 'COUNT'
-                    //             }));
-
-                    //             if (deliverySpeed == 2 ||
-                    //                 deliverySpeedText == '- None -') {
-                    //                 express_speed += mpexUsage;
-                    //             } else if (deliverySpeed == 1) {
-                    //                 standard_speed += mpexUsage;
-                    //             }
-                    //             total_usage += express_speed + standard_speed;
-
-                    //             return true;
-                    //         });
-                    //     }
-
-                    //     console.log(oldcustName + 'MP Exp: ' + express_speed);
-                    //     console.log(oldcustName + 'MP Std: ' + standard_speed);
-
-                    //     var mpExpStdUsageLink =
-                    //         '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
-
-                    //     customerDataSet.push(['',
-                    //         oldcustInternalID,
-                    //         oldcustEntityID,
-                    //         oldcustName,
-                    //         oldzeeName,
-                    //         oldSource,
-                    //         oldProdWeeklyUsage,
-                    //         oldPreviousCarrier,
-                    //         express_speed,
-                    //         standard_speed,
-                    //         mpExpStdUsageLink,
-                    //         olddateLeadEntered,
-                    //         oldquoteSentDate,
-                    //         oldemail48h,
-                    //         olddateProspectWon,
-                    //         oldDaysOpen,
-                    //         oldMonthServiceValue,
-                    //         oldsalesRepText,
-                    //         oldAutoSignUp,
-                    //         customerChildDataSet
-                    //     ]);
-
-
-                    // }
-
-                    // customerChildDataSet = [];
                     prospectChildDataSet = [];
                     prospectOpportunityChildDataSet = [];
                     suspectChildDataSet = [];
@@ -4291,6 +4616,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 oldAutoSignUp = autoSignUp;
                 oldPreviousCarrier = previousCarrier;
                 oldMonthServiceValue = monthlyServiceValue;
+                oldAvgInvoiceValue = avgInvoiceValue;
                 count++
                 return true;
             });
@@ -4298,21 +4624,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             if (count > 0) {
 
                 if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP') {
-
-                    // totalSuspectCount++;
-                    // if (oldCustStatusId == 57) {
-                    //     //SUSPECT - HOT LEAD
-                    //     // totalSuspectHotLeadCount++;
-                    // } else if (oldCustStatusId == 6) {
-                    //     //SUSPECT - NEW
-                    //     // totalSuspect++
-                    // } else if (oldCustStatusId == 22) {
-                    //     //SUSPECT - CUSTOMER - LOST
-                    //     totalSuspectCustomerLostCount++
-                    // } else if (oldcustStaoldCustStatusIdtus == 57) {
-                    //     //SUSPECT - REP REASSIGN
-                    //     totalSuspectRepReassign++;
-                    // }
 
                     suspectDataSet.push(['',
                         oldcustInternalID,
@@ -4334,22 +4645,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldsalesRepText,
                         suspectChildDataSet
                     ]);
-                } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
 
-                    // totalSuspectCount++;
-                    // if (oldcustStatus == 57) {
-                    //     //SUSPECT - HOT LEAD
-                    //     totalSuspectHotLeadCount++;
-                    // } else if (oldcustStatus == 59) {
-                    //     //SUSPECT - LOST
-                    //     totalSuspectLostCount++
-                    // } else if (oldcustStatus == 22) {
-                    //     //SUSPECT - CUSTOMER - LOST
-                    //     totalSuspectCustomerLostCount++
-                    // } else if (oldcustStatus == 57) {
-                    //     //SUSPECT - REP REASSIGN
-                    //     totalSuspectRepReassign++;
-                    // }
+                    csvSuspectDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+                } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
 
                     suspectLostDataSet.push(['',
                         oldcustInternalID,
@@ -4362,31 +4678,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldPreviousCarrier,
                         olddateLeadEntered,
                         oldquoteSentDate,
-                        olddateLeadReassigned,
+                        olddateProspectWon,
                         olddateLeadLost,
                         oldemail48h,
                         oldDaysOpen,
                         oldCancellationReason,
-                        oldMonthServiceValue,
+                        oldMonthServiceValue, oldAvgInvoiceValue,
                         oldsalesRepText,
                         suspectLostChildDataSet
                     ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
-                    // totalSuspectCount++;
-                    // if (oldcustStatus == 57) {
-                    //     //SUSPECT - HOT LEAD
-                    //     totalSuspectHotLeadCount++;
-                    // } else if (oldcustStatus == 59) {
-                    //     //SUSPECT - LOST
-                    //     totalSuspectLostCount++
-                    // } else if (oldcustStatus == 22) {
-                    //     //SUSPECT - CUSTOMER - LOST
-                    //     totalSuspectCustomerLostCount++
-                    // } else if (oldcustStatus == 57) {
-                    //     //SUSPECT - REP REASSIGN
-                    //     totalSuspectRepReassign++;
-                    // }
+                    csvSuspectLostDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue, oldAvgInvoiceValue,
+                        oldsalesRepText
+                    ]);
+                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
                     suspectOffPeakDataSet.push(['',
                         oldcustInternalID,
@@ -4408,22 +4729,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldsalesRepText,
                         suspectOffPeakChildDataSet
                     ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
-                    // totalSuspectCount++;
-                    // if (oldcustStatus == 57) {
-                    //     //SUSPECT - HOT LEAD
-                    //     totalSuspectHotLeadCount++;
-                    // } else if (oldcustStatus == 59) {
-                    //     //SUSPECT - LOST
-                    //     totalSuspectLostCount++
-                    // } else if (oldcustStatus == 22) {
-                    //     //SUSPECT - CUSTOMER - LOST
-                    //     totalSuspectCustomerLostCount++
-                    // } else if (oldcustStatus == 57) {
-                    //     //SUSPECT - REP REASSIGN
-                    //     totalSuspectRepReassign++;
-                    // }
+                    csvSuspectOffPeakDataSet.push([,
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
                     suspectOOTDataSet.push(['',
                         oldcustInternalID,
@@ -4445,22 +4771,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldsalesRepText,
                         suspectOOTChildDataSet
                     ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
 
-                    // totalSuspectCount++;
-                    // if (oldcustStatus == 57) {
-                    //     //SUSPECT - HOT LEAD
-                    //     totalSuspectHotLeadCount++;
-                    // } else if (oldcustStatus == 59) {
-                    //     //SUSPECT - LOST
-                    //     totalSuspectLostCount++
-                    // } else if (oldcustStatus == 22) {
-                    //     //SUSPECT - CUSTOMER - LOST
-                    //     totalSuspectCustomerLostCount++
-                    // } else if (oldcustStatus == 57) {
-                    //     //SUSPECT - REP REASSIGN
-                    //     totalSuspectRepReassign++;
-                    // }
+                    csvSuspectOOTDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
 
                     suspectFollowUpDataSet.push(['',
                         oldcustInternalID,
@@ -4481,6 +4812,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldMonthServiceValue,
                         oldsalesRepText,
                         suspectFollowUpChildDataSet
+                    ]);
+
+                    csvSuspectFollowUpDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
                     ]);
                 } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
 
@@ -4511,6 +4862,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldMonthServiceValue,
                         oldsalesRepText,
                         prospectChildDataSet
+                    ]);
+
+                    csvProspectDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldMonthServiceValue,
+                        oldsalesRepText
                     ]);
 
                 } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-OPPORTUNITY') {
@@ -4544,115 +4912,32 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         prospectOpportunityChildDataSet
                     ]);
 
+                    csvProspectOpportunityDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
 
                 }
-                // else
-                //     if (oldcustStage == 'CUSTOMER') {
-
-                //     totalCustomerCount++;
-
-                //     var express_speed = 0;
-                //     var standard_speed = 0;
-                //     var total_usage = 0;
-                //     if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                //         // Customer Product Usage - Total MP Express & Standard
-                //         var mpexUsageResults = search.load({
-                //             type: 'customrecord_customer_product_stock',
-                //             id: 'customsearch6846'
-                //         });
-
-
-                //         mpexUsageResults.filters.push(search.createFilter({
-                //             name: 'internalid',
-                //             join: 'custrecord_cust_prod_stock_customer',
-                //             operator: search.Operator.ANYOF,
-                //             values: parseInt(oldcustInternalID)
-                //         }));
-
-                //         if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                //             mpexUsageResults.filters.push(search.createFilter({
-                //                 name: 'custrecord_cust_date_stock_used',
-                //                 join: null,
-                //                 operator: search.Operator.ONORAFTER,
-                //                 values: usage_date_from
-                //             }));
-                //             mpexUsageResults.filters.push(search.createFilter({
-                //                 name: 'custrecord_cust_date_stock_used',
-                //                 join: null,
-                //                 operator: search.Operator.ONORBEFORE,
-                //                 values: usage_date_to
-                //             }));
-
-                //         }
-
-
-
-                //         mpexUsageResults.run().each(function (mpexUsageSet) {
-
-                //             var deliverySpeed = mpexUsageSet.getValue({
-                //                 name: 'custrecord_delivery_speed',
-                //                 summary: 'GROUP'
-                //             });
-                //             var deliverySpeedText = mpexUsageSet.getText({
-                //                 name: 'custrecord_delivery_speed',
-                //                 summary: 'GROUP'
-                //             });
-
-
-                //             var mpexUsage = parseInt(mpexUsageSet.getValue({
-                //                 name: 'name',
-                //                 summary: 'COUNT'
-                //             }));
-
-                //             if (deliverySpeed == 2 ||
-                //                 deliverySpeedText == '- None -') {
-                //                 express_speed += mpexUsage;
-                //             } else if (deliverySpeed == 1) {
-                //                 standard_speed += mpexUsage;
-                //             }
-                //             total_usage += express_speed + standard_speed;
-
-                //             return true;
-                //         });
-                //     }
-
-                //     console.log(oldcustName + 'MP Exp: ' + express_speed);
-                //     console.log(oldcustName + 'MP Std: ' + standard_speed);
-
-                //     var mpExpStdUsageLink =
-                //         '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL USAGE</a></button>';
-
-                //     customerDataSet.push(['',
-                //         oldcustInternalID,
-                //         oldcustEntityID,
-                //         oldcustName,
-                //         oldzeeName,
-                //         oldSource,
-                //         oldProdWeeklyUsage,
-                //         oldPreviousCarrier,
-                //         express_speed,
-                //         standard_speed,
-                //         mpExpStdUsageLink,
-                //         olddateLeadEntered,
-                //         oldquoteSentDate,
-                //         oldemail48h,
-                //         olddateProspectWon,
-                //         oldDaysOpen,
-                //         oldMonthServiceValue,
-                //         oldsalesRepText,
-                //         oldAutoSignUp,
-                //         customerChildDataSet
-                //     ]);
-
-                // }
             }
 
 
-            //New Search:
-            //Website Leads - Customer Signed - Reporting
+            
             var websiteLeadsReportingSearch = search.load({
                 type: 'customer',
-                id: 'customsearch_leads_reporting_4'
+                // id: 'customsearch_leads_reporting_4' //Website Leads - Customer Signed - Reporting
+                id: 'customsearch_leads_reporting_4_2' //Website Leads - Customer Signed - Reporting V2
             });
 
             if (!isNullorEmpty(zee_id)) {
@@ -4814,140 +5099,172 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var count = 0;
 
             csvCustomerSignedExport = [];
+            csvExistingCustomerSignedExport = [];
 
             websiteLeadsReportingSearch.run().each(function (custListCommenceTodaySet) {
 
                 var custInternalID = custListCommenceTodaySet.getValue({
-                    name: 'internalid'
+                    name: 'internalid',
+                    summary: "GROUP",
                 });
                 var custEntityID = custListCommenceTodaySet.getValue({
-                    name: 'entityid'
+                    name: 'entityid',
+                    summary: "GROUP",
                 });
                 var custName = custListCommenceTodaySet.getValue({
-                    name: 'companyname'
+                    name: 'companyname',
+                    summary: "GROUP",
                 });
                 var zeeID = custListCommenceTodaySet.getValue({
-                    name: 'partner'
+                    name: 'partner',
+                    summary: "GROUP",
                 });
                 var zeeName = custListCommenceTodaySet.getText({
-                    name: 'partner'
+                    name: 'partner',
+                    summary: "GROUP",
                 });
 
                 var custStage = (custListCommenceTodaySet.getText({
-                    name: 'stage'
+                    name: 'stage',
+                    summary: "GROUP",
                 })).toUpperCase();
 
                 var custStatusId = custListCommenceTodaySet.getValue({
-                    name: 'entitystatus'
+                    name: 'entitystatus',
+                    summary: "GROUP",
                 })
 
                 var custStatus = custListCommenceTodaySet.getText({
-                    name: 'entitystatus'
+                    name: 'entitystatus',
+                    summary: "GROUP",
                 }).toUpperCase();
 
                 var dateLeadEntered = custListCommenceTodaySet.getValue({
-                    name: "custentity_date_lead_entered"
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
                 });
 
                 var quoteSentDate = custListCommenceTodaySet.getValue({
-                    name: "custentity_date_lead_quote_sent"
+                    name: "custentity_date_lead_quote_sent",
+                    summary: "GROUP",
                 });
 
                 var dateLeadLost = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_lead_lost'
+                    name: 'custentity_date_lead_lost',
+                    summary: "GROUP",
                 });
                 var dateLeadinContact = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_prospect_in_contact'
+                    name: 'custentity_date_prospect_in_contact',
+                    summary: "GROUP",
                 });
 
                 var dateProspectWon = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_prospect_opportunity'
+                    name: 'custentity_date_prospect_opportunity',
+                    summary: "GROUP",
                 });
 
                 var dateLeadReassigned = custListCommenceTodaySet.getValue({
-                    name: 'custentity_date_suspect_reassign'
+                    name: 'custentity_date_suspect_reassign',
+                    summary: "GROUP",
                 });
 
                 var salesRepId = custListCommenceTodaySet.getValue({
                     name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
                 });
                 var salesRepText = custListCommenceTodaySet.getText({
                     name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER'
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
                 });
 
                 var invoiceDocumentNumber = custListCommenceTodaySet.getValue({
                     name: "tranid",
-                    join: "transaction"
+                    join: "transaction",
+                    summary: "GROUP",
                 })
                 var invoiceDate = custListCommenceTodaySet.getValue({
                     name: "trandate",
                     join: "transaction",
+                    summary: "GROUP",
                 })
                 var invoiceType = custListCommenceTodaySet.getText({
                     name: "custbody_inv_type",
-                    join: "transaction"
+                    join: "transaction",
+                    summary: "GROUP",
                 })
 
                 var invoiceAmount = custListCommenceTodaySet.getValue({
-                    name: "amount",
-                    join: "transaction"
+                    name: "total",
+                    join: "transaction",
+                    summary: "GROUP",
                 })
 
                 var invoiceStatus = custListCommenceTodaySet.getText({
                     name: "statusref",
-                    join: "transaction"
+                    join: "transaction",
+                    summary: "GROUP",
                 })
 
-                var invoiceItem = custListCommenceTodaySet.getText({
-                    name: "item",
-                    join: "transaction"
-                })
+                // var invoiceItem = custListCommenceTodaySet.getText({
+                //     name: "item",
+                //     join: "transaction"
+                // })
 
                 var email48h = custListCommenceTodaySet.getText({
-                    name: 'custentity_48h_email_sent'
+                    name: 'custentity_48h_email_sent',
+                    summary: "GROUP",
                 });
 
                 var daysOpen = custListCommenceTodaySet.getValue({
                     name: "formulanumeric",
+                    summary: "GROUP",
                 });
 
                 var cancellationReason = custListCommenceTodaySet.getText({
                     name: "custentity_service_cancellation_reason",
+                    summary: "GROUP",
                 });
 
                 var source = custListCommenceTodaySet.getText({
                     name: "leadsource",
+                    summary: "GROUP",
                 });
 
                 var productWeeklyUsage = custListCommenceTodaySet.getText({
                     name: "custentity_form_mpex_usage_per_week",
+                    summary: "GROUP",
                 });
 
                 var autoSignUp = custListCommenceTodaySet.getValue({
                     name: "custentity_auto_sign_up",
+                    summary: "GROUP",
                 });
 
                 var previousCarrier = custListCommenceTodaySet.getText({
                     name: "custentity_previous_carrier",
+                    summary: "GROUP",
                 });
 
                 var monthlyServiceValue = (custListCommenceTodaySet.getValue({
                     name: "custentity_cust_monthly_service_value",
+                    summary: "GROUP",
                 }));
 
                 var monthlyExtraServiceValue = (custListCommenceTodaySet.getValue({
                     name: "custentity_monthly_extra_service_revenue",
+                    summary: "GROUP",
                 }));
 
                 var monthlyReductionServiceValue = (custListCommenceTodaySet.getValue({
                     name: "custentity_monthly_reduc_service_revenue",
+                    summary: "GROUP",
                 }));
 
-                if (source == 'Additional Services') {
-                    monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
-                }
+                // if (source == 'Additional Services') {
+                //     monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
+                // }
 
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = parseFloat(monthlyServiceValue);
@@ -4974,7 +5291,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 //     invoiceDate = 'N/A'
                 // }
 
-                if (isNullorEmpty(invoiceType)) {
+                if (isNullorEmpty(invoiceType) || invoiceType == '- None -') {
                     invoiceType = 'Service'
                 }
 
@@ -5245,66 +5562,68 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         var express_speed = 0;
                         var standard_speed = 0;
                         var total_usage = 0;
-                        if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                            // Customer Product Usage - Total MP Express & Standard
-                            var mpexUsageResults = search.load({
-                                type: 'customrecord_customer_product_stock',
-                                id: 'customsearch6846'
-                            });
-
-
-                            mpexUsageResults.filters.push(search.createFilter({
-                                name: 'internalid',
-                                join: 'custrecord_cust_prod_stock_customer',
-                                operator: search.Operator.ANYOF,
-                                values: parseInt(oldcustInternalID)
-                            }));
-
+                        if (calcprodusage != '2') {
                             if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                                mpexUsageResults.filters.push(search.createFilter({
-                                    name: 'custrecord_cust_date_stock_used',
-                                    join: null,
-                                    operator: search.Operator.ONORAFTER,
-                                    values: usage_date_from
-                                }));
-                                mpexUsageResults.filters.push(search.createFilter({
-                                    name: 'custrecord_cust_date_stock_used',
-                                    join: null,
-                                    operator: search.Operator.ONORBEFORE,
-                                    values: usage_date_to
-                                }));
-
-                            }
-
-
-
-                            mpexUsageResults.run().each(function (mpexUsageSet) {
-
-                                var deliverySpeed = mpexUsageSet.getValue({
-                                    name: 'custrecord_delivery_speed',
-                                    summary: 'GROUP'
-                                });
-                                var deliverySpeedText = mpexUsageSet.getText({
-                                    name: 'custrecord_delivery_speed',
-                                    summary: 'GROUP'
+                                // Customer Product Usage - Total MP Express & Standard
+                                var mpexUsageResults = search.load({
+                                    type: 'customrecord_customer_product_stock',
+                                    id: 'customsearch6846'
                                 });
 
 
-                                var mpexUsage = parseInt(mpexUsageSet.getValue({
-                                    name: 'name',
-                                    summary: 'COUNT'
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'internalid',
+                                    join: 'custrecord_cust_prod_stock_customer',
+                                    operator: search.Operator.ANYOF,
+                                    values: parseInt(oldcustInternalID)
                                 }));
 
-                                if (deliverySpeed == 2 ||
-                                    deliverySpeedText == '- None -') {
-                                    express_speed += mpexUsage;
-                                } else if (deliverySpeed == 1) {
-                                    standard_speed += mpexUsage;
+                                if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                                    mpexUsageResults.filters.push(search.createFilter({
+                                        name: 'custrecord_cust_date_stock_used',
+                                        join: null,
+                                        operator: search.Operator.ONORAFTER,
+                                        values: usage_date_from
+                                    }));
+                                    mpexUsageResults.filters.push(search.createFilter({
+                                        name: 'custrecord_cust_date_stock_used',
+                                        join: null,
+                                        operator: search.Operator.ONORBEFORE,
+                                        values: usage_date_to
+                                    }));
+
                                 }
-                                total_usage += express_speed + standard_speed;
 
-                                return true;
-                            });
+
+
+                                mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                                    var deliverySpeed = mpexUsageSet.getValue({
+                                        name: 'custrecord_delivery_speed',
+                                        summary: 'GROUP'
+                                    });
+                                    var deliverySpeedText = mpexUsageSet.getText({
+                                        name: 'custrecord_delivery_speed',
+                                        summary: 'GROUP'
+                                    });
+
+
+                                    var mpexUsage = parseInt(mpexUsageSet.getValue({
+                                        name: 'name',
+                                        summary: 'COUNT'
+                                    }));
+
+                                    if (deliverySpeed == 2 ||
+                                        deliverySpeedText == '- None -') {
+                                        express_speed += mpexUsage;
+                                    } else if (deliverySpeed == 1) {
+                                        standard_speed += mpexUsage;
+                                    }
+                                    total_usage += express_speed + standard_speed;
+
+                                    return true;
+                                });
+                            }
                         }
 
                         console.log('oldcustName' + oldcustName);
@@ -5341,6 +5660,27 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldAutoSignUp,
                                 customerChildDataSet
                             ]);
+
+                            csvExistingCustomerSignedExport.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                express_speed,
+                                standard_speed,
+                                olddateLeadEntered,
+                                olddateProspectWon,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                oldInvoiceNumber,
+                                oldinvoiceDate,
+                                oldInvoiceType,
+                                oldInvoiceAmount,
+                                oldInvoiceStatus
+                            ]);
+
                         } else {
                             customerDataSet.push(['',
                                 oldcustInternalID,
@@ -5366,34 +5706,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldAutoSignUp,
                                 customerChildDataSet
                             ]);
+
+                            csvCustomerSignedExport.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                oldemail48h,
+                                olddateProspectWon,
+                                oldDaysOpen,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                oldInvoiceNumber,
+                                oldinvoiceDate,
+                                oldInvoiceType,
+                                oldInvoiceAmount,
+                                oldInvoiceStatus
+                            ]);
                         }
 
 
 
-                        csvCustomerSignedExport.push([
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            express_speed,
-                            standard_speed,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            oldemail48h,
-                            olddateProspectWon,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            oldAutoSignUp,
-                            oldInvoiceNumber,
-                            oldinvoiceDate,
-                            oldInvoiceType,
-                            oldInvoiceAmount,
-                            oldInvoiceStatus
-                        ]);
+
 
 
                     }
@@ -5464,11 +5806,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 oldInvoiceType = invoiceType;
                 oldInvoiceAmount = invoiceAmount;
                 oldInvoiceStatus = invoiceStatus;
-                oldInvoiceItem = invoiceItem;
+                // oldInvoiceItem = invoiceItem;
 
-                if (oldInvoiceItem == 'Credit Card Surcharge') {
-                    showInvoice = false;
-                }
+                // if (oldInvoiceItem == 'Credit Card Surcharge') {
+                //     showInvoice = false;
+                // }
 
                 count++
                 return true;
@@ -5502,66 +5844,68 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var express_speed = 0;
                     var standard_speed = 0;
                     var total_usage = 0;
-                    if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                        // Customer Product Usage - Total MP Express & Standard
-                        var mpexUsageResults = search.load({
-                            type: 'customrecord_customer_product_stock',
-                            id: 'customsearch6846'
-                        });
-
-
-                        mpexUsageResults.filters.push(search.createFilter({
-                            name: 'internalid',
-                            join: 'custrecord_cust_prod_stock_customer',
-                            operator: search.Operator.ANYOF,
-                            values: parseInt(oldcustInternalID)
-                        }));
-
+                    if (calcprodusage != '2') {
                         if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                            mpexUsageResults.filters.push(search.createFilter({
-                                name: 'custrecord_cust_date_stock_used',
-                                join: null,
-                                operator: search.Operator.ONORAFTER,
-                                values: usage_date_from
-                            }));
-                            mpexUsageResults.filters.push(search.createFilter({
-                                name: 'custrecord_cust_date_stock_used',
-                                join: null,
-                                operator: search.Operator.ONORBEFORE,
-                                values: usage_date_to
-                            }));
-
-                        }
-
-
-
-                        mpexUsageResults.run().each(function (mpexUsageSet) {
-
-                            var deliverySpeed = mpexUsageSet.getValue({
-                                name: 'custrecord_delivery_speed',
-                                summary: 'GROUP'
-                            });
-                            var deliverySpeedText = mpexUsageSet.getText({
-                                name: 'custrecord_delivery_speed',
-                                summary: 'GROUP'
+                            // Customer Product Usage - Total MP Express & Standard
+                            var mpexUsageResults = search.load({
+                                type: 'customrecord_customer_product_stock',
+                                id: 'customsearch6846'
                             });
 
 
-                            var mpexUsage = parseInt(mpexUsageSet.getValue({
-                                name: 'name',
-                                summary: 'COUNT'
+                            mpexUsageResults.filters.push(search.createFilter({
+                                name: 'internalid',
+                                join: 'custrecord_cust_prod_stock_customer',
+                                operator: search.Operator.ANYOF,
+                                values: parseInt(oldcustInternalID)
                             }));
 
-                            if (deliverySpeed == 2 ||
-                                deliverySpeedText == '- None -') {
-                                express_speed += mpexUsage;
-                            } else if (deliverySpeed == 1) {
-                                standard_speed += mpexUsage;
+                            if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'custrecord_cust_date_stock_used',
+                                    join: null,
+                                    operator: search.Operator.ONORAFTER,
+                                    values: usage_date_from
+                                }));
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'custrecord_cust_date_stock_used',
+                                    join: null,
+                                    operator: search.Operator.ONORBEFORE,
+                                    values: usage_date_to
+                                }));
+
                             }
-                            total_usage += express_speed + standard_speed;
 
-                            return true;
-                        });
+
+
+                            mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                                var deliverySpeed = mpexUsageSet.getValue({
+                                    name: 'custrecord_delivery_speed',
+                                    summary: 'GROUP'
+                                });
+                                var deliverySpeedText = mpexUsageSet.getText({
+                                    name: 'custrecord_delivery_speed',
+                                    summary: 'GROUP'
+                                });
+
+
+                                var mpexUsage = parseInt(mpexUsageSet.getValue({
+                                    name: 'name',
+                                    summary: 'COUNT'
+                                }));
+
+                                if (deliverySpeed == 2 ||
+                                    deliverySpeedText == '- None -') {
+                                    express_speed += mpexUsage;
+                                } else if (deliverySpeed == 1) {
+                                    standard_speed += mpexUsage;
+                                }
+                                total_usage += express_speed + standard_speed;
+
+                                return true;
+                            });
+                        }
                     }
 
                     console.log('oldcustName' + oldcustName);
@@ -5598,6 +5942,26 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldAutoSignUp,
                             customerChildDataSet
                         ]);
+
+                        csvExistingCustomerSignedExport.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            express_speed,
+                            standard_speed,
+                            olddateLeadEntered,
+                            olddateProspectWon,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            oldInvoiceNumber,
+                            oldinvoiceDate,
+                            oldInvoiceType,
+                            oldInvoiceAmount,
+                            oldInvoiceStatus
+                        ]);
                     } else {
                         customerDataSet.push(['',
                             oldcustInternalID,
@@ -5623,41 +5987,41 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldAutoSignUp,
                             customerChildDataSet
                         ]);
+
+                        csvCustomerSignedExport.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            olddateProspectWon,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            oldInvoiceNumber,
+                            oldinvoiceDate,
+                            oldInvoiceType,
+                            oldInvoiceAmount,
+                            oldInvoiceStatus
+                        ]);
                     }
 
-                    csvCustomerSignedExport.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        express_speed,
-                        standard_speed,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        oldemail48h,
-                        olddateProspectWon,
-                        oldDaysOpen,
-                        oldMonthServiceValue,
-                        oldsalesRepText,
-                        oldAutoSignUp,
-                        oldInvoiceNumber,
-                        oldinvoiceDate,
-                        oldInvoiceType,
-                        oldInvoiceAmount,
-                        oldInvoiceStatus
-                    ]);
+
 
                 }
             }
 
             console.log('customerDataSet: ' + customerDataSet);
             console.log('existingCustomerDataSet: ' + existingCustomerDataSet);
-            console.log('csvCustomerSignedExport: ' + csvCustomerSignedExport);
-
-            saveCustomerCsvPreview(csvCustomerSignedExport);
+            console.log('csvCustomerSignedExport: ' + prospectDataSet);
 
             var dataTableExisitngCustomers = $('#mpexusage-existing_customers').DataTable({
                 data: existingCustomerDataSet,
@@ -6680,19 +7044,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'Previous Carrier' },
                     { title: 'Date - Lead Entered' },
                     { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
+                    { title: 'Date - Prospect Won' },
                     { title: 'Date - Lead Lost' },
                     { title: '48H Email Sent?' },
                     { title: 'Days Open' },
                     { title: 'Cancellation Reason' },
                     { title: 'Monthly Service Value' },
+                    { title: 'Avg Invoice - Last 3 Months' },
                     { title: 'Sales Rep' },
                     { title: 'Child Table' }
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [18],
+                        targets: [19],
                         visible: false
                     },
                     {
@@ -6701,15 +7066,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
-                    console.log(JSON.stringify(data[18]));
-                    console.log(data[18].length);
+                    console.log(JSON.stringify(data[19]));
+                    console.log(data[19].length);
 
-                    if (isNullorEmpty(data[18])) {
+                    if (isNullorEmpty(data[19])) {
                         $('td', row).css('background-color', '#f9c67a');
                     }
 
+                    if (!isNullorEmpty(data[17])) {
+
+                        $('td', row).css('background-color', '#E86252');
+                        $('td', row).css('font-weight', 'bold');
+                    }
+
                     if (data[5].toUpperCase() == 'SUSPECT-LOST' || data[5].toUpperCase() == 'SUSPECT-OUT OF TERRITORY') {
-                        $('td', row).css('background-color', '#FF8787');
+                        // $('td', row).css('background-color', '#EBB3A9');
                     }
 
 
@@ -6754,12 +7125,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         formatter.format(page_total_monthly_service_revenue)
                     );
 
+                    // Total Expected Usage over all pages
+                    total_avg_monthly_service_revenue = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_avg_monthly_service_revenue = api
+                        .column(17, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(17).footer()).html(
+                        formatter.format(page_total_avg_monthly_service_revenue)
+                    );
+
                 }
             });
 
             dataTable6.rows().every(function () {
                 // this.child(format(this.data())).show();
-                this.child(createChild3(this)) // Add Child Tables
+                this.child(createChildSuspectLost(this)) // Add Child Tables
                 this.child.hide(); // Hide Child Tables on Open
             });
 
@@ -7007,7 +7402,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
-
+            saveCustomerCsvPreview(csvCustomerSignedExport);
+            saveExistingCustomerCsvPreview(csvExistingCustomerSignedExport);
+            saveProspectCsvPreview(csvProspectDataSet);
+            saveProspectOpportunityCsvPreview(csvProspectOpportunityDataSet);
+            saveSuspectCsvPreview(csvSuspectDataSet);
+            saveSuspectOffPeakCsvPreview(csvSuspectOffPeakDataSet);
+            saveSuspectLostCsvPreview(csvSuspectLostDataSet);
+            saveSuspectOOTCsvPreview(csvSuspectOOTDataSet);
+            saveSuspectFollowUpCsvPreview(csvSuspectFollowUpDataSet);
 
 
             // loadDatatable(debt_set, debt_set2);
@@ -7179,6 +7582,59 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
+        function createChildSuspectLost(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[19].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
         function createChild3(row) {
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
@@ -7236,179 +7692,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function destroyChild(row) {
             // And then hide the row
             row.child.hide();
-        }
-
-        function loadDatatable(debt_rows, debt_rows2) {
-
-            debtDataSet = [];
-            csvSet = [];
-
-            debtDataSet2 = [];
-            csvSet2 = [];
-
-            if (!isNullorEmpty(debt_rows)) {
-                debt_rows.forEach(function (debt_row, index) {
-
-
-                    var linkURL =
-                        '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.custInternalID +
-                        '" href="https://1048144.app.netsuite.com/app/crm/calendar/task.nl?l=T&invitee=' +
-                        debt_row.custInternalID + '&company=' + debt_row.custInternalID +
-                        '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.custInternalID +
-                        '"  data-type="noanswer" class="noAnswer" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-                        debt_row.custInternalID +
-                        '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">LOST</a></button>';
-
-                    var customerIDLink =
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-                        debt_row.custInternalID + '&whence=" target="_blank"><b>' +
-                        debt_row.custEntityID + '</b></a>';
-
-                    var sendSignUpEmail =
-                        '<a data-id="' +
-                        debt_row.custInternalID +
-                        '" data-sales="' +
-                        debt_row.salesRepId +
-                        '" data-contact="' +
-                        debt_row.contactid +
-                        '" data-contactemail="' +
-                        debt_row.contactEmail +
-                        '" style="cursor: pointer !important;color: #095C7B !important;" class="sendEmail">SEND EMAIL</a>';
-
-                    var commDateSplit = debt_row.quoteSentDate.split('/');
-
-                    var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-                        commDateSplit[0]);
-                    var commDateParsed = format.parse({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
-                    var commDateFormatted = format.format({
-                        value: commDate,
-                        type: format.Type.DATE
-                    });
-
-
-                    var dateLeadEnteredSplit = debt_row.dateLeadEntered.split('/');
-
-                    var dateLeadEnteredDate = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1,
-                        dateLeadEnteredSplit[0]);
-                    var dateLeadEnteredDateParsed = format.parse({
-                        value: dateLeadEnteredDate,
-                        type: format.Type.DATE
-                    });
-                    var dateLeadEnteredDateFormatted = format.format({
-                        value: dateLeadEnteredDate,
-                        type: format.Type.DATE
-                    });
-
-                    debtDataSet.push([debt_row.custInternalID,
-                        customerIDLink, debt_row.custName, debt_row.zeeName, debt_row.email48h, debt_row.salesRepText, dateLeadEnteredDateFormatted, commDateFormatted, debt_row.daysOpen
-                    ]);
-                });
-            }
-
-            var datatable = $('#mpexusage-customer').DataTable();
-            datatable.clear();
-            datatable.rows.add(debtDataSet);
-            datatable.draw();
-
-            if (!isNullorEmpty(debt_rows2)) {
-                debt_rows2.forEach(function (debt_row2, index2) {
-
-                    var month = debt_row2.dateUsed;
-                    console.log(month);
-                    var splitMonth = month.split('-');
-                    var splitMonthV2 = month.split('/');
-
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
-
-                    var parsedDate = format.parse({
-                        value: month,
-                        type: format.Type.DATE
-                    });
-
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
-
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
-                    }
-
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
-
-
-                    var detailedInvoiceURLMonth =
-                        '<a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1627&deploy=1&zee=' +
-                        zee + '&start_date=' + monthsStartDate + '&last_date=' + lastDate +
-                        '" target=_blank>VIEW (monthly)</a> | <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1625&deploy=1&zee=' +
-                        zee + '&start_date=' + startDate + '&last_date=' + lastDate +
-                        '" target=_blank>VIEW (daily)</a>';
-
-
-                    debtDataSet2.push([startDate,
-                        debt_row2.lee_lead_count,
-                        debt_row2.kerina_lead_count, debt_row2.david_lead_count, debt_row2.belinda_lead_count, debt_row2.total_usage
-                    ]);
-                });
-            }
-
-            var datatable2 = $('#mpexusage-preview').DataTable();
-            datatable2.clear();
-            datatable2.rows.add(debtDataSet2);
-            datatable2.draw();
-
-            var data = datatable2.rows().data();
-
-
-            var month_year = [];
-            var leeLeadCount = [];
-            var kerinaLeadCount = [];
-            var davidLeadCount = [];
-            var belindaLeadCount = [];
-            var totalUsage = [];
-
-            for (var i = 0; i < data.length; i++) {
-                month_year.push(data[i][0]);
-                leeLeadCount[data[i][0]] = data[i][1];
-                kerinaLeadCount[data[i][0]] = data[i][2];
-                davidLeadCount[data[i][0]] = data[i][3];
-                belindaLeadCount[data[i][0]] = data[i][4]; // creating
-                totalUsage[data[i][0]] = data[i][5]; //
-
-            }
-            var count = {}; // creating object for getting categories with
-            // count
-            month_year.forEach(function (i) {
-                count[i] = (count[i] || 0) + 1;
-            });
-
-            var series_data_lee = [];
-            var series_data_kerina = [];
-            var series_data_david = [];
-            var series_data_belinda = [];
-            var series_data_total = [];
-            var categores = [];
-            Object.keys(leeLeadCount).map(function (item, key) {
-                series_data_lee.push(parseInt(leeLeadCount[item]));
-                series_data_kerina.push(parseInt(kerinaLeadCount[item]));
-                series_data_david.push(parseInt(davidLeadCount[item]));
-                series_data_belinda.push(parseInt(belindaLeadCount[item]));
-                series_data_total.push(parseInt(totalUsage[item]));
-                categores.push(item)
-            });
-            plotChartSpeedUsage(series_data_lee, series_data_kerina, series_data_david, series_data_belinda, series_data_total, categores)
-
-            return true;
         }
 
         /**{
@@ -7609,7 +7892,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     name: 'Suspect - Customer - Lost',
                     data: series_data24,
-                    color: '#E97777',
+                    color: '#e86252',
                     style: {
                         fontWeight: 'bold',
                     }
@@ -8106,7 +8389,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     name: 'Suspect - Customer -Lost',
                     data: series_data61,
-                    color: '#E97777',
+                    color: '#e86252',
                     style: {
                         fontWeight: 'bold',
                     }
@@ -8607,37 +8890,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 });
         }
 
-        /**
-         * Load the string stored in the hidden field 'custpage_table_csv'.
-         * Converts it to a CSV file.
-         * Creates a hidden link to download the file and triggers the click of the link.
-         */
-        function downloadCsv() {
-            var today = new Date();
-            today = formatDate(today);
-            var val1 = currentRecord.get();
-            var csv = val1.getValue({
-                fieldId: 'custpage_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFile = new Blob([csv], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFile);
-            var filename = 'MPEX New Customer List_' + today + '.csv';
-            a.href = url;
-            a.download = filename;
-            a.click();
-            window.URL.revokeObjectURL(url);
-
-
-        }
-
-
         function saveRecord() {
 
             return true;
@@ -8669,7 +8921,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             var val1 = currentRecord.get();
             val1.setValue({
-                fieldId: 'custpage_table_csv',
+                fieldId: 'custpage_overview_table_csv',
                 value: csv
             });
 
@@ -8677,182 +8929,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             return true;
         }
 
-        function formatDate(testDate) {
-            console.log('testDate: ' + testDate);
-            var responseDate = format.format({
-                value: testDate,
-                type: format.Type.DATE
-            });
-            console.log('responseDate: ' + responseDate);
-            return responseDate;
-        }
-
-        function replaceAll(string) {
-            return string.split("/").join("-");
-        }
-
-        function stateIDPublicHolidaysRecord(state) {
-            switch (state) {
-                case 1:
-                    return 1; //NSW
-                    break;
-                case 2:
-                    return 6; //QLD
-                    break;
-                case 3:
-                    return 5; //VIC
-                    break;
-                case 4:
-                    return 3; //SA
-                    break;
-                case 5:
-                    return 7; //TAS
-                    break;
-                case 6:
-                    return 4; //ACT
-                    break;
-                case 7:
-                    return 2; //WA
-                    break;
-                case 8:
-                    return 8; //NT
-                    break;
-                default:
-                    return null;
-                    break;
-            }
-        }
-
-        function stateID(state) {
-            state = state.toUpperCase();
-            switch (state) {
-                case 'ACT':
-                    return 6
-                    break;
-                case 'NSW':
-                    return 1
-                    break;
-                case 'NT':
-                    return 8
-                    break;
-                case 'QLD':
-                    return 2
-                    break;
-                case 'SA':
-                    return 4
-                    break;
-                case 'TAS':
-                    return 5
-                    break;
-                case 'VIC':
-                    return 3
-                    break;
-                case 'WA':
-                    return 7
-                    break;
-                default:
-                    return 0;
-                    break;
-            }
-        }
         /**
-         * Sets the values of `date_from` and `date_to` based on the selected option in the '#period_dropdown'.
+         * Create the CSV and store it in the hidden field
+         * 'custpage_table_csv' as a string.
+         *
+         * @param {Array}
          */
-        function selectDate() {
-            var period_selected = $('#period_dropdown option:selected').val();
-            var today = new Date();
-            var today_day_in_month = today.getDate();
-            var today_day_in_week = today.getDay();
-            var today_month = today.getMonth();
-            var today_year = today.getFullYear();
-
-            var today_date = new Date(Date.UTC(today_year, today_month,
-                today_day_in_month))
-
-            switch (period_selected) {
-                case "this_week":
-                    // This method changes the variable "today" and sets it on the previous monday
-                    if (today_day_in_week == 0) {
-                        var monday = new Date(Date.UTC(today_year, today_month,
-                            today_day_in_month - 6));
-                    } else {
-                        var monday = new Date(Date.UTC(today_year, today_month,
-                            today_day_in_month - today_day_in_week + 1));
-                    }
-                    var date_from = monday.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
-                    break;
-
-                case "last_week":
-                    var today_day_in_month = today.getDate();
-                    var today_day_in_week = today.getDay();
-                    // This method changes the variable "today" and sets it on the previous monday
-                    if (today_day_in_week == 0) {
-                        var previous_sunday = new Date(Date.UTC(today_year, today_month,
-                            today_day_in_month - 7));
-                    } else {
-                        var previous_sunday = new Date(Date.UTC(today_year, today_month,
-                            today_day_in_month - today_day_in_week));
-                    }
-
-                    var previous_sunday_year = previous_sunday.getFullYear();
-                    var previous_sunday_month = previous_sunday.getMonth();
-                    var previous_sunday_day_in_month = previous_sunday.getDate();
-
-                    var monday_before_sunday = new Date(Date.UTC(previous_sunday_year,
-                        previous_sunday_month, previous_sunday_day_in_month - 6));
-
-                    var date_from = monday_before_sunday.toISOString().split('T')[0];
-                    var date_to = previous_sunday.toISOString().split('T')[0];
-                    break;
-
-                case "this_month":
-                    var first_day_month = new Date(Date.UTC(today_year, today_month));
-                    var date_from = first_day_month.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
-                    break;
-
-                case "last_month":
-                    var first_day_previous_month = new Date(Date.UTC(today_year,
-                        today_month - 1));
-                    var last_day_previous_month = new Date(Date.UTC(today_year,
-                        today_month, 0));
-                    var date_from = first_day_previous_month.toISOString().split('T')[
-                        0];
-                    var date_to = last_day_previous_month.toISOString().split('T')[0];
-                    break;
-
-                case "full_year":
-                    var first_day_in_year = new Date(Date.UTC(today_year, 0));
-                    var date_from = first_day_in_year.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
-                    break;
-
-                case "financial_year":
-                    if (today_month >= 6) {
-                        var first_july = new Date(Date.UTC(today_year, 6));
-                    } else {
-                        var first_july = new Date(Date.UTC(today_year - 1, 6));
-                    }
-                    var date_from = first_july.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
-                    break;
-
-                default:
-                    var date_from = '';
-                    var date_to = '';
-                    break;
-            }
-            $('#date_from').val(date_from);
-            $('#date_to').val(date_to);
-        }
-
-        /**
- * Create the CSV and store it in the hidden field
- * 'custpage_table_csv' as a string.
- *
- * @param {Array}
- */
         function saveCustomerCsvPreview(ordersDataSet) {
             var sep = "sep=;";
             headers = [
@@ -8897,7 +8979,478 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             return true;
         }
-        function downloadCustomerCsv() {
+
+        /**
+         * Create the CSV and store it in the hidden field
+         * 'custpage_table_csv' as a string.
+         *
+         * @param {Array}
+         */
+        function saveProspectOpportunityCsvPreview(ordersDataSet) {
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                '48h Email',
+                'Days Open',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_prospect_opportunity_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        /**
+         * Create the CSV and store it in the hidden field
+         * 'custpage_table_csv' as a string.
+         *
+         * @param {Array}
+         */
+        function saveSuspectLostCsvPreview(ordersDataSet) {
+
+            /**
+             *                      csvSuspectLostDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue, oldAvgInvoiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                'Date - Prospect Won',
+                'Date - Lead Lost',
+                '48h Email',
+                'Days Open',
+                'Cancellation Reason',
+                'Monthly Service Value',
+                'Avg Invoice Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_suspect_lost_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        function saveSuspectOOTCsvPreview(ordersDataSet) {
+
+            /**
+             * csvSuspectOOTDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                'Date - Lead Reassigned',
+                'Date - Lead Lost',
+                '48h Email',
+                'Days Open',
+                'Cancellation Reason',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_suspect_oot_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        function saveSuspectFollowUpCsvPreview(ordersDataSet) {
+
+            /**
+             * csvSuspectFollowUpDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                'Date - Lead Reassigned',
+                'Date - Lead Lost',
+                '48h Email',
+                'Days Open',
+                'Cancellation Reason',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_suspect_followup_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        function saveSuspectOffPeakCsvPreview(ordersDataSet) {
+
+            /**
+             *  ccsvSuspectOffPeakDataSet.push([,
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                'Date - Lead Reassigned',
+                'Date - Lead Lost',
+                '48h Email',
+                'Days Open',
+                'Cancellation Reason',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_suspect_offpeak_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        function saveSuspectCsvPreview(ordersDataSet) {
+
+            /**
+             *  csvSuspectDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                'Date - Prospect Won',
+                'Date - Lead Lost',
+                '48h Email',
+                'Days Open',
+                'Cancellation Reason',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_suspect_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        /**
+         * Create the CSV and store it in the hidden field
+         * 'custpage_table_csv' as a string.
+         *
+         * @param {Array}
+         */
+        function saveProspectCsvPreview(ordersDataSet) {
+
+            /**
+             * csvProspectOpportunityDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Status',
+                'Source',
+                'Product Weekly Usage',
+                'Previous Carrier',
+                'Date - Lead Entered',
+                'Date - Quote Sent',
+                '48h Email',
+                'Days Open',
+                'Monthly Service Value',
+                'Sales Rep'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_prospect_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+        /**
+         * Create the CSV and store it in the hidden field
+         * 'custpage_table_csv' as a string.
+         *
+         * @param {Array}
+         */
+        function saveExistingCustomerCsvPreview(ordersDataSet) {
+
+            var sep = "sep=;";
+            headers = [
+                'Internal ID',
+                'ID',
+                'Company Name',
+                'Franchisee',
+                'Source',
+                'MP Express Usage',
+                'MP Standard Usage',
+                'Date - Lead Entered',
+                'Date - Prospect Won',
+                'Monthly Service Value',
+                'Sales Rep',
+                'Auto Signed Up',
+                'Invoice Document Number',
+                'Invoice Date',
+                'Invoice Type',
+                'Invoice Amount',
+                'Invoice Status'
+            ]
+            headers = headers.join(';'); // .join(', ')
+
+            var csv = sep + "\n" + headers + "\n";
+
+            ordersDataSet.forEach(function (row) {
+                row = row.join(';');
+                csv += row;
+                csv += "\n";
+            });
+
+            var val1 = currentRecord.get();
+            val1.setValue({
+                fieldId: 'custpage_existing_customer_table_csv',
+                value: csv
+            });
+
+            return true;
+        }
+
+
+        function downloadCsv() {
 
             var today = new Date();
             today = formatDate(today);
@@ -8918,6 +9471,163 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             a.href = url;
             a.download = filename;
             a.click();
+
+            var csv_overview = val1.getValue({
+                fieldId: 'custpage_overview_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileOverview = new Blob([csv_overview], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileOverview);
+            var filenameOverview = 'Lead Reporting - Overview - By Lead Entered_' + today + '.csv';
+            a.href = url;
+            a.download = filenameOverview;
+            a.click();
+
+            var csv_existing = val1.getValue({
+                fieldId: 'custpage_existing_customer_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileExisting = new Blob([csv_existing], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileExisting);
+            var filenameExisting = 'Existing Customers_' + today + '.csv';
+            a.href = url;
+            a.download = filenameExisting;
+            a.click();
+
+
+            var csv_prospect = val1.getValue({
+                fieldId: 'custpage_prospect_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileProspect = new Blob([csv_prospect], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileProspect);
+            var filenameProspect = 'Prospects_' + today + '.csv';
+            a.href = url;
+            a.download = filenameProspect;
+            a.click();
+
+
+            var csv_prospect_opp = val1.getValue({
+                fieldId: 'custpage_prospect_opportunity_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileProspectOpp = new Blob([csv_prospect_opp], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileProspectOpp);
+            var filenameProspectOpp = 'Prospects Opportunity_' + today + '.csv';
+            a.href = url;
+            a.download = filenameProspectOpp;
+            a.click();
+
+
+            var csv_suspect = val1.getValue({
+                fieldId: 'custpage_suspect_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileSuspect = new Blob([csv_suspect], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileSuspect);
+            var filenameSuspect = 'Suspects_' + today + '.csv';
+            a.href = url;
+            a.download = filenameSuspect;
+            a.click();
+
+            var csv_suspect_lost = val1.getValue({
+                fieldId: 'custpage_suspect_lost_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileSuspectLost = new Blob([csv_suspect_lost], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileSuspectLost);
+            var filenameSuspectLost = 'Suspects Lost_' + today + '.csv';
+            a.href = url;
+            a.download = filenameSuspectLost;
+            a.click();
+
+            var csv_suspect_offpeak = val1.getValue({
+                fieldId: 'custpage_suspect_offpeak_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileSuspectOffPeak = new Blob([csv_suspect_offpeak], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileSuspectOffPeak);
+            var filenameSuspectOffPeak = 'Suspects Off Peak_' + today + '.csv';
+            a.href = url;
+            a.download = filenameSuspectOffPeak;
+            a.click();
+
+            var csv_suspect_followup = val1.getValue({
+                fieldId: 'custpage_suspect_followup_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileSuspectFollowUp = new Blob([csv_suspect_followup], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileSuspectFollowUp);
+            var filenameSuspectFollowUp = 'Suspects Follow Up_' + today + '.csv';
+            a.href = url;
+            a.download = filenameSuspectFollowUp;
+            a.click();
+
+            var csv_suspect_oot = val1.getValue({
+                fieldId: 'custpage_suspect_oot_table_csv',
+            });
+            today = replaceAll(today);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var content_type = 'text/csv';
+            var csvFileSuspectOOT = new Blob([csv_suspect_oot], {
+                type: content_type
+            });
+            var url = window.URL.createObjectURL(csvFileSuspectOOT);
+            var filenameSuspectOOT = 'Suspects Follow Up_' + today + '.csv';
+            a.href = url;
+            a.download = filenameSuspectOOT;
+            a.click();
+
             window.URL.revokeObjectURL(url);
 
 
@@ -8938,6 +9648,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var strTime = hours + ':' + minutes + ' ' + ampm;
             return strTime;
         }
+        function formatDate(testDate) {
+            console.log('testDate: ' + testDate);
+            var responseDate = format.format({
+                value: testDate,
+                type: format.Type.DATE
+            });
+            console.log('responseDate: ' + responseDate);
+            return responseDate;
+        }
+
+        function replaceAll(string) {
+            return string.split("/").join("-");
+        }
+
         /**
          * @param   {Number} x
          * @returns {String} The same number, formatted in Australian dollars.
@@ -8997,8 +9721,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         return {
             pageInit: pageInit,
             saveRecord: saveRecord,
-            adhocNewCustomers: adhocNewCustomers,
-            downloadCustomerCsv: downloadCustomerCsv,
+            downloadCsv: downloadCsv,
             addFilters: addFilters
         }
     });
