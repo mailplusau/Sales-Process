@@ -691,6 +691,7 @@ function onclick_notifyitteam() {
   var companyName = customer_record.getFieldValue('companyname');
   // var zeeText = customer_record.getFieldV('partner');
   customer_record.setFieldValue('custentity_customer_saved', 1);
+  customer_record.setFieldValue('custentity_customer_saved_date', getDate());
   customer_record.setFieldValue('custentity13', null);
   customer_record.setFieldValue('custentity_service_cancellation_notice', null);
   customer_record.setFieldValue('custentity_service_cancellation_reason', null);
