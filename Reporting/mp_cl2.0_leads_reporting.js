@@ -404,11 +404,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             console.log('zee_id ' + zee_id);
 
-            //Customer Cancellation - Requested Date - All
-            var customerCancellationRequestedDateSearch = search.load({
-                type: 'customer',
-                id: 'customsearch_cust_cancellation_request_3'
-            });
+            if (role == 1000) {
+                //Customer Cancellation - Requested Date - All (Monthly)
+                var customerCancellationRequestedDateSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_cust_cancellation_request_4'
+                });
+            } else {
+                //Customer Cancellation - Requested Date - All
+                var customerCancellationRequestedDateSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_cust_cancellation_request_3'
+                });
+            }
+
 
             if (!isNullorEmpty(zee_id)) {
                 customerCancellationRequestedDateSearch.filters.push(search.createFilter({
@@ -512,25 +521,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: 'GROUP'
                 });
 
-                var splitMonthV2 = requestedDate.split('/');
+                if (role == 1000) {
+                    var startDate = requestedDate;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = requestedDate.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
                 if (oldRequestedDate == null || (oldRequestedDate == startDate)) {
                     totalCancellationRequest = totalCancellationRequest + customerCancellationCount;
@@ -948,12 +962,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
 
 
+            if (role == 1000) {
+                // Website New Leads - Signed - Weekly Reporting (Monthly)
+                var customerListBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_3'
+                });
+            } else {
+                // Website New Leads - Signed - Weekly Reporting
+                var customerListBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2'
+                });
+            }
 
-            // Website New Leads - Signed - Weekly Reporting
-            var customerListBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2'
-            });
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -1043,6 +1065,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var source_field_sales = 0;
             var source_website = 0;
             var source_additional_services = 0;
+            var source_legal_campaign = 0;
             var total_source_count = 0;
 
             customerListBySalesRepWeeklySearch.run().each(function (
@@ -1068,25 +1091,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
                 if (count_customer_signed == 0) {
 
@@ -1104,12 +1132,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_website += parseInt(customerCount);
                     } else if (customerSource == '277970') {
                         source_additional_services += parseInt(customerCount)
+                    } else if (customerSource == '279095') {
+                        source_legal_campaign += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate == startDate) {
@@ -1128,12 +1158,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_website += parseInt(customerCount);
                     } else if (customerSource == '277970') {
                         source_additional_services += parseInt(customerCount)
+                    } else if (customerSource == '279095') {
+                        source_legal_campaign += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate != startDate) {
@@ -1145,7 +1177,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_field_sales: source_field_sales,
                         source_website: source_website,
                         total_source_count: total_source_count,
-                        source_additional_services: source_additional_services
+                        source_additional_services: source_additional_services,
+                        source_legal_campaign: source_legal_campaign
                     });
 
                     source_zee_generated = 0;
@@ -1154,6 +1187,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     source_website = 0;
                     total_source_count = 0;
                     source_additional_services = 0;
+                    source_legal_campaign = 0;
 
 
                     if (customerSource == '-4') {
@@ -1170,12 +1204,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_website += parseInt(customerCount);
                     } else if (customerSource == '277970') {
                         source_additional_services += parseInt(customerCount)
+                    } else if (customerSource == '279095') {
+                        source_legal_campaign += parseInt(customerCount)
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign
                 }
 
 
@@ -1199,9 +1235,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     source_field_sales: source_field_sales,
                     source_website: source_website,
                     total_source_count: total_source_count,
-                    source_additional_services: source_additional_services
+                    source_additional_services: source_additional_services,
+                    source_legal_campaign: source_legal_campaign
                 });
             }
+
+            console.log('debt_set3: ' + JSON.stringify(debt_set3));
 
             var customerSignedDataSet = [];
             if (!isNullorEmpty(debt_set3)) {
@@ -1214,6 +1253,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         preview_row.source_field_sales,
                         preview_row.source_website,
                         preview_row.source_additional_services,
+                        preview_row.source_legal_campaign,
                         preview_row.total_source_count
                         ]);
 
@@ -1228,6 +1268,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var customer_signed_source_websitecount = [];
             var customer_signed_total_source_countcount = [];
             var customer_signed_source_additional_services = [];
+            var customer_signed_source_legal_campaign = [];
 
             for (var i = 0; i < customerSignedDataSet.length; i++) {
                 month_year_customer.push(customerSignedDataSet[i][0]);
@@ -1235,8 +1276,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 customer_signed_source_callcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][2]
                 customer_signed_source_field_salescount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][3]
                 customer_signed_source_websitecount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][4]
-                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][6]
+                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][7]
                 customer_signed_source_additional_services[customerSignedDataSet[i][0]] = customerSignedDataSet[i][5]
+                customer_signed_source_legal_campaign[customerSignedDataSet[i][0]] = customerSignedDataSet[i][6]
             }
 
             var series_data30 = [];
@@ -1245,6 +1287,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var series_data33 = [];
             var series_data34 = [];
             var series_data35 = [];
+            var series_data36 = [];
 
 
             var categores_customer_signed_week = []; // creating empty array for highcharts
@@ -1257,6 +1300,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data33.push(parseInt(customer_signed_source_websitecount[item]));
                 series_data34.push(parseInt(customer_signed_total_source_countcount[item]));
                 series_data35.push(parseInt(customer_signed_source_additional_services[item]));
+                series_data36.push(parseInt(customer_signed_source_legal_campaign[item]));
                 categores_customer_signed_week.push(item)
             });
 
@@ -1264,13 +1308,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartCustomerSigned(series_data30, series_data31,
                 series_data32,
                 series_data33,
-                series_data34, series_data35, categores_customer_signed_week);
+                series_data34, series_data35, series_data36, categores_customer_signed_week);
 
-            // Website New Leads - Prospect - Weekly Reporting
-            var prospectWeeklyReportingSearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2_2'
-            });
+            if (role == 1000) {
+                // Website New Leads - Prospect - Monthly Reporting
+                var prospectWeeklyReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__8'
+                });
+            } else {
+                // Website New Leads - Prospect - Weekly Reporting
+                var prospectWeeklyReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_2'
+                });
+            }
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 prospectWeeklyReportingSearch.filters.push(search.createFilter({
@@ -1379,28 +1432,32 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
+
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
+
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
-
-
 
                 if (count2 == 0) {
 
@@ -1562,12 +1619,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data42,
                 series_data43, series_data44, categores5);
 
+            if (role == 1000) {
+                // Website New Leads - Prospect Opportunity - Monthly Reporting
+                var prospectOpportunityWeeklyReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__9'
+                });
+            } else {
+                // Website New Leads - Prospect Opportunity - Weekly Reporting
+                var prospectOpportunityWeeklyReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__3'
+                });
+            }
 
-            // Website New Leads - Prospect Opportunity - Weekly Reporting
-            var prospectOpportunityWeeklyReportingSearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2__3'
-            });
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
@@ -1675,26 +1740,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
+
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
                 debt_set6.push({
                     dateUsed: startDate,
@@ -1752,12 +1822,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartProspectsOpportunities(
                 series_data143, series_data144, categores5);
 
+            if (role == 1000) {
+                // Website New Leads - Suspects - Monthly Reporting
+                var suspectsListBySalesRepWeeklySearch = search.load({
+                    type: 'lead',
+                    id: 'customsearch_leads_reporting_weekly_2_10'
+                });
+            } else {
+                // Website New Leads - Suspects - Weekly Reporting
+                var suspectsListBySalesRepWeeklySearch = search.load({
+                    type: 'lead',
+                    id: 'customsearch_leads_reporting_weekly_2__2'
+                });
+            }
 
-            // Website New Leads - Suspects - Weekly Reporting
-            var suspectsListBySalesRepWeeklySearch = search.load({
-                type: 'lead',
-                id: 'customsearch_leads_reporting_weekly_2__2'
-            });
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -1861,25 +1939,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
                 if (countSuspects == 0) {
 
@@ -2026,12 +2109,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data52,
                 series_data53, categores_suspects);
 
+            if (role == 1000) {
+                // Website New Leads - Suspects Lost - Monthly Reporting
+                var suspectsLostBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_11'
+                });
+            } else {
+                // Website New Leads - Suspects Lost - Weekly Reporting
+                var suspectsLostBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__4'
+                });
+            }
 
-            // Website New Leads - Suspects Lost - Weekly Reporting
-            var suspectsLostBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2__4'
-            });
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -2134,25 +2225,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
                 if (countSuspectsLost == 0) {
 
@@ -2279,11 +2376,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data62,
                 categores_suspects_lost);
 
-            // Website New Leads - Suspects Off Peak Pipeline - Weekly Reporting
-            var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2__5'
-            });
+            if (role == 1000) {
+                // Website New Leads - Suspects Off Peak Pipeline - Monthly Reporting
+                var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_12'
+                });
+            } else {
+                // Website New Leads - Suspects Off Peak Pipeline - Weekly Reporting
+                var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__5'
+                });
+            }
+
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -2377,27 +2484,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
+
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
-
-
 
                 debt_setSuspectsOffPeakPipeline.push({
                     dateUsed: startDate,
@@ -2452,12 +2563,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartSuspectsOffPeakPipeline(series_data70,
                 categores_suspects_lost);
 
+            if (role == 1000) {
+                // Website New Leads - Suspects Out of Territory - Monthly Reporting
+                var suspectsOOTBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_13'
+                });
+            } else {
+                // Website New Leads - Suspects Out of Territory - Weekly Reporting
+                var suspectsOOTBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__6'
+                });
+            }
 
-            // Website New Leads - Suspects Out of Territory - Weekly Reporting
-            var suspectsOOTBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2__6'
-            });
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -2552,27 +2672,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
+
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
-
-
 
                 debt_setSuspectsOOT.push({
                     dateUsed: startDate,
@@ -2627,11 +2751,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartSuspectsOOT(series_data80,
                 categores_suspects_oot);
 
-            // Website New Leads - Suspects Follow Up - Weekly Reporting
-            var suspectsFollowUpBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_2__7'
-            });
+            if (role == 1000) {
+                // Website New Leads - Suspects Follow Up - Monthly Reporting
+                var suspectsFollowUpBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2_14'
+                });
+            } else {
+                // Website New Leads - Suspects Follow Up - Weekly Reporting
+                var suspectsFollowUpBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_2__7'
+                });
+            }
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -2726,27 +2859,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
+
                 }
-
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
-
-
 
                 debt_setSuspectsFollowUp.push({
                     dateUsed: startDate,
@@ -2801,11 +2938,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartSuspectsFollowUp(series_data90,
                 categores_suspects_follow_up);
 
-            // Website New Leads by Status - Weekly Reporting
-            var leadsListBySalesRepWeeklySearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_weekly'
-            });
+            if (role == 1000) {
+                // Website New Leads by Status - Monthly Reporting
+                var leadsListBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_3'
+                });
+            } else {
+                // Website New Leads by Status - Weekly Reporting
+                var leadsListBySalesRepWeeklySearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly'
+                });
+            }
+
+
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
                 leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
@@ -2921,25 +3068,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP"
                 });
 
-                var splitMonthV2 = weekLeadEntered.split('/');
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
 
-                var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                } else {
+                    var splitMonthV2 = weekLeadEntered.split('/');
 
-                var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                if (firstDay < 10) {
-                    firstDay = '0' + firstDay;
+                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = '0' + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        splitMonthV2[0];
+                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                        lastDay
                 }
 
-                // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    splitMonthV2[0];
-                var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    firstDay;
-                // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                    lastDay
 
 
 
@@ -3571,7 +3724,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data28,
                 series_data29, series_data31, series_data32, series_data33, series_data34, categores1)
 
-            
+
             var websiteLeadsReportingSearch = search.load({
                 type: 'customer',
                 // id: 'customsearch_leads_reporting' //Website Leads - Reporting
@@ -4933,7 +5086,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
 
-            
+
             var websiteLeadsReportingSearch = search.load({
                 type: 'customer',
                 // id: 'customsearch_leads_reporting_4' //Website Leads - Customer Signed - Reporting
@@ -8478,7 +8631,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 },
                 series: [{
-                    name: 'Suspect - Lost',
+                    name: 'Suspect - Off Peak Pipeline',
                     data: series_data70,
                     color: '#FEBE8C',
                     style: {
@@ -8664,7 +8817,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function plotChartCustomerSigned(series_data30, series_data31,
             series_data32,
             series_data33,
-            series_data34, series_data35, categores_customer_signed_week) {
+            series_data34, series_data35, series_data36, categores_customer_signed_week) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -8777,6 +8930,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'Additional Services',
                     data: series_data35,
                     color: '#86A3B8',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Legal Campaign',
+                    data: series_data36,
+                    color: '#748DA6',
                     style: {
                         fontWeight: 'bold',
                     }
