@@ -254,6 +254,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             invoice_type = $('#invoice_type').val();
             calcprodusage = $('#calc_prod_usage').val();
 
+            invoice_date_from = $('#invoice_date_from').val();
+            invoice_date_from = dateISOToNetsuite(invoice_date_from);
+            invoice_date_to = $('#invoice_date_to').val();
+            invoice_date_to = dateISOToNetsuite(invoice_date_to);
+
 
             /**
              *  Auto Load Submit Search and Load Results on Page Initialisation
@@ -317,15 +322,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     return false;
                 }
 
-                if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
-                } else if ((isNullorEmpty(date_to) || isNullorEmpty(date_from))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
-                } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
-                } else {
-                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                if (!(isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to))) {
+
                 }
+
+                // if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else if ((isNullorEmpty(date_to) || isNullorEmpty(date_from))) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else {
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to;
+                // }
 
                 window.location.href = url;
 
@@ -401,6 +410,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('lead_source ' + lead_source);
             console.log('sales_rep ' + sales_rep);
             console.log('invoice_type ' + invoice_type);
+            console.log('invoice_date_from ' + invoice_date_from);
+            console.log('invoice_date_to ' + invoice_date_to);
 
             console.log('zee_id ' + zee_id);
 
@@ -5235,6 +5246,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var oldMonthServiceValue = 0.0;
             var oldMonthlyReductionServiceValue = 0.0;
             var oldMonthlyExtraServiceValue = 0.0;
+            var oldMinCommDate = null;
 
             var oldInvoiceNumber = null;
             var oldinvoiceDate = null;
@@ -5415,6 +5427,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP",
                 }));
 
+                var minCommDate = (custListCommenceTodaySet.getValue({
+                    name: "custrecord_comm_date",
+                    join: "CUSTRECORD_CUSTOMER",
+                    summary: "MIN"
+                }));
+
                 // if (source == 'Additional Services') {
                 //     monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
                 // }
@@ -5457,10 +5475,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 // console.log('invoiceType ' + invoiceType)
                 // console.log('invoiceAmount ' + invoiceAmount)
                 // console.log('invocieItem ' + invoiceItem)
-                console.log('custName ' + custName)
-                console.log('monthlyExtraServiceValue ' + monthlyExtraServiceValue)
-                console.log('monthlyReductionServiceValue ' + monthlyReductionServiceValue)
+                // console.log('custName ' + custName)
+                // console.log('monthlyExtraServiceValue ' + monthlyExtraServiceValue)
+                // console.log('monthlyReductionServiceValue ' + monthlyReductionServiceValue)
+                if (!isNullorEmpty(minCommDate)) {
+                    var minCommDateSplit = minCommDate.split('/');
 
+                    if (parseInt(minCommDateSplit[1]) < 10) {
+                        minCommDateSplit[1] = '0' + minCommDateSplit[1]
+                    }
+
+                    if (parseInt(minCommDateSplit[0]) < 10) {
+                        minCommDateSplit[0] = '0' + minCommDateSplit[0]
+                    }
+
+                    minCommDate = minCommDateSplit[2] + '-' + minCommDateSplit[1] + '-' +
+                        minCommDateSplit[0];
+                }
 
                 if (!isNullorEmpty(dateLeadLost)) {
                     var dateLeadLostSplit = dateLeadLost.split('/');
@@ -5540,6 +5571,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
                         dateProspectWonSplit[0];
 
+
+
                 } else {
                     // var dateLeadLostSplit = dateLeadLost.split('/');
                     var dateLeadEnteredSplit = dateLeadEntered.split('/');
@@ -5586,6 +5619,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     invoiceDate = invoiceDateSplit[2] + '-' + invoiceDateSplit[1] + '-' +
                         invoiceDateSplit[0];
                 }
+
+
 
                 if (count == 0) {
                     // if (!isNullorEmpty(activityTitle)) {
@@ -5785,8 +5820,51 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
                         console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
 
+                        var usage_date_from_split = usage_date_from.split('/');
+
+                        if (parseInt(usage_date_from_split[1]) < 10) {
+                            usage_date_from_split[1] = '0' + usage_date_from_split[1]
+                        }
+
+                        if (parseInt(usage_date_from_split[0]) < 10) {
+                            usage_date_from_split[0] = '0' + usage_date_from_split[0]
+                        }
+
+                        var daily_usage_from = usage_date_from_split[2] + '-' + usage_date_from_split[1] + '-' +
+                            usage_date_from_split[0];
+
+                        var usage_date_to_split = usage_date_to.split('/');
+
+                        if (parseInt(usage_date_to_split[1]) < 10) {
+                            usage_date_to_split[1] = '0' + usage_date_to_split[1]
+                        }
+
+                        if (parseInt(usage_date_to_split[0]) < 10) {
+                            usage_date_to_split[0] = '0' + usage_date_to_split[0]
+                        }
+
+                        var daily_usage_to = usage_date_to_split[2] + '-' + usage_date_to_split[1] + '-' +
+                            usage_date_to_split[0];
+
+
                         var mpExpStdUsageLink =
-                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+
+                        // var d1 = new Date(olddateProspectWon);
+                        // var d2 = new Date(oldMinCommDate);
+
+                        // var existingCustomer = false;
+
+                        // if (d2 < d1) {
+                        //     existingCustomer = true;
+                        // }
+
+                        // var d1 = new Date(olddateLeadEntered);
+                        // var d2 = new Date(oldMinCommDate);
+
+                        // if (d2 < d1) {
+                        //     existingCustomer = true;
+                        // }
 
                         if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
                             existingCustomerDataSet.push(['',
@@ -5953,6 +6031,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 oldMonthServiceValue = monthlyServiceValue;
                 oldMonthlyReductionServiceValue = monthlyReductionServiceValue;
                 oldMonthlyExtraServiceValue = monthlyExtraServiceValue;
+                oldMinCommDate = minCommDate
 
                 oldInvoiceNumber = invoiceDocumentNumber;
                 oldinvoiceDate = invoiceDate;
@@ -6067,10 +6146,53 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
                     console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
 
-                    var mpExpStdUsageLink =
-                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                    var usage_date_from_split = usage_date_from.split('/');
 
-                    if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+                    if (parseInt(usage_date_from_split[1]) < 10) {
+                        usage_date_from_split[1] = '0' + usage_date_from_split[1]
+                    }
+
+                    if (parseInt(usage_date_from_split[0]) < 10) {
+                        usage_date_from_split[0] = '0' + usage_date_from_split[0]
+                    }
+
+                    var daily_usage_from = usage_date_from_split[2] + '-' + usage_date_from_split[1] + '-' +
+                        usage_date_from_split[0];
+
+                    var usage_date_to_split = usage_date_to.split('/');
+
+                    if (parseInt(usage_date_to_split[1]) < 10) {
+                        usage_date_to_split[1] = '0' + usage_date_to_split[1]
+                    }
+
+                    if (parseInt(usage_date_to_split[0]) < 10) {
+                        usage_date_to_split[0] = '0' + usage_date_to_split[0]
+                    }
+
+                    var daily_usage_to = usage_date_to_split[2] + '-' + usage_date_to_split[1] + '-' +
+                        usage_date_to_split[0];
+
+
+                    var mpExpStdUsageLink =
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+
+                    // var d1 = new Date(olddateProspectWon);
+                    // var d2 = new Date(oldMinCommDate);
+
+                    // var existingCustomer = false;
+
+                    // if (d2 < d1) {
+                    //     existingCustomer = true;
+                    // }
+
+                    // var d1 = new Date(olddateLeadEntered);
+                    // var d2 = new Date(oldMinCommDate);
+
+                    // if (d2 < d1) {
+                    //     existingCustomer = true;
+                    // }
+
+                    if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) ) {
                         existingCustomerDataSet.push(['',
                             oldcustInternalID,
                             oldcustEntityID,
