@@ -13,10 +13,10 @@
 
 
 define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
-    'N/error', 'N/url', 'N/format', 'N/currentRecord'
+    'N/error', 'N/url', 'N/format', 'N/currentRecord', 'N/portlet'
 ],
     function (email, runtime, search, record, http, log, error, url, format,
-        currentRecord) {
+        currentRecord, portlet) {
         var zee = 0;
         var userId = 0;
         var role = 0;
@@ -190,26 +190,32 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             // $('#customer_benchmark_preview').removeClass('hide');
             // $('#customer_benchmark_preview').show();
+            if (role != 1000) {
+                $('.zee_label_section').removeClass('hide');
+                $('.zee_dropdown_section').removeClass('hide');
+                $('.calcprodusage_div').removeClass('hide');
+                $('.table_section').removeClass('hide');
+                $('.usage_label_section').removeClass('hide');
+                $('.lead_entered_label_section').removeClass('hide');
+                $('.lead_entered_div').removeClass('hide');
+            }
 
-            $('.zee_label_section').removeClass('hide');
             $('.show_buttons_section').removeClass('hide');
-            $('.zee_dropdown_section').removeClass('hide');
-            $('.source_salesrep_label_section').removeClass('hide');
-            $('.source_salesrep_section').removeClass('hide');
-            $('.lead_entered_label_section').removeClass('hide');
-            $('.lead_entered_div').removeClass('hide');
-            $('.quote_sent_label_section').removeClass('hide');
-            $('.quote_sent_div').removeClass('hide');
+
+            // $('.source_salesrep_label_section').removeClass('hide');
+            // $('.source_salesrep_section').removeClass('hide');
+
+            // $('.quote_sent_label_section').removeClass('hide');
+            // $('.quote_sent_div').removeClass('hide');
             $('.signed_up_label_section').removeClass('hide');
             $('.signed_up_div').removeClass('hide');
-            $('.usage_label_section').removeClass('hide');
-            $('.calcprodusage_div').removeClass('hide');
+
             $('.usage_date_div').removeClass('hide');
             $('.invoice_label_section').removeClass('hide');
             $('.invoice_date_type_div').removeClass('hide');
             $('.filter_buttons_section').removeClass('hide');
             $('.tabs_section').removeClass('hide');
-            $('.table_section').removeClass('hide');
+
             $('.loading_section').addClass('hide');
         }
 
@@ -243,21 +249,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             date_signed_up_to = dateISOToNetsuite(date_signed_up_to);
 
 
-            date_quote_sent_from = $('#date_quote_sent_from').val();
-            date_quote_sent_from = dateISOToNetsuite(date_quote_sent_from);
+            // date_quote_sent_from = $('#date_quote_sent_from').val();
+            // date_quote_sent_from = dateISOToNetsuite(date_quote_sent_from);
 
-            date_quote_sent_to = $('#date_quote_sent_to').val();
-            date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
+            // date_quote_sent_to = $('#date_quote_sent_to').val();
+            // date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
 
             lead_source = $('#lead_source').val();
             sales_rep = $('#sales_rep').val();
-            invoice_type = $('#invoice_type').val();
+            // invoice_type = $('#invoice_type').val();
             calcprodusage = $('#calc_prod_usage').val();
 
-            invoice_date_from = $('#invoice_date_from').val();
-            invoice_date_from = dateISOToNetsuite(invoice_date_from);
-            invoice_date_to = $('#invoice_date_to').val();
-            invoice_date_to = dateISOToNetsuite(invoice_date_to);
+            // invoice_date_from = $('#invoice_date_from').val();
+            // invoice_date_from = dateISOToNetsuite(invoice_date_from);
+            // invoice_date_to = $('#invoice_date_to').val();
+            // invoice_date_to = dateISOToNetsuite(invoice_date_to);
 
 
             /**
@@ -358,7 +364,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             });
 
-
+            portlet.resize();
         }
 
         //Initialise the DataTable with headers.
@@ -397,21 +403,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('usage_date_from: ' + usage_date_from);
             console.log('usage_date_to ' + usage_date_to);
 
-            console.log('usage_date_from: ' + usage_date_from);
-            console.log('usage_date_to ' + usage_date_to);
-
-
             console.log('date_signed_up_from: ' + date_signed_up_from);
             console.log('date_signed_up_to ' + date_signed_up_to);
 
-            console.log('date_quote_sent_from: ' + date_quote_sent_from);
-            console.log('date_quote_sent_to ' + date_quote_sent_to);
+            // console.log('date_quote_sent_from: ' + date_quote_sent_from);
+            // console.log('date_quote_sent_to ' + date_quote_sent_to);
 
-            console.log('lead_source ' + lead_source);
-            console.log('sales_rep ' + sales_rep);
-            console.log('invoice_type ' + invoice_type);
-            console.log('invoice_date_from ' + invoice_date_from);
-            console.log('invoice_date_to ' + invoice_date_to);
+            // console.log('lead_source ' + lead_source);
+            // console.log('sales_rep ' + sales_rep);
+            // console.log('invoice_type ' + invoice_type);
+            // console.log('invoice_date_from ' + invoice_date_from);
+            // console.log('invoice_date_to ' + invoice_date_to);
 
             console.log('zee_id ' + zee_id);
 
@@ -1153,7 +1155,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source;
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate == startDate) {
@@ -1205,7 +1207,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count = 0;
                     source_additional_services = 0;
                     source_legal_campaign = 0;
-                    other_source = 0;
 
 
                     if (customerSource == '-4') {
@@ -1329,7 +1330,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data37.push(parseInt(customer_signed_other_source[item]));
                 categores_customer_signed_week.push(item)
             });
-            console.log('series_data37: ' + series_data37)
+
 
             plotChartCustomerSigned(series_data30, series_data31,
                 series_data32,
