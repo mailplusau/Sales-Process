@@ -364,6 +364,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             });
 
+            $("#fullReport").click(function () {
+
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1"
+                window.open(url, '_blank')
+                // window.location.href = url;
+
+            });
+
             portlet.resize();
         }
 
