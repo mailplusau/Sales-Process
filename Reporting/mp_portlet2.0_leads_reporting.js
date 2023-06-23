@@ -57,18 +57,84 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 zee = runtime.getCurrentUser().id;
             }
 
-            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-            var firstDay = new Date(y, m, 1);
-            var lastDay = new Date(y, m + 1, 0);
+            var date = new Date();
+            var y = date.getFullYear();
+            var m = date.getMonth();
+            //If begining of the year, show the current financial year, else show the current 
+            if (m < 5) {
+                //Calculate the Current inancial Year
 
-            firstDay.setHours(0, 0, 0, 0);
-            lastDay.setHours(0, 0, 0, 0);
+                var firstDay = new Date(y, m, 1);
+                var lastDay = new Date(y, m + 1, 0);
 
-            var janLastYear = new Date(date.getFullYear() - 1, 0, 1);
+                firstDay.setHours(0, 0, 0, 0);
+                lastDay.setHours(0, 0, 0, 0);
 
-            firstDay = GetFormattedDate(firstDay);
-            lastDay = GetFormattedDate(lastDay);
-            janLastYear = GetFormattedDate(janLastYear)
+                if (m >= 6) {
+                    var first_july = new Date(y, 6, 1);
+                } else {
+                    var first_july = new Date(y - 1, 6, 1);
+                }
+                date_from = first_july;
+                date_to = lastDay;
+
+                var firstDay = GetFormattedDate(date_from);
+                var lastDay = GetFormattedDate(date_to);
+            } else {
+                //Calculate the Current Calendar Year
+                // var today_day_in_month = date.getDate();
+                // var today_date = new Date(Date.UTC(y, m, today_day_in_month))
+                // var first_day_in_year = new Date(Date.UTC(y, 0));
+                // var date_from = first_day_in_year.toISOString().split('T')[0];
+                // var date_to = today_date.toISOString().split('T')[0];
+
+                // var start_date = date_from;
+                // var last_date = last_date;
+                var i = 0;
+                var lastDay = new Date(y, m + 1, 0);
+                do {
+                    // months.push(m[parseInt((month > 9 ? "" : "0") + month)] + '-' + year);
+                    if (m == 1) {
+                        m = 12;
+                        y--;
+                    } else {
+                        m--;
+                    }
+                    i++;
+                } while (i < 4);
+
+                var firstDay = new Date(y, m, 1);
+                firstDay.setHours(0, 0, 0, 0);
+                lastDay.setHours(0, 0, 0, 0);
+
+                var firstDay = GetFormattedDate(firstDay);
+                var lastDay = GetFormattedDate(lastDay);
+            }
+
+
+            // var janLastYear = new Date(date.getFullYear() - 1, 0, 1);
+
+            // log.debug({
+            //     title: 'date_from',
+            //     details: date_from
+            // })
+            // log.debug({
+            //     title: 'date_to',
+            //     details: date_to
+            // })
+
+            // firstDay = GetFormattedDate(date_from);
+            // lastDay = GetFormattedDate(date_to);
+            // janLastYear = GetFormattedDate(janLastYear)
+
+            log.debug({
+                title: 'start_date',
+                details: start_date
+            })
+            log.debug({
+                title: 'last_date',
+                details: last_date
+            })
 
             if (isNullorEmpty(usage_date_from)) {
                 usage_date_from = firstDay;
@@ -79,19 +145,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
             if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from)) {
-
-                date_signed_up_from = janLastYear;
-                // date_signed_up_from = firstDay;
-
-
+                date_signed_up_from = firstDay;
             }
 
             if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to)) {
 
                 date_signed_up_to = lastDay;
-                // date_signed_up_to = lastDay;
-
-
             }
 
             var inlineHtml =
