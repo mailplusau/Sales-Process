@@ -194,22 +194,29 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $('.zee_label_section').removeClass('hide');
             $('.show_buttons_section').removeClass('hide');
             $('.zee_dropdown_section').removeClass('hide');
-            $('.source_salesrep_label_section').removeClass('hide');
-            $('.source_salesrep_section').removeClass('hide');
+
             $('.lead_entered_label_section').removeClass('hide');
             $('.lead_entered_div').removeClass('hide');
-            $('.quote_sent_label_section').removeClass('hide');
-            $('.quote_sent_div').removeClass('hide');
+            if (role != 1000) {
+                $('.quote_sent_label_section').removeClass('hide');
+                $('.quote_sent_div').removeClass('hide');
+                $('.usage_label_section').removeClass('hide');
+                $('.calcprodusage_div').removeClass('hide');
+                $('.usage_date_div').removeClass('hide');
+                $('.invoice_label_section').removeClass('hide');
+                $('.invoice_date_type_div').removeClass('hide');
+                $('.source_salesrep_label_section').removeClass('hide');
+                $('.source_salesrep_section').removeClass('hide');
+            }
+
             $('.signed_up_label_section').removeClass('hide');
             $('.signed_up_div').removeClass('hide');
-            $('.usage_label_section').removeClass('hide');
-            $('.calcprodusage_div').removeClass('hide');
-            $('.usage_date_div').removeClass('hide');
-            $('.invoice_label_section').removeClass('hide');
-            $('.invoice_date_type_div').removeClass('hide');
+
+
             $('.filter_buttons_section').removeClass('hide');
             $('.tabs_section').removeClass('hide');
             $('.table_section').removeClass('hide');
+            $('.instruction_div').removeClass('hide');
             $('.loading_section').addClass('hide');
         }
 

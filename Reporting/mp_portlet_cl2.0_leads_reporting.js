@@ -207,14 +207,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             // $('.quote_sent_label_section').removeClass('hide');
             // $('.quote_sent_div').removeClass('hide');
-            $('.signed_up_label_section').removeClass('hide');
-            $('.signed_up_div').removeClass('hide');
+            // $('.signed_up_label_section').removeClass('hide');
+            // $('.signed_up_div').removeClass('hide');
 
             $('.usage_date_div').removeClass('hide');
             $('.invoice_label_section').removeClass('hide');
             $('.invoice_date_type_div').removeClass('hide');
             $('.filter_buttons_section').removeClass('hide');
             $('.tabs_section').removeClass('hide');
+            $('.data-range_note').removeClass('hide');
 
             $('.loading_section').addClass('hide');
         }

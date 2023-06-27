@@ -88,29 +88,71 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     details: lastDay
                 });
 
+                if (role != 1000) {
+                    if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from)) {
+                        if (showTotal == 'T') {
+                            start_date = null;
+                            date_signed_up_from = null;
 
-                if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from)) {
-                    if (showTotal == 'T') {
-                        start_date = null;
-                        date_signed_up_from = null;
+                        } else {
+                            start_date = firstDay;
+                            // date_signed_up_from = firstDay;
+                        }
 
-                    } else {
-                        start_date = firstDay;
-                        // date_signed_up_from = firstDay;
                     }
 
-                }
+                    if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to)) {
+                        if (showTotal == 'T') {
+                            last_date = null;
+                            date_signed_up_to = null;
+                        } else {
+                            last_date = lastDay;
+                            // date_signed_up_to = lastDay;
+                        }
 
-                if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to)) {
-                    if (showTotal == 'T') {
-                        last_date = null;
-                        date_signed_up_to = null;
-                    } else {
-                        last_date = lastDay;
-                        // date_signed_up_to = lastDay;
                     }
+                } else {
+                    if (start_date == null && last_date == null) {
+                        var date = new Date();
+                        var y = date.getFullYear();
+                        var m = date.getMonth();
 
+                        var lastDay = new Date(y, m + 1, 0);
+                        lastDay.setHours(0, 0, 0, 0);
+                        //If begining of the year, show the current financial year, else show the current 
+                        if (m < 5) {
+                            //Calculate the Current inancial Year
+
+                            var firstDay = new Date(y, m, 1);
+
+
+                            firstDay.setHours(0, 0, 0, 0);
+
+
+                            if (m >= 6) {
+                                var first_july = new Date(y, 6, 1);
+                            } else {
+                                var first_july = new Date(y - 1, 6, 1);
+                            }
+                            date_from = first_july;
+                            date_to = lastDay;
+
+                            start_date = GetFormattedDate(date_from);
+                            last_date = GetFormattedDate(date_to);
+                        } else {
+                            //Calculate the Current Calendar Year
+                            var today_day_in_month = date.getDate();
+                            var today_date = new Date(Date.UTC(y, m, today_day_in_month))
+                            var first_day_in_year = new Date(Date.UTC(y, 0));
+                            var date_from = first_day_in_year.toISOString().split('T')[0];
+                            var date_to = today_date.toISOString().split('T')[0];
+
+                            start_date = date_from;
+                            last_date = GetFormattedDate(lastDay);
+                        }
+                    }
                 }
+
 
                 if (isNullorEmpty(userId)) {
                     userId = null;
@@ -227,11 +269,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
+
+
                 //Display the modal pop-up to edit the customer details
                 inlineHtml += updateCustomerModal();
 
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
+                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br></br></p></div></br>'
                 inlineHtml +=
                     '<div class="form-group container show_buttons_section hide">';
                 inlineHtml += '<div class="row">';
@@ -280,7 +325,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 context.response.writePage(form);
             } else {
-               
+
             }
         }
 
