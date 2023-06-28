@@ -159,7 +159,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }
 
                 var form = ui.createForm({
-                    title: 'Lead - Reporting'
+                    title: 'Sales Dashboard'
                 });
 
 
@@ -269,14 +269,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
-
-
-                //Display the modal pop-up to edit the customer details
-                inlineHtml += updateCustomerModal();
-
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
-                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, choose a date range under "Date Lead Entered - Filter" and click "Apply Filter." This refers to the date when a lead was entered into Netsuite, either by you, your Sales Rep, or generated from website/social media campaigns.</li><li>For searching new customer results, select a date range under "Date Signed Up - Filter" and click "Apply Filter."</li></ol><b><u>Overview filter:</u></b></br>The far-left button above the graph provides an overview of three lead statuses:<ol><li>Customer</li><li>Prospect</li><li>Suspect</li></ol><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow for drilldown on leads based on their respective statuses.<ol><li>Customers - Filter for new and existing customers by lead source.</li><li>Prospects - Further drilldown to determine if a lead is unresponsive or has become a genuine opportunity after initial discussions.</li><li>Suspects - Gain insights into different categories of suspect leads. Click on the desired status to view data regarding:<ul><li>"Hot Lead" - Leads that have not yet been determined as potential opportunities.</li><li>"Follow up" - Leads that cannot be serviced currently but may be in the future.</li><li>"Lost" - Leads lost after initial conversation, such as when the product is unsuitable for their business or they are out of territory.</li><li>"Cancellations" - Customers who have cancelled.</li></ul></li></ol></p></div></br>'
+                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, choose a date range under "Date Lead Entered - Filter" and click "Apply Filter." This refers to the date when a lead was entered into Netsuite, either by you, your Sales Rep, or generated from website/social media campaigns.</li><li>For searching new customer results, select a date range under "Date Signed Up - Filter" and click "Apply Filter."</li></ol><b><u>Overview filter:</u></b></br>The far-left button above the graph provides an overview of three lead statuses:<ol><li>Customer</li><li>Prospect</li><li>Suspect</li></ol><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow for drilldown on leads based on their respective statuses.<ol><li>Customers - Filter for new and existing customers by lead source.</li><li>Prospects - Further drilldown to determine if a lead is unresponsive or has become a genuine opportunity after initial discussions.</li><li>Suspects - Gain insights into different categories of suspect leads. Click on the desired status to view data regarding:<ul><li>"Hot Lead" - Leads that have not yet been determined as potential opportunities.</li><li>"Follow up" - Leads that cannot be serviced currently but may be in the future.</li><li>"Lost" - Leads lost after initial conversation, such as when the product is unsuitable for their business or they are out of territory.</li><li>"Cancellations" - Customers who have cancelled.</li></ul></li></ol></p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;" /></div><div class="col-xs-4"></div></div></div></div></br>';
+
+                inlineHtml += stepByStepGuideModal();
+
                 inlineHtml +=
                     '<div class="form-group container show_buttons_section hide">';
                 inlineHtml += '<div class="row">';
@@ -373,56 +371,36 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-
         /*
-         * PURPOSE : HTML code to generate the Modal Pop-up
-         *  PARAMS :  -
-         * RETURNS : HTML
-         *   NOTES :
-         */
-        function updateCustomerModal() {
-
-            var yes_no_search = search.create({
-                type: 'customlist107_2',
-                columns: [{
-                    name: 'name'
-                }, {
-                    name: 'internalId'
-                }]
-            });
+ * PURPOSE : HTML code to generate the Modal Pop-up
+ *  PARAMS :  -
+ * RETURNS : HTML
+ *   NOTES :
+ */
+        function stepByStepGuideModal() {
 
 
-            var resultSetYesNo = yes_no_search.run();
             var inlineHtml =
-                '<div id="myModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888;/* width: 80%; */left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h3 class="modal-title" id="modal-title">Lost Reasons</h3></div>';
+                '<div id="myModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #CFE0CE; margin: auto; padding: 0; border: 1px solid #888;width: fit-content; left: 50%;top: 50%; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); -webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h1 class="modal-title" id="modal-title">STEP BY STEP GUIDE</h1></div>';
 
             inlineHtml +=
                 '<div class="modal-body" style="padding: 2px 16px;">';
             inlineHtml +=
                 '<div class="form-group container mpex_customer2_section">';
             inlineHtml += '<div class="row">';
-            inlineHtml +=
-                '<div class="col-xs-4 mpex_customer"><input type="text" id="customerInternalID" value="" hidden/>'
-            inlineHtml +=
-                '<select class="form-control service_cancellation_reason text-center">';
-
-            inlineHtml +=
-                ' <option value="0"></option><option value="46">Lost - Off Peak</option><option value="48">Lost - Over 5Kg</option><option value="47">Lost - Box Solution</option><option value="45">Lost – Integration / IT</option><option value="39">Unserviceable Territory</option><option value="29">Unserviceable Banking</option><option value="37">Duplicate Customer</option><option value="41">No Response</option><option value="40">Not a Lead</option><option value="17">Not Interested</option><option value="18">Price</option>'
-
-            inlineHtml += '</select>';
-
-
-            inlineHtml += '</div > ';
+            inlineHtml += '<iframe src="https://scribehow.com/embed/Sales_Full_Report__Rx3wYVX_TZWc9h9CdpS1Lw?as=scrollable&skipIntro=true&removeLogo=true" width="100%" height="640" allowfullscreen frameborder="0"></iframe>'
 
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
             inlineHtml +=
-                '</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="Save" class="form-control btn-primary" id="customerOnboardingCompleted" style=""/></div></div></div>';
+                '</div></div></div>';
 
             return inlineHtml;
 
         }
+
+
 
         function leadSourceFilterSection(source, salesrep) {
             var inlineHtml = '<div class="form-group container source_salesrep_label_section hide">';
@@ -890,8 +868,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - OFF PEAK PIEPLINE</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost"><b>SUSPECTS - LOST</b></a></li>';
-            inlineHtml +=
+            if (role != 1000) {
+                inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
+            }
+            
 
 
             inlineHtml += '</ul></div>';

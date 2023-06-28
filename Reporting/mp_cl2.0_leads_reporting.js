@@ -280,6 +280,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var today_month = today.getMonth();
             var today_day = today.getDate();
 
+            $("#showGuide").click(function () {
+            
+                if ($('#show_filter').val() == 'HIDE FILTERS') {
+					$('#show_filter').trigger('click');
+				}
+                $("#myModal").show();
+
+                return false;
+
+            })
+
+            $('.close').click(function () {
+                $("#myModal").hide();
+            });
+
             $("#show_filter").click(function () {
                 if ($('#show_filter').val() == 'SHOW FILTERS') {
                     $('#show_filter').val('HIDE FILTERS');
