@@ -810,8 +810,28 @@ function onclick_notifyitteam() {
 
         return true;
       });
-      nlapiSendEmail(668712, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Save & Refinalise Customer - ' + entityid + ' ' + companyName, emailBody, [
-        'ankith.ravindran@mailplus.com.au'
+
+      var salesRepEmail = null;
+      var salesRepName = null;
+      var salesRepId = null;
+      var franchiseeSalesRepAssigned = nlapiLookupField('customer', parseInt(nlapiGetFieldValue('customer')), 'partner.custentity_sales_rep_assigned');
+      salesRepId = franchiseeSalesRepAssigned;
+      if (franchiseeSalesRepAssigned == '668712') {
+        salesRepEmail = 'belinda.urbani@mailplus.com.au';
+        salesRepName = 'Belinda Urbani';
+        salesRepId = 668712
+      } else if (franchiseeSalesRepAssigned == '696160') {
+        salesRepEmail = 'kerina.helliwell@mailplus.com.au'
+        salesRepName = 'Kerina Helliwell';
+        salesRepId = 696160
+      } else {
+        salesRepEmail = 'lee.russell@mailplus.com.au';
+        salesRepName = 'Lee Russell';
+        salesRepId = 668711
+      }
+
+      nlapiSendEmail(salesRepId, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Save & Refinalise Customer - ' + entityid + ' ' + companyName, emailBody, [
+        'ankith.ravindran@mailplus.com.au', salesRepEmail
       ]);
       nlapiSubmitRecord(customer_record)
       var customerURL = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'))
@@ -821,6 +841,60 @@ function onclick_notifyitteam() {
 
 
   }
+
+
+}
+
+function onclick_customersaved() {
+
+  console.log('customer' + parseInt(nlapiGetFieldValue('customer')))
+  console.log('sales record ' + parseInt(nlapiGetFieldValue('sales_record_id')))
+  var result = validate();
+  if (result == false) {
+    return false;
+  }
+  updateCustomerDetails(false);
+  var type = $(this).attr("data-id");
+
+  var customer_record = nlapiLoadRecord('customer', parseInt(nlapiGetFieldValue('customer')));
+  var entityid = customer_record.getFieldValue('entityid');
+  var companyName = customer_record.getFieldValue('companyname');
+  // var zeeText = customer_record.getFieldV('partner');
+  customer_record.setFieldValue('custentity_customer_saved', 1);
+  customer_record.setFieldValue('custentity_customer_saved_date', getDate());
+  customer_record.setFieldValue('custentity13', null);
+  customer_record.setFieldValue('custentity_service_cancellation_notice', null);
+  customer_record.setFieldValue('custentity_service_cancellation_reason', null);
+  customer_record.setFieldValue('custentity14', null);
+  customer_record.setFieldValue('custentity_cancel_proof', null);
+
+  nlapiSubmitRecord(customer_record);
+
+  var salesRepEmail = null;
+  var salesRepName = null;
+  var salesRepId = null;
+  var franchiseeSalesRepAssigned = nlapiLookupField('customer', parseInt(nlapiGetFieldValue('customer')), 'partner.custentity_sales_rep_assigned');
+  salesRepId = franchiseeSalesRepAssigned;
+  if (franchiseeSalesRepAssigned == '668712') {
+    salesRepEmail = 'belinda.urbani@mailplus.com.au';
+    salesRepName = 'Belinda Urbani';
+    salesRepId = 668712
+  } else if (franchiseeSalesRepAssigned == '696160') {
+    salesRepEmail = 'kerina.helliwell@mailplus.com.au'
+    salesRepName = 'Kerina Helliwell';
+    salesRepId = 696160
+  } else {
+    salesRepEmail = 'lee.russell@mailplus.com.au';
+    salesRepName = 'Lee Russell';
+    salesRepId = 668711
+  }
+
+  nlapiSendEmail(salesRepId, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Save & Refinalise Customer - ' + entityid + ' ' + companyName, emailBody, [
+    'ankith.ravindran@mailplus.com.au', salesRepEmail
+  ]);
+  var customerURL = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'))
+  window.open(customerURL, "_self",
+    "height=750,width=650,modal=yes,alwaysRaised=yes");
 
 
 }

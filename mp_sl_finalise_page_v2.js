@@ -1534,38 +1534,38 @@ function customerDetailsSection(companyName, abn, resultSetZees, zee,
   inlineQty += '</div>';
 
   inlineQty += '<div class="form-group container account_manager">';
-      inlineQty += '<div class="row">';
-      inlineQty +=
-        '<div class="col-xs-6 account_manager_div"><div class="input-group"><span class="input-group-addon" id="account_manager_span">ACCOUNT MANAGER <span class="mandatory">*</span></span><select id="account_manager" class="form-control account_manager" ><option></option>';
-      if (account_manager == '668711') {
-        inlineQty += '<option value="668711" selected>Lee Russell</option>';
-        inlineQty += '<option value="696160">Kerina Helliwell</option>';
-        inlineQty += '<option value="690145">David Gdanski</option>';
-        inlineQty += '<option value="668712">Belinda Urbani</option>';
-      } else if (account_manager == '696160') {
-        inlineQty += '<option value="668711">Lee Russell</option>';
-        inlineQty += '<option value="696160" selected>Kerina Helliwell</option>';
-        inlineQty += '<option value="690145">David Gdanski</option>';
-        inlineQty += '<option value="668712">Belinda Urbani</option>';
-      } else if (account_manager == '690145') {
-        inlineQty += '<option value="668711">Lee Russell</option>';
-        inlineQty += '<option value="696160">Kerina Helliwell</option>';
-        inlineQty += '<option value="690145" selected>David Gdanski</option>';
-        inlineQty += '<option value="668712">Belinda Urbani</option>';
-      } else if (account_manager == '668712') {
-        inlineQty += '<option value="668711">Lee Russell</option>';
-        inlineQty += '<option value="696160">Kerina Helliwell</option>';
-        inlineQty += '<option value="690145">David Gdanski</option>';
-        inlineQty += '<option value="668712" selected>Belinda Urbani</option>';
-      } else {
-        inlineQty += '<option value="668711">Lee Russell</option>';
-        inlineQty += '<option value="696160">Kerina Helliwell</option>';
-        inlineQty += '<option value="690145">David Gdanski</option>';
-        inlineQty += '<option value="668712">Belinda Urbani</option>';
-      }
-      inlineQty += '</select>';
-      inlineQty += '</div></div></div>';
-      inlineQty += '</div>';
+  inlineQty += '<div class="row">';
+  inlineQty +=
+    '<div class="col-xs-6 account_manager_div"><div class="input-group"><span class="input-group-addon" id="account_manager_span">ACCOUNT MANAGER <span class="mandatory">*</span></span><select id="account_manager" class="form-control account_manager" ><option></option>';
+  if (account_manager == '668711') {
+    inlineQty += '<option value="668711" selected>Lee Russell</option>';
+    inlineQty += '<option value="696160">Kerina Helliwell</option>';
+    inlineQty += '<option value="690145">David Gdanski</option>';
+    inlineQty += '<option value="668712">Belinda Urbani</option>';
+  } else if (account_manager == '696160') {
+    inlineQty += '<option value="668711">Lee Russell</option>';
+    inlineQty += '<option value="696160" selected>Kerina Helliwell</option>';
+    inlineQty += '<option value="690145">David Gdanski</option>';
+    inlineQty += '<option value="668712">Belinda Urbani</option>';
+  } else if (account_manager == '690145') {
+    inlineQty += '<option value="668711">Lee Russell</option>';
+    inlineQty += '<option value="696160">Kerina Helliwell</option>';
+    inlineQty += '<option value="690145" selected>David Gdanski</option>';
+    inlineQty += '<option value="668712">Belinda Urbani</option>';
+  } else if (account_manager == '668712') {
+    inlineQty += '<option value="668711">Lee Russell</option>';
+    inlineQty += '<option value="696160">Kerina Helliwell</option>';
+    inlineQty += '<option value="690145">David Gdanski</option>';
+    inlineQty += '<option value="668712" selected>Belinda Urbani</option>';
+  } else {
+    inlineQty += '<option value="668711">Lee Russell</option>';
+    inlineQty += '<option value="696160">Kerina Helliwell</option>';
+    inlineQty += '<option value="690145">David Gdanski</option>';
+    inlineQty += '<option value="668712">Belinda Urbani</option>';
+  }
+  inlineQty += '</select>';
+  inlineQty += '</div></div></div>';
+  inlineQty += '</div>';
 
 
   return inlineQty;
@@ -1645,6 +1645,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
   inlineQty += '<div class="col-xs-6 contacts_div">';
   inlineQty +=
     '<table border="0" cellpadding="15" id="contacts" class="table table-responsive table-striped contacts tablesorter" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #103d3987;"><tr><th style="vertical-align: middle;text-align: center;"><b>DETAILS</b></th><th style="vertical-align: middle;text-align: center;"><b>ROLE</b></th></tr></thead><tbody>';
+  var countAdmin = 0;
   resultSetContacts.forEachResult(function (searchResultContacts) {
     var contact_id = searchResultContacts.getValue('internalid');
     var contact_fn = searchResultContacts.getValue('firstname');
@@ -1659,7 +1660,8 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
     var contact_connect_user = searchResultContacts.getValue(
       'custentity_connect_user');
 
-    if (contact_connect_admin == 1 || contact_connect_user == 1) {
+
+    if ((contact_connect_admin == 1 || contact_connect_user == 1) && countAdmin == 0) {
       form.addField('custpage_connect_admin', 'text', 'Connect Admin').setDisplayType(
         'hidden').setDefaultValue(contact_connect_admin);
       form.addField('custpage_connect_user', 'text', 'Connect User').setDisplayType(
@@ -1674,6 +1676,7 @@ function addressContactsSection(resultSetAddresses, resultSetContacts, form) {
         'hidden').setDefaultValue(contact_email);
       form.addField('custpage_connect_phone', 'text', 'Connect User').setDisplayType(
         'hidden').setDefaultValue(contact_phone);
+      countAdmin++;
     }
     inlineQty += '<tr class="text-center"><td>' + contact_text +
       '</td><td>' + contact_role_text + '</td></tr>';
@@ -2340,8 +2343,14 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
     '<div class="col-xs-2 reassign"><input type="button" id="reassign" class="form-control reassign btn btn-warning" value="ASSIGN TO REP" onclick="onclick_reassign()"/></div>';
   inlineQty +=
     '<div class="col-xs-3 offpeakpipeline"><input type="button" id="offpeakpipeline" class="form-control offpeakpipeline btn btn-warning" value="PARKING LOT" onclick="onclick_OffPeak()"/></div>';
-  inlineQty +=
-    '<div class="col-xs-2 sendinfo"><input type="button" id="followup" class="form-control sendinfo btn btn-success" value="FOLLOW-UP" onclick="onclick_Followup();" /></div>';
+  if (saveCustomer == 1 && customer_status == '13') {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="signed" class="form-control sendinfo btn btn-success" value="SAVED - NO CHANGE" onclick="onclick_customersaved();" data-id="signed" /></div>';
+  } else {
+    inlineQty +=
+      '<div class="col-xs-2 sendinfo"><input type="button" id="followup" class="form-control sendinfo btn btn-success" value="FOLLOW-UP" onclick="onclick_Followup();" /></div>';
+  }
+
   // inlineQty +=
   //   '<div class="col-xs-2 sendinfo"></div>';
   inlineQty +=
