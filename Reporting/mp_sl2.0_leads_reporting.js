@@ -57,6 +57,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 //If role is Franchisee
                 if (role == 1000) {
                     zee = runtime.getCurrentUser().id;
+                    calcprodusage = 2;
                 }
 
                 var date = new Date(), y = date.getFullYear(), m = date.getMonth();
