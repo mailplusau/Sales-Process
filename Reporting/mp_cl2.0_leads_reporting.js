@@ -281,10 +281,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var today_day = today.getDate();
 
             $("#showGuide").click(function () {
-            
+
                 if ($('#show_filter').val() == 'HIDE FILTERS') {
-					$('#show_filter').trigger('click');
-				}
+                    $('#show_filter').trigger('click');
+                }
                 $("#myModal").show();
 
                 return false;
@@ -1100,6 +1100,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var source_additional_services = 0;
             var source_legal_campaign = 0;
             var other_source = 0;
+            var futurePlusCount = 0;
             var total_source_count = 0;
 
             customerListBySalesRepWeeklySearch.run().each(function (
@@ -1168,6 +1169,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_additional_services += parseInt(customerCount)
                     } else if (customerSource == '279095') {
                         source_legal_campaign += parseInt(customerCount)
+                    } else if (customerSource == '280411') {
+                        futurePlusCount += parseInt(customerCount)
                     } else {
                         other_source += parseInt(customerCount)
                     }
@@ -1175,7 +1178,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source;
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount;
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate == startDate) {
@@ -1196,6 +1199,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_additional_services += parseInt(customerCount)
                     } else if (customerSource == '279095') {
                         source_legal_campaign += parseInt(customerCount)
+                    } else if (customerSource == '280411') {
+                        futurePlusCount += parseInt(customerCount)
                     } else {
                         other_source += parseInt(customerCount)
                     }
@@ -1203,7 +1208,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount
 
                 } else if (oldCustomerSignedDate != null &&
                     oldCustomerSignedDate != startDate) {
@@ -1217,7 +1222,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         total_source_count: total_source_count,
                         source_additional_services: source_additional_services,
                         source_legal_campaign: source_legal_campaign,
-                        other_source: other_source
+                        other_source: other_source,
+                        futurePlusCount: futurePlusCount
                     });
 
                     source_zee_generated = 0;
@@ -1228,6 +1234,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     source_additional_services = 0;
                     source_legal_campaign = 0;
                     other_source = 0;
+                    futurePlusCount = 0;
 
 
                     if (customerSource == '-4') {
@@ -1246,6 +1253,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_additional_services += parseInt(customerCount)
                     } else if (customerSource == '279095') {
                         source_legal_campaign += parseInt(customerCount)
+                    } else if (customerSource == '280411') {
+                        futurePlusCount += parseInt(customerCount)
                     } else {
                         other_source += parseInt(customerCount)
                     }
@@ -1253,7 +1262,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count =
                         source_zee_generated +
                         source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source
+                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount
                 }
 
 
@@ -1279,7 +1288,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     total_source_count: total_source_count,
                     source_additional_services: source_additional_services,
                     source_legal_campaign: source_legal_campaign,
-                    other_source: other_source
+                    other_source: other_source,
+                    futurePlusCount: futurePlusCount
                 });
             }
 
@@ -1298,6 +1308,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         preview_row.source_additional_services,
                         preview_row.source_legal_campaign,
                         preview_row.other_source,
+                        preview_row.futurePlusCount,
                         preview_row.total_source_count
                         ]);
 
@@ -1314,6 +1325,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var customer_signed_source_additional_services = [];
             var customer_signed_source_legal_campaign = [];
             var customer_signed_other_source = [];
+            var customer_signed_future_plus = [];
 
             for (var i = 0; i < customerSignedDataSet.length; i++) {
                 month_year_customer.push(customerSignedDataSet[i][0]);
@@ -1321,10 +1333,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 customer_signed_source_callcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][2]
                 customer_signed_source_field_salescount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][3]
                 customer_signed_source_websitecount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][4]
-                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][8]
+                customer_signed_total_source_countcount[customerSignedDataSet[i][0]] = customerSignedDataSet[i][9]
                 customer_signed_source_additional_services[customerSignedDataSet[i][0]] = customerSignedDataSet[i][5]
                 customer_signed_source_legal_campaign[customerSignedDataSet[i][0]] = customerSignedDataSet[i][6]
                 customer_signed_other_source[customerSignedDataSet[i][0]] = customerSignedDataSet[i][7]
+                customer_signed_future_plus[customerSignedDataSet[i][0]] = customerSignedDataSet[i][8]
             }
 
             var series_data30 = [];
@@ -1335,6 +1348,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var series_data35 = [];
             var series_data36 = [];
             var series_data37 = [];
+            var series_data38 = [];
 
 
             var categores_customer_signed_week = []; // creating empty array for highcharts
@@ -1349,6 +1363,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data35.push(parseInt(customer_signed_source_additional_services[item]));
                 series_data36.push(parseInt(customer_signed_source_legal_campaign[item]));
                 series_data37.push(parseInt(customer_signed_other_source[item]));
+                series_data38.push(parseInt(customer_signed_future_plus[item]));
                 categores_customer_signed_week.push(item)
             });
             console.log('series_data37: ' + series_data37)
@@ -1356,7 +1371,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             plotChartCustomerSigned(series_data30, series_data31,
                 series_data32,
                 series_data33,
-                series_data34, series_data35, series_data36, series_data37, categores_customer_signed_week);
+                series_data34, series_data35, series_data36, series_data37, categores_customer_signed_week, series_data38);
 
             if (role == 1000) {
                 // Website New Leads - Prospect - Monthly Reporting
@@ -8976,7 +8991,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         function plotChartCustomerSigned(series_data30, series_data31,
             series_data32,
             series_data33,
-            series_data34, series_data35, series_data36, series_data37, categores_customer_signed_week) {
+            series_data34, series_data35, series_data36, series_data37, categores_customer_signed_week, series_data38) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -9096,6 +9111,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'Legal Campaign',
                     data: series_data36,
                     color: '#748DA6',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'FuturePlus',
+                    data: series_data38,
+                    color: '#0f9564',
                     style: {
                         fontWeight: 'bold',
                     }
