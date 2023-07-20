@@ -889,7 +889,11 @@ function onclick_customersaved() {
     salesRepId = 668711
   }
 
-  nlapiSendEmail(salesRepId, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Save & Refinalise Customer - ' + entityid + ' ' + companyName, emailBody, [
+  var emailBody = 'Customer has been saved with no changes to the services. </br></br>Customer Internal ID: ' + parseInt(nlapiGetFieldValue('customer')) + '</br>'
+  emailBody += 'Customer Entity ID: ' + entityid + '</br>';
+  emailBody += 'Customer Name: ' + companyName + '</br></br>';
+
+  nlapiSendEmail(salesRepId, ['popie.popie@mailplus.com.au', 'fiona.harrison@mailplus.com.au'], 'Customer Saved - No Change to Services - ' + entityid + ' ' + companyName, emailBody, [
     'ankith.ravindran@mailplus.com.au', salesRepEmail
   ]);
   var customerURL = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + parseInt(nlapiGetFieldValue('customer'))
