@@ -3161,7 +3161,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 if (count1 == 0) {
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed += parseInt(prospectCount);
                     } else if (custStatus == 57) {
@@ -3215,7 +3215,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 } else if (oldDate1 != null &&
                     oldDate1 == startDate) {
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed += prospectCount;
                     } else if (custStatus == 57) {
@@ -3303,7 +3303,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     total_leads = 0;
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed = prospectCount;
                     } else if (custStatus == 57) {

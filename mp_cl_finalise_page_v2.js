@@ -359,6 +359,18 @@ function onclick_NoAnswerEmail() {
   }
 }
 
+function onclick_customerLost() {
+  if (validate()) {
+    updateCustomerDetails(false);
+    var url = baseURL + nlapiResolveURL('SUITELET', 'customscript_sl2_customer_cancellation', 'customdeploy1');
+    url += '&custid=' + parseInt(nlapiGetFieldValue('customer'));
+
+
+    window.open(url, "_self",
+      "height=750,width=650,modal=yes,alwaysRaised=yes");
+  }
+}
+
 function onclick_NoResponseEmail() {
   if (validate()) {
     updateCustomerDetails(false);
@@ -969,6 +981,21 @@ function onclick_NoSale() {
   window.open(upload_url, "_self",
     "height=750,width=650,modal=yes,alwaysRaised=yes");
 }
+
+// function onclick_customerLost() {
+//   var result = validate();
+//   if (result == false) {
+//     return false;
+//   }
+//   updateCustomerDetails(false);
+
+//   var url = baseURL + nlapiResolveURL('SUITELET', 'customscript_sl2_customer_cancellation', 'customdeploy1');
+//   url += '&custid=' + customerrecordid;
+
+
+//   window.open(url, "_self",
+//     "height=750,width=650,modal=yes,alwaysRaised=yes");
+// }
 
 
 

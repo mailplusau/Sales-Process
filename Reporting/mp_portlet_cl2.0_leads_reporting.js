@@ -191,13 +191,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // $('#customer_benchmark_preview').removeClass('hide');
             // $('#customer_benchmark_preview').show();
             if (role != 1000) {
-                $('.zee_label_section').removeClass('hide');
-                $('.zee_dropdown_section').removeClass('hide');
-                $('.calcprodusage_div').removeClass('hide');
-                $('.table_section').removeClass('hide');
-                $('.usage_label_section').removeClass('hide');
-                $('.lead_entered_label_section').removeClass('hide');
-                $('.lead_entered_div').removeClass('hide');
+                // $('.zee_label_section').removeClass('hide');
+                // $('.zee_dropdown_section').removeClass('hide');
+                // $('.calcprodusage_div').removeClass('hide');
+                // $('.table_section').removeClass('hide');
+                // $('.usage_label_section').removeClass('hide');
+                // $('.lead_entered_label_section').removeClass('hide');
+                // $('.lead_entered_div').removeClass('hide');
             }
 
             $('.show_buttons_section').removeClass('hide');
@@ -3149,7 +3149,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 if (count1 == 0) {
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed += parseInt(prospectCount);
                     } else if (custStatus == 57) {
@@ -3203,7 +3203,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 } else if (oldDate1 != null &&
                     oldDate1 == startDate) {
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed += prospectCount;
                     } else if (custStatus == 57) {
@@ -3291,7 +3291,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     total_leads = 0;
 
-                    if (custStatus == 13) {
+                    if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
                         customer_signed = prospectCount;
                     } else if (custStatus == 57) {

@@ -2289,8 +2289,14 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
       '<div class="col-xs-2 sendinfo"><input type="button" id="sendemail" class="form-control sendinfo btn btn-success" value="SEND EMAIL" onclick="onclick_SendEmailQuote();" data-id="sendemail" /></div>';
   }
 
-  inlineQty +=
+  if (saveCustomer == 1 && customer_status == '13') { 
+    inlineQty +=
+    '<div class="col-xs-2 noansweremail"><input type="button" id="" class="form-control customerlost btn btn-danger" value="CANCEL" onclick="onclick_customerLost()"/></div>';
+  } else {
+    inlineQty +=
     '<div class="col-xs-2 noansweremail"><input type="button" id="offpeakpipeline" class="form-control noansweremail btn btn-danger" value="LOST - NO RESPONSE" onclick="onclick_NoAnswerEmail()"/></div>';
+  }
+  
 
 
 
@@ -2327,8 +2333,15 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
     inlineQty +=
       '<div class="col-xs-3 nosale"><input type="button" id="nocontact" class="form-control nosale btn btn-danger" required value="NO SALE / NO CONTACT" onclick="onclick_NoSale()"/></div>';
   }
-  inlineQty +=
+
+  if (saveCustomer == 1 && customer_status == '13') { 
+    
+  } else {
+    inlineQty +=
     '<div class="col-xs-2 notestablished"><input type="button" id="disconnected" class="form-control notestablished btn btn-danger" value="NOT ESTABLISHED" onclick="onclick_NotEstablished()"/></div>';
+  }
+  
+  
 
 
 
@@ -2353,8 +2366,13 @@ function callCentreButtons(salesCampaign_id, phone_call_made, customer_status,
 
   // inlineQty +=
   //   '<div class="col-xs-2 sendinfo"></div>';
-  inlineQty +=
+  if (saveCustomer == 1 && customer_status == '13') { 
+    
+  } else {
+    inlineQty +=
     '<div class="col-xs-2 nosale"><input type="button" id="nosale" class="form-control nosale btn btn-danger" required value="LOST" onclick="onclick_NoSale()"/></div>';
+  }
+  
 
 
   inlineQty += '</div>';
