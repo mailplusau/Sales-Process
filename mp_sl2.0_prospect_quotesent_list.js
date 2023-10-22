@@ -31,6 +31,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var last_date = context.request.parameters.last_date;
                 zee = context.request.parameters.zee;
                 var paramUserId = context.request.parameters.user;
+                var salesCampaign = context.request.parameters.campaign;
+                var custStatus = context.request.parameters.status;
+
+                var page_no = context.request.parameters.page_no;
+
+                if (isNullorEmpty(page_no)) {
+                    page_no = '1';
+                }
 
                 log.debug({
                     title: 'userId',
@@ -44,6 +52,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 if (isNullorEmpty(last_date)) {
                     last_date = null;
+                }
+
+                if (isNullorEmpty(salesCampaign)) {
+                    salesCampaign = null;
+                }
+                if (isNullorEmpty(custStatus)) {
+                    custStatus = '57';
                 }
 
                 if (isNullorEmpty(userId)) {
@@ -89,6 +104,22 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }).defaultValue = paramUserId;
 
                 form.addField({
+                    id: 'custpage_sales_campaign',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = salesCampaign;
+
+                form.addField({
+                    id: 'custpage_cust_status',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = custStatus;
+
+                form.addField({
                     id: 'custpage_contact_id',
                     type: ui.FieldType.TEXT,
                     label: 'Table CSV'
@@ -120,6 +151,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
+                form.addField({
+                    id: 'custpage_page_no',
+                    type: ui.FieldType.TEXT,
+                    label: 'Page Number'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = page_no;
+
+                form.addField({
+                    id: 'custpage_total_page_no',
+                    type: ui.FieldType.TEXT,
+                    label: 'Total Page Number'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
 
 
 
@@ -139,9 +185,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 // inlineHtml += franchiseeDropdownSection(resultSetZees, context);
 
                 //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
-                inlineHtml += userDropdownSection(userId);
-                inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Colour Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
-                inlineHtml += tabsSection();
+                inlineHtml += userDropdownSection(userId, salesCampaign, custStatus);
+                if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
+                    inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
+                }
+                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign);
 
                 inlineHtml += '<div id="container"></div>'
 
@@ -465,7 +513,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
  * @param   {String}    date_to
  * @return  {String}    `inlineHtml`
  */
-        function userDropdownSection(userId) {
+        function userDropdownSection(userId, salesCampaign, custStatus) {
 
             var searchedSalesTeam = search.load({
                 id: 'customsearch_active_employees_3'
@@ -486,7 +534,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="col-xs-12 cust_dropdown_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
-                '<span class="input-group-addon" id="user_dropdown_text">Sales Rep</span>';
+                '<span class="input-group-addon" id="user_dropdown_text">SALES REP</span>';
             inlineHtml += '<select id="user_dropdown" class="form-control">';
             inlineHtml += '<option value=""></option>'
             searchedSalesTeam.run().each(function (searchResult_sales) {
@@ -508,6 +556,132 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 return true;
             });
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml +=
+                '<div class="form-group container status_dropdown_section">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 cust_status_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="cust_status_text">STATUS</span>';
+            inlineHtml += '<select id="cust_status" class="form-control">';
+            inlineHtml += '<option value="0"></option>';
+            if (custStatus == '57') {
+                inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
+            } else {
+                inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
+            }
+
+            if (custStatus == '42') {
+                inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
+            } else {
+                inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
+            }
+
+            if (custStatus == '6') {
+                inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
+            } else {
+                inlineHtml += '<option value="6">SUSPECT - NEW</option>';
+            }
+
+            if (custStatus == '18') {
+                inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
+            } else {
+                inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
+            }
+
+            if (custStatus == '67') {
+                inlineHtml += '<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
+            } else {
+                inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
+            }
+
+            if (custStatus == '60') {
+                inlineHtml += '<option value="60" selected>SUSPECT - REP REASSIGN</option>';
+            } else {
+                inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
+            }
+
+            if (custStatus == '7') {
+                inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
+            } else {
+                inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
+            }
+
+            if (custStatus == '50') {
+                inlineHtml += '<option value="50" selected>PROSPECT - QUOTE SENT</option>';
+            } else {
+                inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
+            }
+
+            if (custStatus == '58') {
+                inlineHtml += '<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
+            } else {
+                inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
+            }
+
+            if (custStatus == '8') {
+                inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
+            } else {
+                inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
+            }
+
+            if (custStatus == '35') {
+                inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
+            } else {
+                inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
+            }
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml +=
+                '<div class="form-group container cust_dropdown_section">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 sales_campaign_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="sales_campaign_text">SALES CAMPAIGN</span>';
+            inlineHtml += '<select id="sales_campaign" class="form-control">';
+            inlineHtml += '<option></option>';
+
+            var salesCampaignSearch = search.load({
+                type: 'customrecord_salescampaign',
+                id: 'customsearch_sales_button_campaign'
+            });
+
+
+            salesCampaignSearch.filters.push(search.createFilter({
+                name: 'custrecord_salescampaign_recordtype',
+                join: null,
+                operator: search.Operator.IS,
+                values: 2
+            }));
+
+
+            salesCampaignSearch.run().each(function (
+                salesCampaignSearchResultSet) {
+
+                var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
+                var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
+
+                if (salesCampaignInternalId == 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62) {
+                    if (salesCampaignInternalId == salesCampaign) {
+                        inlineHtml += '<option value="' + salesCampaignInternalId + '" selected="selected">' + salesCampaignName + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
+                    }
+
+                }
+
+
+                return true;
+            });
+
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
 
@@ -574,7 +748,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function tabsSection() {
+        function tabsSection(custStatus, paramUserId, salesCampaign) {
             var inlineHtml = '<div >';
 
             // Tabs headers
@@ -587,14 +761,34 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
+            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
+                inlineHtml +=
+                    '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
+            } else {
+                inlineHtml +=
+                    '<li role="presentation" class="hide"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
+            }
+            if (custStatus == '67' || custStatus == '18') {
+                inlineHtml +=
+                    '<li role="presentation" class="active"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
+            } else {
+                inlineHtml +=
+                    '<li role="presentation" class="hide"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
+            }
+            if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
+                inlineHtml +=
+                    '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
+            } else {
+                inlineHtml +=
+                    '<li role="presentation" class="hide"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
+            }
+            if (custStatus == '58') {
+                inlineHtml +=
+                    '<li role="presentation" class="active"><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
+            } else {
+                inlineHtml +=
+                    '<li role="presentation" class="hide"><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
+            }
 
 
 
@@ -603,36 +797,133 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             // Tabs content
             inlineHtml += '<div class="tab-content">';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
+            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
+                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects');
-            inlineHtml += '</div>';
+                inlineHtml += '<figure class="highcharts-figure">';
+                inlineHtml += '<div id="container_suspects"></div>';
+                inlineHtml += '</figure><br>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('prospects');
-            inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="followup">';
+                //Website Leads - Suspects
+                var suspectsSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_suspects'
+                });
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_followup"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('followups');
-            inlineHtml += '</div>';
+                // if (!isNullorEmpty(zee_id)) {
+                //     suspectsSearch.filters.push(search.createFilter({
+                //         name: 'partner',
+                //         join: null,
+                //         operator: search.Operator.IS,
+                //         values: zee_id
+                //     }));
+                // }
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="opportunities">';
+                if (!isNullorEmpty(paramUserId)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_customer"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('opportunities');
-            inlineHtml += '</div>';
+                if (!isNullorEmpty(salesCampaign)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
 
+                if (!isNullorEmpty(custStatus)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                var suspectsSearchCount = suspectsSearch.runPaged().count;
+
+                log.debug({
+                    title: 'suspectsSearchCount',
+                    details: suspectsSearchCount
+                })
+
+                var totalPageCount = parseInt(suspectsSearchCount / 100) + 1;
+
+                var divBreak = Math.ceil(12 / totalPageCount);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml +=
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectsSearchCount - 1) + '</b></div>';
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                for (var i = 0; i < totalPageCount; i++) {
+                    var rangeStart = (parseInt((i + 1)) - 1) * 100;
+                    if (rangeStart != 100) {
+                        var rangeEnd = rangeStart + 100;
+                    } else {
+                        var rangeEnd = (suspectsSearchCount - rangeStart) - 1;
+                    }
+
+                    inlineHtml +=
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                }
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml += dataTable('suspects');
+                inlineHtml += '</div>';
+            }
+
+            if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
+                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
+                inlineHtml += '<figure class="highcharts-figure">';
+                inlineHtml += '</figure><br></br>';
+                inlineHtml += dataTable('prospects');
+                inlineHtml += '</div>';
+            }
+
+            if (custStatus == '67' || custStatus == '18') {
+                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="followup">';
+
+                inlineHtml += '<figure class="highcharts-figure">';
+                inlineHtml += '<div id="container_followup"></div>';
+                inlineHtml += '</figure><br></br>';
+                inlineHtml += dataTable('followups');
+                inlineHtml += '</div>';
+            }
+
+            if (custStatus == '58') {
+                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="opportunities">';
+
+                inlineHtml += '<figure class="highcharts-figure">';
+                inlineHtml += '<div id="container_customer"></div>';
+                inlineHtml += '</figure><br></br>';
+                inlineHtml += dataTable('opportunities');
+                inlineHtml += '</div>';
+            }
 
 
             inlineHtml += '</div></div>';
