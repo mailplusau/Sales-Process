@@ -49,6 +49,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
         var invoiceType = null;
         var lead_source = null;
+        var sales_campaign = null;
         var sales_rep = null;
         var calcprodusage = null;
 
@@ -261,6 +262,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
 
             lead_source = $('#lead_source').val();
+            sales_campaign = $('#sales_campaign').val();
             sales_rep = $('#sales_rep').val();
             invoice_type = $('#invoice_type').val();
             calcprodusage = $('#calc_prod_usage').val();
@@ -331,6 +333,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var invoice_date_to = $('#invoice_date_to').val();
                 var invoice_type = $('#invoice_type').val();
                 var source = $('#lead_source').val();
+                var sales_campaign = $('#sales_campaign').val();
 
                 var sales_rep = $('#sales_rep').val();
                 calcprodusage = $('#calc_prod_usage').val();
@@ -359,7 +362,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 // } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
                 //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
                 // } else {
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign;
                 // }
 
                 window.location.href = url;
@@ -434,6 +437,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('date_quote_sent_to ' + date_quote_sent_to);
 
             console.log('lead_source ' + lead_source);
+            console.log('sales_campaign ' + sales_campaign);
             console.log('sales_rep ' + sales_rep);
             console.log('invoice_type ' + invoice_type);
             console.log('invoice_date_from ' + invoice_date_from);
@@ -535,6 +539,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ANYOF,
                     values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                qualifiedLeadCountSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -753,6 +766,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ANYOF,
                     values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -984,6 +1006,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: null,
                     operator: search.Operator.ANYOF,
                     values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -1299,6 +1330,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -1723,6 +1763,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
                 prospectWeeklyReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
@@ -2032,6 +2081,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
                 prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
@@ -2248,6 +2306,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -2539,6 +2606,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(zee_id)) {
                 suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'partner',
@@ -2807,6 +2883,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(zee_id)) {
                 suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'partner',
@@ -2994,6 +3079,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(zee_id)) {
                 suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'partner',
@@ -3163,6 +3257,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsQualifiedSalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -3348,6 +3451,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -3580,6 +3692,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -4439,6 +4560,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(sales_campaign)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
                 websiteLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
@@ -4454,6 +4584,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     values: date_quote_sent_to
                 }));
             }
+
+            //["custrecord_sales_customer.custrecord_sales_campaign","anyof","69"
 
             var oldcustInternalID = null;
             var oldcustEntityID = null;
@@ -4881,7 +5013,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'SUSPECT-QUALIFIED') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
                             suspectActivityCount++
                             suspectQualifiedChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -4959,7 +5091,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-FOLLOW-UP') {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -4968,7 +5100,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'SUSPECT-QUALIFIED') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
                             suspectActivityCount++
                             suspectQualifiedChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -5242,7 +5374,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            suspectFollowUpChildDataSet
+                            suspectQualifiedChildDataSet
                         ]);
 
                         csvSuspectQualifiedDataSet.push([
@@ -5409,7 +5541,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-FOLLOW-UP') {
+                        } else if (custStage == 'SUSPECT'  && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -5418,7 +5550,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'SUSPECT-QUALIFIED') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
                             suspectActivityCount++
                             suspectQualifiedChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -5642,7 +5774,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        suspectFollowUpChildDataSet
+                        suspectQualifiedChildDataSet
                     ]);
 
                     csvSuspectQualifiedDataSet.push([
@@ -5927,6 +6059,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
                 }));
             }
 
@@ -7594,6 +7735,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log('mpexusage-prospects_quoteSent_incontact_noanswer');
                     console.log(JSON.stringify(data[14]));
                     console.log(data[15].length);
                     if (data[5] == 'PROSPECT-OPPORTUNITY') {
@@ -7606,7 +7748,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             console.log(data[3]);
                             console.log(el.activityOrganiser);
                             if (!isNullorEmpty(el)) {
-                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani') {
+                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' ||  el.activityOrganiser == 'Luke Forbes') {
                                     row_color = ''
                                 }
                             }
@@ -7741,7 +7883,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             console.log(data[3]);
                             console.log(el.activityOrganiser);
                             if (!isNullorEmpty(el)) {
-                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani') {
+                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' ||  el.activityOrganiser == 'Luke Forbes') {
                                     row_color = ''
                                 }
                             }
@@ -7999,6 +8141,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log('mpexusage-suspects_qualified');
                     console.log(JSON.stringify(data[18]));
                     console.log(data[18].length);
 
@@ -11034,7 +11177,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function isNullorEmpty(val) {
-            if (val == '' || val == null) {
+            if (val == '' || val == null || val == '- None -' || val == 0 || val == '0') {
                 return true;
             } else {
                 return false;
