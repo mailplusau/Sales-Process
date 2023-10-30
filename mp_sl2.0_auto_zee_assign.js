@@ -333,7 +333,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
-                            } else if(leadSource == 282051){
+                            } else if (leadSource == 282051) {
                                 var subject = 'Sales Head Office Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -350,7 +350,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
-                            } else if(leadSource == -4){
+                            } else if (leadSource == -4) {
                                 var subject = 'Sales HOT Lead - Franchisee Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -362,7 +362,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: salesRepEmail,
+                                    recipients: ['matthew.rajabi@mailplus.com.au'],
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }

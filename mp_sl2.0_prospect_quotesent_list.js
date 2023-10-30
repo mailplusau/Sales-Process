@@ -861,7 +861,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     details: suspectsSearchCount
                 })
 
-                var totalPageCount = parseInt(suspectsSearchCount / 100) + 1;
+                var totalPageCount = parseInt(suspectsSearchCount / 25) + 1;
 
                 var divBreak = Math.ceil(12 / totalPageCount);
 
@@ -870,7 +870,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectsSearchCount - 1) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectsSearchCount) + '</b></div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -880,15 +880,23 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 for (var i = 0; i < totalPageCount; i++) {
-                    var rangeStart = (parseInt((i + 1)) - 1) * 100;
-                    if (rangeStart != 100) {
-                        var rangeEnd = rangeStart + 100;
+                    if (i == (totalPageCount - 1) || suspectsSearchCount < 25) {
+                        var rangeEnd = suspectsSearchCount
                     } else {
-                        var rangeEnd = (suspectsSearchCount - rangeStart) - 1;
+                        var rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            var rangeEnd = rangeStart + 25;
+                        } else {
+                            var rangeEnd = (suspectsSearchCount - rangeStart) - 1;
+                            if (rangeEnd > 25) {
+                                rangeEnd = parseInt((i + 1)) * 25
+                            }
+                        }
                     }
 
+
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';

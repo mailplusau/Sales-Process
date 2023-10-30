@@ -1349,8 +1349,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [[15, 'des']],
+                order: [[16, 'des']],
                 columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
                     title: 'LINK'
                 }, {
                     title: 'Customer Internal ID'
@@ -1386,26 +1392,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'MP Product Usage/Week'
                 }, {
                     title: 'Send Sign Up Email'
+                }, {
+                    title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 9, 10, 11],
+                    targets: [3, 4, 5, 6, 10, 11, 12],
                     className: 'bolded'
                 }, {
-                    targets: [12, 13, 14, 15],
+                    targets: [13, 14, 15, 16, 19],
                     visible: false
                 }, {
-                    targets: [0],
+                    targets: [0, 1],
                     className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
                     // if (!isNullorEmpty(data[10])) {
-                    if (isNullorEmpty(data[12])) {
+                    if (isNullorEmpty(data[13])) {
                         // $('td', row).css('background-color', '#FFFBC1');
-                    } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+                    } else if (!isNullorEmpty(data[13]) && isNullorEmpty(data[14]) && isNullorEmpty(data[15])) {
                         $('td', row).css('background-color', '#FEBE8C');
-                    } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+                    } else if (!isNullorEmpty(data[13]) && !isNullorEmpty(data[14]) && isNullorEmpty(data[15])) {
                         $('td', row).css('background-color', '#F7A4A4');
-                    } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
+                    } else if (!isNullorEmpty(data[13]) && !isNullorEmpty(data[14]) && !isNullorEmpty(data[15])) {
                         $('td', row).css('background-color', '#E64848');
                     }
                     // }
@@ -1417,8 +1425,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet2,
                 pageLength: 1000,
-                order: [[10, 'des']],
+                order: [[11, 'des']],
                 columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
                     title: 'LINK'
                 }, {
                     title: 'Customer Internal ID'
@@ -1452,15 +1466,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'MP Product Usage/Week'
                 }, {
                     title: 'Send Sign Up Email'
+                }, {
+                    title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 9, 10, 11],
+                    targets: [3, 4, 5, 6, 10, 11, 12],
                     className: 'bolded'
                 }, {
-                    targets: [12, 13, 14],
+                    targets: [13, 14, 15, 18],
                     visible: false
                 }, {
-                    targets: [0],
+                    targets: [0, 1],
                     className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
@@ -1483,8 +1499,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet3,
                 pageLength: 1000,
-                order: [[10, 'des']],
+                order: [[11, 'des']],
                 columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
                     title: 'LINK'
                 }, {
                     title: 'Customer Internal ID'
@@ -1518,15 +1540,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'MP Product Usage/Week'
                 }, {
                     title: 'Send Sign Up Email'
+                }, {
+                    title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 9, 10, 11],
+                    targets: [3, 4, 5, 6, 10, 11, 12],
                     className: 'bolded'
                 }, {
-                    targets: [12, 13, 14],
+                    targets: [13, 14, 15, 18],
                     visible: false
                 }, {
-                    targets: [0],
+                    targets: [0, 1],
                     className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
@@ -1549,8 +1573,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet4,
                 pageLength: 1000,
-                order: [[1, 'asc']],
+                order: [[2, 'asc']],
                 columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
                     title: 'LINK'
                 }, {
                     title: 'Date Lead Entered'
@@ -1584,15 +1614,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'MP Product Usage/Week'
                 }, {
                     title: 'Send Sign Up Email'
+                }, {
+                    title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [1, 2, 3, 4, 5, 6, 9, 10, 11],
+                    targets: [2, 3, 4, 5, 6, 7, 10, 11, 12],
                     className: 'bolded'
                 }, {
-                    targets: [12, 13, 14],
+                    targets: [13, 14, 15, 18],
                     visible: false
                 }, {
-                    targets: [0],
+                    targets: [0, 1],
                     className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
@@ -1794,6 +1826,76 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                     // }
 
+                    //Website Leads - Prospect Quote Sent - Activity List
+                    var prospectQuoteSentActivityListSearch = search.load({
+                        type: 'customer',
+                        id: 'customsearch_web_leads_prosp_quote_sen_8'
+                    });
+
+                    prospectQuoteSentActivityListSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: null,
+                        operator: search.Operator.ANYOF,
+                        values: custInternalID
+                    }));
+
+                    var prospectQuoteChildDataSet = [];
+
+                    prospectQuoteSentActivityListSearch.run().each(function (
+                        prospectQuoteSentActivityListSearchResultSet) {
+                        var activityInternalID = prospectQuoteSentActivityListSearchResultSet.getValue({
+                            name: "internalid",
+                            join: "activity"
+                        })
+                        var activityStartDate = prospectQuoteSentActivityListSearchResultSet.getValue({
+                            name: "startdate",
+                            join: "activity"
+                        })
+                        var activityTitle = prospectQuoteSentActivityListSearchResultSet.getValue({
+                            name: "title",
+                            join: "activity"
+                        })
+                        if (isNullorEmpty(prospectQuoteSentActivityListSearchResultSet.getText({
+                            name: "custevent_organiser",
+                            join: "activity"
+                        }))) {
+                            var activityOrganiser = prospectQuoteSentActivityListSearchResultSet.getText({
+                                name: "assigned",
+                                join: "activity"
+                            })
+                        } else {
+                            var activityOrganiser = prospectQuoteSentActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            })
+                        }
+
+                        var activityMessage = prospectQuoteSentActivityListSearchResultSet.getValue({
+                            name: "message",
+                            join: "activity"
+                        })
+
+                        console.log('activityInternalID: ' + activityInternalID);
+                        console.log('activityTitle: ' + activityTitle);
+                        console.log('activityMessage: ' + activityMessage);
+
+                        if (!isNullorEmpty(activityTitle)) {
+                            prospectQuoteChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            });
+                        }
+
+                        console.log('prospectQuoteChildDataSet: ' + JSON.stringify(prospectQuoteChildDataSet))
+
+                        return true;
+                    });
+
+                    console.log('prospectQuoteChildDataSet: ' + JSON.stringify(prospectQuoteChildDataSet))
+
 
                     debt_set.push({
                         custInternalID: custInternalID,
@@ -1817,7 +1919,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         contactEmail: contactEmail,
                         email48h: email48h,
                         salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek
+                        productUsageperWeek: productUsageperWeek,
+                        child: prospectQuoteChildDataSet
                     });
 
                     return true;
@@ -1969,7 +2072,78 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: 'custentity_form_mpex_usage_per_week'
                     });
 
+                    console.log('custInternalID: ' + custInternalID)
+                    console.log('custName: ' + custName)
 
+                    //Website Leads - Prospect Opportunity - Activity List
+                    var prospectOpportunititesActivityListSearch = search.load({
+                        type: 'customer',
+                        id: 'customsearch_web_leads_prosp_quote_sen_6'
+                    });
+
+                    prospectOpportunititesActivityListSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: null,
+                        operator: search.Operator.ANYOF,
+                        values: custInternalID
+                    }));
+
+                    var prospectOpportunityChildDataSet = [];
+
+                    prospectOpportunititesActivityListSearch.run().each(function (
+                        prospectOpportunititesActivityListResultSet) {
+                        var activityInternalID = prospectOpportunititesActivityListResultSet.getValue({
+                            name: "internalid",
+                            join: "activity"
+                        })
+                        var activityStartDate = prospectOpportunititesActivityListResultSet.getValue({
+                            name: "startdate",
+                            join: "activity"
+                        })
+                        var activityTitle = prospectOpportunititesActivityListResultSet.getValue({
+                            name: "title",
+                            join: "activity"
+                        })
+                        if (isNullorEmpty(prospectOpportunititesActivityListResultSet.getText({
+                            name: "custevent_organiser",
+                            join: "activity"
+                        }))) {
+                            var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                name: "assigned",
+                                join: "activity"
+                            })
+                        } else {
+                            var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            })
+                        }
+
+                        var activityMessage = prospectOpportunititesActivityListResultSet.getValue({
+                            name: "message",
+                            join: "activity"
+                        })
+
+                        console.log('activityInternalID: ' + activityInternalID);
+                        console.log('activityTitle: ' + activityTitle);
+                        console.log('activityMessage: ' + activityMessage);
+
+                        if (!isNullorEmpty(activityTitle)) {
+                            prospectOpportunityChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            });
+                        }
+
+                        console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
+
+                        return true;
+                    });
+
+                    console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
 
                     debt_set2.push({
                         custInternalID: custInternalID,
@@ -1992,7 +2166,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         contactEmail: contactEmail,
                         email48h: email48h,
                         salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek
+                        productUsageperWeek: productUsageperWeek,
+                        child: prospectOpportunityChildDataSet
                     });
 
                     return true;
@@ -2145,6 +2320,71 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
+                    //Website Leads - Suspect Followup - Activity List
+                    var suspectFollowupActivityListSearch = search.load({
+                        type: 'customer',
+                        id: 'customsearch_web_leads_prosp_quote_sen_7'
+                    });
+
+                    suspectFollowupActivityListSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: null,
+                        operator: search.Operator.ANYOF,
+                        values: custInternalID
+                    }));
+
+                    var suspectFollowUpChildDataSet = [];
+
+                    suspectFollowupActivityListSearch.run().each(function (
+                        suspectFollowupActivityListSearchResultSet) {
+                        var activityInternalID = suspectFollowupActivityListSearchResultSet.getValue({
+                            name: "internalid",
+                            join: "activity"
+                        })
+                        var activityStartDate = suspectFollowupActivityListSearchResultSet.getValue({
+                            name: "startdate",
+                            join: "activity"
+                        })
+                        var activityTitle = suspectFollowupActivityListSearchResultSet.getValue({
+                            name: "title",
+                            join: "activity"
+                        })
+                        if (isNullorEmpty(suspectFollowupActivityListSearchResultSet.getText({
+                            name: "custevent_organiser",
+                            join: "activity"
+                        }))) {
+                            var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                name: "assigned",
+                                join: "activity"
+                            })
+                        } else {
+                            var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            })
+                        }
+
+                        var activityMessage = suspectFollowupActivityListSearchResultSet.getValue({
+                            name: "message",
+                            join: "activity"
+                        })
+
+                        if (!isNullorEmpty(activityTitle)) {
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            });
+                        }
+
+                        return true;
+                    });
+
+                    console.log('suspectFollowUpChildDataSet: ' + JSON.stringify(suspectFollowUpChildDataSet))
+
+
 
                     debt_set3.push({
                         custInternalID: custInternalID,
@@ -2167,7 +2407,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         contactEmail: contactEmail,
                         email48h: email48h,
                         salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek
+                        productUsageperWeek: productUsageperWeek,
+                        child: suspectFollowUpChildDataSet
                     });
 
                     return true;
@@ -2229,15 +2470,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 var suspectsSearchCount = suspectsSearch.runPaged().count;
 
-                if (suspectsSearchCount > 100) {
+                if (suspectsSearchCount > 25) {
                     var val1 = currentRecord.get();
                     var page_no = val1.getValue({
                         fieldId: 'custpage_page_no',
                     });
 
-                    var totalPageCount = parseInt(suspectsSearchCount / 100) + 1;
-                    var rangeStart = (parseInt(page_no) - 1) * 101;
-                    var rangeEnd = rangeStart + 100;
+                    var totalPageCount = parseInt(suspectsSearchCount / 25) + 1;
+                    var rangeStart = (parseInt(page_no) - 1) * 26;
+                    var rangeEnd = rangeStart + 25;
 
                     val1.setValue({
                         fieldId: 'custpage_total_page_no',
@@ -2348,6 +2589,70 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'custentity_form_mpex_usage_per_week'
                         });
 
+                        //Website Leads - Suspects - Activity List
+                        var suspectActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_9'
+                        });
+
+                        suspectActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectChildDataSet = [];
+
+                        suspectActivityListSearch.run().each(function (
+                            suspectActivityListSearchResultSet) {
+                            var activityInternalID = suspectActivityListSearchResultSet.getValue({
+                                name: "internalid",
+                                join: "activity"
+                            })
+                            var activityStartDate = suspectActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
+                            })
+
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
+
+                            return true;
+                        });
+
+                        console.log('suspectChildDataSet: ' + JSON.stringify(suspectChildDataSet))
+
 
 
                         debt_set4.push({
@@ -2371,7 +2676,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             contactEmail: contactEmail,
                             servicesOfInterest: servicesOfInterest,
                             salesRecordId: salesRecordId,
-                            productUsageperWeek: productUsageperWeek
+                            productUsageperWeek: productUsageperWeek,
+                            child: suspectChildDataSet
                         });
 
                     }
@@ -2474,6 +2780,69 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
 
 
+                        //Website Leads - Suspects - Activity List
+                        var suspectActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_9'
+                        });
+
+                        suspectActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectChildDataSet = [];
+
+                        suspectActivityListSearch.run().each(function (
+                            suspectActivityListSearchResultSet) {
+                            var activityInternalID = suspectActivityListSearchResultSet.getValue({
+                                name: "internalid",
+                                join: "activity"
+                            })
+                            var activityStartDate = suspectActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
+                            })
+
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
+
+                            return true;
+                        });
+
+                        console.log('suspectChildDataSet: ' + JSON.stringify(suspectChildDataSet))
 
                         debt_set4.push({
                             custInternalID: custInternalID,
@@ -2496,7 +2865,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             contactEmail: contactEmail,
                             servicesOfInterest: servicesOfInterest,
                             salesRecordId: salesRecordId,
-                            productUsageperWeek: productUsageperWeek
+                            productUsageperWeek: productUsageperWeek,
+                            child: suspectChildDataSet
                         });
 
                         return true;
@@ -2609,11 +2979,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
-                    debtDataSet.push([linkURL, debt_row.custInternalID,
+                    debtDataSet.push(['', linkURL, debt_row.custInternalID,
                         customerIDLink,
                         debt_row.custName, debt_row.zeeName, debt_row.statusText, debt_row.contactName,
                         debt_row.serviceEmail,
-                        debt_row.phone, commDateFormatted, debt_row.email48h, debt_row.salesRepName, debt_row.dateFirstNoContact, debt_row.dateSecondNoContact, debt_row.dateThirdNoContact, debt_row.rowColorSort, debt_row.productUsageperWeek, sendSignUpEmail
+                        debt_row.phone, commDateFormatted, debt_row.email48h, debt_row.salesRepName, debt_row.dateFirstNoContact, debt_row.dateSecondNoContact, debt_row.dateThirdNoContact, debt_row.rowColorSort, debt_row.productUsageperWeek, sendSignUpEmail, debt_row.child
                     ]);
                 });
             }
@@ -2622,6 +2992,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             datatable.clear();
             datatable.rows.add(debtDataSet);
             datatable.draw();
+
+            datatable.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-prospects tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = datatable.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
 
 
             if (!isNullorEmpty(debt_rows2)) {
@@ -2711,11 +3111,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
-                    debtDataSet2.push([linkURL, debt_row2.custInternalID,
+                    debtDataSet2.push(['', linkURL, debt_row2.custInternalID,
                         customerIDLink,
                         debt_row2.custName, debt_row2.zeeName, debt_row2.statusText, debt_row2.contactName,
                         debt_row2.serviceEmail,
-                        debt_row2.phone, commDateFormatted, debt_row2.email48h, debt_row2.salesRepName, debt_row2.dateFirstNoContact, debt_row2.dateSecondNoContact, debt_row2.dateThirdNoContact, debt_row2.productUsageperWeek, sendSignUpEmail
+                        debt_row2.phone, commDateFormatted, debt_row2.email48h, debt_row2.salesRepName, debt_row2.dateFirstNoContact, debt_row2.dateSecondNoContact, debt_row2.dateThirdNoContact, debt_row2.productUsageperWeek, sendSignUpEmail, debt_row2.child
                     ]);
                 });
             }
@@ -2724,6 +3124,37 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             datatable2.clear();
             datatable2.rows.add(debtDataSet2);
             datatable2.draw();
+
+            datatable2.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild3(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-opportunities tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = datatable2.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
 
             if (!isNullorEmpty(debt_rows3)) {
                 debt_rows3.forEach(function (debt_row3, index) {
@@ -2817,11 +3248,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
 
-                    debtDataSet3.push([linkURL, debt_row3.custInternalID,
+                    debtDataSet3.push(['', linkURL, debt_row3.custInternalID,
                         customerIDLink,
                         debt_row3.custName, debt_row3.zeeName, debt_row3.statusText, debt_row3.contactName,
                         debt_row3.serviceEmail,
-                        debt_row3.phone, commDateFormatted, debt_row3.email48h, debt_row3.salesRepName, debt_row3.dateFirstNoContact, debt_row3.dateSecondNoContact, debt_row3.dateThirdNoContact, debt_row3.productUsageperWeek, sendSignUpEmail
+                        debt_row3.phone, commDateFormatted, debt_row3.email48h, debt_row3.salesRepName, debt_row3.dateFirstNoContact, debt_row3.dateSecondNoContact, debt_row3.dateThirdNoContact, debt_row3.productUsageperWeek, sendSignUpEmail, debt_row3.child
                     ]);
                 });
             }
@@ -2830,6 +3261,37 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             datatable3.clear();
             datatable3.rows.add(debtDataSet3);
             datatable3.draw();
+
+            datatable3.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild3(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-followups tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = datatable3.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
 
             if (!isNullorEmpty(debt_rows4)) {
                 debt_rows4.forEach(function (debt_row4, index) {
@@ -2951,11 +3413,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     });
 
 
-                    debtDataSet4.push([linkURL, newDate, debt_row4.custInternalID,
+                    debtDataSet4.push(['', linkURL, newDate, debt_row4.custInternalID,
                         customerIDLink,
                         debt_row4.custName, debt_row4.zeeName, debt_row4.statusText, debt_row4.contactName,
                         debt_row4.serviceEmail,
-                        debt_row4.phone, debt_row4.servicesOfInterest, debt_row4.salesRepName, debt_row4.dateFirstNoContact, debt_row4.dateSecondNoContact, debt_row4.dateThirdNoContact, debt_row4.productUsageperWeek, sendSignUpEmail
+                        debt_row4.phone, debt_row4.servicesOfInterest, debt_row4.salesRepName, debt_row4.dateFirstNoContact, debt_row4.dateSecondNoContact, debt_row4.dateThirdNoContact, debt_row4.productUsageperWeek, sendSignUpEmail, debt_row4.child
                     ]);
                 });
             }
@@ -2965,7 +3427,150 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             datatable4.rows.add(debtDataSet4);
             datatable4.draw();
 
+            datatable4.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild3(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-suspects tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = datatable4.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
             return true;
+        }
+
+        function createChild(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[19].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
+
+        function createChild3(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[18].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
+
+        function destroyChild(row) {
+            // And then hide the row
+            row.child.hide();
         }
 
         function plotChartV2(series_data, series_data3_v2, categores) {
