@@ -599,6 +599,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
             }
 
+            if (custStatus == '68') {
+                inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
+            } else {
+                inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
+            }
+
             if (custStatus == '60') {
                 inlineHtml += '<option value="60" selected>SUSPECT - REP REASSIGN</option>';
             } else {
@@ -775,6 +781,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml +=
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
             }
+
+            if (custStatus == '68') {
+                inlineHtml +=
+                    '<li role="presentation" class="active"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
+            } else {
+                inlineHtml +=
+                    '<li role="presentation" class="hide"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
+            }
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
@@ -920,6 +934,16 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div id="container_followup"></div>';
                 inlineHtml += '</figure><br></br>';
                 inlineHtml += dataTable('followups');
+                inlineHtml += '</div>';
+            }
+
+            if (custStatus == '68'){
+                inlineHtml += '<div role="tabpanel" class="tab-pane active" id="validated">';
+
+                inlineHtml += '<figure class="highcharts-figure">';
+                inlineHtml += '<div id="container_validated"></div>';
+                inlineHtml += '</figure><br></br>';
+                inlineHtml += dataTable('validated');
                 inlineHtml += '</div>';
             }
 

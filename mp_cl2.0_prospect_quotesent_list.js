@@ -162,6 +162,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             debtDataSet4 = [];
             debt_set4 = [];
 
+            debtDataSetValidated = [];
+            debt_set_validated = [];
+
             /**
              *  Submit Button Function
              */
@@ -2416,6 +2419,247 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 console.log(debt_set3)
             }
 
+            if (custStatus == '68') {
+                //Website Leads - Suspect Validated
+                var suspectValidatedSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_suspect_validated'
+                });
+
+                if (!isNullorEmpty(zee_id)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee_id
+                    }));
+                }
+
+                console.log('userId: ' + userId)
+
+                if (!isNullorEmpty(paramUserId)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
+
+                if (!isNullorEmpty(salesCampaign)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
+
+                if (!isNullorEmpty(custStatus)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                suspectValidatedSearch.run().each(function (
+                    suspectValidatedSearchResultSet) {
+
+                    var custInternalID = suspectValidatedSearchResultSet.getValue({
+                        name: 'internalid'
+                    });
+                    var custEntityID = suspectValidatedSearchResultSet.getValue({
+                        name: 'entityid'
+                    });
+                    var custName = suspectValidatedSearchResultSet.getValue({
+                        name: 'companyname'
+                    });
+                    var zeeID = suspectValidatedSearchResultSet.getValue({
+                        name: 'partner'
+                    });
+                    var zeeName = suspectValidatedSearchResultSet.getText({
+                        name: 'partner'
+                    });
+
+                    var quoteSentDate = suspectValidatedSearchResultSet.getValue({
+                        name: "custentity_date_lead_quote_sent"
+                    });
+
+                    var email = suspectValidatedSearchResultSet.getValue({
+                        name: 'email'
+                    });
+                    var serviceEmail = suspectValidatedSearchResultSet.getValue({
+                        name: 'custentity_email_service'
+                    });
+
+                    var phone = suspectValidatedSearchResultSet.getValue({
+                        name: 'phone'
+                    });
+
+                    var statusText = suspectValidatedSearchResultSet.getText({
+                        name: 'entitystatus'
+                    });
+
+                    var salesRepId = suspectValidatedSearchResultSet.getValue({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER'
+                    });
+
+                    var salesRepName = suspectValidatedSearchResultSet.getText({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER'
+                    });
+
+                    var dateFirstNoContact = suspectValidatedSearchResultSet.getValue({
+                        name: 'custrecord_sales_day0call',
+                        join: 'CUSTRECORD_SALES_CUSTOMER'
+                    });
+
+                    var dateSecondNoContact = suspectValidatedSearchResultSet.getValue({
+                        name: 'custrecord_sales_day14call',
+                        join: 'CUSTRECORD_SALES_CUSTOMER'
+                    });
+
+                    var dateThirdNoContact = suspectValidatedSearchResultSet.getValue({
+                        name: 'custrecord_sales_day25call',
+                        join: 'CUSTRECORD_SALES_CUSTOMER'
+                    });
+
+                    var contactid = suspectValidatedSearchResultSet.getValue({
+                        name: 'internalid',
+                        join: 'contact'
+                    });
+
+                    var contactName = suspectValidatedSearchResultSet.getValue({
+                        name: 'entityid',
+                        join: 'contact'
+                    });
+
+
+                    var contactEmail = suspectValidatedSearchResultSet.getValue({
+                        name: 'email',
+                        join: 'contact'
+                    });
+
+                    var email48h = suspectValidatedSearchResultSet.getText({
+                        name: 'custentity_48h_email_sent'
+                    });
+
+                    var salesRecordId = suspectValidatedSearchResultSet.getText({
+                        name: "internalid",
+                        join: "CUSTRECORD_SALES_CUSTOMER"
+                    });
+
+                    var productUsageperWeek = suspectValidatedSearchResultSet.getText({
+                        name: 'custentity_form_mpex_usage_per_week'
+                    });
+
+
+                    //Website Leads - Suspect Validated - Activity List
+                    var suspectValidatedActivityListSearch = search.load({
+                        type: 'customer',
+                        id: 'customsearch_web_leads_sus_valid_act_lis'
+                    });
+
+                    suspectValidatedActivityListSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: null,
+                        operator: search.Operator.ANYOF,
+                        values: custInternalID
+                    }));
+
+                    var suspectValidatedChildDataSet = [];
+
+                    suspectValidatedActivityListSearch.run().each(function (
+                        suspectValidatedActivityListSearchResultSet) {
+                        var activityInternalID = suspectValidatedActivityListSearchResultSet.getValue({
+                            name: "internalid",
+                            join: "activity"
+                        })
+                        var activityStartDate = suspectValidatedActivityListSearchResultSet.getValue({
+                            name: "startdate",
+                            join: "activity"
+                        })
+                        var activityTitle = suspectValidatedActivityListSearchResultSet.getValue({
+                            name: "title",
+                            join: "activity"
+                        })
+                        if (isNullorEmpty(suspectValidatedActivityListSearchResultSet.getText({
+                            name: "custevent_organiser",
+                            join: "activity"
+                        }))) {
+                            var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                name: "assigned",
+                                join: "activity"
+                            })
+                        } else {
+                            var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            })
+                        }
+
+                        var activityMessage = suspectValidatedActivityListSearchResultSet.getValue({
+                            name: "message",
+                            join: "activity"
+                        })
+
+                        if (!isNullorEmpty(activityTitle)) {
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            });
+                        }
+
+                        return true;
+                    });
+
+                    console.log('suspectValidatedChildDataSet: ' + JSON.stringify(suspectValidatedChildDataSet))
+
+
+
+                    debt_set_validated.push({
+                        custInternalID: custInternalID,
+                        custEntityID: custEntityID,
+                        custName: custName,
+                        zeeID: zeeID,
+                        zeeName: zeeName,
+                        quoteSentDate: quoteSentDate,
+                        contactName: contactName,
+                        email: email,
+                        serviceEmail: serviceEmail,
+                        phone: phone,
+                        statusText: statusText,
+                        salesRepId: salesRepId,
+                        salesRepName: salesRepName,
+                        dateFirstNoContact: dateFirstNoContact,
+                        dateSecondNoContact: dateSecondNoContact,
+                        dateThirdNoContact: dateThirdNoContact,
+                        contactid: contactid,
+                        contactEmail: contactEmail,
+                        email48h: email48h,
+                        salesRecordId: salesRecordId,
+                        productUsageperWeek: productUsageperWeek,
+                        child: suspectFollowUpChildDataSet
+                    });
+
+                    return true;
+                });
+                console.log(debt_set_validated)
+            }
+
             if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
                 //Website Leads - Suspects
                 var suspectsSearch = search.load({
@@ -2879,12 +3123,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             }
 
-            loadDatatable(debt_set, debt_set2, debt_set3, debt_set4);
+            loadDatatable(debt_set, debt_set2, debt_set3, debt_set4, debt_set_validated);
             debt_set = [];
 
         }
 
-        function loadDatatable(debt_rows, debt_rows2, debt_rows3, debt_rows4) {
+        function loadDatatable(debt_rows, debt_rows2, debt_rows3, debt_rows4, debt_set_validated_rows) {
 
             debtDataSet = [];
             csvSet = [];
@@ -3272,6 +3516,142 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 var tr = $(this).closest('tr');
                 var row = datatable3.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+            if (!isNullorEmpty(debt_set_validated_rows)) {
+                debt_set_validated_rows.forEach(function (debt_set_validated_row, index) {
+
+                    if (!isNullorEmpty(debt_set_validated_row.salesRecordId)) {
+                        var linkURL =
+                            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_set_validated_row.custInternalID + '&sales_record_id=' + debt_set_validated_row.salesRecordId +
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
+                            debt_set_validated_row.custInternalID +
+                            '" data-sales="' +
+                            debt_set_validated_row.salesRepId +
+                            '" data-contact="' +
+                            debt_set_validated_row.contactid +
+                            '" data-contactemail="' +
+                            debt_set_validated_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_set_validated_row.salesRecordId +
+                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_set_validated_row.custInternalID +
+                            '" data-sales="' +
+                            debt_set_validated_row.salesRepId +
+                            '" data-contact="' +
+                            debt_set_validated_row.contactid +
+                            '" data-contactemail="' +
+                            debt_set_validated_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_set_validated_row.salesRecordId +
+                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
+                            debt_set_validated_row.custInternalID +
+                            '" data-sales="' +
+                            debt_set_validated_row.salesRepId +
+                            '" data-contact="' +
+                            debt_set_validated_row.contactid +
+                            '" data-contactemail="' +
+                            debt_set_validated_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_set_validated_row.salesRecordId +
+                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
+                            debt_set_validated_row.custInternalID +
+                            '" data-sales="' +
+                            debt_set_validated_row.salesRepId +
+                            '" data-contact="' +
+                            debt_set_validated_row.contactid +
+                            '" data-contactemail="' +
+                            debt_set_validated_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_set_validated_row.salesRecordId +
+                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                    } else {
+                        var linkURL = '<input type="button" id="" data-id="' +
+                        debt_set_validated_row.custInternalID +
+                            '" value="ASSIGN TO REP" class="form-control btn btn-xs btn-warning salesrepassign" style="color: black; cursor: pointer !important;width: fit-content;" />'
+                    }
+
+
+
+                    var customerIDLink =
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+                        debt_set_validated_row.custInternalID + '&whence=" target="_blank"><b>' +
+                        debt_set_validated_row.custEntityID + '</b></a>';
+
+                    var sendSignUpEmail =
+                        '<a data-id="' +
+                        debt_set_validated_row.custInternalID +
+                        '" data-sales="' +
+                        debt_set_validated_row.salesRepId +
+                        '" data-contact="' +
+                        debt_set_validated_row.contactid +
+                        '" data-contactemail="' +
+                        debt_set_validated_row.contactEmail +
+                        '" data-salesrecordid="' +
+                        debt_set_validated_row.salesRecordId +
+                        '" style="cursor: pointer !important;color: #095C7B !important;" class="sendEmail">SEND EMAIL</a>';
+
+                    if (!isNullorEmpty(debt_set_validated_row.quoteSentDate)) {
+                        var commDateSplit = debt_set_validated_row.quoteSentDate.split('/');
+
+                        var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+                            commDateSplit[0]);
+                        var commDateParsed = format.parse({
+                            value: commDate,
+                            type: format.Type.DATE
+                        });
+                        var commDateFormatted = format.format({
+                            value: commDate,
+                            type: format.Type.DATE
+                        });
+                    } else {
+                        var commDateFormatted = ''
+                    }
+
+
+
+                    debtDataSet3.push(['', linkURL, debt_set_validated_row.custInternalID,
+                        customerIDLink,
+                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.contactName,
+                        debt_set_validated_row.serviceEmail,
+                        debt_set_validated_row.phone, commDateFormatted, debt_set_validated_row.email48h, debt_set_validated_row.salesRepName, debt_set_validated_row.dateFirstNoContact, debt_set_validated_row.dateSecondNoContact, debt_set_validated_row.dateThirdNoContact, debt_set_validated_row.productUsageperWeek, sendSignUpEmail, debt_set_validated_row.child
+                    ]);
+                });
+            }
+
+            var datatableValidated = $('#mpexusage-validated').DataTable();
+            datatableValidated.clear();
+            datatableValidated.rows.add(debtDataSet3);
+            datatableValidated.draw();
+
+            datatableValidated.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild3(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-validated tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = datatableValidated.row(tr);
 
                 if (row.child.isShown()) {
                     // This row is already open - close it
