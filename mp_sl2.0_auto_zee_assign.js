@@ -42,6 +42,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 var customerInternalId = context.request.parameters.custid;
                 role = context.request.parameters.role;
 
+                //* Get the Lead Internal ID passed through to this Suitelet
                 log.debug({
                     title: 'customerInternalId',
                     details: customerInternalId
@@ -56,7 +57,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 var salesRepEmail = null;
                 var salesRepName = null;
 
-                //Find the postcode for the customer
+                //*Find the postcode for the customer
                 //Search: Lead List - Site Addresses
                 var siteAddressesSearch = search.load({
                     type: 'customer',
@@ -88,7 +89,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     return true;
                 });
 
-                //DEBUG DATA
+                //?DEBUG DATA
                 log.debug({
                     title: 'siteAddressZipCode',
                     details: siteAddressZipCode
@@ -217,7 +218,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 }
                             }
                         } else if (!isNullorEmpty(zee_id) && zeeCount == 1) {
-
                             if (role != 1032) {
                                 if (leadSource == 282051) {
                                     //Search: Active Parent LPO Customer List
@@ -275,17 +275,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                         }
 
-                        //DEBUG DATA
+                        //?DEBUG DATA
                         log.debug({
                             title: 'salesRep',
                             details: salesRep
                         })
-
                         log.debug({
                             title: 'leadSource',
                             details: leadSource
                         })
-
                         log.debug({
                             title: 'role',
                             details: role
