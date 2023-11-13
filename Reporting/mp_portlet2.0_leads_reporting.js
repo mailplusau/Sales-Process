@@ -26,11 +26,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             var portlet = params.portlet;
 
 
-            if (userId == 626428) {
-                portlet.title = 'Qualified Leads';
-            } else {
-                portlet.title = 'Sales Dashboard';
-            }
+
+            portlet.title = 'Franchisee Lead Dashboard';
+
 
             var baseURL = 'https://system.na2.netsuite.com';
             if (runtime.EnvType == "SANDBOX") {
@@ -61,6 +59,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             //If role is Franchisee
             if (role == 1000) {
                 zee = runtime.getCurrentUser().id;
+                if (zee == 626428) {
+                    zee = 1645493;
+                }
+            } else { // System Support
+                // zee = 1645493; //test-AR
             }
 
             var date = new Date();
@@ -177,7 +180,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<div class="col-xs-2"></div>'
             inlineHtml +=
-                '<div class="col-xs-8"><input type="button" value="FULL REPORT" class="form-control btn btn-primary" id="fullReport" style="background-color: #095C7B;border-radius: 30px;" /></div>'
+                '<div class="col-xs-8"><input type="button" value="FULL SALES REPORT" class="form-control btn btn-primary" id="fullReport" style="background-color: #095C7B;border-radius: 30px;" /></div>'
             inlineHtml +=
                 '<div class="col-xs-2"></div>'
 
@@ -190,9 +193,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12">'
             inlineHtml += '<article class="card">';
-            if (userId != 626428) {
-                inlineHtml += '<h2 style="text-align:center;">Qualified Lead Count</h2>';
-            }
+            // if (userId != 626428) {
+            //     inlineHtml += '<h2 style="text-align:center;">Qualified Lead Count</h2>';
+            // }
 
             inlineHtml += '<small style="text-align:center;font-size: 12px;"></small>';
             inlineHtml += '<div id="container-progress"></div>';
@@ -200,6 +203,36 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
+
+            inlineHtml +=
+                '<div class="form-group container filter_buttons_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-2"></div>'
+            inlineHtml +=
+                '<div class="col-xs-8"><input type="button" value="ENTER NEW LEADS" class="form-control btn btn-primary" id="enter_leads" style="background-color: #095C7B;border-radius: 30px;" /></div>'
+            inlineHtml +=
+                '<div class="col-xs-2"></div>'
+
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            //  // if (userId == 1645493) {
+            //     inlineHtml +=
+            //     '<div class="form-group container scorecard_percentage hide" style="">';
+            // inlineHtml += '<div class="row">';
+            // inlineHtml += '<div class="col-xs-12">'
+            // inlineHtml += '<article class="card">';
+            // // if (userId != 626428) {
+            //     // inlineHtml += '<h2 style="text-align:center;">Lost Lead Count</h2>';
+            // // }
+
+            // inlineHtml += '<small style="text-align:center;font-size: 12px;"></small>';
+            // inlineHtml += '<div id="container-progress-lost"></div>';
+            // inlineHtml += '</article>';
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
 
             // }
 
@@ -865,7 +898,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (name == 'preview') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
-            
+
             if (name == 'customer' || name == 'existing_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }

@@ -310,9 +310,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
                 inlineHtml += '<div class="col-xs-12">'
                 inlineHtml += '<article class="card">';
-                inlineHtml += '<h2 style="text-align:center;">Qualified Lead Count</h2>';
+                inlineHtml += '<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
                 inlineHtml += '<small style="text-align:center;font-size: 12px;"></small>';
-                inlineHtml += '<div id="container-progress"></div>';
+                inlineHtml += '<div id="container-progress" style="height: 300px"></div>';
                 inlineHtml += '</article>';
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -831,6 +831,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers"><b>NEW CUSTOMERS</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers"><b>FREE TRIALS</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers"><b>EXISTING CUSTOMERS</b></a></li>';
 
             inlineHtml += '</ul></div>';
@@ -842,6 +844,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div id="container_customer"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('customer');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_trial_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('trial_customers');
             inlineHtml += '</div>';
 
 
@@ -913,6 +923,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified"><b>SUSPECTS - QUALIFIED</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup"><b>SUSPECTS - FOLLOW UP</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - OFF PEAK PIEPLINE</b></a></li>';
@@ -941,6 +953,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div id="container_suspects_qualified"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('suspects_qualified');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_validated">';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_suspects_validated"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('suspects_validated');
             inlineHtml += '</div>';
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_followup">';
@@ -1010,11 +1029,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
             if (name == 'preview') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
             if (name == 'customer' || name == 'existing_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+            }
+            if (name == 'trial_customers') {
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'suspects' || name == 'suspects_followup') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'

@@ -212,17 +212,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // $('.quote_sent_div').removeClass('hide');
             // $('.signed_up_label_section').removeClass('hide');
             // $('.signed_up_div').removeClass('hide');
+            $('.highcharts-figure').addClass('hide');
+            $('.tab-content').addClass('hide');
+            // if (userId == 626428) {
+            //     $('.highcharts-figure').addClass('hide');
+            // } else {
+                // $('.usage_date_div').removeClass('hide');
+                // $('.invoice_label_section').removeClass('hide');
+                // $('.invoice_date_type_div').removeClass('hide');
 
-            if (userId == 626428) {
-                $('.highcharts-figure').addClass('hide');
-            } else {
-                $('.usage_date_div').removeClass('hide');
-                $('.invoice_label_section').removeClass('hide');
-                $('.invoice_date_type_div').removeClass('hide');
-
-                $('.tabs_section').removeClass('hide');
-                $('.data-range_note').removeClass('hide');
-            }
+                // $('.tabs_section').removeClass('hide');
+                // $('.data-range_note').removeClass('hide');
+            // }
             $('.filter_buttons_section').removeClass('hide');
             $('.scorecard_percentage').removeClass('hide');
 
@@ -382,6 +383,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             });
 
+            $("#enter_leads").click(function () {
+
+                var url = "https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1706&deploy=1&compid=1048144&script=1706&deploy=1&compid=1048144&script=1706&deploy=1&whence="
+                window.open(url, '_blank')
+                // window.location.href = url;
+
+            });
+
             portlet.resize();
         }
 
@@ -533,7 +542,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
             var totalLeadCount = 0;
+            var totalCustomerCount = 0;
+            var totalSuspectCount = 0;
+            var totalProspectCount = 0;
+            var totalCustomerLostCount = 0;
             var totalQualifiedLeadCount = 0;
+            var totalLeadLost = 0;
 
             qualifiedLeadCountSearch.run().each(function (
                 qualifiedLeadCountSearchResultSet) {
@@ -549,116 +563,325 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'entitystatus',
                     summary: 'GROUP'
                 });
+                var leadStatusId = qualifiedLeadCountSearchResultSet.getValue({
+                    name: 'entitystatus',
+                    summary: 'GROUP'
+                });
 
                 var leadStatusSplit = leadStatus.split('-');
 
                 totalLeadCount = totalLeadCount + leadCount;
-                if (leadStatusSplit[0].toUpperCase() == 'PROSPECT' || leadStatusSplit[0].toUpperCase() == 'CUSTOMER') {
-                    totalQualifiedLeadCount = totalQualifiedLeadCount + leadCount;
+
+                if (leadStatusId == 22) {
+                    totalCustomerLostCount = totalCustomerLostCount + leadCount;
+                }
+
+                if (leadStatusId == 13 || leadStatusId == 66) {
+                    totalCustomerCount = totalCustomerCount + leadCount;
+                }
+
+                if (leadStatusSplit[0].toUpperCase() == 'SUSPECT') {
+                    totalSuspectCount = totalSuspectCount + leadCount;
+                }
+
+                if (leadStatusSplit[0].toUpperCase() == 'PROSPECT') {
+                    totalProspectCount = totalProspectCount + leadCount;
+                }
+
+                if (leadStatusId == 59) {
+                    totalLeadLost = totalLeadLost + leadCount;
                 }
 
                 return true;
             });
 
-
-            const gaugeOptions = {
+            // Create the chart
+            Highcharts.chart('container-progress', {
                 chart: {
-                    type: 'solidgauge',
-                    // backgroundColor: '#CFE0CE',
-                    // height: (4 / 16 * 100) + '%',
-                    // zoomType: 'xy'
+                    type: 'pie'
                 },
-
-                title: null,
-
-                pane: {
-                    center: ['50%', '85%'],
-                    size: '100%',
-                    startAngle: -90,
-                    endAngle: 90,
-                    background: {
-                        backgroundColor:
-                            Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
-                        innerRadius: '60%',
-                        outerRadius: '100%',
-                        shape: 'arc'
-                    }
+                title: {
+                    text: '',
                 },
-
-                exporting: {
-                    enabled: false
-                },
-
-                tooltip: {
-                    enabled: true
-                },
-
-                // the value axis
-                yAxis: {
-                    stops: [
-                        [0, '#095c7b'], // green
-                        // [0.4, '#DDDF0D'], // yellow
-                        // [0.2, '#DF5353'] // red
-                    ],
-                    lineWidth: 0,
-                    tickWidth: 0,
-                    minorTickInterval: null,
-                    tickAmount: 1,
-                    title: {
-                        y: -70
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
                     },
-                    labels: {
-                        y: 16
+                    point: {
+                        valueSuffix: ''
                     }
                 },
 
                 plotOptions: {
-                    solidgauge: {
-                        dataLabels: {
-                            y: parseInt(totalQualifiedLeadCount),
-                            borderWidth: 0,
-                            useHTML: true
-                        }
-                    }
-                }
-            };
-
-            // The speed gauge
-            const chartSpeed = Highcharts.chart('container-progress', Highcharts.merge(gaugeOptions, {
-                yAxis: {
-                    min: 0,
-                    max: parseInt(totalLeadCount),
-                    title: {
-                        text: ''
-                    },
-                    labels: {
-                        formatter: function () {
-                            return this.value + ' Leads';
-                        }
+                    series: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: [{
+                            enabled: true,
+                            distance: 20,
+                            style: {
+                                fontSize: '1.2em',
+                                textOutline: 'none',
+                                opacity: 0.7
+                            }
+                        }, {
+                            enabled: true,
+                            distance: -40,
+                            format: '{point.y:.0f}',
+                            style: {
+                                fontSize: '1.2em',
+                                textOutline: 'none',
+                                opacity: 0.7
+                            }
+                        }]
                     }
                 },
 
-                credits: {
-                    enabled: false
+                tooltip: {
+                    valueSuffix: '',
+                    style: {
+                        fontSize: '1.2em'
+                    }
                 },
 
-                series: [{
-                    name: 'Qualified Leads',
-                    data: [parseInt(totalQualifiedLeadCount)],
-                    dataLabels: {
-                        format:
-                            '<div style="text-align:center">' +
-                            '<span style="font-size:25px">{y}</span><br/>' +
-                            '<span style="font-size:12px;opacity:0.4">Qualified Leads</span>' +
-                            '</div>'
-                    },
-                    tooltip: {
-                        valueSuffix: ' '
+                series: [
+                    {
+                        name: 'Leads',
+                        colorByPoint: true,
+                        data: [
+                            {
+                                name: 'Customers',
+                                y: totalCustomerCount,
+                                sliced: true,
+                                selected: true,
+                                color: '#5cb3b0',
+                            },
+                            {
+                                name: 'Prospects',
+                                y: totalProspectCount,
+                                sliced: true,
+                                color: '#adcf9f',
+                            },
+                            {
+                                name: 'Suspects',
+                                y: totalSuspectCount,
+                                sliced: true,
+                                color: '#FEBE8C',
+                            },
+                            {
+                                name: 'Suspects - Lost',
+                                y: totalLeadLost,
+                                sliced: true,
+                                color: '#e97677',
+                            },
+                            {
+                                name: 'Customers - Lost',
+                                y: totalCustomerLostCount,
+                                sliced: true,
+                                color: '#e76252',
+                            }
+                        ]
                     }
-                }]
+                ]
+            });
 
-            }));
-            // }
+
+            // const gaugeOptions = {
+            //     chart: {
+            //         type: 'solidgauge',
+            //         // backgroundColor: '#CFE0CE',
+            //         // height: (4 / 16 * 100) + '%',
+            //         // zoomType: 'xy'
+            //     },
+
+            //     title: null,
+
+            //     pane: {
+            //         center: ['50%', '85%'],
+            //         size: '100%',
+            //         startAngle: -90,
+            //         endAngle: 90,
+            //         background: {
+            //             backgroundColor:
+            //                 Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+            //             innerRadius: '60%',
+            //             outerRadius: '100%',
+            //             shape: 'arc'
+            //         }
+            //     },
+
+            //     exporting: {
+            //         enabled: false
+            //     },
+
+            //     tooltip: {
+            //         enabled: true
+            //     },
+
+            //     // the value axis
+            //     yAxis: {
+            //         stops: [
+            //             [0, '#095c7b'], // green
+            //             // [0.4, '#DDDF0D'], // yellow
+            //             // [0.2, '#DF5353'] // red
+            //         ],
+            //         lineWidth: 0,
+            //         tickWidth: 0,
+            //         minorTickInterval: null,
+            //         tickAmount: 1,
+            //         title: {
+            //             y: -70
+            //         },
+            //         labels: {
+            //             y: 16
+            //         }
+            //     },
+
+            //     plotOptions: {
+            //         solidgauge: {
+            //             dataLabels: {
+            //                 y: parseInt(totalQualifiedLeadCount),
+            //                 borderWidth: 0,
+            //                 useHTML: true
+            //             }
+            //         }
+            //     }
+            // };
+
+            // // The speed gauge
+            // const chartSpeed = Highcharts.chart('container-progress', Highcharts.merge(gaugeOptions, {
+            //     yAxis: {
+            //         min: 0,
+            //         max: parseInt(totalLeadCount),
+            //         title: {
+            //             text: ''
+            //         },
+            //         labels: {
+            //             formatter: function () {
+            //                 return this.value + ' Leads';
+            //             }
+            //         }
+            //     },
+
+            //     credits: {
+            //         enabled: false
+            //     },
+
+            //     series: [{
+            //         name: 'Qualified Leads',
+            //         data: [parseInt(totalQualifiedLeadCount)],
+            //         dataLabels: {
+            //             format:
+            //                 '<div style="text-align:center">' +
+            //                 '<span style="font-size:25px">{y}</span><br/>' +
+            //                 '<span style="font-size:12px;opacity:0.4">Qualified Leads</span>' +
+            //                 '</div>'
+            //         },
+            //         tooltip: {
+            //             valueSuffix: ' '
+            //         }
+            //     }]
+
+            // }));
+
+
+            // const gaugeOptionsLeadLost = {
+            //     chart: {
+            //         type: 'solidgauge',
+            //         // backgroundColor: '#CFE0CE',
+            //         // height: (4 / 16 * 100) + '%',
+            //         // zoomType: 'xy'
+            //     },
+
+            //     title: null,
+
+            //     pane: {
+            //         center: ['50%', '85%'],
+            //         size: '100%',
+            //         startAngle: -90,
+            //         endAngle: 90,
+            //         background: {
+            //             backgroundColor:
+            //                 Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+            //             innerRadius: '60%',
+            //             outerRadius: '100%',
+            //             shape: 'arc'
+            //         }
+            //     },
+
+            //     exporting: {
+            //         enabled: false
+            //     },
+
+            //     tooltip: {
+            //         enabled: true
+            //     },
+
+            //     // the value axis
+            //     yAxis: {
+            //         stops: [
+            //             [0, '#095c7b'], // green
+            //             // [0.4, '#DDDF0D'], // yellow
+            //             // [0.2, '#DF5353'] // red
+            //         ],
+            //         lineWidth: 0,
+            //         tickWidth: 0,
+            //         minorTickInterval: null,
+            //         tickAmount: 1,
+            //         title: {
+            //             y: -70
+            //         },
+            //         labels: {
+            //             y: 16
+            //         }
+            //     },
+
+            //     plotOptions: {
+            //         solidgauge: {
+            //             dataLabels: {
+            //                 y: parseInt(totalLeadLost),
+            //                 borderWidth: 0,
+            //                 useHTML: true
+            //             }
+            //         }
+            //     }
+            // };
+
+            // // The speed gauge
+            // const chartSpeedLeadLost = Highcharts.chart('container-progress-lost', Highcharts.merge(gaugeOptionsLeadLost, {
+            //     yAxis: {
+            //         min: 0,
+            //         max: parseInt(totalLeadCount),
+            //         title: {
+            //             text: ''
+            //         },
+            //         labels: {
+            //             formatter: function () {
+            //                 return this.value + ' Leads';
+            //             }
+            //         }
+            //     },
+
+            //     credits: {
+            //         enabled: false
+            //     },
+
+            //     series: [{
+            //         name: 'Lost Leads',
+            //         data: [parseInt(totalLeadLost)],
+            //         dataLabels: {
+            //             format:
+            //                 '<div style="text-align:center">' +
+            //                 '<span style="font-size:25px">{y}</span><br/>' +
+            //                 '<span style="font-size:12px;opacity:0.4">Lost Leads</span>' +
+            //                 '</div>'
+            //         },
+            //         tooltip: {
+            //             valueSuffix: ' '
+            //         }
+            //     }]
+
+            // }));
 
             if (role == 1000) {
                 //Customer Cancellation - Requested Date - All (Monthly)
