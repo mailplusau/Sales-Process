@@ -88,7 +88,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     return true;
                 });
 
-
+                //DEBUG DATA
                 log.debug({
                     title: 'siteAddressZipCode',
                     details: siteAddressZipCode
@@ -274,6 +274,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             });
 
                         }
+
+                        //DEBUG DATA
                         log.debug({
                             title: 'salesRep',
                             details: salesRep
