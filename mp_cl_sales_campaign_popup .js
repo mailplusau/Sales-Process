@@ -24,9 +24,7 @@ function saveRecord() {
 
     customer_status = customer_rec.getFieldValue('entitystatus');
     var partner = customer_rec.getFieldValue('partner');
-    if (partner == 435) {
-        alert('Please Select a Franchisee');
-        return false;
+    if (partner != 435) {
     }
 
     if (!isNullorEmpty(old_sales_record_id)) {

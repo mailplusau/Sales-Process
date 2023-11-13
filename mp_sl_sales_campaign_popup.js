@@ -10,7 +10,7 @@
  * @Last Modified time: 2018-04-11 09:11:31
  *
  */
- var ctx = nlapiGetContext();
+var ctx = nlapiGetContext();
 
 function main(request, response) {
     if (request.getMethod() == 'GET') {
@@ -27,7 +27,16 @@ function main(request, response) {
         var customerRecord = nlapiLoadRecord('customer', customerRecordId);
 
         var customerStatus = customerRecord.getFieldValue('entitystatus');
+        var source = customerRecord.getFieldValue('leadsource');
+        var partner = customerRecord.getFieldValue('partner');
 
+        var salesRepId = nlapiGetUser()
+        if (!isNullorEmpty(sales_record_id)) {
+            if (partner != 435) {
+                var partnerRecord = nlapiLoadRecord('partner', partner);
+                salesRepId = partnerRecord.getFieldValue('custentity_sales_rep_assigned');
+            }
+        }
 
         form.addField('custpage_id', 'text', 'ID').setDisplayType('hidden').setDefaultValue(customerRecordId);
 
@@ -55,18 +64,22 @@ function main(request, response) {
         var salesCampaignResult = resultSet.getResults(0, 1);
 
         // if (userRole != 1005) {
-        form.addField('sales_rep', 'select', 'Sales Rep', 'employee').setLayoutType('startrow').setMandatory(true).setDefaultValue(nlapiGetUser());
+        form.addField('sales_rep', 'select', 'Sales Rep', 'employee').setLayoutType('startrow').setMandatory(true).setDefaultValue(salesRepId);
         // }
 
         form.addField('franchisee', 'select', 'Franchisee', 'partner').setLayoutType('startrow').setMandatory(true);
         form.addField('industry', 'select', 'Industry', 'customlist_industry_category').setLayoutType('startrow').setMandatory(true);
         var sales_campagin_select = form.addField('campaign_type', 'select', 'Sales Campaign').setMandatory(true);
 
-        sales_campagin_select.addSelectOption(67, 'Digital Lead Campaign');
+        if (source == 281559 || source == 282051 || source == 282083 || source == 282085) {
+            sales_campagin_select.addSelectOption(69, 'LPO');
+        } else if (source == -4) {
+            sales_campagin_select.addSelectOption(70, 'Franchisee Generated');
+        }
         var i;
 
         // if (!isNullorEmpty(sales_campaign)) {
-        resultSet.forEachResult(function(searchResult) {
+        resultSet.forEachResult(function (searchResult) {
             sales_campagin_select.addSelectOption(searchResult.getValue('internalid'), searchResult.getValue('name'));
             return true;
         });
@@ -92,7 +105,7 @@ function main(request, response) {
 
             body = 'New sales record has been created. \n You have been assigned a lead. Please respond in an hour. \n Link: ' + cust_id_link;
 
-            nlapiSendEmail(112209, salesrep, 'Sales Lead', body, null);
+            nlapiSendEmail(112209, salesrep, 'Sales Lead', body, ['luke.forbes@mailplus.com.au']);
         }
 
 
@@ -105,7 +118,7 @@ function main(request, response) {
 
 
 
-Date.prototype.addHours = function(h) {
+Date.prototype.addHours = function (h) {
     this.setHours(this.getHours() + h);
     return this;
 }

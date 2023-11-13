@@ -1646,6 +1646,80 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
+            dataTable = $('#mpexusage-validated').DataTable({
+                destroy: true,
+                data: debt_set_validated,
+                pageLength: 1000,
+                order: [[2, 'asc']],
+                columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
+                    title: 'LINK'
+                }, {
+                    title: 'Date Lead Entered'
+                }, {
+                    title: 'Customer Internal ID'
+                }, {
+                    title: 'ID'
+                }, {
+                    title: 'Company Name'
+                }, {
+                    title: 'Franchisee'
+                }, {
+                    title: 'Status'
+                }, {
+                    title: 'Contact Name'
+                }, {
+                    title: 'Email'
+                }, {
+                    title: 'Phone Number'
+                }, {
+                    title: 'Services of Interest'
+                }, {
+                    title: 'Sales Rep Assigned'
+                }, {
+                    title: 'Date - 1st No Answer'
+                }, {
+                    title: 'Date - 2nd No Answer'
+                }, {
+                    title: 'Date - 3rd No Answer'
+                }, {
+                    title: 'MP Product Usage/Week'
+                }, {
+                    title: 'Send Sign Up Email'
+                }, {
+                    title: 'Child'
+                }],
+                columnDefs: [{
+                    targets: [2, 3, 4, 5, 6, 7, 10, 11, 12],
+                    className: 'bolded'
+                }, {
+                    targets: [13, 14, 15, 18],
+                    visible: false
+                }, {
+                    targets: [0, 1],
+                    className: 'col-xs-2'
+                }],
+                rowCallback: function (row, data, index) {
+                    // if (!isNullorEmpty(data[10])) {
+                    //     if (isNullorEmpty(data[12])) {
+                    // $('td', row).css('background-color', '#ADCF9F');
+                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+                    //         $('td', row).css('background-color', '#FEBE8C');
+                    //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+                    //         $('td', row).css('background-color', '#F7A4A4');
+                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
+                    //         $('td', row).css('background-color', '#E64848');
+                    //     }
+                    // }
+
+                }
+            });
+
             // userId = $('#user_dropdown option:selected').val();
             zee = $(
                 '#zee_dropdown option:selected').val();

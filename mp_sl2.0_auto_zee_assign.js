@@ -4,9 +4,9 @@
  * 
  * Author:               Ankith Ravindran
  * Created on:           Thu Oct 12 2023
- * Modified on:          Thu Oct 12 2023 13:33:37
- * SuiteScript Version:   
- * Description:           
+ * Modified on:          
+ * SuiteScript Version:  2.0 
+ * Description:          Auto assigning the franchisee to a lead depending on the suburb/state/postcode and then creating a sales record assigning to a campaign depending on the source of the lead. 
  *
  * Copyright (c) 2023 MailPlus Pty. Ltd.
  */
@@ -88,6 +88,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     return true;
                 });
 
+
                 log.debug({
                     title: 'siteAddressZipCode',
                     details: siteAddressZipCode
@@ -100,6 +101,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     title: 'siteAddressState',
                     details: siteAddressState
                 })
+
+                var parentLPO = null;
+                var parentLPOCount = 0;
                 if (role != 1032) {
                     if (!isNullorEmpty(siteAddressZipCode) && !isNullorEmpty(siteAddressSuburb) && !isNullorEmpty(siteAddressState)) {
                         //Network Matrix - Franchisee - Auto Allocate
@@ -213,6 +217,48 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 }
                             }
                         } else if (!isNullorEmpty(zee_id) && zeeCount == 1) {
+
+                            if (role != 1032) {
+                                if (leadSource == 282051) {
+                                    //Search: Active Parent LPO Customer List
+                                    var parentLPOListSearch = search.load({
+                                        type: 'customer',
+                                        id: 'customsearch_parent_lpo_customers'
+                                    });
+
+                                    parentLPOListSearch.filters.push(search.createFilter({
+                                        name: 'custentity_lpo_linked_franchisees',
+                                        join: null,
+                                        operator: search.Operator.ANYOF,
+                                        values: zee_id
+                                    }));
+
+                                    parentLPOListSearch.run().each(function (
+                                        parentLPOListSearchResultSet) {
+
+                                        parentLPO = parentLPOListSearchResultSet.getValue({
+                                            name: "internalid",
+                                            summary: "GROUP"
+                                        });
+
+                                        parentLPOCount++;
+                                        return true;
+                                    });
+
+                                    if (parentLPOCount == 1) {
+                                        customerRecord.setValue({
+                                            fieldId: 'parent',
+                                            value: parentLPO,
+                                        });
+
+                                        customerRecord.setValue({
+                                            fieldId: 'entitystatus',
+                                            value: 42,
+                                        });
+                                    }
+                                }
+                            }
+
                             customerRecord.setValue({
                                 fieldId: 'partner',
                                 value: zee_id,
@@ -265,6 +311,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                         if (role != 1032) {
                             if (leadSource == 282051) {
+                                //Lead Source: LPO - Head Office Generated
+
+                                /* 
+                                Create Sales Record
+                                Assign to Sales Rep depending on the franchisee
+                                Assign to LPO
+                                 */
                                 var salesRecord = record.create({
                                     type: 'customrecord_sales'
                                 });
@@ -275,7 +328,47 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_campaign',
-                                    value: 69,
+                                    value: 69, //LPO
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_assigned',
+                                    value: salesRep,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_outcome',
+                                    value: 20,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbackdate',
+                                    value: date_now,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbacktime',
+                                    value: time_now,
+                                })
+
+                                salesRecord.save({
+                                    ignoreMandatoryFields: true
+                                });
+                            } else if (leadSource == 282094) {
+                                //Lead Source: Sales Coordinator Generated
+
+                                /* 
+                                Create Sales Record
+                                Assign to Sales Rep depending on the franchisee
+                                Assign to Field Sales
+                                 */
+                                var salesRecord = record.create({
+                                    type: 'customrecord_sales'
+                                });
+
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_customer',
+                                    value: customerInternalId,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_campaign',
+                                    value: 62, //Field Sales
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
@@ -298,25 +391,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     ignoreMandatoryFields: true
                                 });
 
-                                var subject = 'Sales LPO - Head Office Generated - ' + entity_id + ' ' + customer_name;
-                                var cust_id_link =
-                                    'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-                                    customerInternalId;
-                                var body =
-                                    'New sales record has been created. \n A LPO Lead has been entered into the System. Please respond in an hour. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
-
-                                email.send({
-                                    author: 112209,
-                                    body: body,
-                                    recipients: salesRepEmail,
-                                    subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'ankith.ravindran@mailplus.com.au'],
-                                    relatedRecords: { entityId: customerInternalId }
-                                });
-
-                            } else if (leadSource == 282094) {
-
                                 var subject = 'Sales Coordinator Head Office Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -334,6 +408,47 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else if (leadSource == 282051) {
+
+                                //Lead Source: Head Office Generated
+
+                                /* 
+                                Create Sales Record
+                                Assign to Sales Rep depending on the franchisee
+                                Assign to Field Sales
+                                 */
+                                var salesRecord = record.create({
+                                    type: 'customrecord_sales'
+                                });
+
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_customer',
+                                    value: customerInternalId,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_campaign',
+                                    value: 62, //Field Sales
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_assigned',
+                                    value: salesRep,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_outcome',
+                                    value: 20,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbackdate',
+                                    value: date_now,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbacktime',
+                                    value: time_now,
+                                })
+
+                                salesRecord.save({
+                                    ignoreMandatoryFields: true
+                                });
+
                                 var subject = 'Sales Head Office Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -351,6 +466,46 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else if (leadSource == -4) {
+                                //Lead Source: Franchisee Generated 
+
+                                /* 
+                                Create Sales Record
+                                Assign to Matthew depending on the franchisee
+                                Assign to Franchisee Generated
+                                 */
+                                var salesRecord = record.create({
+                                    type: 'customrecord_sales'
+                                });
+
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_customer',
+                                    value: customerInternalId,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_campaign',
+                                    value: 70, // Franchisee Generated
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_assigned',
+                                    value: 1777309, // Assign to Matthew
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_outcome',
+                                    value: 20,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbackdate',
+                                    value: date_now,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbacktime',
+                                    value: time_now,
+                                })
+
+                                salesRecord.save({
+                                    ignoreMandatoryFields: true
+                                });
+
                                 var subject = 'Sales HOT Lead - Franchisee Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
@@ -368,6 +523,45 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
+
+                                /* 
+                                Create Sales Record
+                                Assign to Sales Rep depending on the franchisee
+                                Assign to Digital Lead Campaign 
+                                 */
+                                var salesRecord = record.create({
+                                    type: 'customrecord_sales'
+                                });
+
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_customer',
+                                    value: customerInternalId,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_campaign',
+                                    value: 67, //Digital Lead Campaign
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_assigned',
+                                    value: salesRep,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_outcome',
+                                    value: 20,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbackdate',
+                                    value: date_now,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbacktime',
+                                    value: time_now,
+                                })
+
+                                salesRecord.save({
+                                    ignoreMandatoryFields: true
+                                });
+
                                 var subject = 'Sales HOT Lead - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
