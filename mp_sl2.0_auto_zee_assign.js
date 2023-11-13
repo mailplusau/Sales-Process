@@ -4,7 +4,7 @@
  * 
  * Author:               Ankith Ravindran
  * Created on:           Thu Oct 12 2023
- * Modified on:          
+ * Modified on:          2023-11-13T03:24:39.976Z
  * SuiteScript Version:  2.0 
  * Description:          Auto assigning the franchisee to a lead depending on the suburb/state/postcode and then creating a sales record assigning to a campaign depending on the source of the lead. 
  *
