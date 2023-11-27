@@ -187,6 +187,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
+            inlineHtml += '<div class="data-range_note hide" style="color: red;text-align: center;font-weight: bolder;font-size: 14px;"><i>Please note, the lead count below is over a 3 month rolling period.</i></div></br>';
+
             // if (userId == 1645493) {
             inlineHtml +=
                 '<div class="form-group container scorecard_percentage hide" style="">';
@@ -201,6 +203,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div id="container-progress"></div>';
             inlineHtml += '</article>';
             inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            inlineHtml +=
+                '<div class="form-group container no_leads_text hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-2"></div>'
+            inlineHtml +=
+                '<div class="col-xs-8"><p id="noleads" style="text-align:center;font-size:14px;"></p></div>'
+            inlineHtml +=
+                '<div class="col-xs-2"></div>'
+
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 

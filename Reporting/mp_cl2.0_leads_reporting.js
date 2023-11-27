@@ -5391,7 +5391,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data26,
                 series_data27,
                 series_data28,
-                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a,series_data22a, series_data23a)
+                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a)
 
 
             var websiteLeadsReportingSearch = search.load({
@@ -5515,6 +5515,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var oldAutoSignUp = null;
             var oldPreviousCarrier = null;
             var oldMonthServiceValue = 0.0;
+            var oldDateLPOValidated = null;
 
             var oldAvgInvoiceValue = 0.0;
 
@@ -5696,6 +5697,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "AVG",
                 }));
 
+                var dateLPOValidated = custListCommenceTodaySet.getValue({
+                    name: 'custentity_date_lpo_validated',
+                    summary: "GROUP",
+                });
+
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
                 } else {
@@ -5833,6 +5839,37 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
                         dateQuoteSentSplit[0];
+                } if (!isNullorEmpty(dateLPOValidated)) {
+                    var dateLPOValidatedSplit = dateLPOValidated.split('/');
+                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
+
+                    var difference = dateValidated.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateValidated.getDay();
+
+                    // Remove weekend not previously removed.   
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;    
+                    }
+
                 } else {
                     // var dateLeadLostSplit = dateLeadLost.split('/');
                     var dateLeadEnteredSplit = dateLeadEntered.split('/');
@@ -6067,16 +6104,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldzeeName,
                             oldcustStatus,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            olddateLeadLost,
                             oldemail48h,
                             oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
                             oldsalesRepText,
                             suspectChildDataSet
                         ]);
@@ -6088,16 +6119,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldzeeName,
                             oldcustStatus,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            olddateLeadLost,
                             oldemail48h,
                             oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
                             oldsalesRepText
                         ]);
 
@@ -6280,16 +6305,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldzeeName,
                             oldcustStatus,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
                             oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -6301,16 +6319,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldzeeName,
                             oldcustStatus,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
                             oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
                             oldsalesRepText
                         ]);
                     } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
@@ -6322,16 +6333,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldzeeName,
                             oldcustStatus,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
+                            oldDateLPOValidated,
                             oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -6555,6 +6560,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 olddateLeadLost = dateLeadLost;
                 olddateLeadinContact = dateLeadinContact;
                 olddateProspectWon = dateProspectWon;
+                oldDateLPOValidated = dateLPOValidated;
                 olddateLeadReassigned = dateLeadReassigned;
                 oldsalesRepId = salesRepId;
                 oldsalesRepText = salesRepText;
@@ -6587,16 +6593,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldzeeName,
                         oldcustStatus,
                         oldSource,
-                        oldProdWeeklyUsage,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
                         oldemail48h,
                         oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
                         oldsalesRepText,
                         suspectChildDataSet
                     ]);
@@ -6608,16 +6608,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldzeeName,
                         oldcustStatus,
                         oldSource,
-                        oldProdWeeklyUsage,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateProspectWon,
-                        olddateLeadLost,
                         oldemail48h,
                         oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
                         oldsalesRepText
                     ]);
                 } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
@@ -6713,16 +6707,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldzeeName,
                         oldcustStatus,
                         oldSource,
-                        oldProdWeeklyUsage,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
                         oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -6734,16 +6721,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldzeeName,
                         oldcustStatus,
                         oldSource,
-                        oldProdWeeklyUsage,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
                         oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
                         oldsalesRepText
                     ]);
                 } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
@@ -6755,16 +6735,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldzeeName,
                         oldcustStatus,
                         oldSource,
-                        oldProdWeeklyUsage,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
+                        oldDateLPOValidated,
                         oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -9141,35 +9115,29 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'Franchisee' },
                     { title: 'Status' },
                     { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
                     { title: 'Previous Carrier' },
                     { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
                     { title: '48H Email Sent?' },
                     { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
                     { title: 'Sales Rep' },
                     { title: 'Child Table' }
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [18],
+                        targets: [12],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 14, 15],
+                        targets: [2, 3, 4, 5, 6, 8, 10],
                         className: 'bolded'
                     }
                 ],
                 rowCallback: function (row, data, index) {
-                    console.log(JSON.stringify(data[18]));
-                    console.log(data[18].length);
+                    console.log(JSON.stringify(data[12]));
+                    console.log(data[12].length);
 
-                    if (isNullorEmpty(data[18])) {
+                    if (isNullorEmpty(data[12])) {
                         $('td', row).css('background-color', '#f9c67a');
                     }
 
@@ -9179,52 +9147,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                 }, footerCallback: function (row, data, start, end, display) {
-                    var api = this.api(),
-                        data;
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function (i) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '') * 1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-
-                    const formatter = new Intl.NumberFormat('en-AU', {
-                        style: 'currency',
-                        currency: 'AUD',
-                        minimumFractionDigits: 2
-                    })
-
-                    // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(16, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-                    // Update footer
-                    $(api.column(16).footer()).html(
-                        formatter.format(page_total_monthly_service_revenue)
-                    );
-
+                    
                 }
             });
 
             dataTable3.rows().every(function () {
                 // this.child(format(this.data())).show();
-                this.child(createChild3(this)) // Add Child Tables
+                this.child(createChildSuspectsNew(this)) // Add Child Tables
                 this.child.hide(); // Hide Child Tables on Open
             });
 
@@ -9272,36 +9201,29 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'Franchisee' },
                     { title: 'Status' },
                     { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
                     { title: 'Previous Carrier' },
                     { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
                     { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
                     { title: 'Sales Rep' },
                     { title: 'Child Table' }
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [18],
+                        targets: [11],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 14, 15],
+                        targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
                     }
                 ],
                 rowCallback: function (row, data, index) {
                     console.log('mpexusage-suspects_qualified');
-                    console.log(JSON.stringify(data[18]));
-                    console.log(data[18].length);
+                    console.log(JSON.stringify(data[11]));
+                    console.log(data[11].length);
 
-                    if (isNullorEmpty(data[18])) {
+                    if (isNullorEmpty(data[11])) {
                         $('td', row).css('background-color', '#f9c67a');
                     }
 
@@ -9311,52 +9233,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                 }, footerCallback: function (row, data, start, end, display) {
-                    var api = this.api(),
-                        data;
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function (i) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '') * 1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-
-                    const formatter = new Intl.NumberFormat('en-AU', {
-                        style: 'currency',
-                        currency: 'AUD',
-                        minimumFractionDigits: 2
-                    })
-
-                    // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(16, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-                    // Update footer
-                    $(api.column(16).footer()).html(
-                        formatter.format(page_total_monthly_service_revenue)
-                    );
 
                 }
             });
 
             dataTableQualified.rows().every(function () {
                 // this.child(format(this.data())).show();
-                this.child(createChild3(this)) // Add Child Tables
+                this.child(createChildQualified(this)) // Add Child Tables
                 this.child.hide(); // Hide Child Tables on Open
             });
 
@@ -9402,36 +9285,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     { title: 'Franchisee' },
                     { title: 'Status' },
                     { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
                     { title: 'Previous Carrier' },
                     { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
+                    { title: 'Date - LPO Validated' },
                     { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
                     { title: 'Sales Rep' },
                     { title: 'Child Table' }
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [18],
+                        targets: [12],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 14, 15],
+                        targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
                     }
                 ],
                 rowCallback: function (row, data, index) {
                     console.log('mpexusage-suspects_qualified');
-                    console.log(JSON.stringify(data[18]));
-                    console.log(data[18].length);
+                    console.log(JSON.stringify(data[12]));
+                    console.log(data[12].length);
 
-                    if (isNullorEmpty(data[18])) {
+                    if (isNullorEmpty(data[12])) {
                         $('td', row).css('background-color', '#f9c67a');
                     }
 
@@ -9441,52 +9318,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                 }, footerCallback: function (row, data, start, end, display) {
-                    var api = this.api(),
-                        data;
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function (i) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '') * 1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
 
-                    const formatter = new Intl.NumberFormat('en-AU', {
-                        style: 'currency',
-                        currency: 'AUD',
-                        minimumFractionDigits: 2
-                    })
-
-                    // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(16, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-                    // Update footer
-                    $(api.column(16).footer()).html(
-                        formatter.format(page_total_monthly_service_revenue)
-                    );
 
                 }
             });
 
             dataTableValidated.rows().every(function () {
                 // this.child(format(this.data())).show();
-                this.child(createChild3(this)) // Add Child Tables
+                this.child(createChildValidated(this)) // Add Child Tables
                 this.child.hide(); // Hide Child Tables on Open
             });
 
@@ -10275,6 +10114,169 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
+        function createChildSuspectsNew(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[12].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
+
+        function createChildQualified(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[11].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
+
+
+        function createChildValidated(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[12].forEach(function (el) {
+
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
+                }
+            });
+        }
+
         function destroyChild(row) {
             // And then hide the row
             row.child.hide();
@@ -10398,14 +10400,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     style: {
                         fontWeight: 'bold',
                     }
-                },  {
+                }, {
                     name: 'Customer - Free Trial',
                     data: series_data23a,
                     color: '#ADCF9F',
                     style: {
                         fontWeight: 'bold',
                     }
-                },{
+                }, {
                     name: 'Prospects - Opportunity',
                     data: series_data31,
                     color: '#ADCF9F',
