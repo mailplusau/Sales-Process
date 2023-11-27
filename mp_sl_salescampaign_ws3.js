@@ -8,12 +8,12 @@ function main(request, response) {
 			try {
 				custId = nlapiLookupField('customrecord_sales', salesId, 'custrecord_sales_customer');
 				nlapiSubmitField('customrecord_sales', salesId, 'custrecord_sales_inuse', 'T');
-			} catch (err) {}
+			} catch (err) { }
 		}
 		if (isNullorEmpty(custId)) {
 			try {
 				searchResults = nlapiSearchRecord('customrecord_sales', 'customsearch_salescamp_callbacks');
-			} catch (err) {}
+			} catch (err) { }
 			if (!isNullorEmpty(searchResults)) {
 				var recIndex = 0;
 				salesId = searchResults[recIndex].getId();
@@ -22,8 +22,8 @@ function main(request, response) {
 
 			} else {
 				try {
-					searchResults = nlapiSearchRecord('customrecord_sales', 'customsearch_salescampaign');
-				} catch (err) {}
+					searchResults = nlapiSearchRecord('', 'customsearch_salescampaign');
+				} catch (err) { }
 				if (!isNullorEmpty(searchResults)) {
 					if (searchResults.length > 50) {
 						var recIndex = randomFromTo(0, 49);
@@ -36,7 +36,7 @@ function main(request, response) {
 				} else {
 					try {
 						searchResults = nlapiSearchRecord('customrecord_sales', 'customsearch_salescamp_noanswers');
-					} catch (err) {}
+					} catch (err) { }
 					if (!isNullorEmpty(searchResults)) {
 						if (searchResults.length > 50) {
 							var recIndex = randomFromTo(0, 49);
@@ -328,7 +328,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name + ' - No Sale');
 			}
 
-			
+
 			phonecall.setFieldValue('message', callnotes);
 			phonecall.setFieldValue('custevent_call_outcome', 16);
 
@@ -507,7 +507,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'X Sale - ' + sales_campaign_name + ' - Reject');
 			}
 
-			
+
 			phonecall.setFieldValue('message', reject_notes);
 			phonecall.setFieldValue('custevent_call_outcome', 16);
 
@@ -531,7 +531,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'Sales - ' + sales_campaign_name + ' - Info Sent');
 			}
 
-			
+
 			phonecall.setFieldValue('message', callnotes);
 			phonecall.setFieldValue('custevent_call_outcome', 17);
 
@@ -553,7 +553,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name + ' - Forms Sent');
 			}
 
-			
+
 			phonecall.setFieldValue('message', callnotes);
 			phonecall.setFieldValue('custevent_call_outcome', 24);
 
@@ -575,7 +575,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name + ' - Quote Sent');
 			}
 
-			
+
 			phonecall.setFieldValue('message', callnotes);
 			phonecall.setFieldValue('custevent_call_outcome', 23);
 
@@ -597,7 +597,7 @@ function main(request, response) {
 				phonecall.setFieldValue('title', 'X Sales - ' + sales_campaign_name + ' - Referred');
 			}
 
-			
+
 			phonecall.setFieldValue('message', callnotes);
 			phonecall.setFieldValue('custevent_call_outcome', 17);
 

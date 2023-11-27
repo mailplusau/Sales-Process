@@ -72,7 +72,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }
 
                 var form = ui.createForm({
-                    title: 'Prospect Quote Sent & Opportunities - List'
+                    title: 'Suspects & Prospects - List'
                 });
 
 

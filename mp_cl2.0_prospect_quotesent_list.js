@@ -314,6 +314,50 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 return false;
             });
 
+            $(".notalead").click(function () {
+                var customerInternalId = $(this).attr("data-id");
+
+
+                var customer_record = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
+                });
+
+                customer_record.setValue({
+                    fieldId: 'entitystatus',
+                    value: 59
+                });
+
+                customer_record.setValue({
+                    fieldId: 'custentity_service_cancellation_reason',
+                    value: 40
+                });
+
+                var date = new Date();
+                var date_now = format.parse({
+                    value: date,
+                    type: format.Type.DATE
+                });
+
+                customer_record.setValue({
+                    fieldId: 'custentity_date_lead_lost',
+                    value: date_now
+                });
+
+
+                var customerRecordId = customer_record.save({
+                    ignoreMandatoryFields: true
+                });
+
+
+                var url = baseURL +
+                    '/app/site/hosting/scriptlet.nl?script=1659&deploy=1';
+                window.location.href = url;
+
+                return false;
+            });
+
             $(".sendEmail").click(function () {
                 var customerInternalId = $(this).attr("data-id");
                 var salesrepid = $(this).attr("data-sales");
@@ -3236,6 +3280,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             debt_row.contactEmail +
                             '" data-salesrecordid="' +
                             debt_row.salesRecordId +
+                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_row.custInternalID +
+                            '" data-sales="' +
+                            debt_row.salesRepId +
+                            '" data-contact="' +
+                            debt_row.contactid +
+                            '" data-contactemail="' +
+                            debt_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_row.salesRecordId +
                             '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
                             debt_row.custInternalID +
                             '" data-sales="' +
@@ -3368,6 +3422,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             debt_row2.contactEmail +
                             '" data-salesrecordid="' +
                             debt_row2.salesRecordId +
+                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_row2.custInternalID +
+                            '" data-sales="' +
+                            debt_row2.salesRepId +
+                            '" data-contact="' +
+                            debt_row2.contactid +
+                            '" data-contactemail="' +
+                            debt_row2.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_row2.salesRecordId +
                             '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
                             debt_row2.custInternalID +
                             '" data-sales="' +
@@ -3491,6 +3555,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             '" data-salesrecordid="' +
                             debt_row3.salesRecordId +
                             '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_row3.custInternalID +
+                            '" data-sales="' +
+                            debt_row3.salesRepId +
+                            '" data-contact="' +
+                            debt_row3.contactid +
+                            '" data-contactemail="' +
+                            debt_row3.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_row3.salesRecordId +
+                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
                             debt_row3.custInternalID +
                             '" data-sales="' +
                             debt_row3.salesRepId +
@@ -3636,6 +3710,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             debt_set_validated_row.contactEmail +
                             '" data-salesrecordid="' +
                             debt_set_validated_row.salesRecordId +
+                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_set_validated_row.custInternalID +
+                            '" data-sales="' +
+                            debt_set_validated_row.salesRepId +
+                            '" data-contact="' +
+                            debt_set_validated_row.contactid +
+                            '" data-contactemail="' +
+                            debt_set_validated_row.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_set_validated_row.salesRecordId +
                             '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
                             debt_set_validated_row.custInternalID +
                             '" data-sales="' +
@@ -3764,6 +3848,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             '" data-salesrecordid="' +
                             debt_row4.salesRecordId +
                             '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
+                            debt_row4.custInternalID +
+                            '" data-sales="' +
+                            debt_row4.salesRepId +
+                            '" data-contact="' +
+                            debt_row4.contactid +
+                            '" data-contactemail="' +
+                            debt_row4.contactEmail +
+                            '" data-salesrecordid="' +
+                            debt_row4.salesRecordId +
+                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
                             debt_row4.custInternalID +
                             '" data-sales="' +
                             debt_row4.salesRepId +

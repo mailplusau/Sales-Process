@@ -99,13 +99,21 @@ function main(request, response) {
 
         var customer_record = nlapiLoadRecord('customer', custId);
         var status = customer_record.getFieldValue('entitystatus');
+        var leadSource = customer_record.getFieldText('leadsource');
 
-        if (ctx.getUser() != 396479 && status == 57) {
+
+        if (nlapiGetUser() == 1777309) {
+            var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
+
+            body = 'New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \n Link: ' + cust_id_link;
+
+            nlapiSendEmail(112209, salesrep, 'Sales Coordinator Qualified HOT Lead', body, ['luke.forbes@mailplus.com.au']);
+        } else if (ctx.getUser() != 396479 && status == 57) {
             var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
 
             body = 'New sales record has been created. \n You have been assigned a lead. Please respond in an hour. \n Link: ' + cust_id_link;
 
-            nlapiSendEmail(112209, salesrep, 'Sales Lead', body, ['luke.forbes@mailplus.com.au']);
+            nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au']);
         }
 
 
