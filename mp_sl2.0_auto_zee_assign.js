@@ -355,7 +355,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Matthew depending on the franchisee
+                                Assign to Gabby depending on the franchisee
                                 Assign to Field Sales
                                  */
                                 var salesRecord = record.create({
@@ -372,7 +372,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: 1777309, // Assign to Matthew
+                                    value: 1797389, // Assign to Gabby
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -402,7 +402,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: 1777309, // Email to Matthew
+                                    recipients: 1797389, // Email to Gabby
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
@@ -470,7 +470,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Matthew depending on the franchisee
+                                Assign to Gabby depending on the franchisee
                                 Assign to Franchisee Generated
                                  */
                                 var salesRecord = record.create({
@@ -487,7 +487,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: 1777309, // Assign to Matthew
+                                    value: 1797389, // Assign to Gabby
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -517,7 +517,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: ['matthew.rajabi@mailplus.com.au'],
+                                    recipients: ['gabby.yengbie@mailplus.com.au'],
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
