@@ -33,6 +33,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var paramUserId = context.request.parameters.user;
                 var salesCampaign = context.request.parameters.campaign;
                 var custStatus = context.request.parameters.status;
+                var source = context.request.parameters.source;
 
                 var page_no = context.request.parameters.page_no;
 
@@ -120,6 +121,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }).defaultValue = custStatus;
 
                 form.addField({
+                    id: 'custpage_cust_source',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = source;
+
+                form.addField({
                     id: 'custpage_contact_id',
                     type: ui.FieldType.TEXT,
                     label: 'Table CSV'
@@ -185,7 +194,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 // inlineHtml += franchiseeDropdownSection(resultSetZees, context);
 
                 //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
-                inlineHtml += userDropdownSection(userId, salesCampaign, custStatus);
+                inlineHtml += userDropdownSection(userId, salesCampaign, custStatus, source);
                 if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
                 }
@@ -513,7 +522,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
  * @param   {String}    date_to
  * @return  {String}    `inlineHtml`
  */
-        function userDropdownSection(userId, salesCampaign, custStatus) {
+        function userDropdownSection(userId, salesCampaign, custStatus, source) {
 
             var searchedSalesTeam = search.load({
                 id: 'customsearch_active_employees_3'
@@ -640,6 +649,45 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             } else {
                 inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
             }
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml +=
+                '<div class="form-group container cust_dropdown_section">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 sales_campaign_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">SOURCE</span>';
+            inlineHtml += '<select id="lead_source" class="form-control">';
+            inlineHtml += '<option></option>';
+            //NetSuite Search: LEAD SOURCE
+            var leadSourceSearch = search.load({
+                type: 'campaign',
+                id: 'customsearch_lead_source'
+            });
+
+            leadSourceSearch.run().each(function (leadSourceResultSet) {
+
+                var leadsourceid = leadSourceResultSet.getValue({
+                    name: 'internalid'
+                });
+                var leadsourcename = leadSourceResultSet.getValue({
+                    name: 'title'
+                });
+
+                if (leadsourceid == source) {
+                    inlineHtml += '<option value="' + leadsourceid + '" selected>' +
+                        leadsourcename + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + leadsourceid + '" >' +
+                        leadsourcename + '</option>';
+                }
+
+                return true;
+            });
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';

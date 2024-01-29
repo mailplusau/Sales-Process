@@ -128,6 +128,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var paramUserId = null;
         var salesCampaign = null;
         var custStatus = null;
+        var source = null;
 
         function pageInit() {
 
@@ -144,6 +145,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
             custStatus = val1.getValue({
                 fieldId: 'custpage_cust_status'
+            });
+            source = val1.getValue({
+                fieldId: 'custpage_cust_source'
             });
 
             // if (isNullorEmpty(paramUserId)) {
@@ -192,8 +196,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 userId = $('#user_dropdown option:selected').val();
                 salesCampaign = $('#sales_campaign option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
+                source = $('#lead_source option:selected').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source;
 
 
                 window.location.href = url;
@@ -207,8 +212,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 userId = $('#user_dropdown option:selected').val();
                 salesCampaign = $('#sales_campaign option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
+                source = $('#lead_source option:selected').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + "&page_no=" + page_number;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + "&source=" + source + "&page_no=" + page_number;
 
                 window.location.href = url;
 
@@ -1396,7 +1402,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [[16, 'des']],
+                order: [[17, 'des']],
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1415,6 +1421,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Franchisee'
                 }, {
                     title: 'Status'
+                }, {
+                    title: 'Source'
                 }, {
                     title: 'Contact Name'
                 }, {
@@ -1443,10 +1451,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 10, 11, 12],
+                    targets: [3, 4, 5, 6, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [13, 14, 15, 16, 19],
+                    targets: [14, 15, 16, 17, 18],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1454,13 +1462,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }],
                 rowCallback: function (row, data, index) {
                     // if (!isNullorEmpty(data[10])) {
-                    if (isNullorEmpty(data[13])) {
+                    if (isNullorEmpty(data[14])) {
                         // $('td', row).css('background-color', '#FFFBC1');
-                    } else if (!isNullorEmpty(data[13]) && isNullorEmpty(data[14]) && isNullorEmpty(data[15])) {
+                    } else if (!isNullorEmpty(data[14]) && isNullorEmpty(data[15]) && isNullorEmpty(data[16])) {
                         $('td', row).css('background-color', '#FEBE8C');
-                    } else if (!isNullorEmpty(data[13]) && !isNullorEmpty(data[14]) && isNullorEmpty(data[15])) {
+                    } else if (!isNullorEmpty(data[14]) && !isNullorEmpty(data[15]) && isNullorEmpty(data[16])) {
                         $('td', row).css('background-color', '#F7A4A4');
-                    } else if (!isNullorEmpty(data[13]) && !isNullorEmpty(data[14]) && !isNullorEmpty(data[15])) {
+                    } else if (!isNullorEmpty(data[14]) && !isNullorEmpty(data[15]) && !isNullorEmpty(data[16])) {
                         $('td', row).css('background-color', '#E64848');
                     }
                     // }
@@ -1472,7 +1480,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet2,
                 pageLength: 1000,
-                order: [[11, 'des']],
+                order: [[12, 'des']],
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1491,6 +1499,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Franchisee'
                 }, {
                     title: 'Status'
+                }, {
+                    title: 'Source'
                 }, {
                     title: 'Contact Name'
                 }, {
@@ -1517,10 +1527,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 10, 11, 12],
+                    targets: [3, 4, 5, 6, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [13, 14, 15, 18],
+                    targets: [14, 15, 16, 17],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1546,7 +1556,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet3,
                 pageLength: 1000,
-                order: [[11, 'des']],
+                order: [[12, 'des']],
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1565,6 +1575,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Franchisee'
                 }, {
                     title: 'Status'
+                }, {
+                    title: 'Source'
                 }, {
                     title: 'Contact Name'
                 }, {
@@ -1591,10 +1603,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 10, 11, 12],
+                    targets: [3, 4, 5, 6, 7, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [13, 14, 15, 18],
+                    targets: [14, 15, 16, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1642,6 +1654,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Status'
                 }, {
+                    title: 'Source'
+                }, {
                     title: 'Contact Name'
                 }, {
                     title: 'Email'
@@ -1665,10 +1679,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 6, 7, 10, 11, 12],
+                    targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [13, 14, 15, 18],
+                    targets: [14, 15, 16, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1704,7 +1718,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'LINK'
                 }, {
-                    title: 'Date Lead Entered'
+                    title: 'Date LPO Validated'
                 }, {
                     title: 'Customer Internal ID'
                 }, {
@@ -1715,6 +1729,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Franchisee'
                 }, {
                     title: 'Status'
+                }, {
+                    title: 'Source'
                 }, {
                     title: 'Contact Name'
                 }, {
@@ -1739,10 +1755,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 6, 7, 10, 11, 12],
+                    targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [13, 14, 15, 18],
+                    targets: [14, 15, 16, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1841,6 +1857,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
+                if (!isNullorEmpty(source)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
                 custListCommenceTodayResults.run().each(function (
                     custListCommenceTodaySet) {
 
@@ -1931,6 +1956,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     var productUsageperWeek = custListCommenceTodaySet.getText({
                         name: 'custentity_form_mpex_usage_per_week'
+                    });
+
+                    var leadSource = custListCommenceTodaySet.getText({
+                        name: 'leadsource'
                     });
 
                     var rowColorSort = null;
@@ -2030,6 +2059,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         serviceEmail: serviceEmail,
                         phone: phone,
                         statusText: statusText,
+                        leadSource: leadSource,
                         salesRepId: salesRepId,
                         salesRepName: salesRepName,
                         dateFirstNoContact: dateFirstNoContact,
@@ -2098,6 +2128,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: null,
                         operator: search.Operator.IS,
                         values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
                     }));
                 }
 
@@ -2193,6 +2232,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: 'custentity_form_mpex_usage_per_week'
                     });
 
+                    var leadSource = prospectOpportunititesResultSet.getText({
+                        name: 'leadsource'
+                    });
+
                     console.log('custInternalID: ' + custInternalID)
                     console.log('custName: ' + custName)
 
@@ -2278,6 +2321,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         serviceEmail: serviceEmail,
                         phone: phone,
                         statusText: statusText,
+                        leadSource: leadSource,
                         salesRepId: salesRepId,
                         salesRepName: salesRepName,
                         dateFirstNoContact: dateFirstNoContact,
@@ -2345,6 +2389,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: null,
                         operator: search.Operator.IS,
                         values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
                     }));
                 }
 
@@ -2440,6 +2493,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: 'custentity_form_mpex_usage_per_week'
                     });
 
+                    var leadSource = suspectFollowUpsSearchResultSet.getText({
+                        name: 'leadsource'
+                    });
+
 
                     //Website Leads - Suspect Followup - Activity List
                     var suspectFollowupActivityListSearch = search.load({
@@ -2519,6 +2576,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         serviceEmail: serviceEmail,
                         phone: phone,
                         statusText: statusText,
+                        leadSource: leadSource,
                         salesRepId: salesRepId,
                         salesRepName: salesRepName,
                         dateFirstNoContact: dateFirstNoContact,
@@ -2586,6 +2644,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: null,
                         operator: search.Operator.IS,
                         values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
                     }));
                 }
 
@@ -2681,6 +2748,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: 'custentity_form_mpex_usage_per_week'
                     });
 
+                    var leadSource = suspectValidatedSearchResultSet.getText({
+                        name: 'leadsource'
+                    });
+
+                    var dateLPOValidated = suspectValidatedSearchResultSet.getValue({
+                        name: "custentity_date_lpo_validated"
+                    });
+
+
+                    var suspectFollowUpChildDataSet = [];
+
 
                     //Website Leads - Suspect Validated - Activity List
                     var suspectValidatedActivityListSearch = search.load({
@@ -2760,6 +2838,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         serviceEmail: serviceEmail,
                         phone: phone,
                         statusText: statusText,
+                        leadSource: leadSource,
                         salesRepId: salesRepId,
                         salesRepName: salesRepName,
                         dateFirstNoContact: dateFirstNoContact,
@@ -2770,7 +2849,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         email48h: email48h,
                         salesRecordId: salesRecordId,
                         productUsageperWeek: productUsageperWeek,
-                        child: suspectFollowUpChildDataSet
+                        dateLPOValidated:dateLPOValidated,
+                        child: suspectValidatedChildDataSet
                     });
 
                     return true;
@@ -2827,6 +2907,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: null,
                         operator: search.Operator.IS,
                         values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
                     }));
                 }
 
@@ -2951,6 +3040,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'custentity_form_mpex_usage_per_week'
                         });
 
+                        var leadSource = suspectsSearchResultSet[i].getText({
+                            name: 'leadsource'
+                        });
+
                         //Website Leads - Suspects - Activity List
                         var suspectActivityListSearch = search.load({
                             type: 'customer',
@@ -3029,6 +3122,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             serviceEmail: serviceEmail,
                             phone: phone,
                             statusText: statusText,
+                            leadSource: leadSource,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3141,6 +3235,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'custentity_form_mpex_usage_per_week'
                         });
 
+                        var leadSource = suspectsSearchResultSet.getText({
+                            name: 'leadsource'
+                        });
+
 
                         //Website Leads - Suspects - Activity List
                         var suspectActivityListSearch = search.load({
@@ -3218,6 +3316,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             serviceEmail: serviceEmail,
                             phone: phone,
                             statusText: statusText,
+                            leadSource: leadSource,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3353,7 +3452,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet.push(['', linkURL, debt_row.custInternalID,
                         customerIDLink,
-                        debt_row.custName, debt_row.zeeName, debt_row.statusText, debt_row.contactName,
+                        debt_row.custName, debt_row.zeeName, debt_row.statusText, debt_row.leadSource, debt_row.contactName,
                         debt_row.serviceEmail,
                         debt_row.phone, commDateFormatted, debt_row.email48h, debt_row.salesRepName, debt_row.dateFirstNoContact, debt_row.dateSecondNoContact, debt_row.dateThirdNoContact, debt_row.rowColorSort, debt_row.productUsageperWeek, sendSignUpEmail, debt_row.child
                     ]);
@@ -3495,7 +3594,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet2.push(['', linkURL, debt_row2.custInternalID,
                         customerIDLink,
-                        debt_row2.custName, debt_row2.zeeName, debt_row2.statusText, debt_row2.contactName,
+                        debt_row2.custName, debt_row2.zeeName, debt_row2.statusText, debt_row2.leadSource, debt_row2.contactName,
                         debt_row2.serviceEmail,
                         debt_row2.phone, commDateFormatted, debt_row2.email48h, debt_row2.salesRepName, debt_row2.dateFirstNoContact, debt_row2.dateSecondNoContact, debt_row2.dateThirdNoContact, debt_row2.productUsageperWeek, sendSignUpEmail, debt_row2.child
                     ]);
@@ -3642,7 +3741,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet3.push(['', linkURL, debt_row3.custInternalID,
                         customerIDLink,
-                        debt_row3.custName, debt_row3.zeeName, debt_row3.statusText, debt_row3.contactName,
+                        debt_row3.custName, debt_row3.zeeName, debt_row3.statusText, debt_row3.leadSource, debt_row3.contactName,
                         debt_row3.serviceEmail,
                         debt_row3.phone, commDateFormatted, debt_row3.email48h, debt_row3.salesRepName, debt_row3.dateFirstNoContact, debt_row3.dateSecondNoContact, debt_row3.dateThirdNoContact, debt_row3.productUsageperWeek, sendSignUpEmail, debt_row3.child
                     ]);
@@ -3743,7 +3842,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             '" style="color: black; cursor: pointer !important;width: fit-content;" />';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
-                        debt_set_validated_row.custInternalID +
+                            debt_set_validated_row.custInternalID +
                             '" value="ASSIGN TO REP" class="form-control btn btn-xs btn-warning salesrepassign" style="color: black; cursor: pointer !important;width: fit-content;" />'
                     }
 
@@ -3785,12 +3884,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
 
 
+                    if (!isNullorEmpty(debt_set_validated_row.dateLPOValidated)) {
+                        var commDateLPOValidatedSplit = debt_set_validated_row.dateLPOValidated.split('/');
 
-                    debtDataSet3.push(['', linkURL, debt_set_validated_row.custInternalID,
+                        var commDateLPOValidated = new Date(commDateLPOValidatedSplit[2], commDateLPOValidatedSplit[1] - 1,
+                            commDateLPOValidatedSplit[0]);
+                        var commDateLPOValidatedParsed = format.parse({
+                            value: commDateLPOValidated,
+                            type: format.Type.DATE
+                        });
+                        var commDateLPOValidatedFormatted = format.format({
+                            value: commDateLPOValidated,
+                            type: format.Type.DATE
+                        });
+                    } else {
+                        var commDateLPOValidatedFormatted = ''
+                    }
+
+
+
+                    debtDataSet3.push(['', linkURL, commDateLPOValidatedFormatted, debt_set_validated_row.custInternalID,
                         customerIDLink,
-                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.contactName,
+                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.leadSource, debt_set_validated_row.contactName,
                         debt_set_validated_row.serviceEmail,
-                        debt_set_validated_row.phone, commDateFormatted, debt_set_validated_row.email48h, debt_set_validated_row.salesRepName, debt_set_validated_row.dateFirstNoContact, debt_set_validated_row.dateSecondNoContact, debt_set_validated_row.dateThirdNoContact, debt_set_validated_row.productUsageperWeek, sendSignUpEmail, debt_set_validated_row.child
+                        debt_set_validated_row.phone, debt_set_validated_row.email48h, debt_set_validated_row.salesRepName, debt_set_validated_row.dateFirstNoContact, debt_set_validated_row.dateSecondNoContact, debt_set_validated_row.dateThirdNoContact, debt_set_validated_row.productUsageperWeek, sendSignUpEmail, debt_set_validated_row.child
                     ]);
                 });
             }
@@ -3963,7 +4080,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet4.push(['', linkURL, newDate, debt_row4.custInternalID,
                         customerIDLink,
-                        debt_row4.custName, debt_row4.zeeName, debt_row4.statusText, debt_row4.contactName,
+                        debt_row4.custName, debt_row4.zeeName, debt_row4.statusText, debt_row4.leadSource, debt_row4.contactName,
                         debt_row4.serviceEmail,
                         debt_row4.phone, debt_row4.servicesOfInterest, debt_row4.salesRepName, debt_row4.dateFirstNoContact, debt_row4.dateSecondNoContact, debt_row4.dateThirdNoContact, debt_row4.productUsageperWeek, sendSignUpEmail, debt_row4.child
                     ]);
@@ -4012,7 +4129,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
-            row.data()[19].forEach(function (el) {
+            row.data()[20].forEach(function (el) {
 
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
@@ -4066,7 +4183,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
-            row.data()[18].forEach(function (el) {
+            row.data()[19].forEach(function (el) {
 
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
