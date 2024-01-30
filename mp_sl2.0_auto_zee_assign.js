@@ -470,7 +470,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Gabby depending on the franchisee
+                                Assign to Sales Rep depending on the franchisee
                                 Assign to Franchisee Generated
                                  */
                                 var salesRecord = record.create({
@@ -487,7 +487,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: 1797389, // Assign to Gabby
+                                    value: salesRep, //Assign to Sales Rep
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
