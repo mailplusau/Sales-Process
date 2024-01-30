@@ -332,7 +332,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: salesRep,
+                                    value: 1797389,
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -460,7 +460,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: ['matthew.rajabi@mailplus.com.au'],
+                                    recipients: salesRepEmail,
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
                                     relatedRecords: { entityId: customerInternalId }
@@ -517,7 +517,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: ['gabby.yengbie@mailplus.com.au'],
+                                    recipients: salesRepEmail,
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
