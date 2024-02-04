@@ -206,13 +206,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
             '</br></br><b><u>Note</u></b>: If above link not clickable, please copy and paste in browser.'
 
           //Send email to the Sales Rep
-          email.send({
-            author: 112209,
-            recipients: old_sales_rep,
-            subject: subject,
-            body: emailBody,
-            cc: ['luke.forbes@mailplus.com.au']
-          });
+          // email.send({
+          //   author: 112209,
+          //   recipients: old_sales_rep,
+          //   subject: subject,
+          //   body: emailBody,
+          //   cc: ['luke.forbes@mailplus.com.au']
+          // });
 
 
           no_of_weeks = 0;
@@ -297,13 +297,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
           '</br></br><b><u>Note</u></b>: If above link not clickable, please copy and paste in browser.'
 
         //Send email to the Sales Rep
-        email.send({
-          author: 112209,
-          recipients: old_sales_rep,
-          subject: subject,
-          body: emailBody,
-          cc: ['luke.forbes@mailplus.com.au']
-        });
+        // email.send({
+        //   author: 112209,
+        //   recipients: old_sales_rep,
+        //   subject: subject,
+        //   body: emailBody,
+        //   cc: ['luke.forbes@mailplus.com.au']
+        // });
       }
     }
 

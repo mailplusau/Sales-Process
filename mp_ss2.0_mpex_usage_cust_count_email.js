@@ -221,16 +221,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
           })
 
           //Send email to the Sales Rep
-          email.send({
-            author: 112209,
-            // recipients: 409635,
-            recipients: old_sales_rep,
-            subject: subject,
-            body: emailBody,
-            cc: ['ankith.ravindran@mailplus.com.au',
-              'luke.forbes@mailplus.com.au'
-            ]
-          });
+          // email.send({
+          //   author: 112209,
+          //   // recipients: 409635,
+          //   recipients: old_sales_rep,
+          //   subject: subject,
+          //   body: emailBody,
+          //   cc: ['ankith.ravindran@mailplus.com.au',
+          //     'luke.forbes@mailplus.com.au'
+          //   ]
+          // });
 
 
           no_of_weeks = 0;
@@ -320,16 +320,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record'],
         })
 
         //Send email to the Sales Rep
-        email.send({
-          author: 112209,
-          // recipients: 409635,
-          recipients: old_sales_rep,
-          subject: subject,
-          body: emailBody,
-          cc: ['ankith.ravindran@mailplus.com.au',
-            'luke.forbes@mailplus.com.au'
-          ]
-        });
+        // email.send({
+        //   author: 112209,
+        //   // recipients: 409635,
+        //   recipients: old_sales_rep,
+        //   subject: subject,
+        //   body: emailBody,
+        //   cc: ['ankith.ravindran@mailplus.com.au',
+        //     'luke.forbes@mailplus.com.au'
+        //   ]
+        // });
       }
     }
 
