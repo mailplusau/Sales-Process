@@ -5714,10 +5714,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     avgInvoiceValue = 0.0;
                 }
 
+                var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                }
+
+                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                }
+                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
 
                 if (!isNullorEmpty(dateLeadLost)) {
                     var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
@@ -5761,7 +5771,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dateProspectWonSplit[0];
 
                     var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
@@ -5808,7 +5818,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dateQuoteSentSplit[0];
 
                     var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
@@ -5841,7 +5851,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dateQuoteSentSplit[0];
                 } if (!isNullorEmpty(dateLPOValidated)) {
                     var dateLPOValidatedSplit = dateLPOValidated.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
@@ -5867,12 +5877,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Remove end day if span ends on Saturday but starts after Sunday
                     if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;    
+                        daysOpen = daysOpen - 1;
                     }
 
                 } else {
                     // var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     var todayDate = new Date();
@@ -7341,9 +7351,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         minCommDateSplit[0];
                 }
 
+                var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                }
+
+                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                }
+                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
                 if (!isNullorEmpty(dateLeadLost)) {
                     var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
@@ -7387,7 +7407,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         dateProspectWonSplit[0];
 
                     var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
@@ -7423,7 +7443,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 } else {
                     // var dateLeadLostSplit = dateLeadLost.split('/');
-                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
                     var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
                     var todayDate = new Date();
@@ -9100,7 +9120,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var dataTable3 = $('#mpexusage-suspects').DataTable({
                 data: suspectDataSet,
                 pageLength: 250,
-                order: [],
+                order: [8, 'desc'],
                 columns: [
                     {
                         title: 'Expand',
@@ -9147,7 +9167,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                 }, footerCallback: function (row, data, start, end, display) {
-                    
+
                 }
             });
 
@@ -9450,7 +9470,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var dataTable6 = $('#mpexusage-suspects_lost').DataTable({
                 data: suspectLostDataSet,
                 pageLength: 250,
-                order: [],
+                order: [12, 'desc'],
                 columns: [
                     {
                         title: 'Expand',
