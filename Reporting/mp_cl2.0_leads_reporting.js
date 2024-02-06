@@ -5857,6 +5857,33 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP",
                 });
 
+
+                var userNotesInternalID = custListCommenceTodaySet.getValue({
+                    name: "internalid",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesTitle = custListCommenceTodaySet.getValue({
+                    name: "title",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesStartDate = custListCommenceTodaySet.getValue({
+                    name: "notedate",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesOrganiser = custListCommenceTodaySet.getText({
+                    name: "author",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesMessage = custListCommenceTodaySet.getValue({
+                    name: "note",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
                 } else {
@@ -6161,6 +6188,89 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //         activityMessage: activityMessage
                         //     })
                         // }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectOpportunityChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
                     }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
@@ -6257,7 +6367,91 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //         activityMessage: activityMessage
                         //     })
                         // }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectOpportunityChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
                     }
+
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
 
                     if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED') {
@@ -6708,7 +6902,91 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //         activityMessage: activityMessage
                         //     })
                         // }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
+                            prospectActivityCount++
+                            prospectOpportunityChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
                     }
+
 
                 }
 
