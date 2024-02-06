@@ -48,6 +48,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 var source = context.request.parameters.source;
                 var campaign = context.request.parameters.campaign;
+                var parentLPO = context.request.parameters.lpo;
                 var salesrep = context.request.parameters.sales_rep;
 
                 zee = context.request.parameters.zee;
@@ -301,7 +302,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 if (role != 1000) {
                     inlineHtml += franchiseeDropdownSection(resultSetZees, context);
                 }
-                inlineHtml += leadSourceFilterSection(source, salesrep, campaign);
+                inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage);
                 inlineHtml += '</div></div></div></br></br>';
                 // if (role != 1000) {
@@ -418,7 +419,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
 
-        function leadSourceFilterSection(source, salesrep, campaign) {
+        function leadSourceFilterSection(source, salesrep, campaign, parentLPO) {
             var inlineHtml = '<div class="form-group container source_salesrep_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE & SALES REP - FILTER</span></h4></div>';
@@ -533,6 +534,56 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
+
+            if (campaign == 69) {
+                inlineHtml += '<div class="form-group container parent_lpo_label_section">';
+                inlineHtml += '<div class="row">';
+                inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO - FILTER</span></h4></div>';
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml += '<div class="form-group container parent_lpo_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml += '<div class="col-xs-12 parent_lpo_div">';
+                inlineHtml += '<div class="input-group">';
+                inlineHtml +=
+                    '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
+                inlineHtml += '<select id="parent_lpo" class="form-control">';
+                inlineHtml += '<option></option>';
+
+                var parentLPOSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_parent_lpo_customers'
+                });
+
+                parentLPOSearch.run().each(function (
+                    parentLPOSearchResultSet) {
+
+                    var parentLPOInternalId = parentLPOSearchResultSet.getValue({
+                        name: 'internalid',
+                        summary: 'GROUP'
+                    });
+                    var parentLPOName = parentLPOSearchResultSet.getValue({
+                        name: 'companyname',
+                        summary: 'GROUP'
+                    });
+
+                    if (parentLPOInternalId == parentLPO) {
+                        inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
+                        parentLPOName + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
+                        parentLPOName + '</option>';
+                    }
+
+                    return true;
+                });
+
+                inlineHtml += '</select>';
+                inlineHtml += '</div></div></div></div>';
+            }
+
 
             return inlineHtml;
         }
