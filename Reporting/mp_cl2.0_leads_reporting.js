@@ -6458,7 +6458,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6492,7 +6492,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectLostDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6533,7 +6533,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectOffPeakDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6575,7 +6575,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectOOTDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6617,7 +6617,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectFollowUpDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6659,7 +6659,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectQualifiedDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6687,7 +6687,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         suspectValidatedDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6715,7 +6715,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         // }
                         prospectDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -6764,7 +6764,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         // }
                         prospectOpportunityDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
                             oldzeeName,
                             oldcustStatus,
@@ -7031,7 +7031,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7061,7 +7061,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectLostDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7103,7 +7103,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectOffPeakDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7145,7 +7145,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectQualifiedDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7173,7 +7173,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectValidatedDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7191,7 +7191,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectOOTDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7233,7 +7233,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspectFollowUpDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7286,7 +7286,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     // }
                     prospectDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -7334,7 +7334,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     // }
                     prospectOpportunityDataSet.push(['',
                         oldcustInternalID,
-                        oldcustEntityID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
                         oldzeeName,
                         oldcustStatus,
@@ -8176,6 +8176,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         var mpExpStdUsageLink =
                             '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
+                        var customerIdLink =
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
+
                         // var d1 = new Date(olddateProspectWon);
                         // var d2 = new Date(oldMinCommDate);
 
@@ -8195,7 +8198,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
                             existingCustomerDataSet.push(['',
                                 oldcustInternalID,
-                                oldcustEntityID,
+                                customerIdLink,
                                 oldcustName,
                                 oldzeeName,
                                 oldSource,
@@ -8241,7 +8244,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         } else if (oldCustStatusId == 32) {
                             trialCustomerDataSet.push([
                                 oldcustInternalID,
-                                oldcustEntityID,
+                                customerIdLink,
                                 oldcustName,
                                 oldzeeName,
                                 oldSource,
@@ -8261,7 +8264,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         } else {
                             customerDataSet.push(['',
                                 oldcustInternalID,
-                                oldcustEntityID,
+                                customerIdLink,
                                 oldcustName,
                                 oldzeeName,
                                 oldSource,
@@ -8522,6 +8525,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var mpExpStdUsageLink =
                         '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
+                    var customerIdLink =
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
+
                     // var d1 = new Date(olddateProspectWon);
                     // var d2 = new Date(oldMinCommDate);
 
@@ -8541,7 +8547,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
                         existingCustomerDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            customerIdLink,
                             oldcustName,
                             oldzeeName,
                             oldSource,
@@ -8586,7 +8592,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (oldCustStatusId == 32) {
                         trialCustomerDataSet.push([
                             oldcustInternalID,
-                            oldcustEntityID,
+                            customerIdLink,
                             oldcustName,
                             oldzeeName,
                             oldSource,
@@ -8607,7 +8613,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else {
                         customerDataSet.push(['',
                             oldcustInternalID,
-                            oldcustEntityID,
+                            customerIdLink,
                             oldcustName,
                             oldzeeName,
                             oldSource,
@@ -9337,7 +9343,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (!isNullorEmpty(data[15])) {
                         var row_color = '#f9c67a'
                         data[15].forEach(function (el) {
-                            console.log(data[3]);
+                            // console.log(data[3]);
                             console.log(el.activityOrganiser);
                             if (!isNullorEmpty(el)) {
                                 if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
