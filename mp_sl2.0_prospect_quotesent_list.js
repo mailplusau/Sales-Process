@@ -191,14 +191,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var resultSetZees = searchZees.run();
 
                 //Dropdown to Select the Fracnhisee
-                // inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+                inlineHtml += franchiseeDropdownSection(resultSetZees, context);
 
                 //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
                 inlineHtml += userDropdownSection(userId, salesCampaign, custStatus, source);
                 if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
                 }
-                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source);
+                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source, zee);
 
                 inlineHtml += '<div id="container"></div>'
 
@@ -802,7 +802,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function tabsSection(custStatus, paramUserId, salesCampaign, source) {
+        function tabsSection(custStatus, paramUserId, salesCampaign, source, zee) {
             var inlineHtml = '<div >';
 
             // Tabs headers
@@ -877,14 +877,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     id: 'customsearch_web_leads_suspects'
                 });
 
-                // if (!isNullorEmpty(zee_id)) {
-                //     suspectsSearch.filters.push(search.createFilter({
-                //         name: 'partner',
-                //         join: null,
-                //         operator: search.Operator.IS,
-                //         values: zee_id
-                //     }));
-                // }
+                if (!isNullorEmpty(zee)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee
+                    }));
+                }
 
                 if (!isNullorEmpty(paramUserId)) {
                     suspectsSearch.filters.push(search.createFilter({
@@ -1002,6 +1002,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     type: 'customer',
                     id: 'customsearch_web_leads_suspect_validated'
                 });
+
+                if (!isNullorEmpty(zee)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee
+                    }));
+                }
 
 
                 if (!isNullorEmpty(paramUserId)) {

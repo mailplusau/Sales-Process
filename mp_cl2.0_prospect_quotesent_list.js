@@ -197,8 +197,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 salesCampaign = $('#sales_campaign option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
                 source = $('#lead_source option:selected').val();
+                zee = $('#zee_dropdown option:selected').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source + '&zee=' + zee;
 
 
                 window.location.href = url;
