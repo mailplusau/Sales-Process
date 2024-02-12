@@ -198,7 +198,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
                 }
-                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign);
+                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source);
 
                 inlineHtml += '<div id="container"></div>'
 
@@ -802,7 +802,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function tabsSection(custStatus, paramUserId, salesCampaign) {
+        function tabsSection(custStatus, paramUserId, salesCampaign, source) {
             var inlineHtml = '<div >';
 
             // Tabs headers
@@ -833,6 +833,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (custStatus == '68') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
+
+
+
+
             } else {
                 inlineHtml +=
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
@@ -991,6 +995,108 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<figure class="highcharts-figure">';
                 inlineHtml += '<div id="container_validated"></div>';
                 inlineHtml += '</figure><br></br>';
+
+
+                //Website Leads - Suspect Validated
+                var suspectValidatedSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_suspect_validated'
+                });
+
+
+                if (!isNullorEmpty(paramUserId)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
+
+                if (!isNullorEmpty(salesCampaign)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
+
+                if (!isNullorEmpty(custStatus)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
+
+                var suspectValidatedSearchCount = suspectValidatedSearch.runPaged().count;
+
+                var totalPageCount = parseInt(suspectValidatedSearchCount / 25) + 1;
+
+                var divBreak = Math.ceil(12 / totalPageCount);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml +=
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectValidatedSearchCount) + '</b></div>';
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                var rangeStart = 0;
+                var rangeEnd = 0;
+
+                for (var i = 0; i < totalPageCount; i++) {
+                    if (i == (totalPageCount - 1) || suspectValidatedSearchCount < 25) {
+                        if (suspectValidatedSearchCount < 25) {
+                        } else {
+                            rangeStart = rangeEnd;
+                        }
+                        rangeEnd = suspectValidatedSearchCount
+                    } else {
+                        rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            rangeEnd = rangeStart + 25;
+                        } else {
+                            rangeEnd = (suspectValidatedSearchCount - rangeStart) - 1;
+                            if (rangeEnd > 25) {
+                                rangeEnd = parseInt((i + 1)) * 25
+                            }
+                        }
+                    }
+
+
+                    inlineHtml +=
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                }
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
                 inlineHtml += dataTable('validated');
                 inlineHtml += '</div>';
             }

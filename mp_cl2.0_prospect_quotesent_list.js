@@ -1805,6 +1805,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
         function loadDebtRecord(zee_id, userId) {
 
+            console.log('custStatus:' + custStatus)
+
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 //Website Leads - Prospect Quote Sent
                 var custListCommenceTodayResults = search.load({
@@ -2656,205 +2658,430 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
-                suspectValidatedSearch.run().each(function (
-                    suspectValidatedSearchResultSet) {
 
-                    var custInternalID = suspectValidatedSearchResultSet.getValue({
-                        name: 'internalid'
-                    });
-                    var custEntityID = suspectValidatedSearchResultSet.getValue({
-                        name: 'entityid'
-                    });
-                    var custName = suspectValidatedSearchResultSet.getValue({
-                        name: 'companyname'
-                    });
-                    var zeeID = suspectValidatedSearchResultSet.getValue({
-                        name: 'partner'
-                    });
-                    var zeeName = suspectValidatedSearchResultSet.getText({
-                        name: 'partner'
+                var suspectValidatedSearchCount = suspectValidatedSearch.runPaged().count;
+
+                if (suspectValidatedSearchCount > 25) {
+                    var val1 = currentRecord.get();
+                    var page_no = val1.getValue({
+                        fieldId: 'custpage_page_no',
                     });
 
-                    var quoteSentDate = suspectValidatedSearchResultSet.getValue({
-                        name: "custentity_date_lead_quote_sent"
-                    });
+                    var totalPageCount = parseInt(suspectValidatedSearchCount / 25) + 1;
+                    var rangeStart = (parseInt(page_no) - 1) * 26;
+                    var rangeEnd = rangeStart + 25;
 
-                    var email = suspectValidatedSearchResultSet.getValue({
-                        name: 'email'
-                    });
-                    var serviceEmail = suspectValidatedSearchResultSet.getValue({
-                        name: 'custentity_email_service'
-                    });
-
-                    var phone = suspectValidatedSearchResultSet.getValue({
-                        name: 'phone'
-                    });
-
-                    var statusText = suspectValidatedSearchResultSet.getText({
-                        name: 'entitystatus'
-                    });
-
-                    var salesRepId = suspectValidatedSearchResultSet.getValue({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var salesRepName = suspectValidatedSearchResultSet.getText({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateFirstNoContact = suspectValidatedSearchResultSet.getValue({
-                        name: 'custrecord_sales_day0call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateSecondNoContact = suspectValidatedSearchResultSet.getValue({
-                        name: 'custrecord_sales_day14call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateThirdNoContact = suspectValidatedSearchResultSet.getValue({
-                        name: 'custrecord_sales_day25call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var contactid = suspectValidatedSearchResultSet.getValue({
-                        name: 'internalid',
-                        join: 'contact'
-                    });
-
-                    var contactName = suspectValidatedSearchResultSet.getValue({
-                        name: 'entityid',
-                        join: 'contact'
+                    val1.setValue({
+                        fieldId: 'custpage_total_page_no',
+                        value: totalPageCount
                     });
 
 
-                    var contactEmail = suspectValidatedSearchResultSet.getValue({
-                        name: 'email',
-                        join: 'contact'
+                    console.log('start: ' + rangeStart);
+                    console.log('end: ' + rangeEnd)
+
+
+                    var suspectValidatedSearchResultSet = suspectValidatedSearch.run().getRange({
+                        start: rangeStart,
+                        end: rangeEnd
                     });
 
-                    var email48h = suspectValidatedSearchResultSet.getText({
-                        name: 'custentity_48h_email_sent'
-                    });
+                    for (var i = 0; i < suspectValidatedSearchResultSet.length; i++) {
+                        var custInternalID = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'entityid'
+                        });
+                        var custName = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = suspectValidatedSearchResultSet[i].getText({
+                            name: 'partner'
+                        });
 
-                    var salesRecordId = suspectValidatedSearchResultSet.getText({
-                        name: "internalid",
-                        join: "CUSTRECORD_SALES_CUSTOMER"
-                    });
+                        var quoteSentDate = suspectValidatedSearchResultSet[i].getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
 
-                    var productUsageperWeek = suspectValidatedSearchResultSet.getText({
-                        name: 'custentity_form_mpex_usage_per_week'
-                    });
+                        var email = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'custentity_email_service'
+                        });
 
-                    var leadSource = suspectValidatedSearchResultSet.getText({
-                        name: 'leadsource'
-                    });
+                        var phone = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'phone'
+                        });
 
-                    var dateLPOValidated = suspectValidatedSearchResultSet.getValue({
-                        name: "custentity_date_lpo_validated"
-                    });
+                        var statusText = suspectValidatedSearchResultSet[i].getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = suspectValidatedSearchResultSet[i].getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
 
 
-                    var suspectFollowUpChildDataSet = [];
+                        var contactEmail = suspectValidatedSearchResultSet[i].getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
 
+                        var email48h = suspectValidatedSearchResultSet[i].getText({
+                            name: 'custentity_48h_email_sent'
+                        });
 
-                    //Website Leads - Suspect Validated - Activity List
-                    var suspectValidatedActivityListSearch = search.load({
-                        type: 'customer',
-                        id: 'customsearch_web_leads_sus_valid_act_lis'
-                    });
-
-                    suspectValidatedActivityListSearch.filters.push(search.createFilter({
-                        name: 'internalid',
-                        join: null,
-                        operator: search.Operator.ANYOF,
-                        values: custInternalID
-                    }));
-
-                    var suspectValidatedChildDataSet = [];
-
-                    suspectValidatedActivityListSearch.run().each(function (
-                        suspectValidatedActivityListSearchResultSet) {
-                        var activityInternalID = suspectValidatedActivityListSearchResultSet.getValue({
+                        var salesRecordId = suspectValidatedSearchResultSet[i].getText({
                             name: "internalid",
-                            join: "activity"
-                        })
-                        var activityStartDate = suspectValidatedActivityListSearchResultSet.getValue({
-                            name: "startdate",
-                            join: "activity"
-                        })
-                        var activityTitle = suspectValidatedActivityListSearchResultSet.getValue({
-                            name: "title",
-                            join: "activity"
-                        })
-                        if (isNullorEmpty(suspectValidatedActivityListSearchResultSet.getText({
-                            name: "custevent_organiser",
-                            join: "activity"
-                        }))) {
-                            var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
-                                name: "assigned",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = suspectValidatedSearchResultSet[i].getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = suspectValidatedSearchResultSet[i].getText({
+                            name: 'leadsource'
+                        });
+
+                        var dateLPOValidated = suspectValidatedSearchResultSet[i].getValue({
+                            name: "custentity_date_lpo_validated"
+                        });
+
+
+                        //Website Leads - Suspect Validated - Activity List
+                        var suspectValidatedActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_sus_valid_act_lis'
+                        });
+
+                        suspectValidatedActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectValidatedChildDataSet = [];
+
+                        suspectValidatedActivityListSearch.run().each(function (
+                            suspectValidatedActivityListSearchResultSet) {
+                            var activityInternalID = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "internalid",
                                 join: "activity"
                             })
-                        } else {
-                            var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                            var activityStartDate = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectValidatedActivityListSearchResultSet.getText({
                                 name: "custevent_organiser",
                                 join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
                             })
-                        }
 
-                        var activityMessage = suspectValidatedActivityListSearchResultSet.getValue({
-                            name: "message",
-                            join: "activity"
-                        })
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectValidatedChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
 
-                        if (!isNullorEmpty(activityTitle)) {
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            });
-                        }
+                            return true;
+                        });
+
+                        console.log('suspectValidatedChildDataSet: ' + JSON.stringify(suspectValidatedChildDataSet))
+
+
+
+                        debt_set_validated.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            dateLPOValidated: dateLPOValidated,
+                            child: suspectValidatedChildDataSet
+                        });
+
+                    }
+
+                } else {
+                    suspectValidatedSearch.run().each(function (
+                        suspectValidatedSearchResultSet) {
+
+                        var custInternalID = suspectValidatedSearchResultSet.getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = suspectValidatedSearchResultSet.getValue({
+                            name: 'entityid'
+                        });
+                        var custName = suspectValidatedSearchResultSet.getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = suspectValidatedSearchResultSet.getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = suspectValidatedSearchResultSet.getText({
+                            name: 'partner'
+                        });
+
+                        var quoteSentDate = suspectValidatedSearchResultSet.getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
+
+                        var email = suspectValidatedSearchResultSet.getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = suspectValidatedSearchResultSet.getValue({
+                            name: 'custentity_email_service'
+                        });
+
+                        var phone = suspectValidatedSearchResultSet.getValue({
+                            name: 'phone'
+                        });
+
+                        var statusText = suspectValidatedSearchResultSet.getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = suspectValidatedSearchResultSet.getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = suspectValidatedSearchResultSet.getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = suspectValidatedSearchResultSet.getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = suspectValidatedSearchResultSet.getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = suspectValidatedSearchResultSet.getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = suspectValidatedSearchResultSet.getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = suspectValidatedSearchResultSet.getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
+
+
+                        var contactEmail = suspectValidatedSearchResultSet.getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
+
+                        var email48h = suspectValidatedSearchResultSet.getText({
+                            name: 'custentity_48h_email_sent'
+                        });
+
+                        var salesRecordId = suspectValidatedSearchResultSet.getText({
+                            name: "internalid",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = suspectValidatedSearchResultSet.getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = suspectValidatedSearchResultSet.getText({
+                            name: 'leadsource'
+                        });
+
+                        var dateLPOValidated = suspectValidatedSearchResultSet.getValue({
+                            name: "custentity_date_lpo_validated"
+                        });
+
+
+                        var suspectFollowUpChildDataSet = [];
+
+                        //Website Leads - Suspect Validated - Activity List
+                        var suspectValidatedActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_sus_valid_act_lis'
+                        });
+
+                        suspectValidatedActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectValidatedChildDataSet = [];
+
+                        suspectValidatedActivityListSearch.run().each(function (
+                            suspectValidatedActivityListSearchResultSet) {
+                            var activityInternalID = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "internalid",
+                                join: "activity"
+                            })
+                            var activityStartDate = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectValidatedActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectValidatedActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectValidatedActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
+                            })
+
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectValidatedChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
+
+                            return true;
+                        });
+
+                        debt_set_validated.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            dateLPOValidated: dateLPOValidated,
+                            child: suspectValidatedChildDataSet
+                        });
+
+
+
 
                         return true;
                     });
-
-                    console.log('suspectValidatedChildDataSet: ' + JSON.stringify(suspectValidatedChildDataSet))
-
+                }
 
 
-                    debt_set_validated.push({
-                        custInternalID: custInternalID,
-                        custEntityID: custEntityID,
-                        custName: custName,
-                        zeeID: zeeID,
-                        zeeName: zeeName,
-                        quoteSentDate: quoteSentDate,
-                        contactName: contactName,
-                        email: email,
-                        serviceEmail: serviceEmail,
-                        phone: phone,
-                        statusText: statusText,
-                        leadSource: leadSource,
-                        salesRepId: salesRepId,
-                        salesRepName: salesRepName,
-                        dateFirstNoContact: dateFirstNoContact,
-                        dateSecondNoContact: dateSecondNoContact,
-                        dateThirdNoContact: dateThirdNoContact,
-                        contactid: contactid,
-                        contactEmail: contactEmail,
-                        email48h: email48h,
-                        salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek,
-                        dateLPOValidated:dateLPOValidated,
-                        child: suspectValidatedChildDataSet
-                    });
 
-                    return true;
-                });
                 console.log(debt_set_validated)
             }
 
