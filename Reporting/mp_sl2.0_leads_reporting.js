@@ -322,11 +322,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += tabsSection();
                 inlineHtml += dataTable();
 
-                form.addButton({
-                    id: 'download_csv',
-                    label: 'Export All Table Data',
-                    functionName: 'downloadCsv()'
-                });
+                // form.addButton({
+                //     id: 'download_csv',
+                //     label: 'Export All Table Data',
+                //     functionName: 'downloadCsv()'
+                // });
 
                 form.addField({
                     id: 'preview_table',
@@ -336,7 +336,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     layoutType: ui.FieldLayoutType.STARTROW
                 }).defaultValue = inlineHtml;
 
-                form.clientScriptFileId = 6080422;
+                form.clientScriptFileId = 6826994;
 
                 context.response.writePage(form);
             } else {
@@ -571,10 +571,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                     if (parentLPOInternalId == parentLPO) {
                         inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
-                        parentLPOName + '</option>';
+                            parentLPOName + '</option>';
                     } else {
                         inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
-                        parentLPOName + '</option>';
+                            parentLPOName + '</option>';
                     }
 
                     return true;
@@ -714,8 +714,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="1" >Yes</option>';
                 inlineHtml += '<option value="2" selected>No</option>';
             } else {
-                inlineHtml += '<option value="1" selected>Yes</option>';
-                inlineHtml += '<option value="2">No</option>';
+                inlineHtml += '<option value="1">Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
             }
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -929,9 +929,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer"><b>PROSPECTS - QUOTE SENT/IN CONTACT/NO ANSWER</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites"><b>PROSPECTS - OPPORTUNITIES</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites"><b>PROSPECTS - QUOTE SENT</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -972,13 +972,17 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads"><b>SUSPECTS - HOT/NEW LEAD</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer"><b>SUSPECTS - NO ANSWER</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact"><b>SUSPECTS - IN CONTACT</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified"><b>SUSPECTS - QUALIFIED</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup"><b>SUSPECTS - FOLLOW UP</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - OFF PEAK PIEPLINE</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - PARKING LOT</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost"><b>SUSPECTS - LOST</b></a></li>';
             if (role != 1000) {
@@ -997,6 +1001,20 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div id="container_suspects"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('suspects');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_suspects_no_answer"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('suspects_no_answer');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_suspects_in_contact"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('suspects_in_contact');
             inlineHtml += '</div>';
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
@@ -1080,7 +1098,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
             if (name == 'preview') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
             if (name == 'customer' || name == 'existing_customers') {

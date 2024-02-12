@@ -451,13 +451,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 //Zee Lead by Status - Monthly Reporting
                 var qualifiedLeadCountSearch = search.load({
                     type: 'customer',
-                    id: 'customsearch_leads_reporting_weekly_3_2'
+                    id: 'customsearch_zee_lead_by_status_monthly'
                 });
             } else {
                 //Zee Lead by Status - Monthly Reporting
                 var qualifiedLeadCountSearch = search.load({
                     type: 'customer',
-                    id: 'customsearch_leads_reporting_weekly_3_2'
+                    id: 'customsearch_zee_lead_by_status_monthly'
                 });
             }
 

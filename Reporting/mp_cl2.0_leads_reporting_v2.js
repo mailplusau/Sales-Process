@@ -161,8 +161,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var prospectChildDataSet = [];
         var prospectOpportunityChildDataSet = [];
         var prospectQuoteSentChildDataSet = [];
-        var susepctNoAnswerChildDataSet = [];
-        var susepctInContactChildDataSet = [];
+        var suspectNoAnswerChildDataSet = [];
+        var suspectInContactChildDataSet = [];
         var suspectChildDataSet = []
         var suspectOffPeakChildDataSet = [];;
         var suspectLostChildDataSet = [];
@@ -5832,14 +5832,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a)
 
 
-            var websiteLeadsReportingSearch = search.load({
+            var websiteSuspectsLeadsReportingSearch = search.load({
                 type: 'customer',
-                // id: 'customsearch_leads_reporting' //Website Leads - Reporting
-                id: 'customsearch_leads_reporting_5' //Website Leads - Reporting V2
+                id: 'customsearch_leads_reporting_5_2_2' //Website Leads - Reporting V2
             });
 
             if (!isNullorEmpty(zee_id)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'partner',
                     join: null,
                     operator: search.Operator.IS,
@@ -5848,14 +5847,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
@@ -5864,14 +5863,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_prospect_opportunity',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_signed_up_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_prospect_opportunity',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
@@ -5880,7 +5879,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(lead_source)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'leadsource',
                     join: null,
                     operator: search.Operator.IS,
@@ -5889,7 +5888,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(sales_rep)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_assigned',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
@@ -5907,7 +5906,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(parent_lpo)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'internalid',
                     join: 'custentity_lpo_parent_account',
                     operator: search.Operator.ANYOF,
@@ -5916,20 +5915,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_quote_sent_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
                     values: date_quote_sent_to
                 }));
             }
+
 
             var oldcustInternalID = null;
             var oldcustEntityID = null;
@@ -5976,116 +5976,118 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var csvSuspectInContactDataSet = [];
             var csvProspectQuoteSentDataSet = [];
 
+            var websiteSuspectsLeadsReportingSearchCount = websiteSuspectsLeadsReportingSearch.runPaged().count;
 
+            console.log('websiteSuspectsLeadsReportingSearchCount: ' + websiteSuspectsLeadsReportingSearchCount)
             var count = 0;
 
-            websiteLeadsReportingSearch.run().each(function (custListCommenceTodaySet) {
+            websiteSuspectsLeadsReportingSearch.run().each(function (suspectsResultSet) {
 
-                var custInternalID = custListCommenceTodaySet.getValue({
+                var custInternalID = suspectsResultSet.getValue({
                     name: 'internalid',
                     summary: "GROUP",
                 });
-                var custEntityID = custListCommenceTodaySet.getValue({
+                var custEntityID = suspectsResultSet.getValue({
                     name: 'entityid',
                     summary: "GROUP",
                 });
-                var custName = custListCommenceTodaySet.getValue({
+                var custName = suspectsResultSet.getValue({
                     name: 'companyname',
                     summary: "GROUP",
                 });
-                var zeeID = custListCommenceTodaySet.getValue({
+                var zeeID = suspectsResultSet.getValue({
                     name: 'partner',
                     summary: "GROUP",
                 });
-                var zeeName = custListCommenceTodaySet.getText({
+                var zeeName = suspectsResultSet.getText({
                     name: 'partner',
                     summary: "GROUP",
                 });
 
-                var custStage = (custListCommenceTodaySet.getText({
+                var custStage = (suspectsResultSet.getText({
                     name: 'stage',
                     summary: "GROUP",
                 })).toUpperCase();
 
-                var custStatusId = custListCommenceTodaySet.getValue({
+                var custStatusId = suspectsResultSet.getValue({
                     name: 'entitystatus',
                     summary: "GROUP",
                 })
 
-                var custStatus = custListCommenceTodaySet.getText({
+                var custStatus = suspectsResultSet.getText({
                     name: 'entitystatus',
                     summary: "GROUP",
                 }).toUpperCase();
 
-                var dateLeadEntered = custListCommenceTodaySet.getValue({
+                var dateLeadEntered = suspectsResultSet.getValue({
                     name: "custentity_date_lead_entered",
                     summary: "GROUP",
                 });
 
-                var quoteSentDate = custListCommenceTodaySet.getValue({
+                var quoteSentDate = suspectsResultSet.getValue({
                     name: "custentity_date_lead_quote_sent",
                     summary: "GROUP",
                 });
 
-                var dateLeadLost = custListCommenceTodaySet.getValue({
+                var dateLeadLost = suspectsResultSet.getValue({
                     name: 'custentity_date_lead_lost',
                     summary: "GROUP",
                 });
-                var dateLeadinContact = custListCommenceTodaySet.getValue({
+                var dateLeadinContact = suspectsResultSet.getValue({
                     name: 'custentity_date_prospect_in_contact',
                     summary: "GROUP",
                 });
 
-                var dateProspectWon = custListCommenceTodaySet.getValue({
+                var dateProspectWon = suspectsResultSet.getValue({
                     name: 'custentity_date_prospect_opportunity',
                     summary: "GROUP",
                 });
 
-                var dateLeadReassigned = custListCommenceTodaySet.getValue({
+                var dateLeadReassigned = suspectsResultSet.getValue({
                     name: 'custentity_date_suspect_reassign',
                     summary: "GROUP",
                 });
 
-                var salesRepId = custListCommenceTodaySet.getValue({
+                var salesRepId = suspectsResultSet.getValue({
                     name: 'custrecord_sales_assigned',
                     join: 'CUSTRECORD_SALES_CUSTOMER',
                     summary: "GROUP",
                 });
-                var salesRepText = custListCommenceTodaySet.getText({
+                var salesRepText = suspectsResultSet.getText({
                     name: 'custrecord_sales_assigned',
                     join: 'CUSTRECORD_SALES_CUSTOMER',
                     summary: "GROUP",
                 });
 
-                var activityInternalID = custListCommenceTodaySet.getValue({
+                var activityInternalID = suspectsResultSet.getValue({
                     name: "internalid",
                     join: "activity",
                     summary: "GROUP",
                 })
-                var activityStartDate = custListCommenceTodaySet.getValue({
+                var activityStartDate = suspectsResultSet.getValue({
                     name: "startdate",
                     join: "activity",
                     summary: "GROUP",
                 })
-                var activityTitle = custListCommenceTodaySet.getValue({
+                var activityTitle = suspectsResultSet.getValue({
                     name: "title",
                     join: "activity",
                     summary: "GROUP",
                 })
 
 
-                if (isNullorEmpty(custListCommenceTodaySet.getText({
+                if (isNullorEmpty(suspectsResultSet.getText({
                     name: "custevent_organiser",
                     join: "activity",
                     summary: "GROUP",
                 }))) {
-                    var activityOrganiser = custListCommenceTodaySet.getText({
+                    var activityOrganiser = suspectsResultSet.getText({
                         name: "assigned",
                         join: "activity",
                         summary: "GROUP",
                     })
                 } else {
-                    var activityOrganiser = custListCommenceTodaySet.getText({
+                    var activityOrganiser = suspectsResultSet.getText({
                         name: "custevent_organiser",
                         join: "activity",
                         summary: "GROUP",
@@ -6093,85 +6095,85 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
 
-                var activityMessage = custListCommenceTodaySet.getValue({
+                var activityMessage = suspectsResultSet.getValue({
                     name: "message",
                     join: "activity",
                     summary: "GROUP",
                 })
 
-                var email48h = custListCommenceTodaySet.getText({
+                var email48h = suspectsResultSet.getText({
                     name: 'custentity_48h_email_sent',
                     summary: "GROUP",
                 });
 
-                var daysOpen = custListCommenceTodaySet.getValue({
+                var daysOpen = suspectsResultSet.getValue({
                     name: "formulanumeric",
                     summary: "GROUP",
                 });
 
-                var cancellationReason = custListCommenceTodaySet.getText({
+                var cancellationReason = suspectsResultSet.getText({
                     name: "custentity_service_cancellation_reason",
                     summary: "GROUP",
                 });
 
-                var source = custListCommenceTodaySet.getText({
+                var source = suspectsResultSet.getText({
                     name: "leadsource",
                     summary: "GROUP",
                 });
 
-                var productWeeklyUsage = custListCommenceTodaySet.getText({
+                var productWeeklyUsage = suspectsResultSet.getText({
                     name: "custentity_form_mpex_usage_per_week",
                     summary: "GROUP",
                 });
 
-                var autoSignUp = custListCommenceTodaySet.getValue({
+                var autoSignUp = suspectsResultSet.getValue({
                     name: "custentity_auto_sign_up",
                     summary: "GROUP",
                 });
 
-                var previousCarrier = custListCommenceTodaySet.getText({
+                var previousCarrier = suspectsResultSet.getText({
                     name: "custentity_previous_carrier",
                     summary: "GROUP",
                 });
 
-                var monthlyServiceValue = (custListCommenceTodaySet.getValue({
+                var monthlyServiceValue = (suspectsResultSet.getValue({
                     name: "custentity_cust_monthly_service_value",
                     summary: "GROUP",
                 }));
 
-                var avgInvoiceValue = (custListCommenceTodaySet.getValue({
+                var avgInvoiceValue = (suspectsResultSet.getValue({
                     name: "total",
                     join: "transaction",
                     summary: "AVG",
                 }));
 
-                var dateLPOValidated = custListCommenceTodaySet.getValue({
+                var dateLPOValidated = suspectsResultSet.getValue({
                     name: 'custentity_date_lpo_validated',
                     summary: "GROUP",
                 });
 
 
-                var userNotesInternalID = custListCommenceTodaySet.getValue({
+                var userNotesInternalID = suspectsResultSet.getValue({
                     name: "internalid",
                     join: "userNotes",
                     summary: "GROUP",
                 })
-                var userNotesTitle = custListCommenceTodaySet.getValue({
+                var userNotesTitle = suspectsResultSet.getValue({
                     name: "title",
                     join: "userNotes",
                     summary: "GROUP",
                 })
-                var userNotesStartDate = custListCommenceTodaySet.getValue({
+                var userNotesStartDate = suspectsResultSet.getValue({
                     name: "notedate",
                     join: "userNotes",
                     summary: "GROUP",
                 })
-                var userNotesOrganiser = custListCommenceTodaySet.getText({
+                var userNotesOrganiser = suspectsResultSet.getText({
                     name: "author",
                     join: "userNotes",
                     summary: "GROUP",
                 })
-                var userNotesMessage = custListCommenceTodaySet.getValue({
+                var userNotesMessage = suspectsResultSet.getValue({
                     name: "note",
                     join: "userNotes",
                     summary: "GROUP",
@@ -6217,7 +6219,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var startDay = dateEntered.getDay();
                     var endDay = dateLost.getDay();
 
-                    // Remove weekend not previously removed.   
+                    // Remove weekend not previously removed.
                     if (startDay - endDay > 1)
                         daysOpen = daysOpen - 2;
 
@@ -6261,7 +6263,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var startDay = dateEntered.getDay();
                     var endDay = dateProspectWon.getDay();
 
-                    // Remove weekend not previously removed.   
+                    // Remove weekend not previously removed.
                     if (startDay - endDay > 1)
                         daysOpen = daysOpen - 2;
 
@@ -6308,7 +6310,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var startDay = dateEntered.getDay();
                     var endDay = quoteSentDate.getDay();
 
-                    // Remove weekend not previously removed.   
+                    // Remove weekend not previously removed.
                     if (startDay - endDay > 1)
                         daysOpen = daysOpen - 2;
 
@@ -6341,7 +6343,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var startDay = dateEntered.getDay();
                     var endDay = dateValidated.getDay();
 
-                    // Remove weekend not previously removed.   
+                    // Remove weekend not previously removed.
                     if (startDay - endDay > 1)
                         daysOpen = daysOpen - 2;
 
@@ -6372,7 +6374,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     var startDay = dateEntered.getDay();
                     var endDay = todayDate.getDay();
 
-                    // Remove weekend not previously removed.   
+                    // Remove weekend not previously removed.
                     if (startDay - endDay > 1)
                         daysOpen = daysOpen - 2;
 
@@ -6427,7 +6429,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6436,7 +6438,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6470,35 +6472,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                        // else if (custStage == 'CUSTOMER') {
-                        //     customerActivityCount++
-                        //     customerChildDataSet.push({
-                        //         activityInternalID: activityInternalID,
-                        //         activityStartDate: activityStartDate,
-                        //         activityTitle: activityTitle,
-                        //         activityOrganiser: activityOrganiser,
-                        //         activityMessage: activityMessage
-                        //     })
-                        // }
+                        } 
                     } else if (!isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
@@ -6565,7 +6539,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6574,32 +6548,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        }
+                        } 
                     }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
@@ -6669,7 +6625,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6678,42 +6634,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                        // else if (custStage == 'CUSTOMER') {
-                        //     customerActivityCount++
-                        //     customerChildDataSet.push({
-                        //         activityInternalID: activityInternalID,
-                        //         activityStartDate: activityStartDate,
-                        //         activityTitle: activityTitle,
-                        //         activityOrganiser: activityOrganiser,
-                        //         activityMessage: activityMessage
-                        //     })
-                        // }
+                        } 
                     } else if (!isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
@@ -6780,7 +6708,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6789,32 +6717,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        }
+                        } 
                     }
 
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
@@ -7097,105 +7007,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             suspectInContactChildDataSet
                         ]);
 
-                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
-
-                        // totalProspectCount++;
-                        // if (oldcustStatus == 50) {
-                        //     //PROSPECT - QUOTE SENT
-                        //     totalProspectQuoteSentCount++;
-                        // } else if (oldcustStatus == 35) {
-                        //     //PROSPECT - NO ANSWER
-                        //     totalProspectNoAnswerCount++
-                        // } else if (oldcustStatus == 8) {
-                        //     //PROSPECT - IN CONTACT
-                        //     totalProspectInContactCount++
-                        // }
-                        prospectDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            prospectChildDataSet
-                        ]);
-
-                        csvProspectDataSet.push([
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            oldsalesRepText
-                        ]);
-
-
-                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
-
-                        // totalProspectCount++;
-                        // if (oldcustStatus == 50) {
-                        //     //PROSPECT - QUOTE SENT
-                        //     totalProspectQuoteSentCount++;
-                        // } else if (oldcustStatus == 35) {
-                        //     //PROSPECT - NO ANSWER
-                        //     totalProspectNoAnswerCount++
-                        // } else if (oldcustStatus == 8) {
-                        //     //PROSPECT - IN CONTACT
-                        //     totalProspectInContactCount++
-                        // }
-                        prospectQuoteSentDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            prospectQuoteSentChildDataSet
-                        ]);
-                        csvProspectQuoteSentDataSet.push([
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldMonthServiceValue,
-                            oldsalesRepText
-                        ]);
-
-
-                    }
-
+                    } 
                     prospectChildDataSet = [];
                     prospectOpportunityChildDataSet = [];
                     prospectQuoteSentChildDataSet = [];
@@ -7275,7 +7087,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -7284,42 +7096,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                        // else if (custStage == 'CUSTOMER') {
-                        //     customerActivityCount++
-                        //     customerChildDataSet.push({
-                        //         activityInternalID: activityInternalID,
-                        //         activityStartDate: activityStartDate,
-                        //         activityTitle: activityTitle,
-                        //         activityOrganiser: activityOrganiser,
-                        //         activityMessage: activityMessage
-                        //     })
-                        // }
+                        } 
                     } else if (!isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
@@ -7386,7 +7170,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
                             suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
+                            suspectNoAnswerChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -7395,32 +7179,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             })
                         } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
-                            susepctInContactChildDataSet.push({
+                            suspectInContactChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
-                            prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        }
+                        } 
                     }
 
 
@@ -7738,43 +7504,863 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldMonthServiceValue,
                         oldsalesRepText
                     ]);
-                } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
-                    prospectDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldMonthServiceValue,
-                        oldsalesRepText,
-                        prospectChildDataSet
-                    ]);
+                } 
+            }
 
-                    csvProspectDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldMonthServiceValue,
-                        oldsalesRepText
-                    ]);
+            console.log('suspectNoAnswerDatSet: ' + suspectNoAnswerDataSet);
+            console.log('suspectInContactDataSet: ' + suspectInContactDataSet);
 
-                } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+
+            var websiteProspectLeadsReportingSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_5_2' //Website Leads - Reporting V2
+            });
+
+            if (!isNullorEmpty(zee_id)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+
+
+            var oldcustInternalID = null;
+            var oldcustEntityID = null;
+            var oldcustName = null;
+            var oldzeeID = null;
+            var oldzeeName = null;
+            var oldcustStage = null;
+            var oldcustStatus = null;
+            var oldCustStatusId = 0;
+            var olddateLeadEntered = null;
+            var oldquoteSentDate = null;
+            var olddateLeadLost = null;
+            var olddateLeadinContact = null;
+            var olddateProspectWon = null;
+            var olddateLeadReassigned = null;
+            var oldsalesRepId = null;
+            var oldsalesRepText = null;
+            var oldactivityInternalID = null;
+            var oldactivityStartDate = null;
+            var oldactivityTitle = null;
+            var oldactivityOrganiser = null;
+            var oldactivityMessage = null;
+            var oldemail48h = null;
+            var oldDaysOpen = null;
+            var oldCancellationReason = null;
+            var oldSource = null;
+            var oldProdWeeklyUsage = null;
+            var oldAutoSignUp = null;
+            var oldPreviousCarrier = null;
+            var oldMonthServiceValue = 0.0;
+            var oldDateLPOValidated = null;
+
+            var oldAvgInvoiceValue = 0.0;
+
+            var csvSuspectDataSet = [];
+            var csvSuspectLostDataSet = [];
+            var csvSuspectOffPeakDataSet = [];
+            var csvSuspectOOTDataSet = [];
+            var csvSuspectFollowUpDataSet = [];
+            var csvSuspectQualifiedDataSet = [];
+            var csvProspectDataSet = [];
+            var csvProspectOpportunityDataSet = [];
+            var csvSuspectNoAnswerDataSet = [];
+            var csvSuspectInContactDataSet = [];
+            var csvProspectQuoteSentDataSet = [];
+
+            var websiteProspectLeadsReportingSearchCount = websiteProspectLeadsReportingSearch.runPaged().count;
+
+            console.log('websiteProspectLeadsReportingSearchCount: ' + websiteProspectLeadsReportingSearchCount)
+            var count = 0;
+
+            websiteProspectLeadsReportingSearch.run().each(function (prospectResultSet) {
+
+                var custInternalID = prospectResultSet.getValue({
+                    name: 'internalid',
+                    summary: "GROUP",
+                });
+                var custEntityID = prospectResultSet.getValue({
+                    name: 'entityid',
+                    summary: "GROUP",
+                });
+                var custName = prospectResultSet.getValue({
+                    name: 'companyname',
+                    summary: "GROUP",
+                });
+                var zeeID = prospectResultSet.getValue({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+                var zeeName = prospectResultSet.getText({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+
+                var custStage = (prospectResultSet.getText({
+                    name: 'stage',
+                    summary: "GROUP",
+                })).toUpperCase();
+
+                var custStatusId = prospectResultSet.getValue({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                })
+
+                var custStatus = prospectResultSet.getText({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                }).toUpperCase();
+
+                var dateLeadEntered = prospectResultSet.getValue({
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
+                });
+
+                var quoteSentDate = prospectResultSet.getValue({
+                    name: "custentity_date_lead_quote_sent",
+                    summary: "GROUP",
+                });
+
+                var dateLeadLost = prospectResultSet.getValue({
+                    name: 'custentity_date_lead_lost',
+                    summary: "GROUP",
+                });
+                var dateLeadinContact = prospectResultSet.getValue({
+                    name: 'custentity_date_prospect_in_contact',
+                    summary: "GROUP",
+                });
+
+                var dateProspectWon = prospectResultSet.getValue({
+                    name: 'custentity_date_prospect_opportunity',
+                    summary: "GROUP",
+                });
+
+                var dateLeadReassigned = prospectResultSet.getValue({
+                    name: 'custentity_date_suspect_reassign',
+                    summary: "GROUP",
+                });
+
+                var salesRepId = prospectResultSet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+                var salesRepText = prospectResultSet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+
+                var activityInternalID = prospectResultSet.getValue({
+                    name: "internalid",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+                var activityStartDate = prospectResultSet.getValue({
+                    name: "startdate",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+                var activityTitle = prospectResultSet.getValue({
+                    name: "title",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+
+
+                if (isNullorEmpty(prospectResultSet.getText({
+                    name: "custevent_organiser",
+                    join: "activity",
+                    summary: "GROUP",
+                }))) {
+                    var activityOrganiser = prospectResultSet.getText({
+                        name: "assigned",
+                        join: "activity",
+                        summary: "GROUP",
+                    })
+                } else {
+                    var activityOrganiser = prospectResultSet.getText({
+                        name: "custevent_organiser",
+                        join: "activity",
+                        summary: "GROUP",
+                    })
+                }
+
+
+                var activityMessage = prospectResultSet.getValue({
+                    name: "message",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+
+                var email48h = prospectResultSet.getText({
+                    name: 'custentity_48h_email_sent',
+                    summary: "GROUP",
+                });
+
+                var daysOpen = prospectResultSet.getValue({
+                    name: "formulanumeric",
+                    summary: "GROUP",
+                });
+
+                var cancellationReason = prospectResultSet.getText({
+                    name: "custentity_service_cancellation_reason",
+                    summary: "GROUP",
+                });
+
+                var source = prospectResultSet.getText({
+                    name: "leadsource",
+                    summary: "GROUP",
+                });
+
+                var productWeeklyUsage = prospectResultSet.getText({
+                    name: "custentity_form_mpex_usage_per_week",
+                    summary: "GROUP",
+                });
+
+                var autoSignUp = prospectResultSet.getValue({
+                    name: "custentity_auto_sign_up",
+                    summary: "GROUP",
+                });
+
+                var previousCarrier = prospectResultSet.getText({
+                    name: "custentity_previous_carrier",
+                    summary: "GROUP",
+                });
+
+                var monthlyServiceValue = (prospectResultSet.getValue({
+                    name: "custentity_cust_monthly_service_value",
+                    summary: "GROUP",
+                }));
+
+                var avgInvoiceValue = (prospectResultSet.getValue({
+                    name: "total",
+                    join: "transaction",
+                    summary: "AVG",
+                }));
+
+                var dateLPOValidated = prospectResultSet.getValue({
+                    name: 'custentity_date_lpo_validated',
+                    summary: "GROUP",
+                });
+
+
+                var userNotesInternalID = prospectResultSet.getValue({
+                    name: "internalid",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesTitle = prospectResultSet.getValue({
+                    name: "title",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesStartDate = prospectResultSet.getValue({
+                    name: "notedate",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesOrganiser = prospectResultSet.getText({
+                    name: "author",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesMessage = prospectResultSet.getValue({
+                    name: "note",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+
+                if (!isNullorEmpty(monthlyServiceValue)) {
+                    monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+                } else {
+                    monthlyServiceValue = 0.0;
+                }
+
+                if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+                    avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+                } else {
+                    avgInvoiceValue = 0.0;
+                }
+
+                var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                }
+
+                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                }
+                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
+
+                if (!isNullorEmpty(dateLeadLost)) {
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
+
+                    var difference = dateLost.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateLost.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                } else if (!isNullorEmpty(dateProspectWon)) {
+                    var dateProspectWonSplit = dateProspectWon.split('/');
+
+                    if (parseInt(dateProspectWonSplit[1]) < 10) {
+                        dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
+                    }
+
+                    if (parseInt(dateProspectWonSplit[0]) < 10) {
+                        dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
+
+                    var difference = dateProspectWon.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateProspectWon.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+                } else if (!isNullorEmpty(quoteSentDate)) {
+                    var dateQuoteSentSplit = quoteSentDate.split('/');
+
+                    if (parseInt(dateQuoteSentSplit[1]) < 10) {
+                        dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
+                    }
+
+                    if (parseInt(dateQuoteSentSplit[0]) < 10) {
+                        dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
+
+                    var difference = quoteSentDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = quoteSentDate.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
+                } if (!isNullorEmpty(dateLPOValidated)) {
+                    var dateLPOValidatedSplit = dateLPOValidated.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
+
+                    var difference = dateValidated.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateValidated.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                } else {
+                    // var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var todayDate = new Date();
+
+                    var difference = todayDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = todayDate.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+                }
+
+                if (count == 0) {
+                    if (!isNullorEmpty(activityTitle)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+                } else if (count > 0 && (oldcustInternalID == custInternalID)) {
+                    if (!isNullorEmpty(activityTitle)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+                } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+
+                    if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+
+                        // totalProspectCount++;
+                        // if (oldcustStatus == 50) {
+                        //     //PROSPECT - QUOTE SENT
+                        //     totalProspectQuoteSentCount++;
+                        // } else if (oldcustStatus == 35) {
+                        //     //PROSPECT - NO ANSWER
+                        //     totalProspectNoAnswerCount++
+                        // } else if (oldcustStatus == 8) {
+                        //     //PROSPECT - IN CONTACT
+                        //     totalProspectInContactCount++
+                        // }
+                        prospectDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            prospectChildDataSet
+                        ]);
+
+                        csvProspectDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+
+
+                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+
+                        // totalProspectCount++;
+                        // if (oldcustStatus == 50) {
+                        //     //PROSPECT - QUOTE SENT
+                        //     totalProspectQuoteSentCount++;
+                        // } else if (oldcustStatus == 35) {
+                        //     //PROSPECT - NO ANSWER
+                        //     totalProspectNoAnswerCount++
+                        // } else if (oldcustStatus == 8) {
+                        //     //PROSPECT - IN CONTACT
+                        //     totalProspectInContactCount++
+                        // }
+                        prospectQuoteSentDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            prospectQuoteSentChildDataSet
+                        ]);
+                        csvProspectQuoteSentDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+
+
+                    }
+
+                    prospectChildDataSet = [];
+                    prospectOpportunityChildDataSet = [];
+                    prospectQuoteSentChildDataSet = [];
+                    suspectChildDataSet = [];
+                    suspectFollowUpChildDataSet = [];
+                    suspectLostChildDataSet = [];
+                    suspectOOTChildDataSet = [];
+                    suspectQualifiedChildDataSet = [];
+                    suspectOffPeakChildDataSet = [];
+                    suspectNoAnswerChildDataSet = [];
+                    suspectInContactChildDataSet = [];
+
+                    if (!isNullorEmpty(activityTitle)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                        // else if (custStage == 'CUSTOMER') {
+                        //     customerActivityCount++
+                        //     customerChildDataSet.push({
+                        //         activityInternalID: activityInternalID,
+                        //         activityStartDate: activityStartDate,
+                        //         activityTitle: activityTitle,
+                        //         activityOrganiser: activityOrganiser,
+                        //         activityMessage: activityMessage
+                        //     })
+                        // }
+                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+
+                }
+
+                oldcustInternalID = custInternalID;
+                oldcustEntityID = custEntityID;
+                oldcustName = custName;
+                oldzeeID = zeeID;
+                oldzeeName = zeeName;
+                oldcustStage = custStage;
+                oldcustStatus = custStatus;
+                oldCustStatusId = custStatusId;
+                olddateLeadEntered = dateLeadEntered;
+                oldquoteSentDate = quoteSentDate;
+                olddateLeadLost = dateLeadLost;
+                olddateLeadinContact = dateLeadinContact;
+                olddateProspectWon = dateProspectWon;
+                oldDateLPOValidated = dateLPOValidated;
+                olddateLeadReassigned = dateLeadReassigned;
+                oldsalesRepId = salesRepId;
+                oldsalesRepText = salesRepText;
+                oldactivityInternalID = activityInternalID;
+                oldactivityStartDate = activityStartDate;
+                oldactivityTitle = activityTitle;
+                oldactivityOrganiser = activityOrganiser;
+                oldactivityMessage = activityMessage;
+                oldemail48h = email48h;
+                oldDaysOpen = daysOpen;
+                oldCancellationReason = cancellationReason;
+                oldSource = source;
+                oldProdWeeklyUsage = productWeeklyUsage;
+                oldAutoSignUp = autoSignUp;
+                oldPreviousCarrier = previousCarrier;
+                oldMonthServiceValue = monthlyServiceValue;
+                oldAvgInvoiceValue = avgInvoiceValue;
+                count++
+                return true;
+            });
+
+            if (count > 0) {
+
+                if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
 
 
                     prospectQuoteSentDataSet.push(['',
@@ -7815,19 +8401,21 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             }
 
-            console.log('suspectNoAnswerDatSet: ' + suspectNoAnswerDataSet);
-            console.log('suspectInContactDataSet: ' + suspectInContactDataSet);
 
 
 
-            var websiteLeadsReportingSearch = search.load({
+            console.log('prospects hidden');
+
+
+
+            var websiteCustomersReportingSearch = search.load({
                 type: 'customer',
                 // id: 'customsearch_leads_reporting_4' //Website Leads - Customer Signed - Reporting
                 id: 'customsearch_leads_reporting_4_2' //Website Leads - Customer Signed - Reporting V2
             });
 
             if (!isNullorEmpty(zee_id)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'partner',
                     join: null,
                     operator: search.Operator.IS,
@@ -7836,14 +8424,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_entered',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
@@ -7852,14 +8440,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_prospect_opportunity',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_signed_up_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_prospect_opportunity',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
@@ -7868,14 +8456,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'trandate',
                     join: 'transaction',
                     operator: search.Operator.ONORAFTER,
                     values: invoice_date_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'trandate',
                     join: 'transaction',
                     operator: search.Operator.ONORBEFORE,
@@ -7884,7 +8472,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(lead_source)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'leadsource',
                     join: null,
                     operator: search.Operator.IS,
@@ -7911,7 +8499,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(parent_lpo)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'internalid',
                     join: 'custentity_lpo_parent_account',
                     operator: search.Operator.ANYOF,
@@ -7922,14 +8510,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             if (!isNullorEmpty(invoice_type)) {
                 if (invoice_type == '2') {
-                    websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    websiteCustomersReportingSearch.filters.push(search.createFilter({
                         name: 'trandate',
                         join: 'transaction',
                         operator: search.Operator.ANYOF,
                         values: 8
                     }));
                 } else if (invoice_type == '1') {
-                    websiteLeadsReportingSearch.filters.push(search.createFilter({
+                    websiteCustomersReportingSearch.filters.push(search.createFilter({
                         name: 'custbody_inv_type',
                         join: 'transaction',
                         operator: search.Operator.ANYOF,
@@ -7940,14 +8528,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
                     join: null,
                     operator: search.Operator.ONORAFTER,
                     values: date_quote_sent_from
                 }));
 
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
                     join: null,
                     operator: search.Operator.ONORBEFORE,
@@ -8009,7 +8597,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             csvExistingCustomerSignedExport = [];
             csvTrialCustomerSignedExport = [];
 
-            websiteLeadsReportingSearch.run().each(function (custListCommenceTodaySet) {
+            websiteCustomersReportingSearch.run().each(function (custListCommenceTodaySet) {
 
                 var custInternalID = custListCommenceTodaySet.getValue({
                     name: 'internalid',
@@ -9686,23 +10274,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
-                    console.log('mpexusage-prospects_quoteSent_incontact_noanswer');
-                    console.log(JSON.stringify(data[14]));
-                    console.log(data[15].length);
                     if (data[5] == 'PROSPECT-QUOTE SENT') {
                         $('td', row).css('background-color', '#ADCF9F');
                     } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
                         $('td', row).css('background-color', '#f9c67a');
                     } else if (!isNullorEmpty(data[15])) {
-                        var row_color = '#f9c67a'
-                        data[15].forEach(function (el) {
-                            if (!isNullorEmpty(el)) {
-                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
-                                    row_color = ''
-                                }
-                            }
-                        });
-                        $('td', row).css('background-color', row_color);
+                        // var row_color = '#f9c67a'
+                        // data[15].forEach(function (el) {
+                        //     if (!isNullorEmpty(el)) {
+                        //         if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
+                        //             row_color = ''
+                        //         }
+                        //     }
+                        // });
+                        // $('td', row).css('background-color', row_color);
                     }
                 }, footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -10672,7 +11257,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
-
+                    console.log(data[3] + ' Suspects No Answer Child Data Set: ' + data[11]);
                     if (isNullorEmpty(data[11])) {
                         $('td', row).css('background-color', '#f9c67a');
                     }
@@ -10802,15 +11387,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
-            saveCustomerCsvPreview(csvCustomerSignedExport);
-            saveExistingCustomerCsvPreview(csvExistingCustomerSignedExport);
-            saveProspectCsvPreview(csvProspectDataSet);
-            saveProspectOpportunityCsvPreview(csvProspectOpportunityDataSet);
-            saveSuspectCsvPreview(csvSuspectDataSet);
-            saveSuspectOffPeakCsvPreview(csvSuspectOffPeakDataSet);
-            saveSuspectLostCsvPreview(csvSuspectLostDataSet);
-            saveSuspectOOTCsvPreview(csvSuspectOOTDataSet);
-            saveSuspectFollowUpCsvPreview(csvSuspectFollowUpDataSet);
+            // saveCustomerCsvPreview(csvCustomerSignedExport);
+            // saveExistingCustomerCsvPreview(csvExistingCustomerSignedExport);
+            // saveProspectCsvPreview(csvProspectDataSet);
+            // saveProspectOpportunityCsvPreview(csvProspectOpportunityDataSet);
+            // saveSuspectCsvPreview(csvSuspectDataSet);
+            // saveSuspectOffPeakCsvPreview(csvSuspectOffPeakDataSet);
+            // saveSuspectLostCsvPreview(csvSuspectLostDataSet);
+            // saveSuspectOOTCsvPreview(csvSuspectOOTDataSet);
+            // saveSuspectFollowUpCsvPreview(csvSuspectFollowUpDataSet);
 
 
             // loadDatatable(debt_set, debt_set2);

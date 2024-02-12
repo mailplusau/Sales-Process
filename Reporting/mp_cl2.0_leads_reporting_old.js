@@ -131,8 +131,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
         var debtDataSetSuspectsFollowUp = [];
         var debt_setSuspectsFollowUp = [];
-        var debt_setSuspectsNoAnswer = [];
-        var debt_setSuspectsInContact = [];
         var debt_setSuspectsQualified = [];
         var debt_setSuspectsValidated = [];
 
@@ -144,7 +142,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var trialCustomerDataSet = [];
         var prospectDataSet = [];
         var prospectOpportunityDataSet = [];
-        var prospectQuoteSentDataSet = [];
         var suspectDataSet = [];
         var suspectLostDataSet = [];
         var suspectOffPeakDataSet = [];
@@ -152,17 +149,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var suspectFollowUpDataSet = [];
         var suspectQualifiedDataSet = [];
         var suspectValidatedDataSet = [];
-        var suspectNoAnswerDataSet = [];
-        var suspectInContactDataSet = [];
 
 
         var customerChildDataSet = [];
         var existingCustomerChildDataSet = [];
         var prospectChildDataSet = [];
         var prospectOpportunityChildDataSet = [];
-        var prospectQuoteSentChildDataSet = [];
-        var susepctNoAnswerChildDataSet = [];
-        var susepctInContactChildDataSet = [];
         var suspectChildDataSet = []
         var suspectOffPeakChildDataSet = [];;
         var suspectLostChildDataSet = [];
@@ -192,6 +184,25 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function afterSubmit() {
+            // $('.date_filter_section').removeClass('hide');
+            // $('.period_dropdown_section').removeClass('hide');
+
+
+
+
+            // if (!isNullorEmpty($('#result_customer_benchmark').val())) {
+            //     $('#customer_benchmark_preview').removeClass('hide');
+            //     $('#customer_benchmark_preview').show();
+            // }
+
+            // $('#result_customer_benchmark').on('change', function () {
+            //     $('#customer_benchmark_preview').removeClass('hide');
+            //     $('#customer_benchmark_preview').show();
+            // });
+
+            // $('#customer_benchmark_preview').removeClass('hide');
+            // $('#customer_benchmark_preview').show();
+
             $('.zee_label_section').removeClass('hide');
             $('.show_buttons_section').removeClass('hide');
             $('.zee_dropdown_section').removeClass('hide');
@@ -213,11 +224,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $('.signed_up_label_section').removeClass('hide');
             $('.signed_up_div').removeClass('hide');
 
+
             $('.filter_buttons_section').removeClass('hide');
             $('.tabs_section').removeClass('hide');
             $('.table_section').removeClass('hide');
             $('.instruction_div').removeClass('hide');
             $('.scorecard_percentage').removeClass('hide');
+
+
+
 
             $('.loading_section').addClass('hide');
         }
@@ -227,7 +242,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $("#NS_MENU_ID0-item0").css("background-color", "#CFE0CE");
             $("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
             $("#body").css("background-color", "#CFE0CE");
-            // pageLoad();
+            console.log('OLD SCRIPT')
 
 
             debtDataSet = [];
@@ -355,9 +370,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 }
 
-
+                // if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&invoice_type=' + invoice_type + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else if ((isNullorEmpty(date_to) || isNullorEmpty(date_from))) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&date_signed_up_from=" + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else if ((isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to))) {
+                //     var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage;
+                // } else {
                 var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo;
-
+                // }
 
                 window.location.href = url;
 
@@ -444,13 +465,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('date_from:' + date_from);
             console.log('date_to:' + date_to);
             if (role == 1000) {
-                //Search Name: Zee Lead by Status - Monthly Reporting
+                //Zee Lead by Status - Monthly Reporting
                 var qualifiedLeadCountSearch = search.load({
                     type: 'customer',
-                    id: 'customsearch_zee_lead_by_status_monthly'
+                    id: 'customsearch_leads_reporting_weekly_3_2'
                 });
             } else {
-                //Search Name: Zee Lead by Status - Weekly Reporting
+                //Zee Lead by Status - Weekly Reporting
                 var qualifiedLeadCountSearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_3__2'
@@ -701,6 +722,105 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ]
             });
+
+
+            // const gaugeOptions = {
+            //     chart: {
+            //         type: 'solidgauge',
+            //         // backgroundColor: '#CFE0CE',
+            //         // height: (4 / 16 * 100) + '%',
+            //         // zoomType: 'xy'
+            //     },
+
+            //     title: null,
+
+            //     pane: {
+            //         center: ['50%', '85%'],
+            //         size: '100%',
+            //         startAngle: -90,
+            //         endAngle: 90,
+            //         background: {
+            //             backgroundColor:
+            //                 Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+            //             innerRadius: '60%',
+            //             outerRadius: '100%',
+            //             shape: 'arc'
+            //         }
+            //     },
+
+            //     exporting: {
+            //         enabled: false
+            //     },
+
+            //     tooltip: {
+            //         enabled: true
+            //     },
+
+            //     // the value axis
+            //     yAxis: {
+            //         stops: [
+            //             [0, '#095c7b'], // green
+            //             // [0.4, '#DDDF0D'], // yellow
+            //             // [0.2, '#DF5353'] // red
+            //         ],
+            //         lineWidth: 0,
+            //         tickWidth: 0,
+            //         minorTickInterval: null,
+            //         tickAmount: 1,
+            //         title: {
+            //             y: -70
+            //         },
+            //         labels: {
+            //             y: 16
+            //         }
+            //     },
+
+            //     plotOptions: {
+            //         solidgauge: {
+            //             dataLabels: {
+            //                 y: parseInt(totalQualifiedLeadCount),
+            //                 borderWidth: 0,
+            //                 useHTML: true
+            //             }
+            //         }
+            //     }
+            // };
+
+            // // The speed gauge
+            // const chartSpeed = Highcharts.chart('container-progress', Highcharts.merge(gaugeOptions, {
+            //     yAxis: {
+            //         min: 0,
+            //         max: parseInt(totalLeadCount),
+            //         title: {
+            //             text: ''
+            //         },
+            //         labels: {
+            //             formatter: function () {
+            //                 return this.value + ' Leads';
+            //             }
+            //         }
+            //     },
+
+            //     credits: {
+            //         enabled: false
+            //     },
+
+            //     series: [{
+            //         name: 'Qualified Leads',
+            //         data: [parseInt(totalQualifiedLeadCount)],
+            //         dataLabels: {
+            //             format:
+            //                 '<div style="text-align:center">' +
+            //                 '<span style="font-size:25px">{y}</span><br/>' +
+            //                 '<span style="font-size:12px;opacity:0.4">Qualified Leads</span>' +
+            //                 '</div>'
+            //         },
+            //         tooltip: {
+            //             valueSuffix: ' '
+            //         }
+            //     }]
+
+            // }));
 
             if (role == 1000) {
                 //Customer Cancellation - Requested Date - All (Monthly)
@@ -1938,10 +2058,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (firstDay < 10) {
                         firstDay = '0' + firstDay;
                     }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         splitMonthV2[0];
                     var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         lastDay
                 }
@@ -2099,6 +2222,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         source_call +
                         source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount + lpo_transition + lpo_ho_generated + lpo_ap_customer + lpo_inbound_web + ho_generated;
                 }
+
+
+                // debt_set3.push([
+                //     startDate,
+                //     customerCount
+                // ]);
 
                 oldCustomerCount = customerCount;
                 oldCustomerSource = customerSource;
@@ -2560,13 +2689,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data43, series_data44, categores5);
 
             if (role == 1000) {
-                // Website New Leads - Prospect Quote Sent - Monthly Reporting
+                // Website New Leads - Prospect Opportunity - Monthly Reporting
                 var prospectOpportunityWeeklyReportingSearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_2__9'
                 });
             } else {
-                // Website New Leads - Prospect Quote Sent - Weekly Reporting
+                // Website New Leads - Prospect Opportunity - Weekly Reporting
                 var prospectOpportunityWeeklyReportingSearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_2__3'
@@ -2726,7 +2855,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 debt_set6.push({
                     dateUsed: startDate,
-                    prospect_quote: prospectCount,
+                    prospect_opportunity: prospectCount,
                     total_prospect_count: prospectCount
                 });
 
@@ -2744,7 +2873,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     .forEach(function (preview_row, index) {
 
                         previewDataSet2.push([preview_row.dateUsed,
-                        preview_row.prospect_quote,
+                        preview_row.prospect_opportunity,
                         preview_row.total_prospect_count
                         ]);
 
@@ -2755,12 +2884,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             var month_year = []; // creating array for storing browse
 
-            var prospect_quote = [];
+            var prospect_opportunity = [];
             var total_prospects_leads = [];
 
             for (var i = 0; i < previewDataSet2.length; i++) {
                 month_year.push(previewDataSet2[i][0]);
-                prospect_quote[previewDataSet2[i][0]] = previewDataSet2[i][1]
+                prospect_opportunity[previewDataSet2[i][0]] = previewDataSet2[i][1]
                 total_prospects_leads[previewDataSet2[i][0]] = previewDataSet2[i][2]
             }
 
@@ -2769,15 +2898,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             var categores5 = []; // creating empty array for highcharts
             // categories
-            Object.keys(prospect_quote).map(function (item, key) {
+            Object.keys(prospect_opportunity).map(function (item, key) {
 
                 series_data143.push(parseInt(total_prospects_leads[item]));
-                series_data144.push(parseInt(prospect_quote[item]));
+                series_data144.push(parseInt(prospect_opportunity[item]));
                 categores5.push(item)
             });
 
 
-            plotChartProspectsQuotes(
+            plotChartProspectsOpportunities(
                 series_data143, series_data144, categores5);
 
             if (role == 1000) {
@@ -2931,10 +3060,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (firstDay < 10) {
                         firstDay = '0' + firstDay;
                     }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         splitMonthV2[0];
                     var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         lastDay
                 }
@@ -3370,13 +3502,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 categores_suspects_lost);
 
             if (role == 1000) {
-                // Website New Leads - Suspects Parking Lot - Monthly Reporting
+                // Website New Leads - Suspects Off Peak Pipeline - Monthly Reporting
                 var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_2_12'
                 });
             } else {
-                // Website New Leads - Suspects Parking Lot - Weekly Reporting
+                // Website New Leads - Suspects Off Peak Pipeline - Weekly Reporting
                 var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_2__5'
@@ -3510,10 +3642,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         firstDay = '0' + firstDay;
                     }
 
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         splitMonthV2[0];
                     var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
                     var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
                         lastDay
 
@@ -3573,7 +3707,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 categores_suspects_lost);
 
             if (role == 1000) {
-                // Search Name: Website New Leads - Suspects Out of Territory - Monthly Reporting
+                // Website New Leads - Suspects Out of Territory - Monthly Reporting
                 var suspectsOOTBySalesRepWeeklySearch = search.load({
                     type: 'customer',
                     id: 'customsearch_leads_reporting_weekly_2_13'
@@ -4420,420 +4554,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 categores_suspects_follow_up, series_data91);
 
             if (role == 1000) {
-                // Website New Leads - Suspects No Answer - Monthly Reporting
-                var suspectsNoAnswerBySalesRepWeeklySearch = search.load({
-                    type: 'customer',
-                    id: 'customsearch_suspects_no_answer_monthly'
-                });
-            } else {
-                // Website New Leads - Suspects No Answer - Weekly Reporting
-                var suspectsNoAnswerBySalesRepWeeklySearch = search.load({
-                    type: 'customer',
-                    id: 'customsearch_suspects_no_answer_weekly'
-                });
-            }
-
-
-            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_entered',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_from
-                }));
-
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_entered',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_to
-                }));
-            }
-
-            if (!isNullorEmpty(lead_source)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'leadsource',
-                    join: null,
-                    operator: search.Operator.IS,
-                    values: lead_source
-                }));
-            }
-
-            if (!isNullorEmpty(sales_rep)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custrecord_sales_assigned',
-                    join: 'custrecord_sales_customer',
-                    operator: search.Operator.IS,
-                    values: sales_rep
-                }));
-            }
-
-            if (!isNullorEmpty(sales_campaign)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custrecord_sales_campaign',
-                    join: 'custrecord_sales_customer',
-                    operator: search.Operator.ANYOF,
-                    values: sales_campaign
-                }));
-            }
-
-            if (!isNullorEmpty(parent_lpo)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'internalid',
-                    join: 'custentity_lpo_parent_account',
-                    operator: search.Operator.ANYOF,
-                    values: parent_lpo
-                }));
-            }
-
-            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_quote_sent',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_quote_sent_from
-                }));
-
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_quote_sent',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_quote_sent_to
-                }));
-            }
-
-            if (!isNullorEmpty(zee_id)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'partner',
-                    join: null,
-                    operator: search.Operator.IS,
-                    values: zee_id
-                }));
-            }
-
-            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_prospect_opportunity',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_signed_up_from
-                }));
-
-                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_prospect_opportunity',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_signed_up_to
-                }));
-            }
-
-            var countSuspectFollowUp = 0;
-            var countSuspectNoAnswer = 0;
-            suspectsNoAnswerBySalesRepWeeklySearch.run().each(function (
-                suspectsNoAnswerBySalesRepWeeklySearchResultSet) {
-
-
-                var customerCount = parseInt(suspectsNoAnswerBySalesRepWeeklySearchResultSet.getValue({
-                    name: 'internalid',
-                    summary: 'COUNT'
-                }));
-                var weekLeadEntered = suspectsNoAnswerBySalesRepWeeklySearchResultSet.getValue({
-                    name: "custentity_date_lead_entered",
-                    summary: "GROUP"
-                });
-                var custStatus = suspectsNoAnswerBySalesRepWeeklySearchResultSet.getValue({
-                    name: "entitystatus",
-                    summary: "GROUP"
-                });
-
-                if (role == 1000) {
-                    var startDate = weekLeadEntered;
-
-                } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
-
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
-
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
-
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
-                    }
-
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
-
-                }
-
-
-                debt_setSuspectsNoAnswer.push({
-                    dateUsed: startDate,
-                    suspect_no_answer: customerCount
-                });
-                countSuspectFollowUp++;
-                oldStartDateFollowUp = startDate;
-                return true;
-            });
-
-
-            var suspectsNoAnswerChartDatSet = [];
-            if (!isNullorEmpty(debt_setSuspectsNoAnswer)) {
-                debt_setSuspectsNoAnswer
-                    .forEach(function (preview_row, index) {
-
-                        suspectsNoAnswerChartDatSet.push([preview_row.dateUsed,
-                        preview_row.suspect_no_answer
-                        ]);
-
-                    });
-            }
-
-
-            console.log('SUSPECTS No Answer GRAPH DATA: ' + suspectsNoAnswerChartDatSet)
-
-            var month_year_suspects_no_answer = []; // creating array for storing browser
-            var suspect_no_answer_count = [];
-
-            for (var i = 0; i < suspectsNoAnswerChartDatSet.length; i++) {
-
-                if (!isNullorEmpty(suspectsNoAnswerChartDatSet[i][0])) {
-                    month_year_suspects_no_answer.push(suspectsNoAnswerChartDatSet[i][0]);
-                    suspect_no_answer_count[suspectsNoAnswerChartDatSet[i][0]] = suspectsNoAnswerChartDatSet[i][1]
-                }
-
-
-            }
-
-            var series_data200 = [];
-            var series_data201 = [];
-
-
-            var categores_suspects_no_answer = []; // creating empty array for highcharts
-            // categories
-            Object.keys(suspect_no_answer_count).map(function (item, key) {
-                series_data200.push(parseInt(suspect_no_answer_count[item]));
-                categores_suspects_no_answer.push(item)
-            });
-
-
-            plotChartSuspectsNoAnswer(series_data200,
-                categores_suspects_no_answer, series_data201);
-
-            if (role == 1000) {
-                // Website New Leads - Suspects In Contact - Monthly Reporting
-                var suspectsInContactBySalesRepWeeklySearch = search.load({
-                    type: 'customer',
-                    id: 'customsearch_suspects_in_contact_monthly'
-                });
-            } else {
-                // Website New Leads - Suspects In Contact - Weekly Reporting
-                var suspectsInContactBySalesRepWeeklySearch = search.load({
-                    type: 'customer',
-                    id: 'customsearch_suspects_in_contact_weekly'
-                });
-            }
-
-
-            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_entered',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_from
-                }));
-
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_entered',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_to
-                }));
-            }
-
-            if (!isNullorEmpty(lead_source)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'leadsource',
-                    join: null,
-                    operator: search.Operator.IS,
-                    values: lead_source
-                }));
-            }
-
-            if (!isNullorEmpty(sales_rep)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custrecord_sales_assigned',
-                    join: 'custrecord_sales_customer',
-                    operator: search.Operator.IS,
-                    values: sales_rep
-                }));
-            }
-
-            if (!isNullorEmpty(sales_campaign)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custrecord_sales_campaign',
-                    join: 'custrecord_sales_customer',
-                    operator: search.Operator.ANYOF,
-                    values: sales_campaign
-                }));
-            }
-
-            if (!isNullorEmpty(parent_lpo)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'internalid',
-                    join: 'custentity_lpo_parent_account',
-                    operator: search.Operator.ANYOF,
-                    values: parent_lpo
-                }));
-            }
-
-            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_quote_sent',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_quote_sent_from
-                }));
-
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_lead_quote_sent',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_quote_sent_to
-                }));
-            }
-
-            if (!isNullorEmpty(zee_id)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'partner',
-                    join: null,
-                    operator: search.Operator.IS,
-                    values: zee_id
-                }));
-            }
-
-            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_prospect_opportunity',
-                    join: null,
-                    operator: search.Operator.ONORAFTER,
-                    values: date_signed_up_from
-                }));
-
-                suspectsInContactBySalesRepWeeklySearch.filters.push(search.createFilter({
-                    name: 'custentity_date_prospect_opportunity',
-                    join: null,
-                    operator: search.Operator.ONORBEFORE,
-                    values: date_signed_up_to
-                }));
-            }
-
-            var countSuspectFollowUp = 0;
-            var countSuspectNoAnswer = 0;
-            suspectsInContactBySalesRepWeeklySearch.run().each(function (
-                suspectsInContactBySalesRepWeeklySearchResultSet) {
-
-
-                var customerCount = parseInt(suspectsInContactBySalesRepWeeklySearchResultSet.getValue({
-                    name: 'internalid',
-                    summary: 'COUNT'
-                }));
-                var weekLeadEntered = suspectsInContactBySalesRepWeeklySearchResultSet.getValue({
-                    name: "custentity_date_lead_entered",
-                    summary: "GROUP"
-                });
-                var custStatus = suspectsInContactBySalesRepWeeklySearchResultSet.getValue({
-                    name: "entitystatus",
-                    summary: "GROUP"
-                });
-
-                if (role == 1000) {
-                    var startDate = weekLeadEntered;
-
-                } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
-
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
-
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
-
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
-                    }
-
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
-
-                }
-
-
-                debt_setSuspectsInContact.push({
-                    dateUsed: startDate,
-                    suspect_in_contact: customerCount
-                });
-                countSuspectFollowUp++;
-                oldStartDateFollowUp = startDate;
-                return true;
-            });
-
-
-            var suspectsInContactChartDatSet = [];
-            if (!isNullorEmpty(debt_setSuspectsInContact)) {
-                debt_setSuspectsInContact
-                    .forEach(function (preview_row, index) {
-
-                        suspectsInContactChartDatSet.push([preview_row.dateUsed,
-                        preview_row.suspect_in_contact
-                        ]);
-
-                    });
-            }
-
-
-            console.log('SUSPECTS In Contact GRAPH DATA: ' + suspectsInContactChartDatSet)
-
-            var month_year_suspects_in_contact = []; // creating array for storing browser
-            var suspect_in_contact_count = [];
-
-            for (var i = 0; i < suspectsInContactChartDatSet.length; i++) {
-
-                if (!isNullorEmpty(suspectsInContactChartDatSet[i][0])) {
-                    month_year_suspects_in_contact.push(suspectsInContactChartDatSet[i][0]);
-                    suspect_in_contact_count[suspectsInContactChartDatSet[i][0]] = suspectsInContactChartDatSet[i][1]
-                }
-
-
-            }
-
-            var series_data300 = [];
-            var series_data301 = [];
-
-
-            var categores_suspects_in_contact = []; // creating empty array for highcharts
-            // categories
-            Object.keys(suspect_in_contact_count).map(function (item, key) {
-                series_data300.push(parseInt(suspect_in_contact_count[item]));
-                categores_suspects_in_contact.push(item)
-            });
-
-
-            plotChartSuspectsInContact(series_data300,
-                categores_suspects_no_answer, series_data301);
-
-            if (role == 1000) {
                 // Website New Leads by Status - Monthly Reporting
                 var leadsListBySalesRepWeeklySearch = search.load({
                     type: 'customer',
@@ -4965,9 +4685,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             suspect_validated = 0;
             customer_free_trial = 0;
 
-            suspect_no_answer = 0;
-            suspect_in_contact = 0;
-
 
             leadsListBySalesRepWeeklySearch.run().each(function (
                 prospectListBySalesRepWeeklyResultSet) {
@@ -5069,12 +4786,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (custStatus == 32) {
                         //CUSTOMER - FREE TRIAL
                         customer_free_trial = parseInt(prospectCount);
-                    } else if (custStatus == 20) {
-                        //SUSPECT - NO ANSWER
-                        suspect_no_answer = parseInt(prospectCount);
-                    } else if (custStatus == 69) {
-                        //SUSPECT - IN CONTACT
-                        suspect_in_contact = parseInt(prospectCount);
                     }
 
                     total_leads = customer_signed +
@@ -5085,7 +4796,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial
 
                 } else if (oldDate1 != null &&
                     oldDate1 == startDate) {
@@ -5141,12 +4852,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (custStatus == 32) {
                         //CUSTOMER - FREE TRIAL
                         customer_free_trial += parseInt(prospectCount);
-                    } else if (custStatus == 20) {
-                        //SUSPECT - NO ANSWER
-                        suspect_no_answer += parseInt(prospectCount);
-                    } else if (custStatus == 69) {
-                        //SUSPECT - IN CONTACT
-                        suspect_in_contact += parseInt(prospectCount);
                     }
 
                     total_leads = customer_signed +
@@ -5157,7 +4862,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial
 
                 } else if (oldDate1 != null &&
                     oldDate1 != startDate) {
@@ -5181,9 +4886,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         suspect_qualified: suspect_qualified,
                         suspect_lpo_followup: suspect_lpo_followup,
                         suspect_validated: suspect_validated,
-                        customer_free_trial: customer_free_trial,
-                        suspect_no_answer: suspect_no_answer,
-                        suspect_in_contact: suspect_in_contact
+                        customer_free_trial: customer_free_trial
                     });
 
                     customer_signed = 0;
@@ -5205,8 +4908,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     suspect_validated = 0;
                     customer_free_trial = 0;
-                    suspect_no_answer = 0;
-                    suspect_in_contact = 0;
 
                     if (custStatus == 13 || custStatus == 66) {
                         //CUSTOMER _ SIGNED
@@ -5259,12 +4960,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     } else if (custStatus == 32) {
                         //CUSTOMER - FREE TRIAL
                         customer_free_trial = parseInt(prospectCount);
-                    } else if (custStatus == 20) {
-                        //SUSPECT - NO ANSWER
-                        suspect_no_answer = parseInt(prospectCount);
-                    } else if (custStatus == 69) {
-                        //SUSPECT - IN CONTACT
-                        suspect_in_contact = parseInt(prospectCount);
                     }
 
                     total_leads = customer_signed +
@@ -5275,7 +4970,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial
                 }
 
                 count1++;
@@ -5304,9 +4999,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     suspect_qualified: suspect_qualified,
                     suspect_lpo_followup: suspect_lpo_followup,
                     suspect_validated: suspect_validated,
-                    customer_free_trial: customer_free_trial,
-                    suspect_no_answer: suspect_no_answer,
-                    suspect_in_contact: suspect_in_contact
+                    customer_free_trial: customer_free_trial
                 });
             }
 
@@ -5375,30 +5068,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         var customerFreeTrialPercentage = parseInt((preview_row.customer_free_trial / preview_row.total_leads) * 100);
                         var customerFreeTrialCol = preview_row.customer_free_trial + ' (' + customerFreeTrialPercentage + '%)';
 
-                        var suspectNoAnswerPercentage = parseInt((preview_row.suspect_no_answer / preview_row.total_leads) * 100);
-                        var suspectNoAnswerCol = preview_row.suspect_no_answer + ' (' + suspectNoAnswerPercentage + '%)';
-
-                        var suspectInContactPercentage = parseInt((preview_row.suspect_in_contact / preview_row.total_leads) * 100);
-                        var suspectInContactCol = preview_row.suspect_in_contact + ' (' + suspectInContactPercentage + '%)';
-
 
                         overDataSet.push([preview_row.dateUsed,
                         preview_row.suspect_new,
                         preview_row.suspect_hot_lead,
                         preview_row.suspect_qualified,
                         preview_row.suspect_validated,
+                        preview_row.prospecy_quote_sent,
                         preview_row.suspect_reassign,
                         preview_row.suspect_follow_up,
-                        preview_row.suspect_no_answer,
-                        preview_row.suspect_in_contact,
                         preview_row.suspect_lpo_followup,
+                        preview_row.prospect_no_answer,
                         preview_row.prospect_in_contact,
                         preview_row.suspect_off_peak_pipeline,
                         preview_row.suspect_lost,
                         preview_row.suspect_oot,
                         preview_row.suspect_customer_lost,
                         preview_row.prospect_opportunity,
-                        preview_row.prospecy_quote_sent,
                         preview_row.customer_free_trial,
                         preview_row.customer_signed,
                         preview_row.total_leads
@@ -5410,18 +5096,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             hotLeadCol,
                             suspectQualifiedCol,
                             suspectValidatedCol,
+                            quoteSentCol,
                             reassignCol,
                             followUpCol,
                             suspectLPOFollowupwCol,
-                            suspectNoAnswerCol,
-                            suspectInContactCol,
+                            noAnswerCol,
                             inContactCol,
                             offPeakCol,
                             lostCol,
                             ootCol,
                             custLostCol,
                             oppCol,
-                            quoteSentCol,
                             customerFreeTrialCol,
                             signedCol,
                         preview_row.total_leads
@@ -5448,19 +5133,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Suspect - Validated'//4
                 }, {
-                    title: 'Suspect - Reassign'//5
+                    title: 'Prospect - Quote Sent'//5
                 }, {
-                    title: 'Suspect - Follow Up'//6
+                    title: 'Suspect - Reassign'//6
                 }, {
-                    title: 'Suspect - LPO Follow Up'//7
+                    title: 'Suspect - Follow Up'//7
                 }, {
-                    title: 'Suspect - No Answer'//8
+                    title: 'Suspect - LPO Follow Up'//8
                 }, {
-                    title: 'Suspect - In Contact'//9
+                    title: 'Prospect - No answer'//9
                 }, {
                     title: 'Prospect - In Contact'//10
                 }, {
-                    title: 'Suspect - Parking Lot'//11
+                    title: 'Suspect - Off Peak Pipeline'//11
                 }, {
                     title: 'Suspect - Lost'//12
                 }, {
@@ -5470,16 +5155,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Prospect - Opportunity'//15
                 }, {
-                    title: 'Prospect - Quote Sent'//16
+                    title: 'Customer - Free Trial'//16
                 }, {
-                    title: 'Customer - Free Trial'//17
+                    title: 'Customer - Signed'//17
                 }, {
-                    title: 'Customer - Signed'//18
-                }, {
-                    title: 'Total Lead Count'//19
+                    title: 'Total Lead Count'//18
                 }],
                 columnDefs: [{
-                    targets: [0, 16, 17, 18],
+                    targets: [0, 15, 16, 17],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -5519,8 +5202,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    // Total Suspect Validated
-                    total_suspect_validated = api
+                    // Total Prospect Quoite Sent
+                    total_prospect_quote_sent = api
                         .column(4)
                         .data()
                         .reduce(function (a, b) {
@@ -5551,18 +5234,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    // Total Suspect No Answer
-                    total_suspect_no_answer = api
+                    // Total Prospect No Answer
+                    total_prospect_no_answer = api
                         .column(8)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-                    // Total Suspect In Contact
-                    total_suspect_in_contact = api
-                        .column(9)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5571,7 +5245,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Prospect In Contact
                     total_prospect_in_contact = api
-                        .column(10)
+                        .column(9)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5580,7 +5254,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Suspect Off Peak Pipline
                     total_suspect_off_peak_pipeline = api
-                        .column(11)
+                        .column(10)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5589,7 +5263,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Suspect Lost
                     total_suspect_lost = api
-                        .column(12)
+                        .column(11)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5598,7 +5272,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Suspect Out of Territory
                     total_suspect_oot = api
-                        .column(13)
+                        .column(12)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5607,39 +5281,42 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Suspect Customer Lost
                     total_suspect_customer_lost = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Total Prospect Opportunity
+                    total_prospect_opportunity = api
                         .column(14)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    // Total Prospect Opportunity
-                    total_prospect_opportunity = api
+
+                    // Total Customer Signed
+                    total_customer_signed = api
                         .column(15)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    // Total Prospect Quoite Sent
-                    total_prospect_quote_sent = api
+
+                    // Total Lead Count
+                    total_lead1 = api
                         .column(16)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    // Total Customer Free Trial
-                    total_customer_free_trial = api
+                    // Total Lead Count
+                    total_lead2 = api
                         .column(17)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Total Customer Signed
-                    total_customer_signed = api
-                        .column(18)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5647,7 +5324,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Lead Count
                     total_lead = api
-                        .column(19)
+                        .column(18)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5664,7 +5341,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         total_suspect_qualified + ' (' + ((total_suspect_qualified / total_lead) * 100).toFixed(0) + '%)'
                     );
                     $(api.column(4).footer()).html(
-                        total_suspect_validated + ' (' + ((total_suspect_validated / total_lead) * 100).toFixed(0) + '%)'
+                        total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
                     );
                     $(api.column(5).footer()).html(
                         total_suspect_reassign + ' (' + ((total_suspect_reassign / total_lead) * 100).toFixed(0) + '%)'
@@ -5676,40 +5353,38 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         total_suspect_lpo_followup + ' (' + ((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) + '%)'
                     );
                     $(api.column(8).footer()).html(
-                        total_suspect_no_answer + ' (' + ((total_suspect_no_answer / total_lead) * 100).toFixed(0) + '%)'
+                        total_prospect_no_answer + ' (' + ((total_prospect_no_answer / total_lead) * 100).toFixed(0) + '%)'
                     );
                     $(api.column(9).footer()).html(
-                        total_suspect_in_contact + ' (' + ((total_suspect_in_contact / total_lead) * 100).toFixed(0) + '%)'
-                    );
-                    $(api.column(10).footer()).html(
                         total_prospect_in_contact + ' (' + ((total_prospect_in_contact / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(11).footer()).html(
+                    $(api.column(10).footer()).html(
                         total_suspect_off_peak_pipeline + ' (' + ((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(12).footer()).html(
+                    $(api.column(11).footer()).html(
                         total_suspect_lost + ' (' + ((total_suspect_lost / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(13).footer()).html(
+                    $(api.column(12).footer()).html(
                         total_suspect_oot + ' (' + ((total_suspect_oot / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(14).footer()).html(
+                    $(api.column(13).footer()).html(
                         total_suspect_customer_lost + ' (' + ((total_suspect_customer_lost / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(15).footer()).html(
+                    $(api.column(14).footer()).html(
                         total_prospect_opportunity + ' (' + ((total_prospect_opportunity / total_lead) * 100).toFixed(0) + '%)'
                     );
+                    $(api.column(15).footer()).html(
+                        total_customer_signed + ' (' + ((total_customer_signed / total_lead) * 100).toFixed(0) + '%)'
+                    );
                     $(api.column(16).footer()).html(
-                        total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
+                        total_lead1 + ' (' + ((total_lead1 / total_lead) * 100).toFixed(0) + '%)'
                     );
 
                     $(api.column(17).footer()).html(
-                        total_customer_free_trial + ' (' + ((total_customer_free_trial / total_lead) * 100).toFixed(0) + '%)'
+                        total_lead2 + ' (' + ((total_lead2 / total_lead) * 100).toFixed(0) + '%)'
                     );
+
                     $(api.column(18).footer()).html(
-                        total_customer_signed + ' (' + ((total_customer_signed / total_lead) * 100).toFixed(0) + '%)'
-                    );
-                    $(api.column(19).footer()).html(
                         total_lead
                     );
 
@@ -5739,31 +5414,68 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var suspect_lpo_followup = [];
             var suspect_validated = [];
             var customer_free_trial = [];
-            var susect_no_answer = [];
-            var suspect_in_contact = [];
             var total_leads = [];
+
+            // columns: [{
+            //     title: 'Period'//0
+            // }, {
+            //     title: 'Suspect - New'//1
+            // }, {
+            //     title: 'Suspect - Hot Lead'//2
+            // }, {
+            //     title: 'Suspect - Qualified'//3
+            // }, {
+            //     title: 'Suspect - Validated'//4
+            // }, {
+            //     title: 'Prospect - Quote Sent'//5
+            // }, {
+            //     title: 'Suspect - Reassign'//6
+            // }, {
+            //     title: 'Suspect - Follow Up'//7
+            // }, {
+            //     title: 'Suspect - LPO Follow Up'//8
+            // }, {
+            //     title: 'Prospect - No answer'//9
+            // }, {
+            //     title: 'Prospect - In Contact'//10
+            // }, {
+            //     title: 'Suspect - Off Peak Pipeline'//11
+            // }, {
+            //     title: 'Suspect - Lost'//12
+            // }, {
+            //     title: 'Suspect - Out of Territory'//13
+            // }, {
+            //     title: 'Suspect - Customer - Lost'//14
+            // }, {
+            //     title: 'Prospect - Opportunity'//15
+            // }, {
+            //     title: 'Customer - Free Trial'//16
+            // }, {
+            //     title: 'Customer - Signed'//17
+            // }, {
+            //     title: 'Total Lead Count'//18
+            // }],
 
             for (var i = 0; i < data.length; i++) {
                 month_year.push(data[i][0]);
                 suspect_new[data[i][0]] = data[i][1]
+                customer_signed[data[i][0]] = data[i][17]
                 suspect_hot_lead[data[i][0]] = data[i][2]
                 suspect_qualified[data[i][0]] = data[i][3]
                 suspect_validated[data[i][0]] = data[i][4]
-                suspect_reassign[data[i][0]] = data[i][5]
-                suspect_follow_up[data[i][0]] = data[i][6]
-                suspect_lpo_followup[data[i][0]] = data[i][7]
-                suspect_no_answer[data[i][0]] = data[i][8]
-                suspect_in_contact[data[i][0]] = data[i][9]
-                prospect_in_contact[data[i][0]] = data[i][10]
-                suspect_off_peak_pipeline[data[i][0]] = data[i][11]
+                suspect_reassign[data[i][0]] = data[i][6]
+                suspect_follow_up[data[i][0]] = data[i][7]
+                suspect_lpo_followup[data[i][0]] = data[i][8]
                 suspect_lost[data[i][0]] = data[i][12]
                 suspect_oot[data[i][0]] = data[i][13]
                 suspect_customer_lost[data[i][0]] = data[i][14]
+                suspect_off_peak_pipeline[data[i][0]] = data[i][11]
+                prospecy_quote_sent[data[i][0]] = data[i][5]
+                prospect_no_answer[data[i][0]] = data[i][9]
+                prospect_in_contact[data[i][0]] = data[i][10]
                 prospect_opportunity[data[i][0]] = data[i][15]
-                prospecy_quote_sent[data[i][0]] = data[i][16]
-                customer_free_trial[data[i][0]] = data[i][17];
-                customer_signed[data[i][0]] = data[i][18];
-                total_leads[data[i][0]] = data[i][19]
+                total_leads[data[i][0]] = data[i][18]
+                customer_free_trial[data[i][0]] = data[i][16]
             }
             var count = {}; // creating object for getting categories with
             // count
@@ -5790,8 +5502,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var series_data21a = [];
             var series_data22a = [];
             var series_data23a = [];
-            var series_data24a = [];
-            var series_data25a = [];
 
             var categores1 = []; // creating empty array for highcharts
             // categories
@@ -5814,8 +5524,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data21a.push(parseInt(suspect_lpo_followup[item]));
                 series_data22a.push(parseInt(suspect_validated[item]));
                 series_data23a.push(parseInt(customer_free_trial[item]));
-                series_data24a.push(parseInt(suspect_no_answer[item]));
-                series_data25a.push(parseInt(suspect_in_contact[item]));
                 categores1.push(item)
             });
 
@@ -5829,7 +5537,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 series_data26,
                 series_data27,
                 series_data28,
-                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a)
+                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a)
 
 
             var websiteLeadsReportingSearch = search.load({
@@ -5931,6 +5639,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            //["custrecord_sales_customer.custrecord_sales_campaign","anyof","69"
+
             var oldcustInternalID = null;
             var oldcustEntityID = null;
             var oldcustName = null;
@@ -5972,9 +5682,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var csvSuspectQualifiedDataSet = [];
             var csvProspectDataSet = [];
             var csvProspectOpportunityDataSet = [];
-            var csvSuspectNoAnswerDataSet = [];
-            var csvSuspectInContactDataSet = [];
-            var csvProspectQuoteSentDataSet = [];
 
 
             var count = 0;
@@ -6389,7 +6096,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 if (count == 0) {
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6407,7 +6114,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6425,25 +6132,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6470,7 +6159,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6479,9 +6168,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6500,7 +6189,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //     })
                         // }
                     } else if (!isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6518,7 +6207,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6536,7 +6225,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6563,25 +6252,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6590,9 +6261,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
                                 activityStartDate: userNotesStartDate,
                                 activityTitle: userNotesTitle,
@@ -6604,7 +6275,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6622,7 +6293,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6667,25 +6338,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -6694,9 +6347,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -6715,7 +6368,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //     })
                         // }
                     } else if (!isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6733,7 +6386,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6751,7 +6404,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6778,25 +6431,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -6805,9 +6440,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
                                 activityStartDate: userNotesStartDate,
                                 activityTitle: userNotesTitle,
@@ -6819,7 +6454,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
 
-                    if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+                    if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED') {
 
                         suspectDataSet.push(['',
                             oldcustInternalID,
@@ -6894,7 +6529,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldMonthServiceValue, oldAvgInvoiceValue,
                             oldsalesRepText
                         ]);
-                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
                         suspectOffPeakDataSet.push(['',
                             oldcustInternalID,
@@ -7065,39 +6700,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             suspectQualifiedChildDataSet
                         ]);
 
-                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
-
-                        suspectNoAnswerDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldDaysOpen,
-                            oldsalesRepText,
-                            suspectNoAnswerChildDataSet
-                        ]);
-
-                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
-
-                        suspectInContactDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldDaysOpen,
-                            oldsalesRepText,
-                            suspectInContactChildDataSet
-                        ]);
-
-                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
 
                         // totalProspectCount++;
                         // if (oldcustStatus == 50) {
@@ -7146,7 +6749,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         ]);
 
 
-                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-OPPORTUNITY') {
 
                         // totalProspectCount++;
                         // if (oldcustStatus == 50) {
@@ -7159,7 +6762,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //     //PROSPECT - IN CONTACT
                         //     totalProspectInContactCount++
                         // }
-                        prospectQuoteSentDataSet.push(['',
+                        prospectOpportunityDataSet.push(['',
                             oldcustInternalID,
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                             oldcustName,
@@ -7174,9 +6777,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldDaysOpen,
                             oldMonthServiceValue,
                             oldsalesRepText,
-                            prospectQuoteSentChildDataSet
+                            prospectOpportunityChildDataSet
                         ]);
-                        csvProspectQuoteSentDataSet.push([
+                        csvProspectOpportunityDataSet.push([
                             oldcustInternalID,
                             oldcustEntityID,
                             oldcustName,
@@ -7198,18 +6801,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     prospectChildDataSet = [];
                     prospectOpportunityChildDataSet = [];
-                    prospectQuoteSentChildDataSet = [];
                     suspectChildDataSet = [];
                     suspectFollowUpChildDataSet = [];
                     suspectLostChildDataSet = [];
                     suspectOOTChildDataSet = [];
                     suspectQualifiedChildDataSet = [];
                     suspectOffPeakChildDataSet = [];
-                    suspectNoAnswerChildDataSet = [];
-                    suspectInContactChildDataSet = [];
 
                     if (!isNullorEmpty(activityTitle)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -7227,7 +6827,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -7273,25 +6873,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -7300,9 +6882,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -7321,7 +6903,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         //     })
                         // }
                     } else if (!isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OFF PEAK PIPELINE' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -7339,7 +6921,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
                             suspectActivityCount++
                             suspectOffPeakChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -7357,7 +6939,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus != 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -7384,25 +6966,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            susepctNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            susepctInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -7411,9 +6975,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
                             })
-                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-OPPORTUNITY') {
                             prospectActivityCount++
-                            prospectQuoteSentChildDataSet.push({
+                            prospectOpportunityChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
                                 activityStartDate: userNotesStartDate,
                                 activityTitle: userNotesTitle,
@@ -7463,7 +7027,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             if (count > 0) {
 
-                if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+                if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-OFF PEAK PIPELINE' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED') {
 
                     suspectDataSet.push(['',
                         oldcustInternalID,
@@ -7535,7 +7099,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldMonthServiceValue, oldAvgInvoiceValue,
                         oldsalesRepText
                     ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
 
                     suspectOffPeakDataSet.push(['',
                         oldcustInternalID,
@@ -7622,39 +7186,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         suspectQualifiedChildDataSet
                     ]);
 
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
-
-                    suspectNoAnswerDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldDaysOpen,
-                        oldsalesRepText,
-                        suspectNoAnswerChildDataSet
-                    ]);
-
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
-
-                    suspectInContactDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldDaysOpen,
-                        oldsalesRepText,
-                        suspectInContactChildDataSet
-                    ]);
-
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                }
+                else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
 
                     suspectOOTDataSet.push(['',
                         oldcustInternalID,
@@ -7738,7 +7271,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldMonthServiceValue,
                         oldsalesRepText
                     ]);
-                } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+                } else if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-OPPORTUNITY') {
+
+                    // totalProspectCount++;
+                    // if (oldcustStatus == 50) {
+                    //     //PROSPECT - QUOTE SENT
+                    //     totalProspectQuoteSentCount++;
+                    // } else if (oldcustStatus == 35) {
+                    //     //PROSPECT - NO ANSWER
+                    //     totalProspectNoAnswerCount++
+                    // } else if (oldcustStatus == 8) {
+                    //     //PROSPECT - IN CONTACT
+                    //     totalProspectInContactCount++
+                    // }
                     prospectDataSet.push(['',
                         oldcustInternalID,
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
@@ -7774,10 +7319,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldsalesRepText
                     ]);
 
-                } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+                } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-OPPORTUNITY') {
 
-
-                    prospectQuoteSentDataSet.push(['',
+                    // totalProspectCount++;
+                    // if (oldcustStatus == 50) {
+                    //     //PROSPECT - QUOTE SENT
+                    //     totalProspectQuoteSentCount++;
+                    // } else if (oldcustStatus == 35) {
+                    //     //PROSPECT - NO ANSWER
+                    //     totalProspectNoAnswerCount++
+                    // } else if (oldcustStatus == 8) {
+                    //     //PROSPECT - IN CONTACT
+                    //     totalProspectInContactCount++
+                    // }
+                    prospectOpportunityDataSet.push(['',
                         oldcustInternalID,
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
                         oldcustName,
@@ -7792,10 +7347,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldDaysOpen,
                         oldMonthServiceValue,
                         oldsalesRepText,
-                        prospectQuoteSentChildDataSet
+                        prospectOpportunityChildDataSet
                     ]);
 
-                    csvProspectQuoteSentDataSet.push([
+                    csvProspectOpportunityDataSet.push([
                         oldcustInternalID,
                         oldcustEntityID,
                         oldcustName,
@@ -7814,9 +7369,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 }
             }
-
-            console.log('suspectNoAnswerDatSet: ' + suspectNoAnswerDataSet);
-            console.log('suspectInContactDataSet: ' + suspectInContactDataSet);
 
 
 
@@ -8115,6 +7667,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP",
                 })
 
+                // var invoiceItem = custListCommenceTodaySet.getText({
+                //     name: "item",
+                //     join: "transaction"
+                // })
+
                 var email48h = custListCommenceTodaySet.getText({
                     name: 'custentity_48h_email_sent',
                     summary: "GROUP",
@@ -8176,6 +7733,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     summary: "GROUP",
                 });
 
+                // if (source == 'Additional Services') {
+                //     monthlyServiceValue = parseFloat(monthlyExtraServiceValue);
+                // }
+
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = parseFloat(monthlyServiceValue);
                 } else {
@@ -8192,10 +7753,31 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     monthlyReductionServiceValue = 0.0;
                 }
 
+
+                // if (isNullorEmpty(invoiceDocumentNumber)) {
+                //     invoiceDocumentNumber = 'N/A'
+                // }
+
+                // if (isNullorEmpty(invoiceDate)) {
+                //     invoiceDate = 'N/A'
+                // }
+
                 if (isNullorEmpty(invoiceType) || invoiceType == '- None -') {
                     invoiceType = 'Service'
                 }
 
+                // if (isNullorEmpty(invoiceAmount) || invoiceAmount.toString() == '.00') {
+                //     invoiceAmount = 'N/A'
+                // }
+
+                // console.log('invoiceDocumentNumber ' + invoiceDocumentNumber)
+                // console.log('invoiceDate ' + invoiceDate)
+                // console.log('invoiceType ' + invoiceType)
+                // console.log('invoiceAmount ' + invoiceAmount)
+                // console.log('invocieItem ' + invoiceItem)
+                // console.log('custName ' + custName)
+                // console.log('monthlyExtraServiceValue ' + monthlyExtraServiceValue)
+                // console.log('monthlyReductionServiceValue ' + monthlyReductionServiceValue)
                 if (!isNullorEmpty(minCommDate)) {
                     var minCommDateSplit = minCommDate.split('/');
 
@@ -8364,11 +7946,37 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         trialEndDateSplit[0];
                 }
 
+
+
                 if (count == 0) {
+                    // if (!isNullorEmpty(activityTitle)) {
+                    //     if (custStage == 'CUSTOMER') {
+                    //         customerActivityCount++
+                    //         customerChildDataSet.push({
+                    //             invoiceDocumentNumber: invoiceDocumentNumber,
+                    //             invoiceDate: invoiceDate,
+                    //             invoiceType: invoiceType,
+                    //             invoiceAmount: invoiceAmount
+                    //         })
+                    //     }
+                    // }
+
+                    // if (invoiceDocumentNumber != 'Memorized' && parseFloat(invoiceAmount) > 0 && isNullorEmpty(invoiceItem)) {
+                    //     invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                    // }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
 
+                    // console.log('oldcustInternalID: ' + oldcustInternalID)
+                    // console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
+                    // console.log('oldinvoiceDate: ' + oldinvoiceDate)
+                    // console.log('oldInvoiceType: ' + oldInvoiceType)
+                    // console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
+
                     if (oldInvoiceNumber == invoiceDocumentNumber) {
+                        // if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && isNullorEmpty(oldInvoiceItem)) {
+                        //     invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                        // }
                     } else if (oldInvoiceNumber != invoiceDocumentNumber) {
                         customerActivityCount++
                         if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
@@ -8413,6 +8021,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldInvoiceStatus
                         ]);
 
+                        console.log('customerChildDataSet: ' + JSON.stringify(customerChildDataSet))
+
                         oldInvoiceNumber = null;
                         oldinvoiceDate = null;
                         oldInvoiceType = null;
@@ -8425,9 +8035,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
 
 
+
+
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
 
                     if (oldcustStage == 'CUSTOMER') {
+
+                        // console.log('oldcustInternalID: ' + oldcustInternalID)
+                        // console.log('oldInvoiceNumber: ' + oldInvoiceNumber)
+                        // console.log('oldinvoiceDate: ' + oldinvoiceDate)
+                        // console.log('oldInvoiceType: ' + oldInvoiceType)
+                        // console.log('oldInvoiceAmount: ' + oldInvoiceAmount)
 
                         if (oldInvoiceNumber != invoiceDocumentNumber) {
                             customerActivityCount++
@@ -8448,6 +8066,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 }
                             }
                         }
+
+                        console.log('customerChildDataSet: ' + JSON.stringify(customerChildDataSet))
 
 
 
@@ -8520,6 +8140,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             }
                         }
 
+                        console.log('oldcustName' + oldcustName);
+                        console.log(oldcustName + 'MP Exp: ' + express_speed);
+                        console.log(oldcustName + 'MP Std: ' + standard_speed);
+                        console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
+                        console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
+
                         var usage_date_from_split = usage_date_from.split('/');
 
                         if (parseInt(usage_date_from_split[1]) < 10) {
@@ -8552,6 +8178,22 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                         var customerIdLink =
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
+
+                        // var d1 = new Date(olddateProspectWon);
+                        // var d2 = new Date(oldMinCommDate);
+
+                        // var existingCustomer = false;
+
+                        // if (d2 < d1) {
+                        //     existingCustomer = true;
+                        // }
+
+                        // var d1 = new Date(olddateLeadEntered);
+                        // var d2 = new Date(oldMinCommDate);
+
+                        // if (d2 < d1) {
+                        //     existingCustomer = true;
+                        // }
 
                         if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
                             existingCustomerDataSet.push(['',
@@ -8847,6 +8489,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         }
                     }
 
+                    console.log('oldcustName' + oldcustName);
+                    console.log(oldcustName + 'MP Exp: ' + express_speed);
+                    console.log(oldcustName + 'MP Std: ' + standard_speed);
+                    console.log('oldMonthlyExtraServiceValue: ' + oldMonthlyExtraServiceValue);
+                    console.log('oldMonthlyReductionServiceValue: ' + oldMonthlyReductionServiceValue);
 
                     var usage_date_from_split = usage_date_from.split('/');
 
@@ -9689,13 +9336,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     console.log('mpexusage-prospects_quoteSent_incontact_noanswer');
                     console.log(JSON.stringify(data[14]));
                     console.log(data[15].length);
-                    if (data[5] == 'PROSPECT-QUOTE SENT') {
+                    if (data[5] == 'PROSPECT-OPPORTUNITY') {
                         $('td', row).css('background-color', '#ADCF9F');
                     } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
                         $('td', row).css('background-color', '#f9c67a');
                     } else if (!isNullorEmpty(data[15])) {
                         var row_color = '#f9c67a'
                         data[15].forEach(function (el) {
+                            // console.log(data[3]);
+                            console.log(el.activityOrganiser);
                             if (!isNullorEmpty(el)) {
                                 if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
                                     row_color = ''
@@ -9781,7 +9430,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('prospectDataSet: ' + prospectDataSet)
 
             var dataTableOpportunity = $('#mpexusage-prospects_opportunites').DataTable({
-                data: prospectQuoteSentDataSet,
+                data: prospectOpportunityDataSet,
                 pageLength: 250,
                 order: [10, 'desc'],
                 columns: [
@@ -9820,13 +9469,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
-                    if (data[5] == 'PROSPECT-QUOTE SENT') {
+                    console.log(JSON.stringify(data[15]));
+                    console.log(data[15].length);
+                    if (data[5] == 'PROSPECT-OPPORTUNITY') {
                         $('td', row).css('background-color', '#ADCF9F');
                     } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
                         $('td', row).css('background-color', '#f9c67a');
                     } else if (!isNullorEmpty(data[15])) {
                         var row_color = '#f9c67a'
                         data[15].forEach(function (el) {
+                            console.log(data[3]);
+                            console.log(el.activityOrganiser);
                             if (!isNullorEmpty(el)) {
                                 if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
                                     row_color = ''
@@ -10034,6 +9687,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log('mpexusage-suspects_qualified');
+                    console.log(JSON.stringify(data[11]));
+                    console.log(data[11].length);
 
                     if (isNullorEmpty(data[11])) {
                         $('td', row).css('background-color', '#f9c67a');
@@ -10211,6 +9867,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log(JSON.stringify(data[18]));
+                    console.log(data[18].length);
 
                     if (isNullorEmpty(data[18])) {
                         $('td', row).css('background-color', '#f9c67a');
@@ -10464,6 +10122,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log(JSON.stringify(data[18]));
+                    console.log(data[18].length);
 
                     if (isNullorEmpty(data[18])) {
                         $('td', row).css('background-color', '#f9c67a');
@@ -10553,6 +10213,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
+                    console.log(JSON.stringify(data[18]));
+                    console.log(data[18].length);
 
                     if (isNullorEmpty(data[18])) {
                         $('td', row).css('background-color', '#f9c67a');
@@ -10633,175 +10295,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
-            console.log('suspectNoAnswerDataSet: ' + suspectNoAnswerDataSet);
-
-
-            var dataTableSuspectNoAnswer = $('#mpexusage-suspects_no_answer').DataTable({
-                data: suspectNoAnswerDataSet,
-                pageLength: 250,
-                order: [],
-                columns: [
-                    {
-                        title: 'Expand',
-                        className: 'dt-control',
-                        orderable: false,
-                        data: null,
-                        defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
-                ],
-                autoWidth: false,
-                columnDefs: [
-                    {
-                        targets: [11],
-                        visible: false
-                    },
-                    {
-                        targets: [2, 3, 4, 6, 9, 10],
-                        className: 'bolded'
-                    }
-                ],
-                rowCallback: function (row, data, index) {
-
-                    if (isNullorEmpty(data[11])) {
-                        $('td', row).css('background-color', '#f9c67a');
-                    }
-
-                    if (data[5].toUpperCase() == 'SUSPECT-LOST' || data[5].toUpperCase() == 'SUSPECT-OUT OF TERRITORY') {
-                        $('td', row).css('background-color', '#FF8787');
-                    }
-
-
-                }, footerCallback: function (row, data, start, end, display) {
-
-
-                }
-            });
-
-            dataTableSuspectNoAnswer.rows().every(function () {
-                // this.child(format(this.data())).show();
-                this.child(createChildNoAnswerInContact(this)) // Add Child Tables
-                this.child.hide(); // Hide Child Tables on Open
-            });
-
-            $('#mpexusage-suspects_no_answer tbody').on('click', 'td.dt-control', function () {
-
-                var tr = $(this).closest('tr');
-                var row = dataTableSuspectNoAnswer.row(tr);
-
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    destroyChild(row);
-                    tr.removeClass('shown');
-                    tr.removeClass('parent');
-
-                    $('.expand-button').addClass('btn-primary');
-                    $('.expand-button').removeClass('btn-light')
-                } else {
-                    // Open this row
-                    row.child.show();
-                    tr.addClass('shown');
-                    tr.addClass('parent');
-
-                    $('.expand-button').removeClass('btn-primary');
-                    $('.expand-button').addClass('btn-light')
-                }
-            });
-
-
-
-            var dataTableSuspectInContact = $('#mpexusage-suspects_in_contact').DataTable({
-                data: suspectInContactDataSet,
-                pageLength: 250,
-                order: [],
-                columns: [
-                    {
-                        title: 'Expand',
-                        className: 'dt-control',
-                        orderable: false,
-                        data: null,
-                        defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
-                ],
-                autoWidth: false,
-                columnDefs: [
-                    {
-                        targets: [11],
-                        visible: false
-                    },
-                    {
-                        targets: [2, 3, 4, 6, 9, 10],
-                        className: 'bolded'
-                    }
-                ],
-                rowCallback: function (row, data, index) {
-
-                    if (isNullorEmpty(data[11])) {
-                        $('td', row).css('background-color', '#f9c67a');
-                    }
-
-                    if (data[5].toUpperCase() == 'SUSPECT-LOST' || data[5].toUpperCase() == 'SUSPECT-OUT OF TERRITORY') {
-                        $('td', row).css('background-color', '#FF8787');
-                    }
-
-
-                }, footerCallback: function (row, data, start, end, display) {
-
-
-                }
-            });
-
-            dataTableSuspectInContact.rows().every(function () {
-                // this.child(format(this.data())).show();
-                this.child(createChildNoAnswerInContact(this)) // Add Child Tables
-                this.child.hide(); // Hide Child Tables on Open
-            });
-
-            $('#mpexusage-suspects_in_contact tbody').on('click', 'td.dt-control', function () {
-
-                var tr = $(this).closest('tr');
-                var row = dataTableSuspectInContact.row(tr);
-
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    destroyChild(row);
-                    tr.removeClass('shown');
-                    tr.removeClass('parent');
-
-                    $('.expand-button').addClass('btn-primary');
-                    $('.expand-button').removeClass('btn-light')
-                } else {
-                    // Open this row
-                    row.child.show();
-                    tr.addClass('shown');
-                    tr.addClass('parent');
-
-                    $('.expand-button').removeClass('btn-primary');
-                    $('.expand-button').addClass('btn-light')
-                }
-            });
-
             saveCustomerCsvPreview(csvCustomerSignedExport);
             saveExistingCustomerCsvPreview(csvExistingCustomerSignedExport);
             saveProspectCsvPreview(csvProspectDataSet);
@@ -10855,6 +10348,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [],
                 rowCallback: function (row, data) {
 
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
                     if (data[4] == 'Paid In Full') {
                         $('td', row).css('background-color', '#C7F2A4');
                     }
@@ -10896,6 +10401,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
                     if (data[4] == 'Paid In Full') {
                         $('td', row).css('background-color', '#C7F2A4');
                     }
@@ -10935,6 +10453,24 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -10972,6 +10508,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [],
                 rowCallback: function (row, data) {
 
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -11007,6 +10560,24 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
+
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -11044,6 +10615,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [],
                 rowCallback: function (row, data) {
 
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -11081,6 +10669,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [],
                 rowCallback: function (row, data) {
 
+                    // console.log('data[2]: ' + data[2])
+
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -11118,43 +10723,24 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
-                }
-            });
-        }
 
+                    // console.log('data[2]: ' + data[2])
 
-        function createChildNoAnswerInContact(row) {
-            // This is the table we'll convert into a DataTable
-            var table = $('<table class="display" width="50%"/>');
-            var childSet = [];
-            row.data()[11].forEach(function (el) {
-
-                if (!isNullorEmpty(el)) {
-                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
-                    ]);
-                }
-            });
-            // Display it the child row
-            row.child(table).show();
-
-            // Initialise as a DataTable
-            var usersTable = table.DataTable({
-                "bPaginate": false,
-                "bLengthChange": false,
-                "bFilter": false,
-                "bInfo": false,
-                "bAutoWidth": false,
-                data: childSet,
-                order: [1, 'desc'],
-                columns: [
-                    { title: 'Internal Id ' },
-                    { title: 'Date' },
-                    { title: 'Title' },
-                    { title: 'Organiser' },
-                    { title: 'Message' }
-                ],
-                columnDefs: [],
-                rowCallback: function (row, data) {
+                    // console.log('data[11]: ' + data[11])
+                    // var dateUsedArray = data[1].split('/');
+                    // var date = new Date(dateUsedArray[2], dateUsedArray[1] - 1, dateUsedArray[0])
+                    // var dateAfter2Days = new Date();
+                    // dateAfter2Days.setDate(date.getDate() + 2);
+                    // var today = new Date();
+                    // console.log('date: ' + date)
+                    // console.log('today: ' + today)
+                    // console.log('dateAfter2Days: ' + dateAfter2Days)
+                    // console.log('today >= dateAfter2Days: ' + today >= dateAfter2Days)
+                    // if (isNullorEmpty(data[11]) && today >= dateAfter2Days) {
+                    //     $('td', row).css('background-color', '#FF8787');
+                    // } else if (data[11] == 'delivered') {
+                    //     $('td', row).css('background-color', '#C7F2A4');
+                    // }
                 }
             });
         }
@@ -11163,6 +10749,30 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // And then hide the row
             row.child.hide();
         }
+
+        /**{
+                    title: 'Period'
+                }, {
+                    title: 'Suspect - Hot Lead'
+                }, {
+                    title: 'Prospect - Quote Sent'
+                }, {
+                    title: 'Suspect - Reassign'
+                }, {
+                    title: 'Prospect - No answer'
+                }, {
+                    title: 'Prospect - In Contact'
+                }, {
+                    title: 'Suspect - Off Peak Pipeline'
+                }, {
+                    title: 'Suspect - Lost'
+                },{
+                    title: 'Suspect - Customer - Lost'
+                },{
+                    title: 'Customer - Signed'
+                }, {
+                    title: 'Total Lead Count'
+                } */
 
         function plotChartPreview(series_data20,
             series_data21,
@@ -11173,7 +10783,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             series_data26,
             series_data27,
             series_data28,
-            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a) {
+            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -11266,13 +10876,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         fontWeight: 'bold',
                     }
                 }, {
-                    name: 'Prospect - Quote Sent',
-                    data: series_data26,
-                    color: '#3E6D9C',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }, {
                     name: 'Prospects - Opportunity',
                     data: series_data31,
                     color: '#ADCF9F',
@@ -11329,23 +10932,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         fontWeight: 'bold',
                     }
                 }, {
-                    name: 'Suspect - No Answer',
-                    data: series_data24a,
-                    color: '#FEBE8C',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }, {
-                    name: 'Suspect - In Contact',
-                    data: series_data25a,
-                    color: '#FEBE8C',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }, {
-                    name: 'Suspect - Parking Lot',
+                    name: 'Suspect - Off Peak Pipeline',
                     data: series_data25,
                     color: '#FEBE8C',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Prospect - Quote Sent',
+                    data: series_data26,
+                    color: '#3E6D9C',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Prospect - No Answer',
+                    data: series_data27,
+                    color: '#59C1BD',
                     style: {
                         fontWeight: 'bold',
                     }
@@ -11499,7 +11102,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Prospects - Weekly Opportunity / In Contact',
+                    text: 'Prospects - Weekly Quote Sent / In Contact / No Answer',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -11558,9 +11161,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 },
                 series: [{
-                    name: 'Prospect - Opportunity',
-                    data: series_data44,
+                    name: 'Prospect - Quote Sent',
+                    data: series_data40,
                     color: '#3E6D9C',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Prospect - No Answer',
+                    data: series_data41,
+                    color: '#59C1BD',
                     style: {
                         fontWeight: 'bold',
                     }
@@ -11575,15 +11185,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
-        function plotChartProspectsQuotes(
+        function plotChartProspectsOpportunities(
             series_data43, series_data44, categores5) {
+            // console.log(series_data)
+
             Highcharts.chart(
                 'container_prospects_opportunites', {
                 chart: {
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Prospects - Weekly Quotes',
+                    text: 'Prospects - Weekly Opportunities',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -11654,7 +11266,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 },
                 series: [{
-                    name: 'Prospect - Quote Sent',
+                    name: 'Prospect - Opportunity',
                     data: series_data44,
                     color: '#ADCF9F',
                     style: {
@@ -11879,7 +11491,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Suspects - Parking Lot - Week Entered',
+                    text: 'Suspects - Off Peak Pipeline - Week Entered',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -11950,7 +11562,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 },
                 series: [{
-                    name: 'Suspect - Parking Lot',
+                    name: 'Suspect - Off Peak Pipeline',
                     data: series_data70,
                     color: '#FEBE8C',
                     style: {
@@ -12308,183 +11920,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     name: 'Suspect - LPO Follow Up',
                     data: series_data91,
                     color: '#8ECDDD',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }]
-            });
-        }
-
-
-        function plotChartSuspectsNoAnswer(series_data200, categores_suspects_no_answer, series_data201) {
-            // console.log(series_data)
-
-            Highcharts.chart(
-                'container_suspects_no_answer', {
-                chart: {
-                    type: 'column',
-                    backgroundColor: '#CFE0CE',
-                }, title: {
-                    text: 'Suspects - No Answer - Week Entered',
-                    style: {
-                        fontWeight: 'bold',
-                        color: '#0B2447',
-                        fontSize: '12px'
-                    }
-                },
-                xAxis: {
-                    categories: categores_suspects_no_answer,
-                    crosshair: true,
-                    style: {
-                        fontWeight: 'bold',
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '10px'
-                        }
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Total Lead Count',
-                        style: {
-                            fontWeight: 'bold',
-                            color: '#0B2447',
-                            fontSize: '12px'
-                        }
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold'
-                        }
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '10px'
-                        }
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
-                    style: {
-                        fontSize: '10px'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
-                        }
-                    },
-                    series: {
-                        dataLabels: {
-                            enabled: true,
-                            align: 'right',
-                            color: 'black',
-                            style: {
-                                fontSize: '12px'
-                            }
-                        },
-                        pointPadding: 0.1,
-                        groupPadding: 0
-                    }
-                },
-                series: [{
-                    name: 'Suspect - No Answer',
-                    data: series_data200,
-                    color: '#FCE09B',
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                }]
-            });
-        }
-
-        function plotChartSuspectsInContact(series_data300, categores_suspects_in_contact, series_data301) {
-            // console.log(series_data)
-
-            Highcharts.chart(
-                'container_suspects_in_contact', {
-                chart: {
-                    type: 'column',
-                    backgroundColor: '#CFE0CE',
-                }, title: {
-                    text: 'Suspects - In Contact - Week Entered',
-                    style: {
-                        fontWeight: 'bold',
-                        color: '#0B2447',
-                        fontSize: '12px'
-                    }
-                },
-                xAxis: {
-                    categories: categores_suspects_in_contact,
-                    crosshair: true,
-                    style: {
-                        fontWeight: 'bold',
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '10px'
-                        }
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Total Lead Count',
-                        style: {
-                            fontWeight: 'bold',
-                            color: '#0B2447',
-                            fontSize: '12px'
-                        }
-                    },
-                    stackLabels: {
-                        enabled: true,
-                        style: {
-                            fontWeight: 'bold'
-                        }
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '10px'
-                        }
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<b>{point.x}</b><br/>',
-                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
-                    style: {
-                        fontSize: '10px'
-                    }
-                },
-                plotOptions: {
-                    column: {
-                        stacking: 'normal',
-                        dataLabels: {
-                            enabled: true
-                        }
-                    },
-                    series: {
-                        dataLabels: {
-                            enabled: true,
-                            align: 'right',
-                            color: 'black',
-                            style: {
-                                fontSize: '12px'
-                            }
-                        },
-                        pointPadding: 0.1,
-                        groupPadding: 0
-                    }
-                },
-                series: [{
-                    name: 'Suspect - In Contact',
-                    data: series_data300,
-                    color: '#FCE09B',
                     style: {
                         fontWeight: 'bold',
                     }
@@ -12850,6 +12285,112 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
+
+        function plotChartSpeedUsage(series_data_lee, series_data_kerina, series_data_david, series_data_belinda, series_data_total, categores) {
+            console.log(series_data_lee)
+            console.log(series_data_kerina)
+            console.log(series_data_david)
+            console.log(series_data_belinda)
+            console.log(categores)
+            Highcharts
+                .chart(
+                    'container_preview', {
+                    chart: {
+                        type: 'column'
+                    },
+                    xAxis: {
+                        categories: categores,
+                        crosshair: true,
+                        style: {
+                            fontWeight: 'bold',
+                        },
+                        labels: {
+                            style: {
+                                fontSize: '10px'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Total Usage',
+                            style: {
+                                fontWeight: 'bold',
+                                color: '#0B2447',
+                                fontSize: '10px'
+                            }
+                        },
+                        stackLabels: {
+                            enabled: true,
+                            style: {
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labels: {
+                            style: {
+                                fontSize: '10px'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{point.x}</b><br/>',
+                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                        style: {
+                            fontSize: '10px'
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true
+                            }
+                        },
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                align: 'right',
+                                color: 'black',
+                                style: {
+                                    fontSize: '12px'
+                                }
+                            },
+                            pointPadding: 0.1,
+                            groupPadding: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Lee',
+                        data: series_data_lee,
+                        // color: '#108372',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'Kerina',
+                        data: series_data_kerina,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'David',
+                        data: series_data_david,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }, {
+                        name: 'Belinda',
+                        data: series_data_belinda,
+                        // color: '#f15729',
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    }]
+                });
+        }
+
         function saveRecord() {
 
             return true;
@@ -12991,6 +12532,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
          */
         function saveSuspectLostCsvPreview(ordersDataSet) {
 
+            /**
+             *                      csvSuspectLostDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue, oldAvgInvoiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
             var sep = "sep=;";
             headers = [
                 'Internal ID',
@@ -13031,6 +12594,29 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             return true;
         }
         function saveSuspectOOTCsvPreview(ordersDataSet) {
+
+            /**
+             * csvSuspectOOTDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
             var sep = "sep=;";
             headers = [
                 'Internal ID',
@@ -13070,6 +12656,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             return true;
         }
         function saveSuspectFollowUpCsvPreview(ordersDataSet) {
+
+            /**
+             * csvSuspectFollowUpDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+             */
 
             var sep = "sep=;";
             headers = [
@@ -13111,6 +12719,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
         function saveSuspectOffPeakCsvPreview(ordersDataSet) {
 
+            /**
+             *  ccsvSuspectOffPeakDataSet.push([,
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateLeadReassigned,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
+
             var sep = "sep=;";
             headers = [
                 'Internal ID',
@@ -13150,6 +12780,28 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             return true;
         }
         function saveSuspectCsvPreview(ordersDataSet) {
+
+            /**
+             *  csvSuspectDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        olddateProspectWon,
+                        olddateLeadLost,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldCancellationReason,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
 
             var sep = "sep=;";
             headers = [
@@ -13196,6 +12848,25 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
          * @param {Array}
          */
         function saveProspectCsvPreview(ordersDataSet) {
+
+            /**
+             * csvProspectOpportunityDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+             */
 
             var sep = "sep=;";
             headers = [
@@ -13467,6 +13138,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             return string.split("/").join("-");
         }
 
+        function formatAMPM() {
+            var date = new Date();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
         function formatDate(testDate) {
             console.log('testDate: ' + testDate);
             var responseDate = format.format({
@@ -13515,7 +13197,20 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
             return date_netsuite;
         }
+        /**
+         * [getDate description] - Get the current date
+         * @return {[String]} [description] - return the string date
+         */
+        function getDate() {
+            var date = new Date();
+            date = format.format({
+                value: date,
+                type: format.Type.DATE,
+                timezone: format.Timezone.AUSTRALIA_SYDNEY
+            });
 
+            return date;
+        }
 
         function isNullorEmpty(val) {
             if (val == '' || val == null || val == '- None -' || val == 0 || val == '0') {
