@@ -10274,7 +10274,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
                 ],
                 rowCallback: function (row, data, index) {
-                    if (data[5] == 'PROSPECT-QUOTE SENT') {
+                    if (data[5] == 'PROSPECT-OPPORTUNITY') {
                         $('td', row).css('background-color', '#ADCF9F');
                     } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
                         $('td', row).css('background-color', '#f9c67a');
@@ -11853,14 +11853,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     name: 'Prospect - Quote Sent',
                     data: series_data26,
-                    color: '#3E6D9C',
+                    color: '#ADCF9F',
                     style: {
                         fontWeight: 'bold',
                     }
                 }, {
                     name: 'Prospects - Opportunity',
                     data: series_data31,
-                    color: '#ADCF9F',
+                    color: '#3E6D9C',
                     style: {
                         fontWeight: 'bold',
                     }
