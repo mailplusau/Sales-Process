@@ -15,6 +15,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
         var role = 0;
         var userId = 0;
         var zee = 0;
+        var parentLPOInternalId = 0;
+        var custStatus = 0;
+        var salesCampaign = 0;
+        var source = 0;
+        var paramUserId = 0;
 
         function onRequest(context) {
             var baseURL = 'https://system.na2.netsuite.com';
@@ -30,10 +35,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var start_date = context.request.parameters.start_date;
                 var last_date = context.request.parameters.last_date;
                 zee = context.request.parameters.zee;
-                var paramUserId = context.request.parameters.user;
-                var salesCampaign = context.request.parameters.campaign;
-                var custStatus = context.request.parameters.status;
-                var source = context.request.parameters.source;
+                paramUserId = context.request.parameters.user;
+                salesCampaign = context.request.parameters.campaign;
+                custStatus = context.request.parameters.status;
+                source = context.request.parameters.source;
+                parentLPOInternalId = context.request.parameters.lpoid;
+
+
 
                 var page_no = context.request.parameters.page_no;
 
@@ -78,7 +86,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                 var inlineHtml =
-                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;} @-webkit-keyframes animatetop {from {top:-300px; opacity:0} to {top:0; opacity:1}}@keyframes animatetop {from {top:-300px; opacity:0}to {top:0; opacity:1}}</style>';
+                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;} @-webkit-keyframes animatetop {from {top:-300px; opacity:0} to {top:0; opacity:1}}@keyframes animatetop {from {top:-300px; opacity:0}to {top:0; opacity:1}} .wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}</style>';
 
                 form.addField({
                     id: 'custpage_table_csv',
@@ -127,6 +135,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }).updateDisplayType({
                     displayType: ui.FieldDisplayType.HIDDEN
                 }).defaultValue = source;
+
+                form.addField({
+                    id: 'custpage_cust_lpoid',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = parentLPOInternalId;
 
                 form.addField({
                     id: 'custpage_contact_id',
@@ -190,15 +206,41 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 });
                 var resultSetZees = searchZees.run();
 
+
+                //Search: Parent LPO Customer List
+                var activeParentLPOSearch = search.load({
+                    id: 'customsearch_parent_lpo_customers_2'
+                });
+                var activeParentLPOSearchResultSet = activeParentLPOSearch.run();
+
                 //Dropdown to Select the Fracnhisee
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
 
                 //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
                 inlineHtml += userDropdownSection(userId, salesCampaign, custStatus, source);
+
+                //Dropdown to select Parent LPO
+                inlineHtml += parentLPODropdownSection(activeParentLPOSearchResultSet, context);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section hide">';
+                inlineHtml += '<div class="row">';
+                inlineHtml +=
+                    '<div class="col-xs-4"></div>'
+                inlineHtml +=
+                    '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" /></div>'
+                inlineHtml +=
+                    '<div class="col-xs-4"></div>'
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
                 if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
                 }
-                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source, zee);
+                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId);
+
+
 
                 inlineHtml += '<div id="container"></div>'
 
@@ -529,7 +571,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             });
 
             var inlineHtml =
-                '<div class="form-group container cust_filter_section">';
+                '<div class="form-group container cust_filter_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
                 '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES REP</span></h4></div>';
@@ -537,7 +579,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div>';
 
             inlineHtml +=
-                '<div class="form-group container cust_dropdown_section">';
+                '<div class="form-group container cust_dropdown_section hide">';
             inlineHtml += '<div class="row">';
             // Period dropdown field
             inlineHtml += '<div class="col-xs-12 cust_dropdown_div">';
@@ -569,7 +611,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml +=
-                '<div class="form-group container status_dropdown_section">';
+                '<div class="form-group container status_dropdown_section hide">';
             inlineHtml += '<div class="row">';
             // Period dropdown field
             inlineHtml += '<div class="col-xs-12 cust_status_div">';
@@ -596,6 +638,18 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="6">SUSPECT - NEW</option>';
             }
 
+            if (custStatus == '20') {
+                inlineHtml += '<option value="6" selected>SUSPECT - NO ANSWER</option>';
+            } else {
+                inlineHtml += '<option value="6">SUSPECT - NO ANSWER</option>';
+            }
+
+            if (custStatus == '69') {
+                inlineHtml += '<option value="6" selected>SUSPECT - IN CONTACT</option>';
+            } else {
+                inlineHtml += '<option value="6">SUSPECT - IN CONTACT</option>';
+            }
+
             if (custStatus == '18') {
                 inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
             } else {
@@ -606,6 +660,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
             } else {
                 inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
+            }
+
+            if (custStatus == '62') {
+                inlineHtml += '<option value="67" selected>SUSPECT - PARKING LOT</option>';
+            } else {
+                inlineHtml += '<option value="67">SUSPECT - PARKING LOT</option>';
             }
 
             if (custStatus == '68') {
@@ -654,7 +714,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml +=
-                '<div class="form-group container cust_dropdown_section">';
+                '<div class="form-group container cust_dropdown_section hide">';
             inlineHtml += '<div class="row">';
             // Period dropdown field
             inlineHtml += '<div class="col-xs-12 sales_campaign_div">';
@@ -693,7 +753,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml +=
-                '<div class="form-group container cust_dropdown_section">';
+                '<div class="form-group container cust_dropdown_section hide">';
             inlineHtml += '<div class="row">';
             // Period dropdown field
             inlineHtml += '<div class="col-xs-12 sales_campaign_div">';
@@ -739,18 +799,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
 
-            inlineHtml +=
-                '<div class="form-group container zee_available_buttons_section">';
-            inlineHtml += '<div class="row">';
-            inlineHtml +=
-                '<div class="col-xs-4"></div>'
-            inlineHtml +=
-                '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" /></div>'
-            inlineHtml +=
-                '<div class="col-xs-4"></div>'
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-
 
             return inlineHtml;
 
@@ -765,14 +813,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
          */
         function franchiseeDropdownSection(resultSetZees, context) {
             var inlineHtml =
-                '<div class="form-group container date_filter_section">';
+                '<div class="form-group container date_filter_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
                 '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">FRANCHISEE</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
-            inlineHtml += '<div class="form-group container zee_dropdown_section">';
+            inlineHtml += '<div class="form-group container zee_dropdown_section hide">';
             inlineHtml += '<div class="row">';
             // Period dropdown field
             inlineHtml += '<div class="col-xs-12 zee_dropdown_div">';
@@ -802,8 +850,49 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function tabsSection(custStatus, paramUserId, salesCampaign, source, zee) {
-            var inlineHtml = '<div >';
+        function parentLPODropdownSection(activeParentLPOSearchResultSet, context) {
+            var inlineHtml =
+                '<div class="form-group container date_filter_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div class="form-group container parent_lpo_section hide">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 parent_lpo_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
+            inlineHtml += '<select id="parent_lpo" class="form-control">';
+            inlineHtml += '<option value=""></option>'
+            activeParentLPOSearchResultSet.each(function (activeParentLPOResultSet) {
+                parentLPOid = activeParentLPOResultSet.getValue('internalid');
+                parentLPOName = activeParentLPOResultSet.getValue('companyname');
+
+                if (parentLPOInternalId == parentLPOid) {
+                    inlineHtml += '<option value="' + parentLPOid +
+                        '" selected="selected">' + parentLPOName + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + parentLPOid + '">' + parentLPOName +
+                        '</option>';
+                }
+
+                return true;
+            });
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            return inlineHtml;
+
+        }
+
+        function tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId) {
+
+            
+            var inlineHtml = '<div class="tabs_section hide">';
 
             // Tabs headers
             inlineHtml +=
@@ -815,13 +904,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
+            //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
+            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
             } else {
                 inlineHtml +=
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
             }
+            //STATUSES - SUSPECT - LPO FOLLOW UP /SUSPECT - FOLLOW-UP
             if (custStatus == '67' || custStatus == '18') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
@@ -830,17 +921,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
             }
 
+            //STATUS - SUSPECT - VALIDATED
             if (custStatus == '68') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
-
-
-
-
             } else {
                 inlineHtml +=
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
             }
+            //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
@@ -848,6 +937,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml +=
                     '<li role="presentation" class="hide"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
             }
+            //STATUSES - PROSPECT - OPPORTUNITY
             if (custStatus == '58') {
                 inlineHtml +=
                     '<li role="presentation" class="active"><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
@@ -863,7 +953,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             // Tabs content
             inlineHtml += '<div class="tab-content">';
 
-            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
+            //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
+            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
+
+                log.debug({
+                    title: 'INSIDE CONDITION',
+                    details: 'STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT'
+                })
+
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
 
                 inlineHtml += '<figure class="highcharts-figure">';
@@ -920,6 +1017,24 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }));
                 }
 
+                if (!isNullorEmpty(source)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.ANYOF,
+                        values: parentLPOInternalId
+                    }));
+                }
+
                 var suspectsSearchCount = suspectsSearch.runPaged().count;
 
                 log.debug({
@@ -945,15 +1060,22 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     '<div class="form-group container zee_available_buttons_section">';
                 inlineHtml += '<div class="row">';
 
+                var rangeStart = 0;
+                var rangeEnd = 0;
+
                 for (var i = 0; i < totalPageCount; i++) {
                     if (i == (totalPageCount - 1) || suspectsSearchCount < 25) {
-                        var rangeEnd = suspectsSearchCount
-                    } else {
-                        var rangeStart = ((parseInt((i + 1)) - 1) * 25);
-                        if (rangeStart != 25) {
-                            var rangeEnd = rangeStart + 25;
+                        if (suspectsSearchCount < 25) {
                         } else {
-                            var rangeEnd = (suspectsSearchCount - rangeStart) - 1;
+                            rangeStart = rangeEnd;
+                        }
+                        rangeEnd = suspectsSearchCount
+                    } else {
+                        rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            rangeEnd = rangeStart + 25;
+                        } else {
+                            rangeEnd = (suspectsSearchCount - rangeStart) - 1;
                             if (rangeEnd > 25) {
                                 rangeEnd = parseInt((i + 1)) * 25
                             }
@@ -971,24 +1093,274 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '</div>';
             }
 
+            //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
                 inlineHtml += '<figure class="highcharts-figure">';
                 inlineHtml += '</figure><br></br>';
+
+                //Website Leads - Prospect Quote Sent
+                var custListCommenceTodayResults = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_prosp_quote_sent'
+                });
+
+                if (!isNullorEmpty(zee)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee
+                    }));
+                }
+
+
+                if (!isNullorEmpty(paramUserId)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
+
+                if (!isNullorEmpty(salesCampaign)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
+
+                if (!isNullorEmpty(custStatus)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
+                var custListCommenceTodayResultsCount = custListCommenceTodayResults.runPaged().count;
+
+                log.debug({
+                    title: 'custListCommenceTodayResultsCount',
+                    details: custListCommenceTodayResultsCount
+                })
+
+                var totalPageCount = parseInt(custListCommenceTodayResultsCount / 25) + 1;
+
+                var divBreak = Math.ceil(12 / totalPageCount);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml +=
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (custListCommenceTodayResultsCount) + '</b></div>';
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                var rangeStart = 0;
+                var rangeEnd = 0;
+
+                for (var i = 0; i < totalPageCount; i++) {
+                    if (i == (totalPageCount - 1) || custListCommenceTodayResultsCount < 25) {
+                        if (custListCommenceTodayResultsCount < 25) {
+                        } else {
+                            rangeStart = rangeEnd;
+                        }
+                        rangeEnd = custListCommenceTodayResultsCount
+                    } else {
+                        rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            rangeEnd = rangeStart + 25;
+                        } else {
+                            rangeEnd = (custListCommenceTodayResultsCount - rangeStart) - 1;
+                            if (rangeEnd > 25) {
+                                rangeEnd = parseInt((i + 1)) * 25
+                            }
+                        }
+                    }
+
+
+                    inlineHtml +=
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                }
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
                 inlineHtml += dataTable('prospects');
                 inlineHtml += '</div>';
             }
 
+            //STATUSES - SUSPECT - LPO FOLLOW UP /SUSPECT - FOLLOW-UP
             if (custStatus == '67' || custStatus == '18') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="followup">';
 
                 inlineHtml += '<figure class="highcharts-figure">';
                 inlineHtml += '<div id="container_followup"></div>';
                 inlineHtml += '</figure><br></br>';
+
+
+                //Website Leads - Suspect Followup
+                var suspectFollowUpsSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_suspect_followup'
+                });
+
+                if (!isNullorEmpty(zee_id)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee_id
+                    }));
+                }
+
+                if (!isNullorEmpty(paramUserId)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
+
+                if (!isNullorEmpty(salesCampaign)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
+
+                if (!isNullorEmpty(custStatus)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
+                var suspectFollowUpsSearchCount = suspectFollowUpsSearch.runPaged().count;
+
+                log.debug({
+                    title: 'suspectFollowUpsSearchCount',
+                    details: suspectFollowUpsSearchCount
+                })
+
+                var totalPageCount = parseInt(suspectFollowUpsSearchCount / 25) + 1;
+
+                var divBreak = Math.ceil(12 / totalPageCount);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml +=
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectFollowUpsSearchCount) + '</b></div>';
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                var rangeStart = 0;
+                var rangeEnd = 0;
+
+                for (var i = 0; i < totalPageCount; i++) {
+                    if (i == (totalPageCount - 1) || suspectFollowUpsSearchCount < 25) {
+                        if (suspectFollowUpsSearchCount < 25) {
+                        } else {
+                            rangeStart = rangeEnd;
+                        }
+                        rangeEnd = suspectFollowUpsSearchCount
+                    } else {
+                        rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            rangeEnd = rangeStart + 25;
+                        } else {
+                            rangeEnd = (suspectFollowUpsSearchCount - rangeStart) - 1;
+                            if (rangeEnd > 25) {
+                                rangeEnd = parseInt((i + 1)) * 25
+                            }
+                        }
+                    }
+
+
+                    inlineHtml +=
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                }
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+
                 inlineHtml += dataTable('followups');
                 inlineHtml += '</div>';
             }
 
+            //STATUSES - SUSPECT - VALIDATED
             if (custStatus == '68') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="validated">';
 
@@ -1056,6 +1428,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }));
                 }
 
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
 
                 var suspectValidatedSearchCount = suspectValidatedSearch.runPaged().count;
 
@@ -1110,12 +1491,133 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '</div>';
             }
 
+            //STATUSES - PROSPECT - OPPORTUNITY
             if (custStatus == '58') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="opportunities">';
 
                 inlineHtml += '<figure class="highcharts-figure">';
                 inlineHtml += '<div id="container_customer"></div>';
                 inlineHtml += '</figure><br></br>';
+
+                //Website Leads - Prospect Opportunity
+                var prospectOpportunititesSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_web_leads_prosp_quote_sen_5'
+                });
+
+                if (!isNullorEmpty(zee)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee
+                    }));
+                }
+
+                if (!isNullorEmpty(paramUserId)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: paramUserId
+                    }));
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: userId
+                    }));
+                }
+
+                if (!isNullorEmpty(salesCampaign)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: salesCampaign
+                    }));
+                }
+
+                if (!isNullorEmpty(custStatus)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(source)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: source
+                    }));
+                }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
+                var prospectOpportunititesSearchCount = prospectOpportunititesSearch.runPaged().count;
+
+                var totalPageCount = parseInt(prospectOpportunititesSearchCount / 25) + 1;
+
+                var divBreak = Math.ceil(12 / totalPageCount);
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                inlineHtml +=
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (prospectOpportunititesSearchCount) + '</b></div>';
+
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml +=
+                    '<div class="form-group container zee_available_buttons_section">';
+                inlineHtml += '<div class="row">';
+
+                var rangeStart = 0;
+                var rangeEnd = 0;
+
+                for (var i = 0; i < totalPageCount; i++) {
+                    if (i == (totalPageCount - 1) || prospectOpportunititesSearchCount < 25) {
+                        if (prospectOpportunititesSearchCount < 25) {
+                        } else {
+                            rangeStart = rangeEnd;
+                        }
+                        rangeEnd = prospectOpportunititesSearchCount
+                    } else {
+                        rangeStart = ((parseInt((i + 1)) - 1) * 25);
+                        if (rangeStart != 25) {
+                            rangeEnd = rangeStart + 25;
+                        } else {
+                            rangeEnd = (prospectOpportunititesSearchCount - rangeStart) - 1;
+                            if (rangeEnd > 25) {
+                                rangeEnd = parseInt((i + 1)) * 25
+                            }
+                        }
+                    }
+
+
+                    inlineHtml +=
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                }
+                inlineHtml += '</div>';
+                inlineHtml += '</div>';
+
+                inlineHtml += dataTable('validated');
+                inlineHtml += '</div>';
+
                 inlineHtml += dataTable('opportunities');
                 inlineHtml += '</div>';
             }
@@ -1142,7 +1644,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<table id="mpexusage-' +
                 name +
                 '" class="table table-responsive table-striped customer tablesorter" style="width: 100%;">';
-            inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
+            inlineHtml += '<thead style="color: white;background-color: #095C7B;" hide>';
             inlineHtml += '<tr class="text-center">';
 
             inlineHtml += '</tr>';
@@ -1154,20 +1656,27 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             return inlineHtml;
         }
         /**
-         * The header showing that the results are loading.
-         * @returns {String} `inlineQty`
-         */
+        * The header showing that the results are loading.
+        * @returns {String} `inlineQty`
+        */
         function loadingSection() {
-            var inlineHtml =
-                '<div id="loading_section" class="form-group container loading_section " style="text-align:center">';
+
+
+            var inlineHtml = '<div class="wrapper loading_section" style="height: 10em !important;left: 50px !important">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 loading_div">';
-            inlineHtml += '<h1>Loading...</h1>';
-            inlineHtml += '</div></div></div>';
+            inlineHtml += '<div class="col-xs-12 ">';
+            inlineHtml += '<h1 style="color: #095C7B;">Loading</h1>';
+            inlineHtml += '</div></div></div></br></br>';
+            inlineHtml += '<div class="wrapper loading_section">';
+            inlineHtml += '<div class="blue ball"></div>'
+            inlineHtml += '<div class="red ball"></div>'
+            inlineHtml += '<div class="yellow ball"></div>'
+            inlineHtml += '<div class="green ball"></div>'
+
+            inlineHtml += '</div>'
 
             return inlineHtml;
         }
-
 
         /**
          * Used to pass the values of `date_from` and `date_to` between the scripts and to Netsuite for the records and the search.

@@ -105,8 +105,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function afterSubmit() {
+            $('.zee_available_buttons_section').removeClass('hide');
+            $('.cust_filter_section').removeClass('hide');
+            $('.cust_dropdown_section').removeClass('hide');
+            $('.status_dropdown_section').removeClass('hide');
+            $('.cust_dropdown_section').removeClass('hide');
             $('.date_filter_section').removeClass('hide');
-            $('.period_dropdown_section').removeClass('hide');
+            $('.tabs_section').removeClass('hide');
+            $('.customer').removeClass('hide');
+            $('.zee_dropdown_section').removeClass('hide');
+            $('.parent_lpo_section').removeClass('hide');
 
             $('.loading_section').addClass('hide');
 
@@ -129,6 +137,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var salesCampaign = null;
         var custStatus = null;
         var source = null;
+        var parentLPOInternalId = null;
 
         function pageInit() {
 
@@ -148,6 +157,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
             source = val1.getValue({
                 fieldId: 'custpage_cust_source'
+            });
+            parentLPOInternalId = val1.getValue({
+                fieldId: 'custpage_cust_lpoid'
             });
 
             // if (isNullorEmpty(paramUserId)) {
@@ -197,9 +209,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 salesCampaign = $('#sales_campaign option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
                 source = $('#lead_source option:selected').val();
+                parentLPOInternalId = $('#parent_lpo option:selected').val();
                 zee = $('#zee_dropdown option:selected').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source + '&zee=' + zee;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source + '&zee=' + zee + '&lpoid=' + parentLPOInternalId;
 
 
                 window.location.href = url;
@@ -214,8 +227,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 salesCampaign = $('#sales_campaign option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
                 source = $('#lead_source option:selected').val();
+                parentLPOInternalId = $('#parent_lpo option:selected').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + "&source=" + source + "&page_no=" + page_number;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + "&source=" + source + "&page_no=" + page_number + '&lpoid=' + parentLPOInternalId;
 
                 window.location.href = url;
 
@@ -1607,7 +1621,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [3, 4, 5, 6, 7, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 19],
+                    targets: [14, 15, 16, 18, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1683,11 +1697,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 19],
+                    targets: [14, 15, 16, 18, 19],
                     visible: false
-                }, {
-                    targets: [0, 1],
-                    className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
                     // if (!isNullorEmpty(data[10])) {
@@ -1759,11 +1770,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 19],
+                    targets: [14, 15, 16, 18, 19],
                     visible: false
-                }, {
-                    targets: [0, 1],
-                    className: 'col-xs-2'
                 }],
                 rowCallback: function (row, data, index) {
                     // if (!isNullorEmpty(data[10])) {
@@ -1808,6 +1816,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             console.log('custStatus:' + custStatus)
 
+            //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 //Website Leads - Prospect Quote Sent
                 var custListCommenceTodayResults = search.load({
@@ -1866,6 +1875,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: null,
                         operator: search.Operator.IS,
                         values: source
+                    }));
+                }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
                     }));
                 }
 
@@ -2082,6 +2100,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 console.log(debt_set)
             }
 
+            //STATUSES - PROSPECT - OPPORTUNITY
             if (custStatus == '58') {
                 //Website Leads - Prospect Opportunity
                 var prospectOpportunititesSearch = search.load({
@@ -2143,203 +2162,435 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
-                prospectOpportunititesSearch.run().each(function (
-                    prospectOpportunititesResultSet) {
-
-                    var custInternalID = prospectOpportunititesResultSet.getValue({
-                        name: 'internalid'
-                    });
-                    var custEntityID = prospectOpportunititesResultSet.getValue({
-                        name: 'entityid'
-                    });
-                    var custName = prospectOpportunititesResultSet.getValue({
-                        name: 'companyname'
-                    });
-                    var zeeID = prospectOpportunititesResultSet.getValue({
-                        name: 'partner'
-                    });
-                    var zeeName = prospectOpportunititesResultSet.getText({
-                        name: 'partner'
-                    });
-
-                    var quoteSentDate = prospectOpportunititesResultSet.getValue({
-                        name: "custentity_date_lead_quote_sent"
-                    });
-
-                    var email = prospectOpportunititesResultSet.getValue({
-                        name: 'email'
-                    });
-                    var serviceEmail = prospectOpportunititesResultSet.getValue({
-                        name: 'custentity_email_service'
-                    });
-
-                    var phone = prospectOpportunititesResultSet.getValue({
-                        name: 'phone'
-                    });
-
-                    var statusText = prospectOpportunititesResultSet.getText({
-                        name: 'entitystatus'
-                    });
-
-                    var salesRepId = prospectOpportunititesResultSet.getValue({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var salesRepName = prospectOpportunititesResultSet.getText({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateFirstNoContact = prospectOpportunititesResultSet.getValue({
-                        name: 'custrecord_sales_day0call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateSecondNoContact = prospectOpportunititesResultSet.getValue({
-                        name: 'custrecord_sales_day14call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateThirdNoContact = prospectOpportunititesResultSet.getValue({
-                        name: 'custrecord_sales_day25call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var contactid = prospectOpportunititesResultSet.getValue({
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    prospectOpportunititesSearch.filters.push(search.createFilter({
                         name: 'internalid',
-                        join: 'contact'
-                    });
-
-                    var contactName = prospectOpportunititesResultSet.getValue({
-                        name: 'entityid',
-                        join: 'contact'
-                    });
-
-
-                    var contactEmail = prospectOpportunititesResultSet.getValue({
-                        name: 'email',
-                        join: 'contact'
-                    });
-
-                    var email48h = prospectOpportunititesResultSet.getText({
-                        name: 'custentity_48h_email_sent'
-                    });
-
-                    var salesRecordId = prospectOpportunititesResultSet.getText({
-                        name: "internalid",
-                        join: "CUSTRECORD_SALES_CUSTOMER"
-                    });
-
-                    var productUsageperWeek = prospectOpportunititesResultSet.getText({
-                        name: 'custentity_form_mpex_usage_per_week'
-                    });
-
-                    var leadSource = prospectOpportunititesResultSet.getText({
-                        name: 'leadsource'
-                    });
-
-                    console.log('custInternalID: ' + custInternalID)
-                    console.log('custName: ' + custName)
-
-                    //Website Leads - Prospect Opportunity - Activity List
-                    var prospectOpportunititesActivityListSearch = search.load({
-                        type: 'customer',
-                        id: 'customsearch_web_leads_prosp_quote_sen_6'
-                    });
-
-                    prospectOpportunititesActivityListSearch.filters.push(search.createFilter({
-                        name: 'internalid',
-                        join: null,
-                        operator: search.Operator.ANYOF,
-                        values: custInternalID
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
                     }));
+                }
 
-                    var prospectOpportunityChildDataSet = [];
+                var prospectOpportunititesSearchCount = prospectOpportunititesSearch.runPaged().count;
 
-                    prospectOpportunititesActivityListSearch.run().each(function (
-                        prospectOpportunititesActivityListResultSet) {
-                        var activityInternalID = prospectOpportunititesActivityListResultSet.getValue({
+                if (prospectOpportunititesSearchCount > 25) {
+                    var val1 = currentRecord.get();
+                    var page_no = val1.getValue({
+                        fieldId: 'custpage_page_no',
+                    });
+
+                    var totalPageCount = parseInt(prospectOpportunititesSearchCount / 25) + 1;
+                    var rangeStart = (parseInt(page_no) - 1) * 26;
+                    var rangeEnd = rangeStart + 25;
+
+                    val1.setValue({
+                        fieldId: 'custpage_total_page_no',
+                        value: totalPageCount
+                    });
+
+
+                    console.log('start: ' + rangeStart);
+                    console.log('end: ' + rangeEnd)
+
+
+                    var prospectOpportunititesResultSet = prospectOpportunititesSearch.run().getRange({
+                        start: rangeStart,
+                        end: rangeEnd
+                    });
+
+                    for (var i = 0; i < prospectOpportunititesResultSet.length; i++) {
+                        var custInternalID = prospectOpportunititesResultSet[i].getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = prospectOpportunititesResultSet[i].getValue({
+                            name: 'entityid'
+                        });
+                        var custName = prospectOpportunititesResultSet[i].getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = prospectOpportunititesResultSet[i].getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = prospectOpportunititesResultSet[i].getText({
+                            name: 'partner'
+                        });
+
+                        var quoteSentDate = prospectOpportunititesResultSet[i].getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
+
+                        var email = prospectOpportunititesResultSet[i].getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = prospectOpportunititesResultSet[i].getValue({
+                            name: 'custentity_email_service'
+                        });
+
+                        var phone = prospectOpportunititesResultSet[i].getValue({
+                            name: 'phone'
+                        });
+
+                        var statusText = prospectOpportunititesResultSet[i].getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = prospectOpportunititesResultSet[i].getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = prospectOpportunititesResultSet[i].getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = prospectOpportunititesResultSet[i].getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = prospectOpportunititesResultSet[i].getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = prospectOpportunititesResultSet[i].getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = prospectOpportunititesResultSet[i].getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = prospectOpportunititesResultSet[i].getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
+
+
+                        var contactEmail = prospectOpportunititesResultSet[i].getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
+
+                        var email48h = prospectOpportunititesResultSet[i].getText({
+                            name: 'custentity_48h_email_sent'
+                        });
+
+                        var salesRecordId = prospectOpportunititesResultSet[i].getText({
                             name: "internalid",
-                            join: "activity"
-                        })
-                        var activityStartDate = prospectOpportunititesActivityListResultSet.getValue({
-                            name: "startdate",
-                            join: "activity"
-                        })
-                        var activityTitle = prospectOpportunititesActivityListResultSet.getValue({
-                            name: "title",
-                            join: "activity"
-                        })
-                        if (isNullorEmpty(prospectOpportunititesActivityListResultSet.getText({
-                            name: "custevent_organiser",
-                            join: "activity"
-                        }))) {
-                            var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
-                                name: "assigned",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = prospectOpportunititesResultSet[i].getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = prospectOpportunititesResultSet[i].getText({
+                            name: 'leadsource'
+                        });
+
+                        console.log('custInternalID: ' + custInternalID)
+                        console.log('custName: ' + custName)
+
+                        //Website Leads - Prospect Opportunity - Activity List
+                        var prospectOpportunititesActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_6'
+                        });
+
+                        prospectOpportunititesActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var prospectOpportunityChildDataSet = [];
+
+                        prospectOpportunititesActivityListSearch.run().each(function (
+                            prospectOpportunititesActivityListResultSet) {
+                            var activityInternalID = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "internalid",
                                 join: "activity"
                             })
-                        } else {
-                            var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                            var activityStartDate = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(prospectOpportunititesActivityListResultSet.getText({
                                 name: "custevent_organiser",
                                 join: "activity"
+                            }))) {
+                                var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "message",
+                                join: "activity"
                             })
-                        }
 
-                        var activityMessage = prospectOpportunititesActivityListResultSet.getValue({
-                            name: "message",
-                            join: "activity"
-                        })
+                            console.log('activityInternalID: ' + activityInternalID);
+                            console.log('activityTitle: ' + activityTitle);
+                            console.log('activityMessage: ' + activityMessage);
 
-                        console.log('activityInternalID: ' + activityInternalID);
-                        console.log('activityTitle: ' + activityTitle);
-                        console.log('activityMessage: ' + activityMessage);
+                            if (!isNullorEmpty(activityTitle)) {
+                                prospectOpportunityChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
 
-                        if (!isNullorEmpty(activityTitle)) {
-                            prospectOpportunityChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            });
-                        }
+                            console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
+
+                            return true;
+                        });
 
                         console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
 
+                        debt_set2.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            child: prospectOpportunityChildDataSet
+                        });
+                    }
+                } else {
+                    prospectOpportunititesSearch.run().each(function (
+                        prospectOpportunititesResultSet) {
+
+                        var custInternalID = prospectOpportunititesResultSet.getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = prospectOpportunititesResultSet.getValue({
+                            name: 'entityid'
+                        });
+                        var custName = prospectOpportunititesResultSet.getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = prospectOpportunititesResultSet.getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = prospectOpportunititesResultSet.getText({
+                            name: 'partner'
+                        });
+
+                        var quoteSentDate = prospectOpportunititesResultSet.getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
+
+                        var email = prospectOpportunititesResultSet.getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = prospectOpportunititesResultSet.getValue({
+                            name: 'custentity_email_service'
+                        });
+
+                        var phone = prospectOpportunititesResultSet.getValue({
+                            name: 'phone'
+                        });
+
+                        var statusText = prospectOpportunititesResultSet.getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = prospectOpportunititesResultSet.getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = prospectOpportunititesResultSet.getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = prospectOpportunititesResultSet.getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = prospectOpportunititesResultSet.getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = prospectOpportunititesResultSet.getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = prospectOpportunititesResultSet.getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = prospectOpportunititesResultSet.getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
+
+
+                        var contactEmail = prospectOpportunititesResultSet.getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
+
+                        var email48h = prospectOpportunititesResultSet.getText({
+                            name: 'custentity_48h_email_sent'
+                        });
+
+                        var salesRecordId = prospectOpportunititesResultSet.getText({
+                            name: "internalid",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = prospectOpportunititesResultSet.getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = prospectOpportunititesResultSet.getText({
+                            name: 'leadsource'
+                        });
+
+                        console.log('custInternalID: ' + custInternalID)
+                        console.log('custName: ' + custName)
+
+                        //Website Leads - Prospect Opportunity - Activity List
+                        var prospectOpportunititesActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_6'
+                        });
+
+                        prospectOpportunititesActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var prospectOpportunityChildDataSet = [];
+
+                        prospectOpportunititesActivityListSearch.run().each(function (
+                            prospectOpportunititesActivityListResultSet) {
+                            var activityInternalID = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "internalid",
+                                join: "activity"
+                            })
+                            var activityStartDate = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(prospectOpportunititesActivityListResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            }))) {
+                                var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = prospectOpportunititesActivityListResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = prospectOpportunititesActivityListResultSet.getValue({
+                                name: "message",
+                                join: "activity"
+                            })
+
+                            console.log('activityInternalID: ' + activityInternalID);
+                            console.log('activityTitle: ' + activityTitle);
+                            console.log('activityMessage: ' + activityMessage);
+
+                            if (!isNullorEmpty(activityTitle)) {
+                                prospectOpportunityChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
+
+                            console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
+
+                            return true;
+                        });
+
+                        console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
+
+                        debt_set2.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            child: prospectOpportunityChildDataSet
+                        });
+
                         return true;
                     });
+                }
 
-                    console.log('prospectOpportunityChildDataSet: ' + JSON.stringify(prospectOpportunityChildDataSet))
-
-                    debt_set2.push({
-                        custInternalID: custInternalID,
-                        custEntityID: custEntityID,
-                        custName: custName,
-                        zeeID: zeeID,
-                        zeeName: zeeName,
-                        quoteSentDate: quoteSentDate,
-                        contactName: contactName,
-                        email: email,
-                        serviceEmail: serviceEmail,
-                        phone: phone,
-                        statusText: statusText,
-                        leadSource: leadSource,
-                        salesRepId: salesRepId,
-                        salesRepName: salesRepName,
-                        dateFirstNoContact: dateFirstNoContact,
-                        dateSecondNoContact: dateSecondNoContact,
-                        dateThirdNoContact: dateThirdNoContact,
-                        contactid: contactid,
-                        contactEmail: contactEmail,
-                        email48h: email48h,
-                        salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek,
-                        child: prospectOpportunityChildDataSet
-                    });
-
-                    return true;
-                });
                 console.log(debt_set2)
             }
 
@@ -2404,197 +2655,426 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
-                suspectFollowUpsSearch.run().each(function (
-                    suspectFollowUpsSearchResultSet) {
-
-                    var custInternalID = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'internalid'
-                    });
-                    var custEntityID = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'entityid'
-                    });
-                    var custName = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'companyname'
-                    });
-                    var zeeID = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'partner'
-                    });
-                    var zeeName = suspectFollowUpsSearchResultSet.getText({
-                        name: 'partner'
-                    });
-
-                    var quoteSentDate = suspectFollowUpsSearchResultSet.getValue({
-                        name: "custentity_date_lead_quote_sent"
-                    });
-
-                    var email = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'email'
-                    });
-                    var serviceEmail = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'custentity_email_service'
-                    });
-
-                    var phone = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'phone'
-                    });
-
-                    var statusText = suspectFollowUpsSearchResultSet.getText({
-                        name: 'entitystatus'
-                    });
-
-                    var salesRepId = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var salesRepName = suspectFollowUpsSearchResultSet.getText({
-                        name: 'custrecord_sales_assigned',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateFirstNoContact = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'custrecord_sales_day0call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateSecondNoContact = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'custrecord_sales_day14call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var dateThirdNoContact = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'custrecord_sales_day25call',
-                        join: 'CUSTRECORD_SALES_CUSTOMER'
-                    });
-
-                    var contactid = suspectFollowUpsSearchResultSet.getValue({
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectFollowUpsSearch.filters.push(search.createFilter({
                         name: 'internalid',
-                        join: 'contact'
-                    });
-
-                    var contactName = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'entityid',
-                        join: 'contact'
-                    });
-
-
-                    var contactEmail = suspectFollowUpsSearchResultSet.getValue({
-                        name: 'email',
-                        join: 'contact'
-                    });
-
-                    var email48h = suspectFollowUpsSearchResultSet.getText({
-                        name: 'custentity_48h_email_sent'
-                    });
-
-                    var salesRecordId = suspectFollowUpsSearchResultSet.getText({
-                        name: "internalid",
-                        join: "CUSTRECORD_SALES_CUSTOMER"
-                    });
-
-                    var productUsageperWeek = suspectFollowUpsSearchResultSet.getText({
-                        name: 'custentity_form_mpex_usage_per_week'
-                    });
-
-                    var leadSource = suspectFollowUpsSearchResultSet.getText({
-                        name: 'leadsource'
-                    });
-
-
-                    //Website Leads - Suspect Followup - Activity List
-                    var suspectFollowupActivityListSearch = search.load({
-                        type: 'customer',
-                        id: 'customsearch_web_leads_prosp_quote_sen_7'
-                    });
-
-                    suspectFollowupActivityListSearch.filters.push(search.createFilter({
-                        name: 'internalid',
-                        join: null,
-                        operator: search.Operator.ANYOF,
-                        values: custInternalID
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
                     }));
+                }
 
-                    var suspectFollowUpChildDataSet = [];
 
-                    suspectFollowupActivityListSearch.run().each(function (
-                        suspectFollowupActivityListSearchResultSet) {
-                        var activityInternalID = suspectFollowupActivityListSearchResultSet.getValue({
+                var suspectFollowUpsSearchCount = suspectFollowUpsSearch.runPaged().count;
+
+                if (suspectFollowUpsSearchCount > 25) {
+                    var val1 = currentRecord.get();
+                    var page_no = val1.getValue({
+                        fieldId: 'custpage_page_no',
+                    });
+
+                    var totalPageCount = parseInt(suspectFollowUpsSearchCount / 25) + 1;
+                    var rangeStart = (parseInt(page_no) - 1) * 26;
+                    var rangeEnd = rangeStart + 25;
+
+                    val1.setValue({
+                        fieldId: 'custpage_total_page_no',
+                        value: totalPageCount
+                    });
+
+
+                    console.log('start: ' + rangeStart);
+                    console.log('end: ' + rangeEnd)
+
+
+                    var suspectFollowUpsSearchResultSet = suspectFollowUpsSearch.run().getRange({
+                        start: rangeStart,
+                        end: rangeEnd
+                    });
+
+                    for (var i = 0; i < suspectFollowUpsSearchResultSet.length; i++) {
+                        var custInternalID = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'entityid'
+                        });
+                        var custName = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'partner'
+                        });
+
+                        var quoteSentDate = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
+
+                        var email = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'custentity_email_service'
+                        });
+
+                        var phone = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'phone'
+                        });
+
+                        var statusText = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
+
+
+                        var contactEmail = suspectFollowUpsSearchResultSet[i].getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
+
+                        var email48h = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'custentity_48h_email_sent'
+                        });
+
+                        var salesRecordId = suspectFollowUpsSearchResultSet[i].getText({
                             name: "internalid",
-                            join: "activity"
-                        })
-                        var activityStartDate = suspectFollowupActivityListSearchResultSet.getValue({
-                            name: "startdate",
-                            join: "activity"
-                        })
-                        var activityTitle = suspectFollowupActivityListSearchResultSet.getValue({
-                            name: "title",
-                            join: "activity"
-                        })
-                        if (isNullorEmpty(suspectFollowupActivityListSearchResultSet.getText({
-                            name: "custevent_organiser",
-                            join: "activity"
-                        }))) {
-                            var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
-                                name: "assigned",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'leadsource'
+                        });
+
+
+                        //Website Leads - Suspect Followup - Activity List
+                        var suspectFollowupActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_7'
+                        });
+
+                        suspectFollowupActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectFollowUpChildDataSet = [];
+
+                        suspectFollowupActivityListSearch.run().each(function (
+                            suspectFollowupActivityListSearchResultSet) {
+                            var activityInternalID = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "internalid",
                                 join: "activity"
                             })
-                        } else {
-                            var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                            var activityStartDate = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectFollowupActivityListSearchResultSet.getText({
                                 name: "custevent_organiser",
                                 join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
                             })
-                        }
 
-                        var activityMessage = suspectFollowupActivityListSearchResultSet.getValue({
-                            name: "message",
-                            join: "activity"
-                        })
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectFollowUpChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
 
-                        if (!isNullorEmpty(activityTitle)) {
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            });
-                        }
+                            return true;
+                        });
+
+                        console.log('suspectFollowUpChildDataSet: ' + JSON.stringify(suspectFollowUpChildDataSet))
+
+
+
+                        debt_set3.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            child: suspectFollowUpChildDataSet
+                        });
+
+                    }
+                } else {
+                    suspectFollowUpsSearch.run().each(function (
+                        suspectFollowUpsSearchResultSet) {
+
+                        var custInternalID = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'internalid'
+                        });
+                        var custEntityID = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'entityid'
+                        });
+                        var custName = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'companyname'
+                        });
+                        var zeeID = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'partner'
+                        });
+                        var zeeName = suspectFollowUpsSearchResultSet.getText({
+                            name: 'partner'
+                        });
+
+                        var quoteSentDate = suspectFollowUpsSearchResultSet.getValue({
+                            name: "custentity_date_lead_quote_sent"
+                        });
+
+                        var email = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'email'
+                        });
+                        var serviceEmail = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'custentity_email_service'
+                        });
+
+                        var phone = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'phone'
+                        });
+
+                        var statusText = suspectFollowUpsSearchResultSet.getText({
+                            name: 'entitystatus'
+                        });
+
+                        var salesRepId = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var salesRepName = suspectFollowUpsSearchResultSet.getText({
+                            name: 'custrecord_sales_assigned',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateFirstNoContact = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'custrecord_sales_day0call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateSecondNoContact = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'custrecord_sales_day14call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var dateThirdNoContact = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'custrecord_sales_day25call',
+                            join: 'CUSTRECORD_SALES_CUSTOMER'
+                        });
+
+                        var contactid = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'internalid',
+                            join: 'contact'
+                        });
+
+                        var contactName = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'entityid',
+                            join: 'contact'
+                        });
+
+
+                        var contactEmail = suspectFollowUpsSearchResultSet.getValue({
+                            name: 'email',
+                            join: 'contact'
+                        });
+
+                        var email48h = suspectFollowUpsSearchResultSet.getText({
+                            name: 'custentity_48h_email_sent'
+                        });
+
+                        var salesRecordId = suspectFollowUpsSearchResultSet.getText({
+                            name: "internalid",
+                            join: "CUSTRECORD_SALES_CUSTOMER"
+                        });
+
+                        var productUsageperWeek = suspectFollowUpsSearchResultSet.getText({
+                            name: 'custentity_form_mpex_usage_per_week'
+                        });
+
+                        var leadSource = suspectFollowUpsSearchResultSet.getText({
+                            name: 'leadsource'
+                        });
+
+
+                        //Website Leads - Suspect Followup - Activity List
+                        var suspectFollowupActivityListSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_web_leads_prosp_quote_sen_7'
+                        });
+
+                        suspectFollowupActivityListSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: custInternalID
+                        }));
+
+                        var suspectFollowUpChildDataSet = [];
+
+                        suspectFollowupActivityListSearch.run().each(function (
+                            suspectFollowupActivityListSearchResultSet) {
+                            var activityInternalID = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "internalid",
+                                join: "activity"
+                            })
+                            var activityStartDate = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "startdate",
+                                join: "activity"
+                            })
+                            var activityTitle = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "title",
+                                join: "activity"
+                            })
+                            if (isNullorEmpty(suspectFollowupActivityListSearchResultSet.getText({
+                                name: "custevent_organiser",
+                                join: "activity"
+                            }))) {
+                                var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                    name: "assigned",
+                                    join: "activity"
+                                })
+                            } else {
+                                var activityOrganiser = suspectFollowupActivityListSearchResultSet.getText({
+                                    name: "custevent_organiser",
+                                    join: "activity"
+                                })
+                            }
+
+                            var activityMessage = suspectFollowupActivityListSearchResultSet.getValue({
+                                name: "message",
+                                join: "activity"
+                            })
+
+                            if (!isNullorEmpty(activityTitle)) {
+                                suspectFollowUpChildDataSet.push({
+                                    activityInternalID: activityInternalID,
+                                    activityStartDate: activityStartDate,
+                                    activityTitle: activityTitle,
+                                    activityOrganiser: activityOrganiser,
+                                    activityMessage: activityMessage
+                                });
+                            }
+
+                            return true;
+                        });
+
+                        console.log('suspectFollowUpChildDataSet: ' + JSON.stringify(suspectFollowUpChildDataSet))
+
+
+
+                        debt_set3.push({
+                            custInternalID: custInternalID,
+                            custEntityID: custEntityID,
+                            custName: custName,
+                            zeeID: zeeID,
+                            zeeName: zeeName,
+                            quoteSentDate: quoteSentDate,
+                            contactName: contactName,
+                            email: email,
+                            serviceEmail: serviceEmail,
+                            phone: phone,
+                            statusText: statusText,
+                            leadSource: leadSource,
+                            salesRepId: salesRepId,
+                            salesRepName: salesRepName,
+                            dateFirstNoContact: dateFirstNoContact,
+                            dateSecondNoContact: dateSecondNoContact,
+                            dateThirdNoContact: dateThirdNoContact,
+                            contactid: contactid,
+                            contactEmail: contactEmail,
+                            email48h: email48h,
+                            salesRecordId: salesRecordId,
+                            productUsageperWeek: productUsageperWeek,
+                            child: suspectFollowUpChildDataSet
+                        });
 
                         return true;
                     });
-
-                    console.log('suspectFollowUpChildDataSet: ' + JSON.stringify(suspectFollowUpChildDataSet))
-
+                }
 
 
-                    debt_set3.push({
-                        custInternalID: custInternalID,
-                        custEntityID: custEntityID,
-                        custName: custName,
-                        zeeID: zeeID,
-                        zeeName: zeeName,
-                        quoteSentDate: quoteSentDate,
-                        contactName: contactName,
-                        email: email,
-                        serviceEmail: serviceEmail,
-                        phone: phone,
-                        statusText: statusText,
-                        leadSource: leadSource,
-                        salesRepId: salesRepId,
-                        salesRepName: salesRepName,
-                        dateFirstNoContact: dateFirstNoContact,
-                        dateSecondNoContact: dateSecondNoContact,
-                        dateThirdNoContact: dateThirdNoContact,
-                        contactid: contactid,
-                        contactEmail: contactEmail,
-                        email48h: email48h,
-                        salesRecordId: salesRecordId,
-                        productUsageperWeek: productUsageperWeek,
-                        child: suspectFollowUpChildDataSet
-                    });
-
-                    return true;
-                });
                 console.log(debt_set3)
             }
 
@@ -2658,6 +3138,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         values: source
                     }));
                 }
+
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectValidatedSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
 
 
                 var suspectValidatedSearchCount = suspectValidatedSearch.runPaged().count;
@@ -3086,7 +3576,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 console.log(debt_set_validated)
             }
 
-            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7') {
+            //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
+            if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
                 //Website Leads - Suspects
                 var suspectsSearch = search.load({
                     type: 'customer',
@@ -3147,7 +3638,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
+                if (!isNullorEmpty(parentLPOInternalId)) {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.IS,
+                        values: parentLPOInternalId
+                    }));
+                }
+
                 var suspectsSearchCount = suspectsSearch.runPaged().count;
+
+                console.log('suspects count: ' + suspectsSearchCount);
 
                 if (suspectsSearchCount > 25) {
                     var val1 = currentRecord.get();
@@ -3587,57 +4089,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row.custInternalID + '&sales_record_id=' + debt_row.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
-                            debt_row.custInternalID +
-                            '" data-sales="' +
-                            debt_row.salesRepId +
-                            '" data-contact="' +
-                            debt_row.contactid +
-                            '" data-contactemail="' +
-                            debt_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row.salesRecordId +
-                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row.custInternalID +
-                            '" data-sales="' +
-                            debt_row.salesRepId +
-                            '" data-contact="' +
-                            debt_row.contactid +
-                            '" data-contactemail="' +
-                            debt_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row.salesRecordId +
-                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row.custInternalID +
-                            '" data-sales="' +
-                            debt_row.salesRepId +
-                            '" data-contact="' +
-                            debt_row.contactid +
-                            '" data-contactemail="' +
-                            debt_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row.salesRecordId +
-                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
-                            debt_row.custInternalID +
-                            '" data-sales="' +
-                            debt_row.salesRepId +
-                            '" data-contact="' +
-                            debt_row.contactid +
-                            '" data-contactemail="' +
-                            debt_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
-                            debt_row.custInternalID +
-                            '" data-sales="' +
-                            debt_row.salesRepId +
-                            '" data-contact="' +
-                            debt_row.contactid +
-                            '" data-contactemail="' +
-                            debt_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row.custInternalID +
@@ -3729,57 +4181,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row2.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row2.custInternalID + '&sales_record_id=' + debt_row2.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
-                            debt_row2.custInternalID +
-                            '" data-sales="' +
-                            debt_row2.salesRepId +
-                            '" data-contact="' +
-                            debt_row2.contactid +
-                            '" data-contactemail="' +
-                            debt_row2.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row2.salesRecordId +
-                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row2.custInternalID +
-                            '" data-sales="' +
-                            debt_row2.salesRepId +
-                            '" data-contact="' +
-                            debt_row2.contactid +
-                            '" data-contactemail="' +
-                            debt_row2.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row2.salesRecordId +
-                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row2.custInternalID +
-                            '" data-sales="' +
-                            debt_row2.salesRepId +
-                            '" data-contact="' +
-                            debt_row2.contactid +
-                            '" data-contactemail="' +
-                            debt_row2.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row2.salesRecordId +
-                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
-                            debt_row2.custInternalID +
-                            '" data-sales="' +
-                            debt_row2.salesRepId +
-                            '" data-contact="' +
-                            debt_row2.contactid +
-                            '" data-contactemail="' +
-                            debt_row2.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row2.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
-                            debt_row2.custInternalID +
-                            '" data-sales="' +
-                            debt_row2.salesRepId +
-                            '" data-contact="' +
-                            debt_row2.contactid +
-                            '" data-contactemail="' +
-                            debt_row2.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row2.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row2.custInternalID +
@@ -3871,57 +4273,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row3.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row3.custInternalID + '&sales_record_id=' + debt_row3.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
-                            debt_row3.custInternalID +
-                            '" data-sales="' +
-                            debt_row3.salesRepId +
-                            '" data-contact="' +
-                            debt_row3.contactid +
-                            '" data-contactemail="' +
-                            debt_row3.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row3.salesRecordId +
-                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row3.custInternalID +
-                            '" data-sales="' +
-                            debt_row3.salesRepId +
-                            '" data-contact="' +
-                            debt_row3.contactid +
-                            '" data-contactemail="' +
-                            debt_row3.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row3.salesRecordId +
-                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row3.custInternalID +
-                            '" data-sales="' +
-                            debt_row3.salesRepId +
-                            '" data-contact="' +
-                            debt_row3.contactid +
-                            '" data-contactemail="' +
-                            debt_row3.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row3.salesRecordId +
-                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
-                            debt_row3.custInternalID +
-                            '" data-sales="' +
-                            debt_row3.salesRepId +
-                            '" data-contact="' +
-                            debt_row3.contactid +
-                            '" data-contactemail="' +
-                            debt_row3.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row3.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
-                            debt_row3.custInternalID +
-                            '" data-sales="' +
-                            debt_row3.salesRepId +
-                            '" data-contact="' +
-                            debt_row3.contactid +
-                            '" data-contactemail="' +
-                            debt_row3.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row3.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row3.custInternalID +
@@ -4017,57 +4369,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_set_validated_row.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_set_validated_row.custInternalID + '&sales_record_id=' + debt_set_validated_row.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
-                            debt_set_validated_row.custInternalID +
-                            '" data-sales="' +
-                            debt_set_validated_row.salesRepId +
-                            '" data-contact="' +
-                            debt_set_validated_row.contactid +
-                            '" data-contactemail="' +
-                            debt_set_validated_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_set_validated_row.salesRecordId +
-                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_set_validated_row.custInternalID +
-                            '" data-sales="' +
-                            debt_set_validated_row.salesRepId +
-                            '" data-contact="' +
-                            debt_set_validated_row.contactid +
-                            '" data-contactemail="' +
-                            debt_set_validated_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_set_validated_row.salesRecordId +
-                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_set_validated_row.custInternalID +
-                            '" data-sales="' +
-                            debt_set_validated_row.salesRepId +
-                            '" data-contact="' +
-                            debt_set_validated_row.contactid +
-                            '" data-contactemail="' +
-                            debt_set_validated_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_set_validated_row.salesRecordId +
-                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
-                            debt_set_validated_row.custInternalID +
-                            '" data-sales="' +
-                            debt_set_validated_row.salesRepId +
-                            '" data-contact="' +
-                            debt_set_validated_row.contactid +
-                            '" data-contactemail="' +
-                            debt_set_validated_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_set_validated_row.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
-                            debt_set_validated_row.custInternalID +
-                            '" data-sales="' +
-                            debt_set_validated_row.salesRepId +
-                            '" data-contact="' +
-                            debt_set_validated_row.contactid +
-                            '" data-contactemail="' +
-                            debt_set_validated_row.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_set_validated_row.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_set_validated_row.custInternalID +
@@ -4182,57 +4484,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row4.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row4.custInternalID + '&sales_record_id=' + debt_row4.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>     <input type="button" id="" data-id="' +
-                            debt_row4.custInternalID +
-                            '" data-sales="' +
-                            debt_row4.salesRepId +
-                            '" data-contact="' +
-                            debt_row4.contactid +
-                            '" data-contactemail="' +
-                            debt_row4.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row4.salesRecordId +
-                            '" value="LOST - NO RESPONSE" class="form-control btn btn-xs btn-danger lostnoresponse" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row4.custInternalID +
-                            '" data-sales="' +
-                            debt_row4.salesRepId +
-                            '" data-contact="' +
-                            debt_row4.contactid +
-                            '" data-contactemail="' +
-                            debt_row4.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row4.salesRecordId +
-                            '" value="NOT A LEAD" class="form-control btn btn-xs btn-danger notalead" style="cursor: pointer !important;width: fit-content;" /></br></br><input type="button" id="" data-id="' +
-                            debt_row4.custInternalID +
-                            '" data-sales="' +
-                            debt_row4.salesRepId +
-                            '" data-contact="' +
-                            debt_row4.contactid +
-                            '" data-contactemail="' +
-                            debt_row4.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row4.salesRecordId +
-                            '" value="NO ANSWER - PHONE CALL" class="form-control btn btn-xs btn-warning noanswer" style="color: black; cursor: pointer !important;width: fit-content;" />    <input type="button" id="" class="form-control btn btn-xs btn-warning noresponse" value="NO RESPONSE - EMAIL" data-id="' +
-                            debt_row4.custInternalID +
-                            '" data-sales="' +
-                            debt_row4.salesRepId +
-                            '" data-contact="' +
-                            debt_row4.contactid +
-                            '" data-contactemail="' +
-                            debt_row4.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row4.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />  <input type="button" id="" class="form-control btn btn-xs btn-warning noanswerrespone" value="NO ANSWER OR RESPONSE" data-id="' +
-                            debt_row4.custInternalID +
-                            '" data-sales="' +
-                            debt_row4.salesRepId +
-                            '" data-contact="' +
-                            debt_row4.contactid +
-                            '" data-contactemail="' +
-                            debt_row4.contactEmail +
-                            '" data-salesrecordid="' +
-                            debt_row4.salesRecordId +
-                            '" style="color: black; cursor: pointer !important;width: fit-content;" />';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row4.custInternalID +

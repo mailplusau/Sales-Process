@@ -5897,7 +5897,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(sales_campaign)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.ANYOF,
@@ -8481,7 +8481,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(sales_rep)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_assigned',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
@@ -8490,7 +8490,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(sales_campaign)) {
-                websiteLeadsReportingSearch.filters.push(search.createFilter({
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.ANYOF,
