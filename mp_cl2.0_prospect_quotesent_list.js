@@ -105,6 +105,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         }
 
         function afterSubmit() {
+            $('.instruction_div').removeClass('hide');
+            $('.show_buttons_section').removeClass('hide');
             $('.zee_available_buttons_section').removeClass('hide');
             $('.cust_filter_section').removeClass('hide');
             $('.cust_dropdown_section').removeClass('hide');
@@ -201,6 +203,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 submitSearch();
 
                 return true;
+            });
+
+            $("#show_filter").click(function () {
+                if ($('#show_filter').val() == 'SHOW FILTERS') {
+                    $('#show_filter').val('HIDE FILTERS');
+                    $('#show_filter').css("background-color", "#F0AECB");
+                    $('#show_filter').css("color", "#103d39");
+                } else {
+                    $('#show_filter').val('SHOW FILTERS');
+                    $('#show_filter').css("background-color", "#EAF044 !important");
+                    $('#show_filter').css("color", "#103d39");
+                }
+
             });
 
             $("#applyFilter").click(function () {
@@ -1469,7 +1484,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [3, 4, 5, 6, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 17, 18],
+                    targets: [2, 14, 15, 16, 17, 18],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1545,7 +1560,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [3, 4, 5, 6, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 17],
+                    targets: [2, 14, 15, 16, 18, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1621,7 +1636,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [3, 4, 5, 6, 7, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 18, 19],
+                    targets: [2, 14, 15, 16, 18, 19],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1694,24 +1709,17 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child'
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
+                    targets: [2, 4, 5, 6, 7, 8, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 18, 19],
+                    targets: [3, 14, 15, 16, 18, 19],
                     visible: false
                 }],
                 rowCallback: function (row, data, index) {
-                    // if (!isNullorEmpty(data[10])) {
-                    //     if (isNullorEmpty(data[12])) {
-                    // $('td', row).css('background-color', '#ADCF9F');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#FEBE8C');
-                    //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#F7A4A4');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#E64848');
-                    //     }
-                    // }
+                    if (isNullorEmpty(data[13])) {
+                        $('td', row).css('background-color', '#F7A4A4');
+                    }
+
 
                 }
             });
@@ -1770,7 +1778,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
                     className: 'bolded'
                 }, {
-                    targets: [14, 15, 16, 18, 19],
+                    targets: [3, 14, 15, 16, 18, 19],
                     visible: false
                 }],
                 rowCallback: function (row, data, index) {
@@ -4089,7 +4097,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row.custInternalID + '&sales_record_id=' + debt_row.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row.custInternalID +
@@ -4181,7 +4189,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row2.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row2.custInternalID + '&sales_record_id=' + debt_row2.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row2.custInternalID +
@@ -4273,7 +4281,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row3.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row3.custInternalID + '&sales_record_id=' + debt_row3.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row3.custInternalID +
@@ -4369,7 +4377,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_set_validated_row.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_set_validated_row.custInternalID + '&sales_record_id=' + debt_set_validated_row.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_set_validated_row.custInternalID +
@@ -4484,7 +4492,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     if (!isNullorEmpty(debt_row4.salesRecordId)) {
                         var linkURL =
                             '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row4.custInternalID + '&sales_record_id=' + debt_row4.salesRecordId +
-                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button>';
+                            '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
                             debt_row4.custInternalID +

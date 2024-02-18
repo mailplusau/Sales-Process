@@ -200,6 +200,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
+
+
+                //Instructions Sections
+                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br>This page assists you in finding the most relevant leads based on the filters used. </br> <ul><li><b>FRANCHISEE</b>: Leads based on the Franchisee they have been assigned to.</li><li><b>STATUS</b>: Leads at different stages in the sales process. By default the status is "SUSPECT  - HOT LEAD"</li><li><b>SOURCE</b>: Filter by how the lead was generated. </li><li><b>SALES CAMPAIGN</b>: Leads based on the different campaigns.</li></ul>Using the Filters: <ol><li><b>Select one or more filters</b>: Choose the criteria that best match your need.</li><li><b>Combine filters</b>: Use multiple filters together for even more precise targeting.</li><li><b>Click "Apply Filter"</b>: Update the lead list based on your chosen filters.</li></ol>Navigating the Lead List: <ul><li>Displays key information like company name, contact details, and lead status.</li><li><b>Click "Call Center"</b>: Access more detailed information and notes on the specific lead.</li></ul></p></br></div></br>';
+
                 //Search: SMC - Franchisees
                 var searchZees = search.load({
                     id: 'customsearch_smc_franchisee'
@@ -212,6 +217,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     id: 'customsearch_parent_lpo_customers_2'
                 });
                 var activeParentLPOSearchResultSet = activeParentLPOSearch.run();
+                
 
                 //Dropdown to Select the Fracnhisee
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
@@ -228,16 +234,16 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml +=
                     '<div class="col-xs-4"></div>'
                 inlineHtml +=
-                    '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" /></div>'
+                    '<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" style="border-radius: 25px"/></div>'
                 inlineHtml +=
                     '<div class="col-xs-4"></div>'
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
 
                 //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
-                if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
-                    inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
-                }
+                // if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
+                //     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
+                // }
                 inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId);
 
 
@@ -253,7 +259,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 //   functionName: 'addFilters()'
                 // });
 
-                form.addSubmitButton({ label: '' });
+                // form.addSubmitButton({ label: '' });
 
                 form.addField({
                     id: 'preview_table',
@@ -617,7 +623,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="col-xs-12 cust_status_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
-                '<span class="input-group-addon" id="cust_status_text">STATUS</span>';
+                '<span class="input-group-addon" id="cust_status_text">STATUS <span class="mandatory" style="font-size: 16px">*</span></span>';
             inlineHtml += '<select id="cust_status" class="form-control">';
             inlineHtml += '<option value="0"></option>';
             if (custStatus == '57') {
@@ -663,9 +669,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
             if (custStatus == '62') {
-                inlineHtml += '<option value="67" selected>SUSPECT - PARKING LOT</option>';
+                inlineHtml += '<option value="62" selected>SUSPECT - PARKING LOT</option>';
             } else {
-                inlineHtml += '<option value="67">SUSPECT - PARKING LOT</option>';
+                inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
             }
 
             if (custStatus == '68') {
@@ -891,7 +897,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         function tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId) {
 
-            
             var inlineHtml = '<div class="tabs_section hide">';
 
             // Tabs headers
@@ -902,7 +907,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</style>';
 
             inlineHtml +=
-                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+                '<div style=""><ul class="nav nav-pills nav-justified main-tabs-sections " style="padding-left:0px; ">';
 
             //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
             if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
@@ -963,9 +968,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
 
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_suspects"></div>';
-                inlineHtml += '</figure><br>';
+                // inlineHtml += '<figure class="highcharts-figure">';
+                // inlineHtml += '<div id="container_suspects"></div>';
+                // inlineHtml += '</figure><br>';
 
 
                 //Website Leads - Suspects
@@ -1051,7 +1056,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectsSearchCount) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectsSearchCount) + '</b> </br> Pages: </br></div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1084,7 +1089,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1096,8 +1101,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
             if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '</figure><br></br>';
+                // inlineHtml += '<figure class="highcharts-figure">';
+                // inlineHtml += '</figure><br></br>';
 
                 //Website Leads - Prospect Quote Sent
                 var custListCommenceTodayResults = search.load({
@@ -1183,7 +1188,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (custListCommenceTodayResultsCount) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (custListCommenceTodayResultsCount) + '</b></br> Pages: </div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1216,7 +1221,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1229,9 +1234,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (custStatus == '67' || custStatus == '18') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="followup">';
 
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_followup"></div>';
-                inlineHtml += '</figure><br></br>';
+                // inlineHtml += '<figure class="highcharts-figure">';
+                // inlineHtml += '<div id="container_followup"></div>';
+                // inlineHtml += '</figure><br></br>';
 
 
                 //Website Leads - Suspect Followup
@@ -1240,12 +1245,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     id: 'customsearch_web_leads_suspect_followup'
                 });
 
-                if (!isNullorEmpty(zee_id)) {
+                if (!isNullorEmpty(zee)) {
                     suspectFollowUpsSearch.filters.push(search.createFilter({
                         name: 'partner',
                         join: null,
                         operator: search.Operator.IS,
-                        values: zee_id
+                        values: zee
                     }));
                 }
 
@@ -1317,7 +1322,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectFollowUpsSearchCount) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectFollowUpsSearchCount) + '</b> </br> Pages:</div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1350,7 +1355,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1364,9 +1369,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (custStatus == '68') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="validated">';
 
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_validated"></div>';
-                inlineHtml += '</figure><br></br>';
+                // inlineHtml += '<figure class="highcharts-figure">';
+                // inlineHtml += '<div id="container_validated"></div>';
+                // inlineHtml += '</figure><br></br>';
 
 
                 //Website Leads - Suspect Validated
@@ -1449,7 +1454,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (suspectValidatedSearchCount) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectValidatedSearchCount) + '</b></br> Pages: </div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1482,7 +1487,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1495,9 +1500,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             if (custStatus == '58') {
                 inlineHtml += '<div role="tabpanel" class="tab-pane active" id="opportunities">';
 
-                inlineHtml += '<figure class="highcharts-figure">';
-                inlineHtml += '<div id="container_customer"></div>';
-                inlineHtml += '</figure><br></br>';
+                // inlineHtml += '<figure class="highcharts-figure">';
+                // inlineHtml += '<div id="container_customer"></div>';
+                // inlineHtml += '</figure><br></br>';
 
                 //Website Leads - Prospect Opportunity
                 var prospectOpportunititesSearch = search.load({
@@ -1577,7 +1582,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<div class="row">';
 
                 inlineHtml +=
-                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count ' + (prospectOpportunititesSearchCount) + '</b></div>';
+                    '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (prospectOpportunititesSearchCount) + '</b></br> Pages: </div>';
 
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
@@ -1610,12 +1615,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                     inlineHtml +=
-                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="Page: ' + (i + 1) + '&#13;&#10;(' + rangeStart + ' - ' + rangeEnd + ' Leads)" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
+                        '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
                 }
                 inlineHtml += '</div>';
-                inlineHtml += '</div>';
-
-                inlineHtml += dataTable('validated');
                 inlineHtml += '</div>';
 
                 inlineHtml += dataTable('opportunities');
