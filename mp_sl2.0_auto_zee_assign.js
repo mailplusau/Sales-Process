@@ -247,7 +247,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                     if (parentLPOCount == 1) {
                                         customerRecord.setValue({
-                                            fieldId: 'parent',
+                                            fieldId: 'custentity_lpo_parent_account',
                                             value: parentLPO,
                                         });
 
@@ -315,7 +315,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Sales Rep depending on the franchisee
+                                Assign to David Daoud depending on the franchisee
                                 Assign to LPO
                                  */
                                 var salesRecord = record.create({
@@ -332,7 +332,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: 1797389,
+                                    value: 1809334, // Assign to David Daoud
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -355,7 +355,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Gabby depending on the franchisee
+                                Assign to Sales Rep depending on the franchisee
                                 Assign to Field Sales
                                  */
                                 var salesRecord = record.create({
