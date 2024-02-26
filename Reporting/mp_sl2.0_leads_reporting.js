@@ -861,11 +861,45 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             // Tabs content
             inlineHtml += '<div class="tab-content">';
             inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
+
+
+            // Overview Tabs headers
+            inlineHtml +=
+                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            inlineHtml +=
+                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            inlineHtml += '</style>';
+
+            inlineHtml +=
+                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+            inlineHtml +=
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview"><b>COMPLETE OVERVIEW</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview"><b>LPO OVERVIEW</b></a></li>';
+
+
+            inlineHtml += '</ul></div>';
+
+            inlineHtml += '<div class="tab-content">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="complete_overview">';
+
             inlineHtml += '<figure class="highcharts-figure">';
             inlineHtml += '<div id="container_preview"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('preview');
             inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_lpo_overview"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('lpo_overview');
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
 
             inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
 
@@ -1097,7 +1131,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
-            if (name == 'preview') {
+            if (name == 'preview' || name == 'lpo_overview') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
