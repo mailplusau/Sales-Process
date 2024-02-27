@@ -126,19 +126,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             values: "test"
                         }));
                         zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_network_matrix_json',
+                            name: 'custentity_zee_territory_json',
                             join: null,
                             operator: search.Operator.CONTAINS,
                             values: siteAddressSuburb
                         }));
                         zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_network_matrix_json',
+                            name: 'custentity_zee_territory_json',
                             join: null,
                             operator: search.Operator.CONTAINS,
                             values: siteAddressState
                         }));
                         zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_network_matrix_json',
+                            name: 'custentity_zee_territory_json',
                             join: null,
                             operator: search.Operator.CONTAINS,
                             values: siteAddressZipCode
