@@ -602,7 +602,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     name: 'entityid'
                 });
 
-                if (userId == employee_id) {
+                if (userId == employee_id && userId != 653718) {
                     inlineHtml += '<option value="' + employee_id +
                         '" selected="selected">' + employee_name + '</option>';
                 } else {

@@ -1432,59 +1432,61 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet,
                 pageLength: 1000,
-                order: [[17, 'des']],
+                order: [[12, 'des']],
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
-                    title: 'LINK'
+                    title: 'LINK' //1
                 }, {
-                    title: 'Customer Internal ID'
+                    title: 'Customer Internal ID' //2
                 }, {
-                    title: 'ID'
+                    title: 'ID' //3
                 }, {
-                    title: 'Company Name'
+                    title: 'Company Name' //4
                 }, {
-                    title: 'Franchisee'
+                    title: 'Franchisee' //5
                 }, {
-                    title: 'Status'
+                    title: 'Status' //6
                 }, {
-                    title: 'Source'
+                    title: 'Source' //7
                 }, {
-                    title: 'Contact Name'
+                    title: 'Linked LPO' //8
                 }, {
-                    title: 'Email'
+                    title: 'Contact Name' //9
                 }, {
-                    title: 'Phone Number'
+                    title: 'Email' //10
                 }, {
-                    title: 'Date Quote Sent'
+                    title: 'Phone Number' //11
                 }, {
-                    title: '48h Email Sent'
+                    title: 'Date Quote Sent' //12
                 }, {
-                    title: 'Sales Rep Assigned'
+                    title: '48h Email Sent' //13
                 }, {
-                    title: 'Date - 1st No Answer'
+                    title: 'Sales Rep Assigned' //14
                 }, {
-                    title: 'Date - 2nd No Answer'
+                    title: 'Date - 1st No Answer' //15
                 }, {
-                    title: 'Date - 3rd No Answer'
+                    title: 'Date - 2nd No Answer' //16
                 }, {
-                    title: 'Color Code'
+                    title: 'Date - 3rd No Answer' //17
                 }, {
-                    title: 'MP Product Usage/Week'
+                    title: 'Color Code' //18
                 }, {
-                    title: 'Send Sign Up Email'
+                    title: 'MP Product Usage/Week' //19
                 }, {
-                    title: 'Child'
+                    title: 'Send Sign Up Email' //20
+                }, {
+                    title: 'Child' //21
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 11, 12, 13],
+                    targets: [3, 4, 5, 6, 7, 8, 12, 13, 14],
                     className: 'bolded'
                 }, {
-                    targets: [2, 14, 15, 16, 17, 18],
+                    targets: [2, 15, 16, 17, 18, 19, 20, 21],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1492,13 +1494,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }],
                 rowCallback: function (row, data, index) {
                     // if (!isNullorEmpty(data[10])) {
-                    if (isNullorEmpty(data[14])) {
+                    if (isNullorEmpty(data[15])) {
                         // $('td', row).css('background-color', '#FFFBC1');
-                    } else if (!isNullorEmpty(data[14]) && isNullorEmpty(data[15]) && isNullorEmpty(data[16])) {
+                    } else if (!isNullorEmpty(data[15]) && isNullorEmpty(data[16]) && isNullorEmpty(data[17])) {
                         $('td', row).css('background-color', '#FEBE8C');
-                    } else if (!isNullorEmpty(data[14]) && !isNullorEmpty(data[15]) && isNullorEmpty(data[16])) {
+                    } else if (!isNullorEmpty(data[15]) && !isNullorEmpty(data[16]) && isNullorEmpty(data[17])) {
                         $('td', row).css('background-color', '#F7A4A4');
-                    } else if (!isNullorEmpty(data[14]) && !isNullorEmpty(data[15]) && !isNullorEmpty(data[16])) {
+                    } else if (!isNullorEmpty(data[15]) && !isNullorEmpty(data[16]) && !isNullorEmpty(data[17])) {
                         $('td', row).css('background-color', '#E64848');
                     }
                     // }
@@ -1516,51 +1518,53 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
-                    title: 'LINK'
+                    title: 'LINK' //1
                 }, {
-                    title: 'Customer Internal ID'
+                    title: 'Customer Internal ID' //2
                 }, {
-                    title: 'ID'
+                    title: 'ID' //3
                 }, {
-                    title: 'Company Name'
+                    title: 'Company Name' //4
                 }, {
-                    title: 'Franchisee'
+                    title: 'Franchisee' //5
                 }, {
-                    title: 'Status'
+                    title: 'Status' //6
                 }, {
-                    title: 'Source'
+                    title: 'Source' //7
                 }, {
-                    title: 'Contact Name'
+                    title: 'Linked LPO' //8
                 }, {
-                    title: 'Email'
+                    title: 'Contact Name' //9
                 }, {
-                    title: 'Phone Number'
+                    title: 'Email' //10
                 }, {
-                    title: 'Date Quote Sent'
+                    title: 'Phone Number' //11
                 }, {
-                    title: '48h Email Sent'
+                    title: 'Date Quote Sent' //12
                 }, {
-                    title: 'Sales Rep Assigned'
+                    title: '48h Email Sent' //13
                 }, {
-                    title: 'Date - 1st No Answer'
+                    title: 'Sales Rep Assigned' //14
                 }, {
-                    title: 'Date - 2nd No Answer'
+                    title: 'Date - 1st No Answer' //15
                 }, {
-                    title: 'Date - 3rd No Answer'
+                    title: 'Date - 2nd No Answer' //16
                 }, {
-                    title: 'MP Product Usage/Week'
+                    title: 'Date - 3rd No Answer' //17
                 }, {
-                    title: 'Send Sign Up Email'
+                    title: 'MP Product Usage/Week' //18
                 }, {
-                    title: 'Child'
+                    title: 'Send Sign Up Email' //19
+                }, {
+                    title: 'Child' //20
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 11, 12, 13],
+                    targets: [3, 4, 5, 6, 7, 12, 13, 14],
                     className: 'bolded'
                 }, {
-                    targets: [2, 14, 15, 16, 18, 19],
+                    targets: [2, 15, 16, 17, 19, 20],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1592,51 +1596,53 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
-                    title: 'LINK'
+                    title: 'LINK' //1
                 }, {
-                    title: 'Customer Internal ID'
+                    title: 'Customer Internal ID' //2
                 }, {
-                    title: 'ID'
+                    title: 'ID' //3
                 }, {
-                    title: 'Company Name'
+                    title: 'Company Name' //4
                 }, {
-                    title: 'Franchisee'
+                    title: 'Franchisee' //5
                 }, {
-                    title: 'Status'
+                    title: 'Status' //6
                 }, {
-                    title: 'Source'
+                    title: 'Source' //7
                 }, {
-                    title: 'Contact Name'
+                    title: 'Linked LPO' //8
                 }, {
-                    title: 'Email'
+                    title: 'Contact Name' //9
                 }, {
-                    title: 'Phone Number'
+                    title: 'Email' //10
                 }, {
-                    title: 'Date Quote Sent'
+                    title: 'Phone Number' //11
                 }, {
-                    title: '48h Email Sent'
+                    title: 'Date Quote Sent' //12
                 }, {
-                    title: 'Sales Rep Assigned'
+                    title: '48h Email Sent' //13
                 }, {
-                    title: 'Date - 1st No Answer'
+                    title: 'Sales Rep Assigned' //14
                 }, {
-                    title: 'Date - 2nd No Answer'
+                    title: 'Date - 1st No Answer' //15
                 }, {
-                    title: 'Date - 3rd No Answer'
+                    title: 'Date - 2nd No Answer' //16
                 }, {
-                    title: 'MP Product Usage/Week'
+                    title: 'Date - 3rd No Answer' //17
                 }, {
-                    title: 'Send Sign Up Email'
+                    title: 'MP Product Usage/Week' //18
                 }, {
-                    title: 'Child'
+                    title: 'Send Sign Up Email' //19
+                }, {
+                    title: 'Child' //20
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 7, 11, 12, 13],
+                    targets: [3, 4, 5, 6, 7, 8, 12, 13, 14],
                     className: 'bolded'
                 }, {
-                    targets: [2, 14, 15, 16, 18, 19],
+                    targets: [2, 15, 16, 17, 19, 20],
                     visible: false
                 }, {
                     targets: [0, 1],
@@ -1668,61 +1674,72 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
-                    title: 'LINK'
+                    title: 'LINK' //1
                 }, {
-                    title: 'Date Lead Entered'
+                    title: 'Date Lead Entered' //2
                 }, {
-                    title: 'Customer Internal ID'
+                    title: 'Customer Internal ID' //3
                 }, {
-                    title: 'ID'
+                    title: 'ID' //4
                 }, {
-                    title: 'Company Name'
+                    title: 'Company Name' //5
                 }, {
-                    title: 'Franchisee'
+                    title: 'Franchisee' //6
                 }, {
-                    title: 'Status'
+                    title: 'Status' //7
                 }, {
-                    title: 'Source'
+                    title: 'Source' //8
                 }, {
-                    title: 'Contact Name'
+                    title: 'Linked LPO' //9
                 }, {
-                    title: 'Email'
+                    title: 'Contact Name' //10
                 }, {
-                    title: 'Phone Number'
+                    title: 'Email' //11
                 }, {
-                    title: 'Services of Interest'
+                    title: 'Phone Number' //12
                 }, {
-                    title: 'Sales Rep Assigned'
+                    title: 'Services of Interest' //13
                 }, {
-                    title: 'Date - 1st No Answer'
+                    title: 'Sales Rep Assigned' //14
                 }, {
-                    title: 'Date - 2nd No Answer'
+                    title: 'Date - 1st No Answer' //15
                 }, {
-                    title: 'Date - 3rd No Answer'
+                    title: 'Date - 2nd No Answer' //16
                 }, {
-                    title: 'MP Product Usage/Week'
+                    title: 'Date - 3rd No Answer' //17
                 }, {
-                    title: 'Send Sign Up Email'
+                    title: 'MP Product Usage/Week' //18
                 }, {
-                    title: 'Child'
+                    title: 'Send Sign Up Email' //19
+                }, {
+                    title: 'Child' //20
                 }],
                 columnDefs: [{
-                    targets: [2, 4, 5, 6, 7, 8, 12, 13],
+                    targets: [2, 4, 5, 6, 7, 8, 9],
                     className: 'bolded'
                 }, {
-                    targets: [3, 14, 15, 16, 18, 19],
+                    targets: [3, 15, 16, 17, 19, 20],
                     visible: false
                 }],
                 rowCallback: function (row, data, index) {
-                    if (isNullorEmpty(data[13])) {
-                        $('td', row).css('background-color', '#F7A4A4');
-                    }
+                    // if (isNullorEmpty(data[15])) {
+                    //     $('td', row).css('background-color', '#F7A4A4');
+                    // }
 
 
                 }
             });
+
+            /**
+             * debtDataSet3.push(['', linkURL, commDateLPOValidatedFormatted, debt_set_validated_row.custInternalID,
+                        customerIDLink,
+                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.leadSource, debt_set_validated_row.linkedLPOName, debt_set_validated_row.contactName,
+                        debt_set_validated_row.serviceEmail,
+                        debt_set_validated_row.phone, debt_set_validated_row.email48h, debt_set_validated_row.salesRepName, debt_set_validated_row.dateFirstNoContact, debt_set_validated_row.dateSecondNoContact, debt_set_validated_row.dateThirdNoContact, debt_set_validated_row.productUsageperWeek, sendSignUpEmail, debt_set_validated_row.child
+                    ]);
+             */
 
             dataTable = $('#mpexusage-validated').DataTable({
                 destroy: true,
@@ -1734,51 +1751,53 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
-                    title: 'LINK'
+                    title: 'LINK' //1
                 }, {
-                    title: 'Date LPO Validated'
+                    title: 'Date LPO Validated' //2
                 }, {
-                    title: 'Customer Internal ID'
+                    title: 'Customer Internal ID' //3
                 }, {
-                    title: 'ID'
+                    title: 'ID' //4
                 }, {
-                    title: 'Company Name'
+                    title: 'Company Name' //5
                 }, {
-                    title: 'Franchisee'
+                    title: 'Franchisee' //6
                 }, {
-                    title: 'Status'
+                    title: 'Status' //7
                 }, {
-                    title: 'Source'
+                    title: 'Source' //8
                 }, {
-                    title: 'Contact Name'
+                    title: 'Linked LPO' //9
                 }, {
-                    title: 'Email'
+                    title: 'Contact Name' //10
                 }, {
-                    title: 'Phone Number'
+                    title: 'Email' //11
                 }, {
-                    title: 'Services of Interest'
+                    title: 'Phone Number' //12
                 }, {
-                    title: 'Sales Rep Assigned'
+                    title: 'Services of Interest'//13
                 }, {
-                    title: 'Date - 1st No Answer'
+                    title: 'Sales Rep Assigned' //14
                 }, {
-                    title: 'Date - 2nd No Answer'
+                    title: 'Date - 1st No Answer' //15
                 }, {
-                    title: 'Date - 3rd No Answer'
+                    title: 'Date - 2nd No Answer' //16
                 }, {
-                    title: 'MP Product Usage/Week'
+                    title: 'Date - 3rd No Answer' //17
                 }, {
-                    title: 'Send Sign Up Email'
+                    title: 'MP Product Usage/Week' //18
                 }, {
-                    title: 'Child'
+                    title: 'Send Sign Up Email' //19
+                }, {
+                    title: 'Child' //20
                 }],
                 columnDefs: [{
-                    targets: [2, 3, 4, 5, 6, 7, 8, 11, 12, 13],
+                    targets: [2, 3, 4, 5, 6, 7, 8, 9, 14],
                     className: 'bolded'
                 }, {
-                    targets: [3, 14, 15, 16, 18, 19],
+                    targets: [3, 15, 16, 17, 18, 19, 20],
                     visible: false
                 }],
                 rowCallback: function (row, data, index) {
@@ -1991,6 +2010,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: 'leadsource'
                     });
 
+                    var linkedLPOName = custListCommenceTodaySet.getText({
+                        name: 'custentity_lpo_parent_account'
+                    });
+
                     var rowColorSort = null;
 
                     // if (!isNullorEmpty(email48h)) {
@@ -2089,6 +2112,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         phone: phone,
                         statusText: statusText,
                         leadSource: leadSource,
+                        linkedLPOName: linkedLPOName,
                         salesRepId: salesRepId,
                         salesRepName: salesRepName,
                         dateFirstNoContact: dateFirstNoContact,
@@ -2300,6 +2324,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = prospectOpportunititesResultSet[i].getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
                         console.log('custInternalID: ' + custInternalID)
                         console.log('custName: ' + custName)
 
@@ -2386,6 +2414,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -2496,6 +2525,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = prospectOpportunititesResultSet.getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
                         console.log('custInternalID: ' + custInternalID)
                         console.log('custName: ' + custName)
 
@@ -2582,6 +2615,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -2794,6 +2828,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = suspectFollowUpsSearchResultSet[i].getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
 
                         //Website Leads - Suspect Followup - Activity List
                         var suspectFollowupActivityListSearch = search.load({
@@ -2874,6 +2912,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -2985,6 +3024,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = suspectFollowUpsSearchResultSet.getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
 
                         //Website Leads - Suspect Followup - Activity List
                         var suspectFollowupActivityListSearch = search.load({
@@ -3065,6 +3108,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3283,6 +3327,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: "custentity_date_lpo_validated"
                         });
 
+                        var linkedLPOName = suspectValidatedSearchResultSet[i].getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
 
                         //Website Leads - Suspect Validated - Activity List
                         var suspectValidatedActivityListSearch = search.load({
@@ -3363,6 +3411,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3481,6 +3530,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         });
 
 
+                        var linkedLPOName = suspectValidatedSearchResultSet.getText({
+                            name: "custentity_lpo_parent_account"
+                        });
+
+
+
+
                         var suspectFollowUpChildDataSet = [];
 
                         //Website Leads - Suspect Validated - Activity List
@@ -3558,6 +3614,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3782,6 +3839,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = suspectsSearchResultSet[i].getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
+
+
                         //Website Leads - Suspects - Activity List
                         var suspectActivityListSearch = search.load({
                             type: 'customer',
@@ -3861,6 +3924,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -3977,6 +4041,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: 'leadsource'
                         });
 
+                        var linkedLPOName = suspectsSearchResultSet.getText({
+                            name: 'custentity_lpo_parent_account'
+                        });
+
 
                         //Website Leads - Suspects - Activity List
                         var suspectActivityListSearch = search.load({
@@ -4055,6 +4123,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             phone: phone,
                             statusText: statusText,
                             leadSource: leadSource,
+                            linkedLPOName: linkedLPOName,
                             salesRepId: salesRepId,
                             salesRepName: salesRepName,
                             dateFirstNoContact: dateFirstNoContact,
@@ -4140,7 +4209,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet.push(['', linkURL, debt_row.custInternalID,
                         customerIDLink,
-                        debt_row.custName, debt_row.zeeName, debt_row.statusText, debt_row.leadSource, debt_row.contactName,
+                        debt_row.custName, debt_row.zeeName, debt_row.statusText, debt_row.leadSource, debt_row.linkedLPOName, debt_row.contactName,
                         debt_row.serviceEmail,
                         debt_row.phone, commDateFormatted, debt_row.email48h, debt_row.salesRepName, debt_row.dateFirstNoContact, debt_row.dateSecondNoContact, debt_row.dateThirdNoContact, debt_row.rowColorSort, debt_row.productUsageperWeek, sendSignUpEmail, debt_row.child
                     ]);
@@ -4232,7 +4301,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet2.push(['', linkURL, debt_row2.custInternalID,
                         customerIDLink,
-                        debt_row2.custName, debt_row2.zeeName, debt_row2.statusText, debt_row2.leadSource, debt_row2.contactName,
+                        debt_row2.custName, debt_row2.zeeName, debt_row2.statusText, debt_row2.leadSource, debt_row2.linkedLPOName, debt_row2.contactName,
                         debt_row2.serviceEmail,
                         debt_row2.phone, commDateFormatted, debt_row2.email48h, debt_row2.salesRepName, debt_row2.dateFirstNoContact, debt_row2.dateSecondNoContact, debt_row2.dateThirdNoContact, debt_row2.productUsageperWeek, sendSignUpEmail, debt_row2.child
                     ]);
@@ -4329,7 +4398,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet3.push(['', linkURL, debt_row3.custInternalID,
                         customerIDLink,
-                        debt_row3.custName, debt_row3.zeeName, debt_row3.statusText, debt_row3.leadSource, debt_row3.contactName,
+                        debt_row3.custName, debt_row3.zeeName, debt_row3.statusText, debt_row3.leadSource, debt_row3.linkedLPOName, debt_row3.contactName,
                         debt_row3.serviceEmail,
                         debt_row3.phone, commDateFormatted, debt_row3.email48h, debt_row3.salesRepName, debt_row3.dateFirstNoContact, debt_row3.dateSecondNoContact, debt_row3.dateThirdNoContact, debt_row3.productUsageperWeek, sendSignUpEmail, debt_row3.child
                     ]);
@@ -4443,7 +4512,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet3.push(['', linkURL, commDateLPOValidatedFormatted, debt_set_validated_row.custInternalID,
                         customerIDLink,
-                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.leadSource, debt_set_validated_row.contactName,
+                        debt_set_validated_row.custName, debt_set_validated_row.zeeName, debt_set_validated_row.statusText, debt_set_validated_row.leadSource, debt_set_validated_row.linkedLPOName, debt_set_validated_row.contactName,
                         debt_set_validated_row.serviceEmail,
                         debt_set_validated_row.phone, debt_set_validated_row.email48h, debt_set_validated_row.salesRepName, debt_set_validated_row.dateFirstNoContact, debt_set_validated_row.dateSecondNoContact, debt_set_validated_row.dateThirdNoContact, debt_set_validated_row.productUsageperWeek, sendSignUpEmail, debt_set_validated_row.child
                     ]);
@@ -4568,7 +4637,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     debtDataSet4.push(['', linkURL, newDate, debt_row4.custInternalID,
                         customerIDLink,
-                        debt_row4.custName, debt_row4.zeeName, debt_row4.statusText, debt_row4.leadSource, debt_row4.contactName,
+                        debt_row4.custName, debt_row4.zeeName, debt_row4.statusText, debt_row4.leadSource, debt_row4.linkedLPOName, debt_row4.contactName,
                         debt_row4.serviceEmail,
                         debt_row4.phone, debt_row4.servicesOfInterest, debt_row4.salesRepName, debt_row4.dateFirstNoContact, debt_row4.dateSecondNoContact, debt_row4.dateThirdNoContact, debt_row4.productUsageperWeek, sendSignUpEmail, debt_row4.child
                     ]);
@@ -4617,7 +4686,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
-            row.data()[20].forEach(function (el) {
+            row.data()[21].forEach(function (el) {
 
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
@@ -4671,7 +4740,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
-            row.data()[19].forEach(function (el) {
+            row.data()[20].forEach(function (el) {
 
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
