@@ -535,54 +535,54 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
 
-            if (campaign == 69) {
-                inlineHtml += '<div class="form-group container parent_lpo_label_section">';
-                inlineHtml += '<div class="row">';
-                inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO - FILTER</span></h4></div>';
-                inlineHtml += '</div>';
-                inlineHtml += '</div>';
+            // if (campaign == 69) {
+            inlineHtml += '<div class="form-group container parent_lpo_label_section">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO - FILTER</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
-                inlineHtml += '<div class="form-group container parent_lpo_section">';
-                inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="form-group container parent_lpo_section">';
+            inlineHtml += '<div class="row">';
 
-                inlineHtml += '<div class="col-xs-12 parent_lpo_div">';
-                inlineHtml += '<div class="input-group">';
-                inlineHtml +=
-                    '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
-                inlineHtml += '<select id="parent_lpo" class="form-control">';
-                inlineHtml += '<option></option>';
+            inlineHtml += '<div class="col-xs-12 parent_lpo_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
+            inlineHtml += '<select id="parent_lpo" class="form-control">';
+            inlineHtml += '<option></option>';
 
-                var parentLPOSearch = search.load({
-                    type: 'customer',
-                    id: 'customsearch_parent_lpo_customers'
+            var parentLPOSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_parent_lpo_customers'
+            });
+
+            parentLPOSearch.run().each(function (
+                parentLPOSearchResultSet) {
+
+                var parentLPOInternalId = parentLPOSearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'GROUP'
+                });
+                var parentLPOName = parentLPOSearchResultSet.getValue({
+                    name: 'companyname',
+                    summary: 'GROUP'
                 });
 
-                parentLPOSearch.run().each(function (
-                    parentLPOSearchResultSet) {
+                if (parentLPOInternalId == parentLPO) {
+                    inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
+                        parentLPOName + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
+                        parentLPOName + '</option>';
+                }
 
-                    var parentLPOInternalId = parentLPOSearchResultSet.getValue({
-                        name: 'internalid',
-                        summary: 'GROUP'
-                    });
-                    var parentLPOName = parentLPOSearchResultSet.getValue({
-                        name: 'companyname',
-                        summary: 'GROUP'
-                    });
+                return true;
+            });
 
-                    if (parentLPOInternalId == parentLPO) {
-                        inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
-                            parentLPOName + '</option>';
-                    } else {
-                        inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
-                            parentLPOName + '</option>';
-                    }
-
-                    return true;
-                });
-
-                inlineHtml += '</select>';
-                inlineHtml += '</div></div></div></div>';
-            }
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+            // }
 
 
             return inlineHtml;
