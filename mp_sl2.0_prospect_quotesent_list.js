@@ -645,15 +645,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
             if (custStatus == '20') {
-                inlineHtml += '<option value="6" selected>SUSPECT - NO ANSWER</option>';
+                inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
             } else {
-                inlineHtml += '<option value="6">SUSPECT - NO ANSWER</option>';
+                inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
             }
 
             if (custStatus == '69') {
-                inlineHtml += '<option value="6" selected>SUSPECT - IN CONTACT</option>';
+                inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
             } else {
-                inlineHtml += '<option value="6">SUSPECT - IN CONTACT</option>';
+                inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
             }
 
             if (custStatus == '18') {
