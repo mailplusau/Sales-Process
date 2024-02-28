@@ -508,26 +508,65 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="696160">Kerina Helliwell</option>';
                 inlineHtml += '<option value="690145">David Gdanski</option>';
                 inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
             } else if (salesrep == '696160') {
                 inlineHtml += '<option value="668711">Lee Russell</option>';
                 inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
                 inlineHtml += '<option value="690145">David Gdanski</option>';
                 inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
             } else if (salesrep == '690145') {
                 inlineHtml += '<option value="668711">Lee Russell</option>';
                 inlineHtml += '<option value="696160">Kerina Helliwell</option>';
                 inlineHtml += '<option value="690145" selected>David Gdanski</option>';
                 inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
             } else if (salesrep == '668712') {
                 inlineHtml += '<option value="668711">Lee Russell</option>';
                 inlineHtml += '<option value="696160">Kerina Helliwell</option>';
                 inlineHtml += '<option value="690145">David Gdanski</option>';
                 inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            } else if (salesrep == '1809334') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334" selected>David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            } else if (salesrep == '1809382') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712" >Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            } else if (salesrep == '1797389') {
+                inlineHtml += '<option value="668711">Lee Russell</option>';
+                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                inlineHtml += '<option value="690145">David Gdanski</option>';
+                inlineHtml += '<option value="668712" >Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
+                inlineHtml += '<option value="1797389" selected>Bobbi G Yengbie</option>';
             } else {
                 inlineHtml += '<option value="668711">Lee Russell</option>';
                 inlineHtml += '<option value="696160">Kerina Helliwell</option>';
                 inlineHtml += '<option value="690145">David Gdanski</option>';
                 inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1809334">David Daoud</option>';
+                inlineHtml += '<option value="1809382">Liam Pike</option>';
+                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
             }
 
 

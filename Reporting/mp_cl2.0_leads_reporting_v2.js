@@ -13273,7 +13273,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
         }
 
-
         function plotChartProspects(series_data40,
             series_data41,
             series_data42,
@@ -13659,7 +13658,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }]
             });
         }
-
 
         function plotChartSuspectsOffPeakPipeline(series_data70, categores_suspects_off_peak_pipeline) {
             // console.log(series_data)
