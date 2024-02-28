@@ -12764,6 +12764,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -12966,7 +12967,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Website Leads - By Status - Week Entered',
+                    text: 'LPO Leads - By Status - Parent LPO\'s',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -12981,6 +12982,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13191,6 +13193,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13298,6 +13301,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13382,6 +13386,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13475,6 +13480,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13580,6 +13586,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13678,6 +13685,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13765,6 +13773,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     crosshair: true,
                     style: {
                         fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
                     }
                 },
                 yAxis: {
@@ -13853,6 +13867,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -13940,6 +13955,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -14028,6 +14044,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -14124,6 +14141,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -14212,6 +14230,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -14305,6 +14324,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
@@ -14484,6 +14504,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     },
                     labels: {
                         style: {
+                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
                     }
