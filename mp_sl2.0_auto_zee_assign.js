@@ -124,7 +124,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     fieldId: 'companyname'
                 });
 
-                
+
                 if (role != 1032) {
                     if (!isNullorEmpty(siteAddressZipCode) && !isNullorEmpty(siteAddressSuburb) && !isNullorEmpty(siteAddressState)) {
                         //Network Matrix - Franchisee - Auto Allocate
@@ -145,6 +145,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             operator: search.Operator.DOESNOTSTARTWITH,
                             values: "test"
                         }));
+                        //If lead source is LPO - Head Office Generated, use the Australia Post Suburb Mapping JSON to check the suburb is services by the franchisee or not.
                         if (leadSource == 282051) { 
                             zeeNetworkMatrixSearch.filters.push(search.createFilter({
                                 name: 'custentity_ap_suburbs_json',
@@ -165,6 +166,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 values: siteAddressZipCode
                             }));
                         } else {
+                            //Else check the Franchisee Territory JSON field to check if the suburb is being serviced by the franchisee or not. 
                             zeeNetworkMatrixSearch.filters.push(search.createFilter({
                                 name: 'custentity_zee_territory_json',
                                 join: null,
