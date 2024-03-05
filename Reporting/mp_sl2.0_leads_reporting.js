@@ -50,6 +50,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var campaign = context.request.parameters.campaign;
                 var parentLPO = context.request.parameters.lpo;
                 var salesrep = context.request.parameters.sales_rep;
+                var lead_entered_by = context.request.parameters.lead_entered_by;
 
                 zee = context.request.parameters.zee;
                 userId = context.request.parameters.user_id;
@@ -302,7 +303,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 if (role != 1000) {
                     inlineHtml += franchiseeDropdownSection(resultSetZees, context);
                 }
-                inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO);
+                inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage);
                 inlineHtml += '</div></div></div></br></br>';
                 // if (role != 1000) {
@@ -419,7 +420,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
 
-        function leadSourceFilterSection(source, salesrep, campaign, parentLPO) {
+        function leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by) {
             var inlineHtml = '<div class="form-group container source_salesrep_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">LEAD SOURCE & SALES REP - FILTER</span></h4></div>';
@@ -429,7 +430,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="form-group container source_salesrep_section hide">';
             inlineHtml += '<div class="row">';
 
-            inlineHtml += '<div class="col-xs-4 campaign_div">';
+            inlineHtml += '<div class="col-xs-6 campaign_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">CAMPAIGN</span>';
@@ -461,7 +462,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</select>';
             inlineHtml += '</div></div>';
 
-            inlineHtml += '<div class="col-xs-4 source_div">';
+            inlineHtml += '<div class="col-xs-6 source_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SOURCE</span>';
@@ -495,8 +496,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div>';
+            inlineHtml += '</div></div>';
 
-            inlineHtml += '<div class="col-xs-4 sales_rep_div">';
+            inlineHtml += '<div class="form-group container source_salesrep_section hide">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml += '<div class="col-xs-6 sales_rep_div">';
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SALES REP</span>';
@@ -572,7 +577,46 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
             inlineHtml += '</select>';
-            inlineHtml += '</div></div></div></div>';
+            inlineHtml += '</div></div>'
+
+            inlineHtml += '<div class="col-xs-6 sales_rep_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">LEAD ENTERED BY</span>';
+            inlineHtml += '<select id="lead_entered_by" class="form-control">';
+            inlineHtml += '<option></option>';
+
+            //Search: Leads Entered By List
+            var leadEnteredByListSearch = search.load({
+                id: 'customsearch_lead_entered_by_list',
+                type: 'customer'
+            });
+            var leadEnteredByListSearchResultSet = leadEnteredByListSearch.run();
+
+            leadEnteredByListSearchResultSet.each(function (leadEnteredByListResultSet) {
+                var employeeId = leadEnteredByListResultSet.getValue({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP"
+                });
+                var employeeText = leadEnteredByListResultSet.getText({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP"
+                });
+
+                if (lead_entered_by == employeeId) {
+                    inlineHtml += '<option value="' + employeeId +
+                        '" selected="selected">' + employeeText + '</option>';
+                } else {
+                    inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                        '</option>';
+                }
+
+                return true;
+            });
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div ></div > ';
+            inlineHtml += '</div ></div > ';
 
             // if (campaign == 69) {
             inlineHtml += '<div class="form-group container parent_lpo_label_section">';

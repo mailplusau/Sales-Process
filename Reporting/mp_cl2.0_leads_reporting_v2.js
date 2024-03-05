@@ -52,6 +52,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var sales_campaign = null;
         var parent_lpo = null;
         var sales_rep = null;
+        var lead_entered_by = null;
         var calcprodusage = null;
 
         var total_months = 14;
@@ -261,6 +262,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             lead_source = $('#lead_source').val();
             sales_campaign = $('#sales_campaign').val();
+            lead_entered_by = $('#lead_entered_by').val();
             parent_lpo = $('#parent_lpo').val();
             sales_rep = $('#sales_rep').val();
             invoice_type = $('#invoice_type').val();
@@ -337,6 +339,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var parent_lpo = $('#parent_lpo').val();
 
                 var sales_rep = $('#sales_rep').val();
+                var lead_entered_by = $('#lead_entered_by').val();
                 calcprodusage = $('#calc_prod_usage').val();
 
                 zee = $(
@@ -357,7 +360,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by;
 
 
                 window.location.href = url;
@@ -492,6 +495,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                qualifiedLeadCountSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -754,6 +766,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                customerCancellationRequestedDateSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
 
             if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
                 customerCancellationRequestedDateSearch.filters.push(search.createFilter({
@@ -1001,6 +1022,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                customerCancellationRequesteSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -1376,6 +1406,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                customerListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -1852,6 +1891,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                customerTrialListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 customerTrialListBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -2282,6 +2330,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                prospectWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 prospectWeeklyReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -2609,6 +2666,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 prospectOpportunityWeeklyReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -2843,6 +2909,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -3150,6 +3225,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 suspectsLostBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -3436,6 +3520,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -3639,6 +3732,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 suspectsOOTBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -3826,6 +3928,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsQualifiedSalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -4032,6 +4143,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsValidatedSalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 suspectsValidatedSalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -4233,6 +4353,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -4469,6 +4598,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -4673,6 +4811,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -4897,6 +5044,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                leadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
@@ -5902,6 +6058,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                lpoLeadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
             if (!isNullorEmpty(sales_campaign)) {
                 lpoLeadsListBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -6877,6 +7042,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     values: sales_rep
                 }));
             }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
 
             if (!isNullorEmpty(sales_campaign)) {
                 websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
@@ -8557,6 +8732,16 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(lead_entered_by)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+
             if (!isNullorEmpty(sales_campaign)) {
                 websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
@@ -9468,6 +9653,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
                     values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
                 }));
             }
 
