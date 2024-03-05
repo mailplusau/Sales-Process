@@ -105,6 +105,26 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                 var parentLPO = null;
                 var parentLPOCount = 0;
+
+                var customerRecord = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
+                });
+
+                var leadSource = customerRecord.getValue({
+                    fieldId: 'leadsource'
+                });
+
+                var entity_id = customerRecord.getValue({
+                    fieldId: 'entityid'
+                });
+
+                var customer_name = customerRecord.getValue({
+                    fieldId: 'companyname'
+                });
+
+                
                 if (role != 1032) {
                     if (!isNullorEmpty(siteAddressZipCode) && !isNullorEmpty(siteAddressSuburb) && !isNullorEmpty(siteAddressState)) {
                         //Network Matrix - Franchisee - Auto Allocate
@@ -125,24 +145,51 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             operator: search.Operator.DOESNOTSTARTWITH,
                             values: "test"
                         }));
-                        zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_zee_territory_json',
-                            join: null,
-                            operator: search.Operator.CONTAINS,
-                            values: siteAddressSuburb
-                        }));
-                        zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_zee_territory_json',
-                            join: null,
-                            operator: search.Operator.CONTAINS,
-                            values: siteAddressState
-                        }));
-                        zeeNetworkMatrixSearch.filters.push(search.createFilter({
-                            name: 'custentity_zee_territory_json',
-                            join: null,
-                            operator: search.Operator.CONTAINS,
-                            values: siteAddressZipCode
-                        }));
+                        if (leadSource == 282051) { 
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_ap_suburbs_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressSuburb
+                            }));
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_ap_suburbs_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressState
+                            }));
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_ap_suburbs_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressZipCode
+                            }));
+                        } else {
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_zee_territory_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressSuburb
+                            }));
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_zee_territory_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressState
+                            }));
+                            zeeNetworkMatrixSearch.filters.push(search.createFilter({
+                                name: 'custentity_zee_territory_json',
+                                join: null,
+                                operator: search.Operator.CONTAINS,
+                                values: siteAddressZipCode
+                            }));
+                        }
+
+                        log.debug({
+                            title: 'zeeNetworkMatrixSearch.filters',
+                            details: zeeNetworkMatrixSearch.filters
+                        })
+                        
 
                         var zee_name = '';
 
@@ -166,24 +213,17 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             return true;
                         });
 
-                        var customerRecord = record.load({
-                            type: record.Type.CUSTOMER,
-                            id: customerInternalId,
-                            isDynamic: true
-                        });
+                        log.debug({
+                            title: 'zeeCount',
+                            details: zeeCount
+                        })
 
-                        var leadSource = customerRecord.getValue({
-                            fieldId: 'leadsource'
-                        });
+                        log.debug({
+                            title: 'zee_name',
+                            details: zee_name
+                        })
 
-                        var entity_id = customerRecord.getValue({
-                            fieldId: 'entityid'
-                        });
-
-                        var customer_name = customerRecord.getValue({
-                            fieldId: 'companyname'
-                        });
-
+                        
                         if (isNullorEmpty(zee_id) || zeeCount > 1) {
                             if (leadSource != -4) {
                                 customerRecord.setValue({
@@ -218,8 +258,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 }
                             }
                         } else if (!isNullorEmpty(zee_id) && zeeCount == 1) {
+                            var partnerRecord = record.load({
+                                type: record.Type.PARTNER,
+                                id: zee_id
+                            });
+
+                            var lpoSuburbMappingJSON = partnerRecord.getValue({
+                                fieldId: 'custentity_ap_suburbs_json'
+                            });
+
                             if (role != 1032) {
                                 if (leadSource == 282051) {
+                                    //Lead Source: LPO - Head Office Generated
+
                                     //Search: Active Parent LPO Customer List
                                     var parentLPOListSearch = search.load({
                                         type: 'customer',
@@ -245,6 +296,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                         return true;
                                     });
 
+                                    log.debug({
+                                        title: 'LPO - Head Office Generated - parentLPOCount',
+                                        details: parentLPOCount
+                                    })
+                                    log.debug({
+                                        title: 'LPO - Head Office Generated - parentLPO',
+                                        details: parentLPO
+                                    })
+
                                     if (parentLPOCount == 1) {
                                         customerRecord.setValue({
                                             fieldId: 'custentity_lpo_parent_account',
@@ -255,6 +315,37 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                             fieldId: 'entitystatus',
                                             value: 42,
                                         });
+                                    } else {
+                                        log.debug({
+                                            title: 'LPO - Head Office Generated - lpoSuburbMappingJSON',
+                                            details: lpoSuburbMappingJSON
+                                        })
+                                        if (!isNullorEmpty(lpoSuburbMappingJSON)) {
+                                            lpoSuburbMappingJSON = JSON.parse(lpoSuburbMappingJSON);
+                                            log.debug({
+                                                title: 'LPO - Head Office Generated - lpoSuburbMappingJSON.hasOwnProperty(parent_lpo_id)',
+                                                details: lpoSuburbMappingJSON.hasOwnProperty('parent_lpo_id')
+                                            })
+                                            // if (lpoSuburbMappingJSON.hasOwnProperty('parent_lpo_id')) {
+                                                lpoSuburbMappingJSON.forEach(function (suburb) {
+                                                    if (!isNullorEmpty(suburb.parent_lpo_id)) {
+                                                        if (siteAddressSuburb.toLowerCase() == suburb.suburbs.toLowerCase() && siteAddressZipCode == suburb.post_code) {
+                                                            customerRecord.setValue({
+                                                                fieldId: 'custentity_lpo_parent_account',
+                                                                value: parseInt(suburb.parent_lpo_id),
+                                                            });
+
+                                                            customerRecord.setValue({
+                                                                fieldId: 'entitystatus',
+                                                                value: 42,
+                                                            });
+                                                        }
+                                                    }
+
+                                                });
+                                            // }
+
+                                        }
                                     }
                                 }
                             }
@@ -264,10 +355,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 value: zee_id,
                             });
 
-                            var partnerRecord = record.load({
-                                type: record.Type.PARTNER,
-                                id: zee_id
-                            });
 
                             var salesRep = partnerRecord.getValue({
                                 fieldId: 'custentity_sales_rep_assigned'
