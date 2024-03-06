@@ -5636,7 +5636,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Total Lead Count'//19
                 }],
                 columnDefs: [{
-                    targets: [0, 16, 17, 18],
+                    targets: [0, 4, 16, 17, 18],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -6626,7 +6626,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Total Lead Count'//19
                 }],
                 columnDefs: [{
-                    targets: [0, 16, 17, 18],
+                    targets: [0, 4, 16, 17, 18],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
