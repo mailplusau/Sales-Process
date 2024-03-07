@@ -146,7 +146,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             values: "test"
                         }));
                         //If lead source is LPO - Head Office Generated, use the Australia Post Suburb Mapping JSON to check the suburb is services by the franchisee or not.
-                        if (leadSource == 282051) { 
+                        if (leadSource == 282051) {
                             zeeNetworkMatrixSearch.filters.push(search.createFilter({
                                 name: 'custentity_ap_suburbs_json',
                                 join: null,
@@ -191,7 +191,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             title: 'zeeNetworkMatrixSearch.filters',
                             details: zeeNetworkMatrixSearch.filters
                         })
-                        
 
                         var zee_name = '';
 
@@ -225,7 +224,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             details: zee_name
                         })
 
-                        
                         if (isNullorEmpty(zee_id) || zeeCount > 1) {
                             if (leadSource != -4) {
                                 customerRecord.setValue({
@@ -328,25 +326,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                                 title: 'LPO - Head Office Generated - lpoSuburbMappingJSON.hasOwnProperty(parent_lpo_id)',
                                                 details: lpoSuburbMappingJSON.hasOwnProperty('parent_lpo_id')
                                             })
-                                            // if (lpoSuburbMappingJSON.hasOwnProperty('parent_lpo_id')) {
-                                                lpoSuburbMappingJSON.forEach(function (suburb) {
-                                                    if (!isNullorEmpty(suburb.parent_lpo_id)) {
-                                                        if (siteAddressSuburb.toLowerCase() == suburb.suburbs.toLowerCase() && siteAddressZipCode == suburb.post_code) {
-                                                            customerRecord.setValue({
-                                                                fieldId: 'custentity_lpo_parent_account',
-                                                                value: parseInt(suburb.parent_lpo_id),
-                                                            });
 
-                                                            customerRecord.setValue({
-                                                                fieldId: 'entitystatus',
-                                                                value: 42,
-                                                            });
-                                                        }
+                                            lpoSuburbMappingJSON.forEach(function (suburb) {
+                                                if (!isNullorEmpty(suburb.parent_lpo_id)) {
+                                                    if (siteAddressSuburb.toLowerCase() == suburb.suburbs.toLowerCase() && siteAddressZipCode == suburb.post_code) {
+                                                        customerRecord.setValue({
+                                                            fieldId: 'custentity_lpo_parent_account',
+                                                            value: parseInt(suburb.parent_lpo_id),
+                                                        });
+                                                        customerRecord.setValue({
+                                                            fieldId: 'entitystatus',
+                                                            value: 42,
+                                                        });
                                                     }
-
-                                                });
-                                            // }
-
+                                                }
+                                            });
                                         }
                                     }
                                 }
@@ -559,7 +553,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Sales Rep depending on the franchisee
+                                Assign to Liam Pike depending on the franchisee
                                 Assign to Franchisee Generated
                                  */
                                 var salesRecord = record.create({
@@ -576,7 +570,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: salesRep, //Assign to Sales Rep
+                                    value: 1809382, //Assign to Liam Pike
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -606,9 +600,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: salesRepEmail,
+                                    recipients: 'liam.pike@mailplus.com.au',
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
+                                    cc: ['luke.forbes@mailplus.com.au', salesRepEmail, 'lee.russell@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
@@ -672,21 +666,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     }
                 }
             }
-        }
-
-        /**
-         * @description
-         * @author Ankith Ravindran (AR)
-         * @date 09/10/2023
-         * @param {*} todayDate
-         * @returns {*} 
-         */
-        function GetFormattedDate(todayDate) {
-
-            var month = pad(todayDate.getMonth() + 1);
-            var day = pad(todayDate.getDate());
-            var year = (todayDate.getFullYear());
-            return year + "-" + month + "-" + day;
         }
 
         function pad(s) {
