@@ -33,6 +33,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var start_date = context.request.parameters.start_date;
                 var last_date = context.request.parameters.last_date;
 
+                var modified_start_date = context.request.parameters.modified_date_from;
+                var modified_last_date = context.request.parameters.modified_date_to;
+
                 var usage_date_from = context.request.parameters.usage_date_from;
                 var usage_date_to = context.request.parameters.usage_date_to;
 
@@ -63,7 +66,23 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     calcprodusage = 2;
                 }
 
-                var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+                var date = new Date();
+                y = date.getFullYear();
+                m = date.getMonth();
+                var day = date.getDay();
+
+                // Adjust to the previous Monday
+                var offset = day === 0 ? 6 : day - 1;
+                date.setDate(date.getDate() - offset);
+
+                // Start of week
+                var startOfWeek = new Date(date);
+
+                // End of week (Sunday)
+                var endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+
                 var firstDay = new Date(y, m, 1);
                 var lastDay = new Date(y, m + 1, 0);
 
@@ -72,6 +91,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 firstDay = GetFormattedDate(firstDay);
                 lastDay = GetFormattedDate(lastDay);
+
+                startOfWeek = GetFormattedDate(startOfWeek);
+                endOfWeek = GetFormattedDate(endOfWeek);
 
                 if (isNullorEmpty(usage_date_from)) {
                     usage_date_from = firstDay;
@@ -92,8 +114,18 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     details: lastDay
                 });
 
+                log.debug({
+                    title: 'startOfWeek',
+                    details: startOfWeek
+                });
+
+                log.debug({
+                    title: 'endOfWeek',
+                    details: endOfWeek
+                });
+
                 if (role != 1000) {
-                    if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from)) {
+                    if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from) && isNullorEmpty(modified_start_date)) {
                         if (showTotal == 'T') {
                             start_date = null;
                             date_signed_up_from = null;
@@ -105,7 +137,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                     }
 
-                    if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to)) {
+                    if (isNullorEmpty(last_date) && isNullorEmpty(date_signed_up_to) && isNullorEmpty(date_quote_sent_to) && isNullorEmpty(modified_last_date)) {
                         if (showTotal == 'T') {
                             last_date = null;
                             date_signed_up_to = null;
@@ -116,13 +148,31 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                     }
                 } else {
-                    if (start_date == null && last_date == null) {
+                    if (modified_start_date == null && modified_last_date == null) {
                         var date = new Date();
                         var y = date.getFullYear();
                         var m = date.getMonth();
+                        var day = date.getDay();
+
+                        // Adjust to the previous Monday
+                        var offset = day === 0 ? 6 : day - 1;
+                        date.setDate(date.getDate() - offset);
+
+                        // Start of week
+                        var startOfWeek = new Date(date);
+
+                        // End of week (Sunday)
+                        var endOfWeek = new Date(startOfWeek);
+                        endOfWeek.setDate(endOfWeek.getDate() + 6);
+                        endOfWeek = GetFormattedDate(endOfWeek);
+                        startOfWeek = GetFormattedDate(startOfWeek);
 
                         var lastDay = new Date(y, m + 1, 0);
                         lastDay.setHours(0, 0, 0, 0);
+
+                        // modified_start_date = startOfWeek
+                        // modified_last_date = endOfWeek
+
                         //If begining of the year, show the current financial year, else show the current 
                         if (m < 5) {
                             //Calculate the Current inancial Year
@@ -300,11 +350,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     id: 'customsearch_smc_franchisee'
                 });
                 var resultSetZees = searchZees.run();
-                if (role != 1000) {
-                    inlineHtml += franchiseeDropdownSection(resultSetZees, context);
-                }
+                // if (role != 1000) {
+                inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+                // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
-                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage);
+                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date);
                 inlineHtml += '</div></div></div></br></br>';
                 // if (role != 1000) {
                 inlineHtml +=
@@ -372,13 +422,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 zee_id = searchResult_zee.getValue('internalid');
                 zee_name = searchResult_zee.getValue('companyname');
 
-                if (zee == zee_id) {
-                    inlineHtml += '<option value="' + zee_id +
-                        '" selected="selected">' + zee_name + '</option>';
+                if (role == 1000) {
+                    if (zee == zee_id) {
+                        inlineHtml += '<option value="' + zee_id +
+                            '" selected="selected">' + zee_name + '</option>';
+                    }
                 } else {
-                    inlineHtml += '<option value="' + zee_id + '">' + zee_name +
-                        '</option>';
+                    if (zee == zee_id) {
+                        inlineHtml += '<option value="' + zee_id +
+                            '" selected="selected">' + zee_name + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + zee_id + '">' + zee_name +
+                            '</option>';
+                    }
                 }
+
 
                 return true;
             });
@@ -677,8 +735,40 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
         * They are initiated with jQuery in the `pageInit()` function.
         * @return  {String} `inlineHtml`
         */
-        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage) {
+        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date) {
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES ACTIVITY & USER NOTE - FILTER</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div class="form-group container modified_date_div hide">';
+            inlineHtml += '<div class="row">';
+
+            // Last Modified Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">SALES ACTIVITY & USER NOTE DATE - FROM</span>';
+            if (isNullorEmpty(modified_start_date)) {
+                inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
+            } else {
+                inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' + modified_start_date + '"/>';
+            }
+
+            inlineHtml += '</div></div>';
+            // Last Modified Date to field
+            inlineHtml += '<div class="col-xs-6 date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="date_to_text">SALES ACTIVITY & USER NOTE DATE - TO</span>';
+            if (isNullorEmpty(modified_last_date)) {
+                inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date">';
+            } else {
+                inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' + modified_last_date + '">';
+            }
+
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml += '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED - FILTER</span></h4></div>';
             inlineHtml += '</div>';
@@ -1087,7 +1177,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads"><b>SUSPECTS - HOT/NEW LEAD</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer"><b>SUSPECTS - NO ANSWER</b></a></li>';
             inlineHtml +=

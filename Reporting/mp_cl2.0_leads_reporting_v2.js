@@ -34,6 +34,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var date_from = null;
         var date_to = null;
 
+        var modified_date_from = null;
+        var modified_date_to = null;
+
         var usage_date_from = null;
         var usage_date_to = null;
 
@@ -200,6 +203,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             $('.lead_entered_label_section').removeClass('hide');
             $('.lead_entered_div').removeClass('hide');
+            $('.modified_date_div').removeClass('hide');
             if (role != 1000) {
                 $('.quote_sent_label_section').removeClass('hide');
                 $('.quote_sent_div').removeClass('hide');
@@ -208,9 +212,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 $('.usage_date_div').removeClass('hide');
                 $('.invoice_label_section').removeClass('hide');
                 $('.invoice_date_type_div').removeClass('hide');
-                $('.source_salesrep_label_section').removeClass('hide');
-                $('.source_salesrep_section').removeClass('hide');
+
             }
+
+            $('.source_salesrep_label_section').removeClass('hide');
+            $('.source_salesrep_section').removeClass('hide');
 
             $('.signed_up_label_section').removeClass('hide');
             $('.signed_up_div').removeClass('hide');
@@ -240,6 +246,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             date_to = $('#date_to').val();
             date_to = dateISOToNetsuite(date_to);
+
+            modified_date_from = $('#modified_date_from').val();
+            modified_date_from = dateISOToNetsuite(modified_date_from);
+
+            modified_date_to = $('#modified_date_to').val();
+            modified_date_to = dateISOToNetsuite(modified_date_to);
 
             usage_date_from = $('#usage_date_from').val();
             usage_date_from = dateISOToNetsuite(usage_date_from);
@@ -321,6 +333,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var date_from = $('#date_from').val();
                 var date_to = $('#date_to').val();
 
+                var modified_date_from = $('#modified_date_from').val();
+                var modified_date_to = $('#modified_date_to').val();
+
                 var usage_date_from = $('#usage_date_from').val();
                 var usage_date_to = $('#usage_date_to').val();
 
@@ -360,7 +375,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to;
 
 
                 window.location.href = url;
@@ -421,6 +436,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('date_from: ' + date_from);
             console.log('date_to ' + date_to);
 
+            console.log('modified_date_from: ' + modified_date_from);
+            console.log('modified_date_to ' + modified_date_to);
+
             console.log('usage_date_from: ' + usage_date_from);
             console.log('usage_date_to ' + usage_date_to);
 
@@ -447,6 +465,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             // if (role != 1000) {
             console.log('date_from:' + date_from);
             console.log('date_to:' + date_to);
+
+            if (role == 1000 && isNullorEmpty(zee_id) && isNullorEmpty(sales_rep) && !isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                alert('Please select Sales Rep while selecting the Modified Date From & To filters.');
+                return false;
+            }
+
+            console.log('Before Search Name: Zee Lead by Status - Weekly Reporting')
             if (role == 1000) {
                 //Search Name: Zee Lead by Status - Monthly Reporting
                 var qualifiedLeadCountSearch = search.load({
@@ -487,7 +512,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     values: date_to
                 }));
             }
-
 
             if (!isNullorEmpty(sales_rep)) {
                 qualifiedLeadCountSearch.filters.push(search.createFilter({
@@ -567,6 +591,100 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ANYOF,
                     values: parent_lpo
                 }));
+            }
+
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = qualifiedLeadCountSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
 
@@ -757,6 +875,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
 
+
             if (!isNullorEmpty(sales_rep)) {
                 customerCancellationRequestedDateSearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_assigned',
@@ -834,6 +953,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ANYOF,
                     values: parent_lpo
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = customerCancellationRequestedDateSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                customerCancellationRequestedDateSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             var totalCancellationRequest = 0;
@@ -1092,6 +1304,100 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ANYOF,
                     values: parent_lpo
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = customerCancellationRequesteSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                customerCancellationRequesteSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
 
@@ -1443,6 +1749,100 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ANYOF,
                     values: parent_lpo
                 }));
+            }
+
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = customerListBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                customerListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
 
@@ -1927,6 +2327,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = customerTrialListBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                customerTrialListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
 
             total_customer_signed = 0;
             var count_customer_signed = 0;
@@ -2399,6 +2892,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = prospectWeeklyReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                prospectWeeklyReportingSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             var count2 = 0;
             var oldDate2 = null;
 
@@ -2734,6 +3320,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = prospectOpportunityWeeklyReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                prospectOpportunityWeeklyReportingSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             var count2 = 0;
             var oldDate2 = null;
 
@@ -2963,6 +3642,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ONORBEFORE,
                     values: date_signed_up_to
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsListBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             total_customer_signed = 0;
@@ -3277,6 +4049,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsLostBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsLostBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             total_customer_signed = 0;
             var countSuspectsLost = 0;
             var oldSuspectsLostWeekLeadEntered = null;
@@ -3572,6 +4437,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsOffPeakPipelineBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsOffPeakPipelineBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             suspectsOffPeakPipelineBySalesRepWeeklySearch.run().each(function (
                 suspectsLostBySalesRepWeeklySearchResultSet) {
 
@@ -3782,6 +4740,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ONORBEFORE,
                     values: date_signed_up_to
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsOOTBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsOOTBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
 
@@ -3999,6 +5050,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsQualifiedSalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsQualifiedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
 
             suspectsQualifiedSalesRepWeeklySearch.run().each(function (
                 suspectsQualifiedSalesRepWeeklySearchResultSet) {
@@ -4211,6 +5355,100 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsValidatedSalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsValidatedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
+
 
             suspectsValidatedSalesRepWeeklySearch.run().each(function (
                 suspectsValidatedSalesRepWeeklySearchResultSet) {
@@ -4422,6 +5660,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ONORBEFORE,
                     values: date_signed_up_to
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsFollowUpBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsFollowUpBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -4666,6 +5997,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsNoAnswerBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsNoAnswerBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             var countSuspectFollowUp = 0;
             var countSuspectNoAnswer = 0;
             suspectsNoAnswerBySalesRepWeeklySearch.run().each(function (
@@ -4880,6 +6304,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ONORBEFORE,
                     values: date_signed_up_to
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = suspectsInContactBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                suspectsInContactBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -5097,6 +6614,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.IS,
                     values: zee_id
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = leadsListBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                leadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             var count1 = 0;
@@ -6110,6 +7720,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = lpoLeadsListBySalesRepWeeklySearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                lpoLeadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
+
             var count1 = 0;
             var oldParentLPOName = null;
 
@@ -7072,6 +8775,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             }
 
             if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+
                 websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
                     name: 'custentity_date_lead_quote_sent',
                     join: null,
@@ -7087,6 +8791,99 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+
+                var defaultSearchFilters = websiteSuspectsLeadsReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                websiteSuspectsLeadsReportingSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
 
             var oldcustInternalID = null;
             var oldcustEntityID = null;
@@ -7132,6 +8929,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var csvSuspectNoAnswerDataSet = [];
             var csvSuspectInContactDataSet = [];
             var csvProspectQuoteSentDataSet = [];
+
+            console.log('websiteSuspectsLeadsReportingSearch :' + websiteSuspectsLeadsReportingSearch);
+
+            console.log('default search filters: ' + JSON.stringify(websiteSuspectsLeadsReportingSearch.filters))
 
             var websiteSuspectsLeadsReportingSearchCount = websiteSuspectsLeadsReportingSearch.runPaged().count;
 
@@ -8776,7 +10577,98 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }));
             }
 
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = websiteProspectLeadsReportingSearch.filterExpression;
 
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                websiteProspectLeadsReportingSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+            }
 
             var oldcustInternalID = null;
             var oldcustEntityID = null;
@@ -9717,6 +11609,100 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     operator: search.Operator.ONORBEFORE,
                     values: date_quote_sent_to
                 }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = websiteCustomersReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('signed customer defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": 'lastmodifieddate',
+                //     "join": null,
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 2,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "context",
+                //     "join": "systemnotes",
+                //     "operator": "anyof",
+                //     "values": ["UIF", "SLT"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 1
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "activity",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 1,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "date",
+                //     "join": "activity",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "internalid",
+                //     "join": "usernotes",
+                //     "operator": "anyof",
+                //     "values": ["@NONE@"],
+                //     "isor": true,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 0
+                // });
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
+
+                websiteCustomersReportingSearch.filterExpression = defaultSearchFilters;
+
+                // websiteSuspectsLeadsReportingSearch.filters.push({
+                //     "name": "notedate",
+                //     "join": "usernotes",
+                //     "operator": "within",
+                //     "values": [modified_date_from, modified_date_to],
+                //     "isor": false,
+                //     "isnot": false,
+                //     "leftparens": 0,
+                //     "rightparens": 2
+                // });
             }
 
             var oldcustInternalID = null;
