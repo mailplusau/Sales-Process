@@ -1,4 +1,4 @@
-n/**
+/**
  * @NApiVersion 2.x
  * @NScriptType ScheduledScript
  * 
