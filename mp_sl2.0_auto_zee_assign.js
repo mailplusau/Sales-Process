@@ -28,6 +28,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
             userId = runtime.getCurrentUser().id;
             role = runtime.getCurrentUser().role;
 
+            var lpoLeadBDMAssigned = 0;
+
             var date = new Date();
             var date_now = format.parse({
                 value: date,
@@ -292,6 +294,16 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                             summary: "GROUP"
                                         });
 
+                                        lpoLeadBDMAssigned = parentLPOListSearchResultSet.getValue({
+                                            name: "custrecord_lpo_sales_rep",
+                                            join: "CUSTRECORD_LPO_LEAD_CUSTOMER",
+                                            summary: "GROUP",
+                                        });
+
+                                        if (isNullorEmpty(lpoLeadBDMAssigned)) {
+                                            lpoLeadBDMAssigned = 653718
+                                        }
+
                                         parentLPOCount++;
                                         return true;
                                     });
@@ -398,7 +410,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to David Daoud depending on the franchisee
+                                Assign to BDM select via the LPO Profiler Page depending on the franchisee
                                 Assign to LPO
                                  */
                                 var salesRecord = record.create({
@@ -415,7 +427,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: 1809334, // Assign to David Daoud
+                                    value: lpoLeadBDMAssigned, 
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -490,13 +502,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
-                            } else if (leadSource == 282051) {
+                            } else if (leadSource == 97943) {
 
                                 //Lead Source: Head Office Generated
 
                                 /* 
                                 Create Sales Record
-                                Assign to Sales Rep depending on the franchisee
+                                Assign to Liam Pike (role: Lead Qualification) depending on the franchisee
                                 Assign to Field Sales
                                  */
                                 var salesRecord = record.create({
@@ -513,7 +525,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
-                                    value: salesRep,
+                                    value: 1809382, //Assign to Liam
                                 })
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
@@ -603,6 +615,64 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     recipients: 'liam.pike@mailplus.com.au',
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', salesRepEmail, 'lee.russell@mailplus.com.au'],
+                                    relatedRecords: { entityId: customerInternalId }
+                                });
+                            } else if (leadSource == 285297) {
+
+                                //Lead Source: Inbound - Head Office Generated
+
+                                /* 
+                                Create Sales Record
+                                Assign to Sales Rep depending on the franchisee
+                                Assign to Field Sales
+                                 */
+                                var salesRecord = record.create({
+                                    type: 'customrecord_sales'
+                                });
+
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_customer',
+                                    value: customerInternalId,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_campaign',
+                                    value: 62, //Field Sales
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_assigned',
+                                    value: salesRep,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_outcome',
+                                    value: 20,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbackdate',
+                                    value: date_now,
+                                })
+                                salesRecord.setValue({
+                                    fieldId: 'custrecord_sales_callbacktime',
+                                    value: time_now,
+                                })
+
+                                salesRecord.save({
+                                    ignoreMandatoryFields: true
+                                });
+
+                                var subject = 'Sales Head Office Generated - ' + entity_id + ' ' + customer_name;
+                                var cust_id_link =
+                                    'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+                                    customerInternalId;
+                                var body =
+                                    'New lead entered into the system by Head Office. \n Customer Name: ' +
+                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+
+                                email.send({
+                                    author: 112209,
+                                    body: body,
+                                    recipients: salesRepEmail,
+                                    subject: subject,
+                                    cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
