@@ -9687,7 +9687,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }
 
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
-
+                    
                     if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
 
                         suspectDataSet.push(['',
