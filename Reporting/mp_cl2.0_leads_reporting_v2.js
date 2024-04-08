@@ -162,6 +162,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
         var customerChildDataSet = [];
+        var customerChildStatusDataSet = [];
         var existingCustomerChildDataSet = [];
         var prospectChildDataSet = [];
         var prospectOpportunityChildDataSet = [];
@@ -12127,7 +12128,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 invoiceDate: oldinvoiceDate,
                                 invoiceType: oldInvoiceType,
                                 invoiceAmount: oldInvoiceAmount,
-                                invoiceStatus: oldInvoiceStatus
+                                invoiceStatus: oldInvoiceStatus,
+                                oldStatus: '',
+                                newStatus: '',
                             });
 
                             invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12187,7 +12190,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                     invoiceDate: oldinvoiceDate,
                                     invoiceType: oldInvoiceType,
                                     invoiceAmount: oldInvoiceAmount,
-                                    invoiceStatus: oldInvoiceStatus
+                                    invoiceStatus: oldInvoiceStatus,
+                                    oldStatus: '',
+                                    newStatus: '',
                                 });
 
                                 invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12268,6 +12273,91 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                     return true;
                                 });
                             }
+                        }
+
+                        if (role == 3) {
+                            // Lead Status Timeline
+                            var leadStatusTimelineSearch = search.load({
+                                type: 'customer',
+                                id: 'customsearch_lead_status_timeline'
+                            });
+
+
+                            leadStatusTimelineSearch.filters.push(search.createFilter({
+                                name: 'internalid',
+                                join: null,
+                                operator: search.Operator.ANYOF,
+                                values: parseInt(oldcustInternalID)
+                            }));
+
+                            // if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                            //     mpexUsageResults.filters.push(search.createFilter({
+                            //         name: 'custrecord_cust_date_stock_used',
+                            //         join: null,
+                            //         operator: search.Operator.ONORAFTER,
+                            //         values: usage_date_from
+                            //     }));
+                            //     mpexUsageResults.filters.push(search.createFilter({
+                            //         name: 'custrecord_cust_date_stock_used',
+                            //         join: null,
+                            //         operator: search.Operator.ONORBEFORE,
+                            //         values: usage_date_to
+                            //     }));
+
+                            // }
+
+
+
+                            leadStatusTimelineSearch.run().each(function (leadStatusTimelineResultSet) {
+
+                                var systemNotesDate = leadStatusTimelineResultSet.getValue({
+                                    name: "date",
+                                    join: "systemNotes",
+                                });
+                                var oldStatus = leadStatusTimelineResultSet.getValue({
+                                    name: "oldvalue",
+                                    join: "systemNotes",
+                                });
+
+
+                                var newStatus = leadStatusTimelineResultSet.getValue({
+                                    name: "newvalue",
+                                    join: "systemNotes",
+                                });
+
+                                var systemNotesDateSplitSpace = systemNotesDate.split(' ');
+                                var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
+                                var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
+                                if (parseInt(systemNotesDateSplit[1]) < 10) {
+                                    systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
+                                }
+
+                                if (parseInt(systemNotesDateSplit[0]) < 10) {
+                                    systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
+                                }
+
+                                systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
+                                    systemNotesDateSplit[0];
+                                systemNotesDate = systemNotesDate + ' ' + systemNotesTime
+
+                                customerChildDataSet.push({
+                                    invoiceDocumentNumber: '',
+                                    invoiceDate: systemNotesDate,
+                                    invoiceType: '',
+                                    invoiceAmount: '',
+                                    invoiceStatus: '',
+                                    oldStatus: oldStatus,
+                                    newStatus: newStatus,
+                                });
+
+                                // customerChildStatusDataSet.push({
+                                //     systemNotesDate: systemNotesDate,
+                                //     oldStatus: oldStatus,
+                                //     newStatus: newStatus,
+                                // });
+
+                                return true;
+                            });
                         }
 
                         var usage_date_from_split = usage_date_from.split('/');
@@ -12441,6 +12531,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     invoiceServiceTotal = 0.0;
                     invoiceProductsTotal = 0.0;
                     customerChildDataSet = [];
+                    customerChildStatusDataSet = [];
 
                     // if (!isNullorEmpty(activityTitle)) {
                     //     if (custStage == 'CUSTOMER') {
@@ -12516,7 +12607,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             invoiceDate: oldinvoiceDate,
                             invoiceType: oldInvoiceType,
                             invoiceAmount: oldInvoiceAmount,
-                            invoiceStatus: oldInvoiceStatus
+                            invoiceStatus: oldInvoiceStatus,
+                            oldStatus: '',
+                            newStatus: '',
                         });
 
                         invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12597,6 +12690,89 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         }
                     }
 
+                    if (role == 3) {
+                        // Lead Status Timeline
+                        var leadStatusTimelineSearch = search.load({
+                            type: 'customer',
+                            id: 'customsearch_lead_status_timeline'
+                        });
+
+
+                        leadStatusTimelineSearch.filters.push(search.createFilter({
+                            name: 'internalid',
+                            join: null,
+                            operator: search.Operator.ANYOF,
+                            values: parseInt(oldcustInternalID)
+                        }));
+
+                        // if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                        //     mpexUsageResults.filters.push(search.createFilter({
+                        //         name: 'custrecord_cust_date_stock_used',
+                        //         join: null,
+                        //         operator: search.Operator.ONORAFTER,
+                        //         values: usage_date_from
+                        //     }));
+                        //     mpexUsageResults.filters.push(search.createFilter({
+                        //         name: 'custrecord_cust_date_stock_used',
+                        //         join: null,
+                        //         operator: search.Operator.ONORBEFORE,
+                        //         values: usage_date_to
+                        //     }));
+
+                        // }
+
+
+
+                        leadStatusTimelineSearch.run().each(function (leadStatusTimelineResultSet) {
+
+                            var systemNotesDate = leadStatusTimelineResultSet.getValue({
+                                name: "date",
+                                join: "systemNotes",
+                            });
+                            var oldStatus = leadStatusTimelineResultSet.getValue({
+                                name: "oldvalue",
+                                join: "systemNotes",
+                            });
+
+
+                            var newStatus = leadStatusTimelineResultSet.getValue({
+                                name: "newvalue",
+                                join: "systemNotes",
+                            });
+
+                            var systemNotesDateSplitSpace = systemNotesDate.split(' ');
+                            var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
+                            var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
+                            if (parseInt(systemNotesDateSplit[1]) < 10) {
+                                systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
+                            }
+
+                            if (parseInt(systemNotesDateSplit[0]) < 10) {
+                                systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
+                            }
+
+                            systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
+                                systemNotesDateSplit[0];
+                            systemNotesDate = systemNotesDate + ' ' + systemNotesTime
+                            customerChildDataSet.push({
+                                invoiceDocumentNumber: '',
+                                invoiceDate: systemNotesDate,
+                                invoiceType: '',
+                                invoiceAmount: '',
+                                invoiceStatus: '',
+                                oldStatus: oldStatus,
+                                newStatus: newStatus,
+                            });
+
+                            // customerChildStatusDataSet.push({
+                            //     systemNotesDate: systemNotesDate,
+                            //     oldStatus: oldStatus,
+                            //     newStatus: newStatus,
+                            // });
+
+                            return true;
+                        });
+                    }
 
                     var usage_date_from_split = usage_date_from.split('/');
 
@@ -12828,7 +13004,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         $('td', row).css('background-color', '#86A3B8');
                     } else if (!isNullorEmpty(data[21])) {
                         data[21].forEach(function (el) {
-
                             if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
                                 row_color = ''
 
@@ -13191,18 +13366,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 rowCallback: function (row, data, index) {
 
                     var row_color = ''
+                    console.log('customer table: data[5]' + data[5]);
+                    console.log('customer table: data[15]' + data[15]);
                     if (data[5] == 'Additional Services') {
                         $('td', row).css('background-color', '#86A3B8');
                     } else if (!isNullorEmpty(data[21])) {
                         data[21].forEach(function (el) {
-
-                            if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
+                            console.log('customer table: ' + el.invoiceDocumentNumber);
+                            console.log('customer table: ' + el.invoiceAmount);
+                            console.log('customer table: ' + el.oldStatus);
+                            console.log('customer table: ' + el.invoiceDate);
+                            if ((isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') && row_color != '#53BF9D') {
                                 row_color = ''
-
                             } else {
                                 row_color = '#53BF9D'
                             }
                         });
+                        console.log('customer table: row_color' + row_color);
                         $('td', row).css('background-color', row_color);
 
                     } else if (!isNullorEmpty(data[15])) {
@@ -14576,7 +14756,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             row.data()[21].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
-                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus, el.oldStatus, el.newStatus
                     ]);
                 }
             });
@@ -14594,10 +14774,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 order: [1, 'desc'],
                 columns: [
                     { title: 'Invoice Number' },
-                    { title: 'Invoice Date' },
+                    { title: 'Invoice/Status Change Date' },
                     { title: 'Invoice Type' },
                     { title: 'Invoice Amount' },
-                    { title: 'Invoice Status' }
+                    { title: 'Invoice Status' },
+                    { title: 'Old Status' },
+                    { title: 'New Status' },
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
@@ -17507,6 +17689,23 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 return false;
             }
         }
+
+        function convertTo24Hour(time) {
+            // nlapiLogExecution('DEBUG', 'time', time);
+            var hours = parseInt(time.substr(0, 2));
+            if (time.indexOf('AM') != -1 && hours == 12) {
+                time = time.replace('12', '0');
+            }
+            if (time.indexOf('AM') != -1 && hours < 10) {
+                time = time.replace(hours, ('0' + hours));
+            }
+            if (time.indexOf('PM') != -1 && hours < 12) {
+                time = time.replace(hours, (hours + 12));
+            }
+            return time.replace(/( AM| PM)/, '');
+        }
+
+
         return {
             pageInit: pageInit,
             saveRecord: saveRecord,

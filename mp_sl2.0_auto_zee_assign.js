@@ -309,6 +309,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     });
 
                                     log.debug({
+                                        title: 'LPO - Head Office Generated - lpoLeadBDMAssigned',
+                                        details: lpoLeadBDMAssigned
+                                    })
+
+                                    log.debug({
                                         title: 'LPO - Head Office Generated - parentLPOCount',
                                         details: parentLPOCount
                                     })
