@@ -12440,7 +12440,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             ]);
 
                         } else if (oldCustStatusId == 32) {
-                            trialCustomerDataSet.push([
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialCustomerDataSet.push(['',
                                 oldcustInternalID,
                                 customerIdLink,
                                 oldcustName,
@@ -12458,6 +12459,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldDaysOpen,
                                 oldMonthServiceValue,
                                 oldsalesRepText,
+                                customerChildDataSet
                             ]);
                         } else {
                             customerDataSet.push(['',
@@ -12869,7 +12871,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldInvoiceStatus
                         ]);
                     } else if (oldCustStatusId == 32) {
-                        trialCustomerDataSet.push([
+
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialCustomerDataSet.push(['',
                             oldcustInternalID,
                             customerIdLink,
                             oldcustName,
@@ -12887,6 +12891,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldDaysOpen,
                             oldMonthServiceValue,
                             oldsalesRepText,
+                            customerChildDataSet
                         ]);
 
                     } else {
@@ -13204,32 +13209,43 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var dataTableTrialCustomers = $('#mpexusage-trial_customers').DataTable({
                 data: trialCustomerDataSet,
                 pageLength: 250,
-                order: [[13, 'asc']],
-                columns: [
-                    { title: 'Internal ID' }, //0
-                    { title: 'ID' }, //1
-                    { title: 'Company Name' },//2
-                    { title: 'Franchisee' },//3
-                    { title: 'Source' },//4
-                    { title: 'Product Weekly Usage' },//5
-                    { title: 'Previous Carrier' },//6
-                    { title: 'MP Express' },//7
-                    { title: 'MP Standard' },//8
-                    { title: 'Daily Usage' },//9
-                    { title: 'Date - Lead Entered' },//10
-                    { title: 'Date - Quote Sent' },//11
-                    { title: 'Date - Prospect Won' },//12
-                    { title: 'Trial End Date' },//13
-                    { title: 'Days Open' },//14
-                    { title: 'Expected Monthly Service' },//15
-                    { title: 'Sales Rep' },//16
+                order: [[14, 'asc']],
+                columns: [{
+                    title: 'Expand Status Change',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, //0
+                { title: 'Internal ID' }, //1
+                { title: 'ID' }, //2
+                { title: 'Company Name' },//3
+                { title: 'Franchisee' },//4
+                { title: 'Source' },//5
+                { title: 'Product Weekly Usage' },//6
+                { title: 'Previous Carrier' },//7
+                { title: 'MP Express' },//8
+                { title: 'MP Standard' },//9
+                { title: 'Daily Usage' },//10
+                { title: 'Date - Lead Entered' },//11
+                { title: 'Date - Quote Sent' },//12
+                { title: 'Date - Prospect Won' },//13
+                { title: 'Trial End Date' },//14
+                { title: 'Days Open' },//15
+                { title: 'Expected Monthly Service' },//16
+                { title: 'Sales Rep' },//17
+                { title: 'Child Table' },//18
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
                         targets: [2, 3, 4, 12, 13],
                         className: 'bolded'
-                    }
+                    },
+                    {
+                        targets: [18],
+                        visible: false
+                    },
                 ],
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -13250,7 +13266,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total MP Express Usage
                     total_mp_exp_usage = api
-                        .column(7)
+                        .column(8)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -13258,7 +13274,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Page Total MP Express Usage
                     page_mp_exp_usage = api
-                        .column(7, {
+                        .column(8, {
                             page: 'current'
                         })
                         .data()
@@ -13268,7 +13284,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total MP Standard Usage
                     total_mp_std_usage = api
-                        .column(8)
+                        .column(9)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -13276,7 +13292,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Page Total MP Standard Usage
                     page_mp_std_usage = api
-                        .column(8, {
+                        .column(9, {
                             page: 'current'
                         })
                         .data()
@@ -13286,7 +13302,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Total Expected Usage over all pages
                     total_monthly_service_revenue = api
-                        .column(15)
+                        .column(16)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -13294,7 +13310,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     // Page Total Expected Usage over this page
                     page_total_monthly_service_revenue = api
-                        .column(15, {
+                        .column(16, {
                             page: 'current'
                         })
                         .data()
@@ -13305,7 +13321,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                     // Update footer
-                    $(api.column(15).footer()).html(
+                    $(api.column(16).footer()).html(
                         formatter.format(page_total_monthly_service_revenue)
                         // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
                     );
@@ -13315,6 +13331,36 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
+            dataTableTrialCustomers.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChildTrialCustomers(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+
+            $('#mpexusage-trial_customers tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableTrialCustomers.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
 
 
             var dataTable = $('#mpexusage-customer').DataTable({
@@ -14790,6 +14836,49 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
         }
+
+        function createChildTrialCustomers(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+
+            console.log('customer free trial child row: ' + row.data()[16]);
+
+            row.data()[18].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus, el.oldStatus, el.newStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice/Status Change Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' },
+                    { title: 'Old Status' },
+                    { title: 'New Status' },
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                }
+            });
+        }
+
+
         function createChildExisting(row) {
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
