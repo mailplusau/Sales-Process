@@ -463,6 +463,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: "systemNotes",
                     });
 
+                    var currentStatus = leadStatusTimelineResultSet.getValue({
+                        name: "entitystatus"
+                    });
+
                     var systemNotesDateSplitSpace = systemNotesDate.split(' ');
                     var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
                     var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
@@ -530,8 +534,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     return true;
                 });
 
-                statusTimeLineTable += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="3"><b>TOTAL WORKING DAYS</b></th><th style="text-align: center"><b>' + totalTimeInStatusDays + '</b></th><th></th></tfoot>';
-                statusTimeLineTable += '</tbody></table></div>';
+                // statusTimeLineTable += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="3"><b>TOTAL WORKING DAYS</b></th><th style="text-align: center"><b>' + totalTimeInStatusDays + '</b></th><th></th></tfoot>';
+                // statusTimeLineTable += '</tbody></table></div>';
 
 
 
