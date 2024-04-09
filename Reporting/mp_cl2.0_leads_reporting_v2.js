@@ -401,7 +401,148 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             });
 
+            $(".show_status_timeline").click(function () {
 
+                var custInternalID = $(this).attr("data-id");
+
+                console.log('Inside Modal: ' + custInternalID);
+
+                // Lead Status Timeline
+                var leadStatusTimelineSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_lead_status_timeline'
+                });
+
+
+                leadStatusTimelineSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: null,
+                    operator: search.Operator.ANYOF,
+                    values: parseInt(custInternalID)
+                }));
+
+                var statusTimeLineTable = '<style>table#statusTimeLineTable {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-' +
+                    name +
+                    ' th{text-align: center;} .bolded{font-weight: bold;}</style>';
+                statusTimeLineTable += '<div class="table_section "><table id="statusTimeLineTable" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
+                statusTimeLineTable += '<thead style="color: white;background-color: #103D39;">';
+                statusTimeLineTable += '<tr class="text-center">';
+                statusTimeLineTable += '<td>DATE</td>';
+                statusTimeLineTable += '<td>SET BY</td>';
+                statusTimeLineTable += '<td>OLD STATUS</td>';
+                statusTimeLineTable += '<td>TIME IN STATUS (WORKING DAYS)</td>';
+                statusTimeLineTable += '<td>NEW STATUS</td>';
+                statusTimeLineTable += '</tr>';
+                statusTimeLineTable += '</thead>';
+
+                statusTimeLineTable += '<tbody id="" >';
+
+                var oldStatusDate = null;
+                var timeInStatusDays = 0;
+                var totalTimeInStatusDays = 0;
+
+                leadStatusTimelineSearch.run().each(function (leadStatusTimelineResultSet) {
+
+                    var systemNotesDate = leadStatusTimelineResultSet.getValue({
+                        name: "date",
+                        join: "systemNotes",
+                    });
+
+                    var systemNotesSetBy = leadStatusTimelineResultSet.getText({
+                        name: "name",
+                        join: "systemNotes",
+                    });
+                    var oldStatus = leadStatusTimelineResultSet.getValue({
+                        name: "oldvalue",
+                        join: "systemNotes",
+                    });
+
+
+                    var newStatus = leadStatusTimelineResultSet.getValue({
+                        name: "newvalue",
+                        join: "systemNotes",
+                    });
+
+                    var systemNotesDateSplitSpace = systemNotesDate.split(' ');
+                    var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
+                    var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
+                    if (parseInt(systemNotesDateSplit[1]) < 10) {
+                        systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
+                    }
+
+                    if (parseInt(systemNotesDateSplit[0]) < 10) {
+                        systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
+                    }
+
+                    systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
+                        systemNotesDateSplit[0];
+
+                    var onlyStatusDate = systemNotesDate
+
+                    if (!isNullorEmpty(oldStatusDate)) {
+
+
+                        var date1 = new Date(systemNotesDate);
+                        var date2 = new Date(oldStatusDate);
+
+                        var difference = date1.getTime() - date2.getTime();
+                        timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(timeInStatusDays / 7);
+                        timeInStatusDays = timeInStatusDays - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = date1.getDay();
+                        var endDay = date2.getDay();
+
+                        // Remove weekend not previously removed.   
+                        if (startDay - endDay > 1)
+                            timeInStatusDays = timeInStatusDays - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            timeInStatusDays = timeInStatusDays - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            timeInStatusDays = timeInStatusDays - 1;
+                        }
+
+                        // timeInStatusDays = systemNotesDate - oldStatusDate;
+                    }
+
+                    systemNotesDate = systemNotesDate + ' ' + systemNotesTime
+
+                    statusTimeLineTable += '<tr>';
+                    statusTimeLineTable += '<td>' + systemNotesDate + '</td>';
+                    statusTimeLineTable += '<td>' + systemNotesSetBy + '</td>';
+                    statusTimeLineTable += '<td>' + oldStatus + '</td>';
+                    statusTimeLineTable += '<td>' + timeInStatusDays + '</td>';
+                    statusTimeLineTable += '<td>' + newStatus + '</td>';
+
+                    statusTimeLineTable += '</tr>';
+
+                    oldStatusDate = onlyStatusDate;
+
+                    totalTimeInStatusDays += timeInStatusDays;
+
+                    return true;
+                });
+
+                statusTimeLineTable += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="3"><b>TOTAL WORKING DAYS</b></th><th style="text-align: center"><b>' + totalTimeInStatusDays + '</b></th><th></th></tfoot>';
+                statusTimeLineTable += '</tbody></table></div>';
+
+
+
+                $("#leadStatusModal .modal-body").html(statusTimeLineTable);
+                $("#leadStatusModal").show();
+
+            });
+
+            $(".closeModal").click(function () {
+                $("#leadStatusModal").hide();
+            });
         }
 
         //Initialise the DataTable with headers.
@@ -9700,7 +9841,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldsalesRepText,
                             suspectChildDataSet
                         ]);
@@ -9738,7 +9879,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateProspectWon,
                             olddateLeadLost,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldCancellationReason,
                             oldMonthServiceValue, oldAvgInvoiceValue,
                             oldsalesRepText,
@@ -9779,7 +9920,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -9821,7 +9962,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -9863,7 +10004,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -9900,7 +10041,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -9929,7 +10070,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldDateLPOValidated,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -9945,7 +10086,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldsalesRepText,
                             suspectNoAnswerChildDataSet
                         ]);
@@ -9961,7 +10102,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldsalesRepText,
                             suspectInContactChildDataSet
                         ]);
@@ -10200,7 +10341,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldPreviousCarrier,
                         olddateLeadEntered,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldsalesRepText,
                         suspectChildDataSet
                     ]);
@@ -10234,7 +10375,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateProspectWon,
                         olddateLeadLost,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldCancellationReason,
                         oldMonthServiceValue, oldAvgInvoiceValue,
                         oldsalesRepText,
@@ -10276,7 +10417,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -10313,7 +10454,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -10342,7 +10483,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldPreviousCarrier,
                         olddateLeadEntered,
                         oldDateLPOValidated,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -10358,7 +10499,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldsalesRepText,
                         suspectNoAnswerChildDataSet
                     ]);
@@ -10374,7 +10515,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldsalesRepText,
                         suspectInContactChildDataSet
                     ]);
@@ -10395,7 +10536,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -10437,7 +10578,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -11242,7 +11383,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadEntered,
                             oldquoteSentDate,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             prospectChildDataSet
@@ -11291,7 +11432,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadEntered,
                             oldquoteSentDate,
                             oldemail48h,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             prospectQuoteSentChildDataSet
@@ -11435,7 +11576,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadEntered,
                         oldquoteSentDate,
                         oldemail48h,
-                        oldDaysOpen,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                         oldMonthServiceValue,
                         oldsalesRepText,
                         prospectQuoteSentChildDataSet
@@ -12129,8 +12270,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 invoiceType: oldInvoiceType,
                                 invoiceAmount: oldInvoiceAmount,
                                 invoiceStatus: oldInvoiceStatus,
-                                oldStatus: '',
-                                newStatus: '',
                             });
 
                             invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12191,8 +12330,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                     invoiceType: oldInvoiceType,
                                     invoiceAmount: oldInvoiceAmount,
                                     invoiceStatus: oldInvoiceStatus,
-                                    oldStatus: '',
-                                    newStatus: '',
                                 });
 
                                 invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12275,90 +12412,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             }
                         }
 
-                        if (role == 3 && userId ==409635) {
-                            // Lead Status Timeline
-                            var leadStatusTimelineSearch = search.load({
-                                type: 'customer',
-                                id: 'customsearch_lead_status_timeline'
-                            });
-
-
-                            leadStatusTimelineSearch.filters.push(search.createFilter({
-                                name: 'internalid',
-                                join: null,
-                                operator: search.Operator.ANYOF,
-                                values: parseInt(oldcustInternalID)
-                            }));
-
-                            // if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                            //     mpexUsageResults.filters.push(search.createFilter({
-                            //         name: 'custrecord_cust_date_stock_used',
-                            //         join: null,
-                            //         operator: search.Operator.ONORAFTER,
-                            //         values: usage_date_from
-                            //     }));
-                            //     mpexUsageResults.filters.push(search.createFilter({
-                            //         name: 'custrecord_cust_date_stock_used',
-                            //         join: null,
-                            //         operator: search.Operator.ONORBEFORE,
-                            //         values: usage_date_to
-                            //     }));
-
-                            // }
-
-
-
-                            leadStatusTimelineSearch.run().each(function (leadStatusTimelineResultSet) {
-
-                                var systemNotesDate = leadStatusTimelineResultSet.getValue({
-                                    name: "date",
-                                    join: "systemNotes",
-                                });
-                                var oldStatus = leadStatusTimelineResultSet.getValue({
-                                    name: "oldvalue",
-                                    join: "systemNotes",
-                                });
-
-
-                                var newStatus = leadStatusTimelineResultSet.getValue({
-                                    name: "newvalue",
-                                    join: "systemNotes",
-                                });
-
-                                var systemNotesDateSplitSpace = systemNotesDate.split(' ');
-                                var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
-                                var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
-                                if (parseInt(systemNotesDateSplit[1]) < 10) {
-                                    systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
-                                }
-
-                                if (parseInt(systemNotesDateSplit[0]) < 10) {
-                                    systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
-                                }
-
-                                systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
-                                    systemNotesDateSplit[0];
-                                systemNotesDate = systemNotesDate + ' ' + systemNotesTime
-
-                                customerChildDataSet.push({
-                                    invoiceDocumentNumber: '',
-                                    invoiceDate: systemNotesDate,
-                                    invoiceType: '',
-                                    invoiceAmount: '',
-                                    invoiceStatus: '',
-                                    oldStatus: oldStatus,
-                                    newStatus: newStatus,
-                                });
-
-                                // customerChildStatusDataSet.push({
-                                //     systemNotesDate: systemNotesDate,
-                                //     oldStatus: oldStatus,
-                                //     newStatus: newStatus,
-                                // });
-
-                                return true;
-                            });
-                        }
 
                         var usage_date_from_split = usage_date_from.split('/');
 
@@ -12409,7 +12462,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 // oldemail48h,
                                 olddateProspectWon,
-                                oldDaysOpen,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                                 oldMonthServiceValue,
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
@@ -12456,7 +12509,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 olddateProspectWon,
                                 oldTrialEndDate,
-                                oldDaysOpen,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                                 oldMonthServiceValue,
                                 oldsalesRepText,
                                 customerChildDataSet
@@ -12477,7 +12530,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 // oldemail48h,
                                 olddateProspectWon,
-                                oldDaysOpen,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                                 oldMonthServiceValue,
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
@@ -12609,9 +12662,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             invoiceDate: oldinvoiceDate,
                             invoiceType: oldInvoiceType,
                             invoiceAmount: oldInvoiceAmount,
-                            invoiceStatus: oldInvoiceStatus,
-                            oldStatus: '',
-                            newStatus: '',
+                            invoiceStatus: oldInvoiceStatus
                         });
 
                         invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
@@ -12692,90 +12743,6 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         }
                     }
 
-                    if (role == 3 && userId ==409635 ) {
-                        // Lead Status Timeline
-                        var leadStatusTimelineSearch = search.load({
-                            type: 'customer',
-                            id: 'customsearch_lead_status_timeline'
-                        });
-
-
-                        leadStatusTimelineSearch.filters.push(search.createFilter({
-                            name: 'internalid',
-                            join: null,
-                            operator: search.Operator.ANYOF,
-                            values: parseInt(oldcustInternalID)
-                        }));
-
-                        // if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                        //     mpexUsageResults.filters.push(search.createFilter({
-                        //         name: 'custrecord_cust_date_stock_used',
-                        //         join: null,
-                        //         operator: search.Operator.ONORAFTER,
-                        //         values: usage_date_from
-                        //     }));
-                        //     mpexUsageResults.filters.push(search.createFilter({
-                        //         name: 'custrecord_cust_date_stock_used',
-                        //         join: null,
-                        //         operator: search.Operator.ONORBEFORE,
-                        //         values: usage_date_to
-                        //     }));
-
-                        // }
-
-
-
-                        leadStatusTimelineSearch.run().each(function (leadStatusTimelineResultSet) {
-
-                            var systemNotesDate = leadStatusTimelineResultSet.getValue({
-                                name: "date",
-                                join: "systemNotes",
-                            });
-                            var oldStatus = leadStatusTimelineResultSet.getValue({
-                                name: "oldvalue",
-                                join: "systemNotes",
-                            });
-
-
-                            var newStatus = leadStatusTimelineResultSet.getValue({
-                                name: "newvalue",
-                                join: "systemNotes",
-                            });
-
-                            var systemNotesDateSplitSpace = systemNotesDate.split(' ');
-                            var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
-                            var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
-                            if (parseInt(systemNotesDateSplit[1]) < 10) {
-                                systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
-                            }
-
-                            if (parseInt(systemNotesDateSplit[0]) < 10) {
-                                systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
-                            }
-
-                            systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
-                                systemNotesDateSplit[0];
-                            systemNotesDate = systemNotesDate + ' ' + systemNotesTime
-                            customerChildDataSet.push({
-                                invoiceDocumentNumber: '',
-                                invoiceDate: systemNotesDate,
-                                invoiceType: '',
-                                invoiceAmount: '',
-                                invoiceStatus: '',
-                                oldStatus: oldStatus,
-                                newStatus: newStatus,
-                            });
-
-                            // customerChildStatusDataSet.push({
-                            //     systemNotesDate: systemNotesDate,
-                            //     oldStatus: oldStatus,
-                            //     newStatus: newStatus,
-                            // });
-
-                            return true;
-                        });
-                    }
-
                     var usage_date_from_split = usage_date_from.split('/');
 
                     if (parseInt(usage_date_from_split[1]) < 10) {
@@ -12841,7 +12808,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             // oldemail48h,
                             olddateProspectWon,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldMonthServiceValue,
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
@@ -12888,7 +12855,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             olddateProspectWon,
                             oldTrialEndDate,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             customerChildDataSet
@@ -12910,7 +12877,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             // oldemail48h,
                             olddateProspectWon,
-                            oldDaysOpen,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
                             oldMonthServiceValue,
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
@@ -14802,7 +14769,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             row.data()[21].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
-                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus, el.oldStatus, el.newStatus
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
                     ]);
                 }
             });
@@ -14820,12 +14787,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 order: [1, 'desc'],
                 columns: [
                     { title: 'Invoice Number' },
-                    { title: 'Invoice/Status Change Date' },
+                    { title: 'Invoice Date' },
                     { title: 'Invoice Type' },
                     { title: 'Invoice Amount' },
-                    { title: 'Invoice Status' },
-                    { title: 'Old Status' },
-                    { title: 'New Status' },
+                    { title: 'Invoice Status' }
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
@@ -14847,7 +14812,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             row.data()[18].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
-                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus, el.oldStatus, el.newStatus
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
                     ]);
                 }
             });
@@ -14865,12 +14830,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 order: [1, 'desc'],
                 columns: [
                     { title: 'Invoice Number' },
-                    { title: 'Invoice/Status Change Date' },
+                    { title: 'Invoice Date' },
                     { title: 'Invoice Type' },
                     { title: 'Invoice Amount' },
-                    { title: 'Invoice Status' },
-                    { title: 'Old Status' },
-                    { title: 'New Status' },
+                    { title: 'Invoice Status' }
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
