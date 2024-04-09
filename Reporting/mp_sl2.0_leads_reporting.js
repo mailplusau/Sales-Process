@@ -123,6 +123,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     title: 'endOfWeek',
                     details: endOfWeek
                 });
+                log.debug({
+                    title: 'campaign',
+                    details: campaign
+                });
 
                 if (role != 1000) {
                     if (isNullorEmpty(start_date) && isNullorEmpty(date_signed_up_from) && isNullorEmpty(date_quote_sent_from) && isNullorEmpty(modified_start_date)) {
@@ -218,7 +222,20 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                 var inlineHtml =
-                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/highcharts-more.js"></script><script src="https://code.highcharts.com/modules/solid-gauge.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}</style > ';
+                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA92XGDo8rx11izPYT7z2L-YPMMJ6Ih1s0&callback=initMap&libraries=places"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script>';
+                inlineHtml +=
+                    '<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /><script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>';
+                inlineHtml +=
+                    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">';
+                inlineHtml +=
+                    '<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>';
+                // Semantic Select
+                inlineHtml +=
+                    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">';
+                inlineHtml +=
+                    '<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>';
+
+                inlineHtml += '<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}</style>'
 
                 form.addField({
                     id: 'custpage_overview_table_csv',
@@ -326,6 +343,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
                 inlineHtml += modalLeadStatusTimeline();
+                inlineHtml += modalLeadSalesRepTimeline();
                 inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
                 inlineHtml += stepByStepGuideModal();
@@ -417,7 +435,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="zee_dropdown_text">Franchisee</span>';
-            inlineHtml += '<select id="zee_dropdown" class="form-control">';
+            inlineHtml += '<select id="zee_dropdown" class="js-example-basic-multiple js-states form-control" style="width: 100%" multiple="multiple">';
             inlineHtml += '<option value=""></option>'
             resultSetZees.each(function (searchResult_zee) {
                 zee_id = searchResult_zee.getValue('internalid');
@@ -429,13 +447,32 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                             '" selected="selected">' + zee_name + '</option>';
                     }
                 } else {
-                    if (zee == zee_id) {
-                        inlineHtml += '<option value="' + zee_id +
-                            '" selected="selected">' + zee_name + '</option>';
-                    } else {
+                    if (isNullorEmpty(zee)) {
                         inlineHtml += '<option value="' + zee_id + '">' + zee_name +
                             '</option>';
+                    } else {
+                        if (zee.indexOf(",") != -1) {
+                            var zeeArray = zee.split(',');
+                        } else {
+                            var zeeArray = [];
+                            zeeArray.push(zee)
+                        }
+
+                        if (zeeArray.indexOf(zee_id) != -1) {
+                            inlineHtml += '<option value="' + zee_id +
+                                '" selected="selected">' + zee_name + '</option>';
+                        } else {
+                            inlineHtml += '<option value="' + zee_id + '">' + zee_name +
+                                '</option>';
+                        }
                     }
+                    // if (zee == zee_id) {
+                    //     inlineHtml += '<option value="' + zee_id +
+                    //         '" selected="selected">' + zee_name + '</option>';
+                    // } else {
+                    //     inlineHtml += '<option value="' + zee_id + '">' + zee_name +
+                    //         '</option>';
+                    // }
                 }
 
 
@@ -493,7 +530,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">CAMPAIGN</span>';
-            inlineHtml += '<select id="sales_campaign" class="form-control">';
+            inlineHtml += '<select id="sales_campaign" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
             inlineHtml += '<option></option>';
 
             var salesCampaignSearch = search.load({
@@ -507,13 +544,34 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                if (salesCampaignInternalId == campaign) {
-                    inlineHtml += '<option value="' + salesCampaignInternalId + '" selected>' +
-                        salesCampaignName + '</option>';
-                } else {
+                if (isNullorEmpty(campaign)) {
                     inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
                         salesCampaignName + '</option>';
+                } else {
+                    if (campaign.indexOf(",") != -1) {
+                        var campaignArray = campaign.split(',');
+                    } else {
+                        var campaignArray = [];
+                        campaignArray.push(campaign)
+                    }
+
+
+                    if (campaignArray.indexOf(salesCampaignInternalId) != -1) {
+                        inlineHtml += '<option value="' + salesCampaignInternalId + '" selected>' +
+                            salesCampaignName + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
+                            salesCampaignName + '</option>';
+                    }
                 }
+
+                // if (salesCampaignInternalId == campaign) {
+                //     inlineHtml += '<option value="' + salesCampaignInternalId + '" selected>' +
+                //         salesCampaignName + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
+                //         salesCampaignName + '</option>';
+                // }
 
                 return true;
             });
@@ -525,7 +583,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SOURCE</span>';
-            inlineHtml += '<select id="lead_source" class="form-control">';
+            inlineHtml += '<select id="lead_source" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
             inlineHtml += '<option></option>';
             //NetSuite Search: LEAD SOURCE
             var leadSourceSearch = search.load({
@@ -542,13 +600,33 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     name: 'title'
                 });
 
-                if (leadsourceid == source) {
-                    inlineHtml += '<option value="' + leadsourceid + '" selected>' +
-                        leadsourcename + '</option>';
-                } else {
+                if (isNullorEmpty(source)) {
                     inlineHtml += '<option value="' + leadsourceid + '" >' +
                         leadsourcename + '</option>';
+                } else {
+                    if (source.indexOf(",") != -1) {
+                        var sourceArray = source.split(',');
+                    } else {
+                        var sourceArray = [];
+                        sourceArray.push(source)
+                    }
+
+                    if (sourceArray.indexOf(leadsourceid) != -1) {
+                        inlineHtml += '<option value="' + leadsourceid + '" selected>' +
+                            leadsourcename + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + leadsourceid + '" >' +
+                            leadsourcename + '</option>';
+                    }
                 }
+
+                // if (leadsourceid == source) {
+                //     inlineHtml += '<option value="' + leadsourceid + '" selected>' +
+                //         leadsourcename + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + leadsourceid + '" >' +
+                //         leadsourcename + '</option>';
+                // }
 
                 return true;
             });
@@ -564,74 +642,122 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">SALES REP</span>';
-            inlineHtml += '<select id="sales_rep" class="form-control">';
+            inlineHtml += '<select id="sales_rep" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
             inlineHtml += '<option></option>';
 
-            if (salesrep == '668711') {
-                inlineHtml += '<option value="668711" selected>Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '696160') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '690145') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145" selected>David Gdanski</option>';
-                inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '668712') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '1809334') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334" selected>David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '1809382') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            } else if (salesrep == '1797389') {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-                inlineHtml += '<option value="1797389" selected>Bobbi G Yengbie</option>';
-            } else {
-                inlineHtml += '<option value="668711">Lee Russell</option>';
-                inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                inlineHtml += '<option value="690145">David Gdanski</option>';
-                inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                inlineHtml += '<option value="1809334">David Daoud</option>';
-                inlineHtml += '<option value="1809382">Liam Pike</option>';
-                inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            }
+            //Search: Sales Record - Last Assigned List
+            var salesRecordLastAssignedListListSearch = search.load({
+                id: 'customsearch8649',
+                type: 'customrecord_sales'
+            });
+            var salesRecordLastAssignedListListSearchResultSet = salesRecordLastAssignedListListSearch.run();
+
+            salesRecordLastAssignedListListSearchResultSet.each(function (salesRecordLastAssignedListListResultSet) {
+                var employeeId = salesRecordLastAssignedListListResultSet.getValue({
+                    name: "custrecord_sales_assigned",
+                    summary: "GROUP"
+                });
+                var employeeText = salesRecordLastAssignedListListResultSet.getText({
+                    name: "custrecord_sales_assigned",
+                    summary: "GROUP"
+                });
+
+                if (isNullorEmpty(lead_entered_by)) {
+                    inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                        '</option>';
+                } else {
+                    if (salesrep.indexOf(",") != -1) {
+                        var salesrepArray = salesrep.split(',');
+                    } else {
+                        var salesrepArray = [];
+                        salesrepArray.push(salesrep)
+                    }
+
+                    if (salesrepArray.indexOf(employeeId) != -1) {
+                        inlineHtml += '<option value="' + employeeId +
+                            '" selected="selected">' + employeeText + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                            '</option>';
+                    }
+                }
+
+                // if (salesrep == employeeId) {
+                //     inlineHtml += '<option value="' + employeeId +
+                //         '" selected="selected">' + employeeText + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                //         '</option>';
+                // }
+
+                return true;
+            });
+
+            // if (salesrep == '668711') {
+            //     inlineHtml += '<option value="668711" selected>Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '696160') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '690145') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145" selected>David Gdanski</option>';
+            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '668712') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '1809334') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334" selected>David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '1809382') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // } else if (salesrep == '1797389') {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389" selected>Bobbi G Yengbie</option>';
+            // } else {
+            //     inlineHtml += '<option value="668711">Lee Russell</option>';
+            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+            //     inlineHtml += '<option value="690145">David Gdanski</option>';
+            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+            //     inlineHtml += '<option value="1809334">David Daoud</option>';
+            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
+            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
+            // }
 
 
 
@@ -642,7 +768,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="source_text">LEAD ENTERED BY</span>';
-            inlineHtml += '<select id="lead_entered_by" class="form-control">';
+            inlineHtml += '<select id="lead_entered_by" class="form-control" style="width: 100%" >';
             inlineHtml += '<option></option>';
 
             //Search: Leads Entered By List
@@ -661,6 +787,20 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     name: "custentity_lead_entered_by",
                     summary: "GROUP"
                 });
+
+                // if (isNullorEmpty(lead_entered_by)) {
+                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                //             '</option>';
+                // } else {
+                //     var lead_entered_byArray = lead_entered_by.split(',');
+                //     if (lead_entered_byArray.indexOf(employeeId) != -1) {
+                //         inlineHtml += '<option value="' + employeeId +
+                //             '" selected="selected">' + employeeText + '</option>';
+                //     } else {
+                //         inlineHtml += '<option value="' + employeeId + '">' + employeeText +
+                //             '</option>';
+                //     }
+                // }
 
                 if (lead_entered_by == employeeId) {
                     inlineHtml += '<option value="' + employeeId +
@@ -691,7 +831,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
-            inlineHtml += '<select id="parent_lpo" class="form-control">';
+            inlineHtml += '<select id="parent_lpo" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
             inlineHtml += '<option></option>';
 
             var parentLPOSearch = search.load({
@@ -711,13 +851,33 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     summary: 'GROUP'
                 });
 
-                if (parentLPOInternalId == parentLPO) {
-                    inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
-                        parentLPOName + '</option>';
-                } else {
+                if (isNullorEmpty(parentLPO)) {
                     inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
                         parentLPOName + '</option>';
+                } else {
+                    if (parentLPO.indexOf(",") != -1) {
+                        var parentLPOArray = parentLPO.split(',');
+                    } else {
+                        var parentLPOArray = [];
+                        parentLPOArray.push(parentLPO)
+                    }
+                    // var parentLPOArray = parentLPO.split(',');
+                    if (parentLPOArray.indexOf(parentLPOInternalId) != -1) {
+                        inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
+                            parentLPOName + '</option>';
+                    } else {
+                        inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
+                            parentLPOName + '</option>';
+                    }
                 }
+
+                // if (parentLPOInternalId == parentLPO) {
+                //     inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
+                //         parentLPOName + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
+                //         parentLPOName + '</option>';
+                // }
 
                 return true;
             });
@@ -1051,6 +1211,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview"><b>COMPLETE OVERVIEW</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview"><b>LPO OVERVIEW</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview"><b>SALES REP OVERVIEW</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -1071,6 +1233,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('lpo_overview');
             inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_salesrep_overview"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('salesrep_overview');
+            inlineHtml += '</div>';
+
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -1305,7 +1476,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
-            if (name == 'preview' || name == 'lpo_overview') {
+            if (name == 'preview' || name == 'lpo_overview' || name == 'salesrep_overview') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
@@ -1332,6 +1503,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '</table></div>';
             return inlineHtml;
         }
+
+
         /**
          * The header showing that the results are loading.
          * @returns {String} `inlineQty`
@@ -1363,6 +1536,29 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div class="modal-body" style="padding: 2px 16px;font-size: 14px;">';
             inlineHtml +=
                 '</div><div class="modal-footer" style="padding: 2px 16px;"><button type="button" class="btn btn-default closeModal" data-dismiss="modal">Close</button></div></div></div>';
+
+            return inlineHtml;
+        }
+
+
+        function modalLeadSalesRepTimeline() {
+            var inlineHtml =
+                '<div id="leadSalesRepModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888; width: 80%; left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><h3 class="modal-title" id="modal-title">STATUS TIMELINE</h3></div>';
+
+            inlineHtml +=
+                '<div class="modal-body" style="padding: 2px 16px;font-size: 14px;">';
+            inlineHtml += '<style>table#salesrep_timeline_table {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#salesrep_timeline_table th{text-align: center;} .bolded{font-weight: bold;}</style>';
+            inlineHtml += '<div class="table_section "><table id="salesrep_timeline_table" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
+            inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
+            inlineHtml += '<tr class="text-center">';
+
+            inlineHtml += '</tr>';
+            inlineHtml += '</thead>';
+
+            inlineHtml += '<tbody id="" ></tbody>';
+            inlineHtml += '</table></div>';
+            inlineHtml +=
+                '</div><div class="modal-footer" style="padding: 2px 16px;"><button type="button" class="btn btn-default closeSalesRepModal" data-dismiss="modal">Close</button></div></div></div>';
 
             return inlineHtml;
         }
