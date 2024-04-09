@@ -430,10 +430,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     fieldId: 'custrecord_sales_campaign',
                                     value: 69, //LPO
                                 })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_assigned',
-                                    value: lpoLeadBDMAssigned, 
-                                })
+
+                                if (!isNullorEmpty(lpoLeadBDMAssigned)) {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_assigned',
+                                        value: lpoLeadBDMAssigned, 
+                                    })
+                                } else {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_assigned',
+                                        value: userId, 
+                                    })
+                                }
+                                
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
                                     value: 20,
