@@ -550,6 +550,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             $(".show_salesrep_status_timeline").click(function () {
 
                 var salesRepInternalId = $(this).attr("data-id");
+                var salesRepName = $(this).attr("data-name");
+
                 console.log('salesRepInternalId: ' + salesRepInternalId)
                 var date_from = $('#date_from').val();
                 var date_to = $('#date_to').val();
@@ -987,7 +989,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 });
 
 
-                // $("#leadSalesRepModal .modal-body").html(statusTimeLineTable);
+                $("#leadSalesRepModal .modal-title").text(salesRepName + '\'s Customer List');
                 $("#leadSalesRepModal").show();
 
             });
@@ -9852,7 +9854,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 salesrep_debt_set2
                     .forEach(function (preview_row, index) {
 
-                        var hotLeadPercentage = parseInt((preview_row.suspect_hot_lead / preview_row.total_leads) * 100);
+                        var hotLeadPercentage = parseInt((parseInt(preview_row.suspect_hot_lead) / parseInt(preview_row.total_leads)) * 100);
                         var hotLeadCol = preview_row.suspect_hot_lead + ' (' + hotLeadPercentage + '%)';
 
                         var quoteSentPercentage = parseInt((preview_row.prospecy_quote_sent / preview_row.total_leads) * 100);
@@ -9955,7 +9957,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             quoteSentCol,
                             customerFreeTrialCol,
                             signedCol,
-                        '<input type="button" value="' + preview_row.total_leads + '" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' + preview_row.lpoparentnameid + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + preview_row.total_leads + '" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' + preview_row.lpoparentnameid + '" data-name="' + preview_row.lpoparentname + '" style="background-color: #095C7B;border-radius: 30px">',
                         preview_row.lpoparentnameid,
 
                         ]);
@@ -11388,7 +11390,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldsalesRepText,
                             suspectChildDataSet
                         ]);
@@ -11426,7 +11428,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateProspectWon,
                             olddateLeadLost,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldCancellationReason,
                             oldMonthServiceValue, oldAvgInvoiceValue,
                             oldsalesRepText,
@@ -11467,7 +11469,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -11509,7 +11511,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -11551,7 +11553,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadReassigned,
                             olddateLeadLost,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldCancellationReason,
                             oldMonthServiceValue,
                             oldsalesRepText,
@@ -11588,7 +11590,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -11617,7 +11619,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldPreviousCarrier,
                             olddateLeadEntered,
                             oldDateLPOValidated,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldsalesRepText,
                             suspectQualifiedChildDataSet
                         ]);
@@ -11633,7 +11635,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldsalesRepText,
                             suspectNoAnswerChildDataSet
                         ]);
@@ -11649,7 +11651,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldSource,
                             oldPreviousCarrier,
                             olddateLeadEntered,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldsalesRepText,
                             suspectInContactChildDataSet
                         ]);
@@ -11888,7 +11890,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldPreviousCarrier,
                         olddateLeadEntered,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldsalesRepText,
                         suspectChildDataSet
                     ]);
@@ -11922,7 +11924,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateProspectWon,
                         olddateLeadLost,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldCancellationReason,
                         oldMonthServiceValue, oldAvgInvoiceValue,
                         oldsalesRepText,
@@ -11964,7 +11966,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -12001,7 +12003,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -12030,7 +12032,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldPreviousCarrier,
                         olddateLeadEntered,
                         oldDateLPOValidated,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldsalesRepText,
                         suspectQualifiedChildDataSet
                     ]);
@@ -12046,7 +12048,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldsalesRepText,
                         suspectNoAnswerChildDataSet
                     ]);
@@ -12062,7 +12064,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         oldSource,
                         oldPreviousCarrier,
                         olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldsalesRepText,
                         suspectInContactChildDataSet
                     ]);
@@ -12083,7 +12085,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -12125,7 +12127,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadReassigned,
                         olddateLeadLost,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldCancellationReason,
                         oldMonthServiceValue,
                         oldsalesRepText,
@@ -12930,7 +12932,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadEntered,
                             oldquoteSentDate,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             prospectChildDataSet
@@ -12979,7 +12981,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             olddateLeadEntered,
                             oldquoteSentDate,
                             oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             prospectQuoteSentChildDataSet
@@ -13123,7 +13125,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         olddateLeadEntered,
                         oldquoteSentDate,
                         oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                         oldMonthServiceValue,
                         oldsalesRepText,
                         prospectQuoteSentChildDataSet
@@ -13988,7 +13990,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                         var mpExpStdUsageLink =
-                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                         var customerIdLink =
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
@@ -14009,7 +14011,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 // oldemail48h,
                                 olddateProspectWon,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
@@ -14056,7 +14058,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 olddateProspectWon,
                                 oldTrialEndDate,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
                                 oldsalesRepText,
                                 customerChildDataSet
@@ -14077,7 +14079,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                                 oldquoteSentDate,
                                 // oldemail48h,
                                 olddateProspectWon,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
@@ -14318,7 +14320,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                     var mpExpStdUsageLink =
-                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important; border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                     var customerIdLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
@@ -14355,7 +14357,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             // oldemail48h,
                             olddateProspectWon,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
@@ -14402,7 +14404,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             olddateProspectWon,
                             oldTrialEndDate,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             oldsalesRepText,
                             customerChildDataSet
@@ -14424,7 +14426,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             oldquoteSentDate,
                             // oldemail48h,
                             olddateProspectWon,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;">',
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
