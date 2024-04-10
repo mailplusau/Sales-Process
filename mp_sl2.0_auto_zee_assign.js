@@ -360,6 +360,33 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                             });
                                         }
                                     }
+                                } else {
+                                    if (siteAddressZipCode >= 2000 && siteAddressZipCode <= 2999) {
+                                        if (siteAddressZipCode == 2481 || siteAddressZipCode == 2482 || siteAddressZipCode == 2485 ||
+                                            siteAddressZipCode == 2486 || siteAddressZipCode == 2487 || siteAddressZipCode == 2488 || siteAddressZipCode ==
+                                            2479) {
+                                            //Lee 
+                                            salesRep = 668711;
+                                        } else if (siteAddressZipCode == 2481) { //Albury
+                                            //Belinda
+                                            salesRep = 668712;
+                                        } else {
+                                            //Kerina
+                                            salesRep = 696160;
+                                        }
+                                    } else {
+                                        if ((siteAddressZipCode >= 3000 && siteAddressZipCode <= 3999) || (siteAddressZipCode >= 7000 && siteAddressZipCode <= 7999)) { //VIC & SA & TAS siteAddressZipCodes
+                                            salesRep = 668712; //Belinda Urbani
+                                        } else if ((siteAddressZipCode >= 5000 &&
+                                            siteAddressZipCode <= 5999)) {
+                                            salesRep = 668712; //Belinda Urbani
+                                        } else if ((siteAddressZipCode >= 4000 && siteAddressZipCode <= 4999) || (siteAddressZipCode >= 800 &&
+                                            siteAddressZipCode <= 999) || (siteAddressZipCode >= 6000 && siteAddressZipCode <= 6999)) { //QLD & NT & WA siteAddressZipCodes
+                                            salesRep = 668711; //Lee Russell
+                                        } else { //Everything else
+                                            salesRep = 668712; //Belinda Urbani
+                                        }
+                                    }
                                 }
                             }
 
@@ -434,15 +461,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 if (!isNullorEmpty(lpoLeadBDMAssigned)) {
                                     salesRecord.setValue({
                                         fieldId: 'custrecord_sales_assigned',
-                                        value: lpoLeadBDMAssigned, 
+                                        value: lpoLeadBDMAssigned,
                                     })
                                 } else {
                                     salesRecord.setValue({
                                         fieldId: 'custrecord_sales_assigned',
-                                        value: userId, 
+                                        value: userId,
                                     })
                                 }
-                                
+
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_outcome',
                                     value: 20,
