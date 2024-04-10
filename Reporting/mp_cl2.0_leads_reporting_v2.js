@@ -9957,6 +9957,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             quoteSentCol,
                             customerFreeTrialCol,
                             signedCol,
+                            preview_row.total_leads,
                         '<input type="button" value="' + preview_row.total_leads + '" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' + preview_row.lpoparentnameid + '" data-name="' + preview_row.lpoparentname + '" style="background-color: #095C7B;border-radius: 30px">',
                         preview_row.lpoparentnameid,
 
@@ -9972,6 +9973,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: salesrep_previewDataSet,
                 pageLength: 1000,
+                order: [[19, 'des']],
                 columns: [{
                     title: 'Lead Gen/Lead Quali/BDM/Account Manager'//0
                 }, {
@@ -10013,13 +10015,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Total Lead Count'//19
                 }, {
-                    title: 'Sales Rep ID'//20
+                    title: 'Show Leads'//20
+                }, {
+                    title: 'Sales Rep ID'//21
                 }],
                 columnDefs: [{
                     targets: [0, 4, 16, 17, 18, 19],
                     className: 'bolded'
                 }, {
-                    targets: [20],
+                    targets: [21],
                     visible: false
                 }],
                 footerCallback: function (row, data, start, end, display) {

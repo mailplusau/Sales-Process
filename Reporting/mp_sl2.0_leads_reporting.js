@@ -1179,15 +1179,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#overview"><b>OVERVIEW</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#customer"><b>CUSTOMERS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#cancellation"><b>CANCELLATIONS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -1208,11 +1208,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview"><b>COMPLETE OVERVIEW</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview"><b>LPO OVERVIEW</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO OVERVIEW</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview"><b>SALES REP OVERVIEW</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -1259,11 +1259,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers"><b>NEW CUSTOMERS</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers"><b>FREE TRIALS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers"><b>EXISTING CUSTOMERS</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
 
             inlineHtml += '</ul></div>';
 
@@ -1307,9 +1307,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml +=
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites"><b>PROSPECTS - QUOTE SENT</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
 
 
 
@@ -1349,24 +1349,24 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
             inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer"><b>SUSPECTS - NO ANSWER</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact"><b>SUSPECTS - IN CONTACT</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified"><b>SUSPECTS - QUALIFIED</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup"><b>SUSPECTS - FOLLOW UP</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline"><b>SUSPECTS - PARKING LOT</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
             inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost"><b>SUSPECTS - LOST</b></a></li>';
+                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
             if (role != 1000) {
                 inlineHtml +=
-                    '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
+                    '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
             }
 
 
