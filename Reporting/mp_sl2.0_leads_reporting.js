@@ -59,6 +59,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 userId = context.request.parameters.user_id;
                 var showTotal = context.request.parameters.showTotal;
                 var calcprodusage = context.request.parameters.calcprodusage;
+                var leadStatus = context.request.parameters.status;
 
                 //If role is Franchisee
                 if (role == 1000) {
@@ -371,6 +372,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var resultSetZees = searchZees.run();
                 // if (role != 1000) {
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+                inlineHtml += leadStatusDropdown(leadStatus)
                 // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date);
@@ -483,6 +485,146 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             return inlineHtml;
 
+        }
+
+        function leadStatusDropdown(custStatus) {
+            var inlineHtml =
+                '<div class="form-group container status_dropdown_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
+            inlineHtml +=
+                '<div class="form-group container status_dropdown_section hide">';
+            inlineHtml += '<div class="row">';
+            // Period dropdown field
+            inlineHtml += '<div class="col-xs-12 cust_status_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="cust_status_text">STATUS</span>';
+            inlineHtml += '<select id="cust_status" class="form-control">';
+            inlineHtml += '<option value="0"></option>';
+
+            if (custStatus == '13') {
+                inlineHtml += '<option value="13" selected>CUSTOMER - SIGNED</option>';
+            } else {
+                inlineHtml += '<option value="13">CUSTOMER - SIGNED</option>';
+            }
+
+            if (custStatus == '66') {
+                inlineHtml += '<option value="66" selected>CUSTOMER - To Be Finalised</option>';
+            } else {
+                inlineHtml += '<option value="66">CUSTOMER - To Be Finalised</option>';
+            }
+
+            if (custStatus == '32') {
+                inlineHtml += '<option value="32" selected>CUSTOMER - Free Trail</option>';
+            } else {
+                inlineHtml += '<option value="32">CUSTOMER - Free Trial</option>';
+            }
+
+            if (custStatus == '57') {
+                inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
+            } else {
+                inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
+            }
+
+            if (custStatus == '42') {
+                inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
+            } else {
+                inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
+            }
+
+            if (custStatus == '6') {
+                inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
+            } else {
+                inlineHtml += '<option value="6">SUSPECT - NEW</option>';
+            }
+
+            if (custStatus == '20') {
+                inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
+            } else {
+                inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
+            }
+
+            if (custStatus == '69') {
+                inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
+            } else {
+                inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
+            }
+
+            if (custStatus == '18') {
+                inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
+            } else {
+                inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
+            }
+
+            if (custStatus == '67') {
+                inlineHtml += '<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
+            } else {
+                inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
+            }
+
+            if (custStatus == '62') {
+                inlineHtml += '<option value="62" selected>SUSPECT - PARKING LOT</option>';
+            } else {
+                inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
+            }
+
+            if (custStatus == '68') {
+                inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
+            } else {
+                inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
+            }
+
+            if (custStatus == '60') {
+                inlineHtml += '<option value="60" selected>SUSPECT - REP REASSIGN</option>';
+            } else {
+                inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
+            }
+
+            if (custStatus == '7') {
+                inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
+            } else {
+                inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
+            }
+
+            if (custStatus == '70') {
+                inlineHtml += '<option value="70" selected>PROSPECT - QUALIFIED</option>';
+            } else {
+                inlineHtml += '<option value="70">PROSPECT - QUALIFIED</option>';
+            }
+
+            if (custStatus == '50') {
+                inlineHtml += '<option value="50" selected>PROSPECT - QUOTE SENT</option>';
+            } else {
+                inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
+            }
+
+            if (custStatus == '58') {
+                inlineHtml += '<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
+            } else {
+                inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
+            }
+
+            if (custStatus == '8') {
+                inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
+            } else {
+                inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
+            }
+
+            if (custStatus == '35') {
+                inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
+            } else {
+                inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
+            }
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            return inlineHtml;
         }
 
         /*
