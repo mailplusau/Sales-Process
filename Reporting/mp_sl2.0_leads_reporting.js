@@ -804,7 +804,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     summary: "GROUP"
                 });
 
-                if (isNullorEmpty(lead_entered_by)) {
+                if (isNullorEmpty(salesrep)) {
                     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
                         '</option>';
                 } else {
