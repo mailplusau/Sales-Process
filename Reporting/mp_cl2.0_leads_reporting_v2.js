@@ -8050,7 +8050,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Total Lead Count'//20
                 }],
                 columnDefs: [{
-                    targets: [0, 4, 16, 17, 18],
+                    targets: [0, 4, 17, 18, 19],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -8830,7 +8830,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         suspect_in_contact += parseInt(prospectCount);
                     } else if (custStatus == 70) {
                         //PROSPECT - QUALIFIED
-                        prospect_qualified = parseInt(prospectCount);
+                        prospect_qualified += parseInt(prospectCount);
                     }
 
                     total_leads = customer_signed +
@@ -9115,8 +9115,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             ootCol,
                             custLostCol,
                             oppCol,
-                            oppCol,
                             prospectQualifiedCol,
+                            quoteSentCol,
                             customerFreeTrialCol,
                             signedCol,
                         preview_row.total_leads
@@ -9176,7 +9176,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Total Lead Count'//20
                 }],
                 columnDefs: [{
-                    targets: [0, 4, 16, 17, 18],
+                    targets: [0, 4, 17, 18, 19],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -9404,7 +9404,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         total_prospect_opportunity + ' (' + ((total_prospect_opportunity / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-                    $(api.column(15).footer()).html(
+                    $(api.column(16).footer()).html(
                         total_prospect_qualified + ' (' + ((total_prospect_qualified / total_lead) * 100).toFixed(0) + '%)'
                     );
 
@@ -10314,7 +10314,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Sales Rep ID'//22
                 }],
                 columnDefs: [{
-                    targets: [0, 4, 16, 17, 18, 19],
+                    targets: [0, 4, 17, 18, 19],
                     className: 'bolded'
                 }, {
                     targets: [22],
