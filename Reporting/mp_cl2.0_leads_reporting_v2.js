@@ -777,11 +777,15 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var oldCustomerId;
                 var oldCustomerName;
                 var oldCustomerCurrentStatus;
+                var oldCustomerSource;
+                var oldCustomerZee;
+                var oldStatusDate;
 
                 var salesRepTimeLineCustomerArray = [];
                 var childStatusTimeline = [];
 
                 var countSalesRepTimeline = 0;
+                
 
                 leadSalesRepTimelineSearch.run().each(function (leadSalesRepTimelineResultSet) {
 
@@ -828,6 +832,18 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         join: "systemNotes",
                         summary: "GROUP",
                     });
+
+                    var customerSource = leadSalesRepTimelineResultSet.getText({
+                        name: "leadsource",
+                        summary: "GROUP",
+                    });
+                    var customerZee = leadSalesRepTimelineResultSet.getText({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+
+                    var timeInStatusDays = 0;
+
                     var systemNotesDateSplitSpace = systemNotesDate.split(' ');
                     var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
                     var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
@@ -841,20 +857,62 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
                         systemNotesDateSplit[0];
+
+                    var onlyStatusDate = systemNotesDate
+
+                    console.log('customerName: ' + customerName)
+                    console.log('onlyStatusDate: ' + onlyStatusDate)
+                    console.log('oldStatusDate: ' + oldStatusDate)
+
+                    if (!isNullorEmpty(oldStatusDate) && oldStatus != '- None -') {
+
+
+                        var date1 = new Date(systemNotesDate);
+                        var date2 = new Date(oldStatusDate);
+
+                        var difference = date1.getTime() - date2.getTime();
+                        timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        // var weeks = Math.floor(timeInStatusDays / 7);
+                        // timeInStatusDays = timeInStatusDays - (weeks * 2);
+
+                        // // Handle special cases
+                        // var startDay = date1.getDay();
+                        // var endDay = date2.getDay();
+
+                        // // Remove weekend not previously removed.   
+                        // if (startDay - endDay > 1)
+                        //     timeInStatusDays = timeInStatusDays - 2;
+
+                        // // Remove start day if span starts on Sunday but ends before Saturday
+                        // if (startDay == 0 && endDay != 6) {
+                        //     timeInStatusDays = timeInStatusDays - 1;
+                        // }
+
+                        // // Remove end day if span ends on Saturday but starts after Sunday
+                        // if (endDay == 6 && startDay != 0) {
+                        //     timeInStatusDays = timeInStatusDays - 1;
+                        // }
+
+                        // timeInStatusDays = systemNotesDate - oldStatusDate;
+                    }
+                    console.log('timeInStatusDays: ' + timeInStatusDays)
                     systemNotesDate = systemNotesDate + ' ' + systemNotesTime
-
-
+                    console.log('systemNotesDate: ' + systemNotesDate)
                     if (countSalesRepTimeline == 0 || oldCustomerInternalId == customerInternalId) {
                         childStatusTimeline.push({
                             systemNotesDate: systemNotesDate,
                             oldStatus: oldStatus,
+                            timeInStatusDays: timeInStatusDays,
                             newStatus: newStatus,
                         })
                     } else if (oldCustomerInternalId != customerInternalId) {
                         salesRepTimeLineCustomerArray.push(['',
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldCustomerInternalId + '" target="_blank" style="">' + oldCustomerId + '</a>',
                             oldCustomerName,
+                            oldCustomerZee,
                             oldCustomerCurrentStatus,
+                            oldCustomerSource,
                             childStatusTimeline
                         ]);
 
@@ -863,7 +921,8 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         childStatusTimeline.push({
                             systemNotesDate: systemNotesDate,
                             oldStatus: oldStatus,
-                            newStatus: newStatus
+                            timeInStatusDays: timeInStatusDays,
+                            newStatus: newStatus,
                         })
                     }
 
@@ -931,6 +990,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     oldCustomerId = customerId;
                     oldCustomerName = customerName
                     oldCustomerCurrentStatus = customerCurrentStatus;
+                    oldCustomerSource = customerSource;
+                    oldCustomerZee = customerZee;
+
+                    oldStatusDate = onlyStatusDate;
 
                     countSalesRepTimeline++;
                     return true;
@@ -940,10 +1003,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     salesRepTimeLineCustomerArray.push(['',
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldCustomerInternalId + '" target="_blank" style="">' + oldCustomerId + '</a>',
                         oldCustomerName,
+                        oldCustomerZee,
                         oldCustomerCurrentStatus,
+                        oldCustomerSource,
                         childStatusTimeline
                     ]);
                 }
+
 
                 // statusTimeLineTable += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="3"><b>TOTAL WORKING DAYS</b></th><th style="text-align: center"><b>' + totalTimeInStatusDays + '</b></th><th></th></tfoot>';
                 // statusTimeLineTable += '</tbody></table></div>';
@@ -964,15 +1030,19 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }, {
                         title: 'COMPANY NAME'//2
                     }, {
-                        title: 'STATUS'//3
+                        title: 'FRANCHISEE'//3
                     }, {
-                        title: 'CHILD TABLE'//4
+                        title: 'STATUS'//4
+                    }, {
+                        title: 'SOURCE'//5
+                    }, {
+                        title: 'CHILD TABLE'//6
                     }],
                     columnDefs: [{
                         targets: [0, 1, 2, 3],
                         className: 'bolded'
                     }, {
-                        targets: [4],
+                        targets: [6],
                         visible: false
                     }],
                     footerCallback: function (row, data, start, end, display) { }
@@ -16736,10 +16806,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
             console.log('customer free trial child row: ' + row.data()[16]);
 
-            row.data()[4].forEach(function (el) {
+            row.data()[6].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
-                    childSet.push([el.systemNotesDate, el.oldStatus, el.newStatus
+                    childSet.push([el.systemNotesDate, el.oldStatus, el.timeInStatusDays, el.newStatus
                     ]);
                 }
             });
@@ -16754,10 +16824,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 "bInfo": false,
                 "bAutoWidth": false,
                 data: childSet,
-                order: [1, 'desc'],
+                order: [0, 'asc'],
                 columns: [
                     { title: 'DATE' },
                     { title: 'OLD STATUS' },
+                    { title: 'DAYS IN OLD STATUS' },
                     { title: 'NEW STATUS' },
                 ],
                 columnDefs: [],
