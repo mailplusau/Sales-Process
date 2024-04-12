@@ -785,7 +785,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var childStatusTimeline = [];
 
                 var countSalesRepTimeline = 0;
-                
+
 
                 leadSalesRepTimelineSearch.run().each(function (leadSalesRepTimelineResultSet) {
 
@@ -1045,6 +1045,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         targets: [6],
                         visible: false
                     }],
+                    rowCallback: function (row, data, index) {
+                        var row_color = ''
+                        if (data[4] == 'SUSPECT-Customer - Lost' || data[4] == 'SUSPECT-Lost') {
+                            $('td', row).css('background-color', '#e97777');
+                        } else if (data[4] == 'CUSTOMER-Signed') {
+                            $('td', row).css('background-color', '#ADCF9F');
+                        }
+                    },
                     footerCallback: function (row, data, start, end, display) { }
 
                 });
