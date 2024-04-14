@@ -12,10 +12,10 @@
  */
 
 
-define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
+define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
     'N/error', 'N/url', 'N/format', 'N/currentRecord'
 ],
-    function (email, runtime, search, record, http, log, error, url, format,
+    function (moment, email, runtime, search, record, http, log, error, url, format,
         currentRecord) {
         var zee = 0;
         var userId = 0;
