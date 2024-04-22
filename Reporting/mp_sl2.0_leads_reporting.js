@@ -136,6 +136,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                             start_date = null;
                             date_signed_up_from = null;
 
+                        } else if (!isNullorEmpty(campaign)) {
+                            log.debug({
+                                title: 'inside campaign',
+                                details: campaign
+                            });
+                            if (campaign.indexOf(",") != -1) {
+                                var campaignArray = campaign.split(',');
+                            } else {
+                                var campaignArray = [];
+                                campaignArray.push(campaign)
+                            }
+                            log.debug({
+                                title: 'campaignArray',
+                                details: campaignArray
+                            });
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1) {
+                                start_date = null;
+                                date_signed_up_from = null;
+                            } else {
+                                start_date = firstDay;
+                            }
                         } else {
                             start_date = firstDay;
                             // date_signed_up_from = firstDay;
@@ -147,6 +168,20 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                         if (showTotal == 'T') {
                             last_date = null;
                             date_signed_up_to = null;
+                        } else if (!isNullorEmpty(campaign)) {
+                            if (campaign.indexOf(",") != -1) {
+                                var campaignArray = campaign.split(',');
+                            } else {
+                                var campaignArray = [];
+                                campaignArray.push(campaign)
+                            }
+
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1) {
+                                last_date = null;
+                                date_signed_up_to = null;
+                            } else {
+                                last_date = lastDay;
+                            }
                         } else {
                             last_date = lastDay;
                             // date_signed_up_to = lastDay;
@@ -347,13 +382,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += modalLeadStatusTimeline();
                 inlineHtml += modalLeadSalesRepTimeline();
 
-                getDateRange('lastWeek');
-                getDateRange('lastMonth');
-                getDateRange('thisMonth');
-                getDateRange('lastFinancialYear');
-                getDateRange('thisFinancialYear');
-                getDateRange('lastYear');
-                getDateRange('thisYear');
+                // getDateRange('lastWeek');
+                // getDateRange('lastMonth');
+                // getDateRange('thisMonth');
+                // getDateRange('lastFinancialYear');
+                // getDateRange('thisFinancialYear');
+                // getDateRange('lastYear');
+                // getDateRange('thisYear');
 
                 inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
@@ -1749,7 +1784,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             if (period == "lastWeek") {
                 returnDate.push({
                     startDate: today.clone().startOf('isoweek').subtract(1, 'weeks').format(dateFormat), // Monday of last week
-                    endDate: today.clone().endOf('isoweek').subtract(1, 'weeks').format(dateFormat) // Sunday of last week
+                    endDate: today.clone().endOf('isoweek').subtract(1, 'days').format(dateFormat) // Sunday of last week
                 });
             } else if (period == "thisWeek") {
                 returnDate.push({
@@ -1780,16 +1815,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 const financialYearStart = moment().month(6).startOf('month'); // April 1st
                 today.isBefore(financialYearStart) ? returnDate.push({
                     startDate: financialYearStart.subtract(1, 'years').format(dateFormat), // Previous financial year
-                    endDate: moment().month(6).endOf('month').format(dateFormat) // Last day of current month
+                    endDate: today.clone().endOf('month').format(dateFormat) // Last day of current month
                 }) : returnDate.push({
                     startDate: financialYearStart,
                     endDate: financialYearStart.add(1, 'years').subtract(1, 'days').format(dateFormat) // Last day of March next year
                 });
             } else if (period == "lastFinancialYear") {
-                const lastFinancialYearStart = moment().month(5).subtract(1, 'years').startOf('month');
-                const financialYearStart = moment().month(6).startOf('month'); 
-                // today.isBefore(lastFinancialYearStart) ?
-                returnDate.push({
+                const lastFinancialYearStart = moment().month(6).subtract(1, 'years').startOf('month'); returnDate.push({
                     startDate: lastFinancialYearStart.format(dateFormat),
                     endDate: lastFinancialYearStart.add(1, 'years').subtract(1, 'days').format(dateFormat) // Last day of March in previous year
                 });

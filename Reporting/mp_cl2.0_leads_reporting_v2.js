@@ -371,7 +371,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 leadStatus = $('#cust_status').val();
 
                 zee = $(
-                    '#zee_dropdown option:selected').val();
+                    '#zee_dropdown').val();
 
                 if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
                     if ((isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))) {
@@ -584,7 +584,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 var leadStatus = $('#cust_status').val();
 
                 var zee_id = $(
-                    '#zee_dropdown option:selected').val();
+                    '#zee_dropdown').val();
 
                 date_from = dateISOToNetsuite(date_from);
                 date_to = dateISOToNetsuite(date_to);
@@ -1104,7 +1104,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             // userId = $('#user_dropdown option:selected').val();
             zee = $(
-                '#zee_dropdown option:selected').val();
+                '#zee_dropdown').val();
 
             loadDatatable(zee, userId);
 
@@ -1115,7 +1115,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         //Function to add the filters and relaod the page
         function addFilters() {
 
-            zee = $('#zee_dropdown option:selected').val();
+            zee = $('#zee_dropdown').val();
             // userId = $('#user_dropdown option:selected').val();
 
             var url = baseURL +
