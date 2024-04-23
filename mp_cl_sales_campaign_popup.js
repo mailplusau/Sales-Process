@@ -81,7 +81,9 @@ function saveRecord() {
         recordtoCreate.setFieldValue('custrecord_sales_followup_stage', 5);
     }
 
-    nlapiSubmitRecord(recordtoCreate);
+    var newSalesRecordId = nlapiSubmitRecord(recordtoCreate);
+
+    nlapiSetFieldValue("sales_record_id", newSalesRecordId);     
 
     return true;
 }

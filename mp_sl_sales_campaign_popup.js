@@ -100,6 +100,9 @@ function main(request, response) {
         var customer_record = nlapiLoadRecord('customer', custId);
         var status = customer_record.getFieldValue('entitystatus');
         var leadSource = customer_record.getFieldText('leadsource');
+        var sales_record_id = request.getParameter('sales_record_id');
+
+        nlapiLogExecution('DEBUG', "sales_record_id", sales_record_id);
 
 
         if (nlapiGetUser() == 1777309) {
@@ -116,8 +119,17 @@ function main(request, response) {
             nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au']);
         }
 
+        if (!isNullorEmpty(sales_record_id)) {
+            var params = {
+                recid: parseInt(custId),
+                callcenter: 'T',
+                sales_record_id: sales_record_id
+            }
+            nlapiSetRedirectURL('SUITELET', 'customscript_sl_finalise_page_tn_v2_vue', 'customdeploy_sl_finalise_page_tn_v2_vue', null, params);
+        } else {
+            response.sendRedirect('RECORD', 'customer', custId, false);
+        }
 
-        response.sendRedirect('RECORD', 'customer', custId, false);
 
     }
 
