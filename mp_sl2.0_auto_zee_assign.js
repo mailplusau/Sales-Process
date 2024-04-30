@@ -596,7 +596,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: salesRepEmail,
+                                    recipients: ['liam.pike@mailplus.com.au'],
                                     subject: subject,
                                     cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
                                     relatedRecords: { entityId: customerInternalId }
