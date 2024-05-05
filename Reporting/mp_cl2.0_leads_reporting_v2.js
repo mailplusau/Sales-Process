@@ -14316,7 +14316,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         var total_usage = 0;
                         if (calcprodusage != '2') {
                             if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                                // Customer Product Usage - Total MP Express & Standard
+                                // Customer Product Usage - Total MP Express, Standard & Premium
                                 var mpexUsageResults = search.load({
                                     type: 'customrecord_customer_product_stock',
                                     id: 'customsearch6846'
@@ -14647,7 +14647,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var total_usage = 0;
                     if (calcprodusage != '2') {
                         if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
-                            // Customer Product Usage - Total MP Express & Standard
+                            //Customer Product Usage - Total MP Express, Standard & Premium
                             var mpexUsageResults = search.load({
                                 type: 'customrecord_customer_product_stock',
                                 id: 'customsearch6846'

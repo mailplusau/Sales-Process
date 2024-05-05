@@ -547,60 +547,62 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 //Lead Source: Head Office Generated
 
+                                //Update 2024-05-03T03:47:59.116Z - When a lead is entered in the system with the lead source as Head Office Generated, no sales record is created and the user that created the lead will need to manually create the sales record and assign to the campaign and Sales Rep.
+
                                 /* 
                                 Create Sales Record
                                 Assign to Liam Pike (role: Lead Qualification) depending on the franchisee
                                 Assign to Field Sales
                                  */
-                                var salesRecord = record.create({
-                                    type: 'customrecord_sales'
-                                });
+                                // var salesRecord = record.create({
+                                //     type: 'customrecord_sales'
+                                // });
 
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_customer',
-                                    value: customerInternalId,
-                                })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_campaign',
-                                    value: 62, //Field Sales
-                                })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_assigned',
-                                    value: 1809382, //Assign to Liam
-                                })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_outcome',
-                                    value: 20,
-                                })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_callbackdate',
-                                    value: date_now,
-                                })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_callbacktime',
-                                    value: time_now,
-                                })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_customer',
+                                //     value: customerInternalId,
+                                // })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_campaign',
+                                //     value: 62, //Field Sales
+                                // })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_assigned',
+                                //     value: 1809382, //Assign to Liam
+                                // })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_outcome',
+                                //     value: 20,
+                                // })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_callbackdate',
+                                //     value: date_now,
+                                // })
+                                // salesRecord.setValue({
+                                //     fieldId: 'custrecord_sales_callbacktime',
+                                //     value: time_now,
+                                // })
 
-                                salesRecord.save({
-                                    ignoreMandatoryFields: true
-                                });
+                                // salesRecord.save({
+                                //     ignoreMandatoryFields: true
+                                // });
 
-                                var subject = 'Sales Head Office Generated - ' + entity_id + ' ' + customer_name;
-                                var cust_id_link =
-                                    'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-                                    customerInternalId;
-                                var body =
-                                    'New lead entered into the system by Head Office. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+                                // var subject = 'Sales Head Office Generated - ' + entity_id + ' ' + customer_name;
+                                // var cust_id_link =
+                                //     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+                                //     customerInternalId;
+                                // var body =
+                                //     'New lead entered into the system by Head Office. \n Customer Name: ' +
+                                //     entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
 
-                                email.send({
-                                    author: 112209,
-                                    body: body,
-                                    recipients: ['liam.pike@mailplus.com.au'],
-                                    subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
-                                    relatedRecords: { entityId: customerInternalId }
-                                });
+                                // email.send({
+                                //     author: 112209,
+                                //     body: body,
+                                //     recipients: ['liam.pike@mailplus.com.au'],
+                                //     subject: subject,
+                                //     cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
+                                //     relatedRecords: { entityId: customerInternalId }
+                                // });
                             } else if (leadSource == -4) {
                                 //Lead Source: Franchisee Generated 
 
