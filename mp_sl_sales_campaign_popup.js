@@ -100,23 +100,32 @@ function main(request, response) {
         var customer_record = nlapiLoadRecord('customer', custId);
         var status = customer_record.getFieldValue('entitystatus');
         var leadSource = customer_record.getFieldText('leadsource');
+        var zee_text = customer_record.getFieldText('partner');
         var sales_record_id = request.getParameter('sales_record_id');
 
         nlapiLogExecution('DEBUG', "sales_record_id", sales_record_id);
+        var sales_record = nlapiLoadRecord('customrecord_sales', sales_record_id);
+        var sales_campaign_text = sales_record.getFieldText('custrecord_sales_campaign')
+
 
 
         if (nlapiGetUser() == 1777309) {
             var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
 
-            body = 'New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \n Link: ' + cust_id_link;
+            body = 'New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
 
             nlapiSendEmail(112209, salesrep, 'Sales Coordinator Qualified HOT Lead', body, ['luke.forbes@mailplus.com.au']);
-        } else if (ctx.getUser() != 396479 && status == 57) {
+        } else {
             var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
 
-            body = 'New sales record has been created. \n You have been assigned a lead. Please respond in an hour. \n Link: ' + cust_id_link;
+            body = 'New sales record has been created. \n You have been assigned a lead.\nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
 
-            nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au']);
+            if (salesrep == 1809382) {
+                nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au']);
+            } else {
+                nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au']);
+            }
+
         }
 
         if (!isNullorEmpty(sales_record_id)) {

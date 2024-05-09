@@ -126,7 +126,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     fieldId: 'companyname'
                 });
 
-
                 if (role != 1032) {
                     if (!isNullorEmpty(siteAddressZipCode) && !isNullorEmpty(siteAddressSuburb) && !isNullorEmpty(siteAddressState)) {
                         //Network Matrix - Franchisee - Auto Allocate
@@ -421,8 +420,17 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             value: salesRep, //MailPlus Pty Ltd
                         });
 
-                        customerRecord.save({
+                        var newCustomerRecordId = customerRecord.save({
                             ignoreMandatoryFields: true
+                        });
+
+                        var newCustomerRecord = record.load({
+                            type: record.Type.CUSTOMER,
+                            id: newCustomerRecordId,
+                            isDynamic: true
+                        });
+                        var zee_text = newCustomerRecord.getText({
+                            fieldId: 'partner'
                         });
 
                         if (salesRep == 668712) {
@@ -533,7 +541,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     customerInternalId;
                                 var body =
                                     'New lead entered into the system by Sales Coordinator. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link + '\nFranchisee: ' + zee_text;
 
                                 email.send({
                                     author: 112209,
@@ -644,13 +652,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     ignoreMandatoryFields: true
                                 });
 
-                                var subject = 'Sales HOT Lead - Franchisee Generated - ' + entity_id + ' ' + customer_name;
+                                var subject = 'Sales HOT Lead - ' + zee_text + ' Franchisee Generated - ' + entity_id + ' ' + customer_name;
                                 var cust_id_link =
                                     'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
                                     customerInternalId;
                                 var body =
                                     'New lead entered into the system by Franchisee. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link + '\nFranchisee: ' + zee_text;
 
                                 email.send({
                                     author: 112209,
@@ -708,7 +716,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     customerInternalId;
                                 var body =
                                     'New lead entered into the system by Head Office. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link + '\nFranchisee: ' + zee_text;
 
                                 email.send({
                                     author: 112209,
@@ -764,7 +772,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     customerInternalId;
                                 var body =
                                     'New lead entered into the system. \n Customer Name: ' +
-                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link;
+                                    entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link + '\nFranchisee: ' + zee_text;
 
                                 email.send({
                                     author: 112209,
