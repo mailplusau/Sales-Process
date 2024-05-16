@@ -1433,6 +1433,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 data: debtDataSet,
                 pageLength: 1000,
                 order: [[12, 'des']],
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                },
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1513,6 +1518,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 data: debtDataSet2,
                 pageLength: 1000,
                 order: [[12, 'des']],
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                },
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1591,6 +1601,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 data: debtDataSet3,
                 pageLength: 1000,
                 order: [[12, 'des']],
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                },
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1669,6 +1684,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 data: debtDataSet4,
                 pageLength: 1000,
                 order: [[2, 'asc']],
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                },
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
@@ -1746,6 +1766,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 data: debt_set_validated,
                 pageLength: 1000,
                 order: [[2, 'asc']],
+                layout: {
+                    topStart: {
+                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    }
+                },
                 columns: [{
                     title: 'Expand',
                     className: 'dt-control',
