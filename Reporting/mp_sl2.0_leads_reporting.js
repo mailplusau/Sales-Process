@@ -570,6 +570,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += '<option value="32">CUSTOMER - Free Trial</option>';
             }
 
+            if (custStatus == '71') {
+                inlineHtml += '<option value="32" selected>CUSTOMER - Free Trail Pending</option>';
+            } else {
+                inlineHtml += '<option value="32">CUSTOMER - Free Trial Pending</option>';
+            }
+
             if (custStatus == '57') {
                 inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
             } else {
@@ -1463,6 +1469,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
 
             inlineHtml += '</ul></div>';
@@ -1482,6 +1490,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div id="container_trial_customers"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('trial_customers');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_trial_pending_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('trial_pending_customers');
             inlineHtml += '</div>';
 
 
@@ -1677,7 +1693,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
             if (name == 'preview' || name == 'lpo_overview' || name == 'zee_overview') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
 
             if (name == 'salesrep_overview') {
@@ -1687,7 +1703,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             if (name == 'customer' || name == 'existing_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
-            if (name == 'trial_customers') {
+            if (name == 'trial_customers' || name == 'trial_pending_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'suspects_followup') {
