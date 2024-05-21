@@ -81,35 +81,35 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 });
 
                 var subject = '48 Hour after Trial Sign Up - ' + entityId + ' ' + companyName;
-                var emailBody = 'The below customer was signed up for Free Trial, 2 days back.\n';
-                emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '\n'
-                emailBody += 'Franchisee: ' + zeeName + '\n'
-                emailBody += 'Trial Start Date: ' + commDate + '\n'
+                var emailBody = 'The below customer was signed up for Free Trial, 2 days back.</br></br>';
+                emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '</br>'
+                emailBody += 'Franchisee: ' + zeeName + '</br>'
+                emailBody += 'Trial Start Date: ' + commDate + '</br>'
                 emailBody += 'Below are the details that are completed/not completed before the Trial can start'
                 if (isNullorEmpty(tncAgreed) || tncAgreed == 2) {
-                    emailBody += 'LPO Comms to Customer: NO\n'
+                    emailBody += 'LPO Comms to Customer: NO</br>'
                 } else {
-                    emailBody += 'LPO Comms to Customer: YES\n'
+                    emailBody += 'LPO Comms to Customer: YES</br>'
                 }
 
                 if (isNullorEmpty(tncAgreed) || tncAgreed == 2) {
-                    emailBody += 'T&C\'s Agreed by Customer: NO\n'
+                    emailBody += 'T&C\'s Agreed by Customer: NO</br>'
                 } else {
-                    emailBody += 'T&C\'s Agreed by Customer: YES\n'
+                    emailBody += 'T&C\'s Agreed by Customer: YES</br>'
                 }
 
                 if (isNullorEmpty(lpoCommsToCustomer) || lpoCommsToCustomer == 2) {
-                    emailBody += 'Franchisee Visited: NO\n'
+                    emailBody += 'Franchisee Visited: NO</br>'
                 } else {
-                    emailBody += 'Franchisee Visited: YES\n'
+                    emailBody += 'Franchisee Visited: YES</br>'
                 }
 
-                emailBody += '\nPlease note, once the above 3 conditions have been met, the lead will automatically moved to status "CUSTOMER - FREE TRIAL".\nIf the above 3 conditions have been met after the trial date that had been setup, please go back into the Call Center page and restart the trial with new dates.'
+                emailBody += '</br>Please note, once the above 3 conditions have been met, the lead will automatically moved to status "CUSTOMER - FREE TRIAL".</br>If the above 3 conditions have been met after the trial date that had been setup, please go back into the Call Center page and restart the trial with new dates.'
 
                 if (!isNullorEmpty(customer_id)) {
                     email.send({
                         author: 112209,
-                        body: emailHtml,
+                        body: emailBody,
                         recipients: salesRep_id,
                         subject: subject,
                         cc: ['ankith.ravindran@mailplus.com.au', 'luke.forbes@mailplus.com.au'],
