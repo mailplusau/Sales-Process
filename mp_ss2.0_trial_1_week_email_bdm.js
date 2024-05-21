@@ -82,15 +82,15 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
 
 
                 var subject = '1 Week after Free Trial - ' + entityId + ' ' + companyName;
-                var emailBody = 'The below customer has completed 1 week of their 2-week free trial.\n';
-                emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '\n'
-                emailBody += 'Franchisee: ' + zeeName + '\n'
+                var emailBody = 'The below customer has completed 1 week of their 2-week free trial.</br></br>';
+                emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '</br>'
+                emailBody += 'Franchisee: ' + zeeName + '</br>'
 
 
                 if (!isNullorEmpty(customer_id)) {
                     email.send({
                         author: 112209,
-                        body: emailHtml,
+                        body: emailBody,
                         recipients: salesRep_id,
                         subject: subject,
                         cc: ['ankith.ravindran@mailplus.com.au', 'luke.forbes@mailplus.com.au'],
