@@ -6,7 +6,7 @@
  * Created on:           Tue May 21 2024
  * Modified on:          Tue May 21 2024 13:43:41
  * SuiteScript Version:  2.0 
- * Description:          EEmail to the BDM, 48 hours after the Free Trial has been signed up. 
+ * Description:         Email to BDM, 1 week after the free trial has begun. 
  *
  * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
@@ -27,25 +27,25 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
             var today = new Date();
             today.setHours(today.getHours() + 17);
 
-            // NetSuite Search: Free Trial Pending List - Email BDM
-            var freeTrialPendingEmailBDMSearch = search.load({
-                id: 'customsearch_trial_pending_email_bdm',
+            // NetSuite Search: Free Trail List - 1 Week - Email to BDM
+            var freeTrial1WeekEmailBDMSearch = search.load({
+                id: 'customsearch_trial_1_week_email_bdm',
                 type: 'customer',
             });
 
-            var count = freeTrialPendingEmailBDMSearch.runPaged().count;
+            var count = freeTrial1WeekEmailBDMSearch.runPaged().count;
 
             log.debug({
                 title: 'count',
                 details: count
             });
-            sendEmails(freeTrialPendingEmailBDMSearch);
+            sendEmails(freeTrial1WeekEmailBDMSearch);
 
         }
 
-        function sendEmails(freeTrialPendingEmailBDMSearch) {
+        function sendEmails(freeTrial1WeekEmailBDMSearch) {
 
-            freeTrialPendingEmailBDMSearch.run().each(function (searchResult) {
+            freeTrial1WeekEmailBDMSearch.run().each(function (searchResult) {
 
                 var customer_id = searchResult.getValue('internalid');
                 var entityId = searchResult.getValue({
@@ -55,10 +55,10 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                     name: "companyname",
                 });
 
-                var commDate = searchResult.getValue({
-                    name: "custrecord_comm_date",
-                    join: "CUSTRECORD_CUSTOMER",
-                });
+                // var commDate = searchResult.getValue({
+                //     name: "custrecord_comm_date",
+                //     join: "CUSTRECORD_CUSTOMER",
+                // });
 
                 var salesRep_id = searchResult.getValue({
                     name: "custrecord_sales_assigned",
@@ -70,41 +70,22 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 var zeeName = searchResult.getText({
                     name: "partner",
                 });
-                var tncAgreed = searchResult.getValue({
-                    name: "custentity_terms_conditions_agree_date",
-                });
-                var zeeVisited = searchResult.getValue({
-                    name: "custentity_mp_toll_zeevisit_memo",
-                });
-                var lpoCommsToCustomer = searchResult.getValue({
-                    name: "custentity_lpo_comms_to_customer",
-                });
+                // var tncAgreed = searchResult.getValue({
+                //     name: "custentity_terms_conditions_agree_date",
+                // });
+                // var zeeVisited = searchResult.getValue({
+                //     name: "custentity_mp_toll_zeevisit_memo",
+                // });
+                // var lpoCommsToCustomer = searchResult.getValue({
+                //     name: "custentity_lpo_comms_to_customer",
+                // });
 
-                var subject = '48 Hour after Trial Sign Up - ' + entityId + ' ' + companyName;
-                var emailBody = 'The below customer was signed up for Free Trial, 2 days back.\n';
+
+                var subject = '1 Week after Free Trial - ' + entityId + ' ' + companyName;
+                var emailBody = 'The below customer has completed 1 week of their 2-week free trial.\n';
                 emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '\n'
                 emailBody += 'Franchisee: ' + zeeName + '\n'
-                emailBody += 'Trial Start Date: ' + commDate + '\n'
-                emailBody += 'Below are the details that are completed/not completed before the Trial can start'
-                if (isNullorEmpty(tncAgreed) || tncAgreed == 2) {
-                    emailBody += 'LPO Comms to Customer: NO\n'
-                } else {
-                    emailBody += 'LPO Comms to Customer: YES\n'
-                }
 
-                if (isNullorEmpty(tncAgreed) || tncAgreed == 2) {
-                    emailBody += 'T&C\'s Agreed by Customer: NO\n'
-                } else {
-                    emailBody += 'T&C\'s Agreed by Customer: YES\n'
-                }
-
-                if (isNullorEmpty(lpoCommsToCustomer) || lpoCommsToCustomer == 2) {
-                    emailBody += 'Franchisee Visited: NO\n'
-                } else {
-                    emailBody += 'Franchisee Visited: YES\n'
-                }
-
-                emailBody += '\nPlease note, once the above 3 conditions have been met, the lead will automatically moved to status "CUSTOMER - FREE TRIAL".\nIf the above 3 conditions have been met after the trial date that had been setup, please go back into the Call Center page and restart the trial with new dates.'
 
                 if (!isNullorEmpty(customer_id)) {
                     email.send({
@@ -115,7 +96,6 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                         cc: ['ankith.ravindran@mailplus.com.au', 'luke.forbes@mailplus.com.au'],
                         relatedRecords: { entityId: customer_id }
                     });
-
                 }
 
 
