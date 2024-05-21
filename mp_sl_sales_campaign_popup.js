@@ -115,7 +115,7 @@ function main(request, response) {
             body = 'New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
 
             nlapiSendEmail(112209, salesrep, 'Sales Coordinator Qualified HOT Lead', body, ['luke.forbes@mailplus.com.au']);
-        } else {
+        } else if (parseInt(nlapiGetRole()) != 1032 && parseInt(nlapiGetRole()) != 3) {
             var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
 
             body = 'New sales record has been created. \n You have been assigned a lead.\nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
