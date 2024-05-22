@@ -6,8 +6,8 @@
  * Created on:           Tue May 21 2024
  * Modified on:          Tue May 21 2024 13:43:41
  * SuiteScript Version:  2.0 
- * Description:         Email to BDM, 1 week after the free trial has begun. 
- *
+ * Description:         Email to BDM, on day of Free Trial if franchisee has not completed the Visited task.
+ * 
  * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
 
