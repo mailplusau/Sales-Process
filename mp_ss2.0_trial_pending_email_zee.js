@@ -96,7 +96,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
 
                 formattedBillingStartToday = dd + '/' + mm + '/' + yyyy;
 
-                suiteletUrl += '&rectype=customer&template=150';
+                suiteletUrl += '&rectype=customer&template=199';
                 suiteletUrl += '&recid=' + customer_id + '&salesrep=' + salesRep_id + '&dear=' + '' + '&contactid=' + contact_id + '&userid=' + salesRep_id + '&commdate=' + commDate + '&trialenddate=' + trialExpiryDate + '&commreg=' + commReg + '&billingstartdate=' + formattedBillingStartToday;
 
                 log.debug({
