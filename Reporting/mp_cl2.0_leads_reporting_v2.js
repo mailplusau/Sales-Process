@@ -15071,6 +15071,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var oldMonthlyReductionServiceValue = 0.0;
             var oldMonthlyExtraServiceValue = 0.0;
             var oldMinCommDate = null;
+            var oldTnCAgreedDate = null;
+            var oldZeeVisitedDate = null;
+            var oldLPOCommsToCustomer = null;
 
             var oldInvoiceNumber = null;
             var oldinvoiceDate = null;
@@ -15260,6 +15263,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     summary: "GROUP",
                 });
 
+                var tncAgreedDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_terms_conditions_agree_date",
+                    summary: "GROUP",
+                });
+                var zeeVisitedDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_mp_toll_zeevisit_memo",
+                    summary: "GROUP",
+                });
+                var lpoCommsToCustomer = custListCommenceTodaySet.getValue({
+                    name: "custentity_lpo_comms_to_customer",
+                    summary: "GROUP",
+                });
+
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = parseFloat(monthlyServiceValue);
                 } else {
@@ -15446,6 +15462,36 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     trialEndDate = trialEndDateSplit[2] + '-' + trialEndDateSplit[1] + '-' +
                         trialEndDateSplit[0];
+                }
+
+                if (!isNullorEmpty(tncAgreedDate)) {
+                    var tncAgreedDateSplit = tncAgreedDate.split('/');
+
+                    if (parseInt(tncAgreedDateSplit[1]) < 10) {
+                        tncAgreedDateSplit[1] = '0' + tncAgreedDateSplit[1]
+                    }
+
+                    if (parseInt(tncAgreedDateSplit[0]) < 10) {
+                        tncAgreedDateSplit[0] = '0' + tncAgreedDateSplit[0]
+                    }
+
+                    tncAgreedDate = tncAgreedDateSplit[2] + '-' + tncAgreedDateSplit[1] + '-' +
+                        tncAgreedDateSplit[0];
+                }
+
+                if (!isNullorEmpty(zeeVisitedDate)) {
+                    var zeeVisitedDateSplit = zeeVisitedDate.split('/');
+
+                    if (parseInt(zeeVisitedDateSplit[1]) < 10) {
+                        zeeVisitedDateSplit[1] = '0' + zeeVisitedDateSplit[1]
+                    }
+
+                    if (parseInt(zeeVisitedDateSplit[0]) < 10) {
+                        zeeVisitedDateSplit[0] = '0' + zeeVisitedDateSplit[0]
+                    }
+
+                    zeeVisitedDate = zeeVisitedDateSplit[2] + '-' + zeeVisitedDateSplit[1] + '-' +
+                        zeeVisitedDateSplit[0];
                 }
 
                 if (count == 0) {
@@ -15692,14 +15738,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 oldcustName,
                                 oldzeeName,
                                 oldSource,
-                                oldProdWeeklyUsage,
                                 oldPreviousCarrier,
-                                express_speed,
-                                standard_speed,
-                                mpExpStdUsageLink,
                                 olddateLeadEntered,
                                 oldquoteSentDate,
                                 olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
                                 oldTrialEndDate,
                                 '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
@@ -15714,14 +15759,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 oldcustName,
                                 oldzeeName,
                                 oldSource,
-                                oldProdWeeklyUsage,
                                 oldPreviousCarrier,
-                                express_speed,
-                                standard_speed,
-                                mpExpStdUsageLink,
                                 olddateLeadEntered,
                                 oldquoteSentDate,
                                 olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
                                 oldTrialEndDate,
                                 '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
@@ -15850,6 +15894,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldMonthlyExtraServiceValue = monthlyExtraServiceValue;
                 oldMinCommDate = minCommDate
                 oldTrialEndDate = trialEndDate;
+                oldTnCAgreedDate = tncAgreedDate;
+                oldZeeVisitedDate = zeeVisitedDate;
+                oldLPOCommsToCustomer = lpoCommsToCustomer;
                 oldInvoiceNumber = invoiceDocumentNumber;
                 oldinvoiceDate = invoiceDate;
                 oldInvoiceType = invoiceType;
@@ -16060,14 +16107,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldcustName,
                             oldzeeName,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
-                            express_speed,
-                            standard_speed,
-                            mpExpStdUsageLink,
                             olddateLeadEntered,
                             oldquoteSentDate,
                             olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
                             oldTrialEndDate,
                             '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
@@ -16075,7 +16121,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             customerChildDataSet
                         ]);
 
-                    }else if (oldCustStatusId == 71) {
+                    } else if (oldCustStatusId == 71) {
 
                         console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
                         trialPendingCustomerDataSet.push(['',
@@ -16084,14 +16130,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldcustName,
                             oldzeeName,
                             oldSource,
-                            oldProdWeeklyUsage,
                             oldPreviousCarrier,
-                            express_speed,
-                            standard_speed,
-                            mpExpStdUsageLink,
                             olddateLeadEntered,
                             oldquoteSentDate,
                             olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
                             oldTrialEndDate,
                             '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
@@ -16420,7 +16465,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var dataTableTrialCustomers = $('#mpexusage-trial_customers').DataTable({
                 data: trialCustomerDataSet,
                 pageLength: 250,
-                order: [[14, 'asc']],
+                order: [[13, 'asc']],
                 layout: {
                     topStart: {
                         buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
@@ -16438,19 +16483,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 { title: 'Company Name' },//3
                 { title: 'Franchisee' },//4
                 { title: 'Source' },//5
-                { title: 'Product Weekly Usage' },//6
-                { title: 'Previous Carrier' },//7
-                { title: 'MP Express' },//8
-                { title: 'MP Standard' },//9
-                { title: 'Daily Usage' },//10
-                { title: 'Date - Lead Entered' },//11
-                { title: 'Date - Quote Sent' },//12
-                { title: 'Date - Prospect Won' },//13
-                { title: 'Trial End Date' },//14
-                { title: 'Days Open' },//15
-                { title: 'Expected Monthly Service' },//16
-                { title: 'Sales Rep' },//17
-                { title: 'Child Table' },//18
+                { title: 'Previous Carrier' },//6
+                { title: 'Date - Lead Entered' },//7
+                { title: 'Date - Quote Sent' },//8
+                { title: 'Date - Prospect Won' },//9
+                { title: 'T & C\'s Agreed Date' },//10
+                { title: 'Franchisee Visited Date' },//11
+                { title: 'LPO Comms to Customer' },//12
+                { title: 'Trial End Date' },//13
+                { title: 'Days Open' },//14
+                { title: 'Expected Monthly Service' },//15
+                { title: 'Sales Rep' },//16
+                { title: 'Child Table' },//17
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -16459,7 +16503,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         className: 'bolded'
                     },
                     {
-                        targets: [18],
+                        targets: [17],
                         visible: false
                     },
                 ],
@@ -16479,69 +16523,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         currency: 'AUD',
                         minimumFractionDigits: 2
                     })
-
-                    // Total MP Express Usage
-                    total_mp_exp_usage = api
-                        .column(8)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total MP Express Usage
-                    page_mp_exp_usage = api
-                        .column(8, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Total MP Standard Usage
-                    total_mp_std_usage = api
-                        .column(9)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total MP Standard Usage
-                    page_mp_std_usage = api
-                        .column(9, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(16, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-
-                    // Update footer
-                    $(api.column(16).footer()).html(
-                        formatter.format(page_total_monthly_service_revenue)
-                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
-                    );
-
 
 
                 }
@@ -16599,19 +16580,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 { title: 'Company Name' },//3
                 { title: 'Franchisee' },//4
                 { title: 'Source' },//5
-                { title: 'Product Weekly Usage' },//6
-                { title: 'Previous Carrier' },//7
-                { title: 'MP Express' },//8
-                { title: 'MP Standard' },//9
-                { title: 'Daily Usage' },//10
-                { title: 'Date - Lead Entered' },//11
-                { title: 'Date - Quote Sent' },//12
-                { title: 'Date - Prospect Won' },//13
-                { title: 'Trial End Date' },//14
-                { title: 'Days Open' },//15
-                { title: 'Expected Monthly Service' },//16
-                { title: 'Sales Rep' },//17
-                { title: 'Child Table' },//18
+                { title: 'Previous Carrier' },//6
+                { title: 'Date - Lead Entered' },//7
+                { title: 'Date - Quote Sent' },//8
+                { title: 'Date - Prospect Won' },//9
+                { title: 'T & C\'s Agreed Date' },//10
+                { title: 'Franchisee Visited Date' },//11
+                { title: 'LPO Comms to Customer' },//12
+                { title: 'Trial End Date' },//13
+                { title: 'Days Open' },//14
+                { title: 'Expected Monthly Service' },//15
+                { title: 'Sales Rep' },//16
+                { title: 'Child Table' },//17
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -16620,7 +16600,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         className: 'bolded'
                     },
                     {
-                        targets: [18],
+                        targets: [17],
                         visible: false
                     },
                 ],
@@ -16640,69 +16620,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         currency: 'AUD',
                         minimumFractionDigits: 2
                     })
-
-                    // Total MP Express Usage
-                    total_mp_exp_usage = api
-                        .column(8)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total MP Express Usage
-                    page_mp_exp_usage = api
-                        .column(8, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Total MP Standard Usage
-                    total_mp_std_usage = api
-                        .column(9)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total MP Standard Usage
-                    page_mp_std_usage = api
-                        .column(9, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Total Expected Usage over all pages
-                    total_monthly_service_revenue = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-                    // Page Total Expected Usage over this page
-                    page_total_monthly_service_revenue = api
-                        .column(16, {
-                            page: 'current'
-                        })
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
-
-
-
-                    // Update footer
-                    $(api.column(16).footer()).html(
-                        formatter.format(page_total_monthly_service_revenue)
-                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
-                    );
-
 
 
                 }
@@ -18279,7 +18196,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             console.log('customer free trial child row: ' + row.data()[16]);
 
-            row.data()[18].forEach(function (el) {
+            row.data()[17].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -18318,7 +18235,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             console.log('customer free trial child row: ' + row.data()[16]);
 
-            row.data()[18].forEach(function (el) {
+            row.data()[17].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
