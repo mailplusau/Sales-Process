@@ -84,7 +84,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 var formattedBillingStartToday;
 
                 trial_end_date_split = trialExpiryDate.split('/');
-                billingStartdate = new Date(trial_end_date_split[2] + "-" + trial_end_date_split[1] + "-" + trial_end_date_split[0]);
+                billingStartdate = new Date(trial_end_date_split[2], trial_end_date_split[1], trial_end_date_split[0]);
                 billingStartdate.setDate(billingStartdate.getDate() + 1)
 
                 var yyyy = billingStartdate.getFullYear();
