@@ -1023,7 +1023,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     order: [2, 'asc'],
                     layout: {
                         topStart: {
-                            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                            buttons: [{
+                                extend: 'copy', text: 'Copy',
+                                className: 'btn btn-default',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'csv', text: 'CSV',
+                                className: 'btn btn-default',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'excel', text: 'Excel',
+                                className: 'btn btn-default',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'pdf', text: 'PDF',
+                                className: 'btn btn-default',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'print', text: 'Print',
+                                className: 'btn btn-default',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }],
                         }
                     },
                     columns: [{
@@ -1051,7 +1081,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }, {
                         targets: [6],
                         visible: false
-                    }],
+                        }],
                     rowCallback: function (row, data, index) {
                         var row_color = ''
                         if (data[4] == 'SUSPECT-Customer - Lost' || data[4] == 'SUSPECT-Lost') {
@@ -11545,10 +11575,40 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 destroy: true,
                 data: salesrep_previewDataSet,
                 pageLength: 1000,
-                order: [[19, 'des']],
+                order: [[21, 'des']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
@@ -11601,12 +11661,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     title: 'Sales Rep ID'//23
                 }],
                 columnDefs: [{
-                    targets: [0, 4, 17, 19, 20],
+                    targets: [0, 4, 17, 19, 20, 21],
                     className: 'bolded'
                 }, {
                     targets: [23],
                     visible: false
-                }],
+                },
+                {
+                    targets: [22, 23],
+                    className: 'notexport'
+                }
+                ],
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
                         data;
@@ -16213,7 +16278,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [[13, 'des']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -16223,29 +16318,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'MP Express' },
-                    { title: 'MP Standard' },
-                    { title: 'Daily Usage' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Source' },//5
+                    { title: 'Product Weekly Usage' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'MP Express' },//8
+                    { title: 'MP Standard' },//9
+                    { title: 'Daily Usage' },//10
+                    { title: 'Date - Lead Entered' },//11
+                    { title: 'Date - Quote Sent' },//12
                     // { title: '48h Email Sent' },
-                    { title: 'Date - Prospect Won' },
-                    { title: 'Days Open' },
-                    { title: 'Expected Monthly Service' },
-                    { title: 'Total Service Invoice' },
-                    { title: 'Total Product Invoice' },
-                    { title: 'Total Invoice' },
-                    { title: 'Sales Rep' },
-                    { title: 'Auto Signed Up' },
-                    { title: 'Child Table' }
+                    { title: 'Date - Prospect Won' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Expected Monthly Service' },//15
+                    { title: 'Total Service Invoice' },//16
+                    { title: 'Total Product Invoice' },//17
+                    { title: 'Total Invoice' },//18
+                    { title: 'Sales Rep' },//19
+                    { title: 'Auto Signed Up' },//20
+                    { title: 'Child Table' }//21
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -16256,6 +16351,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 13, 15, 16, 17, 18],
                         className: 'bolded'
+                    }, {
+                        targets: [0, 10, 14],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -16468,7 +16566,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [[13, 'asc']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
@@ -16506,6 +16634,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         targets: [17],
                         visible: false
                     },
+                    {
+                        targets: [0, 14],
+                        className: 'notexport'
+                    }
                 ],
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -16565,7 +16697,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [[14, 'asc']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
@@ -16603,6 +16765,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         targets: [17],
                         visible: false
                     },
+                    {
+                        targets: [0, 14],
+                        className: 'notexport'
+                    }
                 ],
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -16663,7 +16829,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [[13, 'des']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -16673,29 +16869,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'MP Express' },
-                    { title: 'MP Standard' },
-                    { title: 'Daily Usage' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Source' },//5
+                    { title: 'Product Weekly Usage' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'MP Express' },//8
+                    { title: 'MP Standard' },//9
+                    { title: 'Daily Usage' },//10
+                    { title: 'Date - Lead Entered' },//11
+                    { title: 'Date - Quote Sent' },//12
                     // { title: '48h Email Sent' },
-                    { title: 'Date - Prospect Won' },
-                    { title: 'Days Open' },
-                    { title: 'Expected Monthly Service' },
-                    { title: 'Total Service Invoice' },
-                    { title: 'Total Product Invoice' },
-                    { title: 'Total Invoice' },
-                    { title: 'Sales Rep' },
-                    { title: 'Auto Signed Up' },
-                    { title: 'Child Table' }
+                    { title: 'Date - Prospect Won' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Expected Monthly Service' },//15
+                    { title: 'Total Service Invoice' },//16
+                    { title: 'Total Product Invoice' },//17
+                    { title: 'Total Invoice' },//18
+                    { title: 'Sales Rep' },//19
+                    { title: 'Auto Signed Up' },//20
+                    { title: 'Child Table' }//21
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -16706,6 +16902,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 13, 15, 16, 17, 18],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 10, 14],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -16927,7 +17127,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -16937,22 +17167,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: '48h Email Sent' },
-                    { title: 'Days Open' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: '48h Email Sent' },//11
+                    { title: 'Days Open' },//12
+                    { title: 'Monthly Service Value' },//13
+                    { title: 'Sales Rep' },//14
+                    { title: 'Child Table' }//15
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -16963,6 +17193,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 5, 12, 13],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 12],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17063,7 +17297,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [10, 'desc'],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17073,22 +17337,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: '48h Email Sent' },
-                    { title: 'Days Open' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: '48h Email Sent' },//11
+                    { title: 'Days Open' },//12
+                    { title: 'Monthly Service Value' },//13
+                    { title: 'Sales Rep' },//14
+                    { title: 'Child Table' }//15
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17099,6 +17363,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 5, 12, 13],
                         className: 'bolded'
+                    }, {
+                        targets: [0, 12],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17200,7 +17467,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [8, 'desc'],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17210,19 +17507,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: '48H Email Sent?' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    }, //0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'Date - Lead Entered' },//8
+                    { title: '48H Email Sent?' },//9
+                    { title: 'Days Open' },//10
+                    { title: 'Sales Rep' },//11
+                    { title: 'Child Table' }//12
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17233,6 +17530,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 5, 6, 8, 10],
                         className: 'bolded'
+                    },
+                    {
+                        taregts: [0, 10],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17291,7 +17592,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17301,18 +17632,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    }, //0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'Date - Lead Entered' },//8
+                    { title: 'Days Open' },//9
+                    { title: 'Sales Rep' },//10
+                    { title: 'Child Table' }//11
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17323,6 +17654,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 9],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17377,7 +17712,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17387,19 +17752,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - LPO Validated' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'Date - Lead Entered' },//8
+                    { title: 'Date - LPO Validated' },//9
+                    { title: 'Days Open' },//10
+                    { title: 'Sales Rep' },//11
+                    { title: 'Child Table' }//12
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17410,6 +17775,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
+                    }, {
+                        targets: [0, 10],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17471,7 +17839,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17481,25 +17879,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
-                    { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: 'Date - Lead Reassigned' },//11
+                    { title: 'Date - Lead Lost' },//12
+                    { title: '48H Email Sent?' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Cancellation Reason' },//15
+                    { title: 'Monthly Service Value' },//16
+                    { title: 'Sales Rep' },//17
+                    { title: 'Child Table' }//18
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17510,6 +17908,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 14, 15],
                         className: 'bolded'
+                    }, {
+                        targets: [0, 14],
+                        className: 'notexported'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17565,7 +17966,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [12, 'desc'],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17575,26 +18006,26 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Prospect Won' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
-                    { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Avg Invoice - Last 3 Months' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: 'Date - Prospect Won' },//11
+                    { title: 'Date - Lead Lost' },//12
+                    { title: '48H Email Sent?' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Cancellation Reason' },//15
+                    { title: 'Monthly Service Value' },//16
+                    { title: 'Avg Invoice - Last 3 Months' },//17
+                    { title: 'Sales Rep' },//18
+                    { title: 'Child Table' }//19
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17605,6 +18036,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 14, 15],
                         className: 'bolded'
+                    }, {
+                        targets: [0, 14],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17734,7 +18168,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17744,25 +18208,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
-                    { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: 'Date - Lead Reassigned' },//11
+                    { title: 'Date - Lead Lost' },//12
+                    { title: '48H Email Sent?' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Cancellation Reason' },//15
+                    { title: 'Monthly Service Value' },//16
+                    { title: 'Sales Rep' },//17
+                    { title: 'Child Table' }//18
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17773,6 +18237,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 14, 15],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 14],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17828,7 +18296,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17838,25 +18336,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Product Weekly Usage' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Date - Quote Sent' },
-                    { title: 'Date - Lead Reassigned' },
-                    { title: 'Date - Lead Lost' },
-                    { title: '48H Email Sent?' },
-                    { title: 'Days Open' },
-                    { title: 'Cancellation Reason' },
-                    { title: 'Monthly Service Value' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: 'Date - Lead Reassigned' },//11
+                    { title: 'Date - Lead Lost' },//12
+                    { title: '48H Email Sent?' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Cancellation Reason' },//15
+                    { title: 'Monthly Service Value' },//16
+                    { title: 'Sales Rep' },//17
+                    { title: 'Child Table' }//18
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17867,6 +18365,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 14, 15],
                         className: 'bolded'
+                    },
+                    {
+                        taregts: [0, 14],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -17959,7 +18461,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -17969,18 +18501,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'Date - Lead Entered' },//8
+                    { title: 'Days Open' },//9
+                    { title: 'Sales Rep' },//10
+                    { title: 'Child Table' }//11
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -17991,6 +18523,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 9],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
@@ -18048,7 +18584,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -18058,18 +18624,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         orderable: false,
                         data: null,
                         defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-                    },
-                    { title: 'Internal ID' },
-                    { title: 'ID' },
-                    { title: 'Company Name' },
-                    { title: 'Franchisee' },
-                    { title: 'Status' },
-                    { title: 'Source' },
-                    { title: 'Previous Carrier' },
-                    { title: 'Date - Lead Entered' },
-                    { title: 'Days Open' },
-                    { title: 'Sales Rep' },
-                    { title: 'Child Table' }
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'Date - Lead Entered' },//8
+                    { title: 'Days Open' },//9
+                    { title: 'Sales Rep' },//10
+                    { title: 'Child Table' }//11
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -18080,6 +18646,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     {
                         targets: [2, 3, 4, 6, 9, 10],
                         className: 'bolded'
+                    },
+                    {
+                        targets: [0, 9],
+                        className: 'notexport'
                     }
                 ],
                 rowCallback: function (row, data, index) {
