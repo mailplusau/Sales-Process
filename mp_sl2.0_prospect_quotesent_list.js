@@ -264,7 +264,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
 
                 //Instructions Sections
-                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br>This page assists you in finding the most relevant leads based on the filters used. </br> <ul><li><b>FRANCHISEE</b>: Leads based on the Franchisee they have been assigned to.</li><li><b>STATUS</b>: Leads at different stages in the sales process. By default the status is "SUSPECT  - HOT LEAD"</li><li><b>SOURCE</b>: Filter by how the lead was generated. </li><li><b>SALES CAMPAIGN</b>: Leads based on the different campaigns.</li></ul>Using the Filters: <ol><li><b>Select one or more filters</b>: Choose the criteria that best match your need.</li><li><b>Combine filters</b>: Use multiple filters together for even more precise targeting.</li><li>Click <b>"Apply Filter"</b>: Update the lead list based on your chosen filters.</li></ol>Navigating the Lead List: <ul><li>Displays key information like company name, contact details, and lead status.</li><li>Click <b>"Call Center"</b>: Access more detailed information and notes on the specific lead.</li></ul></p></br></div></br>';
+                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br>This page assists you in finding the most relevant leads based on the filters used. </br> <ul><li><b>FRANCHISEE</b>: Leads based on the Franchisee they have been assigned to. You can also multiselect mutiple franchisees.</li><li><b>SALES REP</b>: Filter the page based on the selected Sales Rep the Sales Record of the lead has been assigned to. </li><li><b>STAGE</b>: Leads at different stages in the sales process. By default the status is "SUSPECT  - HOT LEAD"</li><li><b>SOURCE</b>: Filter by how the lead was generated. </li><li><b>SALES CAMPAIGN</b>: Leads based on the different campaigns. You can multiselect multiple campaigns.</li><li><b>DATE LEAD ENTERED</b>: By default the page is filtered on all the leads entered from 01/01/2024 onwards.</li><li><b>PARENT LPO</b>: Filter the page based on the leads assigned to the selected Parent LPO. You can multiselect multiple Parent LPO\'s at the same time_now.  </li></ul>Using the Filters: <ol><li><b>Select one or more filters</b>: Choose the criteria that best match your need.</li><li><b>Combine filters</b>: Use multiple filters together for even more precise targeting.</li><li>Click <b>"Apply Filter"</b>: Update the lead list based on your chosen filters.</li></ol>Navigating the Lead List: <ul><li>Displays key information like company name, contact details, and lead status.</li><li>Click <b>"Call Center"</b>: Access more detailed information and notes on the specific lead.</li></ul></p></br></div></br>';
 
                 inlineHtml +=
                     '<div class="container" style=""><div id="alert" class="alert alert-danger fade in hide"></div></div>';
@@ -583,7 +583,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED - FILTER</span></h4></div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">DATE LEAD ENTERED - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -684,7 +684,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div class="form-group container cust_filter_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
-                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES REP</span></h4></div>';
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">SALES REP</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -719,6 +719,15 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             });
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
+
+            inlineHtml +=
+                '<div class="form-group container cust_filter_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">LEAD DETAILS - STAGE/SOURCE/CAMPAIGN</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+
 
             inlineHtml +=
                 '<div class="form-group container status_dropdown_section hide">';
@@ -951,7 +960,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div class="form-group container date_filter_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
-                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">FRANCHISEE</span></h4></div>';
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">FRANCHISEE</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -1002,7 +1011,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '<div class="form-group container date_filter_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml +=
-                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO</span></h4></div>';
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">PARENT LPO</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
