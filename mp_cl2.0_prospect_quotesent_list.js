@@ -1295,7 +1295,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet,
                 scrollCollapse: true,
-                scrollY: '200px',
+                // scrollY: '200px',
                 pageLength: 1000,
                 order: [[12, 'des']],
                 layout: {

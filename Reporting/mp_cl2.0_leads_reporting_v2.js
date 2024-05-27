@@ -1025,31 +1025,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         topStart: {
                             buttons: [{
                                 extend: 'copy', text: 'Copy',
-                                className: 'btn btn-default',
+                                className: 'btn btn-default exportButtons',
                                 exportOptions: {
                                     columns: ':not(.notexport)'
                                 }
                             }, {
                                 extend: 'csv', text: 'CSV',
-                                className: 'btn btn-default',
+                                className: 'btn btn-default exportButtons',
                                 exportOptions: {
                                     columns: ':not(.notexport)'
                                 }
                             }, {
                                 extend: 'excel', text: 'Excel',
-                                className: 'btn btn-default',
+                                className: 'btn btn-default exportButtons',
                                 exportOptions: {
                                     columns: ':not(.notexport)'
                                 }
                             }, {
                                 extend: 'pdf', text: 'PDF',
-                                className: 'btn btn-default',
+                                className: 'btn btn-default exportButtons',
                                 exportOptions: {
                                     columns: ':not(.notexport)'
                                 }
                             }, {
                                 extend: 'print', text: 'Print',
-                                className: 'btn btn-default',
+                                className: 'btn btn-default exportButtons',
                                 exportOptions: {
                                     columns: ':not(.notexport)'
                                 }
@@ -1081,7 +1081,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }, {
                         targets: [6],
                         visible: false
-                        }],
+                    }],
                     rowCallback: function (row, data, index) {
                         var row_color = ''
                         if (data[4] == 'SUSPECT-Customer - Lost' || data[4] == 'SUSPECT-Lost') {
@@ -2297,7 +2297,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 order: [],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [
@@ -8148,7 +8178,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 responsive: true,
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
@@ -9315,7 +9375,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     pageLength: 1000,
                     layout: {
                         topStart: {
-                            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                            buttons: [{
+                                extend: 'copy', text: 'Copy',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'csv', text: 'CSV',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'excel', text: 'Excel',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'pdf', text: 'PDF',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'print', text: 'Print',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }],
                         }
                     },
                     columns: [{
@@ -10401,7 +10491,37 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     pageLength: 1000,
                     layout: {
                         topStart: {
-                            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                            buttons: [{
+                                extend: 'copy', text: 'Copy',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'csv', text: 'CSV',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'excel', text: 'Excel',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'pdf', text: 'PDF',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }, {
+                                extend: 'print', text: 'Print',
+                                className: 'btn btn-default exportButtons',
+                                exportOptions: {
+                                    columns: ':not(.notexport)'
+                                }
+                            }],
                         }
                     },
                     columns: [{
@@ -11580,31 +11700,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -16280,31 +16400,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -16568,31 +16688,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -16655,6 +16775,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         currency: 'AUD',
                         minimumFractionDigits: 2
                     })
+
+                    total_monthly_service_value = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(15).footer()).html(
+                        formatter.format(total_monthly_service_value)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
 
 
                 }
@@ -16699,31 +16831,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -16786,6 +16918,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         currency: 'AUD',
                         minimumFractionDigits: 2
                     })
+
+                    total_monthly_service_value = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(15).footer()).html(
+                        formatter.format(total_monthly_service_value)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
 
 
                 }
@@ -16831,31 +16975,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17129,31 +17273,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17299,31 +17443,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17469,31 +17613,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17594,31 +17738,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17714,31 +17858,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17841,31 +17985,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -17968,31 +18112,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -18170,31 +18314,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -18298,31 +18442,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -18463,31 +18607,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
@@ -18586,31 +18730,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     topStart: {
                         buttons: [{
                             extend: 'copy', text: 'Copy',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'csv', text: 'CSV',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'excel', text: 'Excel',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'pdf', text: 'PDF',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }
                         }, {
                             extend: 'print', text: 'Print',
-                            className: 'btn btn-default',
+                            className: 'btn btn-default exportButtons',
                             exportOptions: {
                                 columns: ':not(.notexport)'
                             }

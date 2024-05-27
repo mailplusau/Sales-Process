@@ -914,7 +914,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                if (salesCampaignInternalId == 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70) {
+                if (salesCampaignInternalId >= 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70) {
 
 
                     if (isNullorEmpty(salesCampaign)) {
