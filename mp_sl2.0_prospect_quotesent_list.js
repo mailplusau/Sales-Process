@@ -37,6 +37,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 zee = context.request.parameters.zee;
                 paramUserId = context.request.parameters.user;
                 salesCampaign = context.request.parameters.campaign;
+                custStage = context.request.parameters.stage;
                 custStatus = context.request.parameters.status;
                 source = context.request.parameters.source;
                 parentLPOInternalId = context.request.parameters.lpoid;
@@ -143,6 +144,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 }).updateDisplayType({
                     displayType: ui.FieldDisplayType.HIDDEN
                 }).defaultValue = custStatus;
+
+                form.addField({
+                    id: 'custpage_cust_stage',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = custStage;
 
                 form.addField({
                     id: 'custpage_cust_source',
@@ -287,7 +296,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
 
                 //Section to select the Sales Rep or show the default Sales Rep based on loadingSection
-                inlineHtml += userDropdownSection(userId, salesCampaign, custStatus, source);
+                inlineHtml += userDropdownSection(userId, salesCampaign, custStage, source, custStatus);
 
                 inlineHtml += dateFilterSection(start_date, last_date, modified_start_date, modified_last_date);
 
@@ -310,7 +319,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 // if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
                 //     inlineHtml += '<div class="container" style="background-color: lightblue;font-size: 14px;"><p><b><u>Color Codes for Prospects Tab</u></b><ol><li><b style="color: #f7e700;">Yellow</b>: 1st Attempt</li><li><b style="color: #f76f05;">Orange</b>: 2nd Attempt</li><li><b style="color: #ff2626;">Red</b>: 3rd Attempt</li></ol></p></div></br>'
                 // }
-                inlineHtml += tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId, start_date, last_date, page_no);
+                inlineHtml += tabsSection(custStage, paramUserId, salesCampaign, source, zee, parentLPOInternalId, start_date, last_date, page_no, custStatus);
 
 
 
@@ -674,7 +683,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
  * @param   {String}    date_to
  * @return  {String}    `inlineHtml`
  */
-        function userDropdownSection(userId, salesCampaign, custStatus, source) {
+        function userDropdownSection(userId, salesCampaign, custStage, source, custStatus) {
 
             var searchedSalesTeam = search.load({
                 id: 'customsearch_active_employees_3'
@@ -737,12 +746,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="cust_status_text">STAGE <span class="mandatory" style="font-size: 16px">*</span></span>';
-            inlineHtml += '<select id="cust_status" class="form-control">';
+            inlineHtml += '<select id="cust_stage" class="form-control">';
 
-            if (custStatus == 1) {
+            if (custStage == 1) {
                 inlineHtml += '<option value="1" selected>SUSPECTS</option>';
                 inlineHtml += '<option value="2">PROSPECTS</option>';
-            } else if (custStatus == 2) {
+            } else if (custStage == 2) {
                 inlineHtml += '<option value="1">SUSPECTS</option>';
                 inlineHtml += '<option value="2" selected>PROSPECTS</option>';
             } else {
@@ -840,6 +849,115 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             // } else {
             //     inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
             // }
+
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml +=
+                '<div class="form-group container status_dropdown_section hide">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml += '<div class="col-xs-12 cust_status_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="cust_status_text">STATUS </span>';
+            inlineHtml += '<select id="cust_status" class="form-control">';
+            inlineHtml += '<option value="0"></option>';
+
+            if (custStage == '1') {
+                if (custStatus == '57') {
+                    inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
+                } else {
+                    inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
+                }
+
+                if (custStatus == '42') {
+                    inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
+                } else {
+                    inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
+                }
+
+                if (custStatus == '6') {
+                    inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
+                } else {
+                    inlineHtml += '<option value="6">SUSPECT - NEW</option>';
+                }
+
+                if (custStatus == '20') {
+                    inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
+                } else {
+                    inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
+                }
+
+                if (custStatus == '69') {
+                    inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
+                } else {
+                    inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
+                }
+
+                if (custStatus == '18') {
+                    inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
+                } else {
+                    inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
+                }
+
+                if (custStatus == '67') {
+                    inlineHtml += '<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
+                } else {
+                    inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
+                }
+
+                if (custStatus == '62') {
+                    inlineHtml += '<option value="62" selected>SUSPECT - PARKING LOT</option>';
+                } else {
+                    inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
+                }
+
+                if (custStatus == '68') {
+                    inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
+                } else {
+                    inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
+                }
+
+                if (custStatus == '60') {
+                    inlineHtml += '<option value="60" selected>SUSPECT - REP REASSIGN</option>';
+                } else {
+                    inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
+                }
+
+                if (custStatus == '7') {
+                    inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
+                } else {
+                    inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
+                }
+            } else if (custStage == '2') {
+                if (custStatus == '50') {
+                    inlineHtml += '<option value="50" selected>PROSPECT - QUOTE SENT</option>';
+                } else {
+                    inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
+                }
+
+                if (custStatus == '58') {
+                    inlineHtml += '<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
+                } else {
+                    inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
+                }
+
+                if (custStatus == '8') {
+                    inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
+                } else {
+                    inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
+                }
+
+                if (custStatus == '35') {
+                    inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
+                } else {
+                    inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
+                }
+            }
+
+
+
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -1067,7 +1185,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
         }
 
-        function tabsSection(custStatus, paramUserId, salesCampaign, source, zee, parentLPOInternalId, from_date, to_date, page_no) {
+        function tabsSection(custStage, paramUserId, salesCampaign, source, zee, parentLPOInternalId, from_date, to_date, page_no, custStatus) {
 
             var zeeArray = [];
             if (!isNullorEmpty(zee)) {
@@ -1193,7 +1311,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             // // Tabs content
             // inlineHtml += '<div class="tab-content">';
 
-            if (custStatus == 1) {
+            if (custStage == 1) {
                 //STAGE: SUSPECTS
                 // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
 
@@ -1241,14 +1359,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }));
                 }
 
-                // if (!isNullorEmpty(custStatus)) {
-                //     suspectsSearch.filters.push(search.createFilter({
-                //         name: 'entitystatus',
-                //         join: null,
-                //         operator: search.Operator.IS,
-                //         values: custStatus
-                //     }));
-                // }
+                if (!isNullorEmpty(custStatus) && custStatus != '0') {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
 
                 if (!isNullorEmpty(source)) {
                     suspectsSearch.filters.push(search.createFilter({
@@ -1345,7 +1463,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
 
                 inlineHtml += dataTable('suspects');
                 // inlineHtml += '</div>';
-            } else if (custStatus == 2) {
+            } else if (custStage == 2) {
                 // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
                 // inlineHtml += '<figure class="highcharts-figure">';
                 // inlineHtml += '</figure><br></br>';
@@ -1391,14 +1509,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }));
                 }
 
-                // if (!isNullorEmpty(custStatus)) {
-                //     custListCommenceTodayResults.filters.push(search.createFilter({
-                //         name: 'entitystatus',
-                //         join: null,
-                //         operator: search.Operator.IS,
-                //         values: custStatus
-                //     }));
-                // }
+                if (!isNullorEmpty(custStatus) && custStatus != '0') {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
 
                 if (!isNullorEmpty(source)) {
                     custListCommenceTodayResults.filters.push(search.createFilter({

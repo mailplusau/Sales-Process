@@ -141,6 +141,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
         var paramUserId = null;
         var salesCampaign = null;
         var custStatus = null;
+        var custStage = null;
         var source = null;
         var parentLPOInternalId = null;
         var date_from = null;
@@ -180,6 +181,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             });
             custStatus = val1.getValue({
                 fieldId: 'custpage_cust_status'
+            });
+            custStage = val1.getValue({
+                fieldId: 'custpage_cust_stage'
             });
             source = val1.getValue({
                 fieldId: 'custpage_cust_source'
@@ -266,7 +270,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 userId = $('#user_dropdown option:selected').val();
                 salesCampaign = $('#sales_campaign').val();
+                custStage = $('#cust_stage option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
+                custStage = $('#cust_stage option:selected').val();
                 source = $('#lead_source option:selected').val();
                 parentLPOInternalId = $('#parent_lpo').val();
                 zee = $('#zee_dropdown').val();
@@ -275,7 +281,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var date_to = $('#date_to').val();
 
 
-                if (isNullorEmpty(custStatus) || custStatus == 0) {
+                if (isNullorEmpty(custStage) || custStage == 0) {
                     showAlert('Please select a Stage');
                     return false;
                 }
@@ -291,7 +297,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
 
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source + '&zee=' + zee + '&lpoid=' + parentLPOInternalId + "&start_date=" + date_from + "&last_date=" + date_to;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&stage=' + custStage + '&source=' + source + '&zee=' + zee + '&lpoid=' + parentLPOInternalId + "&start_date=" + date_from + "&last_date=" + date_to + '&status=' + custStatus;
 
 
                 window.location.href = url;
@@ -304,6 +310,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                 userId = $('#user_dropdown option:selected').val();
                 salesCampaign = $('#sales_campaign').val();
+                custStage = $('#cust_stage option:selected').val();
                 custStatus = $('#cust_status option:selected').val();
                 source = $('#lead_source option:selected').val();
                 parentLPOInternalId = $('#parent_lpo').val();
@@ -312,7 +319,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var date_from = $('#date_from').val();
                 var date_to = $('#date_to').val();
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + "&source=" + source + "&page_no=" + page_number + '&lpoid=' + parentLPOInternalId + "&start_date=" + date_from + "&last_date=" + date_to + '&zee=' + zee
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&stage=' + custStage + "&source=" + source + "&page_no=" + page_number + '&lpoid=' + parentLPOInternalId + "&start_date=" + date_from + "&last_date=" + date_to + '&zee=' + zee + '&status=' + custStatus
 
                 window.location.href = url;
 
@@ -1798,11 +1805,12 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('date_from: ' + date_from);
             console.log('date_to ' + date_to);
             console.log('custStatus ' + custStatus);
+            console.log('custStage ' + custStage);
             console.log('paramUserId ' + paramUserId);
             console.log('salesCampaign ' + salesCampaign);
             console.log('userId: ' + userId)
 
-            if (custStatus == '1') {
+            if (custStage == '1') {
                 console.log('INSIDE SUSPECTS STAGE')
                 //Website Leads - Suspects
                 var suspectsSearch = search.load({
@@ -1846,14 +1854,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
-                // if (!isNullorEmpty(custStatus)) {
-                //     suspectsSearch.filters.push(search.createFilter({
-                //         name: 'entitystatus',
-                //         join: null,
-                //         operator: search.Operator.IS,
-                //         values: custStatus
-                //     }));
-                // }
+                if (!isNullorEmpty(custStatus) && custStatus != '0') {
+                    suspectsSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
 
                 if (!isNullorEmpty(source)) {
                     suspectsSearch.filters.push(search.createFilter({
@@ -2319,7 +2327,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     console.log(debt_set4)
                 }
 
-            } else if (custStatus == '2') {
+            } else if (custStage == '2') {
                 //Website Leads - Prospect Quote Sent
                 var custListCommenceTodayResults = search.load({
                     type: 'customer',
@@ -2362,14 +2370,14 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     }));
                 }
 
-                // if (!isNullorEmpty(custStatus)) {
-                //     custListCommenceTodayResults.filters.push(search.createFilter({
-                //         name: 'entitystatus',
-                //         join: null,
-                //         operator: search.Operator.IS,
-                //         values: custStatus
-                //     }));
-                // }
+                if (!isNullorEmpty(custStatus) && custStatus != '0') {
+                    custListCommenceTodayResults.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: custStatus
+                    }));
+                }
 
                 if (!isNullorEmpty(source)) {
                     custListCommenceTodayResults.filters.push(search.createFilter({
