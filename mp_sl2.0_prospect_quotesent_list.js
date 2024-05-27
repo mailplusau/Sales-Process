@@ -2264,10 +2264,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 name +
                 ' {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-' +
                 name +
-                ' th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;}.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {background-color: white;}</style>';
+                ' th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;}.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {background-color: white;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>';
             inlineHtml += '<table id="mpexusage-' +
                 name +
-                '" class="table table-responsive table-striped customer tablesorter" style="width: 100%;">';
+                '" class="table table-responsive table-striped customer tablesorter row-border cell-border" style="width: 100%;border: 2px solid #103d39">';
             inlineHtml += '<thead style="color: white;background-color: #095C7B;" hide>';
             inlineHtml += '<tr class="text-center">';
 

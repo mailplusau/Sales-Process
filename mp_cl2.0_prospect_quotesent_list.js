@@ -274,7 +274,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 var date_from = $('#date_from').val();
                 var date_to = $('#date_to').val();
 
-                
+
                 if (isNullorEmpty(custStatus) || custStatus == 0) {
                     showAlert('Please select a Stage');
                     return false;
@@ -290,7 +290,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     return false;
                 }
 
-                
+
                 var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1659&deploy=1&user=" + userId + '&campaign=' + salesCampaign + '&status=' + custStatus + '&source=' + source + '&zee=' + zee + '&lpoid=' + parentLPOInternalId + "&start_date=" + date_from + "&last_date=" + date_to;
 
 
@@ -1294,11 +1294,43 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             dataTable = $('#mpexusage-prospects').DataTable({
                 destroy: true,
                 data: debtDataSet,
+                scrollCollapse: true,
+                scrollY: '200px',
                 pageLength: 1000,
                 order: [[12, 'des']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
@@ -1546,10 +1578,42 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 destroy: true,
                 data: debtDataSet4,
                 pageLength: 1000,
+                scrollCollapse: true,
+                // scrollY: '200px',
                 order: [[2, 'asc']],
                 layout: {
                     topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
                     }
                 },
                 columns: [{
