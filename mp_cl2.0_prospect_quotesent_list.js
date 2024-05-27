@@ -1306,7 +1306,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     className: 'dt-control',
                     orderable: false,
                     data: null,
-                    // defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
                 }, {
                     title: 'LINK' //1
                 }, {
@@ -1376,171 +1376,171 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }
             });
 
-            dataTable = $('#mpexusage-opportunities').DataTable({
-                destroy: true,
-                data: debtDataSet2,
-                pageLength: 1000,
-                order: [[12, 'des']],
-                layout: {
-                    topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                    }
-                },
-                columns: [{
-                    title: 'Expand',
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
-                }, {
-                    title: 'LINK' //1
-                }, {
-                    title: 'Customer Internal ID' //2
-                }, {
-                    title: 'ID' //3
-                }, {
-                    title: 'Company Name' //4
-                }, {
-                    title: 'Franchisee' //5
-                }, {
-                    title: 'Status' //6
-                }, {
-                    title: 'Source' //7
-                }, {
-                    title: 'Linked LPO' //8
-                }, {
-                    title: 'Contact Name' //9
-                }, {
-                    title: 'Email' //10
-                }, {
-                    title: 'Phone Number' //11
-                }, {
-                    title: 'Date Quote Sent' //12
-                }, {
-                    title: '48h Email Sent' //13
-                }, {
-                    title: 'Sales Rep Assigned' //14
-                }, {
-                    title: 'Date - 1st No Answer' //15
-                }, {
-                    title: 'Date - 2nd No Answer' //16
-                }, {
-                    title: 'Date - 3rd No Answer' //17
-                }, {
-                    title: 'MP Product Usage/Week' //18
-                }, {
-                    title: 'Send Sign Up Email' //19
-                }, {
-                    title: 'Child' //20
-                }],
-                columnDefs: [{
-                    targets: [3, 4, 5, 6, 7, 12, 13, 14],
-                    className: 'bolded'
-                }, {
-                    targets: [2, 15, 16, 17, 19, 20],
-                    visible: false
-                }, {
-                    targets: [0, 1],
-                    className: 'col-xs-2'
-                }],
-                rowCallback: function (row, data, index) {
-                    // if (!isNullorEmpty(data[10])) {
-                    //     if (isNullorEmpty(data[12])) {
-                    $('td', row).css('background-color', '#ADCF9F');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#FEBE8C');
-                    //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#F7A4A4');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#E64848');
-                    //     }
-                    // }
+            // dataTable = $('#mpexusage-opportunities').DataTable({
+            //     destroy: true,
+            //     data: debtDataSet2,
+            //     pageLength: 1000,
+            //     order: [[12, 'des']],
+            //     layout: {
+            //         topStart: {
+            //             buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            //         }
+            //     },
+            //     columns: [{
+            //         title: 'Expand',
+            //         className: 'dt-control',
+            //         orderable: false,
+            //         data: null,
+            //         // defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
+            //     }, {
+            //         title: 'LINK' //1
+            //     }, {
+            //         title: 'Customer Internal ID' //2
+            //     }, {
+            //         title: 'ID' //3
+            //     }, {
+            //         title: 'Company Name' //4
+            //     }, {
+            //         title: 'Franchisee' //5
+            //     }, {
+            //         title: 'Status' //6
+            //     }, {
+            //         title: 'Source' //7
+            //     }, {
+            //         title: 'Linked LPO' //8
+            //     }, {
+            //         title: 'Contact Name' //9
+            //     }, {
+            //         title: 'Email' //10
+            //     }, {
+            //         title: 'Phone Number' //11
+            //     }, {
+            //         title: 'Date Quote Sent' //12
+            //     }, {
+            //         title: '48h Email Sent' //13
+            //     }, {
+            //         title: 'Sales Rep Assigned' //14
+            //     }, {
+            //         title: 'Date - 1st No Answer' //15
+            //     }, {
+            //         title: 'Date - 2nd No Answer' //16
+            //     }, {
+            //         title: 'Date - 3rd No Answer' //17
+            //     }, {
+            //         title: 'MP Product Usage/Week' //18
+            //     }, {
+            //         title: 'Send Sign Up Email' //19
+            //     }, {
+            //         title: 'Child' //20
+            //     }],
+            //     columnDefs: [{
+            //         targets: [3, 4, 5, 6, 7, 12, 13, 14],
+            //         className: 'bolded'
+            //     }, {
+            //         targets: [2, 15, 16, 17, 19, 20],
+            //         visible: false
+            //     }, {
+            //         targets: [0, 1],
+            //         className: 'col-xs-2'
+            //     }],
+            //     rowCallback: function (row, data, index) {
+            //         // if (!isNullorEmpty(data[10])) {
+            //         //     if (isNullorEmpty(data[12])) {
+            //         $('td', row).css('background-color', '#ADCF9F');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#FEBE8C');
+            //         //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#F7A4A4');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#E64848');
+            //         //     }
+            //         // }
 
-                }
-            });
+            //     }
+            // });
 
-            dataTable = $('#mpexusage-followups').DataTable({
-                destroy: true,
-                data: debtDataSet3,
-                pageLength: 1000,
-                order: [[12, 'des']],
-                layout: {
-                    topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                    }
-                },
-                columns: [{
-                    title: 'Expand',
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
-                }, {
-                    title: 'LINK' //1
-                }, {
-                    title: 'Customer Internal ID' //2
-                }, {
-                    title: 'ID' //3
-                }, {
-                    title: 'Company Name' //4
-                }, {
-                    title: 'Franchisee' //5
-                }, {
-                    title: 'Status' //6
-                }, {
-                    title: 'Source' //7
-                }, {
-                    title: 'Linked LPO' //8
-                }, {
-                    title: 'Contact Name' //9
-                }, {
-                    title: 'Email' //10
-                }, {
-                    title: 'Phone Number' //11
-                }, {
-                    title: 'Date Quote Sent' //12
-                }, {
-                    title: '48h Email Sent' //13
-                }, {
-                    title: 'Sales Rep Assigned' //14
-                }, {
-                    title: 'Date - 1st No Answer' //15
-                }, {
-                    title: 'Date - 2nd No Answer' //16
-                }, {
-                    title: 'Date - 3rd No Answer' //17
-                }, {
-                    title: 'MP Product Usage/Week' //18
-                }, {
-                    title: 'Send Sign Up Email' //19
-                }, {
-                    title: 'Child' //20
-                }],
-                columnDefs: [{
-                    targets: [3, 4, 5, 6, 7, 8, 12, 13, 14],
-                    className: 'bolded'
-                }, {
-                    targets: [2, 15, 16, 17, 19, 20],
-                    visible: false
-                }, {
-                    targets: [0, 1],
-                    className: 'col-xs-2'
-                }],
-                rowCallback: function (row, data, index) {
-                    // if (!isNullorEmpty(data[10])) {
-                    //     if (isNullorEmpty(data[12])) {
-                    // $('td', row).css('background-color', '#ADCF9F');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#FEBE8C');
-                    //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#F7A4A4');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#E64848');
-                    //     }
-                    // }
+            // dataTable = $('#mpexusage-followups').DataTable({
+            //     destroy: true,
+            //     data: debtDataSet3,
+            //     pageLength: 1000,
+            //     order: [[12, 'des']],
+            //     layout: {
+            //         topStart: {
+            //             buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            //         }
+            //     },
+            //     columns: [{
+            //         title: 'Expand',
+            //         className: 'dt-control',
+            //         orderable: false,
+            //         data: null,
+            //         // defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
+            //     }, {
+            //         title: 'LINK' //1
+            //     }, {
+            //         title: 'Customer Internal ID' //2
+            //     }, {
+            //         title: 'ID' //3
+            //     }, {
+            //         title: 'Company Name' //4
+            //     }, {
+            //         title: 'Franchisee' //5
+            //     }, {
+            //         title: 'Status' //6
+            //     }, {
+            //         title: 'Source' //7
+            //     }, {
+            //         title: 'Linked LPO' //8
+            //     }, {
+            //         title: 'Contact Name' //9
+            //     }, {
+            //         title: 'Email' //10
+            //     }, {
+            //         title: 'Phone Number' //11
+            //     }, {
+            //         title: 'Date Quote Sent' //12
+            //     }, {
+            //         title: '48h Email Sent' //13
+            //     }, {
+            //         title: 'Sales Rep Assigned' //14
+            //     }, {
+            //         title: 'Date - 1st No Answer' //15
+            //     }, {
+            //         title: 'Date - 2nd No Answer' //16
+            //     }, {
+            //         title: 'Date - 3rd No Answer' //17
+            //     }, {
+            //         title: 'MP Product Usage/Week' //18
+            //     }, {
+            //         title: 'Send Sign Up Email' //19
+            //     }, {
+            //         title: 'Child' //20
+            //     }],
+            //     columnDefs: [{
+            //         targets: [3, 4, 5, 6, 7, 8, 12, 13, 14],
+            //         className: 'bolded'
+            //     }, {
+            //         targets: [2, 15, 16, 17, 19, 20],
+            //         visible: false
+            //     }, {
+            //         targets: [0, 1],
+            //         className: 'col-xs-2'
+            //     }],
+            //     rowCallback: function (row, data, index) {
+            //         // if (!isNullorEmpty(data[10])) {
+            //         //     if (isNullorEmpty(data[12])) {
+            //         // $('td', row).css('background-color', '#ADCF9F');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#FEBE8C');
+            //         //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#F7A4A4');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#E64848');
+            //         //     }
+            //         // }
 
-                }
-            });
+            //     }
+            // });
 
             dataTable = $('#mpexusage-suspects').DataTable({
                 destroy: true,
@@ -1624,85 +1624,85 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     ]);
              */
 
-            dataTable = $('#mpexusage-validated').DataTable({
-                destroy: true,
-                data: debt_set_validated,
-                pageLength: 1000,
-                order: [[2, 'asc']],
-                layout: {
-                    topStart: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                    }
-                },
-                columns: [{
-                    title: 'Expand',
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
-                }, {
-                    title: 'LINK' //1
-                }, {
-                    title: 'Date LPO Validated' //2
-                }, {
-                    title: 'Customer Internal ID' //3
-                }, {
-                    title: 'ID' //4
-                }, {
-                    title: 'Company Name' //5
-                }, {
-                    title: 'Franchisee' //6
-                }, {
-                    title: 'Status' //7
-                }, {
-                    title: 'Source' //8
-                }, {
-                    title: 'Linked LPO' //9
-                }, {
-                    title: 'Contact Name' //10
-                }, {
-                    title: 'Email' //11
-                }, {
-                    title: 'Phone Number' //12
-                }, {
-                    title: 'Services of Interest'//13
-                }, {
-                    title: 'Sales Rep Assigned' //14
-                }, {
-                    title: 'Date - 1st No Answer' //15
-                }, {
-                    title: 'Date - 2nd No Answer' //16
-                }, {
-                    title: 'Date - 3rd No Answer' //17
-                }, {
-                    title: 'MP Product Usage/Week' //18
-                }, {
-                    title: 'Send Sign Up Email' //19
-                }, {
-                    title: 'Child' //20
-                }],
-                columnDefs: [{
-                    targets: [2, 3, 4, 5, 6, 7, 8, 9, 14],
-                    className: 'bolded'
-                }, {
-                    targets: [3, 15, 16, 17, 18, 19, 20],
-                    visible: false
-                }],
-                rowCallback: function (row, data, index) {
-                    // if (!isNullorEmpty(data[10])) {
-                    //     if (isNullorEmpty(data[12])) {
-                    // $('td', row).css('background-color', '#ADCF9F');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#FEBE8C');
-                    //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#F7A4A4');
-                    //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
-                    //         $('td', row).css('background-color', '#E64848');
-                    //     }
-                    // }
+            // dataTable = $('#mpexusage-validated').DataTable({
+            //     destroy: true,
+            //     data: debt_set_validated,
+            //     pageLength: 1000,
+            //     order: [[2, 'asc']],
+            //     layout: {
+            //         topStart: {
+            //             buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            //         }
+            //     },
+            //     columns: [{
+            //         title: 'Expand',
+            //         className: 'dt-control',
+            //         orderable: false,
+            //         data: null,
+            //         defaultContent: '<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
+            //     }, {
+            //         title: 'LINK' //1
+            //     }, {
+            //         title: 'Date LPO Validated' //2
+            //     }, {
+            //         title: 'Customer Internal ID' //3
+            //     }, {
+            //         title: 'ID' //4
+            //     }, {
+            //         title: 'Company Name' //5
+            //     }, {
+            //         title: 'Franchisee' //6
+            //     }, {
+            //         title: 'Status' //7
+            //     }, {
+            //         title: 'Source' //8
+            //     }, {
+            //         title: 'Linked LPO' //9
+            //     }, {
+            //         title: 'Contact Name' //10
+            //     }, {
+            //         title: 'Email' //11
+            //     }, {
+            //         title: 'Phone Number' //12
+            //     }, {
+            //         title: 'Services of Interest'//13
+            //     }, {
+            //         title: 'Sales Rep Assigned' //14
+            //     }, {
+            //         title: 'Date - 1st No Answer' //15
+            //     }, {
+            //         title: 'Date - 2nd No Answer' //16
+            //     }, {
+            //         title: 'Date - 3rd No Answer' //17
+            //     }, {
+            //         title: 'MP Product Usage/Week' //18
+            //     }, {
+            //         title: 'Send Sign Up Email' //19
+            //     }, {
+            //         title: 'Child' //20
+            //     }],
+            //     columnDefs: [{
+            //         targets: [2, 3, 4, 5, 6, 7, 8, 9, 14],
+            //         className: 'bolded'
+            //     }, {
+            //         targets: [3, 15, 16, 17, 18, 19, 20],
+            //         visible: false
+            //     }],
+            //     rowCallback: function (row, data, index) {
+            //         // if (!isNullorEmpty(data[10])) {
+            //         //     if (isNullorEmpty(data[12])) {
+            //         // $('td', row).css('background-color', '#ADCF9F');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#FEBE8C');
+            //         //     } else if (!isNullorEmpty(data[12]) && !isNullorEmpty(data[13]) && isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#F7A4A4');
+            //         //     } else if (!isNullorEmpty(data[12]) && isNullorEmpty(data[13]) && !isNullorEmpty(data[14])) {
+            //         //         $('td', row).css('background-color', '#E64848');
+            //         //     }
+            //         // }
 
-                }
-            });
+            //     }
+            // });
 
             // userId = $('#user_dropdown option:selected').val();
             zee = $(
