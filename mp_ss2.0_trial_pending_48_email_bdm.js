@@ -27,7 +27,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
             var today = new Date();
             today.setHours(today.getHours() + 17);
 
-            // NetSuite Search: Free Trial Pending List - Email BDM
+            // NetSuite Search: Free Trial Pending List - 48 Hour - Email BDM
             var freeTrialPendingEmailBDMSearch = search.load({
                 id: 'customsearch_trial_pending_email_bdm',
                 type: 'customer',
@@ -85,8 +85,8 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '</br>'
                 emailBody += 'Franchisee: ' + zeeName + '</br>'
                 emailBody += 'Trial Start Date: ' + commDate + '</br>'
-                emailBody += 'Below are the details that are completed/not completed before the Trial can start'
-                if (isNullorEmpty(tncAgreed) || tncAgreed == 2) {
+                emailBody += 'Below are the details that are completed/not completed before the Trial can start</br>'
+                if (isNullorEmpty(lpoCommsToCustomer) || lpoCommsToCustomer == 2) {
                     emailBody += 'LPO Comms to Customer: NO</br>'
                 } else {
                     emailBody += 'LPO Comms to Customer: YES</br>'
@@ -98,7 +98,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                     emailBody += 'T&C\'s Agreed by Customer: YES</br>'
                 }
 
-                if (isNullorEmpty(lpoCommsToCustomer) || lpoCommsToCustomer == 2) {
+                if (isNullorEmpty(zeeVisited) || zeeVisited == 2) {
                     emailBody += 'Franchisee Visited: NO</br>'
                 } else {
                     emailBody += 'Franchisee Visited: YES</br>'
