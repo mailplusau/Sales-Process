@@ -1198,7 +1198,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
             }
 
             var parentLPOInternalIdArray = [];
-            if (!isNullorEmpty(salesCampaign)) {
+            if (!isNullorEmpty(parentLPOInternalId)) {
                 if (parentLPOInternalId.indexOf(",") != -1) {
                     parentLPOInternalIdArray = parentLPOInternalId.split(',');
                 } else {
