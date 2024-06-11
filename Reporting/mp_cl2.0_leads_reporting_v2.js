@@ -13105,6 +13105,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     join: "activity",
                     summary: "GROUP",
                 })
+                if (!isNullorEmpty(activityStartDate)) {
+                    // var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var activityStartDateArray = activityStartDate.split('/');
+                    if (parseInt(activityStartDateArray[1]) < 10) {
+                        activityStartDateArray[1] = '0' + activityStartDateArray[1]
+                    }
+
+                    if (parseInt(activityStartDateArray[0]) < 10) {
+                        activityStartDateArray[0] = '0' + activityStartDateArray[0]
+                    }
+                    activityStartDate = activityStartDateArray[2] + '-' + activityStartDateArray[1] + '-' + activityStartDateArray[0]
+                }
                 var activityTitle = suspectsResultSet.getValue({
                     name: "title",
                     join: "activity",
@@ -13204,6 +13216,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     join: "userNotes",
                     summary: "GROUP",
                 })
+                if (!isNullorEmpty(userNotesStartDate)) {
+                    var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var userNotesStartDateArray = userNotesStartDateTimeArray[0].split('/');
+                    if (parseInt(userNotesStartDateArray[1]) < 10) {
+                        userNotesStartDateArray[1] = '0' + userNotesStartDateArray[1]
+                    }
+
+                    if (parseInt(userNotesStartDateArray[0]) < 10) {
+                        userNotesStartDateArray[0] = '0' + userNotesStartDateArray[0]
+                    }
+                    userNotesStartDate = userNotesStartDateArray[2] + '-' + userNotesStartDateArray[1] + '-' + userNotesStartDateArray[0]
+                }
                 var userNotesOrganiser = suspectsResultSet.getText({
                     name: "author",
                     join: "userNotes",
@@ -13426,8 +13450,154 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
                 if (count == 0) {
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                            suspectActivityCount++
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -13463,25 +13633,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
                             suspectActivityCount++
                             suspectFollowUpChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -13508,8 +13660,26 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                            suspectActivityCount++
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
                         }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
@@ -13595,7 +13765,153 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                            suspectActivityCount++
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
@@ -13678,7 +13994,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityMessage: activityMessage
                             })
                         }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
@@ -14056,8 +14372,154 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspectNoAnswerChildDataSet = [];
                     suspectInContactChildDataSet = [];
 
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                            suspectActivityCount++
+                            suspectLostChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectLostChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                            suspectActivityCount++
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOffPeakChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            suspectActivityCount++
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectOOTChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                            suspectActivityCount++
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectNoAnswerChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                            suspectActivityCount++
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectInContactChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                            suspectActivityCount++
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectFollowUpChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                            suspectActivityCount++
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectQualifiedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                            suspectActivityCount++
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            suspectValidatedChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -14102,8 +14564,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                        }
-                        else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
                             suspectActivityCount++
                             suspectQualifiedChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -14140,7 +14601,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityMessage: activityMessage
                             })
                         }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                             suspectActivityCount++
                             suspectChildDataSet.push({
@@ -14895,6 +15356,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     join: "activity",
                     summary: "GROUP",
                 })
+                if (!isNullorEmpty(activityStartDate)) {
+                    // var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var activityStartDateArray = activityStartDate.split('/');
+                    if (parseInt(activityStartDateArray[1]) < 10) {
+                        activityStartDateArray[1] = '0' + activityStartDateArray[1]
+                    }
+
+                    if (parseInt(activityStartDateArray[0]) < 10) {
+                        activityStartDateArray[0] = '0' + activityStartDateArray[0]
+                    }
+                    activityStartDate = activityStartDateArray[2] + '-' + activityStartDateArray[1] + '-' + activityStartDateArray[0]
+                }
                 var activityTitle = prospectResultSet.getValue({
                     name: "title",
                     join: "activity",
@@ -14994,6 +15467,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     join: "userNotes",
                     summary: "GROUP",
                 })
+                if (!isNullorEmpty(userNotesStartDate)) {
+                    var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var userNotesStartDateArray = userNotesStartDateTimeArray[0].split('/');
+                    if (parseInt(userNotesStartDateArray[1]) < 10) {
+                        userNotesStartDateArray[1] = '0' + userNotesStartDateArray[1]
+                    }
+
+                    if (parseInt(userNotesStartDateArray[0]) < 10) {
+                        userNotesStartDateArray[0] = '0' + userNotesStartDateArray[0]
+                    }
+                    userNotesStartDate = userNotesStartDateArray[2] + '-' + userNotesStartDateArray[1] + '-' + userNotesStartDateArray[0]
+                }
                 var userNotesOrganiser = prospectResultSet.getText({
                     name: "author",
                     join: "userNotes",
@@ -15216,7 +15701,41 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
                 if (count == 0) {
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
@@ -15236,7 +15755,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityMessage: activityMessage
                             })
                         }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
@@ -15259,7 +15778,41 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
@@ -15279,7 +15832,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityMessage: activityMessage
                             })
                         }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
@@ -15414,7 +15967,41 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspectNoAnswerChildDataSet = [];
                     suspectInContactChildDataSet = [];
 
-                    if (!isNullorEmpty(activityTitle)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
@@ -15434,17 +16021,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityMessage: activityMessage
                             })
                         }
-                        // else if (custStage == 'CUSTOMER') {
-                        //     customerActivityCount++
-                        //     customerChildDataSet.push({
-                        //         activityInternalID: activityInternalID,
-                        //         activityStartDate: activityStartDate,
-                        //         activityTitle: activityTitle,
-                        //         activityOrganiser: activityOrganiser,
-                        //         activityMessage: activityMessage
-                        //     })
-                        // }
-                    } else if (!isNullorEmpty(userNotesInternalID)) {
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
                         if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectChildDataSet.push({
