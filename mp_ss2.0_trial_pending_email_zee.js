@@ -27,7 +27,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
             var today = new Date();
             today.setHours(today.getHours() + 17);
 
-            //NetSuite Search: Free Trial Pending List - Email Franchisee
+            //NetSuite Search: Free Trial Pending List - Trial Starting Tomorrow - Email Franchisee
             var freeTrialPendingEmailZeeSearch = search.load({
                 id: 'customsearch_trial_pending_email_zee',
                 type: 'customer',
@@ -54,7 +54,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 });
                 var contact_id = searchResult.getValue({
                     name: "internalid",
-                    join: "contactPrimary"
+                    join: "contact"
                 });
 
                 var commDate = searchResult.getValue({
