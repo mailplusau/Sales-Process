@@ -7416,7 +7416,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             }
 
             if (!isNullorEmpty(sales_rep)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_assigned',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.IS,
@@ -7425,7 +7425,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             }
 
             if (!isNullorEmpty(lead_entered_by)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custentity_lead_entered_by',
                     join: null,
                     operator: search.Operator.IS,
@@ -7434,7 +7434,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             }
 
             if (!isNullorEmpty(sales_campaign)) {
-                suspectsFollowUpBySalesRepWeeklySearch.filters.push(search.createFilter({
+                suspectsNoAnswerBySalesRepWeeklySearch.filters.push(search.createFilter({
                     name: 'custrecord_sales_campaign',
                     join: 'custrecord_sales_customer',
                     operator: search.Operator.ANYOF,
@@ -12753,7 +12753,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             var websiteSuspectsLeadsReportingSearch = search.load({
                 type: 'customer',
-                id: 'customsearch_leads_reporting_5_2_2' //Website Leads - Reporting V2
+                id: 'customsearch_leads_reporting_5_2_2_2' //Website Leads - Reporting V2
             });
 
             if (!isNullorEmpty(leadStatus)) {
@@ -15006,6 +15006,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             console.log('suspectNoAnswerDatSet: ' + suspectNoAnswerDataSet);
             console.log('suspectInContactDataSet: ' + suspectInContactDataSet);
+            console.log('suspectLostDataSet: ' + suspectLostDataSet);
 
 
             var websiteProspectLeadsReportingSearch = search.load({
@@ -17018,7 +17019,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
                         var mpExpStdUsageLink =
-                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1712&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                         var customerIdLink =
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
@@ -17371,7 +17372,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
                     var mpExpStdUsageLink =
-                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important; border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1676&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important; border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1712&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
 
                     var customerIdLink =
                         '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
