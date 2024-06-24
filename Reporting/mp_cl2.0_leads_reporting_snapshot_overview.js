@@ -7001,7 +7001,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 return true;
             });
 
-            if (count1 > 0) {
+            if (count2 > 0) {
                 customerListDataSet.push(['',
                     oldCustomerId,
                     oldCustomerName,
@@ -7409,6 +7409,7727 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
             });
 
+            // Website New Leads by Sales Rep - Weekly Reporting - System Notes
+            var leadsBySalesRepWeeklySystemNotesSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_weekly_6__2'
+            });
+
+
+            if (!isNullorEmpty(leadStatus)) {
+                console.log('inside leadStatus filter')
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'entitystatus',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: leadStatus
+                }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                console.log('inside modified_date_from & modified_date_to filter')
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'date',
+                    join: 'systemnotes',
+                    operator: search.Operator.ONORAFTER,
+                    values: modified_date_from
+                }));
+
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'date',
+                    join: 'systemnotes',
+                    operator: search.Operator.ONORBEFORE,
+                    values: modified_date_to
+                }));
+            }
+
+
+            if (!isNullorEmpty(lead_source)) {
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'name',
+                    join: 'systemnotes',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                console.log('inside sales_campaign filter')
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+
+            if (!isNullorEmpty(zee_id)) {
+                leadsBySalesRepWeeklySystemNotesSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+
+            var count3 = 0;
+            var oldSystemNotesSetBy = null;
+            var oldSystemNotesStatus = null;
+            var customer_signed = 0;
+            var total_customer_signed = 0;
+            var suspect_hot_lead = 0;
+            var total_suspect_hot_lead = 0;
+            var suspect_reassign = 0;
+            var total_suspect_reassign = 0;
+            var suspect_lost = 0;
+            var total_suspect_lost = 0;
+            var suspect_oot = 0;
+            var total_suspect_oot = 0;
+            var suspect_customer_lost = 0;
+            var total_suspect_customer_lost = 0;
+            var suspect_off_peak_pipeline = 0;
+            var total_suspect_off_peak_pipeline = 0;
+            var prospect_opportunity = 0;
+            var total_prospect_opportunity = 0;
+            var prospecy_quote_sent = 0;
+            var total_prospect_quote_sent = 0;
+            var prospect_no_answer = 0;
+            var total_prospect_no_answer = 0;
+            var prospect_in_contact = 0;
+            var total_prospect_in_contact = 0;
+            var suspect_follow_up = 0;
+            var total_suspect_follow_up = 0;
+            var prospect_qualified = 0;
+            var total_prospect_qualified = 0;
+            var suspect_new = 0;
+            var total_suspect_new = 0;
+
+            var suspect_lpo_followup = 0;
+            var total_suspect_lpo_followup = 0;
+            var suspect_qualified = 0;
+            var total_suspect_qualified = 0;
+
+            var suspect_validated = 0;
+            var total_suspect_validated = 0;
+            var customer_free_trial = 0;
+            var total_customer_free_trial = 0;
+            var customer_free_trial_pending = 0;
+            var total_customer_free_trial_pending = 0;
+
+            var suspect_no_answer = 0;
+            var total_suspect_no_answer = 0;
+            var suspect_in_contact = 0;
+            var total_suspect_in_contact = 0;
+
+            var salesRepStatusTransitionChildSet = [];
+            var statusTransitionBySalesRepDataSet = [];
+            var uniqueSalesRepCount = 0;
+            var totalLeadCountBySalesRep = 0;
+
+            leadsBySalesRepWeeklySystemNotesSearch.run().each(function (
+                leadsBySalesRepWeeklySystemNotesSearchResultSet) {
+
+                var prospectCount = parseInt(leadsBySalesRepWeeklySystemNotesSearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'COUNT'
+                }));
+
+                var systemNotesSetBy = leadsBySalesRepWeeklySystemNotesSearchResultSet.getText({
+                    name: "name",
+                    join: "systemNotes",
+                    summary: "GROUP",
+                })
+
+                var custStatus = (leadsBySalesRepWeeklySystemNotesSearchResultSet.getValue({
+                    name: "oldvalue",
+                    join: "systemNotes",
+                    summary: "GROUP",
+                })).toUpperCase();
+
+                var newCustStatus = (leadsBySalesRepWeeklySystemNotesSearchResultSet.getValue({
+                    name: "newvalue",
+                    join: "systemNotes",
+                    summary: "GROUP",
+                })).toUpperCase();
+
+
+                if (count3 == 0) {
+                    if (custStatus == 'CUSTOMER-SIGNED(100%)' || custStatus == 'CUSTOMER-TO BE FINALISED') {
+
+                        total_customer_signed = parseInt(prospectCount);
+                        //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-HOT LEAD') {
+                        //SUSPECT - HOT LEAD
+                        total_suspect_hot_lead = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-LOST') {
+                        //SUSPECT - LOST
+                        total_suspect_lost = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //SUSPECT - OUT OF TERRITORY
+                        total_suspect_oot = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-CUSTOMER - LOST') {
+                        //SUSPECT - CUSTOMER - LOST
+                        total_suspect_customer_lost = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-REP REASSIGN' || custStatus == 'SUSPECT-REASSIGN') {
+                        //SUSPECT - REP REASSIGN
+                        total_suspect_reassign = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                        //PROSPECT - QUOTE SENT
+                        total_prospect_quote_sent = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-NO ANSWER(3%)') {
+                        //PROSPECT - NO ANSWER
+                        total_prospect_no_answer = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-IN CONTACT(6%)') {
+                        //PROSPECT - IN CONTACT
+                        total_prospect_in_contact = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-PARKING LOT' || custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                        //SUSPECT - OFF PEAK PIPELINE
+                        total_suspect_off_peak_pipeline = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-OPPORTUNITY') {
+                        //PROSPECT - OPPORTUNITY
+                        total_prospect_opportunity = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                        //SUSPECT - FOLLOW UP
+                        total_suspect_follow_up = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-NEW') {
+                        //SUSPECT - NEW
+                        total_suspect_new = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-QUALIFIED') {
+                        //SUSPECT - QUALIFIED
+                        total_suspect_qualified = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                        //SUSPECT - LPO FOLLOW UP
+                        total_suspect_lpo_followup = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-VALIDATED') {
+                        //SUSPECT - VALIDATED
+                        total_suspect_validated = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                        //CUSTOMER - FREE TRIAL
+                        total_customer_free_trial = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                        //CUSTOMER - FREE TRIAL
+                        total_customer_free_trial_pending = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-NO ANSWER') {
+                        //SUSPECT - NO ANSWER
+                        total_suspect_no_answer = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-IN CONTACT') {
+                        //SUSPECT - IN CONTACT
+                        total_suspect_in_contact = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-QUALIFIED') {
+                        //PROSPECT - QUALIFIED
+                        total_prospect_qualified = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    }
+
+                } else if (count3 > 0 && (oldSystemNotesSetBy == systemNotesSetBy)) {
+                    if (oldSystemNotesStatus != null &&
+                        oldSystemNotesStatus == custStatus) {
+
+                        if (oldSystemNotesStatus == 'CUSTOMER-SIGNED(100%)' || oldSystemNotesStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                            total_customer_signed += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            total_suspect_hot_lead += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            total_suspect_lost += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            total_suspect_oot += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            total_suspect_customer_lost += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-REP REASSIGN' || oldSystemNotesStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            total_suspect_reassign += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            total_prospect_quote_sent += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            total_prospect_no_answer += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-IN CONTACT(6%)') {
+                            //PROSPECT - IN CONTACT
+                            total_prospect_in_contact += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-PARKING LOT' || oldSystemNotesStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            total_suspect_off_peak_pipeline += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            total_prospect_opportunity += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            total_suspect_follow_up += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            total_suspect_new += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            total_suspect_qualified += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            total_suspect_lpo_followup += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-VALIDATED') {
+                            //SUSPECT - VALIDATED
+                            total_suspect_validated += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            total_customer_free_trial += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL
+                            total_customer_free_trial_pending += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            total_suspect_no_answer += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            total_suspect_in_contact += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            total_prospect_qualified += parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot += parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified += parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial += parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed += parseInt(prospectCount);
+                            }
+                        }
+
+                    } else if (oldSystemNotesStatus != null &&
+                        oldSystemNotesStatus != custStatus) {
+
+
+
+                        if (oldSystemNotesStatus == 'CUSTOMER-SIGNED(100%)' || oldSystemNotesStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                            salesRepStatusTransitionChildSet[20] = {
+                                title: 'Customer - Signed', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_customer_signed
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            salesRepStatusTransitionChildSet[1] = {
+                                title: 'Suspect - Hot Lead', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_hot_lead
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            salesRepStatusTransitionChildSet[12] = {
+                                title: 'Suspect - Lost', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_lost
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            salesRepStatusTransitionChildSet[13] = {
+                                title: 'Suspect - Out of Territory', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_oot
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            salesRepStatusTransitionChildSet[14] = {
+                                title: 'Suspect - Customer - Lost', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_customer_lost
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-REP REASSIGN' || oldSystemNotesStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            salesRepStatusTransitionChildSet[4] = {
+                                title: 'Suspect - Rep Reassign', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_reassign
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            salesRepStatusTransitionChildSet[17] = {
+                                title: 'Prospect - Quote Sent', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_prospect_quote_sent
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            salesRepStatusTransitionChildSet[9] = {
+                                title: 'Prospect - No Answer', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_prospect_no_answer
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-IN CONTACT(6%)') {
+                            //PROSPECT - IN CONTACT
+                            salesRepStatusTransitionChildSet[10] = {
+                                title: 'Prospect - In Answer', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_prospect_in_contact
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-PARKING LOT' || oldSystemNotesStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            salesRepStatusTransitionChildSet[11] = {
+                                title: 'Prospect - Parking Lot', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_off_peak_pipeline
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            salesRepStatusTransitionChildSet[15] = {
+                                title: 'Prospect - Opportunity', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_prospect_opportunity
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            salesRepStatusTransitionChildSet[5] = {
+                                title: 'Suspect - Follow Up', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_follow_up
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            salesRepStatusTransitionChildSet[0] = {
+                                title: 'Suspect - New', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_new
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            salesRepStatusTransitionChildSet[2] = {
+                                title: 'Suspect - Qualified', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_qualified
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            salesRepStatusTransitionChildSet[6] = {
+                                title: 'Suspect - LPO Follow Up', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_lpo_followup
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-VALIDATED') {
+                            //SUSPECT - VALIDATED
+                            salesRepStatusTransitionChildSet[3] = {
+                                title: 'Suspect - Validated', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_validated
+                            }
+                        } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            salesRepStatusTransitionChildSet[19] = {
+                                title: 'Customer - Free Trial', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_customer_free_trial
+                            }
+                        } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL
+                            salesRepStatusTransitionChildSet[18] = {
+                                title: 'Customer - Pending Free Trial', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_customer_free_trial_pending
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            salesRepStatusTransitionChildSet[7] = {
+                                title: 'Suspect - No Answer', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_no_answer
+                            }
+                        } else if (oldSystemNotesStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            salesRepStatusTransitionChildSet[8] = {
+                                title: 'Suspect - In Contact', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_suspect_in_contact
+                            }
+                        } else if (oldSystemNotesStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            salesRepStatusTransitionChildSet[16] = {
+                                title: 'Prospect - Qualified', suspect_new: suspect_new,
+                                suspect_hot_lead: suspect_hot_lead,
+                                suspect_qualified: suspect_qualified,
+                                suspect_validated: suspect_validated,
+                                suspect_reassign: suspect_reassign,
+                                suspect_follow_up: suspect_follow_up,
+                                suspect_lpo_followup: suspect_lpo_followup,
+                                suspect_no_answer: suspect_no_answer,
+                                suspect_in_contact: suspect_in_contact,
+                                prospect_no_answer: prospect_no_answer,
+                                prospect_in_contact: prospect_in_contact,
+                                suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                                suspect_lost: suspect_lost,
+                                suspect_oot: suspect_oot,
+                                suspect_customer_lost: suspect_customer_lost,
+                                prospect_opportunity: prospect_opportunity,
+                                prospect_qualified: prospect_qualified,
+                                prospecy_quote_sent: prospecy_quote_sent,
+                                customer_free_trial_pending: customer_free_trial_pending,
+                                customer_free_trial: customer_free_trial,
+                                customer_signed: customer_signed,
+                                total_leads: total_prospect_qualified
+                            }
+                        }
+
+
+                        customer_signed = 0;
+                        total_customer_signed = 0;
+                        suspect_hot_lead = 0;
+                        total_suspect_hot_lead = 0;
+                        suspect_reassign = 0;
+                        total_suspect_reassign = 0;
+                        suspect_lost = 0;
+                        total_suspect_lost = 0;
+                        suspect_oot = 0;
+                        total_suspect_oot = 0;
+                        suspect_customer_lost = 0;
+                        total_suspect_customer_lost = 0;
+                        suspect_off_peak_pipeline = 0;
+                        total_suspect_off_peak_pipeline = 0;
+                        prospect_opportunity = 0;
+                        total_prospect_opportunity = 0;
+                        prospecy_quote_sent = 0;
+                        total_prospect_quote_sent = 0;
+                        prospect_no_answer = 0;
+                        total_prospect_no_answer = 0;
+                        prospect_in_contact = 0;
+                        total_prospect_in_contact = 0;
+                        suspect_follow_up = 0;
+                        total_suspect_follow_up = 0;
+                        prospect_qualified = 0;
+                        total_prospect_qualified = 0;
+                        suspect_new = 0;
+                        total_suspect_new = 0;
+
+                        suspect_lpo_followup = 0;
+                        total_suspect_lpo_followup = 0;
+                        suspect_qualified = 0;
+                        total_suspect_qualified = 0;
+
+                        suspect_validated = 0;
+                        total_suspect_validated = 0;
+                        customer_free_trial = 0;
+                        total_customer_free_trial = 0;
+                        customer_free_trial_pending = 0;
+                        total_customer_free_trial_pending = 0;
+
+                        suspect_no_answer = 0;
+                        total_suspect_no_answer = 0;
+                        suspect_in_contact = 0;
+                        total_suspect_in_contact = 0;
+
+                        if (custStatus == 'CUSTOMER-SIGNED(100%)' || custStatus == 'CUSTOMER-TO BE FINALISED') {
+
+                            total_customer_signed = parseInt(prospectCount);
+                            //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            total_suspect_hot_lead = parseInt(prospectCount);
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            total_suspect_lost = parseInt(prospectCount);
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            total_suspect_oot = parseInt(prospectCount);
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            total_suspect_customer_lost = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-REP REASSIGN' || custStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            total_suspect_reassign = parseInt(prospectCount);
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            total_prospect_quote_sent = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            total_prospect_no_answer = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'PROSPECT-IN CONTACT(6%)') {
+                            //PROSPECT - IN CONTACT
+                            total_prospect_in_contact = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-PARKING LOT' || custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            total_suspect_off_peak_pipeline = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            total_prospect_opportunity = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            total_suspect_follow_up = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            total_suspect_new = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            total_suspect_qualified = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            total_suspect_lpo_followup = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-VALIDATED') {
+                            //SUSPECT - VALIDATED
+                            total_suspect_validated = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            total_customer_free_trial = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL
+                            total_customer_free_trial_pending = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            total_suspect_no_answer = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            total_suspect_in_contact = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        } else if (custStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            total_prospect_qualified = parseInt(prospectCount)
+                            if (newCustStatus == 'SUSPECT-NEW') {
+                                //SUSPECT - NEW
+                                suspect_new = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                                //SUSPECT - HOT LEAD
+                                suspect_hot_lead = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                                //SUSPECT - QUALIFIED
+                                suspect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                                //SUSPECT - VALIDATED
+                                suspect_validated = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                                //SUSPECT - REP REASSIGN
+                                suspect_reassign = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                                //SUSPECT - FOLLOW UP
+                                suspect_follow_up = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                                //SUSPECT - LPO FOLLOW UP
+                                suspect_lpo_followup = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                                //SUSPECT - NO ANSWER
+                                suspect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                                //PROSPECT - NO ANSWER
+                                prospect_no_answer = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                                //SUSPECT - IN CONTACT
+                                suspect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                                //PROSPECT - IN CONTACT
+                                prospect_in_contact = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                                //SUSPECT - OFF PEAK PIPELINE
+                                suspect_off_peak_pipeline = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-LOST') {
+                                //SUSPECT - LOST
+                                suspect_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                //SUSPECT - OUT OF TERRITORY
+                                suspect_oot = parseInt(prospectCount);
+                            } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                                //SUSPECT - CUSTOMER - LOST
+                                suspect_customer_lost = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                                //PROSPECT - OPPORTUNITY
+                                prospect_opportunity = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                                //PROSPECT - QUALIFIED
+                                prospect_qualified = parseInt(prospectCount);
+                            } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                                //PROSPECT - QUOTE SENT
+                                prospecy_quote_sent = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                                //CUSTOMER - FREE TRIAL PENDING
+                                customer_free_trial_pending = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                                //CUSTOMER - FREE TRIAL
+                                customer_free_trial = parseInt(prospectCount);
+                            } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                                //CUSTOMER _ SIGNED
+                                customer_signed = parseInt(prospectCount);
+                            }
+                        }
+                    }
+                } else if (count3 > 0 && (oldSystemNotesSetBy != systemNotesSetBy)) {
+
+                    if (oldSystemNotesStatus == 'CUSTOMER-SIGNED(100%)' || oldSystemNotesStatus == 'CUSTOMER-TO BE FINALISED') {
+                        //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                        salesRepStatusTransitionChildSet[20] = {
+                            title: 'Customer - Signed', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_customer_signed
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-HOT LEAD') {
+                        //SUSPECT - HOT LEAD
+                        salesRepStatusTransitionChildSet[1] = {
+                            title: 'Suspect - Hot Lead', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_hot_lead
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-LOST') {
+                        //SUSPECT - LOST
+                        salesRepStatusTransitionChildSet[12] = {
+                            title: 'Suspect - Lost', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_lost
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //SUSPECT - OUT OF TERRITORY
+                        salesRepStatusTransitionChildSet[13] = {
+                            title: 'Suspect - Out of Territory', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_oot
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-CUSTOMER - LOST') {
+                        //SUSPECT - CUSTOMER - LOST
+                        salesRepStatusTransitionChildSet[14] = {
+                            title: 'Suspect - Customer - Lost', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_customer_lost
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-REP REASSIGN' || oldSystemNotesStatus == 'SUSPECT-REASSIGN') {
+                        //SUSPECT - REP REASSIGN
+                        salesRepStatusTransitionChildSet[4] = {
+                            title: 'Suspect - Rep Reassign', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_reassign
+                        }
+                    } else if (oldSystemNotesStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                        //PROSPECT - QUOTE SENT
+                        salesRepStatusTransitionChildSet[17] = {
+                            title: 'Prospect - Quote Sent', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_prospect_quote_sent
+                        }
+                    } else if (oldSystemNotesStatus == 'PROSPECT-NO ANSWER(3%)') {
+                        //PROSPECT - NO ANSWER
+                        salesRepStatusTransitionChildSet[9] = {
+                            title: 'Prospect - No Answer', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_prospect_no_answer
+                        }
+                    } else if (oldSystemNotesStatus == 'PROSPECT-IN CONTACT(6%)') {
+                        //PROSPECT - IN CONTACT
+                        salesRepStatusTransitionChildSet[10] = {
+                            title: 'Prospect - In Answer', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_prospect_in_contact
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-PARKING LOT' || oldSystemNotesStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                        //SUSPECT - OFF PEAK PIPELINE
+                        salesRepStatusTransitionChildSet[11] = {
+                            title: 'Prospect - Parking Lot', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_off_peak_pipeline
+                        }
+                    } else if (oldSystemNotesStatus == 'PROSPECT-OPPORTUNITY') {
+                        //PROSPECT - OPPORTUNITY
+                        salesRepStatusTransitionChildSet[15] = {
+                            title: 'Prospect - Opportunity', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_prospect_opportunity
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                        //SUSPECT - FOLLOW UP
+                        salesRepStatusTransitionChildSet[5] = {
+                            title: 'Suspect - Follow Up', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_follow_up
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-NEW') {
+                        //SUSPECT - NEW
+                        salesRepStatusTransitionChildSet[0] = {
+                            title: 'Suspect - New', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_new
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-QUALIFIED') {
+                        //SUSPECT - QUALIFIED
+                        salesRepStatusTransitionChildSet[2] = {
+                            title: 'Suspect - Qualified', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_qualified
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                        //SUSPECT - LPO FOLLOW UP
+                        salesRepStatusTransitionChildSet[6] = {
+                            title: 'Suspect - LPO Follow Up', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_lpo_followup
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-VALIDATED') {
+                        //SUSPECT - VALIDATED
+                        salesRepStatusTransitionChildSet[3] = {
+                            title: 'Suspect - Validated', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_validated
+                        }
+                    } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                        //CUSTOMER - FREE TRIAL
+                        salesRepStatusTransitionChildSet[19] = {
+                            title: 'Customer - Free Trial', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_customer_free_trial
+                        }
+                    } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                        //CUSTOMER - FREE TRIAL
+                        salesRepStatusTransitionChildSet[18] = {
+                            title: 'Customer - Pending Free Trial', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_customer_free_trial_pending
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-NO ANSWER') {
+                        //SUSPECT - NO ANSWER
+                        salesRepStatusTransitionChildSet[7] = {
+                            title: 'Suspect - No Answer', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_no_answer
+                        }
+                    } else if (oldSystemNotesStatus == 'SUSPECT-IN CONTACT') {
+                        //SUSPECT - IN CONTACT
+                        salesRepStatusTransitionChildSet[8] = {
+                            title: 'Suspect - In Contact', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_suspect_in_contact
+                        }
+                    } else if (oldSystemNotesStatus == 'PROSPECT-QUALIFIED') {
+                        //PROSPECT - QUALIFIED
+                        salesRepStatusTransitionChildSet[16] = {
+                            title: 'Prospect - Qualified', suspect_new: suspect_new,
+                            suspect_hot_lead: suspect_hot_lead,
+                            suspect_qualified: suspect_qualified,
+                            suspect_validated: suspect_validated,
+                            suspect_reassign: suspect_reassign,
+                            suspect_follow_up: suspect_follow_up,
+                            suspect_lpo_followup: suspect_lpo_followup,
+                            suspect_no_answer: suspect_no_answer,
+                            suspect_in_contact: suspect_in_contact,
+                            prospect_no_answer: prospect_no_answer,
+                            prospect_in_contact: prospect_in_contact,
+                            suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                            suspect_lost: suspect_lost,
+                            suspect_oot: suspect_oot,
+                            suspect_customer_lost: suspect_customer_lost,
+                            prospect_opportunity: prospect_opportunity,
+                            prospect_qualified: prospect_qualified,
+                            prospecy_quote_sent: prospecy_quote_sent,
+                            customer_free_trial_pending: customer_free_trial_pending,
+                            customer_free_trial: customer_free_trial,
+                            customer_signed: customer_signed,
+                            total_leads: total_prospect_qualified
+                        }
+                    }
+
+                    if (oldSystemNotesSetBy == 'Aleyna A Harnett') {
+                        statusTransitionBySalesRepDataSet.push(['', "Aleyna A Harnett", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Alison Savona') {
+                        statusTransitionBySalesRepDataSet.push(['', "Alison Savona", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Belinda Urbani') {
+                        statusTransitionBySalesRepDataSet.push(['', "Belinda Urbani", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Kerina Helliwell') {
+                        statusTransitionBySalesRepDataSet.push(['', "Kerina Helliwell", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Lee Russell') {
+                        statusTransitionBySalesRepDataSet.push(['', "Lee Russell", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Liam Pike') {
+                        statusTransitionBySalesRepDataSet.push(['', "Liam Pike", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Luke Forbes') {
+                        statusTransitionBySalesRepDataSet.push(['', "Luke Forbes", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Paul D McIntosh') {
+                        statusTransitionBySalesRepDataSet.push(['', "Paul D McIntosh", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    } else if (oldSystemNotesSetBy == 'Stefania Ferreyra') {
+                        statusTransitionBySalesRepDataSet.push(['', "Stefania Ferreyra", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                    }
+
+
+                    customer_signed = 0;
+                    total_customer_signed = 0;
+                    suspect_hot_lead = 0;
+                    total_suspect_hot_lead = 0;
+                    suspect_reassign = 0;
+                    total_suspect_reassign = 0;
+                    suspect_lost = 0;
+                    total_suspect_lost = 0;
+                    suspect_oot = 0;
+                    total_suspect_oot = 0;
+                    suspect_customer_lost = 0;
+                    total_suspect_customer_lost = 0;
+                    suspect_off_peak_pipeline = 0;
+                    total_suspect_off_peak_pipeline = 0;
+                    prospect_opportunity = 0;
+                    total_prospect_opportunity = 0;
+                    prospecy_quote_sent = 0;
+                    total_prospect_quote_sent = 0;
+                    prospect_no_answer = 0;
+                    total_prospect_no_answer = 0;
+                    prospect_in_contact = 0;
+                    total_prospect_in_contact = 0;
+                    suspect_follow_up = 0;
+                    total_suspect_follow_up = 0;
+                    prospect_qualified = 0;
+                    total_prospect_qualified = 0;
+                    suspect_new = 0;
+                    total_suspect_new = 0;
+
+                    suspect_lpo_followup = 0;
+                    total_suspect_lpo_followup = 0;
+                    suspect_qualified = 0;
+                    total_suspect_qualified = 0;
+
+                    suspect_validated = 0;
+                    total_suspect_validated = 0;
+                    customer_free_trial = 0;
+                    total_customer_free_trial = 0;
+                    customer_free_trial_pending = 0;
+                    total_customer_free_trial_pending = 0;
+
+                    suspect_no_answer = 0;
+                    total_suspect_no_answer = 0;
+                    suspect_in_contact = 0;
+                    total_suspect_in_contact = 0;
+                    salesRepStatusTransitionChildSet = [];
+                    totalLeadCountBySalesRep = 0;
+
+                    if (custStatus == 'CUSTOMER-SIGNED(100%)' || custStatus == 'CUSTOMER-TO BE FINALISED') {
+
+                        total_customer_signed = parseInt(prospectCount);
+                        //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-HOT LEAD') {
+                        //SUSPECT - HOT LEAD
+                        total_suspect_hot_lead = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-LOST') {
+                        //SUSPECT - LOST
+                        total_suspect_lost = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //SUSPECT - OUT OF TERRITORY
+                        total_suspect_oot = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-CUSTOMER - LOST') {
+                        //SUSPECT - CUSTOMER - LOST
+                        total_suspect_customer_lost = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-REP REASSIGN' || custStatus == 'SUSPECT-REASSIGN') {
+                        //SUSPECT - REP REASSIGN
+                        total_suspect_reassign = parseInt(prospectCount);
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                        //PROSPECT - QUOTE SENT
+                        total_prospect_quote_sent = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-NO ANSWER(3%)') {
+                        //PROSPECT - NO ANSWER
+                        total_prospect_no_answer = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-IN CONTACT(6%)') {
+                        //PROSPECT - IN CONTACT
+                        total_prospect_in_contact = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-PARKING LOT' || custStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                        //SUSPECT - OFF PEAK PIPELINE
+                        total_suspect_off_peak_pipeline = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-OPPORTUNITY') {
+                        //PROSPECT - OPPORTUNITY
+                        total_prospect_opportunity = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                        //SUSPECT - FOLLOW UP
+                        total_suspect_follow_up = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-NEW') {
+                        //SUSPECT - NEW
+                        total_suspect_new = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-QUALIFIED') {
+                        //SUSPECT - QUALIFIED
+                        total_suspect_qualified = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                        //SUSPECT - LPO FOLLOW UP
+                        total_suspect_lpo_followup = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-VALIDATED') {
+                        //SUSPECT - VALIDATED
+                        total_suspect_validated = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                        //CUSTOMER - FREE TRIAL
+                        total_customer_free_trial = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                        //CUSTOMER - FREE TRIAL
+                        total_customer_free_trial_pending = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-NO ANSWER') {
+                        //SUSPECT - NO ANSWER
+                        total_suspect_no_answer = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'SUSPECT-IN CONTACT') {
+                        //SUSPECT - IN CONTACT
+                        total_suspect_in_contact = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    } else if (custStatus == 'PROSPECT-QUALIFIED') {
+                        //PROSPECT - QUALIFIED
+                        total_prospect_qualified = parseInt(prospectCount)
+                        if (newCustStatus == 'SUSPECT-NEW') {
+                            //SUSPECT - NEW
+                            suspect_new = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-HOT LEAD') {
+                            //SUSPECT - HOT LEAD
+                            suspect_hot_lead = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-QUALIFIED') {
+                            //SUSPECT - QUALIFIED
+                            suspect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-VALIDATED' || newCustStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                            //SUSPECT - VALIDATED
+                            suspect_validated = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-REP REASSIGN' || newCustStatus == 'SUSPECT-REASSIGN') {
+                            //SUSPECT - REP REASSIGN
+                            suspect_reassign = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                            //SUSPECT - FOLLOW UP
+                            suspect_follow_up = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                            //SUSPECT - LPO FOLLOW UP
+                            suspect_lpo_followup = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-NO ANSWER') {
+                            //SUSPECT - NO ANSWER
+                            suspect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-NO ANSWER(3%)') {
+                            //PROSPECT - NO ANSWER
+                            prospect_no_answer = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-IN CONTACT') {
+                            //SUSPECT - IN CONTACT
+                            suspect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-IN CONTACT') {
+                            //PROSPECT - IN CONTACT
+                            prospect_in_contact = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-PARKING LOT') {
+                            //SUSPECT - OFF PEAK PIPELINE
+                            suspect_off_peak_pipeline = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-LOST') {
+                            //SUSPECT - LOST
+                            suspect_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                            //SUSPECT - OUT OF TERRITORY
+                            suspect_oot = parseInt(prospectCount);
+                        } else if (newCustStatus == 'SUSPECT-CUSTOMER - LOST') {
+                            //SUSPECT - CUSTOMER - LOST
+                            suspect_customer_lost = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-OPPORTUNITY') {
+                            //PROSPECT - OPPORTUNITY
+                            prospect_opportunity = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUALIFIED') {
+                            //PROSPECT - QUALIFIED
+                            prospect_qualified = parseInt(prospectCount);
+                        } else if (newCustStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                            //PROSPECT - QUOTE SENT
+                            prospecy_quote_sent = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                            //CUSTOMER - FREE TRIAL PENDING
+                            customer_free_trial_pending = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                            //CUSTOMER - FREE TRIAL
+                            customer_free_trial = parseInt(prospectCount);
+                        } else if (newCustStatus == 'CUSTOMER-SIGNED(100%)' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                            //CUSTOMER _ SIGNED
+                            customer_signed = parseInt(prospectCount);
+                        }
+                    }
+                }
+
+
+
+
+                oldSystemNotesStatus = custStatus
+                oldSystemNotesSetBy = systemNotesSetBy;
+                totalLeadCountBySalesRep += parseInt(prospectCount)
+                count3++;
+                return true;
+            });
+
+            if (count3 > 0) {
+                if (oldSystemNotesStatus == 'CUSTOMER-SIGNED(100%)' || oldSystemNotesStatus == 'CUSTOMER-TO BE FINALISED') {
+                    //CUSTOMER _ SIGNED or CUSTOMER - TO BE FINALISED
+                    salesRepStatusTransitionChildSet[20] = {
+                        title: 'Customer - Signed', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_customer_signed
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-HOT LEAD') {
+                    //SUSPECT - HOT LEAD
+                    salesRepStatusTransitionChildSet[1] = {
+                        title: 'Suspect - Hot Lead', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_hot_lead
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-LOST') {
+                    //SUSPECT - LOST
+                    salesRepStatusTransitionChildSet[12] = {
+                        title: 'Suspect - Lost', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_lost
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-OUT OF TERRITORY') {
+                    //SUSPECT - OUT OF TERRITORY
+                    salesRepStatusTransitionChildSet[13] = {
+                        title: 'Suspect - Out of Territory', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_oot
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-CUSTOMER - LOST') {
+                    //SUSPECT - CUSTOMER - LOST
+                    salesRepStatusTransitionChildSet[14] = {
+                        title: 'Suspect - Customer - Lost', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_customer_lost
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-REP REASSIGN' || oldSystemNotesStatus == 'SUSPECT-REASSIGN') {
+                    //SUSPECT - REP REASSIGN
+                    salesRepStatusTransitionChildSet[4] = {
+                        title: 'Suspect - Rep Reassign', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_reassign
+                    }
+                } else if (oldSystemNotesStatus == 'PROSPECT-QUOTE SENT(50%)') {
+                    //PROSPECT - QUOTE SENT
+                    salesRepStatusTransitionChildSet[17] = {
+                        title: 'Prospect - Quote Sent', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_prospect_quote_sent
+                    }
+                } else if (oldSystemNotesStatus == 'PROSPECT-NO ANSWER(3%)') {
+                    //PROSPECT - NO ANSWER
+                    salesRepStatusTransitionChildSet[9] = {
+                        title: 'Prospect - No Answer', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_prospect_no_answer
+                    }
+                } else if (oldSystemNotesStatus == 'PROSPECT-IN CONTACT(6%)') {
+                    //PROSPECT - IN CONTACT
+                    salesRepStatusTransitionChildSet[10] = {
+                        title: 'Prospect - In Answer', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_prospect_in_contact
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-PARKING LOT' || oldSystemNotesStatus == 'SUSPECT-OFF PEAK PIPELINE') {
+                    //SUSPECT - OFF PEAK PIPELINE
+                    salesRepStatusTransitionChildSet[11] = {
+                        title: 'Prospect - Parking Lot', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_off_peak_pipeline
+                    }
+                } else if (oldSystemNotesStatus == 'PROSPECT-OPPORTUNITY') {
+                    //PROSPECT - OPPORTUNITY
+                    salesRepStatusTransitionChildSet[15] = {
+                        title: 'Prospect - Opportunity', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_prospect_opportunity
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-FOLLOW-UP(2%)') {
+                    //SUSPECT - FOLLOW UP
+                    salesRepStatusTransitionChildSet[5] = {
+                        title: 'Suspect - Follow Up', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_follow_up
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-NEW') {
+                    //SUSPECT - NEW
+                    salesRepStatusTransitionChildSet[0] = {
+                        title: 'Suspect - New', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_new
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-QUALIFIED') {
+                    //SUSPECT - QUALIFIED
+                    salesRepStatusTransitionChildSet[2] = {
+                        title: 'Suspect - Qualified', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_qualified
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-LPO FOLLOW-UP') {
+                    //SUSPECT - LPO FOLLOW UP
+                    salesRepStatusTransitionChildSet[6] = {
+                        title: 'Suspect - LPO Follow Up', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_lpo_followup
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-VALIDATED') {
+                    //SUSPECT - VALIDATED
+                    salesRepStatusTransitionChildSet[3] = {
+                        title: 'Suspect - Validated', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_validated
+                    }
+                } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL(95%)') {
+                    //CUSTOMER - FREE TRIAL
+                    salesRepStatusTransitionChildSet[19] = {
+                        title: 'Customer - Free Trial', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_customer_free_trial
+                    }
+                } else if (oldSystemNotesStatus == 'CUSTOMER-FREE TRIAL PENDING') {
+                    //CUSTOMER - FREE TRIAL
+                    salesRepStatusTransitionChildSet[18] = {
+                        title: 'Customer - Pending Free Trial', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_customer_free_trial_pending
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-NO ANSWER') {
+                    //SUSPECT - NO ANSWER
+                    salesRepStatusTransitionChildSet[7] = {
+                        title: 'Suspect - No Answer', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_no_answer
+                    }
+                } else if (oldSystemNotesStatus == 'SUSPECT-IN CONTACT') {
+                    //SUSPECT - IN CONTACT
+                    salesRepStatusTransitionChildSet[8] = {
+                        title: 'Suspect - In Contact', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_suspect_in_contact
+                    }
+                } else if (oldSystemNotesStatus == 'PROSPECT-QUALIFIED') {
+                    //PROSPECT - QUALIFIED
+                    salesRepStatusTransitionChildSet[16] = {
+                        title: 'Prospect - Qualified', suspect_new: suspect_new,
+                        suspect_hot_lead: suspect_hot_lead,
+                        suspect_qualified: suspect_qualified,
+                        suspect_validated: suspect_validated,
+                        suspect_reassign: suspect_reassign,
+                        suspect_follow_up: suspect_follow_up,
+                        suspect_lpo_followup: suspect_lpo_followup,
+                        suspect_no_answer: suspect_no_answer,
+                        suspect_in_contact: suspect_in_contact,
+                        prospect_no_answer: prospect_no_answer,
+                        prospect_in_contact: prospect_in_contact,
+                        suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+                        suspect_lost: suspect_lost,
+                        suspect_oot: suspect_oot,
+                        suspect_customer_lost: suspect_customer_lost,
+                        prospect_opportunity: prospect_opportunity,
+                        prospect_qualified: prospect_qualified,
+                        prospecy_quote_sent: prospecy_quote_sent,
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        customer_free_trial: customer_free_trial,
+                        customer_signed: customer_signed,
+                        total_leads: total_prospect_qualified
+                    }
+                }
+
+                if (oldSystemNotesSetBy == 'Aleyna A Harnett') {
+                    statusTransitionBySalesRepDataSet.push(['', "Aleyna A Harnett", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Alison Savona') {
+                    statusTransitionBySalesRepDataSet.push(['', "Alison Savona", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Belinda Urbani') {
+                    statusTransitionBySalesRepDataSet.push(['', "Belinda Urbani", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Kerina Helliwell') {
+                    statusTransitionBySalesRepDataSet.push(['', "Kerina Helliwell", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Lee Russell') {
+                    statusTransitionBySalesRepDataSet.push(['', "Lee Russell", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Liam Pike') {
+                    statusTransitionBySalesRepDataSet.push(['', "Liam Pike", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Luke Forbes') {
+                    statusTransitionBySalesRepDataSet.push(['', "Luke Forbes", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Paul D McIntosh') {
+                    statusTransitionBySalesRepDataSet.push(['', "Paul D McIntosh", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                } else if (oldSystemNotesSetBy == 'Stefania Ferreyra') {
+                    statusTransitionBySalesRepDataSet.push(['', "Stefania Ferreyra", totalLeadCountBySalesRep, salesRepStatusTransitionChildSet])
+                }
+            }
+
+            console.log()
+
+            var dataTableSalesRepList = $('#mpexusage-sales_rep_list').DataTable({
+                destroy: true,
+                data: statusTransitionBySalesRepDataSet,
+                pageLength: 1000,
+                responsive: true,
+                order: [[2, 'desc']],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [{
+                    title: 'Expand',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, {
+                    title: 'Sales Rep'//1
+                }, {
+                    title: 'Count of Status Transitions'//2
+                }, {
+                    title: 'Child Table' //3
+                }],
+                columnDefs: [{
+                    targets: [1, 2],
+                    className: 'bolded'
+                }, {
+                    targets: [0, 2],
+                    className: 'col-xs-1'
+                }, {
+                    targets: [3],
+                    visible: false
+                }],
+                rowCallback: function (row, data, index) {
+                },
+                footerCallback: function (row, data, start, end, display) {
+
+                }
+
+            });
+
+            dataTableSalesRepList.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createSalesRepListTableChild(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-sales_rep_list tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableSalesRepList.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
 
             debt_set = [];
             debt_set2 = [];
@@ -7483,6 +15204,186 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 ],
                 columnDefs: [],
                 rowCallback: function (row, data) {
+                }
+            });
+        }
+
+        function createSalesRepListTableChild(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="100%"/>');
+            var previewDataSet = [];
+            row.data()[3].forEach(function (preview_row) {
+
+                if (!isNullorEmpty(preview_row)) {
+                    var hotLeadPercentage = parseInt((preview_row.suspect_hot_lead / preview_row.total_leads) * 100);
+                    var hotLeadCol = preview_row.suspect_hot_lead + ' (' + hotLeadPercentage + '%)';
+
+                    var quoteSentPercentage = parseInt((preview_row.prospecy_quote_sent / preview_row.total_leads) * 100);
+                    var quoteSentCol = preview_row.prospecy_quote_sent + ' (' + quoteSentPercentage + '%)';
+
+
+                    var reassignPercentage = parseInt((preview_row.suspect_reassign / preview_row.total_leads) * 100);
+                    var reassignCol = preview_row.suspect_reassign + ' (' + reassignPercentage + '%)';
+
+                    var noAnswerPercentage = parseInt((preview_row.prospect_no_answer / preview_row.total_leads) * 100);
+                    var noAnswerCol = preview_row.prospect_no_answer + ' (' + noAnswerPercentage + '%)';
+
+                    var inContactPercentage = parseInt((preview_row.prospect_in_contact / preview_row.total_leads) * 100);
+                    var inContactCol = preview_row.prospect_in_contact + ' (' + inContactPercentage + '%)';
+
+
+                    var offPeakPercentage = parseInt((preview_row.suspect_off_peak_pipeline / preview_row.total_leads) * 100);
+                    var offPeakCol = preview_row.suspect_off_peak_pipeline + ' (' + offPeakPercentage + '%)';
+
+                    var lostPercentage = parseInt((preview_row.suspect_lost / preview_row.total_leads) * 100);
+                    var lostCol = preview_row.suspect_lost + ' (' + lostPercentage + '%)';
+
+                    var ootPercentage = parseInt((preview_row.suspect_oot / preview_row.total_leads) * 100);
+                    var ootCol = preview_row.suspect_oot + ' (' + ootPercentage + '%)';
+
+                    var custLostPercentage = parseInt((preview_row.suspect_customer_lost / preview_row.total_leads) * 100);
+                    var custLostCol = preview_row.suspect_customer_lost + ' (' + custLostPercentage + '%)';
+
+                    var oppPercentage = parseInt((preview_row.prospect_opportunity / preview_row.total_leads) * 100);
+                    var oppCol = preview_row.prospect_opportunity + ' (' + oppPercentage + '%)';
+
+                    var signedPercentage = parseInt((preview_row.customer_signed / preview_row.total_leads) * 100);
+                    var signedCol = preview_row.customer_signed + ' (' + signedPercentage + '%)';
+
+                    var suspectFollowUpPErcentage = parseInt((preview_row.suspect_follow_up / preview_row.total_leads) * 100);
+                    var followUpCol = preview_row.suspect_follow_up + ' (' + suspectFollowUpPErcentage + '%)';
+
+                    var suspectNewPercentage = parseInt((preview_row.suspect_new / preview_row.total_leads) * 100);
+                    var suspectNewCol = preview_row.suspect_new + ' (' + suspectNewPercentage + '%)';
+
+                    var suspectQualifiedPercentage = parseInt((preview_row.suspect_qualified / preview_row.total_leads) * 100);
+                    var suspectQualifiedCol = preview_row.suspect_qualified + ' (' + suspectQualifiedPercentage + '%)';
+
+                    var suspectLPOFollowupPercentage = parseInt((preview_row.suspect_lpo_followup / preview_row.total_leads) * 100);
+                    var suspectLPOFollowupwCol = preview_row.suspect_lpo_followup + ' (' + suspectLPOFollowupPercentage + '%)';
+
+                    var suspectValidatedPercentage = parseInt((preview_row.suspect_validated / preview_row.total_leads) * 100);
+                    var suspectValidatedCol = preview_row.suspect_validated + ' (' + suspectValidatedPercentage + '%)';
+
+                    var customerFreeTrialPercentage = parseInt((preview_row.customer_free_trial / preview_row.total_leads) * 100);
+                    var customerFreeTrialCol = preview_row.customer_free_trial + ' (' + customerFreeTrialPercentage + '%)';
+
+                    var customerFreeTrialPendingPercentage = parseInt((preview_row.customer_free_trial_pending / preview_row.total_leads) * 100);
+                    var customerFreeTrialPendingCol = preview_row.customer_free_trial_pending + ' (' + customerFreeTrialPendingPercentage + '%)';
+
+                    var suspectNoAnswerPercentage = parseInt((preview_row.suspect_no_answer / preview_row.total_leads) * 100);
+                    var suspectNoAnswerCol = preview_row.suspect_no_answer + ' (' + suspectNoAnswerPercentage + '%)';
+
+                    var suspectInContactPercentage = parseInt((preview_row.suspect_in_contact / preview_row.total_leads) * 100);
+                    var suspectInContactCol = preview_row.suspect_in_contact + ' (' + suspectInContactPercentage + '%)';
+
+                    var prospectQualifiedPercentage = parseInt((preview_row.prospect_qualified / preview_row.total_leads) * 100);
+                    var prospectQualifiedCol = preview_row.prospect_qualified + ' (' + prospectQualifiedPercentage + '%)';
+
+                    var totalLeadsCol = preview_row.total_leads + '';
+                    previewDataSet.push([preview_row.title,
+                        suspectNewCol,
+                        hotLeadCol,
+                        suspectQualifiedCol,
+                        suspectValidatedCol,
+                        reassignCol,
+                        followUpCol,
+                        suspectLPOFollowupwCol,
+                        suspectNoAnswerCol,
+                        suspectInContactCol,
+                        noAnswerCol,
+                        inContactCol,
+                        offPeakCol,
+                        lostCol,
+                        ootCol,
+                        custLostCol,
+                        oppCol,
+                        prospectQualifiedCol,
+                        quoteSentCol,
+                        customerFreeTrialPendingCol,
+                        customerFreeTrialCol,
+                        signedCol,
+                    preview_row.total_leads.toString(),
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": true,
+                data: previewDataSet,
+                "ordering": false,
+                columns: [{
+                    title: 'Transition From and To', className: 'table-bg-color',//0
+                }, {
+                    title: 'Suspect - New', className: 'table-bg-color',//1
+                }, {
+                    title: 'Suspect - Hot Lead', className: 'table-bg-color',//2
+                }, {
+                    title: 'Suspect - Qualified', className: 'table-bg-color',//3
+                }, {
+                    title: 'Suspect - Validated', className: 'table-bg-color',//4
+                }, {
+                    title: 'Suspect - Reassign', className: 'table-bg-color',//5
+                }, {
+                    title: 'Suspect - Follow Up', className: 'table-bg-color',//6
+                }, {
+                    title: 'Suspect - LPO Follow Up', className: 'table-bg-color',//7
+                }, {
+                    title: 'Suspect - No Answer', className: 'table-bg-color',//8
+                }, {
+                    title: 'Suspect - In Contact', className: 'table-bg-color',//9
+                }, {
+                    title: 'Prospect - No Answer', className: 'table-bg-color',//10
+                }, {
+                    title: 'Prospect - In Contact', className: 'table-bg-color',//11
+                }, {
+                    title: 'Suspect - Parking Lot', className: 'table-bg-color',//12
+                }, {
+                    title: 'Suspect - Lost', className: 'table-bg-color',//13
+                }, {
+                    title: 'Suspect - Out of Territory', className: 'table-bg-color',//14
+                }, {
+                    title: 'Suspect - Customer - Lost', className: 'table-bg-color',//15
+                }, {
+                    title: 'Prospect - Opportunity', className: 'table-bg-color',//16
+                }, {
+                    title: 'Prospect - Qualified', className: 'table-bg-color',//17
+                }, {
+                    title: 'Prospect - Quote Sent', className: 'table-bg-color',//18
+                }, {
+                    title: 'Customer - Free Trial Pending', className: 'table-bg-color',//19
+                }, {
+                    title: 'Customer - Free Trial', className: 'table-bg-color',//20
+                }, {
+                    title: 'Customer - Signed', className: 'table-bg-color',//21
+                }],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                    $('td', row).css('background-color', '#d0dfcd');
+
+                    $('td', row).eq(0).css('background-color', '#045d7b');
+                    $('td', row).eq(0).css('color', '#ffffff');
+
+
+
+                    if (data[13] != '0 (0%)') {
+                        $('td', row).eq(13).css('background-color', '#e97577');
+                    }
+
+                    if (data[15] != '0 (0%)') {
+                        $('td', row).eq(15).css('background-color', '#e97577');
+                    }
+
+                    if (data[21] != '0 (0%)') {
+                        $('td', row).eq(21).css('background-color', '#54bf9d');
+                    }
                 }
             });
         }

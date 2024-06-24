@@ -195,7 +195,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 }
 
                 var form = ui.createForm({
-                    title: 'Sales Snapshot Overview - Dashboard '
+                    title: 'Sales Status Snapshot Overview - Dashboard'
                 });
 
 
@@ -1050,6 +1050,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#salesreplist" style="border-radius: 30px"><b>BY SALES REP - OVERVIEW</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#statuscustlist" style="border-radius: 30px"><b>BY STATUS - CUSTOMER/LEADS LIST</b></a></li>';
             inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#custlist" style="border-radius: 30px"><b>CUSTOMER/LEADS LIST</b></a></li>';
@@ -1066,6 +1068,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div id="container_preview"></div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('preview');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="salesreplist">';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_salesreplist"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('sales_rep_list');
             inlineHtml += '</div>';
 
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="custlist">';
@@ -1102,7 +1111,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 name +
                 ' {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-' +
                 name +
-                ' th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>';
+                ' th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;} th.table-bg-color{background-color: #045d7b; color: #ffffff;}</style>';
             inlineHtml += '<div class="table_section hide"><table id="mpexusage-' +
                 name +
                 '" class="table table-responsive customer tablesorter row-border cell-border compact" style="width: 100%;border: 2px solid #103d39">';
