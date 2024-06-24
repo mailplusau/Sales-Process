@@ -57,6 +57,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         var sales_rep = null;
         var lead_entered_by = null;
         var calcprodusage = null;
+        var sales_activity_notes = null;
         var leadStatus = null;
 
         var total_months = 14;
@@ -217,6 +218,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 $('.quote_sent_div').removeClass('hide');
                 $('.usage_label_section').removeClass('hide');
                 $('.calcprodusage_div').removeClass('hide');
+                $('.salesactivitynotes_div').removeClass('hide');
                 $('.usage_date_div').removeClass('hide');
                 $('.invoice_label_section').removeClass('hide');
                 $('.invoice_date_type_div').removeClass('hide');
@@ -292,6 +294,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             sales_rep = $('#sales_rep').val();
             invoice_type = $('#invoice_type').val();
             calcprodusage = $('#calc_prod_usage').val();
+            sales_activity_notes = $('#sales_activity_notes').val();
             leadStatus = $('#cust_status').val();
 
             invoice_date_from = $('#invoice_date_from').val();
@@ -370,6 +373,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 var sales_rep = $('#sales_rep').val();
                 var lead_entered_by = $('#lead_entered_by').val();
                 calcprodusage = $('#calc_prod_usage').val();
+                sales_activity_notes = $('#sales_activity_notes').val();
 
                 leadStatus = $('#cust_status').val();
 
@@ -391,7 +395,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus;
+                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=' + sales_activity_notes;
 
 
                 window.location.href = url;
@@ -443,7 +447,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 statusTimeLineTable += '<td>DATE</td>';
                 statusTimeLineTable += '<td>SET BY</td>';
                 statusTimeLineTable += '<td>OLD STATUS</td>';
-                statusTimeLineTable += '<td>TIME IN STATUS (WORKING DAYS)</td>';
+                statusTimeLineTable += '<td>TIME IN OLD STATUS </td>';
                 statusTimeLineTable += '<td>NEW STATUS</td>';
                 statusTimeLineTable += '</tr>';
                 statusTimeLineTable += '</thead>';
@@ -494,32 +498,60 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
                         systemNotesDateSplit[0];
 
+                    // console.log('systemNotesDate: ' + systemNotesDate);
+                    // console.log('oldStatusDate: ' + oldStatusDate);
+
                     var onlyStatusDate = systemNotesDate
 
                     if (!isNullorEmpty(oldStatusDate)) {
 
+                        console.log('systemNotesDate: ' + systemNotesDate);
+                        console.log('oldStatusDate: ' + oldStatusDate);
 
                         var date1 = new Date(systemNotesDate);
                         var date2 = new Date(oldStatusDate);
 
+                        console.log('date1: ' + date1);
+                        console.log('date2: ' + date2);
+
                         var difference = date1.getTime() - date2.getTime();
                         timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
 
+                        console.log('timeInStatusDays: ' + timeInStatusDays);
+
                         var weeks = Math.floor(timeInStatusDays / 7);
                         timeInStatusDays = timeInStatusDays - (weeks * 2);
+
+                        console.log('timeInStatusDays: ' + timeInStatusDays);
+                        
+                        console.log('date1: ' + date1);
+                        console.log('date2: ' + date2);
 
                         // Handle special cases
                         var startDay = date1.getDay();
                         var endDay = date2.getDay();
 
+                        console.log('startDay: ' + startDay);
+                        console.log('endDay: ' + endDay);
+
+                        console.log('timeInStatusDays: ' + timeInStatusDays);
+                        console.log('(startDay - endDay): ' + (startDay - endDay));
+
                         // Remove weekend not previously removed.   
-                        if (startDay - endDay > 1)
-                            timeInStatusDays = timeInStatusDays - 2;
+                        // if ((startDay - endDay) > 1) {
+                        //     console.log('inside (startDay - endDay): ' + ((startDay - endDay) > 1));
+                        //     timeInStatusDays = timeInStatusDays - 2;
+                        // }
+                            
+
+                        console.log('timeInStatusDays: ' + timeInStatusDays);
 
                         // Remove start day if span starts on Sunday but ends before Saturday
                         if (startDay == 0 && endDay != 6) {
                             timeInStatusDays = timeInStatusDays - 1;
                         }
+
+                        console.log('timeInStatusDays: ' + timeInStatusDays);
 
                         // Remove end day if span ends on Saturday but starts after Sunday
                         if (endDay == 6 && startDay != 0) {
@@ -528,7 +560,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         // timeInStatusDays = systemNotesDate - oldStatusDate;
                     }
-
+                    console.log('timeInStatusDays: ' + timeInStatusDays);
                     systemNotesDate = systemNotesDate + ' ' + systemNotesTime
 
                     statusTimeLineTable += '<tr>';
@@ -747,7 +779,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -1199,6 +1231,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             console.log('date_from:' + date_from);
             console.log('date_to:' + date_to);
             console.log('leadStatus:' + leadStatus);
+            console.log('sales_activity_notes:' + sales_activity_notes);
 
             if (role == 1000 && isNullorEmpty(zee_id) && isNullorEmpty(sales_rep) && !isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
                 alert('Please select Sales Rep while selecting the Modified Date From & To filters.');
@@ -1342,7 +1375,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -1711,7 +1744,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -2071,7 +2104,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
@@ -2561,7 +2594,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3145,7 +3178,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3721,7 +3754,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -4295,7 +4328,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -4752,7 +4785,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5085,7 +5118,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5499,7 +5532,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5896,7 +5929,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6208,7 +6241,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6524,7 +6557,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6837,7 +6870,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7153,7 +7186,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7497,7 +7530,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7815,7 +7848,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8132,7 +8165,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -9352,7 +9385,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -10543,7 +10576,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -11659,7 +11692,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12751,10 +12784,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 salesrep_series_data29, salesrep_series_data31, salesrep_series_data32, salesrep_series_data33, salesrep_series_data34, salesrep_categores1, salesrep_series_data20a, salesrep_series_data21a, salesrep_series_data22a, salesrep_series_data23a, salesrep_series_data24a, salesrep_series_data25a, salesrep_series_data26a, salesrep_series_data27a)
 
 
-            var websiteSuspectsLeadsReportingSearch = search.load({
-                type: 'customer',
-                id: 'customsearch_leads_reporting_5_2_2_2' //Website Leads - Reporting V2
-            });
+            if (sales_activity_notes == 1) {
+                var websiteSuspectsLeadsReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_5_2_2_2_3' //Website Leads - Suspects - Reporting V3
+                });
+            } else {
+                var websiteSuspectsLeadsReportingSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_suspects_reporting_no_activ' //Website Leads - Suspects - Reporting V4 (No Activity)
+                });
+            }
+
 
             if (!isNullorEmpty(leadStatus)) {
                 websiteSuspectsLeadsReportingSearch.filters.push(search.createFilter({
@@ -12875,7 +12916,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -13017,1069 +13058,1750 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             console.log('websiteSuspectsLeadsReportingSearchCount: ' + websiteSuspectsLeadsReportingSearchCount)
             var count = 0;
 
-            websiteSuspectsLeadsReportingSearch.run().each(function (suspectsResultSet) {
+            if (sales_activity_notes == 1) {
+                console.log('websiteSuspectsLeadsReportingSearch with activity')
+                websiteSuspectsLeadsReportingSearch.run().each(function (suspectsResultSet) {
 
-                var custInternalID = suspectsResultSet.getValue({
-                    name: 'internalid',
-                    summary: "GROUP",
-                });
-                var custEntityID = suspectsResultSet.getValue({
-                    name: 'entityid',
-                    summary: "GROUP",
-                });
-                var custName = suspectsResultSet.getValue({
-                    name: 'companyname',
-                    summary: "GROUP",
-                });
-                var zeeID = suspectsResultSet.getValue({
-                    name: 'partner',
-                    summary: "GROUP",
-                });
-                var zeeName = suspectsResultSet.getText({
-                    name: 'partner',
-                    summary: "GROUP",
-                });
+                    var custInternalID = suspectsResultSet.getValue({
+                        name: 'internalid',
+                        summary: "GROUP",
+                    });
+                    var custEntityID = suspectsResultSet.getValue({
+                        name: 'entityid',
+                        summary: "GROUP",
+                    });
+                    var custName = suspectsResultSet.getValue({
+                        name: 'companyname',
+                        summary: "GROUP",
+                    });
+                    var zeeID = suspectsResultSet.getValue({
+                        name: 'partner',
+                        summary: "GROUP",
+                    });
+                    var zeeName = suspectsResultSet.getText({
+                        name: 'partner',
+                        summary: "GROUP",
+                    });
 
-                var custStage = (suspectsResultSet.getText({
-                    name: 'stage',
-                    summary: "GROUP",
-                })).toUpperCase();
+                    var custStage = (suspectsResultSet.getText({
+                        name: 'stage',
+                        summary: "GROUP",
+                    })).toUpperCase();
 
-                var custStatusId = suspectsResultSet.getValue({
-                    name: 'entitystatus',
-                    summary: "GROUP",
-                })
-
-                var custStatus = suspectsResultSet.getText({
-                    name: 'entitystatus',
-                    summary: "GROUP",
-                }).toUpperCase();
-
-                var dateLeadEntered = suspectsResultSet.getValue({
-                    name: "custentity_date_lead_entered",
-                    summary: "GROUP",
-                });
-
-                var quoteSentDate = suspectsResultSet.getValue({
-                    name: "custentity_date_lead_quote_sent",
-                    summary: "GROUP",
-                });
-
-                var dateLeadLost = suspectsResultSet.getValue({
-                    name: 'custentity_date_lead_lost',
-                    summary: "GROUP",
-                });
-                var dateLeadinContact = suspectsResultSet.getValue({
-                    name: 'custentity_date_prospect_in_contact',
-                    summary: "GROUP",
-                });
-
-                var dateProspectWon = suspectsResultSet.getValue({
-                    name: 'custentity_date_prospect_opportunity',
-                    summary: "GROUP",
-                });
-
-                var dateLeadReassigned = suspectsResultSet.getValue({
-                    name: 'custentity_date_suspect_reassign',
-                    summary: "GROUP",
-                });
-
-                var salesRepId = suspectsResultSet.getValue({
-                    name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER',
-                    summary: "GROUP",
-                });
-                var salesRepText = suspectsResultSet.getText({
-                    name: 'custrecord_sales_assigned',
-                    join: 'CUSTRECORD_SALES_CUSTOMER',
-                    summary: "GROUP",
-                });
-
-                var activityInternalID = suspectsResultSet.getValue({
-                    name: "internalid",
-                    join: "activity",
-                    summary: "GROUP",
-                })
-                var activityStartDate = suspectsResultSet.getValue({
-                    name: "startdate",
-                    join: "activity",
-                    summary: "GROUP",
-                })
-                if (!isNullorEmpty(activityStartDate)) {
-                    // var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
-                    var activityStartDateArray = activityStartDate.split('/');
-                    if (parseInt(activityStartDateArray[1]) < 10) {
-                        activityStartDateArray[1] = '0' + activityStartDateArray[1]
-                    }
-
-                    if (parseInt(activityStartDateArray[0]) < 10) {
-                        activityStartDateArray[0] = '0' + activityStartDateArray[0]
-                    }
-                    activityStartDate = activityStartDateArray[2] + '-' + activityStartDateArray[1] + '-' + activityStartDateArray[0]
-                }
-                var activityTitle = suspectsResultSet.getValue({
-                    name: "title",
-                    join: "activity",
-                    summary: "GROUP",
-                })
-
-
-                if (isNullorEmpty(suspectsResultSet.getText({
-                    name: "custevent_organiser",
-                    join: "activity",
-                    summary: "GROUP",
-                }))) {
-                    var activityOrganiser = suspectsResultSet.getText({
-                        name: "assigned",
-                        join: "activity",
+                    var custStatusId = suspectsResultSet.getValue({
+                        name: 'entitystatus',
                         summary: "GROUP",
                     })
-                } else {
-                    var activityOrganiser = suspectsResultSet.getText({
-                        name: "custevent_organiser",
-                        join: "activity",
+
+                    var custStatus = suspectsResultSet.getText({
+                        name: 'entitystatus',
+                        summary: "GROUP",
+                    }).toUpperCase();
+
+                    var dateLeadEntered = suspectsResultSet.getValue({
+                        name: "custentity_date_lead_entered",
+                        summary: "GROUP",
+                    });
+
+                    var quoteSentDate = suspectsResultSet.getValue({
+                        name: "custentity_date_lead_quote_sent",
+                        summary: "GROUP",
+                    });
+
+                    var dateLeadLost = suspectsResultSet.getValue({
+                        name: 'custentity_date_lead_lost',
+                        summary: "GROUP",
+                    });
+                    var dateLeadinContact = suspectsResultSet.getValue({
+                        name: 'custentity_date_prospect_in_contact',
+                        summary: "GROUP",
+                    });
+
+                    var dateProspectWon = suspectsResultSet.getValue({
+                        name: 'custentity_date_prospect_opportunity',
+                        summary: "GROUP",
+                    });
+
+                    var dateLeadReassigned = suspectsResultSet.getValue({
+                        name: 'custentity_date_suspect_reassign',
+                        summary: "GROUP",
+                    });
+
+                    var salesRepId = suspectsResultSet.getValue({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER',
+                        summary: "GROUP",
+                    });
+                    var salesRepText = suspectsResultSet.getText({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER',
+                        summary: "GROUP",
+                    });
+
+                    // var activityInternalID = suspectsResultSet.getValue({
+                    //     name: "internalid",
+                    //     join: "activity",
+                    //     summary: "GROUP",
+                    // })
+                    // var activityStartDate = suspectsResultSet.getValue({
+                    //     name: "startdate",
+                    //     join: "activity",
+                    //     summary: "GROUP",
+                    // })
+                    // if (!isNullorEmpty(activityStartDate)) {
+                    //     // var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    //     var activityStartDateArray = activityStartDate.split('/');
+                    //     if (parseInt(activityStartDateArray[1]) < 10) {
+                    //         activityStartDateArray[1] = '0' + activityStartDateArray[1]
+                    //     }
+
+                    //     if (parseInt(activityStartDateArray[0]) < 10) {
+                    //         activityStartDateArray[0] = '0' + activityStartDateArray[0]
+                    //     }
+                    //     activityStartDate = activityStartDateArray[2] + '-' + activityStartDateArray[1] + '-' + activityStartDateArray[0]
+                    // }
+                    // var activityTitle = suspectsResultSet.getValue({
+                    //     name: "title",
+                    //     join: "activity",
+                    //     summary: "GROUP",
+                    // })
+
+
+                    // if (isNullorEmpty(suspectsResultSet.getText({
+                    //     name: "custevent_organiser",
+                    //     join: "activity",
+                    //     summary: "GROUP",
+                    // }))) {
+                    //     var activityOrganiser = suspectsResultSet.getText({
+                    //         name: "assigned",
+                    //         join: "activity",
+                    //         summary: "GROUP",
+                    //     })
+                    // } else {
+                    //     var activityOrganiser = suspectsResultSet.getText({
+                    //         name: "custevent_organiser",
+                    //         join: "activity",
+                    //         summary: "GROUP",
+                    //     })
+                    // }
+
+
+                    // var activityMessage = suspectsResultSet.getValue({
+                    //     name: "message",
+                    //     join: "activity",
+                    //     summary: "GROUP",
+                    // })
+
+                    var email48h = suspectsResultSet.getText({
+                        name: 'custentity_48h_email_sent',
+                        summary: "GROUP",
+                    });
+
+                    var daysOpen = suspectsResultSet.getValue({
+                        name: "formulanumeric",
+                        summary: "GROUP",
+                    });
+
+                    var cancellationReason = suspectsResultSet.getText({
+                        name: "custentity_service_cancellation_reason",
+                        summary: "GROUP",
+                    });
+
+                    var source = suspectsResultSet.getText({
+                        name: "leadsource",
+                        summary: "GROUP",
+                    });
+
+                    var productWeeklyUsage = suspectsResultSet.getText({
+                        name: "custentity_form_mpex_usage_per_week",
+                        summary: "GROUP",
+                    });
+
+                    var autoSignUp = suspectsResultSet.getValue({
+                        name: "custentity_auto_sign_up",
+                        summary: "GROUP",
+                    });
+
+                    var previousCarrier = suspectsResultSet.getText({
+                        name: "custentity_previous_carrier",
+                        summary: "GROUP",
+                    });
+
+                    var monthlyServiceValue = (suspectsResultSet.getValue({
+                        name: "custentity_cust_monthly_service_value",
+                        summary: "GROUP",
+                    }));
+
+                    var avgInvoiceValue = (suspectsResultSet.getValue({
+                        name: "total",
+                        join: "transaction",
+                        summary: "AVG",
+                    }));
+
+                    var dateLPOValidated = suspectsResultSet.getValue({
+                        name: 'custentity_date_lpo_validated',
+                        summary: "GROUP",
+                    });
+
+
+                    var userNotesInternalID = suspectsResultSet.getValue({
+                        name: "internalid",
+                        join: "userNotes",
                         summary: "GROUP",
                     })
-                }
-
-
-                var activityMessage = suspectsResultSet.getValue({
-                    name: "message",
-                    join: "activity",
-                    summary: "GROUP",
-                })
-
-                var email48h = suspectsResultSet.getText({
-                    name: 'custentity_48h_email_sent',
-                    summary: "GROUP",
-                });
-
-                var daysOpen = suspectsResultSet.getValue({
-                    name: "formulanumeric",
-                    summary: "GROUP",
-                });
-
-                var cancellationReason = suspectsResultSet.getText({
-                    name: "custentity_service_cancellation_reason",
-                    summary: "GROUP",
-                });
-
-                var source = suspectsResultSet.getText({
-                    name: "leadsource",
-                    summary: "GROUP",
-                });
-
-                var productWeeklyUsage = suspectsResultSet.getText({
-                    name: "custentity_form_mpex_usage_per_week",
-                    summary: "GROUP",
-                });
-
-                var autoSignUp = suspectsResultSet.getValue({
-                    name: "custentity_auto_sign_up",
-                    summary: "GROUP",
-                });
-
-                var previousCarrier = suspectsResultSet.getText({
-                    name: "custentity_previous_carrier",
-                    summary: "GROUP",
-                });
-
-                var monthlyServiceValue = (suspectsResultSet.getValue({
-                    name: "custentity_cust_monthly_service_value",
-                    summary: "GROUP",
-                }));
-
-                var avgInvoiceValue = (suspectsResultSet.getValue({
-                    name: "total",
-                    join: "transaction",
-                    summary: "AVG",
-                }));
-
-                var dateLPOValidated = suspectsResultSet.getValue({
-                    name: 'custentity_date_lpo_validated',
-                    summary: "GROUP",
-                });
-
-
-                var userNotesInternalID = suspectsResultSet.getValue({
-                    name: "internalid",
-                    join: "userNotes",
-                    summary: "GROUP",
-                })
-                var userNotesTitle = suspectsResultSet.getValue({
-                    name: "title",
-                    join: "userNotes",
-                    summary: "GROUP",
-                })
-                var userNotesStartDate = suspectsResultSet.getValue({
-                    name: "notedate",
-                    join: "userNotes",
-                    summary: "GROUP",
-                })
-                if (!isNullorEmpty(userNotesStartDate)) {
-                    var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
-                    var userNotesStartDateArray = userNotesStartDateTimeArray[0].split('/');
-                    if (parseInt(userNotesStartDateArray[1]) < 10) {
-                        userNotesStartDateArray[1] = '0' + userNotesStartDateArray[1]
-                    }
-
-                    if (parseInt(userNotesStartDateArray[0]) < 10) {
-                        userNotesStartDateArray[0] = '0' + userNotesStartDateArray[0]
-                    }
-                    userNotesStartDate = userNotesStartDateArray[2] + '-' + userNotesStartDateArray[1] + '-' + userNotesStartDateArray[0]
-                }
-                var userNotesOrganiser = suspectsResultSet.getText({
-                    name: "author",
-                    join: "userNotes",
-                    summary: "GROUP",
-                })
-                var userNotesMessage = suspectsResultSet.getValue({
-                    name: "note",
-                    join: "userNotes",
-                    summary: "GROUP",
-                })
-
-                if (!isNullorEmpty(monthlyServiceValue)) {
-                    monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
-                } else {
-                    monthlyServiceValue = 0.0;
-                }
-
-                if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
-                    avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
-                } else {
-                    avgInvoiceValue = 0.0;
-                }
-
-                var dateLeadEnteredSplit = dateLeadEntered.split('/');
-                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
-                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
-                }
-
-                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
-                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
-                }
-                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
-
-
-                if (!isNullorEmpty(dateLeadLost)) {
-                    var dateLeadLostSplit = dateLeadLost.split('/');
-                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
-                    var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
-
-                    var difference = dateLost.getTime() - dateEntered.getTime();
-                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    var weeks = Math.floor(daysOpen / 7);
-                    daysOpen = daysOpen - (weeks * 2);
-
-                    // Handle special cases
-                    var startDay = dateEntered.getDay();
-                    var endDay = dateLost.getDay();
-
-                    // Remove weekend not previously removed.
-                    if (startDay - endDay > 1)
-                        daysOpen = daysOpen - 2;
-
-                    // Remove start day if span starts on Sunday but ends before Saturday
-                    if (startDay == 0 && endDay != 6) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    // Remove end day if span ends on Saturday but starts after Sunday
-                    if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                } else if (!isNullorEmpty(dateProspectWon)) {
-                    var dateProspectWonSplit = dateProspectWon.split('/');
-
-                    if (parseInt(dateProspectWonSplit[1]) < 10) {
-                        dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
-                    }
-
-                    if (parseInt(dateProspectWonSplit[0]) < 10) {
-                        dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
-                    }
-
-                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
-                        dateProspectWonSplit[0];
-
-                    var dateLeadLostSplit = dateLeadLost.split('/');
-                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
-                    dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
-
-                    var difference = dateProspectWon.getTime() - dateEntered.getTime();
-                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    var weeks = Math.floor(daysOpen / 7);
-                    daysOpen = daysOpen - (weeks * 2);
-
-                    // Handle special cases
-                    var startDay = dateEntered.getDay();
-                    var endDay = dateProspectWon.getDay();
-
-                    // Remove weekend not previously removed.
-                    if (startDay - endDay > 1)
-                        daysOpen = daysOpen - 2;
-
-                    // Remove start day if span starts on Sunday but ends before Saturday
-                    if (startDay == 0 && endDay != 6) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    // Remove end day if span ends on Saturday but starts after Sunday
-                    if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
-                        dateProspectWonSplit[0];
-
-                } else if (!isNullorEmpty(quoteSentDate)) {
-                    var dateQuoteSentSplit = quoteSentDate.split('/');
-
-                    if (parseInt(dateQuoteSentSplit[1]) < 10) {
-                        dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
-                    }
-
-                    if (parseInt(dateQuoteSentSplit[0]) < 10) {
-                        dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
-                    }
-
-                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
-                        dateQuoteSentSplit[0];
-
-                    var dateLeadLostSplit = dateLeadLost.split('/');
-                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
-                    quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
-
-                    var difference = quoteSentDate.getTime() - dateEntered.getTime();
-                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    var weeks = Math.floor(daysOpen / 7);
-                    daysOpen = daysOpen - (weeks * 2);
-
-                    // Handle special cases
-                    var startDay = dateEntered.getDay();
-                    var endDay = quoteSentDate.getDay();
-
-                    // Remove weekend not previously removed.
-                    if (startDay - endDay > 1)
-                        daysOpen = daysOpen - 2;
-
-                    // Remove start day if span starts on Sunday but ends before Saturday
-                    if (startDay == 0 && endDay != 6) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    // Remove end day if span ends on Saturday but starts after Sunday
-                    if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
-                        dateQuoteSentSplit[0];
-                } if (!isNullorEmpty(dateLPOValidated)) {
-                    var dateLPOValidatedSplit = dateLPOValidated.split('/');
-                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
-                    var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
-
-                    var difference = dateValidated.getTime() - dateEntered.getTime();
-                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    var weeks = Math.floor(daysOpen / 7);
-                    daysOpen = daysOpen - (weeks * 2);
-
-                    // Handle special cases
-                    var startDay = dateEntered.getDay();
-                    var endDay = dateValidated.getDay();
-
-                    // Remove weekend not previously removed.
-                    if (startDay - endDay > 1)
-                        daysOpen = daysOpen - 2;
-
-                    // Remove start day if span starts on Sunday but ends before Saturday
-                    if (startDay == 0 && endDay != 6) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    // Remove end day if span ends on Saturday but starts after Sunday
-                    if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                } else {
-                    // var dateLeadLostSplit = dateLeadLost.split('/');
-                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
-                    var todayDate = new Date();
-
-                    var difference = todayDate.getTime() - dateEntered.getTime();
-                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    var weeks = Math.floor(daysOpen / 7);
-                    daysOpen = daysOpen - (weeks * 2);
-
-                    // Handle special cases
-                    var startDay = dateEntered.getDay();
-                    var endDay = todayDate.getDay();
-
-                    // Remove weekend not previously removed.
-                    if (startDay - endDay > 1)
-                        daysOpen = daysOpen - 2;
-
-                    // Remove start day if span starts on Sunday but ends before Saturday
-                    if (startDay == 0 && endDay != 6) {
-                        daysOpen = daysOpen - 1;
-                    }
-
-                    // Remove end day if span ends on Saturday but starts after Sunday
-                    if (endDay == 6 && startDay != 0) {
-                        daysOpen = daysOpen - 1;
-                    }
-                }
-
-                if (count == 0) {
-                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
+                    var userNotesTitle = suspectsResultSet.getValue({
+                        name: "title",
+                        join: "userNotes",
+                        summary: "GROUP",
+                    })
+                    var userNotesStartDate = suspectsResultSet.getValue({
+                        name: "notedate",
+                        join: "userNotes",
+                        summary: "GROUP",
+                    })
+                    if (!isNullorEmpty(userNotesStartDate)) {
+                        var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                        var userNotesStartDateArray = userNotesStartDateTimeArray[0].split('/');
+                        if (parseInt(userNotesStartDateArray[1]) < 10) {
+                            userNotesStartDateArray[1] = '0' + userNotesStartDateArray[1]
                         }
-                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
+
+                        if (parseInt(userNotesStartDateArray[0]) < 10) {
+                            userNotesStartDateArray[0] = '0' + userNotesStartDateArray[0]
                         }
-                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
+                        userNotesStartDate = userNotesStartDateArray[2] + '-' + userNotesStartDateArray[1] + '-' + userNotesStartDateArray[0]
+                    }
+                    var userNotesOrganiser = suspectsResultSet.getText({
+                        name: "author",
+                        join: "userNotes",
+                        summary: "GROUP",
+                    })
+                    var userNotesMessage = suspectsResultSet.getValue({
+                        name: "note",
+                        join: "userNotes",
+                        summary: "GROUP",
+                    })
+
+                    console.log('userNotesInternalID: ' + userNotesInternalID);
+                    console.log('userNotesTitle: ' + userNotesTitle);
+                    console.log('userNotesStartDate: ' + userNotesStartDate);
+                    console.log('userNotesOrganiser: ' + userNotesOrganiser);
+                    console.log('userNotesMessage: ' + userNotesMessage);
+                    console.log('custStage: ' + custStage);
+                    console.log('custStatus: ' + custStatus);
+
+                    if (!isNullorEmpty(monthlyServiceValue)) {
+                        monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+                    } else {
+                        monthlyServiceValue = 0.0;
+                    }
+
+                    if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+                        avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+                    } else {
+                        avgInvoiceValue = 0.0;
+                    }
+
+                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                        dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                    }
+
+                    if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                        dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                    }
+                    dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
+
+                    if (!isNullorEmpty(dateLeadLost)) {
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
+
+                        var difference = dateLost.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateLost.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                    } else if (!isNullorEmpty(dateProspectWon)) {
+                        var dateProspectWonSplit = dateProspectWon.split('/');
+
+                        if (parseInt(dateProspectWonSplit[1]) < 10) {
+                            dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
+                        }
+
+                        if (parseInt(dateProspectWonSplit[0]) < 10) {
+                            dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
+                        }
+
+                        dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                            dateProspectWonSplit[0];
+
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
+
+                        var difference = dateProspectWon.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateProspectWon.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                            dateProspectWonSplit[0];
+
+                    } else if (!isNullorEmpty(quoteSentDate)) {
+                        var dateQuoteSentSplit = quoteSentDate.split('/');
+
+                        if (parseInt(dateQuoteSentSplit[1]) < 10) {
+                            dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
+                        }
+
+                        if (parseInt(dateQuoteSentSplit[0]) < 10) {
+                            dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
+                        }
+
+                        quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                            dateQuoteSentSplit[0];
+
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
+
+                        var difference = quoteSentDate.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = quoteSentDate.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                            dateQuoteSentSplit[0];
+                    } if (!isNullorEmpty(dateLPOValidated)) {
+                        var dateLPOValidatedSplit = dateLPOValidated.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
+
+                        var difference = dateValidated.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateValidated.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                    } else {
+                        // var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var todayDate = new Date();
+
+                        var difference = todayDate.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = todayDate.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
                         }
                     }
 
-                } else if (count > 0 && (oldcustInternalID == custInternalID)) {
-                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
+                    if (count == 0) {
+                        console.log('inside count == 0')
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else
+                        if (!isNullorEmpty(userNotesInternalID)) {
+                            console.log('inside usernotes internal id')
+                            console.log('custStage: ' + custStage);
+                            console.log('custStatus: ' + custStatus);
+                            if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                                console.log('inside suspect new')
+                                suspectActivityCount++
+                                suspectChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                                console.log('inside suspect lost')
+                                suspectActivityCount++
+                                suspectLostChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                                console.log('inside suspect parking lot')
+                                suspectActivityCount++
+                                suspectOffPeakChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                console.log('inside suspect OOT')
+                                suspectActivityCount++
+                                suspectOOTChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                                console.log('inside suspect follow-up')
+                                suspectActivityCount++
+                                suspectFollowUpChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                                console.log('inside suspect qualifeid')
+                                suspectActivityCount++
+                                suspectQualifiedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                                console.log('inside suspect validated')
+                                suspectActivityCount++
+                                suspectValidatedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                                console.log('inside suspect no answer')
+                                suspectActivityCount++
+                                suspectNoAnswerChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                                console.log('inside SUSPECT-IN CONTACT')
+                                suspectActivityCount++
+                                suspectInContactChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            }
                         }
-                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
+                    } else if (count > 0 && (oldcustInternalID == custInternalID)) {
+                        console.log('inside count > 0 && (oldcustInternalID == custInternalID)')
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else
+                        if (!isNullorEmpty(userNotesInternalID)) {
+                            console.log('inside usernotes internal id')
+                            if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                                console.log('inside suspect new')
+                                suspectActivityCount++
+                                suspectChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                                console.log('inside suspect lost')
+                                suspectActivityCount++
+                                suspectLostChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                                console.log('inside suspect parking lot')
+                                suspectActivityCount++
+                                suspectOffPeakChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                console.log('inside suspect OOT')
+                                suspectActivityCount++
+                                suspectOOTChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                                console.log('inside suspect follow-up')
+                                suspectActivityCount++
+                                suspectFollowUpChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                                console.log('inside suspect qualifeid')
+                                suspectActivityCount++
+                                suspectQualifiedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                                console.log('inside suspect validated')
+                                suspectActivityCount++
+                                suspectValidatedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                                console.log('inside suspect no answer')
+                                suspectActivityCount++
+                                suspectNoAnswerChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                                console.log('inside SUSPECT-IN CONTACT')
+                                suspectActivityCount++
+                                suspectInContactChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            }
                         }
-                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                    }
 
-                } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+                    } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+
+                        if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+
+                            suspectDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectChildDataSet
+                            ]);
+
+                            csvSuspectDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldsalesRepText
+                            ]);
+
+
+
+                        } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
+
+
+                            suspectLostDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue, oldAvgInvoiceValue,
+                                oldsalesRepText,
+                                suspectLostChildDataSet
+                            ]);
+                            csvSuspectLostDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue, oldAvgInvoiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+
+                            suspectOffPeakDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectOffPeakChildDataSet
+                            ]);
+                            csvSuspectOffPeakDataSet.push([,
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+
+
+                            suspectOOTDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectOOTChildDataSet
+                            ]);
+
+                            csvSuspectOOTDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+
+                            suspectFollowUpDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectFollowUpChildDataSet
+                            ]);
+
+                            csvSuspectFollowUpDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-QUALIFIED') {
+
+                            suspectQualifiedDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectQualifiedChildDataSet
+                            ]);
+
+                            csvSuspectQualifiedDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldDaysOpen,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
+
+                            suspectValidatedDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldDateLPOValidated,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectQualifiedChildDataSet
+                            ]);
+
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
+
+                            suspectNoAnswerDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectNoAnswerChildDataSet
+                            ]);
+
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
+
+                            suspectInContactDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectInContactChildDataSet
+                            ]);
+
+                        }
+                        prospectChildDataSet = [];
+                        prospectOpportunityChildDataSet = [];
+                        prospectQuoteSentChildDataSet = [];
+                        suspectChildDataSet = [];
+                        suspectFollowUpChildDataSet = [];
+                        suspectLostChildDataSet = [];
+                        suspectOOTChildDataSet = [];
+                        suspectQualifiedChildDataSet = [];
+                        suspectOffPeakChildDataSet = [];
+                        suspectNoAnswerChildDataSet = [];
+                        suspectInContactChildDataSet = [];
+
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else
+                        if (!isNullorEmpty(userNotesInternalID)) {
+                            if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                                suspectActivityCount++
+                                suspectChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                                suspectActivityCount++
+                                suspectLostChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                                suspectActivityCount++
+                                suspectOffPeakChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                                suspectActivityCount++
+                                suspectOOTChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                                suspectActivityCount++
+                                suspectFollowUpChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                                suspectActivityCount++
+                                suspectQualifiedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                                suspectActivityCount++
+                                suspectValidatedChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                                suspectActivityCount++
+                                suspectNoAnswerChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                                suspectActivityCount++
+                                suspectInContactChildDataSet.push({
+                                    activityInternalID: userNotesInternalID,
+                                    activityStartDate: userNotesStartDate,
+                                    activityTitle: userNotesTitle,
+                                    activityOrganiser: userNotesOrganiser,
+                                    activityMessage: userNotesMessage
+                                })
+                            }
+                        }
+
+
+                    }
+                    console.log('suspectInContactChildDataSet: ' + suspectInContactChildDataSet);
+                    oldcustInternalID = custInternalID;
+                    oldcustEntityID = custEntityID;
+                    oldcustName = custName;
+                    oldzeeID = zeeID;
+                    oldzeeName = zeeName;
+                    oldcustStage = custStage;
+                    oldcustStatus = custStatus;
+                    oldCustStatusId = custStatusId;
+                    olddateLeadEntered = dateLeadEntered;
+                    oldquoteSentDate = quoteSentDate;
+                    olddateLeadLost = dateLeadLost;
+                    olddateLeadinContact = dateLeadinContact;
+                    olddateProspectWon = dateProspectWon;
+                    oldDateLPOValidated = dateLPOValidated;
+                    olddateLeadReassigned = dateLeadReassigned;
+                    oldsalesRepId = salesRepId;
+                    oldsalesRepText = salesRepText;
+                    // oldactivityInternalID = activityInternalID;
+                    // oldactivityStartDate = activityStartDate;
+                    // oldactivityTitle = activityTitle;
+                    // oldactivityOrganiser = activityOrganiser;
+                    // oldactivityMessage = activityMessage;
+                    oldemail48h = email48h;
+                    oldDaysOpen = daysOpen;
+                    oldCancellationReason = cancellationReason;
+                    oldSource = source;
+                    oldProdWeeklyUsage = productWeeklyUsage;
+                    oldAutoSignUp = autoSignUp;
+                    oldPreviousCarrier = previousCarrier;
+                    oldMonthServiceValue = monthlyServiceValue;
+                    oldAvgInvoiceValue = avgInvoiceValue;
+                    count++
+                    return true;
+                });
+                console.log('suspectInContactChildDataSet: ' + suspectInContactChildDataSet);
+                if (count > 0) {
 
                     if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
 
@@ -14111,11 +14833,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldDaysOpen,
                             oldsalesRepText
                         ]);
-
-
-
                     } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
-
 
                         suspectLostDataSet.push(['',
                             oldcustInternalID,
@@ -14137,6 +14855,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldsalesRepText,
                             suspectLostChildDataSet
                         ]);
+
                         csvSuspectLostDataSet.push([
                             oldcustInternalID,
                             oldcustEntityID,
@@ -14178,92 +14897,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldsalesRepText,
                             suspectOffPeakChildDataSet
                         ]);
+
                         csvSuspectOffPeakDataSet.push([,
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
-                            oldsalesRepText
-                        ]);
-                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
-
-
-                        suspectOOTDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldCancellationReason,
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            suspectOOTChildDataSet
-                        ]);
-
-                        csvSuspectOOTDataSet.push([
-                            oldcustInternalID,
-                            oldcustEntityID,
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
-                            oldDaysOpen,
-                            oldCancellationReason,
-                            oldMonthServiceValue,
-                            oldsalesRepText
-                        ]);
-                    } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-
-                        suspectFollowUpDataSet.push(['',
-                            oldcustInternalID,
-                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                            oldcustName,
-                            oldzeeName,
-                            oldcustStatus,
-                            oldSource,
-                            oldProdWeeklyUsage,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateLeadReassigned,
-                            olddateLeadLost,
-                            oldemail48h,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldCancellationReason,
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            suspectFollowUpChildDataSet
-                        ]);
-
-                        csvSuspectFollowUpDataSet.push([
                             oldcustInternalID,
                             oldcustEntityID,
                             oldcustName,
@@ -14359,650 +14994,1994 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             suspectInContactChildDataSet
                         ]);
 
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+
+                        suspectOOTDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectOOTChildDataSet
+                        ]);
+
+                        csvSuspectOOTDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
+
+                        suspectFollowUpDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectFollowUpChildDataSet
+                        ]);
+
+                        csvSuspectFollowUpDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
                     }
-                    prospectChildDataSet = [];
-                    prospectOpportunityChildDataSet = [];
-                    prospectQuoteSentChildDataSet = [];
-                    suspectChildDataSet = [];
-                    suspectFollowUpChildDataSet = [];
-                    suspectLostChildDataSet = [];
-                    suspectOOTChildDataSet = [];
-                    suspectQualifiedChildDataSet = [];
-                    suspectOffPeakChildDataSet = [];
-                    suspectNoAnswerChildDataSet = [];
-                    suspectInContactChildDataSet = [];
-
-                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        }
-                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                            suspectActivityCount++
-                            suspectLostChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                            suspectActivityCount++
-                            suspectOffPeakChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                            suspectActivityCount++
-                            suspectOOTChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                            suspectActivityCount++
-                            suspectFollowUpChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                            suspectActivityCount++
-                            suspectQualifiedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                            suspectActivityCount++
-                            suspectValidatedChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                            suspectActivityCount++
-                            suspectNoAnswerChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                            suspectActivityCount++
-                            suspectInContactChildDataSet.push({
-                                activityInternalID: activityInternalID,
-                                activityStartDate: activityStartDate,
-                                activityTitle: activityTitle,
-                                activityOrganiser: activityOrganiser,
-                                activityMessage: activityMessage
-                            })
-                        }
-                    }
-
-
                 }
+            } else {
+                console.log('websiteSuspectsLeadsReportingSearch without activity')
+                websiteSuspectsLeadsReportingSearch.run().each(function (suspectsResultSet) {
 
-                oldcustInternalID = custInternalID;
-                oldcustEntityID = custEntityID;
-                oldcustName = custName;
-                oldzeeID = zeeID;
-                oldzeeName = zeeName;
-                oldcustStage = custStage;
-                oldcustStatus = custStatus;
-                oldCustStatusId = custStatusId;
-                olddateLeadEntered = dateLeadEntered;
-                oldquoteSentDate = quoteSentDate;
-                olddateLeadLost = dateLeadLost;
-                olddateLeadinContact = dateLeadinContact;
-                olddateProspectWon = dateProspectWon;
-                oldDateLPOValidated = dateLPOValidated;
-                olddateLeadReassigned = dateLeadReassigned;
-                oldsalesRepId = salesRepId;
-                oldsalesRepText = salesRepText;
-                oldactivityInternalID = activityInternalID;
-                oldactivityStartDate = activityStartDate;
-                oldactivityTitle = activityTitle;
-                oldactivityOrganiser = activityOrganiser;
-                oldactivityMessage = activityMessage;
-                oldemail48h = email48h;
-                oldDaysOpen = daysOpen;
-                oldCancellationReason = cancellationReason;
-                oldSource = source;
-                oldProdWeeklyUsage = productWeeklyUsage;
-                oldAutoSignUp = autoSignUp;
-                oldPreviousCarrier = previousCarrier;
-                oldMonthServiceValue = monthlyServiceValue;
-                oldAvgInvoiceValue = avgInvoiceValue;
-                count++
-                return true;
-            });
+                    var custInternalID = suspectsResultSet.getValue({
+                        name: 'internalid',
+                        summary: "GROUP",
+                    });
+                    var custEntityID = suspectsResultSet.getValue({
+                        name: 'entityid',
+                        summary: "GROUP",
+                    });
+                    var custName = suspectsResultSet.getValue({
+                        name: 'companyname',
+                        summary: "GROUP",
+                    });
+                    var zeeID = suspectsResultSet.getValue({
+                        name: 'partner',
+                        summary: "GROUP",
+                    });
+                    var zeeName = suspectsResultSet.getText({
+                        name: 'partner',
+                        summary: "GROUP",
+                    });
 
-            if (count > 0) {
+                    var custStage = (suspectsResultSet.getText({
+                        name: 'stage',
+                        summary: "GROUP",
+                    })).toUpperCase();
 
-                if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+                    var custStatusId = suspectsResultSet.getValue({
+                        name: 'entitystatus',
+                        summary: "GROUP",
+                    })
 
-                    suspectDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldsalesRepText,
-                        suspectChildDataSet
-                    ]);
+                    var custStatus = suspectsResultSet.getText({
+                        name: 'entitystatus',
+                        summary: "GROUP",
+                    }).toUpperCase();
 
-                    csvSuspectDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldsalesRepText
-                    ]);
-                } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
+                    var dateLeadEntered = suspectsResultSet.getValue({
+                        name: "custentity_date_lead_entered",
+                        summary: "GROUP",
+                    });
 
-                    suspectLostDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateProspectWon,
-                        olddateLeadLost,
-                        oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldCancellationReason,
-                        oldMonthServiceValue, oldAvgInvoiceValue,
-                        oldsalesRepText,
-                        suspectLostChildDataSet
-                    ]);
+                    var quoteSentDate = suspectsResultSet.getValue({
+                        name: "custentity_date_lead_quote_sent",
+                        summary: "GROUP",
+                    });
 
-                    csvSuspectLostDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateProspectWon,
-                        olddateLeadLost,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue, oldAvgInvoiceValue,
-                        oldsalesRepText
-                    ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+                    var dateLeadLost = suspectsResultSet.getValue({
+                        name: 'custentity_date_lead_lost',
+                        summary: "GROUP",
+                    });
+                    var dateLeadinContact = suspectsResultSet.getValue({
+                        name: 'custentity_date_prospect_in_contact',
+                        summary: "GROUP",
+                    });
 
-                    suspectOffPeakDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText,
-                        suspectOffPeakChildDataSet
-                    ]);
+                    var dateProspectWon = suspectsResultSet.getValue({
+                        name: 'custentity_date_prospect_opportunity',
+                        summary: "GROUP",
+                    });
 
-                    csvSuspectOffPeakDataSet.push([,
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText
-                    ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-QUALIFIED') {
+                    var dateLeadReassigned = suspectsResultSet.getValue({
+                        name: 'custentity_date_suspect_reassign',
+                        summary: "GROUP",
+                    });
 
-                    suspectQualifiedDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldsalesRepText,
-                        suspectQualifiedChildDataSet
-                    ]);
+                    var salesRepId = suspectsResultSet.getValue({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER',
+                        summary: "GROUP",
+                    });
+                    var salesRepText = suspectsResultSet.getText({
+                        name: 'custrecord_sales_assigned',
+                        join: 'CUSTRECORD_SALES_CUSTOMER',
+                        summary: "GROUP",
+                    });
 
-                    csvSuspectQualifiedDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldDaysOpen,
-                        oldsalesRepText
-                    ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
 
-                    suspectValidatedDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldDateLPOValidated,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldsalesRepText,
-                        suspectQualifiedChildDataSet
-                    ]);
 
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
+                    var email48h = suspectsResultSet.getText({
+                        name: 'custentity_48h_email_sent',
+                        summary: "GROUP",
+                    });
 
-                    suspectNoAnswerDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldsalesRepText,
-                        suspectNoAnswerChildDataSet
-                    ]);
+                    var daysOpen = suspectsResultSet.getValue({
+                        name: "formulanumeric",
+                        summary: "GROUP",
+                    });
 
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
+                    var cancellationReason = suspectsResultSet.getText({
+                        name: "custentity_service_cancellation_reason",
+                        summary: "GROUP",
+                    });
 
-                    suspectInContactDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldsalesRepText,
-                        suspectInContactChildDataSet
-                    ]);
+                    var source = suspectsResultSet.getText({
+                        name: "leadsource",
+                        summary: "GROUP",
+                    });
 
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+                    var productWeeklyUsage = suspectsResultSet.getText({
+                        name: "custentity_form_mpex_usage_per_week",
+                        summary: "GROUP",
+                    });
 
-                    suspectOOTDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText,
-                        suspectOOTChildDataSet
-                    ]);
+                    var autoSignUp = suspectsResultSet.getValue({
+                        name: "custentity_auto_sign_up",
+                        summary: "GROUP",
+                    });
 
-                    csvSuspectOOTDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText
-                    ]);
-                } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
+                    var previousCarrier = suspectsResultSet.getText({
+                        name: "custentity_previous_carrier",
+                        summary: "GROUP",
+                    });
 
-                    suspectFollowUpDataSet.push(['',
-                        oldcustInternalID,
-                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText,
-                        suspectFollowUpChildDataSet
-                    ]);
+                    var monthlyServiceValue = (suspectsResultSet.getValue({
+                        name: "custentity_cust_monthly_service_value",
+                        summary: "GROUP",
+                    }));
 
-                    csvSuspectFollowUpDataSet.push([
-                        oldcustInternalID,
-                        oldcustEntityID,
-                        oldcustName,
-                        oldzeeName,
-                        oldcustStatus,
-                        oldSource,
-                        oldProdWeeklyUsage,
-                        oldPreviousCarrier,
-                        olddateLeadEntered,
-                        oldquoteSentDate,
-                        olddateLeadReassigned,
-                        olddateLeadLost,
-                        oldemail48h,
-                        oldDaysOpen,
-                        oldCancellationReason,
-                        oldMonthServiceValue,
-                        oldsalesRepText
-                    ]);
+                    var avgInvoiceValue = (suspectsResultSet.getValue({
+                        name: "total",
+                        join: "transaction",
+                        summary: "AVG",
+                    }));
+
+                    var dateLPOValidated = suspectsResultSet.getValue({
+                        name: 'custentity_date_lpo_validated',
+                        summary: "GROUP",
+                    });
+
+
+
+                    if (!isNullorEmpty(monthlyServiceValue)) {
+                        monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+                    } else {
+                        monthlyServiceValue = 0.0;
+                    }
+
+                    if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+                        avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+                    } else {
+                        avgInvoiceValue = 0.0;
+                    }
+
+                    var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                    if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                        dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                    }
+
+                    if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                        dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                    }
+                    dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
+
+                    if (!isNullorEmpty(dateLeadLost)) {
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
+
+                        var difference = dateLost.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateLost.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                    } else if (!isNullorEmpty(dateProspectWon)) {
+                        var dateProspectWonSplit = dateProspectWon.split('/');
+
+                        if (parseInt(dateProspectWonSplit[1]) < 10) {
+                            dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
+                        }
+
+                        if (parseInt(dateProspectWonSplit[0]) < 10) {
+                            dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
+                        }
+
+                        dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                            dateProspectWonSplit[0];
+
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
+
+                        var difference = dateProspectWon.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateProspectWon.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                            dateProspectWonSplit[0];
+
+                    } else if (!isNullorEmpty(quoteSentDate)) {
+                        var dateQuoteSentSplit = quoteSentDate.split('/');
+
+                        if (parseInt(dateQuoteSentSplit[1]) < 10) {
+                            dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
+                        }
+
+                        if (parseInt(dateQuoteSentSplit[0]) < 10) {
+                            dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
+                        }
+
+                        quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                            dateQuoteSentSplit[0];
+
+                        var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
+
+                        var difference = quoteSentDate.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = quoteSentDate.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                            dateQuoteSentSplit[0];
+                    } if (!isNullorEmpty(dateLPOValidated)) {
+                        var dateLPOValidatedSplit = dateLPOValidated.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
+
+                        var difference = dateValidated.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = dateValidated.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                    } else {
+                        // var dateLeadLostSplit = dateLeadLost.split('/');
+                        // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                        var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                        var todayDate = new Date();
+
+                        var difference = todayDate.getTime() - dateEntered.getTime();
+                        daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                        var weeks = Math.floor(daysOpen / 7);
+                        daysOpen = daysOpen - (weeks * 2);
+
+                        // Handle special cases
+                        var startDay = dateEntered.getDay();
+                        var endDay = todayDate.getDay();
+
+                        // Remove weekend not previously removed.
+                        if (startDay - endDay > 1)
+                            daysOpen = daysOpen - 2;
+
+                        // Remove start day if span starts on Sunday but ends before Saturday
+                        if (startDay == 0 && endDay != 6) {
+                            daysOpen = daysOpen - 1;
+                        }
+
+                        // Remove end day if span ends on Saturday but starts after Sunday
+                        if (endDay == 6 && startDay != 0) {
+                            daysOpen = daysOpen - 1;
+                        }
+                    }
+
+                    if (count == 0) {
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // }
+
+                    } else if (count > 0 && (oldcustInternalID == custInternalID)) {
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // }
+
+                    } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+
+
+                        if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+
+                            suspectDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectChildDataSet
+                            ]);
+
+                            csvSuspectDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldsalesRepText
+                            ]);
+
+
+
+                        } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
+
+
+                            suspectLostDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue, oldAvgInvoiceValue,
+                                oldsalesRepText,
+                                suspectLostChildDataSet
+                            ]);
+                            csvSuspectLostDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue, oldAvgInvoiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+
+                            suspectOffPeakDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectOffPeakChildDataSet
+                            ]);
+                            csvSuspectOffPeakDataSet.push([,
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+
+
+                            suspectOOTDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectOOTChildDataSet
+                            ]);
+
+                            csvSuspectOOTDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-FOLLOW-UP' || oldcustStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+
+                            suspectFollowUpDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                suspectFollowUpChildDataSet
+                            ]);
+
+                            csvSuspectFollowUpDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateLeadReassigned,
+                                olddateLeadLost,
+                                oldemail48h,
+                                oldDaysOpen,
+                                oldCancellationReason,
+                                oldMonthServiceValue,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-QUALIFIED') {
+
+                            suspectQualifiedDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectQualifiedChildDataSet
+                            ]);
+
+                            csvSuspectQualifiedDataSet.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldDaysOpen,
+                                oldsalesRepText
+                            ]);
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
+
+                            suspectValidatedDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldDateLPOValidated,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectQualifiedChildDataSet
+                            ]);
+
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
+
+                            suspectNoAnswerDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectNoAnswerChildDataSet
+                            ]);
+
+                        } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
+
+                            suspectInContactDataSet.push(['',
+                                oldcustInternalID,
+                                '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                                oldcustName,
+                                oldzeeName,
+                                oldcustStatus,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldsalesRepText,
+                                suspectInContactChildDataSet
+                            ]);
+
+                        }
+                        prospectChildDataSet = [];
+                        prospectOpportunityChildDataSet = [];
+                        prospectQuoteSentChildDataSet = [];
+                        suspectChildDataSet = [];
+                        suspectFollowUpChildDataSet = [];
+                        suspectLostChildDataSet = [];
+                        suspectOOTChildDataSet = [];
+                        suspectQualifiedChildDataSet = [];
+                        suspectOffPeakChildDataSet = [];
+                        suspectNoAnswerChildDataSet = [];
+                        suspectInContactChildDataSet = [];
+
+                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     }
+                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
+                        //         suspectActivityCount++
+                        //         suspectLostChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
+                        //         suspectActivityCount++
+                        //         suspectOffPeakChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
+                        //         suspectActivityCount++
+                        //         suspectOOTChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
+                        //         suspectActivityCount++
+                        //         suspectFollowUpChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
+                        //         suspectActivityCount++
+                        //         suspectQualifiedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
+                        //         suspectActivityCount++
+                        //         suspectValidatedChildDataSet.push({
+                        //             activityInternalID: userNotesInternalID,
+                        //             activityStartDate: userNotesStartDate,
+                        //             activityTitle: userNotesTitle,
+                        //             activityOrganiser: userNotesOrganiser,
+                        //             activityMessage: userNotesMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
+                        //         suspectActivityCount++
+                        //         suspectNoAnswerChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
+                        //         suspectActivityCount++
+                        //         suspectInContactChildDataSet.push({
+                        //             activityInternalID: activityInternalID,
+                        //             activityStartDate: activityStartDate,
+                        //             activityTitle: activityTitle,
+                        //             activityOrganiser: activityOrganiser,
+                        //             activityMessage: activityMessage
+                        //         })
+                        //     }
+                        // }
+
+
+                    }
+
+                    oldcustInternalID = custInternalID;
+                    oldcustEntityID = custEntityID;
+                    oldcustName = custName;
+                    oldzeeID = zeeID;
+                    oldzeeName = zeeName;
+                    oldcustStage = custStage;
+                    oldcustStatus = custStatus;
+                    oldCustStatusId = custStatusId;
+                    olddateLeadEntered = dateLeadEntered;
+                    oldquoteSentDate = quoteSentDate;
+                    olddateLeadLost = dateLeadLost;
+                    olddateLeadinContact = dateLeadinContact;
+                    olddateProspectWon = dateProspectWon;
+                    oldDateLPOValidated = dateLPOValidated;
+                    olddateLeadReassigned = dateLeadReassigned;
+                    oldsalesRepId = salesRepId;
+                    oldsalesRepText = salesRepText;
+                    // oldactivityInternalID = activityInternalID;
+                    // oldactivityStartDate = activityStartDate;
+                    // oldactivityTitle = activityTitle;
+                    // oldactivityOrganiser = activityOrganiser;
+                    // oldactivityMessage = activityMessage;
+                    oldemail48h = email48h;
+                    oldDaysOpen = daysOpen;
+                    oldCancellationReason = cancellationReason;
+                    oldSource = source;
+                    oldProdWeeklyUsage = productWeeklyUsage;
+                    oldAutoSignUp = autoSignUp;
+                    oldPreviousCarrier = previousCarrier;
+                    oldMonthServiceValue = monthlyServiceValue;
+                    oldAvgInvoiceValue = avgInvoiceValue;
+                    count++
+                    return true;
+                });
+
+                if (count > 0) {
+
+                    if (oldcustStage == 'SUSPECT' && oldcustStatus != 'SUSPECT-CUSTOMER - LOST' && oldcustStatus != 'SUSPECT-PARKING LOT' && oldcustStatus != 'SUSPECT-LOST' && oldcustStatus != 'SUSPECT-OUT OF TERRITORY' && oldcustStatus != 'SUSPECT-FOLLOW-UP' && oldcustStatus != 'SUSPECT-QUALIFIED' && oldcustStatus != 'SUSPECT-LPO FOLLOW-UP' && oldcustStatus != 'SUSPECT-VALIDATED' && oldcustStatus != 'SUSPECT-NO ANSWER' && oldcustStatus != 'SUSPECT-IN CONTACT') {
+
+                        suspectDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldsalesRepText,
+                            suspectChildDataSet
+                        ]);
+
+                        csvSuspectDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && (oldcustStatus == 'SUSPECT-CUSTOMER - LOST' || oldcustStatus == 'SUSPECT-LOST')) {
+
+                        suspectLostDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue, oldAvgInvoiceValue,
+                            oldsalesRepText,
+                            suspectLostChildDataSet
+                        ]);
+
+                        csvSuspectLostDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue, oldAvgInvoiceValue,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-PARKING LOT') {
+
+                        suspectOffPeakDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectOffPeakChildDataSet
+                        ]);
+
+                        csvSuspectOffPeakDataSet.push([,
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-QUALIFIED') {
+
+                        suspectQualifiedDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldsalesRepText,
+                            suspectQualifiedChildDataSet
+                        ]);
+
+                        csvSuspectQualifiedDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldDaysOpen,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-VALIDATED') {
+
+                        suspectValidatedDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldDateLPOValidated,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldsalesRepText,
+                            suspectQualifiedChildDataSet
+                        ]);
+
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-NO ANSWER') {
+
+                        suspectNoAnswerDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldsalesRepText,
+                            suspectNoAnswerChildDataSet
+                        ]);
+
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-IN CONTACT') {
+
+                        suspectInContactDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldsalesRepText,
+                            suspectInContactChildDataSet
+                        ]);
+
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-OUT OF TERRITORY') {
+
+                        suspectOOTDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectOOTChildDataSet
+                        ]);
+
+                        csvSuspectOOTDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+                    } else if (oldcustStage == 'SUSPECT' && oldcustStatus == 'SUSPECT-FOLLOW-UP') {
+
+                        suspectFollowUpDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            suspectFollowUpChildDataSet
+                        ]);
+
+                        csvSuspectFollowUpDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateLeadReassigned,
+                            olddateLeadLost,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldCancellationReason,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+                    }
                 }
             }
+
 
             console.log('suspectNoAnswerDatSet: ' + suspectNoAnswerDataSet);
             console.log('suspectInContactDataSet: ' + suspectInContactDataSet);
@@ -15131,7 +17110,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -16290,7 +18269,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 

@@ -60,12 +60,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 userId = context.request.parameters.user_id;
                 var showTotal = context.request.parameters.showTotal;
                 var calcprodusage = context.request.parameters.calcprodusage;
+                var sales_activity_notes = context.request.parameters.salesactivitynotes;
                 var leadStatus = context.request.parameters.status;
 
                 //If role is Franchisee
                 if (role == 1000) {
                     zee = runtime.getCurrentUser().id;
                     calcprodusage = 2;
+                    sales_activity_notes = 2;
                 }
 
                 var date = new Date();
@@ -420,7 +422,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += leadStatusDropdown(leadStatus)
                 // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
-                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date);
+                inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes);
                 inlineHtml += '</div></div></div></br></br>';
                 // if (role != 1000) {
                 inlineHtml +=
@@ -1089,7 +1091,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         * They are initiated with jQuery in the `pageInit()` function.
         * @return  {String} `inlineHtml`
         */
-        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date) {
+        function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes) {
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES ACTIVITY & USER NOTE - FILTER</span></h4></div>';
@@ -1120,6 +1122,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' + modified_last_date + '">';
             }
 
+            inlineHtml += '</div></div></div></div>';
+
+            inlineHtml += '<div class="form-group container salesactivitynotes_div hide">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
+            inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+            inlineHtml += '<option></option>';
+
+            if (sales_activity_notes == '1') {
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
+
+            } else if (sales_activity_notes == '2') {
+                inlineHtml += '<option value="1" >Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
+            } else {
+                inlineHtml += '<option value="1">Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
+            }
+            inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
 
             inlineHtml += '<div class="form-group container lead_entered_label_section hide">';
