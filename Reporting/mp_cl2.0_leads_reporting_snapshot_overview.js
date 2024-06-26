@@ -15156,7 +15156,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 "bInfo": false,
                 "bAutoWidth": false,
                 data: childSet,
-                order: [1, 'desc'],
+                order: [0, 'desc'],
                 columns: [
                     { title: 'System Notes Date' },
                     { title: 'Set By' },
