@@ -36,19 +36,19 @@ function saveRecord() {
 
         nlapiSubmitRecord(old_sales_record);
 
-        if (customer_status != 13) {
+        if (customer_status != 13 ) {
             customer_rec.setFieldValue('entitystatus', 60);
             customer_rec.setFieldValue('custentity_date_suspect_reassign', getDate());
         }
 
-    } else {
-        if (customer_status == 22) {
+    } else {   
+        if (customer_status != 22 && customer_status != 13) {
             customer_rec.setFieldValue('entitystatus', 6);
         }
     }
 
-
     customer_rec.setFieldValue('custentity_industry_category', nlapiGetFieldValue('industry'));
+    customer_rec.setFieldValue('custentity13', null);
     customer_rec.setFieldValue('partner', nlapiGetFieldValue('franchisee'));
 
     nlapiSubmitRecord(customer_rec);

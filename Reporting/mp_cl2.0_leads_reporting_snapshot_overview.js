@@ -6288,56 +6288,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         }],
                     }
                 },
-                // columns: [{
-                //     title: 'Transition From and To'//0
-                // }, {
-                //     title: 'Suspect - New'//1
-                // }, {
-                //     title: 'Suspect - Hot Lead'//2
-                // }, {
-                //     title: 'Suspect - Qualified'//3
-                // }, {
-                //     title: 'Suspect - Validated'//4
-                // }, {
-                //     title: 'Suspect - Reassign'//5
-                // }, {
-                //     title: 'Suspect - Follow Up'//6
-                // }, {
-                //     title: 'Suspect - LPO Follow Up'//7
-                // }, {
-                //     title: 'Suspect - No Answer'//8
-                // }, {
-                //     title: 'Suspect - In Contact'//9
-                // }, {
-                //     title: 'Prospect - No Answer'//10
-                // }, {
-                //     title: 'Prospect - In Contact'//11
-                // }, {
-                //     title: 'Suspect - Parking Lot'//12
-                // }, {
-                //     title: 'Suspect - Lost'//13
-                // }, {
-                //     title: 'Suspect - Out of Territory'//14
-                // }, {
-                //     title: 'Suspect - Customer - Lost'//15
-                // }, {
-                //     title: 'Prospect - Opportunity'//16
-                // }, {
-                //     title: 'Prospect - Qualified'//17
-                // }, {
-                //     title: 'Prospect - Quote Sent'//18
-                // }, {
-                //     title: 'Customer - Free Trial Pending'//19
-                // }, {
-                //     title: 'Customer - Free Trial'//20
-                // }, {
-                //     title: 'Customer - Signed'//21
-                // }],
                 columnDefs: [{
                     targets: [0, 3, 4, 18, 19, 20, 21, 22],
                     className: 'bolded'
                 }],
                 rowCallback: function (row, data, index) {
+
+
+                    if (data[0] == 'Suspect - Customer - Lost' || data[0] == 'Suspect - Lost') {
+                        $('td', row).css('background-color', '#E9B775');
+                    }
+
                     $('td', row).eq(0).css('background-color', '#045d7b');
                     $('td', row).eq(0).css('color', '#ffffff');
 
@@ -6353,9 +6314,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         $('td', row).eq(21).css('background-color', '#54bf9d');
                     }
 
-                    for (var x = 0; x < data.length; x++) {
-
+                    if (data[20] != '0 (0%)') {
+                        $('td', row).eq(20).css('background-color', '#54bf9d');
                     }
+
+                    if (data[19] != '0 (0%)') {
+                        $('td', row).eq(19).css('background-color', '#54bf9d');
+                    }
+
                 },
                 footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -6772,6 +6738,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var suspect_no_answer_total = 0;
             var suspect_in_contact_total = 0;
 
+            var lostCustomer = '';
+            var newSignUp = '';
+
+            var oldLostCustomer = null;
+            var oldNewSignUp = null;
+
             leadsByCustomerWeeklySystemNotesSearch.run().each(function (
                 leadsByCustomerWeeklySystemNotesSearchResultSet) {
 
@@ -6829,6 +6801,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         oldCustomerName,
                         oldCustomerFranchiseeText,
                         oldCustomerStatusText,
+                        oldNewSignUp,
+                        oldLostCustomer,
                         customerChildStatusTransition
                     ]);
 
@@ -6860,7 +6834,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             customerFranchiseeText: oldCustomerFranchiseeText,
                         });
                         suspect_oot_total++;
-                    } else if (oldCustomerStatusText.toUpperCase() == 'SUSPECT-CUSTOMER - LOST') {
+                    } else if (oldCustomerStatusText.toUpperCase() == 'SUSPECT-CUSTOMER - LOSTSUSPECT-CUSTOMER - LOST') {
                         suspect_customer_lost.push({
                             customerId: oldCustomerId,
                             customerName: oldCustomerName,
@@ -6982,8 +6956,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
 
                     customerChildStatusTransition = [];
+                    lostCustomer = '';
+                    newSignUp = '';
                 }
 
+                if (oldCustStatus == 'SUSPECT-CUSTOMER - LOST' && (newCustStatus == 'CUSTOMER-SIGNED' || newCustStatus == 'CUSTOMER-TO BE FINALISED')) {
+                    lostCustomer = 'YES';
+                } else if (newCustStatus == 'CUSTOMER-SIGNED' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                    newSignUp = 'YES';
+                }
                 customerChildStatusTransition.push({
                     systemNotesDate: systemNotesDate,
                     systemNotesSetBy: systemNotesSetBy,
@@ -6997,6 +6978,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldCustomerName = customerName;
                 oldCustomerFranchiseeText = customerFranchiseeText;
                 oldCustomerStatusText = customerStatusText;
+                oldLostCustomer = lostCustomer;
+                oldNewSignUp = newSignUp;
                 count2++;
                 return true;
             });
@@ -7007,6 +6990,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     oldCustomerName,
                     oldCustomerFranchiseeText,
                     oldCustomerStatusText,
+                    oldNewSignUp,
+                    oldLostCustomer,
                     customerChildStatusTransition
                 ]);
 
@@ -7241,21 +7226,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Status'//4
                 }, {
-                    title: 'Child Table' //5
+                    title: 'New Sign-Up?'//5
+                }, {
+                    title: 'Lost Customer Sign-Up?'//6
+                }, {
+                    title: 'Child Table' //7
                 }
                 ],
                 columnDefs: [{
-                    targets: [1, 2, 4],
+                    targets: [1, 2, 4, 5, 6],
                     className: 'bolded'
                 }, {
-                    targets: [5],
+                    targets: [7],
                     visible: false
                 },],
                 rowCallback: function (row, data, index) {
                     if (data[4] == 'SUSPECT-Lost' || data[4] == 'SUSPECT-Customer - Lost') {
                         $('td', row).css('background-color', '#e97577');
                     } else if (data[4] == 'CUSTOMER-To Be Finalised' || data[4] == 'CUSTOMER-Signed') {
-                        $('td', row).css('background-color', '#54bf9d');
+                        if (data[5] == 'YES') {
+                            $('td', row).css('background-color', '#54bf9d');
+                        } else {
+                            $('td', row).css('background-color', '#adcf9f');
+                        }
                     } else if (data[4] == 'Customer-Free Trial') {
                         $('td', row).css('background-color', '#E0FBE2');
                     }
@@ -7302,6 +7295,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 data: currentStatusCount,
                 pageLength: 1000,
                 responsive: true,
+                order: [[2, 'desc']],
                 layout: {
                     topStart: {
                         buttons: [{
@@ -15145,7 +15139,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             // This is the table we'll convert into a DataTable
             var table = $('<table class="display" width="50%"/>');
             var childSet = [];
-            row.data()[5].forEach(function (el) {
+            row.data()[7].forEach(function (el) {
 
                 if (!isNullorEmpty(el)) {
                     childSet.push([el.systemNotesDate, el.systemNotesSetBy, el.oldCustStatus, el.newCustStatus]);
@@ -15366,12 +15360,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }],
                 columnDefs: [],
                 rowCallback: function (row, data) {
-                    $('td', row).css('background-color', '#d0dfcd');
+                    if (data[0] == 'Suspect - Customer - Lost' || data[0] == 'Suspect - Lost') {
+                        $('td', row).css('background-color', '#E9B775');
+                    }
 
                     $('td', row).eq(0).css('background-color', '#045d7b');
                     $('td', row).eq(0).css('color', '#ffffff');
-
-
 
                     if (data[13] != '0 (0%)') {
                         $('td', row).eq(13).css('background-color', '#e97577');
@@ -15383,6 +15377,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (data[21] != '0 (0%)') {
                         $('td', row).eq(21).css('background-color', '#54bf9d');
+                    }
+
+                    if (data[20] != '0 (0%)') {
+                        $('td', row).eq(20).css('background-color', '#54bf9d');
+                    }
+
+                    if (data[19] != '0 (0%)') {
+                        $('td', row).eq(19).css('background-color', '#54bf9d');
                     }
                 }
             });
