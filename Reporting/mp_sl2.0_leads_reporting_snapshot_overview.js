@@ -26,7 +26,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             userId = runtime.getCurrentUser().id;
 
             role = runtime.getCurrentUser().role;
-            // moment().tz.setDefault('Australia/Sydney'); // Set default timezone to AEST
 
             if (context.request.method === 'GET') {
 
@@ -321,14 +320,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
 
-                // getDateRange('lastWeek');
-                // getDateRange('lastMonth');
-                // getDateRange('thisMonth');
-                // getDateRange('lastFinancialYear');
-                // getDateRange('thisFinancialYear');
-                // getDateRange('lastYear');
-                // getDateRange('thisYear');
-
                 inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Status Change Date - Filter" and select the desired date range (Range can be only between the the 1st of the previous month month to the end of the current month). After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when the status of the lead changed.</li></ol><b><u>Overview:</u></b></br>Represents the overview of the number of leads that have transitions from an old status to the new status. The old status is displayed in the 1st column of the table and the current status(new status) is the 1st column of the table.</br></br></div></br>';
 
                 inlineHtml +=
@@ -352,10 +343,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     id: 'customsearch_smc_franchisee'
                 });
                 var resultSetZees = searchZees.run();
-                // if (role != 1000) {
+                
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
                 inlineHtml += leadStatusDropdown(leadStatus)
-                // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
                 inlineHtml += dateFilterSection(modified_start_date, modified_last_date, firstDayOfPreviousMonth, lastDay);
                 inlineHtml += '</div></div></div></br></br>';
