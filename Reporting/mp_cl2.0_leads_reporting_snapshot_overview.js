@@ -6960,9 +6960,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     newSignUp = '';
                 }
 
-                if (oldCustStatus == 'SUSPECT-CUSTOMER - LOST' && (newCustStatus == 'CUSTOMER-SIGNED' || newCustStatus == 'CUSTOMER-TO BE FINALISED')) {
+                if (oldCustStatus == 'SUSPECT-CUSTOMER - LOST') {
                     lostCustomer = 'YES';
-                } else if (newCustStatus == 'CUSTOMER-SIGNED' || newCustStatus == 'CUSTOMER-TO BE FINALISED') {
+                } else if ((newCustStatus == 'CUSTOMER-SIGNED' || newCustStatus == 'CUSTOMER-TO BE FINALISED') && lostCustomer != 'YES') {
                     newSignUp = 'YES';
                 }
                 customerChildStatusTransition.push({
@@ -7228,7 +7228,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'New Sign-Up?'//5
                 }, {
-                    title: 'Lost Customer Sign-Up?'//6
+                    title: 'Existing Lost Customer?'//6
                 }, {
                     title: 'Child Table' //7
                 }
