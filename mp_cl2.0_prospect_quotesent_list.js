@@ -1400,7 +1400,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     title: 'Child' //24
                 }],
                 columnDefs: [{
-                    targets: [3, 4, 5, 6, 7, 8, 12, 13, 14],
+                    targets: [3, 4, 5, 6, 7, 8, 12, 13, 14, 21, 22, 23],
                     className: 'bolded'
                 }, {
                     targets: [2, 15, 16, 17, 18, 19, 20, 24],
@@ -1654,7 +1654,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 }, {
                     title: 'Status' //7
                 }, {
-                    title: 'Source' //8
+                    title: 'Source' //8 
                 }, {
                     title: 'Linked LPO' //9
                 }, {
@@ -1689,11 +1689,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 columnDefs: [{
                     targets: [5],
                     className: 'col-xs-2'
-                },{
-                    targets: [2, 4, 5, 6, 7, 8, 9],
+                }, {
+                    targets: [2, 4, 5, 6, 7, 8, 9, 20, 21, 22],
                     className: 'bolded'
                 }, {
-                    targets: [3, 15, 16, 17, 19, 23],
+                    targets: [3, 13, 18, 15, 16, 17, 19, 23],
                     visible: false
                 }],
                 rowCallback: function (row, data, index) {
@@ -2051,6 +2051,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: "custentity_zee_mp_exp_activated",
                             join: "partner",
                         });
+                        if (isNullorEmpty(zeeMpExpActivated)) {
+                            zeeMpExpActivated = 'Yes'
+                        }
                         var zeeMPStdActivated = suspectsSearchResultSet[i].getText({
                             name: "custentity_zee_mp_std_activated",
                             join: "partner",
@@ -2269,6 +2272,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                             name: "custentity_zee_mp_exp_activated",
                             join: "partner",
                         });
+                        if (isNullorEmpty(zeeMpExpActivated)) {
+                            zeeMpExpActivated = 'Yes'
+                        }
                         var zeeMPStdActivated = suspectsSearchResultSet.getText({
                             name: "custentity_zee_mp_std_activated",
                             join: "partner",
@@ -2568,6 +2574,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         name: "custentity_zee_mp_exp_activated",
                         join: "partner",
                     });
+                    if (isNullorEmpty(zeeMpExpActivated)) {
+                        zeeMpExpActivated = 'Yes'
+                    }
                     var zeeMPStdActivated = custListCommenceTodaySet.getText({
                         name: "custentity_zee_mp_std_activated",
                         join: "partner",
