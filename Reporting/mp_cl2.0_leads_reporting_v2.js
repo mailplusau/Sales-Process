@@ -523,7 +523,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         timeInStatusDays = timeInStatusDays - (weeks * 2);
 
                         console.log('timeInStatusDays: ' + timeInStatusDays);
-                        
+
                         console.log('date1: ' + date1);
                         console.log('date2: ' + date2);
 
@@ -542,7 +542,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         //     console.log('inside (startDay - endDay): ' + ((startDay - endDay) > 1));
                         //     timeInStatusDays = timeInStatusDays - 2;
                         // }
-                            
+
 
                         console.log('timeInStatusDays: ' + timeInStatusDays);
 
@@ -2732,25 +2732,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 if (count_customer_signed == 0) {
@@ -3316,22 +3321,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (count_customer_signed == 0) {
@@ -3892,22 +3902,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (count_customer_signed == 0) {
@@ -4452,26 +4467,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -4908,26 +4928,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 debt_set6.push({
@@ -5238,22 +5263,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (countSuspects == 0) {
@@ -5650,26 +5680,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 if (countSuspectsLost == 0) {
@@ -6038,24 +6072,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
-
                 }
 
                 debt_setSuspectsOffPeakPipeline.push({
@@ -6351,25 +6388,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -6667,25 +6709,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -6981,25 +7028,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -7299,25 +7351,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -7641,25 +7698,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -7959,25 +8021,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -8307,25 +8374,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
 

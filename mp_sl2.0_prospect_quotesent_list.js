@@ -223,18 +223,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var day = date.getDay();
 
                 if (start_date == null && last_date == null) {
-                    var lastDay = new Date(y, m + 1, 0);
-                    lastDay.setHours(0, 0, 0, 0);
+                    if (salesCampaign != 77) {
+                        var lastDay = new Date(y, m + 1, 0);
+                        lastDay.setHours(0, 0, 0, 0);
 
-                    //Calculate the Current Calendar Year
-                    var today_day_in_month = date.getDate();
-                    var today_date = new Date(Date.UTC(y, m, today_day_in_month))
-                    var first_day_in_year = new Date(Date.UTC(y, 0));
-                    var date_from = first_day_in_year.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
+                        //Calculate the Current Calendar Year
+                        var today_day_in_month = date.getDate();
+                        var today_date = new Date(Date.UTC(y, m, today_day_in_month))
+                        var first_day_in_year = new Date(Date.UTC(y, 0));
+                        var date_from = first_day_in_year.toISOString().split('T')[0];
+                        var date_to = today_date.toISOString().split('T')[0];
 
-                    start_date = date_from;
-                    last_date = GetFormattedDate(lastDay);
+                        start_date = date_from;
+                        last_date = GetFormattedDate(lastDay);
+                    }
+
                 }
 
 
@@ -685,6 +688,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
  */
         function userDropdownSection(userId, salesCampaign, custStage, source, custStatus) {
 
+            log.debug({
+                title: 'salesCampaign',
+                details: salesCampaign
+            })
+
             var searchedSalesTeam = search.load({
                 id: 'customsearch_active_employees_3'
             });
@@ -1025,6 +1033,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 values: 2
             }));
 
+            log.debug({
+                title: 'salesCampaignSearch.runPaged().count',
+                details: salesCampaignSearch.runPaged().count
+            })
+
 
             salesCampaignSearch.run().each(function (
                 salesCampaignSearchResultSet) {
@@ -1032,7 +1045,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                if (salesCampaignInternalId >= 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70) {
+                log.debug({
+                    title: 'salesCampaignInternalId',
+                    details: salesCampaignInternalId
+                })
+
+                if (salesCampaignInternalId >= 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70 || salesCampaignInternalId == 77) {
 
 
                     if (isNullorEmpty(salesCampaign)) {
@@ -1045,7 +1063,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                             salesCampaignArray.push(salesCampaign)
                         }
 
-                        if (salesCampaignArray.indexOf(zee_id) != -1) {
+                        if (salesCampaignArray.indexOf(salesCampaignInternalId) != -1) {
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" selected="selected">' + salesCampaignName + '</option>';
                         } else {
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
@@ -1225,8 +1243,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 details: from_date
             })
 
-            var date_from = dateISOToNetsuite(from_date);
-            var date_to = dateISOToNetsuite(to_date);
+            var date_from;
+            var date_to;
+            if (!isNullorEmpty(from_date) && !isNullorEmpty(to_date)) {
+                date_from = dateISOToNetsuite(from_date);
+                date_to = dateISOToNetsuite(to_date);
+            }
+
 
             log.debug({
                 title: 'inside tabsSection function',

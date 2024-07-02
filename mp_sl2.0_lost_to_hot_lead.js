@@ -109,7 +109,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     type: 'customrecord_sales',
                 });
                 newSalesRecord.setValue({ fieldId: 'custrecord_sales_customer', value: custinternalid });
-                newSalesRecord.setValue({ fieldId: 'custrecord_sales_campaign', value: 71 });
+                newSalesRecord.setValue({ fieldId: 'custrecord_sales_campaign', value: 77 });
                 newSalesRecord.setValue({ fieldId: 'custrecord_sales_assigned', value: accountManagerID });
                 newSalesRecord.setValue({ fieldId: 'custrecord_sales_outcome', value: 20 });
                 newSalesRecord.setValue({ fieldId: 'custrecord_sales_callbackdate', value: getDateStoreNS() });

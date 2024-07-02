@@ -153,7 +153,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 title: 'campaignArray',
                                 details: campaignArray
                             });
-                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1) {
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1 || campaignArray.indexOf('77') != -1) {
                                 start_date = null;
                                 date_signed_up_from = null;
                             } else {
@@ -178,7 +178,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 campaignArray.push(campaign)
                             }
 
-                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1) {
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1 || campaignArray.indexOf('77') != -1) {
                                 last_date = null;
                                 date_signed_up_to = null;
                             } else {
