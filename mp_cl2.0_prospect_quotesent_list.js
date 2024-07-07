@@ -288,7 +288,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     return false;
                 }
 
-                if (salesCampaign != 77) {
+                if (isNullorEmpty(salesCampaign) && isNullorEmpty(zee)) {
                     if (isNullorEmpty(date_from)) {
                         showAlert('Please select a Date Lead Entered From');
                         return false;

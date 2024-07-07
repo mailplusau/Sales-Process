@@ -223,7 +223,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var day = date.getDay();
 
                 if (start_date == null && last_date == null) {
-                    if (salesCampaign != 77) {
+                    if (isNullorEmpty(salesCampaign) && isNullorEmpty(zee)) {
                         var lastDay = new Date(y, m + 1, 0);
                         lastDay.setHours(0, 0, 0, 0);
 
