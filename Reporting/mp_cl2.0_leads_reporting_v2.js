@@ -235,6 +235,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             $('.tabs_section').removeClass('hide');
             $('.table_section').removeClass('hide');
             $('.instruction_div').removeClass('hide');
+            // if (userId == 409635) {
+            //     $('.development_message').removeClass('hide');
+            // }
             $('.scorecard_percentage').removeClass('hide');
             $('.status_dropdown_section').removeClass('hide');
 
@@ -779,7 +782,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -791,22 +794,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     leadSalesRepTimelineSearch.filterExpression = defaultSearchFilters;
 
                 }
-
-                // var defaultSearchFilters = leadSalesRepTimelineSearch.filterExpression;
-
-                // console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
-
-                // var statusTimeLineTable = '<style>table#salesRepTimeLineTable {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#salesRepTimeLineTable th{text-align: center;} .bolded{font-weight: bold;}</style>';
-                // statusTimeLineTable += '<div class="table_section "><table id="salesRepTimeLineTable" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
-                // statusTimeLineTable += '<thead style="color: white;background-color: #103D39;">';
-                // statusTimeLineTable += '<tr class="text-center">';
-                // statusTimeLineTable += '<td>LEAD COUNT</td>';
-                // statusTimeLineTable += '<td>OLD STATUS</td>';;
-                // statusTimeLineTable += '<td>NEW STATUS</td>';
-                // statusTimeLineTable += '</tr>';
-                // statusTimeLineTable += '</thead>';
-
-                // statusTimeLineTable += '<tbody id="" >';
 
                 var oldCustomerInternalId;
                 var oldCustomerId;
@@ -1176,7 +1163,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             zee = $(
                 '#zee_dropdown').val();
 
-            loadDatatable(zee, userId);
+            // if (userId == 409635) {
+                loadDatatable(zee, userId);
+            // }
 
             console.log('Loaded Results');
             afterSubmit();
@@ -1375,7 +1364,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -1383,84 +1372,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -1744,7 +1657,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -1752,84 +1665,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerCancellationRequestedDateSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var totalCancellationRequest = 0;
@@ -2104,7 +1941,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
@@ -2113,84 +1950,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
+                
                 customerCancellationRequesteSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -2594,7 +2356,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -2602,84 +2364,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
+                
                 customerListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -3183,7 +2871,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3191,84 +2879,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerTrialListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -3764,7 +3377,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3772,84 +3385,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerTrialPendingListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -4343,92 +3881,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
                 defaultSearchFilters.push(modifiedDateFilters);
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
+              
                 prospectWeeklyReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var count2 = 0;
@@ -4805,7 +4268,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -4813,84 +4276,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 prospectOpportunityWeeklyReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var count2 = 0;
@@ -5143,7 +4530,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5151,84 +4538,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             total_customer_signed = 0;
@@ -5562,7 +4873,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5570,84 +4881,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsLostBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             total_customer_signed = 0;
@@ -5963,7 +5198,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5971,84 +5206,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsOffPeakPipelineBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             suspectsOffPeakPipelineBySalesRepWeeklySearch.run().each(function (
@@ -6278,7 +5437,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6286,84 +5445,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsOOTBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -6599,7 +5682,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6607,84 +5690,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsQualifiedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -6917,7 +5924,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6925,84 +5932,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsValidatedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -7238,7 +6169,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7246,84 +6177,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
 
                 suspectsFollowUpBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -7587,7 +6443,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7595,84 +6451,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
+                
                 suspectsNoAnswerBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -7910,7 +6691,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7918,84 +6699,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsInContactBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var countSuspectFollowUp = 0;
@@ -8232,7 +6938,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8240,84 +6946,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 leadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var count1 = 0;
@@ -9457,7 +8088,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -9465,84 +8096,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": 'lastmodifieddate',
-                    //     "join": null,
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 2,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "context",
-                    //     "join": "systemnotes",
-                    //     "operator": "anyof",
-                    //     "values": ["UIF", "SLT"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 1
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "internalid",
-                    //     "join": "activity",
-                    //     "operator": "anyof",
-                    //     "values": ["@NONE@"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 1,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "date",
-                    //     "join": "activity",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "internalid",
-                    //     "join": "usernotes",
-                    //     "operator": "anyof",
-                    //     "values": ["@NONE@"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "notedate",
-                    //     "join": "usernotes",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 2
-                    // });
-
                     lpoLeadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "notedate",
-                    //     "join": "usernotes",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 2
-                    // });
                 }
 
                 var count1 = 0;
@@ -10648,7 +9203,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -11764,7 +10319,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12982,13 +11537,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }));
             }
 
-            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to) && sales_activity_notes == 1) {
 
                 var defaultSearchFilters = websiteSuspectsLeadsReportingSearch.filterExpression;
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["usernotes.notedate", "within", [modified_date_from, modified_date_to]]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -17182,7 +15737,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -17190,84 +15745,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 websiteProspectLeadsReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var oldcustInternalID = null;
@@ -18341,7 +16820,11 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                // var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+
+                // var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], 'OR', [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "696160", "668711", "1809382", "653718", "1820151", "1819701", "409635"], "AND", ["systemnotes.date", "onorafter", modified_date_from], "AND", ["systemnotes.date", "onorbefore", modified_date_to]]]
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
@@ -18350,84 +16833,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('signed customer defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 websiteCustomersReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var oldcustInternalID = null;
@@ -19300,6 +17707,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 // }
 
                 count++
+
+                console.log('signed customer count: ' + count);
                 return true;
             });
 
