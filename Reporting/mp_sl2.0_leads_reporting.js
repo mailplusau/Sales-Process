@@ -393,8 +393,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 // getDateRange('lastYear');
                 // getDateRange('thisYear');
 
-
-
                 inlineHtml += stepByStepGuideModal();
 
                 // if (pageUserId != 409635) {
@@ -828,14 +826,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     }
                 }
 
-                // if (leadsourceid == source) {
-                //     inlineHtml += '<option value="' + leadsourceid + '" selected>' +
-                //         leadsourcename + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + leadsourceid + '" >' +
-                //         leadsourcename + '</option>';
-                // }
-
                 return true;
             });
 
@@ -890,82 +880,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     }
                 }
 
-                // if (salesrep == employeeId) {
-                //     inlineHtml += '<option value="' + employeeId +
-                //         '" selected="selected">' + employeeText + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //         '</option>';
-                // }
 
                 return true;
             });
 
-            // if (salesrep == '668711') {
-            //     inlineHtml += '<option value="668711" selected>Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '696160') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '690145') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145" selected>David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '668712') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1809334') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334" selected>David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1809382') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1797389') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389" selected>Bobbi G Yengbie</option>';
-            // } else {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // }
 
 
 
@@ -995,20 +913,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     name: "custentity_lead_entered_by",
                     summary: "GROUP"
                 });
-
-                // if (isNullorEmpty(lead_entered_by)) {
-                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //             '</option>';
-                // } else {
-                //     var lead_entered_byArray = lead_entered_by.split(',');
-                //     if (lead_entered_byArray.indexOf(employeeId) != -1) {
-                //         inlineHtml += '<option value="' + employeeId +
-                //             '" selected="selected">' + employeeText + '</option>';
-                //     } else {
-                //         inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //             '</option>';
-                //     }
-                // }
 
                 if (lead_entered_by == employeeId) {
                     inlineHtml += '<option value="' + employeeId +
@@ -1079,13 +983,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     }
                 }
 
-                // if (parentLPOInternalId == parentLPO) {
-                //     inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
-                //         parentLPOName + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
-                //         parentLPOName + '</option>';
-                // }
 
                 return true;
             });
@@ -1381,18 +1278,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
             inlineHtml += '</div>';
             inlineHtml += '</div>';
-            //     '<div class="form-group container zee_available_buttons_section">';
-            // inlineHtml += '<div class="row">';
-
-            // inlineHtml +=
-            //     '<div class="col-xs-3"></div>'
-            // inlineHtml +=
-            //     '<div class="col-xs-6"><input type="button" value="SHOW TOTAL LEAD COUNT" class="form-control btn btn-success" id="showTotal" style="font-weight: bold;"/><p style="font-size: inherit; color: red; text-align: center"><u><b>Please Note:</b></u> This will not calculate the product usage for a customer.</br> Please click <u><b>\"TOTAL USAGE\"</b></u> button to get the usage count for a customer. </p></div>'
-            // inlineHtml +=
-            //     '<div class="col-xs-3"></div>'
-
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
 
             return inlineHtml;
         }

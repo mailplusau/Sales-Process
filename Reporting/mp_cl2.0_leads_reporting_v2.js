@@ -895,28 +895,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         var difference = date1.getTime() - date2.getTime();
                         timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
 
-                        // var weeks = Math.floor(timeInStatusDays / 7);
-                        // timeInStatusDays = timeInStatusDays - (weeks * 2);
-
-                        // // Handle special cases
-                        // var startDay = date1.getDay();
-                        // var endDay = date2.getDay();
-
-                        // // Remove weekend not previously removed.   
-                        // if (startDay - endDay > 1)
-                        //     timeInStatusDays = timeInStatusDays - 2;
-
-                        // // Remove start day if span starts on Sunday but ends before Saturday
-                        // if (startDay == 0 && endDay != 6) {
-                        //     timeInStatusDays = timeInStatusDays - 1;
-                        // }
-
-                        // // Remove end day if span ends on Saturday but starts after Sunday
-                        // if (endDay == 6 && startDay != 0) {
-                        //     timeInStatusDays = timeInStatusDays - 1;
-                        // }
-
-                        // timeInStatusDays = systemNotesDate - oldStatusDate;
                     }
                     console.log('timeInStatusDays: ' + timeInStatusDays)
                     systemNotesDate = systemNotesDate + ' ' + systemNotesTime
@@ -947,66 +925,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             newStatus: newStatus,
                         })
                     }
-
-                    // var systemNotesDateSplitSpace = systemNotesDate.split(' ');
-                    // var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
-                    // var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
-                    // if (parseInt(systemNotesDateSplit[1]) < 10) {
-                    //     systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
-                    // }
-
-                    // if (parseInt(systemNotesDateSplit[0]) < 10) {
-                    //     systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
-                    // }
-
-                    // systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
-                    //     systemNotesDateSplit[0];
-
-                    // var onlyStatusDate = systemNotesDate
-
-                    // if (!isNullorEmpty(oldSalesRep)) {
-
-
-                    //     var date1 = new Date(systemNotesDate);
-                    //     var date2 = new Date(oldStatusDate);
-
-                    //     var difference = date1.getTime() - date2.getTime();
-                    //     timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    //     var weeks = Math.floor(timeInStatusDays / 7);
-                    //     timeInStatusDays = timeInStatusDays - (weeks * 2);
-
-                    //     // Handle special cases
-                    //     var startDay = date1.getDay();
-                    //     var endDay = date2.getDay();
-
-                    //     // Remove weekend not previously removed.
-                    //     if (startDay - endDay > 1)
-                    //         timeInStatusDays = timeInStatusDays - 2;
-
-                    //     // Remove start day if span starts on Sunday but ends before Saturday
-                    //     if (startDay == 0 && endDay != 6) {
-                    //         timeInStatusDays = timeInStatusDays - 1;
-                    //     }
-
-                    //     // Remove end day if span ends on Saturday but starts after Sunday
-                    //     if (endDay == 6 && startDay != 0) {
-                    //         timeInStatusDays = timeInStatusDays - 1;
-                    //     }
-
-                    //     // timeInStatusDays = systemNotesDate - oldStatusDate;
-                    // }
-
-                    // systemNotesDate = systemNotesDate + ' ' + systemNotesTime
-
-                    // statusTimeLineTable += '<tr>';
-                    // statusTimeLineTable += '<td>' + customerCount + '</td>';
-                    // statusTimeLineTable += '<td>' + oldStatus + '</td>';
-                    // statusTimeLineTable += '<td>' + newStatus + '</td>';
-
-
-
-                    // statusTimeLineTable += '</tr>';
 
                     oldCustomerInternalId = customerInternalId;
                     oldCustomerId = customerId;
@@ -10327,84 +10245,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 leadsListBySalesRepStatusSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var count1 = 0;
