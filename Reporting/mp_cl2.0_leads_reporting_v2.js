@@ -3162,7 +3162,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 series_trial_data34, series_trial_data35, series_trial_data36, series_trial_data37, categores_customer_trial_week, series_trial_data38, series_trial_data39, series_trial_data30a, series_trial_data31a, series_trial_data32a, series_trial_data33a);
 
 
-
+            //! Update the Search to exlcude Change of Entity & Relocation source
             if (role == 1000) {
                 // Website New Leads - Trial Pending- Weekly Reporting (Monthly)
                 var customerTrialPendingListBySalesRepWeeklySearch = search.load({
