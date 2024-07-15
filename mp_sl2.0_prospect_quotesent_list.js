@@ -1087,7 +1087,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                         parentLPOInternalIdArray.push(parentLPOInternalId)
                     }
 
-                    if (parentLPOInternalIdArray.indexOf(zee_id) != -1) {
+                    if (parentLPOInternalIdArray.indexOf(parentLPOid) != -1) {
                         inlineHtml += '<option value="' + parentLPOid + '" selected="selected">' + parentLPOName +
                             '</option>';
                     } else {
@@ -1096,13 +1096,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }
                 }
 
-                if (parentLPOInternalId == parentLPOid) {
-                    inlineHtml += '<option value="' + parentLPOid +
-                        '" selected="selected">' + parentLPOName + '</option>';
-                } else {
-                    inlineHtml += '<option value="' + parentLPOid + '">' + parentLPOName +
-                        '</option>';
-                }
+                // if (parentLPOInternalId == parentLPOid) {
+                //     inlineHtml += '<option value="' + parentLPOid +
+                //         '" selected="selected">' + parentLPOName + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + parentLPOid + '">' + parentLPOName +
+                //         '</option>';
+                // }
 
                 return true;
             });

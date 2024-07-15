@@ -1585,6 +1585,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('paramUserId ' + paramUserId);
             console.log('salesCampaign ' + salesCampaign);
             console.log('userId: ' + userId)
+            console.log('parentLPOInternalId: ' + parentLPOInternalId)
 
             if (custStage == '1') {
                 console.log('INSIDE SUSPECTS STAGE')
@@ -1652,7 +1653,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     suspectsSearch.filters.push(search.createFilter({
                         name: 'internalid',
                         join: 'custentity_lpo_parent_account',
-                        operator: search.Operator.IS,
+                        operator: search.Operator.ANYOF,
                         values: parentLPOInternalId
                     }));
                 }
@@ -2206,7 +2207,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     custListCommenceTodayResults.filters.push(search.createFilter({
                         name: 'internalid',
                         join: 'custentity_lpo_parent_account',
-                        operator: search.Operator.IS,
+                        operator: search.Operator.ANYOF,
                         values: parentLPOInternalId
                     }));
                 }
