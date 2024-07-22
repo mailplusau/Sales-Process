@@ -1082,7 +1082,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 '#zee_dropdown').val();
 
             // if (userId == 409635) {
-                loadDatatable(zee, userId);
+            loadDatatable(zee, userId);
             // }
 
             console.log('Loaded Results');
@@ -1868,7 +1868,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                
+
                 customerCancellationRequesteSearch.filterExpression = defaultSearchFilters;
 
             }
@@ -2282,7 +2282,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                
+
                 customerListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
 
@@ -3806,7 +3806,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 defaultSearchFilters.push(modifiedDateFilters);
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
-              
+
                 prospectWeeklyReportingSearch.filterExpression = defaultSearchFilters;
 
 
@@ -6369,7 +6369,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                
+
                 suspectsNoAnswerBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
             }
@@ -16729,6 +16729,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             var oldTrialEndDate = null;
 
+            var existingCustomer = false;
+            var oldExistingCustomer;
+
 
             var count = 0;
 
@@ -16802,6 +16805,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     name: 'custentity_date_suspect_reassign',
                     summary: "GROUP",
                 });
+
+                var maapImplementationDate = custListCommenceTodaySet.getValue({
+                    name: 'custentity_maap_implementdate',
+                    summary: "GROUP",
+                });
+
+                console.log('custName: ' + custName)
+                console.log('maapImplementationDate: ' + maapImplementationDate)
 
                 var salesRepId = custListCommenceTodaySet.getValue({
                     name: 'custrecord_sales_assigned',
@@ -16891,6 +16902,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     name: "custentity_monthly_reduc_service_revenue",
                     summary: "GROUP",
                 }));
+
+                var d1 = dateProspectWon.split("/");
+                var c = maapImplementationDate.split("/");
+
+                // console.log('d1[1]: ' + d1[1])
+                // console.log('c[1]: ' + c[1])
+                // console.log('d1[2]: ' + d1[2])
+                // console.log('c[2]: ' + c[2])
+
+                if (isNullorEmpty(maapImplementationDate) || ((d1[1] == c[1]) && (d1[2] == c[2]))) {
+                    existingCustomer = false
+                } else {
+                    existingCustomer = true;
+                }
+
+                console.log('existingCustomer: ' + existingCustomer)
 
                 var minCommDate = (custListCommenceTodaySet.getValue({
                     name: "custrecord_comm_date",
@@ -17324,7 +17351,52 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         var customerIdLink =
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
 
-                        if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+                        console.log('oldcustName: ' + oldcustName);
+                        console.log('existingCustomer: ' + oldExistingCustomer);
+
+                        if (oldCustStatusId == 32) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if (oldCustStatusId == 71) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialPendingCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
                             existingCustomerDataSet.push(['',
                                 oldcustInternalID,
                                 customerIdLink,
@@ -17370,48 +17442,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 oldInvoiceStatus
                             ]);
 
-                        } else if (oldCustStatusId == 32) {
-                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                            trialCustomerDataSet.push(['',
-                                oldcustInternalID,
-                                customerIdLink,
-                                oldcustName,
-                                oldzeeName,
-                                oldSource,
-                                oldPreviousCarrier,
-                                olddateLeadEntered,
-                                oldquoteSentDate,
-                                olddateProspectWon,
-                                oldTnCAgreedDate,
-                                oldZeeVisitedDate,
-                                oldLPOCommsToCustomer,
-                                oldTrialEndDate,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                                oldMonthServiceValue,
-                                oldsalesRepText,
-                                customerChildDataSet
-                            ]);
-                        } else if (oldCustStatusId == 71) {
-                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                            trialPendingCustomerDataSet.push(['',
-                                oldcustInternalID,
-                                customerIdLink,
-                                oldcustName,
-                                oldzeeName,
-                                oldSource,
-                                oldPreviousCarrier,
-                                olddateLeadEntered,
-                                oldquoteSentDate,
-                                olddateProspectWon,
-                                oldTnCAgreedDate,
-                                oldZeeVisitedDate,
-                                oldLPOCommsToCustomer,
-                                oldTrialEndDate,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                                oldMonthServiceValue,
-                                oldsalesRepText,
-                                customerChildDataSet
-                            ]);
                         } else {
                             customerDataSet.push(['',
                                 oldcustInternalID,
@@ -17486,6 +17516,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     customerChildDataSet = [];
                     customerChildStatusDataSet = [];
 
+                    existingCustomer = false;
+
                     // if (!isNullorEmpty(activityTitle)) {
                     //     if (custStage == 'CUSTOMER') {
                     //         customerActivityCount++
@@ -17542,6 +17574,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldInvoiceType = invoiceType;
                 oldInvoiceAmount = invoiceAmount;
                 oldInvoiceStatus = invoiceStatus;
+                oldExistingCustomer = existingCustomer
                 // oldInvoiceItem = invoiceItem;
 
                 // if (oldInvoiceItem == 'Credit Card Surcharge') {
@@ -17695,7 +17728,50 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     //     existingCustomer = true;
                     // }
 
-                    if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+
+                    if (oldCustStatusId == 32) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if (oldCustStatusId == 71) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialPendingCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
                         existingCustomerDataSet.push(['',
                             oldcustInternalID,
                             customerIdLink,
@@ -17739,51 +17815,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldInvoiceType,
                             oldInvoiceAmount,
                             oldInvoiceStatus
-                        ]);
-                    } else if (oldCustStatusId == 32) {
-
-                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                        trialCustomerDataSet.push(['',
-                            oldcustInternalID,
-                            customerIdLink,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            oldTnCAgreedDate,
-                            oldZeeVisitedDate,
-                            oldLPOCommsToCustomer,
-                            oldTrialEndDate,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            customerChildDataSet
-                        ]);
-
-                    } else if (oldCustStatusId == 71) {
-
-                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                        trialPendingCustomerDataSet.push(['',
-                            oldcustInternalID,
-                            customerIdLink,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            oldTnCAgreedDate,
-                            oldZeeVisitedDate,
-                            oldLPOCommsToCustomer,
-                            oldTrialEndDate,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            customerChildDataSet
                         ]);
 
                     } else {
