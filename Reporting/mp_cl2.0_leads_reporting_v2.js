@@ -17868,9 +17868,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldInvoiceStatus
                         ]);
                     }
-
-
-
                 }
             }
 
