@@ -89,7 +89,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 var emailBody = 'The below Franchisee has not made contact or visited the customer. Please contact the franchisee and restart the Free Trial.</br></br>';
                 emailBody += 'Franchisee: ' + zeeName + '</br>'
                 emailBody += 'Customer Name: ' + entityId + ' ' + companyName + '</br>';
-                emailBody += 'Call Center: <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + customer_id + '&sales_record_id=' + salesRecordInternalId + '">Link to Call Center Page</a>'
+                emailBody += 'Call Center: <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' + customer_id + '&salesRecordId=' + salesRecordInternalId + '">Link to Call Center Page</a>'
 
                 if (!isNullorEmpty(customer_id)) {
                     email.send({

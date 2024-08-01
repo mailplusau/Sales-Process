@@ -2486,7 +2486,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     if (!isNullorEmpty(debt_row.salesRecordId)) {
                         var linkURL =
-                            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row.custInternalID + '&sales_record_id=' + debt_row.salesRecordId +
+                            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' + debt_row.custInternalID + '&salesRecordId=' + debt_row.salesRecordId +
                             '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
@@ -2881,7 +2881,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
                     if (!isNullorEmpty(debt_row4.salesRecordId)) {
                         var linkURL =
-                            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row4.custInternalID + '&sales_record_id=' + debt_row4.salesRecordId +
+                            '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' + debt_row4.custInternalID + '&salesRecordId=' + debt_row4.salesRecordId +
                             '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
                     } else {
                         var linkURL = '<input type="button" id="" data-id="' +
