@@ -582,7 +582,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                     totalCustomerCount = totalCustomerCount + leadCount;
                 }
 
-                if (leadStatusSplit[0].toUpperCase() == 'SUSPECT') {
+                if (leadStatusSplit[0].toUpperCase() == 'SUSPECT' && leadStatusId != 59) {
                     totalSuspectCount = totalSuspectCount + leadCount;
                 }
 

@@ -17160,6 +17160,20 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     zeeVisitedDate = zeeVisitedDateSplit[2] + '-' + zeeVisitedDateSplit[1] + '-' +
                         zeeVisitedDateSplit[0];
                 }
+                if (!isNullorEmpty(quoteSentDate)) {
+                    var quoteSentDateSplit = quoteSentDate.split('/');
+
+                    if (parseInt(quoteSentDateSplit[1]) < 10) {
+                        quoteSentDateSplit[1] = '0' + quoteSentDateSplit[1]
+                    }
+
+                    if (parseInt(quoteSentDateSplit[0]) < 10) {
+                        quoteSentDateSplit[0] = '0' + quoteSentDateSplit[0]
+                    }
+
+                    quoteSentDate = quoteSentDateSplit[2] + '-' + quoteSentDateSplit[1] + '-' +
+                        quoteSentDateSplit[0];
+                }
 
                 if (count == 0) {
 
