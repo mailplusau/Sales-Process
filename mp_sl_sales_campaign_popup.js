@@ -130,11 +130,11 @@ function main(request, response) {
 
         if (!isNullorEmpty(sales_record_id)) {
             var params = {
-                recid: parseInt(custId),
-                callcenter: 'T',
-                sales_record_id: sales_record_id
+                customerId: parseInt(custId),
+                callCenter: 'T',
+                salesRecordId: sales_record_id
             }
-            nlapiSetRedirectURL('SUITELET', 'customscript_sl_finalise_page_tn_v2_vue', 'customdeploy_sl_finalise_page_tn_v2_vue', null, params);
+            nlapiSetRedirectURL('SUITELET', 'customscript_sl_update_customer_tn_vue3', 'customdeploy_sl_update_customer_tn_vue3', null, params);
         } else {
             response.sendRedirect('RECORD', 'customer', custId, false);
         }

@@ -109,16 +109,16 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
 
                 contactSearch.run().each(function (contactSearchResultSet) {
 
-                    var contactFirstName = searchResultSet.getValue({
+                    var contactFirstName = contactSearchResultSet.getValue({
                         name: 'firstname'
                     });
-                    var contactLastName = searchResultSet.getValue({
+                    var contactLastName = contactSearchResultSet.getValue({
                         name: 'lastname'
                     });
-                    var contactEmail = searchResultSet.getValue({
+                    var contactEmail = contactSearchResultSet.getValue({
                         name: 'email'
                     });
-                    var contactPhone = searchResultSet.getValue({
+                    var contactPhone = contactSearchResultSet.getValue({
                         name: 'phone'
                     });
 
