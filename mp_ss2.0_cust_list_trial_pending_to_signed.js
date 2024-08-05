@@ -60,6 +60,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                     id: parseInt(custInternalID)
                 });
 
+                //Set status to Signed.
                 customerRecord.setValue({
                     fieldId: 'entitystatus',
                     value: 13
@@ -67,6 +68,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
 
                 customerRecord.save();
 
+                //Create new customer in RTA
                 var customerJSON = '{';
                 customerJSON += '"ns_id" : "' + custInternalID + '"';
                 customerJSON += '}';
@@ -120,6 +122,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                         name: 'phone'
                     });
 
+                    //Create new staff in RTA
                     var userJSON = '{';
                     userJSON += '"customer_ns_id" : "' + custInternalID + '",';
                     userJSON += '"first_name" : "' + contactFirstName + '",';
