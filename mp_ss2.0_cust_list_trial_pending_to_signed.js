@@ -72,15 +72,17 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                 customerJSON += '}';
 
                 var apiHeaders = {};
-                headers['Content-Type'] = 'application/json';
-                headers['Accept'] = 'application/json';
-                headers['x-api-key'] = 'XAZkNK8dVs463EtP7WXWhcUQ0z8Xce47XklzpcBj';
+                apiHeaders['Content-Type'] = 'application/json';
+                apiHeaders['Accept'] = 'application/json';
+                apiHeaders['x-api-key'] = 'XAZkNK8dVs463EtP7WXWhcUQ0z8Xce47XklzpcBj';
 
-                https.post({
+                apiCustomerResponse = https.post({
                     url: 'https://mpns.protechly.com/new_customer',
                     body: customerJSON,
                     headers: apiHeaders
                 });
+
+                log.debug('apiCustomerResponse', apiCustomerResponse);
 
                 // Search: SALESP - Portal Contacts
                 var contactSearch = search.load({
@@ -92,7 +94,7 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                     name: 'internalid',
                     join: 'CUSTOMER',
                     operator: search.Operator.ANYOF,
-                    values: customerId
+                    values: custInternalID
                 }));
 
                 contactSearch.filters.push(search.createFilter({
@@ -126,11 +128,13 @@ define(['N/runtime', 'N/search', 'N/record', 'N/log', 'N/task', 'N/currentRecord
                     userJSON += '"phone" : "' + contactPhone + '"';
                     userJSON += '}';
 
-                    https.post({
+                    var apiContactResponse = https.post({
                         url: 'https://mpns.protechly.com/new_staff',
                         body: userJSON,
                         headers: apiHeaders
                     });
+
+                    log.debug('apiContactResponse', apiContactResponse);
 
                     contactCount++;
                     return true;
