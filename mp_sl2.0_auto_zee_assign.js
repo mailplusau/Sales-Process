@@ -4,7 +4,7 @@
  * 
  * Author:               Ankith Ravindran
  * Created on:           Thu Oct 12 2023
- * Modified on:          2023-11-13T03:24:39.976Z
+ * Modified on:          2024-08-07T22:17:58.880Z
  * SuiteScript Version:  2.0 
  * Description:          Auto assigning the franchisee to a lead depending on the suburb/state/postcode and then creating a sales record assigning to a campaign depending on the source of the lead. 
  *
@@ -707,10 +707,18 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     fieldId: 'custrecord_sales_customer',
                                     value: customerInternalId,
                                 })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_campaign',
-                                    value: 62, //Field Sales
-                                })
+                                if (isNullorEmpty(campaignid)) {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_campaign',
+                                        value: 62, //Field Sales
+                                    })
+                                } else {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_campaign',
+                                        value: campaignid, //Assign to the campaign selected from the Prospect Capture Page
+                                    })
+                                }
+
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
                                     value: salesRep,
@@ -743,9 +751,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: salesRepEmail,
+                                    recipients: salesRep,
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', salesRepEmail],
+                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
@@ -763,10 +771,18 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     fieldId: 'custrecord_sales_customer',
                                     value: customerInternalId,
                                 })
-                                salesRecord.setValue({
-                                    fieldId: 'custrecord_sales_campaign',
-                                    value: 67, //Digital Lead Campaign
-                                })
+                                if (isNullorEmpty(campaignid)) {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_campaign',
+                                        value: 67, //Digital Lead Campaign
+                                    })
+                                } else {
+                                    salesRecord.setValue({
+                                        fieldId: 'custrecord_sales_campaign',
+                                        value: campaignid, //Assign to campaign selected from the Prospect Capture Paage
+                                    })
+                                }
+
                                 salesRecord.setValue({
                                     fieldId: 'custrecord_sales_assigned',
                                     value: salesRep,
@@ -799,9 +815,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: salesRepEmail,
+                                    recipients: salesRep,
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
+                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             }
