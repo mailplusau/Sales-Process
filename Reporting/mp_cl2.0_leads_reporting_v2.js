@@ -13340,7 +13340,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                
+
                 leadsListByDataCaptureStatusSearch.filterExpression = defaultSearchFilters;
 
 
@@ -13405,7 +13405,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 });
 
                 if (isNullorEmpty(dataCaptureAssigned)) {
-                    dataCaptureAssigned = 'Franchisee'
+                    dataCaptureAssigned = 'Franchisees'
                 }
 
                 if (count1 == 0) {
@@ -13872,7 +13872,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             customerFreeTrialCol,
                             signedCol,
                         preview_row.total_leads,
-                        '<input type="button" value="' + preview_row.total_leads + '" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' + preview_row.lpoparentnameid + '" data-name="' + preview_row.lpoparentname + '" style="background-color: #095C7B;border-radius: 30px">',
                         preview_row.lpoparentnameid,
 
                         ]);
@@ -13970,19 +13969,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Total Lead Count'//22
                 }, {
-                    title: 'Show Leads'//23
-                }, {
                     title: 'Sales Rep ID'//24
                 }],
                 columnDefs: [{
                     targets: [0, 5, 18, 20, 21, 22],
                     className: 'bolded'
                 }, {
-                    targets: [24],
+                    targets: [23],
                     visible: false
                 },
                 {
-                    targets: [23, 24],
+                    targets: [23],
                     className: 'notexport'
                 }
                 ],
@@ -14343,7 +14340,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             var datacapture_categores1 = []; // creating empty array for highcharts
             // categories
-            Object.keys(salesrep_total_leads).map(function (item, key) {
+            Object.keys(datacapture_total_leads).map(function (item, key) {
                 datacapture_series_data20.push(parseInt(datacapture_customer_signed[item]));
                 datacapture_series_data21.push(parseInt(datacapture_suspect_hot_lead[item]));
                 datacapture_series_data22.push(parseInt(datacapture_suspect_reassign[item]));
@@ -14370,6 +14367,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 datacapture_categores1.push(item)
             });
 
+            console.log('datacapture_categores1: ' + JSON.stringify(datacapture_categores1));
+
 
             plotDataCaptureChartPreview(datacapture_series_data20,
                 datacapture_series_data21,
@@ -14381,6 +14380,526 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 datacapture_series_data27,
                 datacapture_series_data28,
                 datacapture_series_data29, datacapture_series_data31, datacapture_series_data32, datacapture_series_data33, datacapture_series_data34, datacapture_categores1, datacapture_series_data20a, datacapture_series_data21a, datacapture_series_data22a, datacapture_series_data23a, datacapture_series_data24a, datacapture_series_data25a, datacapture_series_data26a, datacapture_series_data27a, datacapture_series_data28a)
+
+            //? Data Capture Grouped by Source & Campaign
+            //Website New Leads by Source & Campaign - Data Capture Reporting
+            var leadsListByDataCaptureSourceCampaignSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_weekly_5__2'
+            });
+
+
+            if (!isNullorEmpty(leadStatus)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'entitystatus',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: leadStatus
+                }));
+            }
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                leadsListByDataCaptureSourceCampaignSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = leadsListByDataCaptureSourceCampaignSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+
+                leadsListByDataCaptureSourceCampaignSearch.filterExpression = defaultSearchFilters;
+
+
+            }
+
+            var count1 = 0;
+            var total_leads = 0;
+            var oldDataCaptureAssigned = null;
+            var oldDataCaptureAssignedId = null;
+
+            var oldDataCaptureSource = null;
+            var oldDataCaptureSourceId = null;
+
+            var oldDataCaptureCampaign = null;
+            var oldDataCaptureCampaignId = null;
+
+
+            var dataCaptureBySource = {};
+            var datatCaptureBySourceId = {};
+
+            var dataCaptureTeam = [];
+
+
+            leadsListByDataCaptureSourceCampaignSearch.run().each(function (
+                leadsListByDataCaptureSourceCampaignSearchResultSet) {
+
+
+                var prospectCount = parseInt(leadsListByDataCaptureSourceCampaignSearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'COUNT'
+                }));
+
+                var custLeadSource = parseInt(leadsListByDataCaptureSourceCampaignSearchResultSet.getValue({
+                    name: "leadsource",
+                    summary: "GROUP",
+                }));
+                var custLeadSourceText = leadsListByDataCaptureSourceCampaignSearchResultSet.getText({
+                    name: "leadsource",
+                    summary: "GROUP",
+                });
+
+                var custCampaign = parseInt(leadsListByDataCaptureSourceCampaignSearchResultSet.getValue({
+                    name: "custrecord_sales_campaign",
+                    join: "CUSTRECORD_SALES_CUSTOMER",
+                    summary: "GROUP",
+                }));
+                var custCampaignText = leadsListByDataCaptureSourceCampaignSearchResultSet.getText({
+                    name: "custrecord_sales_campaign",
+                    join: "CUSTRECORD_SALES_CUSTOMER",
+                    summary: "GROUP",
+                });
+
+
+                var dataCaptureAssigned = leadsListByDataCaptureSourceCampaignSearchResultSet.getText({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+
+                var dataCaptureAssignedId = leadsListByDataCaptureSourceCampaignSearchResultSet.getValue({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+
+                if (isNullorEmpty(dataCaptureAssigned)) {
+                    dataCaptureAssigned = 'Franchisees'
+                }
+
+                if (count1 == 0) {
+                    total_leads += prospectCount
+
+                    dataCaptureTeam.push({
+                        'id': dataCaptureAssignedId,
+                        'name': dataCaptureAssigned,
+                        'count': total_leads,
+                        "details": []
+                    });
+
+                    dataCaptureTeam[dataCaptureTeam.length - 1].details.push({
+                        'source': [{
+                            'id': custLeadSource,
+                            'name': custLeadSourceText,
+                            'count': prospectCount,
+                            'campaign': [{
+                                'id': custCampaign,
+                                'name': custCampaignText,
+                                'count': prospectCount
+                            }]
+                        }]
+                    })
+
+
+                } else if (oldDataCaptureAssigned != null &&
+                    oldDataCaptureAssigned == dataCaptureAssigned) {
+
+                    dataCaptureTeam[dataCaptureTeam.length - 1].count = total_leads;
+                    var sourceLength = dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.length;
+
+                    if (custLeadSource == oldDataCaptureSourceId) {
+                        total_leads += prospectCount;
+                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].count = total_leads;
+                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].campaign.push({
+                            'id': custCampaign,
+                            'name': custCampaignText,
+                            'count': prospectCount
+                        })
+                    } else if (custLeadSource != oldDataCaptureSourceId) {
+                        console.log('sourceLength: ' + sourceLength);
+                        console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
+                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.push({
+                            'id': custLeadSource,
+                            'name': custLeadSourceText,
+                            'count': prospectCount,
+                            'campaign': [{
+                                'id': custCampaign,
+                                'name': custCampaignText,
+                                'count': prospectCount
+                            }]
+                        })
+                    }
+
+                } else if (oldDataCaptureAssigned != null &&
+                    oldDataCaptureAssigned != dataCaptureAssigned) {
+
+
+                    total_leads = 0;
+
+                    total_leads += prospectCount;
+
+                    dataCaptureTeam.push({
+                        'id': dataCaptureAssignedId,
+                        'name': dataCaptureAssigned,
+                        'count': prospectCount,
+                        "details": []
+                    });
+
+                    dataCaptureTeam[dataCaptureTeam.length - 1].details.push({
+                        'source': [{
+                            'id': custLeadSource,
+                            'name': custLeadSourceText,
+                            'count': prospectCount,
+                            'campaign': [{
+                                'id': custCampaign,
+                                'name': custCampaignText,
+                                'count': prospectCount
+                            }]
+                        }]
+                    })
+
+                }
+
+                count1++;
+                oldDataCaptureAssigned = dataCaptureAssigned;
+                oldDataCaptureAssignedId = dataCaptureAssignedId;
+                oldDataCaptureSourceId = custLeadSource;
+                oldDataCaptureSource = custLeadSourceText;
+                oldDataCaptureCampaignId = custCampaign;
+                oldDataCaptureCampaign = custCampaignText;
+                return true;
+            });
+
+
+            console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
+
+
+            var series_data_source = [];
+            var series_data_campaign = [];
+            var series_lpo_data_source = [];
+            var series_lpo_data_campaign = [];
+            var dataCaptureTeamMemberCategories = [];
+            var dataCaptureTeamMemberLPOCategories = [];
+            var sourceLeadCount = [];
+            var sourceName = [];
+            var dataSource = new Array(dataCaptureTeam.length).fill(0);
+            var dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+            var dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+            var resetDataSource = new Array(dataCaptureTeam.length).fill(0);
+            for (var x = 0; x < dataCaptureTeam.length; x++) {
+                dataCaptureTeamMemberCategories[x] = dataCaptureTeam[x].name;
+                sourceLeadCount[x] = [];
+                sourceName[x] = [];
+                console.log('name: ' + dataCaptureTeam[x].name);
+                console.log('details: ' + JSON.stringify(dataCaptureTeam[x].details[0].source));
+                for (y = 0; y < dataCaptureTeam[x].details[0].source.length; y++) {
+                    sourceLeadCount[x][y] = dataCaptureTeam[x].details[0].source[y].count;
+                    sourceName[x][y] = dataCaptureTeam[x].details[0].source[y].name;
+
+                    console.log('Source Name: ' + dataCaptureTeam[x].details[0].source[y].name);
+                    console.log('Source Count: ' + dataCaptureTeam[x].details[0].source[y].count);
+
+                    console.log('before series_data_source: ' + JSON.stringify(series_data_source));
+                    var source_exists = false;
+                    for (var j = 0; j < series_data_source.length; j++) {
+                        if (series_data_source[j].name == sourceName[x][y]) {
+                            source_exists = true;
+                            series_data_source[j].data[x] = dataCaptureTeam[x].details[0].source[y].count
+                        }
+                    }
+                    if (source_exists == false) {
+                        dataSource = new Array(dataCaptureTeam.length).fill(0);
+                        dataSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+                        series_data_source.push({
+                            name: sourceName[x][y],
+                            data: dataSource
+                        });
+                    }
+
+
+                    console.log('after series_data_source: ' + JSON.stringify(series_data_source));
+
+                    for (z = 0; z < dataCaptureTeam[x].details[0].source[y].campaign.length; z++) {
+
+                        console.log('Campaign Name: ' + dataCaptureTeam[x].details[0].source[y].campaign[z].name);
+                        console.log('Campaign Count: ' + dataCaptureTeam[x].details[0].source[y].campaign[z].count);
+
+                        console.log('before series_data_campaign: ' + JSON.stringify(series_data_campaign));
+
+                        var campaign_exists = false;
+                        var lpo_campaign_exists = false;
+                        var lpo_source_exists = false;
+                        for (var j = 0; j < series_data_campaign.length; j++) {
+
+                            if (series_data_campaign[j].name == dataCaptureTeam[x].details[0].source[y].campaign[z].name) {
+                                campaign_exists = true;
+                                series_data_campaign[j].data[x] += dataCaptureTeam[x].details[0].source[y].campaign[z].count
+                            }
+                        }
+                        if (campaign_exists == false) {
+                            dataSource = new Array(dataCaptureTeam.length).fill(0);
+                            dataSource[x] = dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+                            series_data_campaign.push({
+                                name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
+                                data: dataSource
+                            });
+                        }
+
+                        if (dataCaptureTeam[x].details[0].source[y].campaign[z].name == 'LPO - BAU' || dataCaptureTeam[x].details[0].source[y].campaign[z].name == 'LPO') {
+                            dataCaptureTeamMemberLPOCategories[x] = dataCaptureTeam[x].name;
+
+                            for (var j = 0; j < series_lpo_data_source.length; j++) {
+
+                                if (series_lpo_data_source[j].name == dataCaptureTeam[x].details[0].source[y].name) {
+                                    lpo_source_exists = true;
+                                    series_lpo_data_source[j].data[x] += dataCaptureTeam[x].details[0].source[y].count
+                                }
+                            }
+
+                            if (lpo_source_exists == false) {
+                                dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+                                dataLPOSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+                                series_lpo_data_source.push({
+                                    name: dataCaptureTeam[x].details[0].source[y].name,
+                                    data: dataLPOSource
+                                });
+                            }
+
+                            for (var j = 0; j < series_lpo_data_campaign.length; j++) {
+
+                                if (series_lpo_data_campaign[j].name == dataCaptureTeam[x].details[0].source[y].campaign[z].name) {
+                                    lpo_campaign_exists = true;
+                                    series_lpo_data_campaign[j].data[x] += dataCaptureTeam[x].details[0].source[y].campaign[z].count
+                                }
+                            }
+
+                            if (lpo_campaign_exists == false) {
+                                dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+                                dataLPOCampaign[x] = dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+                                series_lpo_data_campaign.push({
+                                    name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
+                                    data: dataLPOCampaign
+                                });
+                            }
+                        }
+
+
+                    }
+                    console.log('after series_data_campaign: ' + JSON.stringify(series_data_campaign));
+                    console.log('after series_lpo_data_source: ' + JSON.stringify(series_lpo_data_source));
+                    console.log('after series_lpo_data_campaign: ' + JSON.stringify(series_lpo_data_campaign));
+
+                }
+
+            }
+
+            console.log('dataCaptureTeamMemberCategories')
+            console.log(dataCaptureTeamMemberCategories)
+
+            console.log('series_data_source')
+            console.log(series_data_source)
+
+            console.log('series_data_campaign')
+            console.log(series_data_campaign)
+
+            console.log('dataCaptureTeamMemberLPOCategories')
+            console.log(dataCaptureTeamMemberLPOCategories);
+
+            console.log('series_lpo_data_campaign')
+            console.log(series_lpo_data_campaign)
+
+            console.log('series_lpo_data_source')
+            console.log(series_lpo_data_source)
+
+
+            var removedArrayPositions = []
+            var existingArrayPositions = []
+            var series_new_lpo_data_campaign = []
+            var series_new_lpo_data_source = []
+
+            for (var i = 0; i < dataCaptureTeamMemberLPOCategories.length; i++) {
+                if (dataCaptureTeamMemberLPOCategories[i] != null) {
+                    existingArrayPositions.push(i);
+                } else {
+                    removedArrayPositions.push(i);
+                }
+
+            }
+
+            console.log('dataCaptureTeamMemberLPOCategories')
+            console.log(dataCaptureTeamMemberLPOCategories);
+
+            console.log('removedArrayPositions')
+            console.log(removedArrayPositions);
+
+            var dataCaptureTeamMemberLPOCategoriesUpdated = [];
+
+            for (var t = 0; t < dataCaptureTeamMemberLPOCategories.length; t++) {
+                if (removedArrayPositions.includes(t)) {
+
+                } else {
+                    dataCaptureTeamMemberLPOCategoriesUpdated.push(dataCaptureTeamMemberLPOCategories[t])
+                }
+            }
+
+            console.log('dataCaptureTeamMemberLPOCategoriesUpdated')
+            console.log(dataCaptureTeamMemberLPOCategoriesUpdated);
+
+            var new_lpo_campaign_count = []
+
+            for (var i = 0; i < series_lpo_data_campaign.length; i++) {
+                for (var r = 0; r < series_lpo_data_campaign[i].data.length; r++) {
+                    if (removedArrayPositions.indexOf(r) != -1) {
+
+                    } else {
+                        new_lpo_campaign_count[new_lpo_campaign_count.length] = series_lpo_data_campaign[i].data[r];
+                    }
+                }
+                series_new_lpo_data_campaign.push({
+                    name: series_lpo_data_campaign[i].name,
+                    data: new_lpo_campaign_count
+                })
+                // series_new_lpo_data_campaign[i].data = new_lpo_campaign_count;
+            }
+
+            console.log('series_new_lpo_data_campaign')
+            console.log(series_new_lpo_data_campaign)
+
+            var new_lpo_source_count = []
+
+            for (var a = 0; a < series_lpo_data_source.length; a++) {
+                new_lpo_source_count = []
+                for (var b = 0; b < series_lpo_data_source[a].data.length; b++) {
+                    console.log('b: ' + b)
+                    console.log('removedArrayPositions.indexOf(b): ' + removedArrayPositions.indexOf(b))
+                    if (removedArrayPositions.indexOf(b) != -1) {
+
+                    } else {
+                        new_lpo_source_count[new_lpo_source_count.length] = series_lpo_data_source[a].data[b];
+                    }
+                }
+                series_new_lpo_data_source.push({
+                    name: series_lpo_data_source[a].name,
+                    data: new_lpo_source_count
+                })
+                // series_new_lpo_data_source[i].data = new_lpo_source_count;
+            }
+
+            console.log('series_new_lpo_data_source')
+            console.log(series_new_lpo_data_source)
+
+            plotChart(series_data_source, null, dataCaptureTeamMemberCategories)
+            plotChartDataCaptureOverview(series_data_source, null, dataCaptureTeamMemberCategories)
+
+            plotChartCampaign(series_data_campaign, null, dataCaptureTeamMemberCategories)
+            plotChartDataCaptureOverviewCampaign(series_data_campaign, null, dataCaptureTeamMemberCategories)
+
+            plotChartLPOCampaign(series_new_lpo_data_campaign, null, dataCaptureTeamMemberLPOCategoriesUpdated)
+            plotChartLPOSource(series_new_lpo_data_source, null, dataCaptureTeamMemberLPOCategoriesUpdated)
 
 
             if (sales_activity_notes == 1) {
@@ -24377,7 +24896,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Website Leads - By Status - Week Entered',
+                    text: 'Leads - By Status - Week Entered',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -25327,6 +25846,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 chart: {
                     type: 'column',
                     backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
                 }, title: {
                     text: 'Leads - By Data Capture Team & Status',
                     style: {
@@ -25546,6 +26066,460 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         fontWeight: 'bold',
                     }
                 }]
+            });
+        }
+
+        function plotChart(series_data, series_data2, categores) {
+            Highcharts.chart('container_source_preview', {
+                chart: {
+                    height: (8 / 16 * 100) + '%',
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Lead Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartDataCaptureOverview(series_data, series_data2, categores) {
+            Highcharts.chart('container_source_datacapture_preview', {
+                chart: {
+                    height: (8 / 16 * 100) + '%',
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Lead Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartCampaign(series_data, series_data2, categores) {
+            Highcharts.chart('container_campaign_preview', {
+                chart: {
+                    height: (8 / 16 * 100) + '%',
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Campaign',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartDataCaptureOverviewCampaign(series_data, series_data2, categores) {
+            Highcharts.chart('container_campaign_datacapture_preview', {
+                chart: {
+                    height: (8 / 16 * 100) + '%',
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Campaign',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartLPOCampaign(series_data, series_data2, categores) {
+            Highcharts.chart('container_lpo_campaign_datacapture_preview', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Campaign',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartLPOSource(series_data, series_data2, categores) {
+            Highcharts.chart('container_lpo_source_datacapture_preview', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Lead Entered - Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total Leads'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                        }
+                    },
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
             });
         }
 
