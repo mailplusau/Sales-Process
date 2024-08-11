@@ -1498,7 +1498,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_salesrep_overview"></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
+            inlineHtml += '<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>'
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('salesrep_overview');
             inlineHtml += '</div>';
