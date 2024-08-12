@@ -1613,7 +1613,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         operator: search.Operator.IS,
                         values: paramUserId
                     }));
-                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718 && userId != 668711) {
                     suspectsSearch.filters.push(search.createFilter({
                         name: 'custrecord_sales_assigned',
                         join: 'custrecord_sales_customer',
@@ -2167,7 +2167,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                         operator: search.Operator.IS,
                         values: paramUserId
                     }));
-                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
+                } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718 && userId != 668711) {
                     custListCommenceTodayResults.filters.push(search.createFilter({
                         name: 'custrecord_sales_assigned',
                         join: 'custrecord_sales_customer',
