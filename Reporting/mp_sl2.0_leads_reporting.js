@@ -19,6 +19,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         var userId = 0;
         var zee = 0;
 
+        var employee_list = [];
+        var employee_list_color = [];
+
+        var campaign_list = [];
+        var campaign_list_color = [];
+
+        var source_list = [];
+        var source_list_color = [];
+
         function onRequest(context) {
             var baseURL = 'https://system.na2.netsuite.com';
             if (runtime.EnvType == "SANDBOX") {
@@ -261,6 +270,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 });
 
 
+                //Assign Color Codes to employees
+                //Search Name: Active Employees - Sales Team
+                var salesTeamSearch = search.load({
+                    type: 'employee',
+                    id: 'customsearch_active_employees_3'
+                });
+
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+
+                salesTeamSearch.run().each(function (
+                    salesTeamSearchResultSet) {
+
+                    var employee_id = salesTeamSearchResultSet.getValue('internalid');
+                    var first_name = salesTeamSearchResultSet.getValue('firstname');
+                    var last_name = salesTeamSearchResultSet.getValue('lastname');
+                    var full_name = first_name + ' ' + last_name;
+
+                    color = randomHexColorCode();
+
+                    employee_list.push(employee_id);
+                    employee_list_color.push(color);
+
+                    return true;
+                });
+
+
                 var inlineHtml =
                     '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css"><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA92XGDo8rx11izPYT7z2L-YPMMJ6Ih1s0&callback=initMap&libraries=places"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script>';
                 inlineHtml +=
@@ -380,6 +416,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
+
+                form.addField({
+                    id: 'custpage_employee_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = employee_list.toString();
+
+                form.addField({
+                    id: 'custpage_employee_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = employee_list_color.toString();
+
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
                 inlineHtml += modalLeadStatusTimeline();
@@ -395,9 +448,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
                 inlineHtml += stepByStepGuideModal();
 
-                // if (pageUserId != 409635) {
-                //     inlineHtml += '<div class="container development_message hide" style=";font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><h1>Temporarily bringing down this page for scheduled updates and developments. This downtime is necessary to implement new features and improvements that will enhance the user experience and overall functionality.</h1></br>MailPlus IT</div>'
-                // } else {
                 inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
                 inlineHtml +=
@@ -423,16 +473,11 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 var resultSetZees = searchZees.run();
 
 
-
-
-                // if (role != 1000) {
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
                 inlineHtml += leadStatusDropdown(leadStatus)
-                // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes);
                 inlineHtml += '</div></div></div></br></br>';
-                // if (role != 1000) {
                 inlineHtml +=
                     '<div class="form-group container scorecard_percentage hide" style="">';
                 inlineHtml += '<div class="row">';
@@ -445,17 +490,41 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
-                // }
                 inlineHtml += tabsSection();
                 inlineHtml += dataTable();
 
-                // form.addButton({
-                //     id: 'download_csv',
-                //     label: 'Export All Table Data',
-                //     functionName: 'downloadCsv()'
-                // });
-                // }
+                form.addField({
+                    id: 'custpage_campaign_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = campaign_list.toString();
 
+                form.addField({
+                    id: 'custpage_campaign_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = campaign_list_color.toString();
+
+
+                form.addField({
+                    id: 'custpage_source_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = source_list.toString();
+
+                form.addField({
+                    id: 'custpage_source_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = source_list_color.toString();
 
 
                 form.addField({
@@ -755,6 +824,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
+                var campaignColorCode = salesCampaignSearchResultSet.getValue('custrecord_campaign_color_code');
+
+                if (isNullorEmpty(campaignColorCode)) {
+                    campaignColorCode = '#F5F7F8'
+                }
+
+                campaign_list.push(salesCampaignInternalId);
+                campaign_list_color.push(campaignColorCode);
 
                 if (isNullorEmpty(campaign)) {
                     inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
@@ -811,6 +888,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 var leadsourcename = leadSourceResultSet.getValue({
                     name: 'title'
                 });
+                var sourceColorCode = leadSourceResultSet.getValue({
+                    name: 'custevent_source_color_code'
+                });
+
+                if (!isNullorEmpty(sourceColorCode)) {
+                    source_list.push(leadsourceid);
+                    source_list_color.push(sourceColorCode);
+                }
+
+               
 
                 if (isNullorEmpty(source)) {
                     inlineHtml += '<option value="' + leadsourceid + '" >' +
@@ -1879,6 +1966,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 return false;
             }
         }
+
+        function randomHexColorCode() {
+            var n = (Math.random() * 0xfffff * 1000000).toString(16);
+            return '#' + n.slice(0, 6);
+        };
+
         return {
             onRequest: onRequest
         };
