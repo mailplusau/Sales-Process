@@ -12958,7 +12958,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -13384,7 +13384,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 series_new_lpo_data_source.push({
                     name: series_lpo_data_source[a].name,
                     data: new_lpo_source_count,
-                    color: series_lpo_data_source[i].color,
+                    color: series_lpo_data_source[a].color,
                     style: {
                         fontWeight: 'bold',
                     }
@@ -13529,7 +13529,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -13646,15 +13646,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count = total_leads;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += prospectCount;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
                             'count': prospectCount
                         })
                     } else if (dataCaptureAssignedId != oldDataCaptureAssignedId) {
-                        console.log('enteredByLength: ' + enteredByLength);
-                        console.log('salesRepAssignedTeam: ' + JSON.stringify(salesRepAssignedTeam));
+
+                        // total_leads += prospectCount;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy.push({
                             'id': dataCaptureAssignedId,
                             'name': dataCaptureAssigned,
@@ -13669,7 +13669,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 } else if (oldDataCaptureLastAssignedId != null &&
                     oldDataCaptureLastAssignedId != custSalesRepAssigned) {
-
+                    console.log('salesRepAssignedTeam(' + oldDataCaptureAssigned + '): ' + JSON.stringify(salesRepAssignedTeam));
 
                     total_leads = 0;
                     total_leads_assigned = 0;
