@@ -286,9 +286,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     var employee_id = salesTeamSearchResultSet.getValue('internalid');
                     var first_name = salesTeamSearchResultSet.getValue('firstname');
                     var last_name = salesTeamSearchResultSet.getValue('lastname');
+                    var employeeColorCode = salesTeamSearchResultSet.getValue('custentity_employee_color_code');
                     var full_name = first_name + ' ' + last_name;
-
-                    color = randomHexColorCode();
+                    
+                    if (isNullorEmpty(employeeColorCode)) {
+                        color = randomHexColorCode();
+                    } else {
+                        color = employeeColorCode;
+                    }
+                    
 
                     employee_list.push(employee_id);
                     employee_list_color.push(color);
@@ -1784,10 +1790,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             }
 
             if (name == 'customer' || name == 'existing_customers') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'trial_customers' || name == 'trial_pending_customers') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'suspects_followup') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total Monthly Service Revenue:</th><th></th><th></th></tr></tfoot>'
