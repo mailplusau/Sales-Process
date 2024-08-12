@@ -4,7 +4,7 @@
 
  * Author:               Ankith Ravindran
  * Created on:           Tue Apr 18 2023
- * Modified on:          Tue Apr 18 2023 11:22:39
+ * Modified on:          2024-07-10T05:12:54.193Z
  * SuiteScript Version:  2.0 
  * Description:          Client script for the reporting page that shows reporting based on the leads that come into the system and the customers that have been signed up based on the leads. 
  *
@@ -201,6 +201,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         var employee_list = []
         var employee_list_color = []
 
+        var campaign_list = []
+        var campaign_list_color = []
+
+        var source_list = []
+        var source_list_color = []
+
         function pageLoad() {
             $('.zee_label_section').addClass('hide');
             $('.zee_dropdown_section').addClass('hide');
@@ -240,6 +246,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             $('.tabs_section').removeClass('hide');
             $('.table_section').removeClass('hide');
             $('.instruction_div').removeClass('hide');
+            // if (userId == 409635) {
+            //     $('.development_message').removeClass('hide');
+            // }
             $('.scorecard_percentage').removeClass('hide');
             $('.status_dropdown_section').removeClass('hide');
 
@@ -784,7 +793,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -796,22 +805,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     leadSalesRepTimelineSearch.filterExpression = defaultSearchFilters;
 
                 }
-
-                // var defaultSearchFilters = leadSalesRepTimelineSearch.filterExpression;
-
-                // console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
-
-                // var statusTimeLineTable = '<style>table#salesRepTimeLineTable {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#salesRepTimeLineTable th{text-align: center;} .bolded{font-weight: bold;}</style>';
-                // statusTimeLineTable += '<div class="table_section "><table id="salesRepTimeLineTable" class="table table-responsive table-striped customer tablesorter cell-border compact" style="width: 100%;">';
-                // statusTimeLineTable += '<thead style="color: white;background-color: #103D39;">';
-                // statusTimeLineTable += '<tr class="text-center">';
-                // statusTimeLineTable += '<td>LEAD COUNT</td>';
-                // statusTimeLineTable += '<td>OLD STATUS</td>';;
-                // statusTimeLineTable += '<td>NEW STATUS</td>';
-                // statusTimeLineTable += '</tr>';
-                // statusTimeLineTable += '</thead>';
-
-                // statusTimeLineTable += '<tbody id="" >';
 
                 var oldCustomerInternalId;
                 var oldCustomerId;
@@ -913,28 +906,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         var difference = date1.getTime() - date2.getTime();
                         timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
 
-                        // var weeks = Math.floor(timeInStatusDays / 7);
-                        // timeInStatusDays = timeInStatusDays - (weeks * 2);
-
-                        // // Handle special cases
-                        // var startDay = date1.getDay();
-                        // var endDay = date2.getDay();
-
-                        // // Remove weekend not previously removed.   
-                        // if (startDay - endDay > 1)
-                        //     timeInStatusDays = timeInStatusDays - 2;
-
-                        // // Remove start day if span starts on Sunday but ends before Saturday
-                        // if (startDay == 0 && endDay != 6) {
-                        //     timeInStatusDays = timeInStatusDays - 1;
-                        // }
-
-                        // // Remove end day if span ends on Saturday but starts after Sunday
-                        // if (endDay == 6 && startDay != 0) {
-                        //     timeInStatusDays = timeInStatusDays - 1;
-                        // }
-
-                        // timeInStatusDays = systemNotesDate - oldStatusDate;
                     }
                     console.log('timeInStatusDays: ' + timeInStatusDays)
                     systemNotesDate = systemNotesDate + ' ' + systemNotesTime
@@ -965,66 +936,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             newStatus: newStatus,
                         })
                     }
-
-                    // var systemNotesDateSplitSpace = systemNotesDate.split(' ');
-                    // var systemNotesTime = convertTo24Hour(systemNotesDateSplitSpace[1] + ' ' + systemNotesDateSplitSpace[2])
-                    // var systemNotesDateSplit = systemNotesDateSplitSpace[0].split('/')
-                    // if (parseInt(systemNotesDateSplit[1]) < 10) {
-                    //     systemNotesDateSplit[1] = '0' + systemNotesDateSplit[1]
-                    // }
-
-                    // if (parseInt(systemNotesDateSplit[0]) < 10) {
-                    //     systemNotesDateSplit[0] = '0' + systemNotesDateSplit[0]
-                    // }
-
-                    // systemNotesDate = systemNotesDateSplit[2] + '-' + systemNotesDateSplit[1] + '-' +
-                    //     systemNotesDateSplit[0];
-
-                    // var onlyStatusDate = systemNotesDate
-
-                    // if (!isNullorEmpty(oldSalesRep)) {
-
-
-                    //     var date1 = new Date(systemNotesDate);
-                    //     var date2 = new Date(oldStatusDate);
-
-                    //     var difference = date1.getTime() - date2.getTime();
-                    //     timeInStatusDays = Math.ceil(difference / (1000 * 3600 * 24));
-
-                    //     var weeks = Math.floor(timeInStatusDays / 7);
-                    //     timeInStatusDays = timeInStatusDays - (weeks * 2);
-
-                    //     // Handle special cases
-                    //     var startDay = date1.getDay();
-                    //     var endDay = date2.getDay();
-
-                    //     // Remove weekend not previously removed.
-                    //     if (startDay - endDay > 1)
-                    //         timeInStatusDays = timeInStatusDays - 2;
-
-                    //     // Remove start day if span starts on Sunday but ends before Saturday
-                    //     if (startDay == 0 && endDay != 6) {
-                    //         timeInStatusDays = timeInStatusDays - 1;
-                    //     }
-
-                    //     // Remove end day if span ends on Saturday but starts after Sunday
-                    //     if (endDay == 6 && startDay != 0) {
-                    //         timeInStatusDays = timeInStatusDays - 1;
-                    //     }
-
-                    //     // timeInStatusDays = systemNotesDate - oldStatusDate;
-                    // }
-
-                    // systemNotesDate = systemNotesDate + ' ' + systemNotesTime
-
-                    // statusTimeLineTable += '<tr>';
-                    // statusTimeLineTable += '<td>' + customerCount + '</td>';
-                    // statusTimeLineTable += '<td>' + oldStatus + '</td>';
-                    // statusTimeLineTable += '<td>' + newStatus + '</td>';
-
-
-
-                    // statusTimeLineTable += '</tr>';
 
                     oldCustomerInternalId = customerInternalId;
                     oldCustomerId = customerId;
@@ -1181,7 +1092,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             zee = $(
                 '#zee_dropdown').val();
 
+            // if (userId == 409635) {
             loadDatatable(zee, userId);
+            // }
 
             console.log('Loaded Results');
             afterSubmit();
@@ -1237,6 +1150,61 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             console.log('date_to:' + date_to);
             console.log('leadStatus:' + leadStatus);
             console.log('sales_activity_notes:' + sales_activity_notes);
+
+            var employee_list_string = currRec.getValue({
+                fieldId: 'custpage_employee_list'
+            });
+            var employee_list_color_string = currRec.getValue({
+                fieldId: 'custpage_employee_list_color'
+            });
+
+            if (!isNullorEmpty(employee_list_string)) {
+                employee_list = employee_list_string.split(',')
+            }
+
+            if (!isNullorEmpty(employee_list_color_string)) {
+                employee_list_color = employee_list_color_string.split(',')
+            }
+
+            var campaign_list_string = currRec.getValue({
+                fieldId: 'custpage_campaign_list'
+            });
+            var campaign_list_color_string = currRec.getValue({
+                fieldId: 'custpage_campaign_list_color'
+            });
+
+            if (!isNullorEmpty(campaign_list_string)) {
+                campaign_list = campaign_list_string.split(',')
+            }
+
+            if (!isNullorEmpty(campaign_list_color_string)) {
+                campaign_list_color = campaign_list_color_string.split(',')
+            }
+
+            console.log('employee_list ' + employee_list);
+            console.log('employee_list_color ' + employee_list_color);
+
+            console.log('campaign_list ' + campaign_list);
+            console.log('campaign_list_color ' + campaign_list_color);
+
+
+            var source_list_string = currRec.getValue({
+                fieldId: 'custpage_source_list'
+            });
+            var source_list_color_string = currRec.getValue({
+                fieldId: 'custpage_source_list_color'
+            });
+
+            if (!isNullorEmpty(source_list_string)) {
+                source_list = source_list_string.split(',')
+            }
+
+            if (!isNullorEmpty(source_list_color_string)) {
+                source_list_color = source_list_color_string.split(',')
+            }
+
+            console.log('source_list ' + source_list);
+            console.log('source_list_color ' + source_list_color);
 
             if (role == 1000 && isNullorEmpty(zee_id) && isNullorEmpty(sales_rep) && !isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
                 alert('Please select Sales Rep while selecting the Modified Date From & To filters.');
@@ -1380,7 +1348,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -1388,84 +1356,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -1749,7 +1641,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -1757,84 +1649,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerCancellationRequestedDateSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var totalCancellationRequest = 0;
@@ -2109,7 +1925,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
@@ -2118,84 +1934,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
 
                 customerCancellationRequesteSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -2599,7 +2340,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -2607,84 +2348,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
 
                 customerListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -2737,25 +2404,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 if (count_customer_signed == 0) {
@@ -3183,7 +2855,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3191,84 +2863,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerTrialListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -3321,22 +2918,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (count_customer_signed == 0) {
@@ -3626,7 +3228,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 series_trial_data34, series_trial_data35, series_trial_data36, series_trial_data37, categores_customer_trial_week, series_trial_data38, series_trial_data39, series_trial_data30a, series_trial_data31a, series_trial_data32a, series_trial_data33a);
 
 
-
+            //! Update the Search to exlcude Change of Entity & Relocation source
             if (role == 1000) {
                 // Website New Leads - Trial Pending- Weekly Reporting (Monthly)
                 var customerTrialPendingListBySalesRepWeeklySearch = search.load({
@@ -3759,7 +3361,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -3767,84 +3369,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 customerTrialPendingListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
 
@@ -3897,22 +3424,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (count_customer_signed == 0) {
@@ -4333,7 +3865,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -4341,84 +3873,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 prospectWeeklyReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var count2 = 0;
@@ -4457,26 +3914,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -4790,7 +4252,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -4798,84 +4260,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 prospectOpportunityWeeklyReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var count2 = 0;
@@ -4913,26 +4299,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 debt_set6.push({
@@ -5123,7 +4514,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5131,84 +4522,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             total_customer_signed = 0;
@@ -5244,22 +4559,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
+
                 }
 
                 if (countSuspects == 0) {
@@ -5538,7 +4858,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5546,84 +4866,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsLostBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             total_customer_signed = 0;
@@ -5656,26 +4900,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
                 if (countSuspectsLost == 0) {
@@ -5935,7 +5183,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5943,84 +5191,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsOffPeakPipelineBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             suspectsOffPeakPipelineBySalesRepWeeklySearch.run().each(function (
@@ -6044,24 +5216,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
-
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
-
                 }
 
                 debt_setSuspectsOffPeakPipeline.push({
@@ -6247,7 +5422,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6255,84 +5430,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsOOTBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -6357,25 +5456,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -6563,7 +5667,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6571,84 +5675,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsQualifiedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -6673,25 +5701,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -6884,84 +5917,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsQualifiedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -7189,7 +6146,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7197,84 +6154,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsValidatedSalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
 
@@ -7300,25 +6181,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -7505,7 +6391,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7513,84 +6399,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
 
                 suspectsFollowUpBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -7618,25 +6429,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -7849,7 +6665,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7857,84 +6673,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
 
                 suspectsNoAnswerBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var countSuspectFollowUp = 0;
@@ -7960,25 +6701,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -8167,7 +6913,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8175,84 +6921,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 suspectsInContactBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var countSuspectFollowUp = 0;
@@ -8278,25 +6949,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
 
                 }
 
@@ -8484,7 +7160,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8492,84 +7168,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 leadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
+
             }
 
             var count1 = 0;
@@ -8627,25 +7228,30 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     var startDate = weekLeadEntered;
 
                 } else {
-                    var splitMonthV2 = weekLeadEntered.split('/');
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
 
-                    var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
 
-                    var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
-                    var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
 
-                    if (firstDay < 10) {
-                        firstDay = '0' + firstDay;
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        splitMonthV2[0];
-                    var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
-                        lastDay
                 }
 
 
@@ -9739,7 +8345,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -9747,84 +8353,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": 'lastmodifieddate',
-                    //     "join": null,
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 2,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "context",
-                    //     "join": "systemnotes",
-                    //     "operator": "anyof",
-                    //     "values": ["UIF", "SLT"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 1
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "internalid",
-                    //     "join": "activity",
-                    //     "operator": "anyof",
-                    //     "values": ["@NONE@"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 1,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "date",
-                    //     "join": "activity",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "internalid",
-                    //     "join": "usernotes",
-                    //     "operator": "anyof",
-                    //     "values": ["@NONE@"],
-                    //     "isor": true,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 0
-                    // });
-
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "notedate",
-                    //     "join": "usernotes",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 2
-                    // });
-
                     lpoLeadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
 
-                    // websiteSuspectsLeadsReportingSearch.filters.push({
-                    //     "name": "notedate",
-                    //     "join": "usernotes",
-                    //     "operator": "within",
-                    //     "values": [modified_date_from, modified_date_to],
-                    //     "isor": false,
-                    //     "isnot": false,
-                    //     "leftparens": 0,
-                    //     "rightparens": 2
-                    // });
                 }
 
                 var count1 = 0;
@@ -10931,7 +9461,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -12080,7 +10610,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -14637,9 +13167,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     if (source_exists == false) {
                         dataSource = new Array(dataCaptureTeam.length).fill(0);
                         dataSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+
+                        var colorCodeSource;
+                        if (source_list.includes((dataCaptureTeam[x].details[0].source[y].id).toString()) == true) {
+                            colorCodeSource = source_list_color[source_list.indexOf((dataCaptureTeam[x].details[0].source[y].id).toString())];
+                        }
+
                         series_data_source.push({
                             name: sourceName[x][y],
-                            data: dataSource
+                            data: dataSource,
+                            color: colorCodeSource,
+                            style: {
+                                fontWeight: 'bold',
+                            }
                         });
                     }
 
@@ -14666,9 +13206,21 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         if (campaign_exists == false) {
                             dataSource = new Array(dataCaptureTeam.length).fill(0);
                             dataSource[x] = dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+
+
+                            var colorCodeCampaign;
+                            if (campaign_list.includes((dataCaptureTeam[x].details[0].source[y].campaign[z].id).toString()) == true) {
+                                colorCodeCampaign = campaign_list_color[campaign_list.indexOf((dataCaptureTeam[x].details[0].source[y].campaign[z].id).toString())];
+                            }
+
+
                             series_data_campaign.push({
                                 name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
-                                data: dataSource
+                                data: dataSource,
+                                color: colorCodeCampaign,
+                                style: {
+                                    fontWeight: 'bold',
+                                }
                             });
                         }
 
@@ -14686,9 +13238,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             if (lpo_source_exists == false) {
                                 dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
                                 dataLPOSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+
+                                var colorCodeSource;
+                                if (source_list.includes((dataCaptureTeam[x].details[0].source[y].id).toString()) == true) {
+                                    colorCodeSource = source_list_color[source_list.indexOf((dataCaptureTeam[x].details[0].source[y].id).toString())];
+                                }
+
                                 series_lpo_data_source.push({
                                     name: dataCaptureTeam[x].details[0].source[y].name,
-                                    data: dataLPOSource
+                                    data: dataLPOSource,
+                                    color: colorCodeSource,
+                                    style: {
+                                        fontWeight: 'bold',
+                                    }
                                 });
                             }
 
@@ -14703,9 +13265,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             if (lpo_campaign_exists == false) {
                                 dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
                                 dataLPOCampaign[x] = dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+
+                                var colorCodeLPOCampaign;
+                                if (campaign_list.indexOf((dataCaptureTeam[x].details[0].source[y].campaign[z].id).toString()) != -1) {
+                                    colorCodeLPOCampaign = campaign_list_color[campaign_list.indexOf((dataCaptureTeam[x].details[0].source[y].campaign[z].id).toString())];
+                                }
+
                                 series_lpo_data_campaign.push({
                                     name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
-                                    data: dataLPOCampaign
+                                    data: dataLPOCampaign,
+                                    color: colorCodeLPOCampaign,
+                                    style: {
+                                        fontWeight: 'bold',
+                                    }
                                 });
                             }
                         }
@@ -14784,7 +13356,11 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
                 series_new_lpo_data_campaign.push({
                     name: series_lpo_data_campaign[i].name,
-                    data: new_lpo_campaign_count
+                    data: new_lpo_campaign_count,
+                    color: series_lpo_data_campaign[i].color,
+                    style: {
+                        fontWeight: 'bold',
+                    }
                 })
                 // series_new_lpo_data_campaign[i].data = new_lpo_campaign_count;
             }
@@ -14807,7 +13383,11 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
                 series_new_lpo_data_source.push({
                     name: series_lpo_data_source[a].name,
-                    data: new_lpo_source_count
+                    data: new_lpo_source_count,
+                    color: series_lpo_data_source[i].color,
+                    style: {
+                        fontWeight: 'bold',
+                    }
                 })
                 // series_new_lpo_data_source[i].data = new_lpo_source_count;
             }
@@ -15166,9 +13746,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     if (entered_by_exists == false) {
                         dataEntered = new Array(salesRepAssignedTeam.length).fill(0);
                         dataEntered[x] = salesRepAssignedTeam[x].details[0].enteredBy[y].count;
+
+                        var colorCode = '#ffffff'
+                        if (employee_list.indexOf(salesRepAssignedTeam[x].details[0].enteredBy[y].id) != -1) {
+                            colorCode = employee_list_color[employee_list.indexOf(salesRepAssignedTeam[x].details[0].enteredBy[y].id)];
+                        }
+
                         series_data_entered.push({
                             name: enteredName[x][y],
-                            data: dataEntered
+                            data: dataEntered,
+                            color: colorCode,
+                            style: {
+                                fontWeight: 'bold',
+                            }
                         });
                     }
 
@@ -15193,9 +13783,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         if (campaign_exists == false) {
                             dataEntered = new Array(salesRepAssignedTeam.length).fill(0);
                             dataEntered[x] = salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].count;
+
+                            var colorCodeCampaign;
+                            if (campaign_list.indexOf((salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].id).toString()) != -1) {
+                                colorCodeCampaign = campaign_list_color[campaign_list.indexOf((salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].id).toString())];
+                            }
+
                             series_data_campaign.push({
                                 name: salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].name,
-                                data: dataEntered
+                                data: dataEntered,
+                                color: colorCodeCampaign,
+                                style: {
+                                    fontWeight: 'bold',
+                                }
                             });
                         }
 
@@ -15216,100 +13816,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             console.log('series_data_campaign')
             console.log(series_data_campaign)
 
-            // console.log('dataCaptureTeamMemberLPOCategories')
-            // console.log(dataCaptureTeamMemberLPOCategories);
-
-            // console.log('series_lpo_data_campaign')
-            // console.log(series_lpo_data_campaign)
-
-            // console.log('series_lpo_data_source')
-            // console.log(series_lpo_data_source)
-
-
-            // var removedArrayPositions = []
-            // var existingArrayPositions = []
-            // var series_new_lpo_data_campaign = []
-            // var series_new_lpo_data_source = []
-
-            // for (var i = 0; i < dataCaptureTeamMemberLPOCategories.length; i++) {
-            //     if (dataCaptureTeamMemberLPOCategories[i] != null) {
-            //         existingArrayPositions.push(i);
-            //     } else {
-            //         removedArrayPositions.push(i);
-            //     }
-
-            // }
-
-            // console.log('dataCaptureTeamMemberLPOCategories')
-            // console.log(dataCaptureTeamMemberLPOCategories);
-
-            // console.log('removedArrayPositions')
-            // console.log(removedArrayPositions);
-
-            // var dataCaptureTeamMemberLPOCategoriesUpdated = [];
-
-            // for (var t = 0; t < dataCaptureTeamMemberLPOCategories.length; t++) {
-            //     if (removedArrayPositions.includes(t)) {
-
-            //     } else {
-            //         dataCaptureTeamMemberLPOCategoriesUpdated.push(dataCaptureTeamMemberLPOCategories[t])
-            //     }
-            // }
-
-            // console.log('dataCaptureTeamMemberLPOCategoriesUpdated')
-            // console.log(dataCaptureTeamMemberLPOCategoriesUpdated);
-
-            // var new_lpo_campaign_count = []
-
-            // for (var i = 0; i < series_lpo_data_campaign.length; i++) {
-            //     for (var r = 0; r < series_lpo_data_campaign[i].data.length; r++) {
-            //         if (removedArrayPositions.indexOf(r) != -1) {
-
-            //         } else {
-            //             new_lpo_campaign_count[new_lpo_campaign_count.length] = series_lpo_data_campaign[i].data[r];
-            //         }
-            //     }
-            //     series_new_lpo_data_campaign.push({
-            //         name: series_lpo_data_campaign[i].name,
-            //         data: new_lpo_campaign_count
-            //     })
-            //     // series_new_lpo_data_campaign[i].data = new_lpo_campaign_count;
-            // }
-
-            // console.log('series_new_lpo_data_campaign')
-            // console.log(series_new_lpo_data_campaign)
-
-            // var new_lpo_source_count = []
-
-            // for (var a = 0; a < series_lpo_data_source.length; a++) {
-            //     new_lpo_source_count = []
-            //     for (var b = 0; b < series_lpo_data_source[a].data.length; b++) {
-            //         console.log('b: ' + b)
-            //         console.log('removedArrayPositions.indexOf(b): ' + removedArrayPositions.indexOf(b))
-            //         if (removedArrayPositions.indexOf(b) != -1) {
-
-            //         } else {
-            //             new_lpo_source_count[new_lpo_source_count.length] = series_lpo_data_source[a].data[b];
-            //         }
-            //     }
-            //     series_new_lpo_data_source.push({
-            //         name: series_lpo_data_source[a].name,
-            //         data: new_lpo_source_count
-            //     })
-            //     // series_new_lpo_data_source[i].data = new_lpo_source_count;
-            // }
-
-            // console.log('series_new_lpo_data_source')
-            // console.log(series_new_lpo_data_source)
 
             plotSalesRepChart(series_data_entered, null, salesRepAssignedTeamMemberCategories)
-            // plotSalesRepChartDataCaptureOverview(series_data_source, null, salesRepAssignedTeamMemberCategories)
 
             plotSalesRepChartCampaign(series_data_campaign, null, salesRepAssignedTeamMemberCategories)
-            // plotChartDataCaptureOverviewCampaign(series_data_campaign, null, dataCaptureTeamMemberCategories)
-
-            // plotChartLPOCampaign(series_new_lpo_data_campaign, null, dataCaptureTeamMemberLPOCategoriesUpdated)
-            // plotChartLPOSource(series_new_lpo_data_source, null, dataCaptureTeamMemberLPOCategoriesUpdated)
 
 
             if (sales_activity_notes == 1) {
@@ -15438,13 +13948,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }));
             }
 
-            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to) && sales_activity_notes == 1) {
 
                 var defaultSearchFilters = websiteSuspectsLeadsReportingSearch.filterExpression;
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["usernotes.notedate", "within", [modified_date_from, modified_date_to]]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -16030,236 +14540,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (count == 0) {
                         console.log('inside count == 0')
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else
+
                         if (!isNullorEmpty(userNotesInternalID)) {
                             console.log('inside usernotes internal id')
                             console.log('custStage: ' + custStage);
@@ -16368,236 +14649,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         }
                     } else if (count > 0 && (oldcustInternalID == custInternalID)) {
                         console.log('inside count > 0 && (oldcustInternalID == custInternalID)')
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else
+
                         if (!isNullorEmpty(userNotesInternalID)) {
                             console.log('inside usernotes internal id')
                             if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
@@ -17025,236 +15077,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         suspectNoAnswerChildDataSet = [];
                         suspectInContactChildDataSet = [];
 
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else
+
                         if (!isNullorEmpty(userNotesInternalID)) {
                             if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
                                 suspectActivityCount++
@@ -17369,11 +15192,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     olddateLeadReassigned = dateLeadReassigned;
                     oldsalesRepId = salesRepId;
                     oldsalesRepText = salesRepText;
-                    // oldactivityInternalID = activityInternalID;
-                    // oldactivityStartDate = activityStartDate;
-                    // oldactivityTitle = activityTitle;
-                    // oldactivityOrganiser = activityOrganiser;
-                    // oldactivityMessage = activityMessage;
                     oldemail48h = email48h;
                     oldDaysOpen = daysOpen;
                     oldCancellationReason = cancellationReason;
@@ -18040,634 +15858,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
 
                     if (count == 0) {
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // }
+
 
                     } else if (count > 0 && (oldcustInternalID == custInternalID)) {
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // }
+
 
                     } else if (count > 0 && (oldcustInternalID != custInternalID)) {
 
@@ -18992,319 +16186,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         suspectNoAnswerChildDataSet = [];
                         suspectInContactChildDataSet = [];
 
-                        // if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     }
-                        // } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-OPARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus == 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        //     if (custStage == 'SUSPECT' && custStatus != 'SUSPECT-CUSTOMER - LOST' && custStatus != 'SUSPECT-PARKING LOT' && custStatus != 'SUSPECT-LOST' && custStatus != 'SUSPECT-OUT OF TERRITORY' && custStatus != 'SUSPECT-FOLLOW-UP' && custStatus != 'SUSPECT-QUALIFIED' && custStatus != 'SUSPECT-LPO FOLLOW-UP' && custStatus != 'SUSPECT-NO ANSWER' && custStatus != 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-CUSTOMER - LOST' || custStatus == 'SUSPECT-LOST')) {
-                        //         suspectActivityCount++
-                        //         suspectLostChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-PARKING LOT') {
-                        //         suspectActivityCount++
-                        //         suspectOffPeakChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-OUT OF TERRITORY') {
-                        //         suspectActivityCount++
-                        //         suspectOOTChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && (custStatus == 'SUSPECT-FOLLOW-UP' || custStatus != 'SUSPECT-LPO FOLLOW-UP')) {
-                        //         suspectActivityCount++
-                        //         suspectFollowUpChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-QUALIFIED') {
-                        //         suspectActivityCount++
-                        //         suspectQualifiedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-VALIDATED') {
-                        //         suspectActivityCount++
-                        //         suspectValidatedChildDataSet.push({
-                        //             activityInternalID: userNotesInternalID,
-                        //             activityStartDate: userNotesStartDate,
-                        //             activityTitle: userNotesTitle,
-                        //             activityOrganiser: userNotesOrganiser,
-                        //             activityMessage: userNotesMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-NO ANSWER') {
-                        //         suspectActivityCount++
-                        //         suspectNoAnswerChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     } else if (custStage == 'SUSPECT' && custStatus == 'SUSPECT-IN CONTACT') {
-                        //         suspectActivityCount++
-                        //         suspectInContactChildDataSet.push({
-                        //             activityInternalID: activityInternalID,
-                        //             activityStartDate: activityStartDate,
-                        //             activityTitle: activityTitle,
-                        //             activityOrganiser: activityOrganiser,
-                        //             activityMessage: activityMessage
-                        //         })
-                        //     }
-                        // }
+
 
 
                     }
@@ -19781,7 +16663,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -19789,84 +16671,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 websiteProspectLeadsReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var oldcustInternalID = null;
@@ -20940,7 +17746,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
 
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
@@ -20949,84 +17755,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('signed customer defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": 'lastmodifieddate',
-                //     "join": null,
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 2,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "context",
-                //     "join": "systemnotes",
-                //     "operator": "anyof",
-                //     "values": ["UIF", "SLT"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 1
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "activity",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 1,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "date",
-                //     "join": "activity",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "internalid",
-                //     "join": "usernotes",
-                //     "operator": "anyof",
-                //     "values": ["@NONE@"],
-                //     "isor": true,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 0
-                // });
-
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
-
                 websiteCustomersReportingSearch.filterExpression = defaultSearchFilters;
 
-                // websiteSuspectsLeadsReportingSearch.filters.push({
-                //     "name": "notedate",
-                //     "join": "usernotes",
-                //     "operator": "within",
-                //     "values": [modified_date_from, modified_date_to],
-                //     "isor": false,
-                //     "isnot": false,
-                //     "leftparens": 0,
-                //     "rightparens": 2
-                // });
             }
 
             var oldcustInternalID = null;
@@ -21078,6 +17808,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var showInvoice = true;
 
             var oldTrialEndDate = null;
+
+            var existingCustomer = false;
+            var oldExistingCustomer;
 
 
             var count = 0;
@@ -21152,6 +17885,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     name: 'custentity_date_suspect_reassign',
                     summary: "GROUP",
                 });
+
+                var maapImplementationDate = custListCommenceTodaySet.getValue({
+                    name: 'custentity_maap_implementdate',
+                    summary: "GROUP",
+                });
+
+                console.log('custName: ' + custName)
+                console.log('maapImplementationDate: ' + maapImplementationDate)
 
                 var salesRepId = custListCommenceTodaySet.getValue({
                     name: 'custrecord_sales_assigned',
@@ -21241,6 +17982,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     name: "custentity_monthly_reduc_service_revenue",
                     summary: "GROUP",
                 }));
+
+                var d1 = dateProspectWon.split("/");
+                var c = maapImplementationDate.split("/");
+
+                // console.log('d1[1]: ' + d1[1])
+                // console.log('c[1]: ' + c[1])
+                // console.log('d1[2]: ' + d1[2])
+                // console.log('c[2]: ' + c[2])
+
+                if (isNullorEmpty(maapImplementationDate) || ((d1[1] == c[1]) && (d1[2] == c[2]))) {
+                    existingCustomer = false
+                } else {
+                    existingCustomer = true;
+                }
+
+                console.log('existingCustomer: ' + existingCustomer)
 
                 var minCommDate = (custListCommenceTodaySet.getValue({
                     name: "custrecord_comm_date",
@@ -21483,6 +18240,20 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     zeeVisitedDate = zeeVisitedDateSplit[2] + '-' + zeeVisitedDateSplit[1] + '-' +
                         zeeVisitedDateSplit[0];
                 }
+                if (!isNullorEmpty(quoteSentDate)) {
+                    var quoteSentDateSplit = quoteSentDate.split('/');
+
+                    if (parseInt(quoteSentDateSplit[1]) < 10) {
+                        quoteSentDateSplit[1] = '0' + quoteSentDateSplit[1]
+                    }
+
+                    if (parseInt(quoteSentDateSplit[0]) < 10) {
+                        quoteSentDateSplit[0] = '0' + quoteSentDateSplit[0]
+                    }
+
+                    quoteSentDate = quoteSentDateSplit[2] + '-' + quoteSentDateSplit[1] + '-' +
+                        quoteSentDateSplit[0];
+                }
 
                 if (count == 0) {
 
@@ -21674,7 +18445,52 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         var customerIdLink =
                             '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
 
-                        if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+                        console.log('oldcustName: ' + oldcustName);
+                        console.log('existingCustomer: ' + oldExistingCustomer);
+
+                        if (oldCustStatusId == 32) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if (oldCustStatusId == 71) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialPendingCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
                             existingCustomerDataSet.push(['',
                                 oldcustInternalID,
                                 customerIdLink,
@@ -21720,48 +18536,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 oldInvoiceStatus
                             ]);
 
-                        } else if (oldCustStatusId == 32) {
-                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                            trialCustomerDataSet.push(['',
-                                oldcustInternalID,
-                                customerIdLink,
-                                oldcustName,
-                                oldzeeName,
-                                oldSource,
-                                oldPreviousCarrier,
-                                olddateLeadEntered,
-                                oldquoteSentDate,
-                                olddateProspectWon,
-                                oldTnCAgreedDate,
-                                oldZeeVisitedDate,
-                                oldLPOCommsToCustomer,
-                                oldTrialEndDate,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                                oldMonthServiceValue,
-                                oldsalesRepText,
-                                customerChildDataSet
-                            ]);
-                        } else if (oldCustStatusId == 71) {
-                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                            trialPendingCustomerDataSet.push(['',
-                                oldcustInternalID,
-                                customerIdLink,
-                                oldcustName,
-                                oldzeeName,
-                                oldSource,
-                                oldPreviousCarrier,
-                                olddateLeadEntered,
-                                oldquoteSentDate,
-                                olddateProspectWon,
-                                oldTnCAgreedDate,
-                                oldZeeVisitedDate,
-                                oldLPOCommsToCustomer,
-                                oldTrialEndDate,
-                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                                oldMonthServiceValue,
-                                oldsalesRepText,
-                                customerChildDataSet
-                            ]);
                         } else {
                             customerDataSet.push(['',
                                 oldcustInternalID,
@@ -21836,18 +18610,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     customerChildDataSet = [];
                     customerChildStatusDataSet = [];
 
-                    // if (!isNullorEmpty(activityTitle)) {
-                    //     if (custStage == 'CUSTOMER') {
-                    //         customerActivityCount++
-                    //         customerChildDataSet.push({
-                    //             activityInternalID: activityInternalID,
-                    //             activityStartDate: activityStartDate,
-                    //             activityTitle: activityTitle,
-                    //             activityOrganiser: activityOrganiser,
-                    //             activityMessage: activityMessage
-                    //         })
-                    //     }
-                    // }
+                    existingCustomer = false;
 
                 }
 
@@ -21892,6 +18655,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldInvoiceType = invoiceType;
                 oldInvoiceAmount = invoiceAmount;
                 oldInvoiceStatus = invoiceStatus;
+                oldExistingCustomer = existingCustomer
                 // oldInvoiceItem = invoiceItem;
 
                 // if (oldInvoiceItem == 'Credit Card Surcharge') {
@@ -21899,6 +18663,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 // }
 
                 count++
+
+                console.log('signed customer count: ' + count);
                 return true;
             });
 
@@ -22043,7 +18809,50 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     //     existingCustomer = true;
                     // }
 
-                    if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0)) {
+
+                    if (oldCustStatusId == 32) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if (oldCustStatusId == 71) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialPendingCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
                         existingCustomerDataSet.push(['',
                             oldcustInternalID,
                             customerIdLink,
@@ -22087,51 +18896,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldInvoiceType,
                             oldInvoiceAmount,
                             oldInvoiceStatus
-                        ]);
-                    } else if (oldCustStatusId == 32) {
-
-                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                        trialCustomerDataSet.push(['',
-                            oldcustInternalID,
-                            customerIdLink,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            oldTnCAgreedDate,
-                            oldZeeVisitedDate,
-                            oldLPOCommsToCustomer,
-                            oldTrialEndDate,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            customerChildDataSet
-                        ]);
-
-                    } else if (oldCustStatusId == 71) {
-
-                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
-                        trialPendingCustomerDataSet.push(['',
-                            oldcustInternalID,
-                            customerIdLink,
-                            oldcustName,
-                            oldzeeName,
-                            oldSource,
-                            oldPreviousCarrier,
-                            olddateLeadEntered,
-                            oldquoteSentDate,
-                            olddateProspectWon,
-                            oldTnCAgreedDate,
-                            oldZeeVisitedDate,
-                            oldLPOCommsToCustomer,
-                            oldTrialEndDate,
-                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
-                            oldMonthServiceValue,
-                            oldsalesRepText,
-                            customerChildDataSet
                         ]);
 
                     } else {
@@ -22185,9 +18949,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             oldInvoiceStatus
                         ]);
                     }
-
-
-
                 }
             }
 
@@ -25317,23 +22078,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -25391,23 +22162,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -26658,23 +23439,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -26734,23 +23525,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -26810,23 +23611,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -26886,23 +23697,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -26961,23 +23782,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -27036,23 +23867,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Total Leads'
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
                     },
                     stackLabels: {
                         enabled: true,
                         style: {
                             fontWeight: 'bold',
+                            fontSize: '10px'
                         }
-                    },
-                    style: {
-                        fontWeight: 'bold',
                     },
                     labels: {
                         style: {
-                            fontWeight: 'bold',
                             fontSize: '10px'
                         }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
                     }
                 },
                 plotOptions: {
@@ -28883,580 +25724,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             return true;
         }
 
-        /**
-         * Create the CSV and store it in the hidden field
-         * 'custpage_table_csv' as a string.
-         *
-         * @param {Array}
-         */
-        function saveCustomerCsvPreview(ordersDataSet) {
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'MP Express Usage',
-                'MP Standard Usage',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                '48h Email Sent',
-                'Date - Prospect Won',
-                'Days Open',
-                'Monthly Service Value',
-                'Sales Rep',
-                'Auto Signed Up',
-                'Invoice Document Number',
-                'Invoice Date',
-                'Invoice Type',
-                'Invoice Amount',
-                'Invoice Status'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-
-        /**
-         * Create the CSV and store it in the hidden field
-         * 'custpage_table_csv' as a string.
-         *
-         * @param {Array}
-         */
-        function saveProspectOpportunityCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                '48h Email',
-                'Days Open',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_prospect_opportunity_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        /**
-         * Create the CSV and store it in the hidden field
-         * 'custpage_table_csv' as a string.
-         *
-         * @param {Array}
-         */
-        function saveSuspectLostCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                'Date - Prospect Won',
-                'Date - Lead Lost',
-                '48h Email',
-                'Days Open',
-                'Cancellation Reason',
-                'Monthly Service Value',
-                'Avg Invoice Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_suspect_lost_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        function saveSuspectOOTCsvPreview(ordersDataSet) {
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                'Date - Lead Reassigned',
-                'Date - Lead Lost',
-                '48h Email',
-                'Days Open',
-                'Cancellation Reason',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_suspect_oot_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        function saveSuspectFollowUpCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                'Date - Lead Reassigned',
-                'Date - Lead Lost',
-                '48h Email',
-                'Days Open',
-                'Cancellation Reason',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_suspect_followup_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        function saveSuspectOffPeakCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                'Date - Lead Reassigned',
-                'Date - Lead Lost',
-                '48h Email',
-                'Days Open',
-                'Cancellation Reason',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_suspect_offpeak_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        function saveSuspectCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                'Date - Prospect Won',
-                'Date - Lead Lost',
-                '48h Email',
-                'Days Open',
-                'Cancellation Reason',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_suspect_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        /**
-         * Create the CSV and store it in the hidden field
-         * 'custpage_table_csv' as a string.
-         *
-         * @param {Array}
-         */
-        function saveProspectCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Status',
-                'Source',
-                'Product Weekly Usage',
-                'Previous Carrier',
-                'Date - Lead Entered',
-                'Date - Quote Sent',
-                '48h Email',
-                'Days Open',
-                'Monthly Service Value',
-                'Sales Rep'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_prospect_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-        /**
-         * Create the CSV and store it in the hidden field
-         * 'custpage_table_csv' as a string.
-         *
-         * @param {Array}
-         */
-        function saveExistingCustomerCsvPreview(ordersDataSet) {
-
-            var sep = "sep=;";
-            headers = [
-                'Internal ID',
-                'ID',
-                'Company Name',
-                'Franchisee',
-                'Source',
-                'MP Express Usage',
-                'MP Standard Usage',
-                'Date - Lead Entered',
-                'Date - Prospect Won',
-                'Monthly Service Value',
-                'Sales Rep',
-                'Auto Signed Up',
-                'Invoice Document Number',
-                'Invoice Date',
-                'Invoice Type',
-                'Invoice Amount',
-                'Invoice Status'
-            ]
-            headers = headers.join(';'); // .join(', ')
-
-            var csv = sep + "\n" + headers + "\n";
-
-            ordersDataSet.forEach(function (row) {
-                row = row.join(';');
-                csv += row;
-                csv += "\n";
-            });
-
-            var val1 = currentRecord.get();
-            val1.setValue({
-                fieldId: 'custpage_existing_customer_table_csv',
-                value: csv
-            });
-
-            return true;
-        }
-
-
-        function downloadCsv() {
-
-            var today = new Date();
-            today = formatDate(today);
-            var val1 = currentRecord.get();
-            var csv = val1.getValue({
-                fieldId: 'custpage_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFile = new Blob([csv], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFile);
-            var filename = 'Signed Customers_' + today + '.csv';
-            a.href = url;
-            a.download = filename;
-            a.click();
-
-            var csv_overview = val1.getValue({
-                fieldId: 'custpage_overview_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileOverview = new Blob([csv_overview], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileOverview);
-            var filenameOverview = 'Lead Reporting - Overview - By Lead Entered_' + today + '.csv';
-            a.href = url;
-            a.download = filenameOverview;
-            a.click();
-
-            var csv_existing = val1.getValue({
-                fieldId: 'custpage_existing_customer_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileExisting = new Blob([csv_existing], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileExisting);
-            var filenameExisting = 'Existing Customers_' + today + '.csv';
-            a.href = url;
-            a.download = filenameExisting;
-            a.click();
-
-
-            var csv_prospect = val1.getValue({
-                fieldId: 'custpage_prospect_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileProspect = new Blob([csv_prospect], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileProspect);
-            var filenameProspect = 'Prospects_' + today + '.csv';
-            a.href = url;
-            a.download = filenameProspect;
-            a.click();
-
-
-            var csv_prospect_opp = val1.getValue({
-                fieldId: 'custpage_prospect_opportunity_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileProspectOpp = new Blob([csv_prospect_opp], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileProspectOpp);
-            var filenameProspectOpp = 'Prospects Opportunity_' + today + '.csv';
-            a.href = url;
-            a.download = filenameProspectOpp;
-            a.click();
-
-
-            var csv_suspect = val1.getValue({
-                fieldId: 'custpage_suspect_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileSuspect = new Blob([csv_suspect], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileSuspect);
-            var filenameSuspect = 'Suspects_' + today + '.csv';
-            a.href = url;
-            a.download = filenameSuspect;
-            a.click();
-
-            var csv_suspect_lost = val1.getValue({
-                fieldId: 'custpage_suspect_lost_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileSuspectLost = new Blob([csv_suspect_lost], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileSuspectLost);
-            var filenameSuspectLost = 'Suspects Lost_' + today + '.csv';
-            a.href = url;
-            a.download = filenameSuspectLost;
-            a.click();
-
-            var csv_suspect_offpeak = val1.getValue({
-                fieldId: 'custpage_suspect_offpeak_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileSuspectOffPeak = new Blob([csv_suspect_offpeak], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileSuspectOffPeak);
-            var filenameSuspectOffPeak = 'Suspects Off Peak_' + today + '.csv';
-            a.href = url;
-            a.download = filenameSuspectOffPeak;
-            a.click();
-
-            var csv_suspect_followup = val1.getValue({
-                fieldId: 'custpage_suspect_followup_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileSuspectFollowUp = new Blob([csv_suspect_followup], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileSuspectFollowUp);
-            var filenameSuspectFollowUp = 'Suspects Follow Up_' + today + '.csv';
-            a.href = url;
-            a.download = filenameSuspectFollowUp;
-            a.click();
-
-            var csv_suspect_oot = val1.getValue({
-                fieldId: 'custpage_suspect_oot_table_csv',
-            });
-            today = replaceAll(today);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            var content_type = 'text/csv';
-            var csvFileSuspectOOT = new Blob([csv_suspect_oot], {
-                type: content_type
-            });
-            var url = window.URL.createObjectURL(csvFileSuspectOOT);
-            var filenameSuspectOOT = 'Suspects Follow Up_' + today + '.csv';
-            a.href = url;
-            a.download = filenameSuspectOOT;
-            a.click();
-
-            window.URL.revokeObjectURL(url);
-
-
-        };
-
         function replaceAll(string) {
             return string.split("/").join("-");
         }
@@ -29538,7 +25805,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         return {
             pageInit: pageInit,
             saveRecord: saveRecord,
-            downloadCsv: downloadCsv,
             addFilters: addFilters
         }
     });

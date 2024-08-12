@@ -4,7 +4,7 @@
 
  * Author:               Ankith Ravindran
  * Created on:           Tue Apr 18 2023
- * Modified on:          Tue Apr 18 2023 11:23:49
+ * Modified on:          2024-07-10T05:12:43.406Z
  * SuiteScript Version:  2.0 
  * Description:          Reporting page that shows reporting based on the leads that come into the system and the customers that have been signed up based on the leads.  
  *
@@ -19,12 +19,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         var userId = 0;
         var zee = 0;
 
+        var employee_list = [];
+        var employee_list_color = [];
+
+        var campaign_list = [];
+        var campaign_list_color = [];
+
+        var source_list = [];
+        var source_list_color = [];
+
         function onRequest(context) {
             var baseURL = 'https://system.na2.netsuite.com';
             if (runtime.EnvType == "SANDBOX") {
                 baseURL = 'https://system.sandbox.netsuite.com';
             }
             userId = runtime.getCurrentUser().id;
+            pageUserId = runtime.getCurrentUser().id;
 
             role = runtime.getCurrentUser().role;
             // moment().tz.setDefault('Australia/Sydney'); // Set default timezone to AEST
@@ -153,7 +163,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 title: 'campaignArray',
                                 details: campaignArray
                             });
-                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1) {
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1 || campaignArray.indexOf('77') != -1) {
                                 start_date = null;
                                 date_signed_up_from = null;
                             } else {
@@ -178,7 +188,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 campaignArray.push(campaign)
                             }
 
-                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1) {
+                            if (campaignArray.indexOf('71') != -1 || campaignArray.indexOf('72') != -1 || campaignArray.indexOf('69') != -1 || campaignArray.indexOf('77') != -1) {
                                 last_date = null;
                                 date_signed_up_to = null;
                             } else {
@@ -257,6 +267,33 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
                 var form = ui.createForm({
                     title: 'Sales Dashboard'
+                });
+
+
+                //Assign Color Codes to employees
+                //Search Name: Active Employees - Sales Team
+                var salesTeamSearch = search.load({
+                    type: 'employee',
+                    id: 'customsearch_active_employees_3'
+                });
+
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+
+                salesTeamSearch.run().each(function (
+                    salesTeamSearchResultSet) {
+
+                    var employee_id = salesTeamSearchResultSet.getValue('internalid');
+                    var first_name = salesTeamSearchResultSet.getValue('firstname');
+                    var last_name = salesTeamSearchResultSet.getValue('lastname');
+                    var full_name = first_name + ' ' + last_name;
+
+                    color = randomHexColorCode();
+
+                    employee_list.push(employee_id);
+                    employee_list_color.push(color);
+
+                    return true;
                 });
 
 
@@ -379,6 +416,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     displayType: ui.FieldDisplayType.HIDDEN
                 })
 
+
+                form.addField({
+                    id: 'custpage_employee_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = employee_list.toString();
+
+                form.addField({
+                    id: 'custpage_employee_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = employee_list_color.toString();
+
                 //Loading Section that gets displayed when the page is being loaded
                 inlineHtml += loadingSection();
                 inlineHtml += modalLeadStatusTimeline();
@@ -392,9 +446,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 // getDateRange('lastYear');
                 // getDateRange('thisYear');
 
-                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
-
                 inlineHtml += stepByStepGuideModal();
+
+                inlineHtml += '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
                 inlineHtml +=
                     '<div class="form-group container show_buttons_section hide">';
@@ -417,14 +471,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     id: 'customsearch_smc_franchisee'
                 });
                 var resultSetZees = searchZees.run();
-                // if (role != 1000) {
+
+
                 inlineHtml += franchiseeDropdownSection(resultSetZees, context);
                 inlineHtml += leadStatusDropdown(leadStatus)
-                // }
                 inlineHtml += leadSourceFilterSection(source, salesrep, campaign, parentLPO, lead_entered_by);
                 inlineHtml += dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes);
                 inlineHtml += '</div></div></div></br></br>';
-                // if (role != 1000) {
                 inlineHtml +=
                     '<div class="form-group container scorecard_percentage hide" style="">';
                 inlineHtml += '<div class="row">';
@@ -437,15 +490,42 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
-                // }
                 inlineHtml += tabsSection();
                 inlineHtml += dataTable();
 
-                // form.addButton({
-                //     id: 'download_csv',
-                //     label: 'Export All Table Data',
-                //     functionName: 'downloadCsv()'
-                // });
+                form.addField({
+                    id: 'custpage_campaign_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = campaign_list.toString();
+
+                form.addField({
+                    id: 'custpage_campaign_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = campaign_list_color.toString();
+
+
+                form.addField({
+                    id: 'custpage_source_list',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = source_list.toString();
+
+                form.addField({
+                    id: 'custpage_source_list_color',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = source_list_color.toString();
+
 
                 form.addField({
                     id: 'preview_table',
@@ -744,6 +824,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
+                var campaignColorCode = salesCampaignSearchResultSet.getValue('custrecord_campaign_color_code');
+
+                if (isNullorEmpty(campaignColorCode)) {
+                    campaignColorCode = '#F5F7F8'
+                }
+
+                campaign_list.push(salesCampaignInternalId);
+                campaign_list_color.push(campaignColorCode);
 
                 if (isNullorEmpty(campaign)) {
                     inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
@@ -800,6 +888,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 var leadsourcename = leadSourceResultSet.getValue({
                     name: 'title'
                 });
+                var sourceColorCode = leadSourceResultSet.getValue({
+                    name: 'custevent_source_color_code'
+                });
+
+                if (!isNullorEmpty(sourceColorCode)) {
+                    source_list.push(leadsourceid);
+                    source_list_color.push(sourceColorCode);
+                }
+
+               
 
                 if (isNullorEmpty(source)) {
                     inlineHtml += '<option value="' + leadsourceid + '" >' +
@@ -820,14 +918,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                             leadsourcename + '</option>';
                     }
                 }
-
-                // if (leadsourceid == source) {
-                //     inlineHtml += '<option value="' + leadsourceid + '" selected>' +
-                //         leadsourcename + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + leadsourceid + '" >' +
-                //         leadsourcename + '</option>';
-                // }
 
                 return true;
             });
@@ -883,82 +973,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     }
                 }
 
-                // if (salesrep == employeeId) {
-                //     inlineHtml += '<option value="' + employeeId +
-                //         '" selected="selected">' + employeeText + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //         '</option>';
-                // }
 
                 return true;
             });
 
-            // if (salesrep == '668711') {
-            //     inlineHtml += '<option value="668711" selected>Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '696160') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '690145') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145" selected>David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '668712') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1809334') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334" selected>David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1809382') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // } else if (salesrep == '1797389') {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712" >Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382" selected>Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389" selected>Bobbi G Yengbie</option>';
-            // } else {
-            //     inlineHtml += '<option value="668711">Lee Russell</option>';
-            //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-            //     inlineHtml += '<option value="690145">David Gdanski</option>';
-            //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
-            //     inlineHtml += '<option value="1809334">David Daoud</option>';
-            //     inlineHtml += '<option value="1809382">Liam Pike</option>';
-            //     inlineHtml += '<option value="1797389">Bobbi G Yengbie</option>';
-            // }
 
 
 
@@ -988,20 +1006,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     name: "custentity_lead_entered_by",
                     summary: "GROUP"
                 });
-
-                // if (isNullorEmpty(lead_entered_by)) {
-                //     inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //             '</option>';
-                // } else {
-                //     var lead_entered_byArray = lead_entered_by.split(',');
-                //     if (lead_entered_byArray.indexOf(employeeId) != -1) {
-                //         inlineHtml += '<option value="' + employeeId +
-                //             '" selected="selected">' + employeeText + '</option>';
-                //     } else {
-                //         inlineHtml += '<option value="' + employeeId + '">' + employeeText +
-                //             '</option>';
-                //     }
-                // }
 
                 if (lead_entered_by == employeeId) {
                     inlineHtml += '<option value="' + employeeId +
@@ -1072,13 +1076,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     }
                 }
 
-                // if (parentLPOInternalId == parentLPO) {
-                //     inlineHtml += '<option value="' + parentLPOInternalId + '" selected>' +
-                //         parentLPOName + '</option>';
-                // } else {
-                //     inlineHtml += '<option value="' + parentLPOInternalId + '" >' +
-                //         parentLPOName + '</option>';
-                // }
 
                 return true;
             });
@@ -1374,18 +1371,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
             inlineHtml += '</div>';
             inlineHtml += '</div>';
-            //     '<div class="form-group container zee_available_buttons_section">';
-            // inlineHtml += '<div class="row">';
-
-            // inlineHtml +=
-            //     '<div class="col-xs-3"></div>'
-            // inlineHtml +=
-            //     '<div class="col-xs-6"><input type="button" value="SHOW TOTAL LEAD COUNT" class="form-control btn btn-success" id="showTotal" style="font-weight: bold;"/><p style="font-size: inherit; color: red; text-align: center"><u><b>Please Note:</b></u> This will not calculate the product usage for a customer.</br> Please click <u><b>\"TOTAL USAGE\"</b></u> button to get the usage count for a customer. </p></div>'
-            // inlineHtml +=
-            //     '<div class="col-xs-3"></div>'
-
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
 
             return inlineHtml;
         }
@@ -1981,6 +1966,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                 return false;
             }
         }
+
+        function randomHexColorCode() {
+            var n = (Math.random() * 0xfffff * 1000000).toString(16);
+            return '#' + n.slice(0, 6);
+        };
+
         return {
             onRequest: onRequest
         };

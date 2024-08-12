@@ -1396,7 +1396,7 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
 
 
                     var linkURL =
-                        '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1721&deploy=1&compid=1048144&callcenter=T&recid=' + debt_row.custInternalID + '&sales_record_id=' + debt_row.salesRecordInternalId +
+                        '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' + debt_row.custInternalID + '&salesRecordId=' + debt_row.salesRecordInternalId +
                         '&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;">CALL CENTER</a></button></br></br><input type="button" id="" class="form-control btn btn-xs btn-success convert" data-id="' +
                         debt_row.custInternalID +
                         '" data-salesrecordid="' + debt_row.salesRecordInternalId + '" data-sales="' +

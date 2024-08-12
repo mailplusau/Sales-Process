@@ -6744,6 +6744,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var oldLostCustomer = null;
             var oldNewSignUp = null;
 
+            var defaultSearchFilters = leadsByCustomerWeeklySystemNotesSearch.filterExpression;
+            console.log('signed customer defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
             leadsByCustomerWeeklySystemNotesSearch.run().each(function (
                 leadsByCustomerWeeklySystemNotesSearchResultSet) {
 

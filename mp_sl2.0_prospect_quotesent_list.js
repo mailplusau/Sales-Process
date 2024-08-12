@@ -223,18 +223,21 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var day = date.getDay();
 
                 if (start_date == null && last_date == null) {
-                    var lastDay = new Date(y, m + 1, 0);
-                    lastDay.setHours(0, 0, 0, 0);
+                    if (isNullorEmpty(salesCampaign) && isNullorEmpty(zee)) {
+                        var lastDay = new Date(y, m + 1, 0);
+                        lastDay.setHours(0, 0, 0, 0);
 
-                    //Calculate the Current Calendar Year
-                    var today_day_in_month = date.getDate();
-                    var today_date = new Date(Date.UTC(y, m, today_day_in_month))
-                    var first_day_in_year = new Date(Date.UTC(y, 0));
-                    var date_from = first_day_in_year.toISOString().split('T')[0];
-                    var date_to = today_date.toISOString().split('T')[0];
+                        //Calculate the Current Calendar Year
+                        var today_day_in_month = date.getDate();
+                        var today_date = new Date(Date.UTC(y, m, today_day_in_month))
+                        var first_day_in_year = new Date(Date.UTC(y, 0));
+                        var date_from = first_day_in_year.toISOString().split('T')[0];
+                        var date_to = today_date.toISOString().split('T')[0];
 
-                    start_date = date_from;
-                    last_date = GetFormattedDate(lastDay);
+                        start_date = date_from;
+                        last_date = GetFormattedDate(lastDay);
+                    }
+
                 }
 
 
@@ -685,6 +688,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
  */
         function userDropdownSection(userId, salesCampaign, custStage, source, custStatus) {
 
+            log.debug({
+                title: 'salesCampaign',
+                details: salesCampaign
+            })
+
             var searchedSalesTeam = search.load({
                 id: 'customsearch_active_employees_3'
             });
@@ -759,96 +767,6 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 inlineHtml += '<option value="1">SUSPECTS</option>';
                 inlineHtml += '<option value="2">PROSPECTS</option>';
             }
-
-            // if (custStatus == '57') {
-            //     inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
-            // } else {
-            //     inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
-            // }
-
-            // if (custStatus == '42') {
-            //     inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
-            // } else {
-            //     inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
-            // }
-
-            // if (custStatus == '6') {
-            //     inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
-            // } else {
-            //     inlineHtml += '<option value="6">SUSPECT - NEW</option>';
-            // }
-
-            // if (custStatus == '20') {
-            //     inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
-            // } else {
-            //     inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
-            // }
-
-            // if (custStatus == '69') {
-            //     inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
-            // } else {
-            //     inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
-            // }
-
-            // if (custStatus == '18') {
-            //     inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
-            // } else {
-            //     inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
-            // }
-
-            // if (custStatus == '67') {
-            //     inlineHtml += '<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
-            // } else {
-            //     inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
-            // }
-
-            // if (custStatus == '62') {
-            //     inlineHtml += '<option value="62" selected>SUSPECT - PARKING LOT</option>';
-            // } else {
-            //     inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
-            // }
-
-            // if (custStatus == '68') {
-            //     inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
-            // } else {
-            //     inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
-            // }
-
-            // if (custStatus == '60') {
-            //     inlineHtml += '<option value="60" selected>SUSPECT - REP REASSIGN</option>';
-            // } else {
-            //     inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
-            // }
-
-            // if (custStatus == '7') {
-            //     inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
-            // } else {
-            //     inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
-            // }
-
-            // if (custStatus == '50') {
-            //     inlineHtml += '<option value="50" selected>PROSPECT - QUOTE SENT</option>';
-            // } else {
-            //     inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
-            // }
-
-            // if (custStatus == '58') {
-            //     inlineHtml += '<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
-            // } else {
-            //     inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
-            // }
-
-            // if (custStatus == '8') {
-            //     inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
-            // } else {
-            //     inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
-            // }
-
-            // if (custStatus == '35') {
-            //     inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
-            // } else {
-            //     inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
-            // }
 
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -1025,6 +943,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 values: 2
             }));
 
+            log.debug({
+                title: 'salesCampaignSearch.runPaged().count',
+                details: salesCampaignSearch.runPaged().count
+            })
+
 
             salesCampaignSearch.run().each(function (
                 salesCampaignSearchResultSet) {
@@ -1032,7 +955,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                 var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                if (salesCampaignInternalId >= 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70) {
+                log.debug({
+                    title: 'salesCampaignInternalId',
+                    details: salesCampaignInternalId
+                })
+
+                if (salesCampaignInternalId >= 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70 || salesCampaignInternalId == 77) {
 
 
                     if (isNullorEmpty(salesCampaign)) {
@@ -1045,7 +973,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                             salesCampaignArray.push(salesCampaign)
                         }
 
-                        if (salesCampaignArray.indexOf(zee_id) != -1) {
+                        if (salesCampaignArray.indexOf(salesCampaignInternalId) != -1) {
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" selected="selected">' + salesCampaignName + '</option>';
                         } else {
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
@@ -1159,7 +1087,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                         parentLPOInternalIdArray.push(parentLPOInternalId)
                     }
 
-                    if (parentLPOInternalIdArray.indexOf(zee_id) != -1) {
+                    if (parentLPOInternalIdArray.indexOf(parentLPOid) != -1) {
                         inlineHtml += '<option value="' + parentLPOid + '" selected="selected">' + parentLPOName +
                             '</option>';
                     } else {
@@ -1168,13 +1096,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     }
                 }
 
-                if (parentLPOInternalId == parentLPOid) {
-                    inlineHtml += '<option value="' + parentLPOid +
-                        '" selected="selected">' + parentLPOName + '</option>';
-                } else {
-                    inlineHtml += '<option value="' + parentLPOid + '">' + parentLPOName +
-                        '</option>';
-                }
+                // if (parentLPOInternalId == parentLPOid) {
+                //     inlineHtml += '<option value="' + parentLPOid +
+                //         '" selected="selected">' + parentLPOName + '</option>';
+                // } else {
+                //     inlineHtml += '<option value="' + parentLPOid + '">' + parentLPOName +
+                //         '</option>';
+                // }
 
                 return true;
             });
@@ -1225,8 +1153,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 details: from_date
             })
 
-            var date_from = dateISOToNetsuite(from_date);
-            var date_to = dateISOToNetsuite(to_date);
+            var date_from;
+            var date_to;
+            if (!isNullorEmpty(from_date) && !isNullorEmpty(to_date)) {
+                date_from = dateISOToNetsuite(from_date);
+                date_to = dateISOToNetsuite(to_date);
+            }
+
 
             log.debug({
                 title: 'inside tabsSection function',
@@ -1252,72 +1185,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
             inlineHtml += '</style>';
 
-            // inlineHtml +=
-            //     '<div style="">';
-
-            // if (custStatus == 1) {
-            //     //STAGE: SUSPECTS
-            //     inlineHtml += '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects" style="border-radius: 30px;"><b>SUSPECTS</b></a></li>';
-            // } else if (custStatus == 2) {
-            //     //STAGE: PROSPECTS
-            //     inlineHtml += '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects" style="border-radius: 30px;"><b>PROSPECTS</b></a></li>';
-            // }
-            // //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
-            // if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
-            // } else {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="hide"><a data-toggle="tab" href="#suspects"><b>SUSPECTS</b></a></li>';
-            // }
-            // //STATUSES - SUSPECT - LPO FOLLOW UP /SUSPECT - FOLLOW-UP
-            // if (custStatus == '67' || custStatus == '18') {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="active"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
-            // } else {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="hide"><a data-toggle="tab" href="#followup"><b>FOLLOW-UP</b></a></li>';
-            // }
-
-            // //STATUS - SUSPECT - VALIDATED
-            // if (custStatus == '68') {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="active"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
-            // } else {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="hide"><a data-toggle="tab" href="#validated"><b>VALIDATED</b></a></li>';
-            // }
-            // //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
-            // if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
-            // } else {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="hide"><a data-toggle="tab" href="#prospects"><b>PROSPECTS</b></a></li>';
-            // }
-            // //STATUSES - PROSPECT - OPPORTUNITY
-            // if (custStatus == '58') {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="active"><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
-            // } else {
-            //     inlineHtml +=
-            //         '<li role="presentation" class="hide"><a data-toggle="tab" href="#opportunities"><b>OPPORTUNITIES</b></a></li>';
-            // }
-
-
-
-            // inlineHtml += '</ul></div>';
-
-            // // Tabs content
-            // inlineHtml += '<div class="tab-content">';
 
             if (custStage == 1) {
                 //STAGE: SUSPECTS
-                // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
-
-                // inlineHtml += '<figure class="highcharts-figure">';
-                // inlineHtml += '<div id="container_suspects"></div>';
-                // inlineHtml += '</figure><br>';
 
                 //Website Leads - Suspects
                 var suspectsSearch = search.load({
@@ -1616,755 +1486,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                 // inlineHtml += '</div>';
             }
 
-            // //STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT
-            // if (custStatus == '57' || custStatus == '42' || custStatus == '6' || custStatus == '60' || custStatus == '7' || custStatus == '20' || custStatus == '69' || custStatus == '62') {
-
-            //     log.debug({
-            //         title: 'INSIDE CONDITION',
-            //         details: 'STATUSES - SUSPECT - HOT / SUSPECT QUALIFIED / SUSPECT - NEW /  SUSPECT - RE REASSIGN / SUSPECT - REJECTED / SUSPECT - NO ANSWER / SUSPECT - IN CONTACT /SUSPECT - PARKING LOT'
-            //     })
-
-            //     inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects">';
-
-            //     // inlineHtml += '<figure class="highcharts-figure">';
-            //     // inlineHtml += '<div id="container_suspects"></div>';
-            //     // inlineHtml += '</figure><br>';
-
-
-            //     //Website Leads - Suspects
-            //     var suspectsSearch = search.load({
-            //         type: 'customer',
-            //         id: 'customsearch_web_leads_suspects'
-            //     });
-
-            //     if (!isNullorEmpty(zee)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'partner',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: zee
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(paramUserId)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: paramUserId
-            //         }));
-            //     } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: userId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(salesCampaign)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_campaign',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: salesCampaign
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(custStatus)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'entitystatus',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: custStatus
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(source)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'leadsource',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: source
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(parentLPOInternalId)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'internalid',
-            //             join: 'custentity_lpo_parent_account',
-            //             operator: search.Operator.ANYOF,
-            //             values: parentLPOInternalId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORAFTER,
-            //             values: date_from
-            //         }));
-
-            //         suspectsSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORBEFORE,
-            //             values: date_to
-            //         }));
-            //     }
-
-            //     var suspectsSearchCount = suspectsSearch.runPaged().count;
-
-            //     log.debug({
-            //         title: 'suspectsSearchCount',
-            //         details: suspectsSearchCount
-            //     })
-
-            //     var totalPageCount = parseInt(suspectsSearchCount / 25) + 1;
-
-            //     var divBreak = Math.ceil(12 / totalPageCount);
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     inlineHtml +=
-            //         '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectsSearchCount) + '</b> </br> Pages: </br></div>';
-
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     var rangeStart = 0;
-            //     var rangeEnd = 0;
-
-            //     for (var i = 0; i < totalPageCount; i++) {
-            //         if (i == (totalPageCount - 1) || suspectsSearchCount < 25) {
-            //             if (suspectsSearchCount < 25) {
-            //             } else {
-            //                 rangeStart = rangeEnd;
-            //             }
-            //             rangeEnd = suspectsSearchCount
-            //         } else {
-            //             rangeStart = ((parseInt((i + 1)) - 1) * 25);
-            //             if (rangeStart != 25) {
-            //                 rangeEnd = rangeStart + 25;
-            //             } else {
-            //                 rangeEnd = (suspectsSearchCount - rangeStart) - 1;
-            //                 if (rangeEnd > 25) {
-            //                     rangeEnd = parseInt((i + 1)) * 25
-            //                 }
-            //             }
-            //         }
-
-
-            //         inlineHtml +=
-            //             '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
-            //     }
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml += dataTable('suspects');
-            //     inlineHtml += '</div>';
-            // }
-
-            // //STATUSES - PROSPECT - QUOTE SENT / PROSPECT - NO ANSWER / PROSPECT - IN CONTACT
-            // if (custStatus == '50' || custStatus == '35' || custStatus == '8') {
-            //     inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
-            //     // inlineHtml += '<figure class="highcharts-figure">';
-            //     // inlineHtml += '</figure><br></br>';
-
-            //     //Website Leads - Prospect Quote Sent
-            //     var custListCommenceTodayResults = search.load({
-            //         type: 'customer',
-            //         id: 'customsearch_web_leads_prosp_quote_sent'
-            //     });
-
-            //     if (!isNullorEmpty(zee)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'partner',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: zee
-            //         }));
-            //     }
-
-
-            //     if (!isNullorEmpty(paramUserId)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: paramUserId
-            //         }));
-            //     } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: userId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(salesCampaign)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_campaign',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: salesCampaign
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(custStatus)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'entitystatus',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: custStatus
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(source)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'leadsource',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: source
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(parentLPOInternalId)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'internalid',
-            //             join: 'custentity_lpo_parent_account',
-            //             operator: search.Operator.IS,
-            //             values: parentLPOInternalId
-            //         }));
-            //     }
-
-
-            //     if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORAFTER,
-            //             values: date_from
-            //         }));
-
-            //         custListCommenceTodayResults.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORBEFORE,
-            //             values: date_to
-            //         }));
-            //     }
-
-            //     var custListCommenceTodayResultsCount = custListCommenceTodayResults.runPaged().count;
-
-            //     log.debug({
-            //         title: 'custListCommenceTodayResultsCount',
-            //         details: custListCommenceTodayResultsCount
-            //     })
-
-            //     var totalPageCount = parseInt(custListCommenceTodayResultsCount / 25) + 1;
-
-            //     var divBreak = Math.ceil(12 / totalPageCount);
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     inlineHtml +=
-            //         '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (custListCommenceTodayResultsCount) + '</b></br> Pages: </div>';
-
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     var rangeStart = 0;
-            //     var rangeEnd = 0;
-
-            //     for (var i = 0; i < totalPageCount; i++) {
-            //         if (i == (totalPageCount - 1) || custListCommenceTodayResultsCount < 25) {
-            //             if (custListCommenceTodayResultsCount < 25) {
-            //             } else {
-            //                 rangeStart = rangeEnd;
-            //             }
-            //             rangeEnd = custListCommenceTodayResultsCount
-            //         } else {
-            //             rangeStart = ((parseInt((i + 1)) - 1) * 25);
-            //             if (rangeStart != 25) {
-            //                 rangeEnd = rangeStart + 25;
-            //             } else {
-            //                 rangeEnd = (custListCommenceTodayResultsCount - rangeStart) - 1;
-            //                 if (rangeEnd > 25) {
-            //                     rangeEnd = parseInt((i + 1)) * 25
-            //                 }
-            //             }
-            //         }
-
-
-            //         inlineHtml +=
-            //             '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
-            //     }
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml += dataTable('prospects');
-            //     inlineHtml += '</div>';
-            // }
-
-            // //STATUSES - SUSPECT - LPO FOLLOW UP /SUSPECT - FOLLOW-UP
-            // if (custStatus == '67' || custStatus == '18') {
-            //     inlineHtml += '<div role="tabpanel" class="tab-pane active" id="followup">';
-
-            //     // inlineHtml += '<figure class="highcharts-figure">';
-            //     // inlineHtml += '<div id="container_followup"></div>';
-            //     // inlineHtml += '</figure><br></br>';
-
-
-            //     //Website Leads - Suspect Followup
-            //     var suspectFollowUpsSearch = search.load({
-            //         type: 'customer',
-            //         id: 'customsearch_web_leads_suspect_followup'
-            //     });
-
-            //     if (!isNullorEmpty(zee)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'partner',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: zee
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(paramUserId)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: paramUserId
-            //         }));
-            //     } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: userId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(salesCampaign)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_campaign',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: salesCampaign
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(custStatus)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'entitystatus',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: custStatus
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(source)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'leadsource',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: source
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(parentLPOInternalId)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'internalid',
-            //             join: 'custentity_lpo_parent_account',
-            //             operator: search.Operator.IS,
-            //             values: parentLPOInternalId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORAFTER,
-            //             values: date_from
-            //         }));
-
-            //         suspectFollowUpsSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORBEFORE,
-            //             values: date_to
-            //         }));
-            //     }
-
-            //     var suspectFollowUpsSearchCount = suspectFollowUpsSearch.runPaged().count;
-
-            //     log.debug({
-            //         title: 'suspectFollowUpsSearchCount',
-            //         details: suspectFollowUpsSearchCount
-            //     })
-
-            //     var totalPageCount = parseInt(suspectFollowUpsSearchCount / 25) + 1;
-
-            //     var divBreak = Math.ceil(12 / totalPageCount);
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     inlineHtml +=
-            //         '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectFollowUpsSearchCount) + '</b> </br> Pages:</div>';
-
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     var rangeStart = 0;
-            //     var rangeEnd = 0;
-
-            //     for (var i = 0; i < totalPageCount; i++) {
-            //         if (i == (totalPageCount - 1) || suspectFollowUpsSearchCount < 25) {
-            //             if (suspectFollowUpsSearchCount < 25) {
-            //             } else {
-            //                 rangeStart = rangeEnd;
-            //             }
-            //             rangeEnd = suspectFollowUpsSearchCount
-            //         } else {
-            //             rangeStart = ((parseInt((i + 1)) - 1) * 25);
-            //             if (rangeStart != 25) {
-            //                 rangeEnd = rangeStart + 25;
-            //             } else {
-            //                 rangeEnd = (suspectFollowUpsSearchCount - rangeStart) - 1;
-            //                 if (rangeEnd > 25) {
-            //                     rangeEnd = parseInt((i + 1)) * 25
-            //                 }
-            //             }
-            //         }
-
-
-            //         inlineHtml +=
-            //             '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
-            //     }
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-
-            //     inlineHtml += dataTable('followups');
-            //     inlineHtml += '</div>';
-            // }
-
-            // //STATUSES - SUSPECT - VALIDATED
-            // if (custStatus == '68') {
-            //     inlineHtml += '<div role="tabpanel" class="tab-pane active" id="validated">';
-
-            //     // inlineHtml += '<figure class="highcharts-figure">';
-            //     // inlineHtml += '<div id="container_validated"></div>';
-            //     // inlineHtml += '</figure><br></br>';
-
-
-            //     //Website Leads - Suspect Validated
-            //     var suspectValidatedSearch = search.load({
-            //         type: 'customer',
-            //         id: 'customsearch_web_leads_suspect_validated'
-            //     });
-
-            //     if (!isNullorEmpty(zee)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'partner',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: zee
-            //         }));
-            //     }
-
-
-            //     if (!isNullorEmpty(paramUserId)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: paramUserId
-            //         }));
-            //     } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: userId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(salesCampaign)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_campaign',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: salesCampaign
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(custStatus)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'entitystatus',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: custStatus
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(source)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'leadsource',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: source
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(parentLPOInternalId)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'internalid',
-            //             join: 'custentity_lpo_parent_account',
-            //             operator: search.Operator.IS,
-            //             values: parentLPOInternalId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORAFTER,
-            //             values: date_from
-            //         }));
-
-            //         suspectValidatedSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORBEFORE,
-            //             values: date_to
-            //         }));
-            //     }
-
-
-            //     var suspectValidatedSearchCount = suspectValidatedSearch.runPaged().count;
-
-            //     var totalPageCount = parseInt(suspectValidatedSearchCount / 25) + 1;
-
-            //     var divBreak = Math.ceil(12 / totalPageCount);
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     inlineHtml +=
-            //         '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (suspectValidatedSearchCount) + '</b></br> Pages: </div>';
-
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     var rangeStart = 0;
-            //     var rangeEnd = 0;
-
-            //     for (var i = 0; i < totalPageCount; i++) {
-            //         if (i == (totalPageCount - 1) || suspectValidatedSearchCount < 25) {
-            //             if (suspectValidatedSearchCount < 25) {
-            //             } else {
-            //                 rangeStart = rangeEnd;
-            //             }
-            //             rangeEnd = suspectValidatedSearchCount
-            //         } else {
-            //             rangeStart = ((parseInt((i + 1)) - 1) * 25);
-            //             if (rangeStart != 25) {
-            //                 rangeEnd = rangeStart + 25;
-            //             } else {
-            //                 rangeEnd = (suspectValidatedSearchCount - rangeStart) - 1;
-            //                 if (rangeEnd > 25) {
-            //                     rangeEnd = parseInt((i + 1)) * 25
-            //                 }
-            //             }
-            //         }
-
-
-            //         inlineHtml +=
-            //             '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
-            //     }
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml += dataTable('validated');
-            //     inlineHtml += '</div>';
-            // }
-
-            // //STATUSES - PROSPECT - OPPORTUNITY
-            // if (custStatus == '58') {
-            //     inlineHtml += '<div role="tabpanel" class="tab-pane active" id="opportunities">';
-
-            //     // inlineHtml += '<figure class="highcharts-figure">';
-            //     // inlineHtml += '<div id="container_customer"></div>';
-            //     // inlineHtml += '</figure><br></br>';
-
-            //     //Website Leads - Prospect Opportunity
-            //     var prospectOpportunititesSearch = search.load({
-            //         type: 'customer',
-            //         id: 'customsearch_web_leads_prosp_quote_sen_5'
-            //     });
-
-            //     if (!isNullorEmpty(zee)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'partner',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: zee
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(paramUserId)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: paramUserId
-            //         }));
-            //     } else if (role != 3 && isNullorEmpty(paramUserId) && userId != 653718) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_assigned',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: userId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(salesCampaign)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'custrecord_sales_campaign',
-            //             join: 'custrecord_sales_customer',
-            //             operator: search.Operator.IS,
-            //             values: salesCampaign
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(custStatus)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'entitystatus',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: custStatus
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(source)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'leadsource',
-            //             join: null,
-            //             operator: search.Operator.IS,
-            //             values: source
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(parentLPOInternalId)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'internalid',
-            //             join: 'custentity_lpo_parent_account',
-            //             operator: search.Operator.IS,
-            //             values: parentLPOInternalId
-            //         }));
-            //     }
-
-            //     if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORAFTER,
-            //             values: date_from
-            //         }));
-
-            //         prospectOpportunititesSearch.filters.push(search.createFilter({
-            //             name: 'custentity_date_lead_entered',
-            //             join: null,
-            //             operator: search.Operator.ONORBEFORE,
-            //             values: date_to
-            //         }));
-            //     }
-
-
-            //     var prospectOpportunititesSearchCount = prospectOpportunititesSearch.runPaged().count;
-
-            //     var totalPageCount = parseInt(prospectOpportunititesSearchCount / 25) + 1;
-
-            //     var divBreak = Math.ceil(12 / totalPageCount);
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     inlineHtml +=
-            //         '<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' + (prospectOpportunititesSearchCount) + '</b></br> Pages: </div>';
-
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml +=
-            //         '<div class="form-group container zee_available_buttons_section">';
-            //     inlineHtml += '<div class="row">';
-
-            //     var rangeStart = 0;
-            //     var rangeEnd = 0;
-
-            //     for (var i = 0; i < totalPageCount; i++) {
-            //         if (i == (totalPageCount - 1) || prospectOpportunititesSearchCount < 25) {
-            //             if (prospectOpportunititesSearchCount < 25) {
-            //             } else {
-            //                 rangeStart = rangeEnd;
-            //             }
-            //             rangeEnd = prospectOpportunititesSearchCount
-            //         } else {
-            //             rangeStart = ((parseInt((i + 1)) - 1) * 25);
-            //             if (rangeStart != 25) {
-            //                 rangeEnd = rangeStart + 25;
-            //             } else {
-            //                 rangeEnd = (prospectOpportunititesSearchCount - rangeStart) - 1;
-            //                 if (rangeEnd > 25) {
-            //                     rangeEnd = parseInt((i + 1)) * 25
-            //                 }
-            //             }
-            //         }
-
-
-            //         inlineHtml +=
-            //             '<div class="col-xs-' + divBreak + '" style="text-align: center;"><input type="button" value="' + (i + 1) + '" class="form-control btn btn-info page_number" data-id="' + (i + 1) + '" /></br></div>'
-            //     }
-            //     inlineHtml += '</div>';
-            //     inlineHtml += '</div>';
-
-            //     inlineHtml += dataTable('opportunities');
-            //     inlineHtml += '</div>';
-            // }
-
-
+            
             inlineHtml += '</div>';
 
             return inlineHtml;
