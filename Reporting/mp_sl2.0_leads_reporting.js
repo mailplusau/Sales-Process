@@ -288,13 +288,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     var last_name = salesTeamSearchResultSet.getValue('lastname');
                     var employeeColorCode = salesTeamSearchResultSet.getValue('custentity_employee_color_code');
                     var full_name = first_name + ' ' + last_name;
-                    
+
                     if (isNullorEmpty(employeeColorCode)) {
                         color = randomHexColorCode();
                     } else {
                         color = employeeColorCode;
                     }
-                    
+
 
                     employee_list.push(employee_id);
                     employee_list_color.push(color);
@@ -903,7 +903,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     source_list_color.push(sourceColorCode);
                 }
 
-               
+
 
                 if (isNullorEmpty(source)) {
                     inlineHtml += '<option value="' + leadsourceid + '" >' +
@@ -1103,59 +1103,59 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes) {
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
-            // inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES ACTIVITY & USER NOTE - FILTER</span></h4></div>';
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
-            // inlineHtml += '<div class="form-group container modified_date_div hide">';
-            // inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="form-group container modified_date_div hide">';
+            inlineHtml += '<div class="row">';
 
-            // // Last Modified Date from field
-            // inlineHtml += '<div class="col-xs-6 date_from">';
-            // inlineHtml += '<div class="input-group">';
-            // inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">SALES ACTIVITY & USER NOTE DATE - FROM</span>';
-            // if (isNullorEmpty(modified_start_date)) {
-            //     inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
-            // } else {
-            //     inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' + modified_start_date + '"/>';
-            // }
+            // Last Modified Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
+            if (isNullorEmpty(modified_start_date)) {
+                inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
+            } else {
+                inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' + modified_start_date + '"/>';
+            }
 
-            // inlineHtml += '</div></div>';
-            // // Last Modified Date to field
-            // inlineHtml += '<div class="col-xs-6 date_to">';
-            // inlineHtml += '<div class="input-group">';
-            // inlineHtml += '<span class="input-group-addon" id="date_to_text">SALES ACTIVITY & USER NOTE DATE - TO</span>';
-            // if (isNullorEmpty(modified_last_date)) {
-            //     inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date">';
-            // } else {
-            //     inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' + modified_last_date + '">';
-            // }
+            inlineHtml += '</div></div>';
+            // Last Modified Date to field
+            inlineHtml += '<div class="col-xs-6 date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml += '<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
+            if (isNullorEmpty(modified_last_date)) {
+                inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date">';
+            } else {
+                inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' + modified_last_date + '">';
+            }
 
-            // inlineHtml += '</div></div></div></div>';
+            inlineHtml += '</div></div></div></div>';
 
-            // inlineHtml += '<div class="form-group container salesactivitynotes_div hide">';
-            // inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="form-group container salesactivitynotes_div hide">';
+            inlineHtml += '<div class="row">';
 
-            // inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
-            // inlineHtml += '<div class="input-group">';
-            // inlineHtml +=
-            //     '<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-            // inlineHtml += '<select id="sales_activity_notes" class="form-control">';
-            // inlineHtml += '<option></option>';
+            inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
+            inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+            inlineHtml += '<option></option>';
 
-            // if (sales_activity_notes == '1') {
-            //     inlineHtml += '<option value="1" selected>Yes</option>';
-            //     inlineHtml += '<option value="2">No</option>';
+            if (sales_activity_notes == '1') {
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
 
-            // } else if (sales_activity_notes == '2') {
-            //     inlineHtml += '<option value="1" >Yes</option>';
-            //     inlineHtml += '<option value="2" selected>No</option>';
-            // } else {
-            //     inlineHtml += '<option value="1">Yes</option>';
-            //     inlineHtml += '<option value="2" selected>No</option>';
-            // }
-            // inlineHtml += '</select>';
-            // inlineHtml += '</div></div></div></div>';
+            } else if (sales_activity_notes == '2') {
+                inlineHtml += '<option value="1" >Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
+            } else {
+                inlineHtml += '<option value="1">Yes</option>';
+                inlineHtml += '<option value="2" selected>No</option>';
+            }
+            inlineHtml += '</select>';
+            inlineHtml += '</div></div></div></div>';
 
             inlineHtml += '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
@@ -1462,7 +1462,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_zee_overview"></div>';
+            inlineHtml += '<div id=""></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('zee_overview');
             inlineHtml += '</div>';

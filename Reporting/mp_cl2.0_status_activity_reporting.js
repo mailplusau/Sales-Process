@@ -409,7 +409,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=' + sales_activity_notes;
+                if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1915&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=1';
+
+                } else {
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=' + sales_activity_notes;
+
+                }
 
 
                 window.location.href = url;
@@ -7898,10 +7904,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
             //?BY SALES REP ASSIGNED - LEAD ENTERED BY & CAMPAIGN
-            //Website New Leads by Lead Entered - Sales Rep Reporting
+            //Leads by Lead Entered - System Notes - Sales Rep Reporting
             var leadsListBySalesRepDataCaptureCampaignSearch = search.load({
                 type: 'customer',
-                id: 'customsearch_leads_reporting_weekly_5_3'
+                id: 'customsearch_leads_reporting_weekly_5__5'
             });
 
 
@@ -8021,7 +8027,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8087,12 +8093,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
                 var dataCaptureAssigned = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
-                    name: "custentity_lead_entered_by",
+                    name: "name",
+                    join: "systemNotes",
                     summary: "GROUP",
                 });
 
                 var dataCaptureAssignedId = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
-                    name: "custentity_lead_entered_by",
+                    name: "name",
+                    join: "systemNotes",
                     summary: "GROUP",
                 });
 
@@ -8319,7 +8327,356 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             plotSalesRepChartCampaign(series_data_campaign, null, salesRepAssignedTeamMemberCategories)
 
+            //?Franchisee Generated Leads Assgined to Sales Rep
+            if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
 
+                //Franchisee Generated Leads by LAst Assigned - Weekly Reporting
+                var leadsListByZeeGeneratedLastAssignedSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_4__3'
+                });
+
+
+                if (!isNullorEmpty(leadStatus)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: leadStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_entered',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_entered',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_to
+                    }));
+                }
+
+                if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                    leadsListBySalesRepDataCaptureCampaignSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_prospect_opportunity',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_signed_up_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_prospect_opportunity',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_signed_up_to
+                    }));
+                }
+
+                if (!isNullorEmpty(lead_source)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: lead_source
+                    }));
+                }
+
+                if (!isNullorEmpty(sales_rep)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: sales_rep
+                    }));
+                }
+
+                if (!isNullorEmpty(lead_entered_by)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_lead_entered_by',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: lead_entered_by
+                    }));
+                }
+
+                if (!isNullorEmpty(sales_campaign)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.ANYOF,
+                        values: sales_campaign
+                    }));
+                }
+
+                if (!isNullorEmpty(parent_lpo)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.ANYOF,
+                        values: parent_lpo
+                    }));
+                }
+
+                if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_quote_sent',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_quote_sent_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_quote_sent',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_quote_sent_to
+                    }));
+                }
+
+                if (!isNullorEmpty(zee_id)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee_id
+                    }));
+                }
+
+                if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                    var defaultSearchFilters = leadsListByZeeGeneratedLastAssignedSearch.filterExpression;
+
+                    console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                    defaultSearchFilters.push('AND');
+                    defaultSearchFilters.push(modifiedDateFilters);
+
+                    console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filterExpression = defaultSearchFilters;
+
+
+                }
+
+                var count1 = 0;
+                var total_leads = 0;
+                var total_leads_assigned = 0;
+                var oldCustSalesRepAssigned = null;
+                var oldCustSalesRepAssignedText = null;
+
+                var oldzeeGenerated = null;
+                var oldzeeGeneratedId = null;
+
+                var oldDataCaptureCampaign = null;
+                var oldDataCaptureCampaignId = null;
+
+
+                var dataCaptureBySource = {};
+                var datatCaptureBySourceId = {};
+
+                var zeeGeneratedTeam = [];
+
+
+                leadsListByZeeGeneratedLastAssignedSearch.run().each(function (
+                    leadsListBySalesRepDataCaptureCampaignSearchResultSet) {
+
+
+                    var prospectCount = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: 'internalid',
+                        summary: 'COUNT'
+                    }));
+
+                    var custSalesRepAssigned = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: "custrecord_sales_assigned",
+                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        summary: "GROUP",
+                    }));
+                    var custSalesRepAssignedText = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
+                        name: "custrecord_sales_assigned",
+                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        summary: "GROUP",
+                    });
+
+
+                    var zeeGenerated = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+
+                    var zeeGeneratedId = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+
+                    // if (isNullorEmpty(dataCaptureAssigned)) {
+                    //     dataCaptureAssigned = 'Franchisees'
+                    // }
+                    // if (isNullorEmpty(dataCaptureAssignedId)) {
+                    //     dataCaptureAssignedId = -4
+                    // }
+
+                    if (count1 == 0) {
+                        total_leads += prospectCount
+                        total_leads_assigned += prospectCount
+
+                        zeeGeneratedTeam.push({
+                            'id': zeeGeneratedId,
+                            'name': zeeGenerated,
+                            'count': total_leads_assigned,
+                            "details": []
+                        });
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details.push({
+                            'lastAssigned': [{
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+                            }]
+                        })
+
+
+                    } else if (oldzeeGeneratedId != null &&
+                        oldzeeGeneratedId == zeeGeneratedId) {
+                        total_leads_assigned += prospectCount
+
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].count = total_leads_assigned;
+                        var lastAssignedLength = zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned.length;
+
+                        if (custSalesRepAssigned == oldCustSalesRepAssigned) {
+                            total_leads += prospectCount;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count += total_leads;
+
+                        } else if (custSalesRepAssigned != oldCustSalesRepAssigned) {
+
+                            // total_leads += prospectCount;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned.push({
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+                            })
+                        }
+
+                    } else if (oldzeeGeneratedId != null &&
+                        oldzeeGeneratedId != zeeGeneratedId) {
+
+                        total_leads = 0;
+                        total_leads_assigned = 0;
+
+                        total_leads += prospectCount;
+                        total_leads_assigned += prospectCount
+
+                        zeeGeneratedTeam.push({
+                            'id': zeeGeneratedId,
+                            'name': zeeGenerated,
+                            'count': total_leads_assigned,
+                            "details": []
+                        });
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details.push({
+                            'lastAssigned': [{
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+
+                            }]
+                        })
+
+                    }
+
+                    count1++;
+                    oldCustSalesRepAssigned = custSalesRepAssigned;
+                    oldCustSalesRepAssignedText = custSalesRepAssignedText;
+                    oldzeeGenerated = zeeGenerated;
+                    oldzeeGeneratedId = zeeGeneratedId;
+                    return true;
+                });
+
+
+                console.log('zeeGeneratedTeam: ' + JSON.stringify(zeeGeneratedTeam));
+
+
+                var series_data_last_assigned = [];
+                var series_data_campaign = [];
+                var salesRepAssignedTeamMemberCategories = [];
+                var enteredLeadCount = [];
+                var enteredName = [];
+                var dataLastAssigned = new Array(dataCaptureTeam.length).fill(0);
+                var dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+                var dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+                var resetDataSource = new Array(dataCaptureTeam.length).fill(0);
+                for (var x = 0; x < zeeGeneratedTeam.length; x++) {
+                    salesRepAssignedTeamMemberCategories[x] = zeeGeneratedTeam[x].name;
+                    enteredLeadCount[x] = [];
+                    enteredName[x] = [];
+                    console.log('name: ' + zeeGeneratedTeam[x].name);
+                    console.log('details: ' + JSON.stringify(zeeGeneratedTeam[x].details[0].lastAssigned));
+                    for (y = 0; y < zeeGeneratedTeam[x].details[0].lastAssigned.length; y++) {
+                        enteredLeadCount[x][y] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count;
+                        enteredName[x][y] = zeeGeneratedTeam[x].details[0].lastAssigned[y].name;
+
+                        console.log('lastAssigned Name: ' + zeeGeneratedTeam[x].details[0].lastAssigned[y].name);
+                        console.log('lastAssigned Count: ' + zeeGeneratedTeam[x].details[0].lastAssigned[y].count);
+
+                        console.log('before series_data_last_assigned: ' + JSON.stringify(series_data_last_assigned));
+                        var entered_by_exists = false;
+                        for (var j = 0; j < series_data_last_assigned.length; j++) {
+                            if (series_data_last_assigned[j].name == enteredName[x][y]) {
+                                entered_by_exists = true;
+                                series_data_last_assigned[j].data[x] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count
+                            }
+                        }
+                        if (entered_by_exists == false) {
+                            dataLastAssigned = new Array(zeeGeneratedTeam.length).fill(0);
+                            dataLastAssigned[x] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count;
+
+                            var colorCode = '#ffffff'
+                            if (employee_list.indexOf((zeeGeneratedTeam[x].details[0].lastAssigned[y].id).toString()) != -1) {
+                                colorCode = employee_list_color[employee_list.indexOf((zeeGeneratedTeam[x].details[0].lastAssigned[y].id).toString())];
+                            }
+
+                            if (enteredName[x][y] == 'Portal') {
+                                colorCode = '#0F6292'
+                            } else if (enteredName[x][y] == 'Franchisees') {
+                                colorCode = '#508b9b'
+                            }
+
+                            series_data_last_assigned.push({
+                                name: enteredName[x][y],
+                                data: dataLastAssigned,
+                                color: colorCode,
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+
+
+                        console.log('after series_data_last_assigned: ' + JSON.stringify(series_data_last_assigned));
+
+
+                    }
+
+                }
+
+                console.log('salesRepAssignedTeamMemberCategories')
+                console.log(salesRepAssignedTeamMemberCategories)
+
+                console.log('series_data_last_assigned')
+                console.log(series_data_last_assigned)
+
+
+                plotZeeGeneratedSalesRepChart(series_data_last_assigned, null, salesRepAssignedTeamMemberCategories)
+            }
 
             // loadDatatable(debt_set, debt_set2);
             debt_set = [];
@@ -8381,7 +8738,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     zoomType: 'xy',
                     type: 'column'
                 }, title: {
-                    text: 'Leads - By Sales Rep Assigned - Lead Entered By',
+                    text: 'Leads - By Sales Rep Assigned - Status Change By',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -8458,6 +8815,92 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
+        function plotZeeGeneratedSalesRepChart(series_data, series_data2, categores) {
+            Highcharts.chart('container_zee_overview_last_assigned', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Franchisee - Last Assigned',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
         function plotSalesRepChartCampaign(series_data, series_data2, categores) {
             Highcharts.chart('container_campaign_sales_rep_preview', {
                 chart: {
@@ -8465,7 +8908,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     zoomType: 'xy',
                     type: 'column'
                 }, title: {
-                    text: 'Leads - By Sales Rep Assigned - Campaign',
+                    text: 'Leads - By Sales Rep Assigned - Status Change By',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',

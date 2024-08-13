@@ -167,10 +167,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 start_date = null;
                                 date_signed_up_from = null;
                             } else {
-                                start_date = firstDay;
+                                modified_start_date = firstDay;
                             }
                         } else {
-                            start_date = firstDay;
+                            modified_start_date = firstDay;
                             // date_signed_up_from = firstDay;
                         }
 
@@ -1140,19 +1140,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-            inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+            inlineHtml += '<select id="sales_activity_notes" class="form-control" readonly>';
             inlineHtml += '<option></option>';
 
             if (sales_activity_notes == '1') {
                 inlineHtml += '<option value="1" selected>Yes</option>';
                 inlineHtml += '<option value="2">No</option>';
 
-            } else if (sales_activity_notes == '2') {
-                inlineHtml += '<option value="1" >Yes</option>';
-                inlineHtml += '<option value="2" selected>No</option>';
             } else {
-                inlineHtml += '<option value="1">Yes</option>';
-                inlineHtml += '<option value="2" selected>No</option>';
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
             }
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -1462,7 +1459,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_zee_overview"></div>';
+            inlineHtml += '<div id=""></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('zee_overview');
             inlineHtml += '</div>';
