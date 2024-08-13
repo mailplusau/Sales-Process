@@ -5667,7 +5667,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5909,7 +5909,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7548,7 +7548,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified_count
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
                 }
 
                 count1++;
@@ -11785,7 +11785,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12958,7 +12958,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12974,6 +12974,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             var count1 = 0;
             var total_leads = 0;
+            var total_leads_per_source = 0
+            var total_leads_assigned = 0;
             var oldDataCaptureAssigned = null;
             var oldDataCaptureAssignedId = null;
 
@@ -13034,13 +13036,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     dataCaptureAssigned = 'Franchisees'
                 }
 
+                console.log('dataCaptureAssigned: ' + dataCaptureAssigned);
+                console.log('custLeadSourceText: ' + custLeadSourceText);
+                console.log('custCampaignText: ' + custCampaignText);
+                console.log('prospectCount: ' + prospectCount);
+
+                console.log('oldDataCaptureAssigned: ' + oldDataCaptureAssigned);
+                console.log('custLeadSource: ' + custLeadSource);
+                console.log('oldDataCaptureSourceId: ' + oldDataCaptureSourceId);
+
+
                 if (count1 == 0) {
                     total_leads += prospectCount
+                    total_leads_assigned += prospectCount
+                    total_leads_per_source += prospectCount
 
                     dataCaptureTeam.push({
                         'id': dataCaptureAssignedId,
                         'name': dataCaptureAssigned,
-                        'count': total_leads,
+                        'count': total_leads_assigned,
                         "details": []
                     });
 
@@ -13060,25 +13074,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 } else if (oldDataCaptureAssigned != null &&
                     oldDataCaptureAssigned == dataCaptureAssigned) {
+                    total_leads_assigned += prospectCount
 
-                    dataCaptureTeam[dataCaptureTeam.length - 1].count = total_leads;
+                    dataCaptureTeam[dataCaptureTeam.length - 1].count = total_leads_assigned;
                     var sourceLength = dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.length;
 
                     if (custLeadSource == oldDataCaptureSourceId) {
-                        total_leads += prospectCount;
-                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].count = total_leads;
+                        total_leads_per_source += prospectCount
+                        console.log('total_leads: ' + total_leads);
+                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].count = total_leads_per_source;
                         dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
                             'count': prospectCount
                         })
                     } else if (custLeadSource != oldDataCaptureSourceId) {
-                        console.log('sourceLength: ' + sourceLength);
-                        console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
+
+                        total_leads_per_source = 0;
+                        total_leads_per_source += prospectCount
+
                         dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.push({
                             'id': custLeadSource,
                             'name': custLeadSourceText,
-                            'count': prospectCount,
+                            'count': total_leads_per_source,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -13092,13 +13110,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
                     total_leads = 0;
+                    total_leads_assigned = 0;
+                    total_leads_per_source = 0;
 
                     total_leads += prospectCount;
+                    total_leads_assigned += prospectCount;
+                    total_leads_per_source += prospectCount;
+
+                    console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
 
                     dataCaptureTeam.push({
                         'id': dataCaptureAssignedId,
                         'name': dataCaptureAssigned,
-                        'count': prospectCount,
+                        'count': total_leads_assigned,
                         "details": []
                     });
 
@@ -13106,7 +13130,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         'source': [{
                             'id': custLeadSource,
                             'name': custLeadSourceText,
-                            'count': prospectCount,
+                            'count': total_leads_per_source,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -13116,7 +13140,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     })
 
                 }
-
+                console.log('total_leads: ' + total_leads);
                 count1++;
                 oldDataCaptureAssigned = dataCaptureAssigned;
                 oldDataCaptureAssignedId = dataCaptureAssignedId;
@@ -13126,6 +13150,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldDataCaptureCampaign = custCampaignText;
                 return true;
             });
+
+            if (count1 > 0) {
+
+            }
 
 
             console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
@@ -13529,7 +13557,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -13646,7 +13674,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += prospectCount;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += total_leads;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
@@ -16540,7 +16568,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
