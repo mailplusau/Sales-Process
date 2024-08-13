@@ -229,7 +229,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 $('.quote_sent_div').removeClass('hide');
                 $('.usage_label_section').removeClass('hide');
                 $('.calcprodusage_div').removeClass('hide');
-                $('.salesactivitynotes_div').removeClass('hide');
+                // $('.salesactivitynotes_div').removeClass('hide');
                 $('.usage_date_div').removeClass('hide');
                 $('.invoice_label_section').removeClass('hide');
                 $('.invoice_date_type_div').removeClass('hide');
@@ -408,8 +408,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 }
 
+                if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1915&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=1';
 
-                var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=' + sales_activity_notes;
+                } else {
+                    var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" + date_from + '&last_date=' + date_to + '&usage_date_from=' + usage_date_from + '&usage_date_to=' + usage_date_to + '&date_signed_up_from=' + date_signed_up_from + '&date_signed_up_to=' + date_signed_up_to + '&source=' + source + '&date_quote_sent_from=' + date_quote_sent_from + '&date_quote_sent_to=' + date_quote_sent_to + '&sales_rep=' + sales_rep + '&zee=' + zee + '&calcprodusage=' + calcprodusage + "&invoice_date_from=" + invoice_date_from + '&invoice_date_to=' + invoice_date_to + '&campaign=' + sales_campaign + '&lpo=' + parent_lpo + '&lead_entered_by=' + lead_entered_by + '&modified_date_from=' + modified_date_from + '&modified_date_to=' + modified_date_to + '&status=' + leadStatus + '&salesactivitynotes=' + sales_activity_notes;
+
+                }
 
 
                 window.location.href = url;
@@ -5667,7 +5672,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -5909,7 +5914,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "690145", "696160", "668711", "653718", "1777309", "1809382", "1809334", "1813424", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7548,7 +7553,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified_count
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
                 }
 
                 count1++;
@@ -11785,7 +11790,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12958,7 +12963,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -12974,6 +12979,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             var count1 = 0;
             var total_leads = 0;
+            var total_leads_per_source = 0
+            var total_leads_assigned = 0;
             var oldDataCaptureAssigned = null;
             var oldDataCaptureAssignedId = null;
 
@@ -13034,13 +13041,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     dataCaptureAssigned = 'Franchisees'
                 }
 
+                console.log('dataCaptureAssigned: ' + dataCaptureAssigned);
+                console.log('custLeadSourceText: ' + custLeadSourceText);
+                console.log('custCampaignText: ' + custCampaignText);
+                console.log('prospectCount: ' + prospectCount);
+
+                console.log('oldDataCaptureAssigned: ' + oldDataCaptureAssigned);
+                console.log('custLeadSource: ' + custLeadSource);
+                console.log('oldDataCaptureSourceId: ' + oldDataCaptureSourceId);
+
+
                 if (count1 == 0) {
                     total_leads += prospectCount
+                    total_leads_assigned += prospectCount
+                    total_leads_per_source += prospectCount
 
                     dataCaptureTeam.push({
                         'id': dataCaptureAssignedId,
                         'name': dataCaptureAssigned,
-                        'count': total_leads,
+                        'count': total_leads_assigned,
                         "details": []
                     });
 
@@ -13060,25 +13079,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 } else if (oldDataCaptureAssigned != null &&
                     oldDataCaptureAssigned == dataCaptureAssigned) {
+                    total_leads_assigned += prospectCount
 
-                    dataCaptureTeam[dataCaptureTeam.length - 1].count = total_leads;
+                    dataCaptureTeam[dataCaptureTeam.length - 1].count = total_leads_assigned;
                     var sourceLength = dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.length;
 
                     if (custLeadSource == oldDataCaptureSourceId) {
-                        total_leads += prospectCount;
-                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].count = total_leads;
+                        total_leads_per_source += prospectCount
+                        console.log('total_leads: ' + total_leads);
+                        dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].count = total_leads_per_source;
                         dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source[sourceLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
                             'count': prospectCount
                         })
                     } else if (custLeadSource != oldDataCaptureSourceId) {
-                        console.log('sourceLength: ' + sourceLength);
-                        console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
+
+                        total_leads_per_source = 0;
+                        total_leads_per_source += prospectCount
+
                         dataCaptureTeam[dataCaptureTeam.length - 1].details[0].source.push({
                             'id': custLeadSource,
                             'name': custLeadSourceText,
-                            'count': prospectCount,
+                            'count': total_leads_per_source,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -13092,13 +13115,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
                     total_leads = 0;
+                    total_leads_assigned = 0;
+                    total_leads_per_source = 0;
 
                     total_leads += prospectCount;
+                    total_leads_assigned += prospectCount;
+                    total_leads_per_source += prospectCount;
+
+                    console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
 
                     dataCaptureTeam.push({
                         'id': dataCaptureAssignedId,
                         'name': dataCaptureAssigned,
-                        'count': prospectCount,
+                        'count': total_leads_assigned,
                         "details": []
                     });
 
@@ -13106,7 +13135,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         'source': [{
                             'id': custLeadSource,
                             'name': custLeadSourceText,
-                            'count': prospectCount,
+                            'count': total_leads_per_source,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -13116,7 +13145,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     })
 
                 }
-
+                console.log('total_leads: ' + total_leads);
                 count1++;
                 oldDataCaptureAssigned = dataCaptureAssigned;
                 oldDataCaptureAssignedId = dataCaptureAssignedId;
@@ -13126,6 +13155,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldDataCaptureCampaign = custCampaignText;
                 return true;
             });
+
+            if (count1 > 0) {
+
+            }
 
 
             console.log('dataCaptureTeam: ' + JSON.stringify(dataCaptureTeam));
@@ -13529,7 +13562,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]], "OR", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053","1822089","668712","1797389","1809334","690145","1813424","109783","696160","668711","1809382","653718","1777309","1820151","1844985","1819701"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -13646,7 +13679,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += prospectCount;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += total_leads;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
@@ -13827,6 +13860,356 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             plotSalesRepChartCampaign(series_data_campaign, null, salesRepAssignedTeamMemberCategories)
 
+            //?Franchisee Generated Leads Assgined to Sales Rep
+            if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
+
+                //Franchisee Generated Leads by LAst Assigned - Weekly Reporting
+                var leadsListByZeeGeneratedLastAssignedSearch = search.load({
+                    type: 'customer',
+                    id: 'customsearch_leads_reporting_weekly_4__3'
+                });
+
+
+                if (!isNullorEmpty(leadStatus)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'entitystatus',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: leadStatus
+                    }));
+                }
+
+                if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_entered',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_entered',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_to
+                    }));
+                }
+
+                if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                    leadsListBySalesRepDataCaptureCampaignSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_prospect_opportunity',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_signed_up_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_prospect_opportunity',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_signed_up_to
+                    }));
+                }
+
+                if (!isNullorEmpty(lead_source)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'leadsource',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: lead_source
+                    }));
+                }
+
+                if (!isNullorEmpty(sales_rep)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_assigned',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.IS,
+                        values: sales_rep
+                    }));
+                }
+
+                if (!isNullorEmpty(lead_entered_by)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_lead_entered_by',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: lead_entered_by
+                    }));
+                }
+
+                if (!isNullorEmpty(sales_campaign)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custrecord_sales_campaign',
+                        join: 'custrecord_sales_customer',
+                        operator: search.Operator.ANYOF,
+                        values: sales_campaign
+                    }));
+                }
+
+                if (!isNullorEmpty(parent_lpo)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'internalid',
+                        join: 'custentity_lpo_parent_account',
+                        operator: search.Operator.ANYOF,
+                        values: parent_lpo
+                    }));
+                }
+
+                if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_quote_sent',
+                        join: null,
+                        operator: search.Operator.ONORAFTER,
+                        values: date_quote_sent_from
+                    }));
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'custentity_date_lead_quote_sent',
+                        join: null,
+                        operator: search.Operator.ONORBEFORE,
+                        values: date_quote_sent_to
+                    }));
+                }
+
+                if (!isNullorEmpty(zee_id)) {
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
+                        name: 'partner',
+                        join: null,
+                        operator: search.Operator.IS,
+                        values: zee_id
+                    }));
+                }
+
+                if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                    var defaultSearchFilters = leadsListByZeeGeneratedLastAssignedSearch.filterExpression;
+
+                    console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                    defaultSearchFilters.push('AND');
+                    defaultSearchFilters.push(modifiedDateFilters);
+
+                    console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+
+                    leadsListByZeeGeneratedLastAssignedSearch.filterExpression = defaultSearchFilters;
+
+
+                }
+
+                var count1 = 0;
+                var total_leads = 0;
+                var total_leads_assigned = 0;
+                var oldCustSalesRepAssigned = null;
+                var oldCustSalesRepAssignedText = null;
+
+                var oldzeeGenerated = null;
+                var oldzeeGeneratedId = null;
+
+                var oldDataCaptureCampaign = null;
+                var oldDataCaptureCampaignId = null;
+
+
+                var dataCaptureBySource = {};
+                var datatCaptureBySourceId = {};
+
+                var zeeGeneratedTeam = [];
+
+
+                leadsListByZeeGeneratedLastAssignedSearch.run().each(function (
+                    leadsListBySalesRepDataCaptureCampaignSearchResultSet) {
+
+
+                    var prospectCount = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: 'internalid',
+                        summary: 'COUNT'
+                    }));
+
+                    var custSalesRepAssigned = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: "custrecord_sales_assigned",
+                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        summary: "GROUP",
+                    }));
+                    var custSalesRepAssignedText = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
+                        name: "custrecord_sales_assigned",
+                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        summary: "GROUP",
+                    });
+
+
+                    var zeeGenerated = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+
+                    var zeeGeneratedId = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+
+                    // if (isNullorEmpty(dataCaptureAssigned)) {
+                    //     dataCaptureAssigned = 'Franchisees'
+                    // }
+                    // if (isNullorEmpty(dataCaptureAssignedId)) {
+                    //     dataCaptureAssignedId = -4
+                    // }
+
+                    if (count1 == 0) {
+                        total_leads += prospectCount
+                        total_leads_assigned += prospectCount
+
+                        zeeGeneratedTeam.push({
+                            'id': zeeGeneratedId,
+                            'name': zeeGenerated,
+                            'count': total_leads_assigned,
+                            "details": []
+                        });
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details.push({
+                            'lastAssigned': [{
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+                            }]
+                        })
+
+
+                    } else if (oldzeeGeneratedId != null &&
+                        oldzeeGeneratedId == zeeGeneratedId) {
+                        total_leads_assigned += prospectCount
+
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].count = total_leads_assigned;
+                        var lastAssignedLength = zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned.length;
+
+                        if (custSalesRepAssigned == oldCustSalesRepAssigned) {
+                            total_leads += prospectCount;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count += total_leads;
+
+                        } else if (custSalesRepAssigned != oldCustSalesRepAssigned) {
+
+                            // total_leads += prospectCount;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned.push({
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+                            })
+                        }
+
+                    } else if (oldzeeGeneratedId != null &&
+                        oldzeeGeneratedId != zeeGeneratedId) {
+
+                        total_leads = 0;
+                        total_leads_assigned = 0;
+
+                        total_leads += prospectCount;
+                        total_leads_assigned += prospectCount
+
+                        zeeGeneratedTeam.push({
+                            'id': zeeGeneratedId,
+                            'name': zeeGenerated,
+                            'count': total_leads_assigned,
+                            "details": []
+                        });
+
+                        zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details.push({
+                            'lastAssigned': [{
+                                'id': custSalesRepAssigned,
+                                'name': custSalesRepAssignedText,
+                                'count': prospectCount,
+
+                            }]
+                        })
+
+                    }
+
+                    count1++;
+                    oldCustSalesRepAssigned = custSalesRepAssigned;
+                    oldCustSalesRepAssignedText = custSalesRepAssignedText;
+                    oldzeeGenerated = zeeGenerated;
+                    oldzeeGeneratedId = zeeGeneratedId;
+                    return true;
+                });
+
+
+                console.log('zeeGeneratedTeam: ' + JSON.stringify(zeeGeneratedTeam));
+
+
+                var series_data_last_assigned = [];
+                var series_data_campaign = [];
+                var salesRepAssignedTeamMemberCategories = [];
+                var enteredLeadCount = [];
+                var enteredName = [];
+                var dataLastAssigned = new Array(dataCaptureTeam.length).fill(0);
+                var dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+                var dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+                var resetDataSource = new Array(dataCaptureTeam.length).fill(0);
+                for (var x = 0; x < zeeGeneratedTeam.length; x++) {
+                    salesRepAssignedTeamMemberCategories[x] = zeeGeneratedTeam[x].name;
+                    enteredLeadCount[x] = [];
+                    enteredName[x] = [];
+                    console.log('name: ' + zeeGeneratedTeam[x].name);
+                    console.log('details: ' + JSON.stringify(zeeGeneratedTeam[x].details[0].lastAssigned));
+                    for (y = 0; y < zeeGeneratedTeam[x].details[0].lastAssigned.length; y++) {
+                        enteredLeadCount[x][y] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count;
+                        enteredName[x][y] = zeeGeneratedTeam[x].details[0].lastAssigned[y].name;
+
+                        console.log('lastAssigned Name: ' + zeeGeneratedTeam[x].details[0].lastAssigned[y].name);
+                        console.log('lastAssigned Count: ' + zeeGeneratedTeam[x].details[0].lastAssigned[y].count);
+
+                        console.log('before series_data_last_assigned: ' + JSON.stringify(series_data_last_assigned));
+                        var entered_by_exists = false;
+                        for (var j = 0; j < series_data_last_assigned.length; j++) {
+                            if (series_data_last_assigned[j].name == enteredName[x][y]) {
+                                entered_by_exists = true;
+                                series_data_last_assigned[j].data[x] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count
+                            }
+                        }
+                        if (entered_by_exists == false) {
+                            dataLastAssigned = new Array(zeeGeneratedTeam.length).fill(0);
+                            dataLastAssigned[x] = zeeGeneratedTeam[x].details[0].lastAssigned[y].count;
+
+                            var colorCode = '#ffffff'
+                            if (employee_list.indexOf((zeeGeneratedTeam[x].details[0].lastAssigned[y].id).toString()) != -1) {
+                                colorCode = employee_list_color[employee_list.indexOf((zeeGeneratedTeam[x].details[0].lastAssigned[y].id).toString())];
+                            }
+
+                            if (enteredName[x][y] == 'Portal') {
+                                colorCode = '#0F6292'
+                            } else if (enteredName[x][y] == 'Franchisees') {
+                                colorCode = '#508b9b'
+                            }
+
+                            series_data_last_assigned.push({
+                                name: enteredName[x][y],
+                                data: dataLastAssigned,
+                                color: colorCode,
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+
+
+                        console.log('after series_data_last_assigned: ' + JSON.stringify(series_data_last_assigned));
+
+
+                    }
+
+                }
+
+                console.log('salesRepAssignedTeamMemberCategories')
+                console.log(salesRepAssignedTeamMemberCategories)
+
+                console.log('series_data_last_assigned')
+                console.log(series_data_last_assigned)
+
+
+                plotZeeGeneratedSalesRepChart(series_data_last_assigned, null, salesRepAssignedTeamMemberCategories)
+            }
 
             if (sales_activity_notes == 1) {
                 var websiteSuspectsLeadsReportingSearch = search.load({
@@ -16540,7 +16923,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "696160", "1623053", "1809334", "668711", "690145", "1813424", "1809382", "1777309", "668712", "1797389", "653718", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "1623053", "668712", "1797389", "1771076", "1809334", "690145", "1813424", "696160", "668711", "1809382", "653718", "1819701", "1820151", "1822089"]]]
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -22030,6 +22413,92 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
+        function plotZeeGeneratedSalesRepChart(series_data, series_data2, categores) {
+            Highcharts.chart('container_zee_overview_last_assigned', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Franchisee - Last Assigned',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
         function plotSalesRepChartCampaign(series_data, series_data2, categores) {
             Highcharts.chart('container_campaign_sales_rep_preview', {
                 chart: {

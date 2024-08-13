@@ -167,10 +167,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                                 start_date = null;
                                 date_signed_up_from = null;
                             } else {
-                                start_date = firstDay;
+                                modified_start_date = firstDay;
                             }
                         } else {
-                            start_date = firstDay;
+                            modified_start_date = firstDay;
                             // date_signed_up_from = firstDay;
                         }
 
@@ -541,7 +541,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
                     layoutType: ui.FieldLayoutType.STARTROW
                 }).defaultValue = inlineHtml;
 
-                form.clientScriptFileId = 6826994;
+                form.clientScriptFileId = 7119023;
 
                 context.response.writePage(form);
             } else {
@@ -1103,7 +1103,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes) {
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES ACTIVITY & USER NOTE - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -1113,7 +1113,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             // Last Modified Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
             inlineHtml += '<div class="input-group">';
-            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
+            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">SALES ACTIVITY & USER NOTE DATE - FROM</span>';
             if (isNullorEmpty(modified_start_date)) {
                 inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
             } else {
@@ -1124,7 +1124,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             // Last Modified Date to field
             inlineHtml += '<div class="col-xs-6 date_to">';
             inlineHtml += '<div class="input-group">';
-            inlineHtml += '<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
+            inlineHtml += '<span class="input-group-addon" id="date_to_text">SALES ACTIVITY & USER NOTE DATE - TO</span>';
             if (isNullorEmpty(modified_last_date)) {
                 inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date">';
             } else {
@@ -1140,19 +1140,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div class="input-group">';
             inlineHtml +=
                 '<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-            inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+            inlineHtml += '<select id="sales_activity_notes" class="form-control" readonly>';
             inlineHtml += '<option></option>';
 
             if (sales_activity_notes == '1') {
                 inlineHtml += '<option value="1" selected>Yes</option>';
                 inlineHtml += '<option value="2">No</option>';
 
-            } else if (sales_activity_notes == '2') {
-                inlineHtml += '<option value="1" >Yes</option>';
-                inlineHtml += '<option value="2" selected>No</option>';
             } else {
-                inlineHtml += '<option value="1">Yes</option>';
-                inlineHtml += '<option value="2" selected>No</option>';
+                inlineHtml += '<option value="1" selected>Yes</option>';
+                inlineHtml += '<option value="2">No</option>';
             }
             inlineHtml += '</select>';
             inlineHtml += '</div></div></div></div>';
@@ -1396,14 +1393,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
 
 
             inlineHtml += '</ul></div>';
@@ -1536,225 +1533,225 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '</div>';
 
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
 
-            // Customers Tabs headers
-            inlineHtml +=
-                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-            inlineHtml +=
-                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-            inlineHtml += '</style>';
+            // // Customers Tabs headers
+            // inlineHtml +=
+            //     '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            // inlineHtml +=
+            //     '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            // inlineHtml += '</style>';
 
-            inlineHtml +=
-                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+            // inlineHtml +=
+            //     '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-            inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
 
-            inlineHtml += '</ul></div>';
+            // inlineHtml += '</ul></div>';
 
-            inlineHtml += '<div class="tab-content">';
-            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
+            // inlineHtml += '<div class="tab-content">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_customer"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('customer');
-            inlineHtml += '</div>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_customer"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('customer');
+            // inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_trial_customers"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('trial_customers');
-            inlineHtml += '</div>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_trial_customers"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('trial_customers');
+            // inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_trial_pending_customers"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('trial_pending_customers');
-            inlineHtml += '</div>';
-
-
-            inlineHtml += '<div role="tabpanel" class="tab-pane " id="existing_customers">';
-
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_existing_customers"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('existing_customers');
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
-
-            // Prospects Tabs headers
-            inlineHtml +=
-                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-            inlineHtml +=
-                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-            inlineHtml += '</style>';
-
-            inlineHtml +=
-                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-            inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_trial_pending_customers"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('trial_pending_customers');
+            // inlineHtml += '</div>';
 
 
+            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="existing_customers">';
 
-            inlineHtml += '</ul></div>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_existing_customers"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('existing_customers');
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
 
-            inlineHtml += '<div class="tab-content">';
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_quoteSent_incontact_noanswer"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('prospects_quoteSent_incontact_noanswer');
-            inlineHtml += '</div>';
+            // // Prospects Tabs headers
+            // inlineHtml +=
+            //     '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            // inlineHtml +=
+            //     '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            // inlineHtml += '</style>';
 
-
-            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
-
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_prospects_opportunites"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('prospects_opportunites');
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-            inlineHtml += '</div>';
-
-
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
-
-            // Suspects Tabs headers
-            inlineHtml +=
-                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-            inlineHtml +=
-                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-            inlineHtml += '</style>';
-
-            inlineHtml +=
-                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-
-            inlineHtml +=
-                '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
-            inlineHtml +=
-                '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
-            if (role != 1000) {
-                inlineHtml +=
-                    '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
-            }
+            // inlineHtml +=
+            //     '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+            // inlineHtml +=
+            //     '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
 
 
 
-            inlineHtml += '</ul></div>';
+            // inlineHtml += '</ul></div>';
 
-            inlineHtml += '<div class="tab-content">';
+            // inlineHtml += '<div class="tab-content">';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects');
-            inlineHtml += '</div>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_quoteSent_incontact_noanswer"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('prospects_quoteSent_incontact_noanswer');
+            // inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_no_answer"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_no_answer');
-            inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_in_contact"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_in_contact');
-            inlineHtml += '</div>';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_qualified"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_qualified');
-            inlineHtml += '</div>';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_prospects_opportunites"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('prospects_opportunites');
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_unqualified"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_unqualified');
-            inlineHtml += '</div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_validated">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_validated"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_validated');
-            inlineHtml += '</div>';
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_followup">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_followup"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_followup');
-            inlineHtml += '</div>';
+            // // Suspects Tabs headers
+            // inlineHtml +=
+            //     '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            // inlineHtml +=
+            //     '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            // inlineHtml += '</style>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_off_peak_pipeline');
-            inlineHtml += '</div>';
+            // inlineHtml +=
+            //     '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_lost"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_lost');
-            inlineHtml += '</div>';
+            // inlineHtml +=
+            //     '<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
+            // inlineHtml +=
+            //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
+            // if (role != 1000) {
+            //     inlineHtml +=
+            //         '<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
+            // }
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_suspects_oot"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('suspects_oot');
-            inlineHtml += '</div>';
-            inlineHtml += '</div></div>';
 
-            inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
 
-            inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_cancellation"></div>';
-            inlineHtml += '</figure><br></br>';
-            inlineHtml += dataTable('cancellation');
-            inlineHtml += '</div>';
+            // inlineHtml += '</ul></div>';
+
+            // inlineHtml += '<div class="tab-content">';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_no_answer"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_no_answer');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_in_contact"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_in_contact');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_qualified"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_qualified');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_unqualified"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_unqualified');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_validated">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_validated"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_validated');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_followup">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_followup"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_followup');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_off_peak_pipeline');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_lost"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_lost');
+            // inlineHtml += '</div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_suspects_oot"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('suspects_oot');
+            // inlineHtml += '</div>';
+            // inlineHtml += '</div></div>';
+
+            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
+
+            // inlineHtml += '<figure class="highcharts-figure">';
+            // inlineHtml += '<div id="container_cancellation"></div>';
+            // inlineHtml += '</figure><br></br>';
+            // inlineHtml += dataTable('cancellation');
+            // inlineHtml += '</div>';
 
 
 
