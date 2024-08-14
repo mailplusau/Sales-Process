@@ -283,7 +283,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 });
 
                                 if (role != 1032) {
-                                    if (leadSource == 282051) {
+                                    if (leadSource == 282051 || campaignid == 69 || campaignid == 76) {
                                         //Lead Source: LPO - Head Office Generated
 
                                         //Search: Active Parent LPO Customer List
@@ -630,7 +630,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     body: body,
                                     recipients: salesRep,
                                     subject: subject,
-                                    cc: ['lee.russell@mailplus.com.au'], //2024-08-14T04:52:32.507Z Update: Luke asked to remove his email address.
+                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else if (leadSource == -4) {
@@ -753,7 +753,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     body: body,
                                     recipients: salesRep,
                                     subject: subject,
-                                    cc: ['lee.russell@mailplus.com.au'], // 2024-08-14T04:52:53.349ZUpdate - Luke asked to remove his email.
+                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
