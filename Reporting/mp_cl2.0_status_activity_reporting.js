@@ -103,6 +103,19 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             return 32 - new Date(iYear, iMonth, 32).getDate();
         }
 
+        var salesRecordLastAssignedListIds = [
+            1623053, //Aleyna
+            1822089, //Alison
+            668712, //Belinda
+            696160, //Kerina
+            668711, //Lee
+            1809382, //Liam
+            653718, //Luke
+            1820151, //Paul
+            1844985, //Shaheer
+            1819701, //Stefania
+        ]
+
         var debtDataSet = [];
         var debt_set = [];
 
@@ -799,7 +812,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -1348,7 +1361,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [[["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]]
+                var modifiedDateFilters = [[["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -2280,7 +2293,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Customer - Signed'//21
                 }, {
-                    title: 'Total Lead Count'//22
+                    title: 'Total Status Change Count'//22
                 }],
                 columnDefs: [{
                     targets: [0, 5, 17, 19, 20],
@@ -2810,7 +2823,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -3411,7 +3424,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }, {
                         title: 'Customer - Signed'//20
                     }, {
-                        title: 'Total Lead Count'//21
+                        title: 'Total Status Change Count'//21
                     }],
                     columnDefs: [{
                         targets: [0, 4, 17, 19, 20],
@@ -3927,7 +3940,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
 
-                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -5076,7 +5089,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -6251,7 +6264,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -7426,7 +7439,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8027,7 +8040,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                 console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                 defaultSearchFilters.push('AND');
@@ -8044,11 +8057,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var count1 = 0;
             var total_leads = 0;
             var total_leads_assigned = 0;
-            var oldDataCaptureAssigned = null;
-            var oldDataCaptureAssignedId = null;
+            var total_leads_entered = 0;
+            var oldStatusChangeSetBy = null;
+            var oldStatusChangeSetById = null;
 
-            var oldDataCaptureLastAssigned = null;
-            var oldDataCaptureLastAssignedId = null;
+            var oldSalesRepAssigned = null;
+            var oldSalesRepAssignedId = null;
 
             var oldDataCaptureCampaign = null;
             var oldDataCaptureCampaignId = null;
@@ -8092,28 +8106,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 });
 
 
-                var dataCaptureAssigned = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
+                var statusChangeSetBy = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
                     name: "name",
                     join: "systemNotes",
                     summary: "GROUP",
                 });
 
-                var dataCaptureAssignedId = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
+                var statusChangeSetById = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
                     name: "name",
                     join: "systemNotes",
                     summary: "GROUP",
                 });
 
-                if (isNullorEmpty(dataCaptureAssigned)) {
-                    dataCaptureAssigned = 'Franchisees'
+                if (isNullorEmpty(statusChangeSetBy)) {
+                    statusChangeSetBy = 'Franchisees'
                 }
-                if (isNullorEmpty(dataCaptureAssignedId)) {
-                    dataCaptureAssignedId = -4
+                if (isNullorEmpty(statusChangeSetById)) {
+                    statusChangeSetById = -4
                 }
 
                 if (count1 == 0) {
                     total_leads += prospectCount
                     total_leads_assigned += prospectCount
+                    total_leads_entered += prospectCount
 
                     salesRepAssignedTeam.push({
                         'id': custSalesRepAssigned,
@@ -8124,9 +8139,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details.push({
                         'enteredBy': [{
-                            'id': dataCaptureAssignedId,
-                            'name': dataCaptureAssigned,
-                            'count': prospectCount,
+                            'id': statusChangeSetById,
+                            'name': statusChangeSetBy,
+                            'count': total_leads_entered,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -8136,29 +8151,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     })
 
 
-                } else if (oldDataCaptureLastAssignedId != null &&
-                    oldDataCaptureLastAssignedId == custSalesRepAssigned) {
+                } else if (oldSalesRepAssignedId != null &&
+                    oldSalesRepAssignedId == custSalesRepAssigned) {
                     total_leads_assigned += prospectCount
 
 
                     salesRepAssignedTeam[salesRepAssignedTeam.length - 1].count = total_leads_assigned;
                     var enteredByLength = salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy.length;
 
-                    if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
+                    if (statusChangeSetById == statusChangeSetById) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += total_leads;
+                        total_leads_entered += prospectCount;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count = total_leads_entered;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
                             'count': prospectCount
                         })
-                    } else if (dataCaptureAssignedId != oldDataCaptureAssignedId) {
+                    } else if (statusChangeSetById != statusChangeSetById) {
 
+                        total_leads_entered = 0;
                         // total_leads += prospectCount;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy.push({
-                            'id': dataCaptureAssignedId,
-                            'name': dataCaptureAssigned,
-                            'count': prospectCount,
+                            'id': statusChangeSetById,
+                            'name': statusChangeSetBy,
+                            'count': total_leads_entered,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -8167,15 +8184,17 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         })
                     }
 
-                } else if (oldDataCaptureLastAssignedId != null &&
-                    oldDataCaptureLastAssignedId != custSalesRepAssigned) {
-                    console.log('salesRepAssignedTeam(' + oldDataCaptureAssigned + '): ' + JSON.stringify(salesRepAssignedTeam));
+                } else if (oldSalesRepAssignedId != null &&
+                    oldSalesRepAssignedId != custSalesRepAssigned) {
+                    console.log('salesRepAssignedTeam(' + oldSalesRepAssigned + '): ' + JSON.stringify(salesRepAssignedTeam));
 
                     total_leads = 0;
                     total_leads_assigned = 0;
+                    total_leads_entered = 0;
 
                     total_leads += prospectCount;
                     total_leads_assigned += prospectCount
+                    total_leads_entered += prospectCount
 
                     salesRepAssignedTeam.push({
                         'id': custSalesRepAssigned,
@@ -8186,9 +8205,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details.push({
                         'enteredBy': [{
-                            'id': dataCaptureAssignedId,
-                            'name': dataCaptureAssigned,
-                            'count': prospectCount,
+                            'id': statusChangeSetById,
+                            'name': statusChangeSetBy,
+                            'count': total_leads_entered,
                             'campaign': [{
                                 'id': custCampaign,
                                 'name': custCampaignText,
@@ -8200,10 +8219,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
                 count1++;
-                oldDataCaptureAssigned = dataCaptureAssigned;
-                oldDataCaptureAssignedId = dataCaptureAssignedId;
-                oldDataCaptureLastAssigned = custSalesRepAssignedText;
-                oldDataCaptureLastAssignedId = custSalesRepAssigned;
+                oldStatusChangeSetBy = statusChangeSetBy;
+                oldStatusChangeSetById = statusChangeSetById;
+                oldSalesRepAssigned = custSalesRepAssignedText;
+                oldSalesRepAssignedId = custSalesRepAssigned;
                 oldDataCaptureCampaignId = custCampaign;
                 oldDataCaptureCampaign = custCampaignText;
                 return true;
@@ -8330,10 +8349,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             //?Franchisee Generated Leads Assgined to Sales Rep
             if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
 
-                //Franchisee Generated Leads by LAst Assigned - Weekly Reporting
+                //Franchisee Generated Leads by System Notes Set By - Weekly Reporting
                 var leadsListByZeeGeneratedLastAssignedSearch = search.load({
                     type: 'customer',
-                    id: 'customsearch_leads_reporting_weekly_4__3'
+                    id: 'customsearch_leads_reporting_weekly_4__4'
                 });
 
 
@@ -8453,7 +8472,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -8496,13 +8515,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }));
 
                     var custSalesRepAssigned = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
-                        name: "custrecord_sales_assigned",
-                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        name: "name",
+                        join: "systemNotes",
                         summary: "GROUP",
                     }));
                     var custSalesRepAssignedText = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
-                        name: "custrecord_sales_assigned",
-                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        name: "name",
+                        join: "systemNotes",
                         summary: "GROUP",
                     });
 
@@ -8516,13 +8535,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         name: "partner",
                         summary: "GROUP",
                     });
-
-                    // if (isNullorEmpty(dataCaptureAssigned)) {
-                    //     dataCaptureAssigned = 'Franchisees'
-                    // }
-                    // if (isNullorEmpty(dataCaptureAssignedId)) {
-                    //     dataCaptureAssignedId = -4
-                    // }
 
                     if (count1 == 0) {
                         total_leads += prospectCount
@@ -8678,13 +8690,3822 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 plotZeeGeneratedSalesRepChart(series_data_last_assigned, null, salesRepAssignedTeamMemberCategories)
             }
 
+            var websiteCustomersReportingSearch = search.load({
+                type: 'customer',
+                // id: 'customsearch_leads_reporting_4' //Website Leads - Customer Signed - Reporting
+                id: 'customsearch_leads_reporting_4_2' //Website Leads - Customer Signed - Reporting V2
+            });
+
+            if (!isNullorEmpty(leadStatus)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'entitystatus',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: leadStatus
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(invoice_date_from) && !isNullorEmpty(invoice_date_to)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'trandate',
+                    join: 'transaction',
+                    operator: search.Operator.ONORAFTER,
+                    values: invoice_date_from
+                }));
+
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'trandate',
+                    join: 'transaction',
+                    operator: search.Operator.ONORBEFORE,
+                    values: invoice_date_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+
+            if (!isNullorEmpty(invoice_type)) {
+                if (invoice_type == '2') {
+                    websiteCustomersReportingSearch.filters.push(search.createFilter({
+                        name: 'trandate',
+                        join: 'transaction',
+                        operator: search.Operator.ANYOF,
+                        values: 8
+                    }));
+                } else if (invoice_type == '1') {
+                    websiteCustomersReportingSearch.filters.push(search.createFilter({
+                        name: 'custbody_inv_type',
+                        join: 'transaction',
+                        operator: search.Operator.ANYOF,
+                        values: "@NONE@"
+                    }));
+                }
+
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                websiteCustomersReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = websiteCustomersReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('signed customer defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                websiteCustomersReportingSearch.filterExpression = defaultSearchFilters;
+
+            }
+
+            var oldcustInternalID = null;
+            var oldcustEntityID = null;
+            var oldcustName = null;
+            var oldzeeID = null;
+            var oldzeeName = null;
+            var oldcustStage = null;
+            var oldcustStatus = null;
+            var oldCustStatusId = 0;
+            var olddateLeadEntered = null;
+            var oldquoteSentDate = null;
+            var olddateLeadLost = null;
+            var olddateLeadinContact = null;
+            var olddateProspectWon = null;
+            var olddateLeadReassigned = null;
+            var oldsalesRepId = null;
+            var oldsalesRepText = null;
+            var oldactivityInternalID = null;
+            var oldactivityStartDate = null;
+            var oldactivityTitle = null;
+            var oldactivityOrganiser = null;
+            var oldactivityMessage = null;
+            var oldemail48h = null;
+            var oldDaysOpen = null;
+            var oldCancellationReason = null;
+            var oldSource = null;
+            var oldProdWeeklyUsage = null;
+            var oldAutoSignUp = null;
+            var oldPreviousCarrier = null;
+            var oldMonthServiceValue = 0.0;
+            var oldMonthlyReductionServiceValue = 0.0;
+            var oldMonthlyExtraServiceValue = 0.0;
+            var oldMinCommDate = null;
+            var oldTnCAgreedDate = null;
+            var oldZeeVisitedDate = null;
+            var oldLPOCommsToCustomer = null;
+
+            var oldInvoiceNumber = null;
+            var oldinvoiceDate = null;
+            var oldInvoiceType = null;
+            var oldInvoiceAmount = null;
+            var oldInvoiceStatus = null;
+            var oldInvoiceItem = null;
+
+            var invoiceTotal = 0.0;
+            var invoiceServiceTotal = 0.0;
+            var invoiceProductsTotal = 0.0;
+            var showInvoice = true;
+
+            var oldTrialEndDate = null;
+
+            var existingCustomer = false;
+            var oldExistingCustomer;
+
+            var oldLeadEnteredById = null;
+            var oldLeadEnteredByText = null;
+
+            var count = 0;
+
+            csvCustomerSignedExport = [];
+            csvExistingCustomerSignedExport = [];
+            csvTrialCustomerSignedExport = [];
+
+            websiteCustomersReportingSearch.run().each(function (custListCommenceTodaySet) {
+
+                var custInternalID = custListCommenceTodaySet.getValue({
+                    name: 'internalid',
+                    summary: "GROUP",
+                });
+                var custEntityID = custListCommenceTodaySet.getValue({
+                    name: 'entityid',
+                    summary: "GROUP",
+                });
+                var custName = custListCommenceTodaySet.getValue({
+                    name: 'companyname',
+                    summary: "GROUP",
+                });
+                var zeeID = custListCommenceTodaySet.getValue({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+                var zeeName = custListCommenceTodaySet.getText({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+
+                var custStage = (custListCommenceTodaySet.getText({
+                    name: 'stage',
+                    summary: "GROUP",
+                })).toUpperCase();
+
+                var custStatusId = custListCommenceTodaySet.getValue({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                })
+
+                var custStatus = custListCommenceTodaySet.getText({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                }).toUpperCase();
+
+                var dateLeadEntered = custListCommenceTodaySet.getValue({
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
+                });
+
+                var quoteSentDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_date_lead_quote_sent",
+                    summary: "GROUP",
+                });
+
+                var dateLeadLost = custListCommenceTodaySet.getValue({
+                    name: 'custentity_date_lead_lost',
+                    summary: "GROUP",
+                });
+                var dateLeadinContact = custListCommenceTodaySet.getValue({
+                    name: 'custentity_date_prospect_in_contact',
+                    summary: "GROUP",
+                });
+
+                var dateProspectWon = custListCommenceTodaySet.getValue({
+                    name: 'custentity_date_prospect_opportunity',
+                    summary: "GROUP",
+                });
+
+                var dateLeadReassigned = custListCommenceTodaySet.getValue({
+                    name: 'custentity_date_suspect_reassign',
+                    summary: "GROUP",
+                });
+
+                var maapImplementationDate = custListCommenceTodaySet.getValue({
+                    name: 'custentity_maap_implementdate',
+                    summary: "GROUP",
+                });
+
+                console.log('custName: ' + custName)
+                console.log('maapImplementationDate: ' + maapImplementationDate)
+
+                var salesRepId = custListCommenceTodaySet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+                var salesRepText = custListCommenceTodaySet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+
+                var leadEnteredById = custListCommenceTodaySet.getValue({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+                var leadEnteredByText = custListCommenceTodaySet.getText({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+
+                var invoiceDocumentNumber = custListCommenceTodaySet.getValue({
+                    name: "tranid",
+                    join: "transaction",
+                    summary: "GROUP",
+                })
+                var invoiceDate = custListCommenceTodaySet.getValue({
+                    name: "trandate",
+                    join: "transaction",
+                    summary: "GROUP",
+                })
+                var invoiceType = custListCommenceTodaySet.getText({
+                    name: "custbody_inv_type",
+                    join: "transaction",
+                    summary: "GROUP",
+                })
+
+                var invoiceAmount = custListCommenceTodaySet.getValue({
+                    name: "total",
+                    join: "transaction",
+                    summary: "GROUP",
+                })
+
+                var invoiceStatus = custListCommenceTodaySet.getText({
+                    name: "statusref",
+                    join: "transaction",
+                    summary: "GROUP",
+                })
+
+                var email48h = custListCommenceTodaySet.getText({
+                    name: 'custentity_48h_email_sent',
+                    summary: "GROUP",
+                });
+
+                var daysOpen = custListCommenceTodaySet.getValue({
+                    name: "formulanumeric",
+                    summary: "GROUP",
+                });
+
+                var cancellationReason = custListCommenceTodaySet.getText({
+                    name: "custentity_service_cancellation_reason",
+                    summary: "GROUP",
+                });
+
+                var source = custListCommenceTodaySet.getText({
+                    name: "leadsource",
+                    summary: "GROUP",
+                });
+
+                var productWeeklyUsage = custListCommenceTodaySet.getText({
+                    name: "custentity_form_mpex_usage_per_week",
+                    summary: "GROUP",
+                });
+
+                var autoSignUp = custListCommenceTodaySet.getValue({
+                    name: "custentity_auto_sign_up",
+                    summary: "GROUP",
+                });
+
+                var previousCarrier = custListCommenceTodaySet.getText({
+                    name: "custentity_previous_carrier",
+                    summary: "GROUP",
+                });
+
+                var monthlyServiceValue = (custListCommenceTodaySet.getValue({
+                    name: "custentity_cust_monthly_service_value",
+                    summary: "GROUP",
+                }));
+
+                var monthlyExtraServiceValue = (custListCommenceTodaySet.getValue({
+                    name: "custentity_monthly_extra_service_revenue",
+                    summary: "GROUP",
+                }));
+
+                var monthlyReductionServiceValue = (custListCommenceTodaySet.getValue({
+                    name: "custentity_monthly_reduc_service_revenue",
+                    summary: "GROUP",
+                }));
+
+                var d1 = dateProspectWon.split("/");
+                var c = maapImplementationDate.split("/");
+
+                // console.log('d1[1]: ' + d1[1])
+                // console.log('c[1]: ' + c[1])
+                // console.log('d1[2]: ' + d1[2])
+                // console.log('c[2]: ' + c[2])
+
+                if (isNullorEmpty(maapImplementationDate) || ((d1[1] == c[1]) && (d1[2] == c[2]))) {
+                    existingCustomer = false
+                } else {
+                    existingCustomer = true;
+                }
+
+                console.log('existingCustomer: ' + existingCustomer)
+
+                var minCommDate = (custListCommenceTodaySet.getValue({
+                    name: "custrecord_comm_date",
+                    join: "CUSTRECORD_CUSTOMER",
+                    summary: "MIN"
+                }));
+
+                var trialEndDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_customer_trial_expiry_date",
+                    summary: "GROUP",
+                });
+
+                var tncAgreedDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_terms_conditions_agree_date",
+                    summary: "GROUP",
+                });
+                var zeeVisitedDate = custListCommenceTodaySet.getValue({
+                    name: "custentity_mp_toll_zeevisit_memo",
+                    summary: "GROUP",
+                });
+                var lpoCommsToCustomer = custListCommenceTodaySet.getValue({
+                    name: "custentity_lpo_comms_to_customer",
+                    summary: "GROUP",
+                });
+
+                if (!isNullorEmpty(monthlyServiceValue)) {
+                    monthlyServiceValue = parseFloat(monthlyServiceValue);
+                } else {
+                    monthlyServiceValue = 0.0;
+                }
+                if (!isNullorEmpty(monthlyExtraServiceValue)) {
+                    monthlyExtraServiceValue = parseFloat(monthlyExtraServiceValue);
+                } else {
+                    monthlyExtraServiceValue = 0.0;
+                }
+                if (!isNullorEmpty(monthlyReductionServiceValue)) {
+                    monthlyReductionServiceValue = parseFloat(monthlyReductionServiceValue);
+                } else {
+                    monthlyReductionServiceValue = 0.0;
+                }
+
+                if (isNullorEmpty(invoiceType) || invoiceType == '- None -') {
+                    invoiceType = 'Service'
+                }
+
+                if (!isNullorEmpty(minCommDate)) {
+                    var minCommDateSplit = minCommDate.split('/');
+
+                    if (parseInt(minCommDateSplit[1]) < 10) {
+                        minCommDateSplit[1] = '0' + minCommDateSplit[1]
+                    }
+
+                    if (parseInt(minCommDateSplit[0]) < 10) {
+                        minCommDateSplit[0] = '0' + minCommDateSplit[0]
+                    }
+
+                    minCommDate = minCommDateSplit[2] + '-' + minCommDateSplit[1] + '-' +
+                        minCommDateSplit[0];
+                }
+
+                var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                }
+
+                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                }
+                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
+                if (!isNullorEmpty(dateLeadLost)) {
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
+
+                    var difference = dateLost.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateLost.getDay();
+
+                    // Remove weekend not previously removed.   
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                } else if (!isNullorEmpty(dateProspectWon)) {
+                    var dateProspectWonSplit = dateProspectWon.split('/');
+
+                    if (parseInt(dateProspectWonSplit[1]) < 10) {
+                        dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
+                    }
+
+                    if (parseInt(dateProspectWonSplit[0]) < 10) {
+                        dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
+
+                    var difference = dateProspectWon.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateProspectWon.getDay();
+
+                    // Remove weekend not previously removed.   
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+
+
+                } else {
+                    // var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var todayDate = new Date();
+
+                    var difference = todayDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = todayDate.getDay();
+
+                    // Remove weekend not previously removed.   
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+                }
+
+                if (!isNullorEmpty(invoiceDate)) {
+                    var invoiceDateSplit = invoiceDate.split('/');
+
+                    if (parseInt(invoiceDateSplit[1]) < 10) {
+                        invoiceDateSplit[1] = '0' + invoiceDateSplit[1]
+                    }
+
+                    if (parseInt(invoiceDateSplit[0]) < 10) {
+                        invoiceDateSplit[0] = '0' + invoiceDateSplit[0]
+                    }
+
+                    invoiceDate = invoiceDateSplit[2] + '-' + invoiceDateSplit[1] + '-' +
+                        invoiceDateSplit[0];
+                }
+
+
+                if (!isNullorEmpty(trialEndDate)) {
+                    var trialEndDateSplit = trialEndDate.split('/');
+
+                    if (parseInt(trialEndDateSplit[1]) < 10) {
+                        trialEndDateSplit[1] = '0' + trialEndDateSplit[1]
+                    }
+
+                    if (parseInt(trialEndDateSplit[0]) < 10) {
+                        trialEndDateSplit[0] = '0' + trialEndDateSplit[0]
+                    }
+
+                    trialEndDate = trialEndDateSplit[2] + '-' + trialEndDateSplit[1] + '-' +
+                        trialEndDateSplit[0];
+                }
+
+                if (!isNullorEmpty(tncAgreedDate)) {
+                    var tncAgreedDateSplit = tncAgreedDate.split('/');
+
+                    if (parseInt(tncAgreedDateSplit[1]) < 10) {
+                        tncAgreedDateSplit[1] = '0' + tncAgreedDateSplit[1]
+                    }
+
+                    if (parseInt(tncAgreedDateSplit[0]) < 10) {
+                        tncAgreedDateSplit[0] = '0' + tncAgreedDateSplit[0]
+                    }
+
+                    tncAgreedDate = tncAgreedDateSplit[2] + '-' + tncAgreedDateSplit[1] + '-' +
+                        tncAgreedDateSplit[0];
+                }
+
+                if (!isNullorEmpty(zeeVisitedDate)) {
+                    var zeeVisitedDateSplit = zeeVisitedDate.split('/');
+
+                    if (parseInt(zeeVisitedDateSplit[1]) < 10) {
+                        zeeVisitedDateSplit[1] = '0' + zeeVisitedDateSplit[1]
+                    }
+
+                    if (parseInt(zeeVisitedDateSplit[0]) < 10) {
+                        zeeVisitedDateSplit[0] = '0' + zeeVisitedDateSplit[0]
+                    }
+
+                    zeeVisitedDate = zeeVisitedDateSplit[2] + '-' + zeeVisitedDateSplit[1] + '-' +
+                        zeeVisitedDateSplit[0];
+                }
+                if (!isNullorEmpty(quoteSentDate)) {
+                    var quoteSentDateSplit = quoteSentDate.split('/');
+
+                    if (parseInt(quoteSentDateSplit[1]) < 10) {
+                        quoteSentDateSplit[1] = '0' + quoteSentDateSplit[1]
+                    }
+
+                    if (parseInt(quoteSentDateSplit[0]) < 10) {
+                        quoteSentDateSplit[0] = '0' + quoteSentDateSplit[0]
+                    }
+
+                    quoteSentDate = quoteSentDateSplit[2] + '-' + quoteSentDateSplit[1] + '-' +
+                        quoteSentDateSplit[0];
+                }
+
+                if (count == 0) {
+
+                } else if (count > 0 && (oldcustInternalID == custInternalID)) {
+
+                    if (oldInvoiceNumber == invoiceDocumentNumber) {
+                    } else if (oldInvoiceNumber != invoiceDocumentNumber) {
+                        customerActivityCount++
+                        if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
+                            customerChildDataSet.push({
+                                invoiceDocumentNumber: oldInvoiceNumber,
+                                invoiceDate: oldinvoiceDate,
+                                invoiceType: oldInvoiceType,
+                                invoiceAmount: oldInvoiceAmount,
+                                invoiceStatus: oldInvoiceStatus,
+                            });
+
+                            invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                            if (oldInvoiceType == 'Service') {
+                                invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                            } else {
+                                invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                            }
+                        }
+
+                        csvCustomerSignedExport.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            olddateProspectWon,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            oldInvoiceNumber,
+                            oldinvoiceDate,
+                            oldInvoiceType,
+                            oldInvoiceAmount,
+                            oldInvoiceStatus
+                        ]);
+
+                        oldInvoiceNumber = null;
+                        oldinvoiceDate = null;
+                        oldInvoiceType = null;
+                        oldInvoiceAmount = null;
+                        oldInvoiceStatus = null;
+                        oldInvoiceItem = null;
+
+                        showInvoice = true;
+
+                    }
+
+
+                } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+
+                    if (oldcustStage == 'CUSTOMER') {
+
+                        if (oldInvoiceNumber != invoiceDocumentNumber) {
+                            customerActivityCount++
+                            if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
+                                customerChildDataSet.push({
+                                    invoiceDocumentNumber: oldInvoiceNumber,
+                                    invoiceDate: oldinvoiceDate,
+                                    invoiceType: oldInvoiceType,
+                                    invoiceAmount: oldInvoiceAmount,
+                                    invoiceStatus: oldInvoiceStatus,
+                                });
+
+                                invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                                if (oldInvoiceType == 'Service') {
+                                    invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                                } else {
+                                    invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                                }
+                            }
+                        }
+
+
+
+                        totalCustomerCount++;
+
+                        var express_speed = 0;
+                        var standard_speed = 0;
+                        var total_usage = 0;
+                        if (calcprodusage != '2') {
+                            if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                                // Customer Product Usage - Total MP Express, Standard & Premium
+                                var mpexUsageResults = search.load({
+                                    type: 'customrecord_customer_product_stock',
+                                    id: 'customsearch6846'
+                                });
+
+
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'internalid',
+                                    join: 'custrecord_cust_prod_stock_customer',
+                                    operator: search.Operator.ANYOF,
+                                    values: parseInt(oldcustInternalID)
+                                }));
+
+                                if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                                    mpexUsageResults.filters.push(search.createFilter({
+                                        name: 'custrecord_cust_date_stock_used',
+                                        join: null,
+                                        operator: search.Operator.ONORAFTER,
+                                        values: usage_date_from
+                                    }));
+                                    mpexUsageResults.filters.push(search.createFilter({
+                                        name: 'custrecord_cust_date_stock_used',
+                                        join: null,
+                                        operator: search.Operator.ONORBEFORE,
+                                        values: usage_date_to
+                                    }));
+
+                                }
+
+
+
+                                mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                                    var deliverySpeed = mpexUsageSet.getValue({
+                                        name: 'custrecord_delivery_speed',
+                                        summary: 'GROUP'
+                                    });
+                                    var deliverySpeedText = mpexUsageSet.getText({
+                                        name: 'custrecord_delivery_speed',
+                                        summary: 'GROUP'
+                                    });
+
+
+                                    var mpexUsage = parseInt(mpexUsageSet.getValue({
+                                        name: 'name',
+                                        summary: 'COUNT'
+                                    }));
+
+                                    if (deliverySpeed == 2 ||
+                                        deliverySpeedText == '- None -') {
+                                        express_speed += mpexUsage;
+                                    } else if (deliverySpeed == 1) {
+                                        standard_speed += mpexUsage;
+                                    }
+                                    total_usage += express_speed + standard_speed;
+
+                                    return true;
+                                });
+                            }
+                        }
+
+
+                        var usage_date_from_split = usage_date_from.split('/');
+
+                        if (parseInt(usage_date_from_split[1]) < 10) {
+                            usage_date_from_split[1] = '0' + usage_date_from_split[1]
+                        }
+
+                        if (parseInt(usage_date_from_split[0]) < 10) {
+                            usage_date_from_split[0] = '0' + usage_date_from_split[0]
+                        }
+
+                        var daily_usage_from = usage_date_from_split[2] + '-' + usage_date_from_split[1] + '-' +
+                            usage_date_from_split[0];
+
+                        var usage_date_to_split = usage_date_to.split('/');
+
+                        if (parseInt(usage_date_to_split[1]) < 10) {
+                            usage_date_to_split[1] = '0' + usage_date_to_split[1]
+                        }
+
+                        if (parseInt(usage_date_to_split[0]) < 10) {
+                            usage_date_to_split[0] = '0' + usage_date_to_split[0]
+                        }
+
+                        var daily_usage_to = usage_date_to_split[2] + '-' + usage_date_to_split[1] + '-' +
+                            usage_date_to_split[0];
+
+
+                        var mpExpStdUsageLink =
+                            '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important;border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1712&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+
+                        var customerIdLink =
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
+
+                        console.log('oldcustName: ' + oldcustName);
+                        console.log('existingCustomer: ' + oldExistingCustomer);
+
+                        if (oldCustStatusId == 32) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldLeadEnteredByText,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if (oldCustStatusId == 71) {
+                            console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                            trialPendingCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldPreviousCarrier,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                olddateProspectWon,
+                                oldTnCAgreedDate,
+                                oldZeeVisitedDate,
+                                oldLPOCommsToCustomer,
+                                oldTrialEndDate,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                oldLeadEnteredByText,
+                                oldsalesRepText,
+                                customerChildDataSet
+                            ]);
+                        } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
+                            existingCustomerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                mpExpStdUsageLink,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                // oldemail48h,
+                                olddateProspectWon,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                invoiceServiceTotal.toFixed(2),
+                                invoiceProductsTotal.toFixed(2),
+                                invoiceTotal.toFixed(2),
+                                oldLeadEnteredByText,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                customerChildDataSet
+                            ]);
+
+                            csvExistingCustomerSignedExport.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                express_speed,
+                                standard_speed,
+                                olddateLeadEntered,
+                                olddateProspectWon,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                oldInvoiceNumber,
+                                oldinvoiceDate,
+                                oldInvoiceType,
+                                oldInvoiceAmount,
+                                oldInvoiceStatus
+                            ]);
+
+                        } else {
+                            customerDataSet.push(['',
+                                oldcustInternalID,
+                                customerIdLink,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                mpExpStdUsageLink,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                // oldemail48h,
+                                olddateProspectWon,
+                                '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                                oldMonthServiceValue,
+                                invoiceServiceTotal.toFixed(2),
+                                invoiceProductsTotal.toFixed(2),
+                                invoiceTotal.toFixed(2),
+                                oldLeadEnteredByText,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                customerChildDataSet
+                            ]);
+
+                            csvCustomerSignedExport.push([
+                                oldcustInternalID,
+                                oldcustEntityID,
+                                oldcustName,
+                                oldzeeName,
+                                oldSource,
+                                oldProdWeeklyUsage,
+                                oldPreviousCarrier,
+                                express_speed,
+                                standard_speed,
+                                olddateLeadEntered,
+                                oldquoteSentDate,
+                                oldemail48h,
+                                olddateProspectWon,
+                                oldDaysOpen,
+                                oldMonthServiceValue,
+                                oldsalesRepText,
+                                oldAutoSignUp,
+                                oldInvoiceNumber,
+                                oldinvoiceDate,
+                                oldInvoiceType,
+                                oldInvoiceAmount,
+                                oldInvoiceStatus
+                            ]);
+                        }
+
+
+
+
+
+
+                    }
+
+                    oldInvoiceNumber = null;
+                    oldinvoiceDate = null;
+                    oldInvoiceType = null;
+                    oldInvoiceStatus = null;
+                    oldInvoiceAmount = 0.0;
+                    oldInvoiceItem = null;
+
+                    showInvoice = true;
+
+                    invoiceTotal = 0;
+                    invoiceServiceTotal = 0.0;
+                    invoiceProductsTotal = 0.0;
+                    customerChildDataSet = [];
+                    customerChildStatusDataSet = [];
+
+                    existingCustomer = false;
+
+                }
+
+                oldcustInternalID = custInternalID;
+                oldcustEntityID = custEntityID;
+                oldcustName = custName;
+                oldzeeID = zeeID;
+                oldzeeName = zeeName;
+                oldcustStage = custStage;
+                oldcustStatus = custStatus;
+                oldCustStatusId = custStatusId;
+                olddateLeadEntered = dateLeadEntered;
+                oldquoteSentDate = quoteSentDate;
+                olddateLeadLost = dateLeadLost;
+                olddateLeadinContact = dateLeadinContact;
+                olddateProspectWon = dateProspectWon;
+                olddateLeadReassigned = dateLeadReassigned;
+                oldsalesRepId = salesRepId;
+                oldsalesRepText = salesRepText;
+                oldLeadEnteredById = leadEnteredById;
+                oldLeadEnteredByText = leadEnteredByText;
+                // oldactivityInternalID = activityInternalID;
+                // oldactivityStartDate = activityStartDate;
+                // oldactivityTitle = activityTitle;
+                // oldactivityOrganiser = activityOrganiser;
+                // oldactivityMessage = activityMessage;
+                oldemail48h = email48h;
+                oldDaysOpen = daysOpen;
+                oldCancellationReason = cancellationReason;
+                oldSource = source;
+                oldProdWeeklyUsage = productWeeklyUsage;
+                oldAutoSignUp = autoSignUp;
+                oldPreviousCarrier = previousCarrier;
+                oldMonthServiceValue = monthlyServiceValue;
+                oldMonthlyReductionServiceValue = monthlyReductionServiceValue;
+                oldMonthlyExtraServiceValue = monthlyExtraServiceValue;
+                oldMinCommDate = minCommDate
+                oldTrialEndDate = trialEndDate;
+                oldTnCAgreedDate = tncAgreedDate;
+                oldZeeVisitedDate = zeeVisitedDate;
+                oldLPOCommsToCustomer = lpoCommsToCustomer;
+                oldInvoiceNumber = invoiceDocumentNumber;
+                oldinvoiceDate = invoiceDate;
+                oldInvoiceType = invoiceType;
+                oldInvoiceAmount = invoiceAmount;
+                oldInvoiceStatus = invoiceStatus;
+                oldExistingCustomer = existingCustomer
+                // oldInvoiceItem = invoiceItem;
+
+                // if (oldInvoiceItem == 'Credit Card Surcharge') {
+                //     showInvoice = false;
+                // }
+
+                count++
+
+                console.log('signed customer count: ' + count);
+                return true;
+            });
+
+            if (count > 0) {
+
+                if (oldcustStage == 'CUSTOMER') {
+
+                    customerActivityCount++
+                    if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
+                        customerChildDataSet.push({
+                            invoiceDocumentNumber: oldInvoiceNumber,
+                            invoiceDate: oldinvoiceDate,
+                            invoiceType: oldInvoiceType,
+                            invoiceAmount: oldInvoiceAmount,
+                            invoiceStatus: oldInvoiceStatus
+                        });
+
+                        invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
+                        if (oldInvoiceType == 'Service') {
+                            invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
+                        } else {
+                            invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
+                        }
+                    }
+
+
+                    totalCustomerCount++;
+
+                    var express_speed = 0;
+                    var standard_speed = 0;
+                    var total_usage = 0;
+                    if (calcprodusage != '2') {
+                        if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                            //Customer Product Usage - Total MP Express, Standard & Premium
+                            var mpexUsageResults = search.load({
+                                type: 'customrecord_customer_product_stock',
+                                id: 'customsearch6846'
+                            });
+
+
+                            mpexUsageResults.filters.push(search.createFilter({
+                                name: 'internalid',
+                                join: 'custrecord_cust_prod_stock_customer',
+                                operator: search.Operator.ANYOF,
+                                values: parseInt(oldcustInternalID)
+                            }));
+
+                            if (!isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to)) {
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'custrecord_cust_date_stock_used',
+                                    join: null,
+                                    operator: search.Operator.ONORAFTER,
+                                    values: usage_date_from
+                                }));
+                                mpexUsageResults.filters.push(search.createFilter({
+                                    name: 'custrecord_cust_date_stock_used',
+                                    join: null,
+                                    operator: search.Operator.ONORBEFORE,
+                                    values: usage_date_to
+                                }));
+
+                            }
+
+
+
+                            mpexUsageResults.run().each(function (mpexUsageSet) {
+
+                                var deliverySpeed = mpexUsageSet.getValue({
+                                    name: 'custrecord_delivery_speed',
+                                    summary: 'GROUP'
+                                });
+                                var deliverySpeedText = mpexUsageSet.getText({
+                                    name: 'custrecord_delivery_speed',
+                                    summary: 'GROUP'
+                                });
+
+
+                                var mpexUsage = parseInt(mpexUsageSet.getValue({
+                                    name: 'name',
+                                    summary: 'COUNT'
+                                }));
+
+                                if (deliverySpeed == 2 ||
+                                    deliverySpeedText == '- None -') {
+                                    express_speed += mpexUsage;
+                                } else if (deliverySpeed == 1) {
+                                    standard_speed += mpexUsage;
+                                }
+                                total_usage += express_speed + standard_speed;
+
+                                return true;
+                            });
+                        }
+                    }
+
+                    var usage_date_from_split = usage_date_from.split('/');
+
+                    if (parseInt(usage_date_from_split[1]) < 10) {
+                        usage_date_from_split[1] = '0' + usage_date_from_split[1]
+                    }
+
+                    if (parseInt(usage_date_from_split[0]) < 10) {
+                        usage_date_from_split[0] = '0' + usage_date_from_split[0]
+                    }
+
+                    var daily_usage_from = usage_date_from_split[2] + '-' + usage_date_from_split[1] + '-' +
+                        usage_date_from_split[0];
+
+                    var usage_date_to_split = usage_date_to.split('/');
+
+                    if (parseInt(usage_date_to_split[1]) < 10) {
+                        usage_date_to_split[1] = '0' + usage_date_to_split[1]
+                    }
+
+                    if (parseInt(usage_date_to_split[0]) < 10) {
+                        usage_date_to_split[0] = '0' + usage_date_to_split[0]
+                    }
+
+                    var daily_usage_to = usage_date_to_split[2] + '-' + usage_date_to_split[1] + '-' +
+                        usage_date_to_split[0];
+
+
+                    var mpExpStdUsageLink =
+                        '<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;background-color: #095C7B !important;padding-bottom: 40px !important; border-radius: 15px"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1712&deploy=1&custid=' + oldcustInternalID + '&start_date=' + daily_usage_from + '&last_date=' + daily_usage_to + '&zee=' + oldzeeID + '" target="_blank" style="color: white !important;">TOTAL </br> USAGE</a></button>';
+
+                    var customerIdLink =
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>';
+
+                    // var d1 = new Date(olddateProspectWon);
+                    // var d2 = new Date(oldMinCommDate);
+
+                    // var existingCustomer = false;
+
+                    // if (d2 < d1) {
+                    //     existingCustomer = true;
+                    // }
+
+                    // var d1 = new Date(olddateLeadEntered);
+                    // var d2 = new Date(oldMinCommDate);
+
+                    // if (d2 < d1) {
+                    //     existingCustomer = true;
+                    // }
+
+
+                    if (oldCustStatusId == 32) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldLeadEnteredByText,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if (oldCustStatusId == 71) {
+                        console.log('freetrial child data' + JSON.stringify(customerChildDataSet))
+                        trialPendingCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            olddateProspectWon,
+                            oldTnCAgreedDate,
+                            oldZeeVisitedDate,
+                            oldLPOCommsToCustomer,
+                            oldTrialEndDate,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldLeadEnteredByText,
+                            oldsalesRepText,
+                            customerChildDataSet
+                        ]);
+                    } else if ((!isNullorEmpty(oldMonthlyExtraServiceValue) && parseInt(oldMonthlyExtraServiceValue) != 0) || (!isNullorEmpty(oldMonthlyReductionServiceValue) && parseInt(oldMonthlyReductionServiceValue) != 0) || oldExistingCustomer == true) {
+                        existingCustomerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            mpExpStdUsageLink,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            // oldemail48h,
+                            olddateProspectWon,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            invoiceServiceTotal.toFixed(2),
+                            invoiceProductsTotal.toFixed(2),
+                            invoiceTotal.toFixed(2),
+                            oldLeadEnteredByText,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            customerChildDataSet
+                        ]);
+
+                        csvExistingCustomerSignedExport.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            express_speed,
+                            standard_speed,
+                            olddateLeadEntered,
+                            olddateProspectWon,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            oldInvoiceNumber,
+                            oldinvoiceDate,
+                            oldInvoiceType,
+                            oldInvoiceAmount,
+                            oldInvoiceStatus
+                        ]);
+
+                    } else {
+                        customerDataSet.push(['',
+                            oldcustInternalID,
+                            customerIdLink,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            mpExpStdUsageLink,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            // oldemail48h,
+                            olddateProspectWon,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            invoiceServiceTotal.toFixed(2),
+                            invoiceProductsTotal.toFixed(2),
+                            invoiceTotal.toFixed(2),
+                            oldLeadEnteredByText,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            customerChildDataSet
+                        ]);
+
+                        csvCustomerSignedExport.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            express_speed,
+                            standard_speed,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            olddateProspectWon,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            oldAutoSignUp,
+                            oldInvoiceNumber,
+                            oldinvoiceDate,
+                            oldInvoiceType,
+                            oldInvoiceAmount,
+                            oldInvoiceStatus
+                        ]);
+                    }
+                }
+            }
+
+            console.log('customerDataSet: ' + customerDataSet);
+            console.log('existingCustomerDataSet: ' + existingCustomerDataSet);
+            console.log('trialCustomerDataSet: ' + trialCustomerDataSet);
+            console.log('trialPendingCustomerDataSet: ' + trialPendingCustomerDataSet);
+            console.log('csvCustomerSignedExport: ' + prospectDataSet);
+
+            var dataTableExisitngCustomers = $('#mpexusage-existing_customers').DataTable({
+                data: existingCustomerDataSet,
+                pageLength: 250,
+                order: [[13, 'des']],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Source' },//5
+                    { title: 'Product Weekly Usage' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'MP Express' },//8
+                    { title: 'MP Standard' },//9
+                    { title: 'Daily Usage' },//10
+                    { title: 'Date - Lead Entered' },//11
+                    { title: 'Date - Quote Sent' },//12
+                    // { title: '48h Email Sent' },
+                    { title: 'Date - Prospect Won' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Expected Monthly Service' },//15
+                    { title: 'Total Service Invoice' },//16
+                    { title: 'Total Product Invoice' },//17
+                    { title: 'Total Invoice' },//18
+                    { title: 'Lead Entered By' },//19
+                    { title: 'Sales Rep' },//20
+                    { title: 'Auto Signed Up' },//21
+                    { title: 'Child Table' }//22
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [21, 22],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 13, 15, 16, 17, 18],
+                        className: 'bolded'
+                    }, {
+                        targets: [0, 10, 14],
+                        className: 'notexport'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+
+                    var row_color = ''
+                    if (data[5] == 'Additional Services') {
+                        $('td', row).css('background-color', '#86A3B8');
+                    } else if (!isNullorEmpty(data[21])) {
+                        data[21].forEach(function (el) {
+                            if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
+                                row_color = ''
+
+                            } else {
+                                row_color = '#53BF9D'
+                            }
+                        });
+                        $('td', row).css('background-color', row_color);
+
+                    } else if (!isNullorEmpty(data[15])) {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total MP Express Usage
+                    total_mp_exp_usage = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Express Usage
+                    page_mp_exp_usage = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total MP Standard Usage
+                    total_mp_std_usage = api
+                        .column(9)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Standard Usage
+                    page_mp_std_usage = api
+                        .column(9, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(15, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_service_invoice_amount = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_service_invoice_amount = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_prod_nvoice_amount = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_prod_invoice_amount = api
+                        .column(17, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_invoice_amount = api
+                        .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_invoice_amount = api
+                        .column(18, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(8).footer()).html(
+                        page_mp_exp_usage
+                    );
+                    $(api.column(9).footer()).html(
+                        page_mp_std_usage
+                    );
+
+                    // Update footer
+                    $(api.column(15).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(16).footer()).html(
+                        formatter.format(pagetotal_service_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(17).footer()).html(
+                        formatter.format(pagetotal_prod_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(18).footer()).html(
+                        formatter.format(pagetotal_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                }
+            });
+
+            dataTableExisitngCustomers.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChildExisting(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-existing_customers tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableExisitngCustomers.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+
+            var dataTableTrialCustomers = $('#mpexusage-trial_customers').DataTable({
+                data: trialCustomerDataSet,
+                pageLength: 250,
+                order: [[13, 'asc']],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [{
+                    title: 'Expand Status Change',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, //0
+                { title: 'Internal ID' }, //1
+                { title: 'ID' }, //2
+                { title: 'Company Name' },//3
+                { title: 'Franchisee' },//4
+                { title: 'Source' },//5
+                { title: 'Previous Carrier' },//6
+                { title: 'Date - Lead Entered' },//7
+                { title: 'Date - Quote Sent' },//8
+                { title: 'Date - Prospect Won' },//9
+                { title: 'T & C\'s Agreed Date' },//10
+                { title: 'Franchisee Visited Date' },//11
+                { title: 'LPO Comms to Customer' },//12
+                { title: 'Trial End Date' },//13
+                { title: 'Days Open' },//14
+                { title: 'Expected Monthly Service' },//15
+                { title: 'Lead Entered By' },//16
+                { title: 'Sales Rep' },//17
+                { title: 'Child Table' },//18
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [2, 3, 4, 12, 13],
+                        className: 'bolded'
+                    },
+                    {
+                        targets: [18],
+                        visible: false
+                    },
+                    {
+                        targets: [0, 14],
+                        className: 'notexport'
+                    }
+                ],
+                footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    total_monthly_service_value = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(15).footer()).html(
+                        formatter.format(total_monthly_service_value)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+
+                }
+            });
+
+            dataTableTrialCustomers.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChildTrialCustomers(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+
+            $('#mpexusage-trial_customers tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableTrialCustomers.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+            var dataTableTrialPendingCustomers = $('#mpexusage-trial_pending_customers').DataTable({
+                data: trialPendingCustomerDataSet,
+                pageLength: 250,
+                order: [[14, 'asc']],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [{
+                    title: 'Expand Status Change',
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                }, //0
+                { title: 'Internal ID' }, //1
+                { title: 'ID' }, //2
+                { title: 'Company Name' },//3
+                { title: 'Franchisee' },//4
+                { title: 'Source' },//5
+                { title: 'Previous Carrier' },//6
+                { title: 'Date - Lead Entered' },//7
+                { title: 'Date - Quote Sent' },//8
+                { title: 'Date - Prospect Won' },//9
+                { title: 'T & C\'s Agreed Date' },//10
+                { title: 'Franchisee Visited Date' },//11
+                { title: 'LPO Comms to Customer' },//12
+                { title: 'Trial End Date' },//13
+                { title: 'Days Open' },//14
+                { title: 'Expected Monthly Service' },//15
+                { title: 'Lead Entered By' },//16
+                { title: 'Sales Rep' },//17
+                { title: 'Child Table' },//18
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [2, 3, 4, 12, 13],
+                        className: 'bolded'
+                    },
+                    {
+                        targets: [18],
+                        visible: false
+                    },
+                    {
+                        targets: [0, 14],
+                        className: 'notexport'
+                    }
+                ],
+                footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    total_monthly_service_value = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(15).footer()).html(
+                        formatter.format(total_monthly_service_value)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+
+                }
+            });
+
+            dataTableTrialPendingCustomers.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChildTrialPendingCustomers(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+
+            $('#mpexusage-trial_pending_customers tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableTrialPendingCustomers.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+
+            var dataTable = $('#mpexusage-customer').DataTable({
+                data: customerDataSet,
+                pageLength: 250,
+                order: [[13, 'des']],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Source' },//5
+                    { title: 'Product Weekly Usage' },//6
+                    { title: 'Previous Carrier' },//7
+                    { title: 'MP Express' },//8
+                    { title: 'MP Standard' },//9
+                    { title: 'Daily Usage' },//10
+                    { title: 'Date - Lead Entered' },//11
+                    { title: 'Date - Quote Sent' },//12
+                    // { title: '48h Email Sent' },
+                    { title: 'Date - Prospect Won' },//13
+                    { title: 'Days Open' },//14
+                    { title: 'Expected Monthly Service' },//15
+                    { title: 'Total Service Invoice' },//16
+                    { title: 'Total Product Invoice' },//17
+                    { title: 'Total Invoice' },//18
+                    { title: 'Lead Entered By' },//19
+                    { title: 'Sales Rep' },//20
+                    { title: 'Auto Signed Up' },//21
+                    { title: 'Child Table' }//22
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [21, 22],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 13, 15, 16, 17, 18],
+                        className: 'bolded'
+                    },
+                    {
+                        targets: [0, 10, 14],
+                        className: 'notexport'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+
+                    var row_color = ''
+                    console.log('customer table: data[5]' + data[5]);
+                    console.log('customer table: data[15]' + data[15]);
+                    if (data[5] == 'Additional Services') {
+                        $('td', row).css('background-color', '#86A3B8');
+                    } else if (!isNullorEmpty(data[21])) {
+                        data[22].forEach(function (el) {
+                            console.log('customer table: ' + el.invoiceDocumentNumber);
+                            console.log('customer table: ' + el.invoiceAmount);
+                            console.log('customer table: ' + el.oldStatus);
+                            console.log('customer table: ' + el.invoiceDate);
+                            if ((isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') && row_color != '#53BF9D') {
+                                row_color = ''
+                            } else {
+                                row_color = '#53BF9D'
+                            }
+                        });
+                        console.log('customer table: row_color' + row_color);
+                        $('td', row).css('background-color', row_color);
+
+                    } else if (!isNullorEmpty(data[15])) {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total MP Express Usage
+                    total_mp_exp_usage = api
+                        .column(8)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Express Usage
+                    page_mp_exp_usage = api
+                        .column(8, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total MP Standard Usage
+                    total_mp_std_usage = api
+                        .column(9)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total MP Standard Usage
+                    page_mp_std_usage = api
+                        .column(9, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(15)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(15, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_service_invoice_amount = api
+                        .column(16)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_service_invoice_amount = api
+                        .column(16, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_prod_nvoice_amount = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_prod_invoice_amount = api
+                        .column(17, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Expected Usage over all pages
+                    total_invoice_amount = api
+                        .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    pagetotal_invoice_amount = api
+                        .column(18, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    $(api.column(8).footer()).html(
+                        page_mp_exp_usage
+                    );
+                    $(api.column(9).footer()).html(
+                        page_mp_std_usage
+                    );
+
+                    // Update footer
+                    $(api.column(15).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(16).footer()).html(
+                        formatter.format(pagetotal_service_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(17).footer()).html(
+                        formatter.format(pagetotal_prod_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                    $(api.column(18).footer()).html(
+                        formatter.format(pagetotal_invoice_amount)
+                        // '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
+                    );
+
+                }
+            });
+
+            dataTable.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-customer tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTable.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+            var websiteProspectLeadsReportingSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_5_2' //Website Leads - Reporting V2
+            });
+
+            if (!isNullorEmpty(leadStatus)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'entitystatus',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: leadStatus
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+
+            if (!isNullorEmpty(sales_campaign)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                websiteProspectLeadsReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = websiteProspectLeadsReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", salesRecordLastAssignedListIds], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
+
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                websiteProspectLeadsReportingSearch.filterExpression = defaultSearchFilters;
+
+            }
+
+            var oldcustInternalID = null;
+            var oldcustEntityID = null;
+            var oldcustName = null;
+            var oldzeeID = null;
+            var oldzeeName = null;
+            var oldcustStage = null;
+            var oldcustStatus = null;
+            var oldCustStatusId = 0;
+            var olddateLeadEntered = null;
+            var oldquoteSentDate = null;
+            var olddateLeadLost = null;
+            var olddateLeadinContact = null;
+            var olddateProspectWon = null;
+            var olddateLeadReassigned = null;
+            var oldsalesRepId = null;
+            var oldsalesRepText = null;
+            var oldactivityInternalID = null;
+            var oldactivityStartDate = null;
+            var oldactivityTitle = null;
+            var oldactivityOrganiser = null;
+            var oldactivityMessage = null;
+            var oldemail48h = null;
+            var oldDaysOpen = null;
+            var oldCancellationReason = null;
+            var oldSource = null;
+            var oldProdWeeklyUsage = null;
+            var oldAutoSignUp = null;
+            var oldPreviousCarrier = null;
+            var oldMonthServiceValue = 0.0;
+            var oldDateLPOValidated = null;
+
+            var oldAvgInvoiceValue = 0.0;
+
+            var csvSuspectDataSet = [];
+            var csvSuspectLostDataSet = [];
+            var csvSuspectOffPeakDataSet = [];
+            var csvSuspectOOTDataSet = [];
+            var csvSuspectFollowUpDataSet = [];
+            var csvSuspectQualifiedDataSet = [];
+            var csvProspectDataSet = [];
+            var csvProspectOpportunityDataSet = [];
+            var csvSuspectNoAnswerDataSet = [];
+            var csvSuspectInContactDataSet = [];
+            var csvProspectQuoteSentDataSet = [];
+
+            var websiteProspectLeadsReportingSearchCount = websiteProspectLeadsReportingSearch.runPaged().count;
+
+            console.log('websiteProspectLeadsReportingSearchCount: ' + websiteProspectLeadsReportingSearchCount)
+            var count = 0;
+
+            websiteProspectLeadsReportingSearch.run().each(function (prospectResultSet) {
+
+                var custInternalID = prospectResultSet.getValue({
+                    name: 'internalid',
+                    summary: "GROUP",
+                });
+                var custEntityID = prospectResultSet.getValue({
+                    name: 'entityid',
+                    summary: "GROUP",
+                });
+                var custName = prospectResultSet.getValue({
+                    name: 'companyname',
+                    summary: "GROUP",
+                });
+                var zeeID = prospectResultSet.getValue({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+                var zeeName = prospectResultSet.getText({
+                    name: 'partner',
+                    summary: "GROUP",
+                });
+
+                var custStage = (prospectResultSet.getText({
+                    name: 'stage',
+                    summary: "GROUP",
+                })).toUpperCase();
+
+                var custStatusId = prospectResultSet.getValue({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                })
+
+                var custStatus = prospectResultSet.getText({
+                    name: 'entitystatus',
+                    summary: "GROUP",
+                }).toUpperCase();
+
+                var dateLeadEntered = prospectResultSet.getValue({
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP",
+                });
+
+                var quoteSentDate = prospectResultSet.getValue({
+                    name: "custentity_date_lead_quote_sent",
+                    summary: "GROUP",
+                });
+
+                var dateLeadLost = prospectResultSet.getValue({
+                    name: 'custentity_date_lead_lost',
+                    summary: "GROUP",
+                });
+                var dateLeadinContact = prospectResultSet.getValue({
+                    name: 'custentity_date_prospect_in_contact',
+                    summary: "GROUP",
+                });
+
+                var dateProspectWon = prospectResultSet.getValue({
+                    name: 'custentity_date_prospect_opportunity',
+                    summary: "GROUP",
+                });
+
+                var dateLeadReassigned = prospectResultSet.getValue({
+                    name: 'custentity_date_suspect_reassign',
+                    summary: "GROUP",
+                });
+
+                var salesRepId = prospectResultSet.getValue({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+                var salesRepText = prospectResultSet.getText({
+                    name: 'custrecord_sales_assigned',
+                    join: 'CUSTRECORD_SALES_CUSTOMER',
+                    summary: "GROUP",
+                });
+
+                var activityInternalID = prospectResultSet.getValue({
+                    name: "internalid",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+                var activityStartDate = prospectResultSet.getValue({
+                    name: "startdate",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+                if (!isNullorEmpty(activityStartDate)) {
+                    // var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var activityStartDateArray = activityStartDate.split('/');
+                    if (parseInt(activityStartDateArray[1]) < 10) {
+                        activityStartDateArray[1] = '0' + activityStartDateArray[1]
+                    }
+
+                    if (parseInt(activityStartDateArray[0]) < 10) {
+                        activityStartDateArray[0] = '0' + activityStartDateArray[0]
+                    }
+                    activityStartDate = activityStartDateArray[2] + '-' + activityStartDateArray[1] + '-' + activityStartDateArray[0]
+                }
+                var activityTitle = prospectResultSet.getValue({
+                    name: "title",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+
+
+                if (isNullorEmpty(prospectResultSet.getText({
+                    name: "custevent_organiser",
+                    join: "activity",
+                    summary: "GROUP",
+                }))) {
+                    var activityOrganiser = prospectResultSet.getText({
+                        name: "assigned",
+                        join: "activity",
+                        summary: "GROUP",
+                    })
+                } else {
+                    var activityOrganiser = prospectResultSet.getText({
+                        name: "custevent_organiser",
+                        join: "activity",
+                        summary: "GROUP",
+                    })
+                }
+
+
+                var activityMessage = prospectResultSet.getValue({
+                    name: "message",
+                    join: "activity",
+                    summary: "GROUP",
+                })
+
+                var email48h = prospectResultSet.getText({
+                    name: 'custentity_48h_email_sent',
+                    summary: "GROUP",
+                });
+
+                var daysOpen = prospectResultSet.getValue({
+                    name: "formulanumeric",
+                    summary: "GROUP",
+                });
+
+                var cancellationReason = prospectResultSet.getText({
+                    name: "custentity_service_cancellation_reason",
+                    summary: "GROUP",
+                });
+
+                var source = prospectResultSet.getText({
+                    name: "leadsource",
+                    summary: "GROUP",
+                });
+
+                var productWeeklyUsage = prospectResultSet.getText({
+                    name: "custentity_form_mpex_usage_per_week",
+                    summary: "GROUP",
+                });
+
+                var autoSignUp = prospectResultSet.getValue({
+                    name: "custentity_auto_sign_up",
+                    summary: "GROUP",
+                });
+
+                var previousCarrier = prospectResultSet.getText({
+                    name: "custentity_previous_carrier",
+                    summary: "GROUP",
+                });
+
+                var monthlyServiceValue = (prospectResultSet.getValue({
+                    name: "custentity_cust_monthly_service_value",
+                    summary: "GROUP",
+                }));
+
+                var avgInvoiceValue = (prospectResultSet.getValue({
+                    name: "total",
+                    join: "transaction",
+                    summary: "AVG",
+                }));
+
+                var dateLPOValidated = prospectResultSet.getValue({
+                    name: 'custentity_date_lpo_validated',
+                    summary: "GROUP",
+                });
+
+
+                var userNotesInternalID = prospectResultSet.getValue({
+                    name: "internalid",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesTitle = prospectResultSet.getValue({
+                    name: "title",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesStartDate = prospectResultSet.getValue({
+                    name: "notedate",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                if (!isNullorEmpty(userNotesStartDate)) {
+                    var userNotesStartDateTimeArray = userNotesStartDate.split(' ');
+                    var userNotesStartDateArray = userNotesStartDateTimeArray[0].split('/');
+                    if (parseInt(userNotesStartDateArray[1]) < 10) {
+                        userNotesStartDateArray[1] = '0' + userNotesStartDateArray[1]
+                    }
+
+                    if (parseInt(userNotesStartDateArray[0]) < 10) {
+                        userNotesStartDateArray[0] = '0' + userNotesStartDateArray[0]
+                    }
+                    userNotesStartDate = userNotesStartDateArray[2] + '-' + userNotesStartDateArray[1] + '-' + userNotesStartDateArray[0]
+                }
+                var userNotesOrganiser = prospectResultSet.getText({
+                    name: "author",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+                var userNotesMessage = prospectResultSet.getValue({
+                    name: "note",
+                    join: "userNotes",
+                    summary: "GROUP",
+                })
+
+                if (!isNullorEmpty(monthlyServiceValue)) {
+                    monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+                } else {
+                    monthlyServiceValue = 0.0;
+                }
+
+                if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+                    avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+                } else {
+                    avgInvoiceValue = 0.0;
+                }
+
+                var dateLeadEnteredSplit = dateLeadEntered.split('/');
+                if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+                    dateLeadEnteredSplit[1] = '0' + dateLeadEnteredSplit[1]
+                }
+
+                if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+                    dateLeadEnteredSplit[0] = '0' + dateLeadEnteredSplit[0]
+                }
+                dateLeadEntered = dateLeadEnteredSplit[2] + '-' + dateLeadEnteredSplit[1] + '-' + dateLeadEnteredSplit[0]
+
+
+                if (!isNullorEmpty(dateLeadLost)) {
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateLost = new Date(dateLeadLostSplit[2], dateLeadLostSplit[1] - 1, dateLeadLostSplit[0]);
+
+                    var difference = dateLost.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateLost.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                } else if (!isNullorEmpty(dateProspectWon)) {
+                    var dateProspectWonSplit = dateProspectWon.split('/');
+
+                    if (parseInt(dateProspectWonSplit[1]) < 10) {
+                        dateProspectWonSplit[1] = '0' + dateProspectWonSplit[1]
+                    }
+
+                    if (parseInt(dateProspectWonSplit[0]) < 10) {
+                        dateProspectWonSplit[0] = '0' + dateProspectWonSplit[0]
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    dateProspectWon = new Date(dateProspectWonSplit[2], dateProspectWonSplit[1] - 1, dateProspectWonSplit[0]);
+
+                    var difference = dateProspectWon.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateProspectWon.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    dateProspectWon = dateProspectWonSplit[2] + '-' + dateProspectWonSplit[1] + '-' +
+                        dateProspectWonSplit[0];
+
+                } else if (!isNullorEmpty(quoteSentDate)) {
+                    var dateQuoteSentSplit = quoteSentDate.split('/');
+
+                    if (parseInt(dateQuoteSentSplit[1]) < 10) {
+                        dateQuoteSentSplit[1] = '0' + dateQuoteSentSplit[1]
+                    }
+
+                    if (parseInt(dateQuoteSentSplit[0]) < 10) {
+                        dateQuoteSentSplit[0] = '0' + dateQuoteSentSplit[0]
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
+
+                    var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    quoteSentDate = new Date(dateQuoteSentSplit[2], dateQuoteSentSplit[1] - 1, dateQuoteSentSplit[0]);
+
+                    var difference = quoteSentDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = quoteSentDate.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    quoteSentDate = dateQuoteSentSplit[2] + '-' + dateQuoteSentSplit[1] + '-' +
+                        dateQuoteSentSplit[0];
+                } if (!isNullorEmpty(dateLPOValidated)) {
+                    var dateLPOValidatedSplit = dateLPOValidated.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var dateValidated = new Date(dateLPOValidatedSplit[2], dateLPOValidatedSplit[1] - 1, dateLPOValidatedSplit[0]);
+
+                    var difference = dateValidated.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = dateValidated.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                } else {
+                    // var dateLeadLostSplit = dateLeadLost.split('/');
+                    // var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+                    var dateEntered = new Date(dateLeadEnteredSplit[2], dateLeadEnteredSplit[1] - 1, dateLeadEnteredSplit[0]);
+                    var todayDate = new Date();
+
+                    var difference = todayDate.getTime() - dateEntered.getTime();
+                    daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+                    var weeks = Math.floor(daysOpen / 7);
+                    daysOpen = daysOpen - (weeks * 2);
+
+                    // Handle special cases
+                    var startDay = dateEntered.getDay();
+                    var endDay = todayDate.getDay();
+
+                    // Remove weekend not previously removed.
+                    if (startDay - endDay > 1)
+                        daysOpen = daysOpen - 2;
+
+                    // Remove start day if span starts on Sunday but ends before Saturday
+                    if (startDay == 0 && endDay != 6) {
+                        daysOpen = daysOpen - 1;
+                    }
+
+                    // Remove end day if span ends on Saturday but starts after Sunday
+                    if (endDay == 6 && startDay != 0) {
+                        daysOpen = daysOpen - 1;
+                    }
+                }
+
+                if (count == 0) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+                } else if (count > 0 && (oldcustInternalID == custInternalID)) {
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+                } else if (count > 0 && (oldcustInternalID != custInternalID)) {
+
+                    if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+
+                        // totalProspectCount++;
+                        // if (oldcustStatus == 50) {
+                        //     //PROSPECT - QUOTE SENT
+                        //     totalProspectQuoteSentCount++;
+                        // } else if (oldcustStatus == 35) {
+                        //     //PROSPECT - NO ANSWER
+                        //     totalProspectNoAnswerCount++
+                        // } else if (oldcustStatus == 8) {
+                        //     //PROSPECT - IN CONTACT
+                        //     totalProspectInContactCount++
+                        // }
+                        prospectDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            prospectChildDataSet
+                        ]);
+
+                        csvProspectDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+
+
+                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+
+                        // totalProspectCount++;
+                        // if (oldcustStatus == 50) {
+                        //     //PROSPECT - QUOTE SENT
+                        //     totalProspectQuoteSentCount++;
+                        // } else if (oldcustStatus == 35) {
+                        //     //PROSPECT - NO ANSWER
+                        //     totalProspectNoAnswerCount++
+                        // } else if (oldcustStatus == 8) {
+                        //     //PROSPECT - IN CONTACT
+                        //     totalProspectInContactCount++
+                        // }
+                        prospectQuoteSentDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            prospectQuoteSentChildDataSet
+                        ]);
+                        csvProspectQuoteSentDataSet.push([
+                            oldcustInternalID,
+                            oldcustEntityID,
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            oldDaysOpen,
+                            oldMonthServiceValue,
+                            oldsalesRepText
+                        ]);
+
+
+                    }
+
+                    prospectChildDataSet = [];
+                    prospectOpportunityChildDataSet = [];
+                    prospectQuoteSentChildDataSet = [];
+                    suspectChildDataSet = [];
+                    suspectFollowUpChildDataSet = [];
+                    suspectLostChildDataSet = [];
+                    suspectOOTChildDataSet = [];
+                    suspectQualifiedChildDataSet = [];
+                    suspectOffPeakChildDataSet = [];
+                    suspectNoAnswerChildDataSet = [];
+                    suspectInContactChildDataSet = [];
+
+                    if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        }
+                    } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
+                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
+                            prospectActivityCount++
+                            prospectQuoteSentChildDataSet.push({
+                                activityInternalID: userNotesInternalID,
+                                activityStartDate: userNotesStartDate,
+                                activityTitle: userNotesTitle,
+                                activityOrganiser: userNotesOrganiser,
+                                activityMessage: userNotesMessage
+                            })
+                        }
+                    }
+
+
+                }
+
+                oldcustInternalID = custInternalID;
+                oldcustEntityID = custEntityID;
+                oldcustName = custName;
+                oldzeeID = zeeID;
+                oldzeeName = zeeName;
+                oldcustStage = custStage;
+                oldcustStatus = custStatus;
+                oldCustStatusId = custStatusId;
+                olddateLeadEntered = dateLeadEntered;
+                oldquoteSentDate = quoteSentDate;
+                olddateLeadLost = dateLeadLost;
+                olddateLeadinContact = dateLeadinContact;
+                olddateProspectWon = dateProspectWon;
+                oldDateLPOValidated = dateLPOValidated;
+                olddateLeadReassigned = dateLeadReassigned;
+                oldsalesRepId = salesRepId;
+                oldsalesRepText = salesRepText;
+                oldactivityInternalID = activityInternalID;
+                oldactivityStartDate = activityStartDate;
+                oldactivityTitle = activityTitle;
+                oldactivityOrganiser = activityOrganiser;
+                oldactivityMessage = activityMessage;
+                oldemail48h = email48h;
+                oldDaysOpen = daysOpen;
+                oldCancellationReason = cancellationReason;
+                oldSource = source;
+                oldProdWeeklyUsage = productWeeklyUsage;
+                oldAutoSignUp = autoSignUp;
+                oldPreviousCarrier = previousCarrier;
+                oldMonthServiceValue = monthlyServiceValue;
+                oldAvgInvoiceValue = avgInvoiceValue;
+                count++
+                return true;
+            });
+
+            if (count > 0) {
+
+                if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-QUOTE SENT') {
+
+
+                    prospectQuoteSentDataSet.push(['',
+                        oldcustInternalID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                        oldMonthServiceValue,
+                        oldsalesRepText,
+                        prospectQuoteSentChildDataSet
+                    ]);
+
+                    csvProspectQuoteSentDataSet.push([
+                        oldcustInternalID,
+                        oldcustEntityID,
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        oldDaysOpen,
+                        oldMonthServiceValue,
+                        oldsalesRepText
+                    ]);
+
+                }
+            }
+
+            console.log('prospects hidden');
+
+            console.log('prospectDataSet: ' + prospectDataSet)
+
+            var dataTable2 = $('#mpexusage-prospects_quoteSent_incontact_noanswer').DataTable({
+                data: prospectDataSet,
+                pageLength: 250,
+                order: [],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: '48h Email Sent' },//11
+                    { title: 'Days Open' },//12
+                    { title: 'Monthly Service Value' },//13
+                    { title: 'Sales Rep' },//14
+                    { title: 'Child Table' }//15
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [15],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 5, 12, 13],
+                        className: 'bolded'
+                    },
+                    {
+                        targets: [0, 12],
+                        className: 'notexport'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    if (data[5] == 'PROSPECT-OPPORTUNITY') {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
+                        $('td', row).css('background-color', '#f9c67a');
+                    } else if (!isNullorEmpty(data[15])) {
+                        // var row_color = '#f9c67a'
+                        // data[15].forEach(function (el) {
+                        //     if (!isNullorEmpty(el)) {
+                        //         if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
+                        //             row_color = ''
+                        //         }
+                        //     }
+                        // });
+                        // $('td', row).css('background-color', row_color);
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(13, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(13).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
+                }
+            });
+
+            dataTable2.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild2(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-prospects_quoteSent_incontact_noanswer tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTable2.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+            console.log('prospectDataSet: ' + prospectDataSet)
+
+            var dataTableOpportunity = $('#mpexusage-prospects_opportunites').DataTable({
+                data: prospectQuoteSentDataSet,
+                pageLength: 250,
+                order: [10, 'desc'],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: '48h Email Sent' },//11
+                    { title: 'Days Open' },//12
+                    { title: 'Monthly Service Value' },//13
+                    { title: 'Sales Rep' },//14
+                    { title: 'Child Table' }//15
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [15],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 5, 12, 13],
+                        className: 'bolded'
+                    }, {
+                        targets: [0, 12],
+                        className: 'notexport'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    if (data[5] == 'PROSPECT-QUOTE SENT') {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
+                        $('td', row).css('background-color', '#f9c67a');
+                    } else if (!isNullorEmpty(data[15])) {
+                        var row_color = '#f9c67a'
+                        data[15].forEach(function (el) {
+                            if (!isNullorEmpty(el)) {
+                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
+                                    row_color = ''
+                                }
+                            }
+                        });
+                        $('td', row).css('background-color', row_color);
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(13, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(13).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
+                }
+            });
+
+            dataTableOpportunity.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild2(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-prospects_opportunites tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableOpportunity.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+
+
             // loadDatatable(debt_set, debt_set2);
             debt_set = [];
             debt_set2 = [];
 
         }
 
+        function createChild(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
 
+            // console.log('customer child row: ' + row.data()[19]);
+
+            row.data()[22].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+
+                    if (data[4] == 'Paid In Full') {
+                        $('td', row).css('background-color', '#C7F2A4');
+                    }
+                }
+            });
+        }
+
+        function createChildTrialCustomers(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+
+            console.log('customer free trial child row: ' + row.data()[16]);
+
+            row.data()[18].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                }
+            });
+        }
+
+        function createChildTrialPendingCustomers(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+
+            console.log('customer free trial child row: ' + row.data()[16]);
+
+            row.data()[18].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                }
+            });
+        }
+
+        function createChildExisting(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+
+            // console.log('customer child row: ' + row.data()[19]);
+
+            row.data()[22].forEach(function (el) {
+                if (!isNullorEmpty(el)) {
+                    var invoiceURL = '';
+                    childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Invoice Number' },
+                    { title: 'Invoice Date' },
+                    { title: 'Invoice Type' },
+                    { title: 'Invoice Amount' },
+                    { title: 'Invoice Status' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                    if (data[4] == 'Paid In Full') {
+                        $('td', row).css('background-color', '#C7F2A4');
+                    }
+                }
+            });
+        }
 
         function createChildSalesRepTimeline(row) {
             // This is the table we'll convert into a DataTable
@@ -8724,7 +12545,41 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             });
         }
 
+                function createChild2(row) {
+            // This is the table we'll convert into a DataTable
+            var table = $('<table class="display" width="50%"/>');
+            var childSet = [];
+            row.data()[15].forEach(function (el) {
 
+                if (!isNullorEmpty(el)) {
+                    childSet.push([el.activityInternalID, el.activityStartDate, el.activityTitle, el.activityOrganiser, el.activityMessage
+                    ]);
+                }
+            });
+            // Display it the child row
+            row.child(table).show();
+
+            // Initialise as a DataTable
+            var usersTable = table.DataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                data: childSet,
+                order: [1, 'desc'],
+                columns: [
+                    { title: 'Internal Id ' },
+                    { title: 'Date' },
+                    { title: 'Title' },
+                    { title: 'Organiser' },
+                    { title: 'Message' }
+                ],
+                columnDefs: [],
+                rowCallback: function (row, data) {
+                }
+            });
+        }
 
         function destroyChild(row) {
             // And then hide the row
@@ -8762,7 +12617,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -8847,7 +12702,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -8932,7 +12787,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -9027,7 +12882,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -9266,7 +13121,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -9498,7 +13353,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -9739,7 +13594,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10209,7 +14064,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10295,7 +14150,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10381,7 +14236,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10467,7 +14322,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10552,7 +14407,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -10637,7 +14492,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Lead Count',
+                        text: 'Total Status Changes',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',

@@ -12841,6 +12841,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             //? Data Capture Grouped by Source & Campaign
             //Website New Leads by Source & Campaign - Data Capture Reporting
+            console.log('Website New Leads by Source & Campaign - Data Capture Reporting')
+            console.log('date_signed_up_from: ' + date_signed_up_from)
+            console.log('date_signed_up_to: ' + date_signed_up_to)
             var leadsListByDataCaptureSourceCampaignSearch = search.load({
                 type: 'customer',
                 id: 'customsearch_leads_reporting_weekly_5__2'
@@ -13440,6 +13443,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             //?BY SALES REP ASSIGNED - LEAD ENTERED BY & CAMPAIGN
             //Website New Leads by Lead Entered - Sales Rep Reporting
+            console.log('Website New Leads by Lead Entered - Sales Rep Reporting')
+            console.log('date_signed_up_from: ' + date_signed_up_from)
+            console.log('date_signed_up_to: ' + date_signed_up_to)
             var leadsListBySalesRepDataCaptureCampaignSearch = search.load({
                 type: 'customer',
                 id: 'customsearch_leads_reporting_weekly_5_3'
@@ -13679,7 +13685,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += total_leads;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count = total_leads;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
@@ -13861,6 +13867,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             plotSalesRepChartCampaign(series_data_campaign, null, salesRepAssignedTeamMemberCategories)
 
             //?Franchisee Generated Leads Assgined to Sales Rep
+            console.log('lead_source: ' + lead_source)
+            console.log('date_signed_up_from: ' + date_signed_up_from)
+            console.log('date_signed_up_to: ' + date_signed_up_to)
             if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
 
                 //Franchisee Generated Leads by LAst Assigned - Weekly Reporting
@@ -13896,7 +13905,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }
 
                 if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
-                    leadsListBySalesRepDataCaptureCampaignSearch.filters.push(search.createFilter({
+                    leadsListByZeeGeneratedLastAssignedSearch.filters.push(search.createFilter({
                         name: 'custentity_date_prospect_opportunity',
                         join: null,
                         operator: search.Operator.ONORAFTER,
@@ -14018,6 +14027,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 var zeeGeneratedTeam = [];
 
+                var defaultSearchFilters = leadsListByZeeGeneratedLastAssignedSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
                 leadsListByZeeGeneratedLastAssignedSearch.run().each(function (
                     leadsListBySalesRepDataCaptureCampaignSearchResultSet) {
@@ -14087,7 +14099,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         if (custSalesRepAssigned == oldCustSalesRepAssigned) {
                             total_leads += prospectCount;
-                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count += total_leads;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count = total_leads;
 
                         } else if (custSalesRepAssigned != oldCustSalesRepAssigned) {
 
