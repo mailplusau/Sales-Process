@@ -1103,7 +1103,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
         function dateFilterSection(start_date, last_date, usage_date_from, usage_date_to, date_signed_up_from, date_signed_up_to, invoice_date_from, invoice_date_to, invoice_type, date_quote_sent_to, date_quote_sent_from, calcprodusage, modified_start_date, modified_last_date, sales_activity_notes) {
             var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
             inlineHtml += '<div class="row">';
-            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SALES ACTIVITY & USER NOTE - FILTER</span></h4></div>';
+            inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
             inlineHtml += '</div>';
             inlineHtml += '</div>';
 
@@ -1113,7 +1113,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             // Last Modified Date from field
             inlineHtml += '<div class="col-xs-6 date_from">';
             inlineHtml += '<div class="input-group">';
-            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">SALES ACTIVITY & USER NOTE DATE - FROM</span>';
+            inlineHtml += '<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
             if (isNullorEmpty(modified_start_date)) {
                 inlineHtml += '<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
             } else {
@@ -1124,7 +1124,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             // Last Modified Date to field
             inlineHtml += '<div class="col-xs-6 date_to">';
             inlineHtml += '<div class="input-group">';
-            inlineHtml += '<span class="input-group-addon" id="date_to_text">SALES ACTIVITY & USER NOTE DATE - TO</span>';
+            inlineHtml += '<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
             if (isNullorEmpty(modified_last_date)) {
                 inlineHtml += '<input id="modified_date_to" class="form-control modified_date_to" type="date">';
             } else {

@@ -799,7 +799,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -2280,7 +2280,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Customer - Signed'//21
                 }, {
-                    title: 'Total Lead Count'//22
+                    title: 'Total Status Change Count'//22
                 }],
                 columnDefs: [{
                     targets: [0, 5, 17, 19, 20],
@@ -3411,7 +3411,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }, {
                         title: 'Customer - Signed'//20
                     }, {
-                        title: 'Total Lead Count'//21
+                        title: 'Total Status Change Count'//21
                     }],
                     columnDefs: [{
                         targets: [0, 4, 17, 19, 20],
@@ -8330,10 +8330,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             //?Franchisee Generated Leads Assgined to Sales Rep
             if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
 
-                //Franchisee Generated Leads by LAst Assigned - Weekly Reporting
+                //Franchisee Generated Leads by System Notes Set By - Weekly Reporting
                 var leadsListByZeeGeneratedLastAssignedSearch = search.load({
                     type: 'customer',
-                    id: 'customsearch_leads_reporting_weekly_4__3'
+                    id: 'customsearch_leads_reporting_weekly_4__4'
                 });
 
 
@@ -8453,7 +8453,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
 
-                    var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                    var modifiedDateFilters = [["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"], "AND", ["systemnotes.oldvalue", "isnotempty", ""], "AND", ["systemnotes.name", "anyof", "-4", "1623053", "1822089", "668712", "1797389", "1809334", "690145", "1813424", "409428", "109783", "696160", "668711", "1809382", "653718", "1777309", "585236", "1844985", "1819701"], "AND", ["systemnotes.date", "within", [modified_date_from, modified_date_to]]]
                     console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
 
                     defaultSearchFilters.push('AND');
@@ -8496,13 +8496,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }));
 
                     var custSalesRepAssigned = parseInt(leadsListBySalesRepDataCaptureCampaignSearchResultSet.getValue({
-                        name: "custrecord_sales_assigned",
-                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        name: "name",
+                        join: "systemNotes",
                         summary: "GROUP",
                     }));
                     var custSalesRepAssignedText = leadsListBySalesRepDataCaptureCampaignSearchResultSet.getText({
-                        name: "custrecord_sales_assigned",
-                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        name: "name",
+                        join: "systemNotes",
                         summary: "GROUP",
                     });
 
@@ -8516,13 +8516,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         name: "partner",
                         summary: "GROUP",
                     });
-
-                    // if (isNullorEmpty(dataCaptureAssigned)) {
-                    //     dataCaptureAssigned = 'Franchisees'
-                    // }
-                    // if (isNullorEmpty(dataCaptureAssignedId)) {
-                    //     dataCaptureAssignedId = -4
-                    // }
 
                     if (count1 == 0) {
                         total_leads += prospectCount
