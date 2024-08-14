@@ -630,7 +630,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     body: body,
                                     recipients: salesRep,
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
+                                    cc: ['lee.russell@mailplus.com.au'], //2024-08-14T04:52:32.507Z Update: Luke asked to remove his email address.
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else if (leadSource == -4) {
@@ -753,7 +753,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                     body: body,
                                     recipients: salesRep,
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
+                                    cc: ['lee.russell@mailplus.com.au'], // 2024-08-14T04:52:53.349ZUpdate - Luke asked to remove his email.
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else {
