@@ -1393,10 +1393,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
 
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
             // inlineHtml +=
             //     '<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
             // inlineHtml +=
@@ -1533,104 +1533,104 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '</div>';
 
 
-            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
 
-            // // Customers Tabs headers
-            // inlineHtml +=
-            //     '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-            // inlineHtml +=
-            //     '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-            // inlineHtml += '</style>';
+            // Customers Tabs headers
+            inlineHtml +=
+                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            inlineHtml +=
+                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            inlineHtml += '</style>';
 
-            // inlineHtml +=
-            //     '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+            inlineHtml +=
+                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-            // inlineHtml +=
-            //     '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
 
-            // inlineHtml += '</ul></div>';
+            inlineHtml += '</ul></div>';
 
-            // inlineHtml += '<div class="tab-content">';
-            // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
+            inlineHtml += '<div class="tab-content">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_customer"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('customer');
-            // inlineHtml += '</div>';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_customer"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('customer');
+            inlineHtml += '</div>';
 
-            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
 
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_trial_customers"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('trial_customers');
-            // inlineHtml += '</div>';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_trial_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('trial_customers');
+            inlineHtml += '</div>';
 
-            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
 
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_trial_pending_customers"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('trial_pending_customers');
-            // inlineHtml += '</div>';
-
-
-            // inlineHtml += '<div role="tabpanel" class="tab-pane " id="existing_customers">';
-
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_existing_customers"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('existing_customers');
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
-
-            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
-
-            // // Prospects Tabs headers
-            // inlineHtml +=
-            //     '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
-            // inlineHtml +=
-            //     '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
-            // inlineHtml += '</style>';
-
-            // inlineHtml +=
-            //     '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-            // inlineHtml +=
-            //     '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
-            // inlineHtml +=
-            //     '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_trial_pending_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('trial_pending_customers');
+            inlineHtml += '</div>';
 
 
+            inlineHtml += '<div role="tabpanel" class="tab-pane " id="existing_customers">';
 
-            // inlineHtml += '</ul></div>';
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_existing_customers"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('existing_customers');
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
-            // inlineHtml += '<div class="tab-content">';
-            // inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
 
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_quoteSent_incontact_noanswer"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('prospects_quoteSent_incontact_noanswer');
-            // inlineHtml += '</div>';
+            // Prospects Tabs headers
+            inlineHtml +=
+                '<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }';
+            inlineHtml +=
+                '.nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }';
+            inlineHtml += '</style>';
+
+            inlineHtml +=
+                '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+            inlineHtml +=
+                '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
+            inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
 
 
-            // inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
 
-            // inlineHtml += '<figure class="highcharts-figure">';
-            // inlineHtml += '<div id="container_prospects_opportunites"></div>';
-            // inlineHtml += '</figure><br></br>';
-            // inlineHtml += dataTable('prospects_opportunites');
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
-            // inlineHtml += '</div>';
+            inlineHtml += '</ul></div>';
+
+            inlineHtml += '<div class="tab-content">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_quoteSent_incontact_noanswer"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('prospects_quoteSent_incontact_noanswer');
+            inlineHtml += '</div>';
+
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_prospects_opportunites"></div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('prospects_opportunites');
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
 
 
             // inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';

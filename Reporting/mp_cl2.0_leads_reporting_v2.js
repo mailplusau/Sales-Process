@@ -13685,7 +13685,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (dataCaptureAssignedId == oldDataCaptureAssignedId) {
                         total_leads += prospectCount;
-                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count += total_leads;
+                        salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].count = total_leads;
                         salesRepAssignedTeam[salesRepAssignedTeam.length - 1].details[0].enteredBy[enteredByLength - 1].campaign.push({
                             'id': custCampaign,
                             'name': custCampaignText,
@@ -14099,7 +14099,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         if (custSalesRepAssigned == oldCustSalesRepAssigned) {
                             total_leads += prospectCount;
-                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count += total_leads;
+                            zeeGeneratedTeam[zeeGeneratedTeam.length - 1].details[0].lastAssigned[lastAssignedLength - 1].count = total_leads;
 
                         } else if (custSalesRepAssigned != oldCustSalesRepAssigned) {
 
