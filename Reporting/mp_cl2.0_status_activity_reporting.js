@@ -104,6 +104,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         }
 
         var salesRecordLastAssignedListIds = [
+            409635, //Ankith
             1623053, //Aleyna
             1822089, //Alison
             668712, //Belinda
@@ -12989,7 +12990,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             total_customer_signed = 0;
             var count_customer_signed = 0;
-            var oldCustomerSignedDate = null;
+            var oldLastAssigned = null;
             var oldCustomerCount = 0;
             var oldCustomerSource = null;
 
@@ -13008,18 +13009,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var lpo_ap_customer = 0;
 
             var total_source_count = 0;
+            var oldSalesRecordInternalId = null;
+            var oldCustomerInternalId = 0;
 
             customerTrialListBySalesRepWeeklySearch.run().each(function (
                 customerTrialListBySalesRepWeeklySearchResultSet) {
 
 
-                var customerCount = parseInt(customerTrialListBySalesRepWeeklySearchResultSet.getValue({
-                    name: 'internalid',
-                    summary: 'COUNT'
-                }));
-                var weekLeadEntered = customerTrialListBySalesRepWeeklySearchResultSet.getText({
+                // var customerCount = parseInt(customerTrialListBySalesRepWeeklySearchResultSet.getValue({
+                //     name: 'internalid',
+                //     summary: 'COUNT'
+                // }));
+                var lastAssigned = customerTrialListBySalesRepWeeklySearchResultSet.getText({
                     name: "custrecord_sales_assigned",
                     join: "CUSTRECORD_SALES_CUSTOMER",
+                    summary: "GROUP",
+                });
+
+                var customerInternalId = customerTrialListBySalesRepWeeklySearchResultSet.getValue({
+                    name: "internalid",
                     summary: "GROUP",
                 });
 
@@ -13035,88 +13043,57 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 if (count_customer_signed == 0) {
 
-                    if (customerSource == '-4') {
+
+                } else if (oldCustomerInternalId != null &&
+                    oldCustomerInternalId == customerInternalId) {
+
+
+
+                } else if (oldCustomerInternalId != null &&
+                    oldCustomerInternalId != customerInternalId) {
+
+                    console.log('oldCustomerInternalId' + oldCustomerInternalId)
+                    console.log('oldCustomerSource' + oldCustomerSource)
+
+                    if (oldCustomerSource == '-4') {
                         //ZEE GENERATED
-                        source_zee_generated += parseInt(customerCount);
-                    } else if (customerSource == '17') {
+                        source_zee_generated++;
+                    } else if (oldCustomerSource == '17') {
                         //INBOUND CALL
-                        source_call += parseInt(customerCount);
-                    } else if (customerSource == '239030') {
+                        source_call++;
+                    } else if (oldCustomerSource == '239030') {
                         //FIELD SALES
-                        source_field_sales += parseInt(customerCount);
-                    } else if (customerSource == '254557') {
+                        source_field_sales++;
+                    } else if (oldCustomerSource == '254557') {
                         //INBOUND - NEW WEBSITE
-                        source_website += parseInt(customerCount);
-                    } else if (customerSource == '277970') {
-                        source_additional_services += parseInt(customerCount)
-                    } else if (customerSource == '279095') {
-                        source_legal_campaign += parseInt(customerCount)
-                    } else if (customerSource == '280411') {
-                        futurePlusCount += parseInt(customerCount)
-                    } else if (customerSource == '281559') {
-                        lpo_transition += parseInt(customerCount)
-                    } else if (customerSource == '282051') {
-                        lpo_ho_generated += parseInt(customerCount)
-                    } else if (customerSource == '282083') {
-                        lpo_ap_customer += parseInt(customerCount)
-                    } else if (customerSource == '282085') {
-                        lpo_inbound_web += parseInt(customerCount)
-                    } else if (customerSource == '97943') {
-                        ho_generated += parseInt(customerCount)
+                        source_website++;
+                    } else if (oldCustomerSource == '277970') {
+                        source_additional_services++;
+                    } else if (oldCustomerSource == '279095') {
+                        source_legal_campaign++;
+                    } else if (oldCustomerSource == '280411') {
+                        futurePlusCount++;
+                    } else if (oldCustomerSource == '281559') {
+                        lpo_transition++;
+                    } else if (oldCustomerSource == '282051') {
+                        lpo_ho_generated++;
+                    } else if (oldCustomerSource == '282083') {
+                        lpo_ap_customer++;
+                    } else if (oldCustomerSource == '282085') {
+                        lpo_inbound_web++;
+                    } else if (oldCustomerSource == '97943') {
+                        ho_generated++;
                     } else {
-                        other_source += parseInt(customerCount)
+                        other_source++;
                     }
 
                     total_source_count =
                         source_zee_generated +
                         source_call +
                         source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount + lpo_transition + lpo_ho_generated + lpo_ap_customer + lpo_inbound_web + ho_generated;
-
-                } else if (oldCustomerSignedDate != null &&
-                    oldCustomerSignedDate == weekLeadEntered) {
-
-                    if (customerSource == '-4') {
-                        //ZEE GENERATED
-                        source_zee_generated += parseInt(customerCount);
-                    } else if (customerSource == '17') {
-                        //INBOUND CALL
-                        source_call += parseInt(customerCount);
-                    } else if (customerSource == '239030') {
-                        //FIELD SALES
-                        source_field_sales += parseInt(customerCount);
-                    } else if (customerSource == '254557') {
-                        //INBOUND - NEW WEBSITE
-                        source_website += parseInt(customerCount);
-                    } else if (customerSource == '277970') {
-                        source_additional_services += parseInt(customerCount)
-                    } else if (customerSource == '279095') {
-                        source_legal_campaign += parseInt(customerCount)
-                    } else if (customerSource == '280411') {
-                        futurePlusCount += parseInt(customerCount)
-                    } else if (customerSource == '281559') {
-                        lpo_transition += parseInt(customerCount)
-                    } else if (customerSource == '282051') {
-                        lpo_ho_generated += parseInt(customerCount)
-                    } else if (customerSource == '282083') {
-                        lpo_ap_customer += parseInt(customerCount)
-                    } else if (customerSource == '282085') {
-                        lpo_inbound_web += parseInt(customerCount)
-                    } else if (customerSource == '97943') {
-                        ho_generated += parseInt(customerCount)
-                    } else {
-                        other_source += parseInt(customerCount)
-                    }
-
-                    total_source_count =
-                        source_zee_generated +
-                        source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount + lpo_transition + lpo_ho_generated + lpo_ap_customer + lpo_inbound_web + ho_generated;
-
-                } else if (oldCustomerSignedDate != null &&
-                    oldCustomerSignedDate != weekLeadEntered) {
 
                     debt_setTrial.push({
-                        dateUsed: oldCustomerSignedDate,
+                        dateUsed: oldLastAssigned,
                         source_zee_generated: source_zee_generated,
                         source_call: source_call,
                         source_field_sales: source_field_sales,
@@ -13132,6 +13109,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         lpo_inbound_web: lpo_inbound_web,
                         ho_generated: ho_generated
                     });
+
+                    console.log('debt_setTrial(' + oldLastAssigned + ')' + debt_setTrial)
 
                     source_zee_generated = 0;
                     source_call = 0;
@@ -13149,54 +13128,58 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     lpo_ap_customer = 0;
 
 
-                    if (customerSource == '-4') {
-                        //ZEE GENERATED
-                        source_zee_generated += parseInt(customerCount);
-                    } else if (customerSource == '17') {
-                        //INBOUND CALL
-                        source_call += parseInt(customerCount);
-                    } else if (customerSource == '239030') {
-                        //FIELD SALES
-                        source_field_sales += parseInt(customerCount);
-                    } else if (customerSource == '254557') {
-                        //INBOUND - NEW WEBSITE
-                        source_website += parseInt(customerCount);
-                    } else if (customerSource == '277970') {
-                        source_additional_services += parseInt(customerCount)
-                    } else if (customerSource == '279095') {
-                        source_legal_campaign += parseInt(customerCount)
-                    } else if (customerSource == '280411') {
-                        futurePlusCount += parseInt(customerCount)
-                    } else if (customerSource == '281559') {
-                        lpo_transition += parseInt(customerCount)
-                    } else if (customerSource == '282051') {
-                        lpo_ho_generated += parseInt(customerCount)
-                    } else if (customerSource == '282083') {
-                        lpo_ap_customer += parseInt(customerCount)
-                    } else if (customerSource == '282085') {
-                        lpo_inbound_web += parseInt(customerCount)
-                    } else if (customerSource == '97943') {
-                        ho_generated += parseInt(customerCount)
-                    } else {
-                        other_source += parseInt(customerCount)
-                    }
-
-                    total_source_count =
-                        source_zee_generated +
-                        source_call +
-                        source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount + lpo_transition + lpo_ho_generated + lpo_ap_customer + lpo_inbound_web + ho_generated;
                 }
 
-                oldCustomerCount = customerCount;
+                // oldCustomerCount = customerCount;
                 oldCustomerSource = customerSource;
-                oldCustomerSignedDate = weekLeadEntered;
+                oldLastAssigned = lastAssigned;
+                oldCustomerInternalId = customerInternalId;
                 count_customer_signed++;
                 return true;
             });
 
             if (count_customer_signed > 0) {
+
+
+                if (oldCustomerSource == '-4') {
+                    //ZEE GENERATED
+                    source_zee_generated++;
+                } else if (oldCustomerSource == '17') {
+                    //INBOUND CALL
+                    source_call++;
+                } else if (oldCustomerSource == '239030') {
+                    //FIELD SALES
+                    source_field_sales++;
+                } else if (oldCustomerSource == '254557') {
+                    //INBOUND - NEW WEBSITE
+                    source_website++;
+                } else if (oldCustomerSource == '277970') {
+                    source_additional_services++;
+                } else if (oldCustomerSource == '279095') {
+                    source_legal_campaign++;
+                } else if (oldCustomerSource == '280411') {
+                    futurePlusCount++;
+                } else if (oldCustomerSource == '281559') {
+                    lpo_transition++;
+                } else if (oldCustomerSource == '282051') {
+                    lpo_ho_generated++;
+                } else if (oldCustomerSource == '282083') {
+                    lpo_ap_customer++;
+                } else if (oldCustomerSource == '282085') {
+                    lpo_inbound_web++;
+                } else if (oldCustomerSource == '97943') {
+                    ho_generated++;
+                } else {
+                    other_source++;
+                }
+
+                total_source_count =
+                    source_zee_generated +
+                    source_call +
+                    source_field_sales + source_website + source_additional_services + source_legal_campaign + other_source + futurePlusCount + lpo_transition + lpo_ho_generated + lpo_ap_customer + lpo_inbound_web + ho_generated;
+
                 debt_setTrial.push({
-                    dateUsed: oldCustomerSignedDate,
+                    dateUsed: oldLastAssigned,
                     source_zee_generated: source_zee_generated,
                     source_call: source_call,
                     source_field_sales: source_field_sales,
@@ -13507,7 +13490,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     summary: "GROUP"
                 });
 
-               
+
                 if (count_customer_signed == 0) {
 
                     if (customerSource == '-4') {
