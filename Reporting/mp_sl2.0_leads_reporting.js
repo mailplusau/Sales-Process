@@ -1563,7 +1563,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_customer"></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_customer"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-6"><div id="container_signed_source"></div></div>';
+            inlineHtml += '<div class="col-xs-6"><div id="container_signed_campaign"></div></div>'
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('customer');
             inlineHtml += '</div>';
@@ -1571,7 +1586,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_customers">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_trial_customers"></div>';
+            inlineHtml += '<div id=""></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_trial_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-6"><div id="container_trial_source"></div></div>';
+            inlineHtml += '<div class="col-xs-6"><div id="container_trial_campaign"></div></div>'
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('trial_customers');
             inlineHtml += '</div>';
@@ -1579,7 +1610,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
 
             inlineHtml += '<figure class="highcharts-figure">';
-            inlineHtml += '<div id="container_trial_pending_customers"></div>';
+            inlineHtml += '<div id=""></div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_trial_pending_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-6"><div id="container_trial_pending_source"></div></div>';
+            inlineHtml += '<div class="col-xs-6"><div id="container_trial_pending_campaign"></div></div>'
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('trial_pending_customers');
             inlineHtml += '</div>';
@@ -1800,7 +1847,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             }
 
             if (name == 'customer' || name == 'existing_customers') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'trial_customers' || name == 'trial_pending_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
