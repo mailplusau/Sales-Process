@@ -18770,7 +18770,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             if (customerCampaign[p].id == currentCustCampaignId) {
                                 newCampaign = false;
                                 customerCampaign[p].count = customerCampaign[p].count + 1;
-  
+
                                 var newCampaignStatus = true;
                                 for (var st = 0; st < customerCampaign[p].status[0].type.length; st++) {
 
@@ -18779,7 +18779,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                         customerCampaign[p].status[0].type[st].count = customerCampaign[p].status[0].type[st].count + 1;
                                     }
                                 }
-                                
+
                                 if (newCampaignStatus == true) {
                                     customerCampaign[p].status[0].type.push({
                                         'id': oldCustStatusId,
@@ -18814,6 +18814,65 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         });
 
                         customerCampaign[customerCampaign.length - 1].status.push({
+                            'type': [{
+                                'id': oldCustStatusId,
+                                'name': oldcustStatus,
+                                'count': 1,
+                            }]
+                        })
+
+                    }
+
+                    if (customerSource.length > 0) {
+                        var newSource = true;
+                        for (var p = 0; p < customerSource.length; p++) {
+                            if (customerSource[p].id == oldSourceId) {
+                                newSource = false;
+                                customerSource[p].count = customerSource[p].count + 1;
+
+                                var newSourceStatus = true;
+                                for (var st = 0; st < customerSource[p].status[0].type.length; st++) {
+
+                                    if (customerSource[p].status[0].type[st].id == oldCustStatusId) {
+                                        newSourceStatus = false;
+                                        customerSource[p].status[0].type[st].count = customerSource[p].status[0].type[st].count + 1;
+                                    }
+                                }
+
+                                if (newSourceStatus == true) {
+                                    customerSource[p].status[0].type.push({
+                                        'id': oldCustStatusId,
+                                        'name': oldcustStatus,
+                                        'count': 1,
+                                    })
+                                }
+                            }
+                        }
+                        if (newSource == true) {
+                            customerSource.push({
+                                'id': oldSourceId,
+                                'name': oldSource,
+                                'count': 1,
+                                "status": [],
+                            });
+
+                            customerSource[customerSource.length - 1].status.push({
+                                'type': [{
+                                    'id': oldCustStatusId,
+                                    'name': oldcustStatus,
+                                    'count': 1,
+                                }]
+                            })
+                        }
+                    } else {
+                        customerSource.push({
+                            'id': oldSourceId,
+                            'name': oldSource,
+                            'count': 1,
+                            "status": [],
+                        });
+
+                        customerSource[customerSource.length - 1].status.push({
                             'type': [{
                                 'id': oldCustStatusId,
                                 'name': oldcustStatus,
@@ -18973,6 +19032,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
                                 oldLeadEnteredByText,
+                                currentCustCampaign,
                                 currentLastAssigned,
                                 customerChildDataSet
                             ]);
@@ -18995,6 +19055,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                                 oldMonthServiceValue,
                                 oldLeadEnteredByText,
+                                currentCustCampaign,
                                 currentLastAssigned,
                                 customerChildDataSet
                             ]);
@@ -19020,6 +19081,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 invoiceProductsTotal.toFixed(2),
                                 invoiceTotal.toFixed(2),
                                 oldLeadEnteredByText,
+                                currentCustCampaign,
                                 currentLastAssigned,
                                 oldAutoSignUp,
                                 customerChildDataSet
@@ -19067,6 +19129,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 invoiceProductsTotal.toFixed(2),
                                 invoiceTotal.toFixed(2),
                                 oldLeadEnteredByText,
+                                currentCustCampaign,
                                 currentLastAssigned,
                                 oldAutoSignUp,
                                 customerChildDataSet
@@ -19327,7 +19390,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                     customerCampaign[p].status[0].type[st].count = customerCampaign[p].status[0].type[st].count + 1;
                                 }
                             }
-                            
+
                             if (newCampaignStatus == true) {
                                 customerCampaign[p].status[0].type.push({
                                     'id': oldCustStatusId,
@@ -19362,6 +19425,65 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     });
 
                     customerCampaign[lastAssigned.length - 1].status.push({
+                        'type': [{
+                            'id': oldCustStatusId,
+                            'name': oldcustStatus,
+                            'count': 1,
+                        }]
+                    })
+
+                }
+
+                if (customerSource.length > 0) {
+                    var newSource = true;
+                    for (var p = 0; p < customerSource.length; p++) {
+                        if (customerSource[p].id == oldSourceId) {
+                            newSource = false;
+                            customerSource[p].count = customerSource[p].count + 1;
+
+                            var newSourceStatus = true;
+                            for (var st = 0; st < customerSource[p].status[0].type.length; st++) {
+
+                                if (customerSource[p].status[0].type[st].id == oldCustStatusId) {
+                                    newSourceStatus = false;
+                                    customerSource[p].status[0].type[st].count = customerSource[p].status[0].type[st].count + 1;
+                                }
+                            }
+
+                            if (newSourceStatus == true) {
+                                customerSource[p].status[0].type.push({
+                                    'id': oldCustStatusId,
+                                    'name': oldcustStatus,
+                                    'count': 1,
+                                })
+                            }
+                        }
+                    }
+                    if (newSource == true) {
+                        customerSource.push({
+                            'id': oldSourceId,
+                            'name': oldSource,
+                            'count': 1,
+                            "status": [],
+                        });
+
+                        customerSource[customerSource.length - 1].status.push({
+                            'type': [{
+                                'id': oldCustStatusId,
+                                'name': oldcustStatus,
+                                'count': 1,
+                            }]
+                        })
+                    }
+                } else {
+                    customerSource.push({
+                        'id': oldSourceId,
+                        'name': oldSource,
+                        'count': 1,
+                        "status": [],
+                    });
+
+                    customerSource[customerSource.length - 1].status.push({
                         'type': [{
                             'id': oldCustStatusId,
                             'name': oldcustStatus,
@@ -19530,6 +19652,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             oldLeadEnteredByText,
+                            currentCustCampaign,
                             currentLastAssigned,
                             customerChildDataSet
                         ]);
@@ -19552,6 +19675,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
                             oldMonthServiceValue,
                             oldLeadEnteredByText,
+                            currentCustCampaign,
                             currentLastAssigned,
                             customerChildDataSet
                         ]);
@@ -19577,6 +19701,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             invoiceProductsTotal.toFixed(2),
                             invoiceTotal.toFixed(2),
                             oldLeadEnteredByText,
+                            currentCustCampaign,
                             currentLastAssigned,
                             oldAutoSignUp,
                             customerChildDataSet
@@ -19624,6 +19749,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             invoiceProductsTotal.toFixed(2),
                             invoiceTotal.toFixed(2),
                             oldLeadEnteredByText,
+                            currentCustCampaign,
                             currentLastAssigned,
                             oldAutoSignUp,
                             customerChildDataSet
@@ -19943,7 +20069,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var series_data_campaign_signed = [];
             var series_data_campaign_trial_pending = [];
             var series_data_campaign_free_trial = [];
-            
+
             var campaignCategories = [];
             var sourceLeadCount = [];
             var sourceName = [];
@@ -19956,7 +20082,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 sourceName[x] = [];
                 console.log('name: ' + customerCampaign[x].name);
                 // console.log('details: ' + JSON.stringify(customerCampaign[x].details[0].source));
-                
+
 
                 for (y = 0; y < customerCampaign[x].status[0].type.length; y++) {
 
@@ -20063,6 +20189,134 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             plotChartFreeTrialByCampaign(series_data_campaign_free_trial, null, campaignCategories)
             plotChartFreeTrialPendingByCampaign(series_data_campaign_trial_pending, null, campaignCategories)
 
+
+            //!
+            //!
+            var series_data_signed_source = [];
+            var series_data_signed_campaign = [];
+            var series_data_source_signed = [];
+            var series_data_source_trial_pending = [];
+            var series_data_source_free_trial = [];
+
+            var sourceCategories = [];
+            var sourceLeadCount = [];
+            var sourceName = [];
+            var sourceSigned = new Array(customerSource.length).fill(0);
+            var sourceFreeTrial = new Array(customerSource.length).fill(0);
+            var sourceFreeTrialPending = new Array(customerSource.length).fill(0);
+            for (var x = 0; x < customerSource.length; x++) {
+                sourceCategories[x] = customerSource[x].name;
+                sourceLeadCount[x] = [];
+                sourceName[x] = [];
+                console.log('name: ' + customerSource[x].name);
+                // console.log('details: ' + JSON.stringify(customerSource[x].details[0].source));
+
+
+                for (y = 0; y < customerSource[x].status[0].type.length; y++) {
+
+                    console.log('Status Name: ' + customerSource[x].status[0].type[y].name);
+                    console.log('Status Count: ' + customerSource[x].status[0].type[y].count);
+
+                    if (customerSource[x].status[0].type[y].id == 13 || customerSource[x].status[0].type[y].id == 66) {
+                        console.log('before series_data_source_signed: ' + JSON.stringify(series_data_source_signed));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_source_signed.length; j++) {
+                            if (series_data_source_signed[j].name == customerSource[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_source_signed[j].data[x] = customerSource[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            sourceSigned = new Array(customerSource.length).fill(0);
+                            sourceSigned[x] = customerSource[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_source_signed.push({
+                                name: customerSource[x].status[0].type[y].name,
+                                data: sourceSigned,
+                                color: '#439A97',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
+                    if (customerSource[x].status[0].type[y].id == 32) {
+                        console.log('before series_data_source_free_trial: ' + JSON.stringify(series_data_source_free_trial));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_source_free_trial.length; j++) {
+                            if (series_data_source_free_trial[j].name == customerSource[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_source_free_trial[j].data[x] = customerSource[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            sourceFreeTrial = new Array(customerSource.length).fill(0);
+                            sourceFreeTrial[x] = customerSource[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_source_free_trial.push({
+                                name: customerSource[x].status[0].type[y].name,
+                                data: sourceFreeTrial,
+                                color: '#ADCF9F',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
+                    if (customerSource[x].status[0].type[y].id == 71) {
+                        console.log('before series_data_source_trial_pending: ' + JSON.stringify(series_data_source_trial_pending));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_source_trial_pending.length; j++) {
+                            if (series_data_source_trial_pending[j].name == customerSource[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_source_trial_pending[j].data[x] = customerSource[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            sourceFreeTrialPending = new Array(customerSource.length).fill(0);
+                            sourceFreeTrialPending[x] = customerSource[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_source_trial_pending.push({
+                                name: customerSource[x].status[0].type[y].name,
+                                data: sourceFreeTrialPending,
+                                color: '#ADCF9F',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
+
+
+
+                    // console.log('after series_data_source: ' + JSON.stringify(series_data_source));
+
+
+                }
+
+            }
+            plotChartSignedBySource(series_data_source_signed, null, sourceCategories)
+            plotChartFreeTrialBySource(series_data_source_free_trial, null, sourceCategories)
+            plotChartFreeTrialPendingBySource(series_data_source_trial_pending, null, sourceCategories)
+
             var dataTableExisitngCustomers = $('#mpexusage-existing_customers').DataTable({
                 data: existingCustomerDataSet,
                 pageLength: 250,
@@ -20130,14 +20384,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     { title: 'Total Product Invoice' },//15
                     { title: 'Total Invoice' },//16
                     { title: 'Lead Entered By' },//17
-                    { title: 'Sales Rep' },//18
-                    { title: 'Auto Signed Up' },//19
-                    { title: 'Child Table' }//20
+                    { title: 'Sales Campaign' },//18
+                    { title: 'Sales Rep' },//19
+                    { title: 'Auto Signed Up' },//20
+                    { title: 'Child Table' }//21
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [19, 20],
+                        targets: [20, 21],
                         visible: false
                     },
                     {
@@ -20415,8 +20670,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 { title: 'Days Open' },//14
                 { title: 'Expected Monthly Service' },//15
                 { title: 'Lead Entered By' },//16
-                { title: 'Sales Rep' },//17
-                { title: 'Child Table' },//18
+                { title: 'Sales Campaign' },//17
+                { title: 'Sales Rep' },//18
+                { title: 'Child Table' },//19
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -20425,7 +20681,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         className: 'bolded'
                     },
                     {
-                        targets: [18],
+                        targets: [19],
                         visible: false
                     },
                     {
@@ -20559,8 +20815,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 { title: 'Days Open' },//14
                 { title: 'Expected Monthly Service' },//15
                 { title: 'Lead Entered By' },//16
-                { title: 'Sales Rep' },//17
-                { title: 'Child Table' },//18
+                { title: 'Sales Campaign' },//17
+                { title: 'Sales Rep' },//18
+                { title: 'Child Table' },//19
                 ],
                 autoWidth: false,
                 columnDefs: [
@@ -20569,7 +20826,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         className: 'bolded'
                     },
                     {
-                        targets: [18],
+                        targets: [19],
                         visible: false
                     },
                     {
@@ -20709,14 +20966,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     { title: 'Total Product Invoice' },//15
                     { title: 'Total Invoice' },//16
                     { title: 'Lead Entered By' },//17
-                    { title: 'Sales Rep' },//18
-                    { title: 'Auto Signed Up' },//19
-                    { title: 'Child Table' }//20
+                    { title: 'Sales Campaign' },//18
+                    { title: 'Sales Rep' },//19
+                    { title: 'Auto Signed Up' },//20
+                    { title: 'Child Table' }//21
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [19, 20],
+                        targets: [20, 21],
                         visible: false
                     },
                     {
@@ -22659,7 +22917,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             // console.log('customer child row: ' + row.data()[19]);
 
-            row.data()[20].forEach(function (el) {
+            row.data()[21].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -22702,7 +22960,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             console.log('customer free trial child row: ' + row.data()[16]);
 
-            row.data()[18].forEach(function (el) {
+            row.data()[19].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -22741,7 +22999,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             console.log('customer free trial child row: ' + row.data()[16]);
 
-            row.data()[18].forEach(function (el) {
+            row.data()[19].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -22819,7 +23077,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             // console.log('customer child row: ' + row.data()[19]);
 
-            row.data()[20].forEach(function (el) {
+            row.data()[21].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -25117,6 +25375,262 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     type: 'column'
                 }, title: {
                     text: 'Leads - By Campaign',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Free Trial Pending',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+
+        function plotChartSignedBySource(series_data, series_data2, categores) {
+            Highcharts.chart('container_signed_source', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Signed',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartFreeTrialBySource(series_data, series_data2, categores) {
+            Highcharts.chart('container_trial_source', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Free Trial',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+        function plotChartFreeTrialPendingBySource(series_data, series_data2, categores) {
+            Highcharts.chart('container_trial_pending_source', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Source',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
