@@ -341,10 +341,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                                 value: parentLPO,
                                             });
 
-                                            customerRecord.setValue({
-                                                fieldId: 'entitystatus',
-                                                value: 42,
-                                            });
+                                            // customerRecord.setValue({
+                                            //     fieldId: 'entitystatus',
+                                            //     value: 42,
+                                            // });
                                         } else {
                                             log.debug({
                                                 title: 'LPO - Head Office Generated - lpoSuburbMappingJSON',
@@ -364,10 +364,10 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                                                 fieldId: 'custentity_lpo_parent_account',
                                                                 value: parseInt(suburb.parent_lpo_id),
                                                             });
-                                                            customerRecord.setValue({
-                                                                fieldId: 'entitystatus',
-                                                                value: 42,
-                                                            });
+                                                            // customerRecord.setValue({
+                                                            //     fieldId: 'entitystatus',
+                                                            //     value: 42,
+                                                            // });
                                                         }
                                                     }
                                                 });
