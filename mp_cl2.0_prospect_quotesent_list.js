@@ -1587,6 +1587,10 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             console.log('userId: ' + userId)
             console.log('parentLPOInternalId: ' + parentLPOInternalId)
 
+            salesCampaign = JSON.parse("[" + salesCampaign + "]");
+            parentLPOInternalId = JSON.parse("[" + parentLPOInternalId + "]");
+            zee_id = JSON.parse("[" + zee_id + "]");
+
             if (custStage == '1') {
                 console.log('INSIDE SUSPECTS STAGE')
                 //Website Leads - Suspects
