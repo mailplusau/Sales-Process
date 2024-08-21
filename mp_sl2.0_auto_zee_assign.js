@@ -28,7 +28,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
             userId = runtime.getCurrentUser().id;
             role = runtime.getCurrentUser().role;
 
-            var lpoLeadBDMAssigned = 0;
+            var lpoLeadBDMAssigned = null;
 
             var date = new Date();
             var date_now = format.parse({
@@ -52,6 +52,11 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 log.debug({
                     title: 'customerInternalId',
                     details: customerInternalId
+                })
+
+                log.debug({
+                    title: 'salesrepid',
+                    details: salesrepid
                 })
 
                 var zee_id;
@@ -313,9 +318,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                                 summary: "GROUP",
                                             });
 
-                                            if (isNullorEmpty(lpoLeadBDMAssigned)) {
-                                                lpoLeadBDMAssigned = 653718
-                                            }
+                                            // if (isNullorEmpty(lpoLeadBDMAssigned)) {
+                                            //     lpoLeadBDMAssigned = 653718
+                                            // }
 
                                             parentLPOCount++;
                                             return true;
@@ -341,11 +346,19 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                                 value: parentLPO,
                                             });
 
+                                            if (isNullorEmpty(lpoLeadBDMAssigned)) {
+                                                salesRep = salesrepid
+                                            } else {
+                                                salesRep = lpoLeadBDMAssigned
+                                            }
+
+
                                             // customerRecord.setValue({
                                             //     fieldId: 'entitystatus',
                                             //     value: 42,
                                             // });
                                         } else {
+                                            salesRep = salesrepid
                                             log.debug({
                                                 title: 'LPO - Head Office Generated - lpoSuburbMappingJSON',
                                                 details: lpoSuburbMappingJSON
@@ -403,6 +416,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                             }
                                         } else {
                                             salesRep = salesrepid
+                                        }
+                                        if (leadSource == -4) {
+                                            customerRecord.setValue({
+                                                fieldId: 'entitystatus',
+                                                value: 38,
+                                            });
                                         }
                                     }
                                 }
@@ -638,7 +657,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                                 /* 
                                 Create Sales Record
-                                Assign to Aleyna depending on the franchisee
+                                Assign to Liam depending on the franchisee
                                 Assign to Franchisee Generated
                                  */
                                 var salesRecord = record.create({
@@ -685,9 +704,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                                 email.send({
                                     author: 112209,
                                     body: body,
-                                    recipients: 1623053,
+                                    recipients: 1809382,
                                     subject: subject,
-                                    cc: ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au'],
+                                    cc: ['aleyna.harnett@mailplus.com.au'],
                                     relatedRecords: { entityId: customerInternalId }
                                 });
                             } else if (leadSource == 285297) {
