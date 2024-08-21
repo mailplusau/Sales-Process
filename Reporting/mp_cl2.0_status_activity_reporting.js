@@ -7318,6 +7318,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             //? Data Capture Grouped by Source & Campaign
             //Leads by Source & Campaign - System Notes - Data Capture Reporting
+            console.log('Leads by Source & Campaign - System Notes - Data Capture Reporting')
             var leadsListByDataCaptureSourceCampaignSearch = search.load({
                 type: 'customer',
                 id: 'customsearch_leads_reporting_weekly_5__4'
@@ -7859,6 +7860,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var new_lpo_campaign_count = []
 
             for (var i = 0; i < series_lpo_data_campaign.length; i++) {
+                new_lpo_campaign_count = []
                 for (var r = 0; r < series_lpo_data_campaign[i].data.length; r++) {
                     if (removedArrayPositions.indexOf(r) != -1) {
 
