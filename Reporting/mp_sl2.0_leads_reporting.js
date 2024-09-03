@@ -1913,7 +1913,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             }
 
             if (name == 'customer' || name == 'existing_customers') {
-                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th></tr></tfoot>'
+                inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
             }
             if (name == 'trial_customers' || name == 'trial_pending_customers') {
                 inlineHtml += '<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>'
