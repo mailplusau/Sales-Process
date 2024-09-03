@@ -1652,6 +1652,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml +=
                 '<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
             inlineHtml +=
+                '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_box" style="border-radius: 30px"><b>PROSPECTS - BOX SENT</b></a></li>';
+            inlineHtml +=
                 '<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
 
 
@@ -1680,6 +1682,29 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/ui/serverWidget',
             inlineHtml += '</div>';
             inlineHtml += '</figure><br></br>';
             inlineHtml += dataTable('prospects_quoteSent_incontact_noanswer');
+            inlineHtml += '</div>';
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
+
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-12"><div id="container_prospect_box_sent_last_assigned"></div></div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '<div class="">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-6"><div id="container_prospect_box_sent_source"></div></div>';
+            inlineHtml += '<div class="col-xs-6"><div id="container_prospect_box_sent_campaign"></div></div>'
+            inlineHtml += '</div>';
+            inlineHtml += '</div>';
+            inlineHtml += '</figure><br></br>';
+            inlineHtml += dataTable('prospects_box_sent');
             inlineHtml += '</div>';
 
 
