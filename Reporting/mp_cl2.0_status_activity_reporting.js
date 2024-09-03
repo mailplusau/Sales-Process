@@ -140,6 +140,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         var debtDataSet6 = [];
         var debt_set6 = [];
 
+        var debtDataSet7 = [];
+        var debt_set7 = [];
+
         var debtDataSetSuspectsLost = [];
         var debt_setSuspectsLost = [];
 
@@ -173,6 +176,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         var prospectOpportunityDataSet = [];
         var prospectQUualifiedDataSet = [];
         var prospectQuoteSentDataSet = [];
+        var prospectBoxSentDataSet = [];
         var suspectDataSet = [];
         var suspectLostDataSet = [];
         var suspectOffPeakDataSet = [];
@@ -191,6 +195,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
         var prospectChildDataSet = [];
         var prospectOpportunityChildDataSet = [];
         var prospectQuoteSentChildDataSet = [];
+        var prospectBoxSentChildDataSet = [];
         var prospectQualifiedChildDataSet = [];
         var suspectNoAnswerChildDataSet = [];
         var suspectInContactChildDataSet = [];
@@ -10086,6 +10091,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             if (count > 0) {
 
+                console.log('lastAssigned: ' + lastAssigned);
                 if (lastAssigned.length > 0) {
                     var newRep = true;
                     for (var p = 0; p < lastAssigned.length; p++) {
@@ -10206,9 +10212,10 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     })
                 }
 
+                console.log('customerCampaign: ' + customerCampaign);
                 if (customerCampaign.length > 0) {
                     var newCampaign = true;
-                    for (var p = 0; p < lastAssigned.length; p++) {
+                    for (var p = 0; p < customerCampaign.length; p++) {
                         if (customerCampaign[p].id == currentCustCampaignId) {
                             newCampaign = false;
                             customerCampaign[p].count = customerCampaign[p].count + 1;
@@ -10239,7 +10246,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             "status": [],
                         });
 
-                        customerCampaign[lastAssigned.length - 1].status.push({
+                        customerCampaign[customerCampaign.length - 1].status.push({
                             'type': [{
                                 'id': oldCustStatusId,
                                 'name': oldcustStatus,
@@ -12674,7 +12681,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     currentLastAssigned = salesRepText
 
                     if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -12699,16 +12706,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -12720,6 +12729,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -12728,7 +12746,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             })
                         }
                     } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -12745,13 +12763,22 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityTitle: userNotesTitle,
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     }
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
                     if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -12776,16 +12803,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -12797,6 +12826,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -12805,7 +12843,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             })
                         }
                     } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -12822,6 +12860,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityTitle: userNotesTitle,
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     }
@@ -13074,7 +13121,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     }
 
-                    if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+                    if (oldcustStage == 'PROSPECT' && (oldcustStatus != 'PROSPECT-QUOTE SENT' && oldcustStatus != 'PROSPECT-BOX SENT')) {
 
                         // totalProspectCount++;
                         // if (oldcustStatus == 50) {
@@ -13171,11 +13218,44 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         ]);
 
 
+                    } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-BOX SENT') {
+
+                        // totalProspectCount++;
+                        // if (oldcustStatus == 50) {
+                        //     //PROSPECT - QUOTE SENT
+                        //     totalProspectQuoteSentCount++;
+                        // } else if (oldcustStatus == 35) {
+                        //     //PROSPECT - NO ANSWER
+                        //     totalProspectNoAnswerCount++
+                        // } else if (oldcustStatus == 8) {
+                        //     //PROSPECT - IN CONTACT
+                        //     totalProspectInContactCount++
+                        // }
+                        prospectBoxSentDataSet.push(['',
+                            oldcustInternalID,
+                            '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                            oldcustName,
+                            oldzeeName,
+                            oldcustStatus,
+                            oldSource,
+                            oldProdWeeklyUsage,
+                            oldPreviousCarrier,
+                            olddateLeadEntered,
+                            oldquoteSentDate,
+                            oldemail48h,
+                            '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                            oldMonthServiceValue,
+                            oldsalesRepText,
+                            prospectBoxSentChildDataSet
+                        ]);
+
+
                     }
 
                     prospectChildDataSet = [];
                     prospectOpportunityChildDataSet = [];
                     prospectQuoteSentChildDataSet = [];
+                    prospectBoxSentChildDataSet = [];
                     suspectChildDataSet = [];
                     suspectFollowUpChildDataSet = [];
                     suspectLostChildDataSet = [];
@@ -13201,7 +13281,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     currentLastAssigned = salesRepText
 
                     if (!isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -13226,16 +13306,18 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityOrganiser: activityOrganiser,
                                 activityMessage: activityMessage
                             })
-                            prospectQuoteSentChildDataSet.push({
-                                activityInternalID: userNotesInternalID,
-                                activityStartDate: userNotesStartDate,
-                                activityTitle: userNotesTitle,
-                                activityOrganiser: userNotesOrganiser,
-                                activityMessage: userNotesMessage
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     } else if (!isNullorEmpty(activityTitle) && isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: activityInternalID,
@@ -13247,6 +13329,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-QUOTE SENT') {
                             prospectActivityCount++
                             prospectQuoteSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
                                 activityInternalID: activityInternalID,
                                 activityStartDate: activityStartDate,
                                 activityTitle: activityTitle,
@@ -13255,7 +13346,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             })
                         }
                     } else if (isNullorEmpty(activityTitle) && !isNullorEmpty(userNotesInternalID)) {
-                        if (custStage == 'PROSPECT' && custStatus != 'PROSPECT-QUOTE SENT') {
+                        if (custStage == 'PROSPECT' && (custStatus != 'PROSPECT-QUOTE SENT' && custStatus != 'PROSPECT-BOX SENT')) {
                             prospectActivityCount++
                             prospectChildDataSet.push({
                                 activityInternalID: userNotesInternalID,
@@ -13272,6 +13363,15 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 activityTitle: userNotesTitle,
                                 activityOrganiser: userNotesOrganiser,
                                 activityMessage: userNotesMessage
+                            })
+                        } else if (custStage == 'PROSPECT' && custStatus == 'PROSPECT-BOX SENT') {
+                            prospectActivityCount++
+                            prospectBoxSentChildDataSet.push({
+                                activityInternalID: activityInternalID,
+                                activityStartDate: activityStartDate,
+                                activityTitle: activityTitle,
+                                activityOrganiser: activityOrganiser,
+                                activityMessage: activityMessage
                             })
                         }
                     }
@@ -13561,7 +13661,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 }
 
-                if (oldcustStage == 'PROSPECT' && oldcustStatus != 'PROSPECT-QUOTE SENT') {
+                if (oldcustStage == 'PROSPECT' && (oldcustStatus != 'PROSPECT-QUOTE SENT' && oldcustStatus != 'PROSPECT-BOX SENT')) {
 
                     // totalProspectCount++;
                     // if (oldcustStatus == 50) {
@@ -13658,6 +13758,38 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     ]);
 
 
+                } else if (oldcustStage == 'PROSPECT' && oldcustStatus == 'PROSPECT-BOX SENT') {
+
+                    // totalProspectCount++;
+                    // if (oldcustStatus == 50) {
+                    //     //PROSPECT - QUOTE SENT
+                    //     totalProspectQuoteSentCount++;
+                    // } else if (oldcustStatus == 35) {
+                    //     //PROSPECT - NO ANSWER
+                    //     totalProspectNoAnswerCount++
+                    // } else if (oldcustStatus == 8) {
+                    //     //PROSPECT - IN CONTACT
+                    //     totalProspectInContactCount++
+                    // }
+                    prospectBoxSentDataSet.push(['',
+                        oldcustInternalID,
+                        '<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + oldcustInternalID + '" target="_blank" style="">' + oldcustEntityID + '</a>',
+                        oldcustName,
+                        oldzeeName,
+                        oldcustStatus,
+                        oldSource,
+                        oldProdWeeklyUsage,
+                        oldPreviousCarrier,
+                        olddateLeadEntered,
+                        oldquoteSentDate,
+                        oldemail48h,
+                        '<input type="button" value="' + oldDaysOpen + '" class="form-control btn btn-primary show_status_timeline" id="" data-id="' + oldcustInternalID + '" style="background-color: #095C7B;border-radius: 30px">',
+                        oldMonthServiceValue,
+                        oldsalesRepText,
+                        prospectBoxSentChildDataSet
+                    ]);
+
+
                 }
             }
 
@@ -13670,6 +13802,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var series_data_signed_source = [];
             var series_data_signed_campaign = [];
             var series_data_quote_sent = [];
+            var series_data_box_sent = [];
             var series_data_opportunities = [];
             var series_data_free_trial = [];
             var lastAssignedTeamMemberCategories = [];
@@ -13678,6 +13811,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var sourceName = [];
             var dataQuoteSent = new Array(lastAssigned.length).fill(0);
             var dataOpportunities = new Array(lastAssigned.length).fill(0);
+            var dataBoxSent = new Array(lastAssigned.length).fill(0);
             for (var x = 0; x < lastAssigned.length; x++) {
                 lastAssignedTeamMemberCategories[x] = lastAssigned[x].name;
                 sourceLeadCount[x] = [];
@@ -13711,6 +13845,35 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             series_data_quote_sent.push({
                                 name: lastAssigned[x].status[0].type[y].name,
                                 data: dataQuoteSent,
+                                color: '#439A97',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
+                    if (lastAssigned[x].status[0].type[y].id == 72) {
+                        console.log('before series_data_box_sent: ' + JSON.stringify(series_data_box_sent));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_box_sent.length; j++) {
+                            if (series_data_box_sent[j].name == lastAssigned[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_box_sent[j].data[x] = lastAssigned[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            dataBoxSent = new Array(lastAssigned.length).fill(0);
+                            dataBoxSent[x] = lastAssigned[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_box_sent.push({
+                                name: lastAssigned[x].status[0].type[y].name,
+                                data: dataBoxSent,
                                 color: '#439A97',
                                 style: {
                                     fontWeight: 'bold',
@@ -13754,18 +13917,21 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             console.log('lastAssignedTeamMemberCategories: ' + JSON.stringify(lastAssignedTeamMemberCategories));
             console.log('series_data_quote_sent: ' + JSON.stringify(series_data_quote_sent));
             plotChartQuoteSentByLastAssigned(series_data_quote_sent, null, lastAssignedTeamMemberCategories)
+            plotChartBoxSentByLastAssigned(series_data_box_sent, null, lastAssignedTeamMemberCategories)
             plotChartOpportunityByLastAssigned(series_data_opportunities, null, lastAssignedTeamMemberCategories)
 
             //!
             var series_data_signed_source = [];
             var series_data_signed_campaign = [];
             var series_data_campaign_quote_sent = [];
+            var series_data_campaign_box_sent = [];
             var series_data_campaign_opportunities = [];
 
             var campaignCategories = [];
             var sourceLeadCount = [];
             var sourceName = [];
             var campaignQuoteSent = new Array(customerCampaign.length).fill(0);
+            var campaignBoxSent = new Array(customerCampaign.length).fill(0);
             var campaignOpportunites = new Array(customerCampaign.length).fill(0);
             var campaignFreeTrialPending = new Array(customerCampaign.length).fill(0);
             for (var x = 0; x < customerCampaign.length; x++) {
@@ -13802,6 +13968,35 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             series_data_campaign_quote_sent.push({
                                 name: customerCampaign[x].status[0].type[y].name,
                                 data: campaignQuoteSent,
+                                color: '#439A97',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
+                    if (customerCampaign[x].status[0].type[y].id == 72) {
+                        console.log('before series_data_campaign_box_sent: ' + JSON.stringify(series_data_campaign_box_sent));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_campaign_box_sent.length; j++) {
+                            if (series_data_campaign_box_sent[j].name == customerCampaign[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_campaign_box_sent[j].data[x] = customerCampaign[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            campaignBoxSent = new Array(customerCampaign.length).fill(0);
+                            campaignBoxSent[x] = customerCampaign[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_campaign_box_sent.push({
+                                name: customerCampaign[x].status[0].type[y].name,
+                                data: campaignBoxSent,
                                 color: '#439A97',
                                 style: {
                                     fontWeight: 'bold',
@@ -13849,6 +14044,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             }
             plotChartQuoteSentByCampaign(series_data_campaign_quote_sent, null, campaignCategories)
+            plotChartBoxSentByCampaign(series_data_campaign_box_sent, null, campaignCategories)
             plotChartOpportunityByCampaign(series_data_campaign_opportunities, null, campaignCategories)
 
 
@@ -13857,12 +14053,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var series_data_signed_source = [];
             var series_data_signed_campaign = [];
             var series_data_source_quote_sent = [];
+            var series_data_source_box_sent = [];
             var series_data_source_opportunities = [];
 
             var sourceCategories = [];
             var sourceLeadCount = [];
             var sourceName = [];
             var sourceQuoteSent = new Array(customerSource.length).fill(0);
+            var sourceBoxSent = new Array(customerSource.length).fill(0);
             var sourceOpportunities = new Array(customerSource.length).fill(0);
             for (var x = 0; x < customerSource.length; x++) {
                 sourceCategories[x] = customerSource[x].name;
@@ -13906,6 +14104,35 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         }
                     }
 
+                    if (customerSource[x].status[0].type[y].id == 72) {
+                        console.log('before series_data_source_box_sent: ' + JSON.stringify(series_data_source_box_sent));
+                        var status_exists = false;
+                        for (var j = 0; j < series_data_source_box_sent.length; j++) {
+                            if (series_data_source_box_sent[j].name == customerSource[x].status[0].type[y].name) {
+                                status_exists = true;
+                                series_data_source_quote_sent[j].data[x] = customerSource[x].status[0].type[y].count
+                            }
+                        }
+                        if (status_exists == false) {
+                            sourceBoxSent = new Array(customerSource.length).fill(0);
+                            sourceBoxSent[x] = customerSource[x].status[0].type[y].count;
+
+                            // var colorCodeSource;
+                            // if (source_list.includes((lastAssigned[x].status[0].type[y].id).toString()) == true) {
+                            //     colorCodeSource = source_list_color[source_list.indexOf((lastAssigned[x].status[0].type[y].id).toString())];
+                            // }
+
+                            series_data_source_box_sent.push({
+                                name: customerSource[x].status[0].type[y].name,
+                                data: sourceBoxSent,
+                                color: '#439A97',
+                                style: {
+                                    fontWeight: 'bold',
+                                }
+                            });
+                        }
+                    }
+
 
                     if (customerSource[x].status[0].type[y].id == 58) {
                         console.log('before series_data_source_opportunities: ' + JSON.stringify(series_data_source_opportunities));
@@ -13939,6 +14166,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             }
             plotChartQuoteSentBySource(series_data_source_quote_sent, null, sourceCategories)
+            plotChartBoxSentBySource(series_data_source_box_sent, null, sourceCategories)
             plotChartOpportunityBySource(series_data_source_opportunities, null, sourceCategories)
 
             console.log('prospects hidden');
@@ -14262,6 +14490,173 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 var tr = $(this).closest('tr');
                 var row = dataTableOpportunity.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    destroyChild(row);
+                    tr.removeClass('shown');
+                    tr.removeClass('parent');
+
+                    $('.expand-button').addClass('btn-primary');
+                    $('.expand-button').removeClass('btn-light')
+                } else {
+                    // Open this row
+                    row.child.show();
+                    tr.addClass('shown');
+                    tr.addClass('parent');
+
+                    $('.expand-button').removeClass('btn-primary');
+                    $('.expand-button').addClass('btn-light')
+                }
+            });
+
+            var dataTableBoxSent = $('#mpexusage-prospects_box_sent').DataTable({
+                data: prospectBoxSentDataSet,
+                pageLength: 250,
+                order: [10, 'desc'],
+                layout: {
+                    topStart: {
+                        buttons: [{
+                            extend: 'copy', text: 'Copy',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'csv', text: 'CSV',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'excel', text: 'Excel',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'pdf', text: 'PDF',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }, {
+                            extend: 'print', text: 'Print',
+                            className: 'btn btn-default exportButtons',
+                            exportOptions: {
+                                columns: ':not(.notexport)'
+                            }
+                        }],
+                    }
+                },
+                columns: [
+                    {
+                        title: 'Expand',
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: '<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+                    },//0
+                    { title: 'Internal ID' },//1
+                    { title: 'ID' },//2
+                    { title: 'Company Name' },//3
+                    { title: 'Franchisee' },//4
+                    { title: 'Status' },//5
+                    { title: 'Source' },//6
+                    { title: 'Product Weekly Usage' },//7
+                    { title: 'Previous Carrier' },//8
+                    { title: 'Date - Lead Entered' },//9
+                    { title: 'Date - Quote Sent' },//10
+                    { title: '48h Email Sent' },//11
+                    { title: 'Days Open' },//12
+                    { title: 'Monthly Service Value' },//13
+                    { title: 'Sales Rep' },//14
+                    { title: 'Child Table' }//15
+                ],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [15],
+                        visible: false
+                    },
+                    {
+                        targets: [2, 3, 4, 5, 12, 13],
+                        className: 'bolded'
+                    }, {
+                        targets: [0, 12],
+                        className: 'notexport'
+                    }
+                ],
+                rowCallback: function (row, data, index) {
+                    if (data[5] == 'PROSPECT-QUOTE SENT') {
+                        $('td', row).css('background-color', '#ADCF9F');
+                    } else if (isNullorEmpty(data[15]) && data[5] != 'PROSPECT-NO ANSWER') {
+                        $('td', row).css('background-color', '#f9c67a');
+                    } else if (!isNullorEmpty(data[15])) {
+                        var row_color = '#f9c67a'
+                        data[15].forEach(function (el) {
+                            if (!isNullorEmpty(el)) {
+                                if (el.activityOrganiser == 'Kerina Helliwell' || el.activityOrganiser == 'David Gdanski' || el.activityOrganiser == 'Lee Russell' || el.activityOrganiser == 'Belinda Urbani' || el.activityOrganiser == 'Luke Forbes' || el.activityOrganiser == 'Bobbi G Yengbie') {
+                                    row_color = ''
+                                }
+                            }
+                        });
+                        $('td', row).css('background-color', row_color);
+                    }
+                }, footerCallback: function (row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    const formatter = new Intl.NumberFormat('en-AU', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2
+                    })
+
+                    // Total Expected Usage over all pages
+                    total_monthly_service_revenue = api
+                        .column(13)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Page Total Expected Usage over this page
+                    page_total_monthly_service_revenue = api
+                        .column(13, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+
+                    // Update footer
+                    $(api.column(13).footer()).html(
+                        formatter.format(page_total_monthly_service_revenue)
+                    );
+
+                }
+            });
+
+            dataTableBoxSent.rows().every(function () {
+                // this.child(format(this.data())).show();
+                this.child(createChild2(this)) // Add Child Tables
+                this.child.hide(); // Hide Child Tables on Open
+            });
+
+            $('#mpexusage-prospects_box_sent tbody').on('click', 'td.dt-control', function () {
+
+                var tr = $(this).closest('tr');
+                var row = dataTableBoxSent.row(tr);
 
                 if (row.child.isShown()) {
                     // This row is already open - close it
@@ -16449,6 +16844,262 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             plotChartProspectsQuotes(
                 series_data143, series_data144, categores5);
+
+            //!
+            // Website New Leads - Prospect Box Sent - Weekly Reporting
+            var prospectBoxSentWeeklyReportingSearch = search.load({
+                type: 'customer',
+                id: 'customsearch_leads_reporting_weekly_2_21'
+            });
+
+
+            if (!isNullorEmpty(leadStatus)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'entitystatus',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: leadStatus
+                }));
+            }
+
+
+
+            if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_from
+                }));
+
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_entered',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_to
+                }));
+            }
+
+            if (!isNullorEmpty(lead_source)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'leadsource',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_source
+                }));
+            }
+
+            if (!isNullorEmpty(sales_rep)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_assigned',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.IS,
+                    values: sales_rep
+                }));
+            }
+
+            if (!isNullorEmpty(lead_entered_by)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_lead_entered_by',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: lead_entered_by
+                }));
+            }
+
+            if (!isNullorEmpty(sales_campaign)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custrecord_sales_campaign',
+                    join: 'custrecord_sales_customer',
+                    operator: search.Operator.ANYOF,
+                    values: sales_campaign
+                }));
+            }
+
+            if (!isNullorEmpty(parent_lpo)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'internalid',
+                    join: 'custentity_lpo_parent_account',
+                    operator: search.Operator.ANYOF,
+                    values: parent_lpo
+                }));
+            }
+
+            if (!isNullorEmpty(date_quote_sent_from) && !isNullorEmpty(date_quote_sent_to)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_quote_sent_from
+                }));
+
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_lead_quote_sent',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_quote_sent_to
+                }));
+            }
+
+            if (!isNullorEmpty(date_signed_up_from) && !isNullorEmpty(date_signed_up_to)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORAFTER,
+                    values: date_signed_up_from
+                }));
+
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'custentity_date_prospect_opportunity',
+                    join: null,
+                    operator: search.Operator.ONORBEFORE,
+                    values: date_signed_up_to
+                }));
+            }
+
+            if (!isNullorEmpty(zee_id)) {
+                prospectBoxSentWeeklyReportingSearch.filters.push(search.createFilter({
+                    name: 'partner',
+                    join: null,
+                    operator: search.Operator.IS,
+                    values: zee_id
+                }));
+            }
+
+            if (!isNullorEmpty(modified_date_from) && !isNullorEmpty(modified_date_to)) {
+                var defaultSearchFilters = prospectBoxSentWeeklyReportingSearch.filterExpression;
+
+                console.log('default search filters: ' + JSON.stringify(defaultSearchFilters));
+
+                var modifiedDateFilters = [[["activity.date", "within", [modified_date_from, modified_date_to]], 'AND', ["activity.custevent_organiser", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]], "AND", [["usernotes.notedate", "within", [modified_date_from, modified_date_to]], 'AND', ["usernotes.author", "anyof", "anyof", "1623053", "668712", "1797389", "1809334", "690145", "1771076", "1813424", "696160", "668711", "1809382", "653718", "1777309", "1819701", "1820151", "1822089"]]]
+                console.log('modifiedDateFilters filters: ' + JSON.stringify(modifiedDateFilters));
+
+                defaultSearchFilters.push('AND');
+                defaultSearchFilters.push(modifiedDateFilters);
+
+                console.log('defaultSearchFilters filters: ' + JSON.stringify(defaultSearchFilters));
+
+                prospectBoxSentWeeklyReportingSearch.filterExpression = defaultSearchFilters;
+
+            }
+
+            var count2 = 0;
+            var oldDate2 = null;
+
+            total_prospect_count = 0;
+            prospecy_quote_sent = 0;
+            prospect_no_answer = 0;
+            prospect_in_contact = 0;
+            var prospect_opportunity = 0;
+
+
+            prospectBoxSentWeeklyReportingSearch.run().each(function (
+                prospectBoxSentWeeklyReportingSearchResultSet) {
+
+
+                var prospectCount = parseInt(prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+                    name: 'internalid',
+                    summary: 'COUNT'
+                }));
+                var weekLeadEntered = prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+                    name: "formuladate",
+                    summary: "GROUP",
+                });
+                var custStatus = parseInt(prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+                    name: "entitystatus",
+                    summary: "GROUP"
+                }));
+                var custStatusText = prospectBoxSentWeeklyReportingSearchResultSet.getText({
+                    name: "entitystatus",
+                    summary: "GROUP"
+                });
+
+                if (role == 1000) {
+                    var startDate = weekLeadEntered;
+
+                } else {
+                    if (!isNullorEmpty(weekLeadEntered)) {
+                        var splitMonthV2 = weekLeadEntered.split('/');
+
+                        var formattedDate = dateISOToNetsuite(splitMonthV2[2] + '-' + splitMonthV2[1] + '-' + splitMonthV2[0]);
+
+
+                        var firstDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 1).getDate();
+                        var lastDay = new Date(splitMonthV2[0], (splitMonthV2[1]), 0).getDate();
+
+                        if (firstDay < 10) {
+                            firstDay = '0' + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var startDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            splitMonthV2[0];
+                        var monthsStartDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate = splitMonthV2[2] + '-' + splitMonthV2[1] + '-' +
+                            lastDay
+                    } else {
+                        var startDate = 'NO DATE'
+                    }
+
+                }
+
+                debt_set7.push({
+                    dateUsed: startDate,
+                    prospect_quote: prospectCount,
+                    total_prospect_count: prospectCount
+                });
+
+                return true;
+            });
+
+            previewDataSetBoxSent = [];
+            csvPreviewSet2 = [];
+
+            console.log('debt_set7: ' + debt_set7);
+
+
+            if (!isNullorEmpty(debt_set7)) {
+                debt_set7
+                    .forEach(function (preview_row, index) {
+
+                        previewDataSetBoxSent.push([preview_row.dateUsed,
+                        preview_row.prospect_quote,
+                        preview_row.total_prospect_count
+                        ]);
+
+                    });
+            }
+
+            console.log('previewDataSetBoxSent: ' + previewDataSetBoxSent);
+
+            var month_year = []; // creating array for storing browse
+
+            var prospect_box_sent = [];
+            var total_prospects_box_sent_leads = [];
+
+            for (var i = 0; i < previewDataSetBoxSent.length; i++) {
+                month_year.push(previewDataSetBoxSent[i][0]);
+                prospect_box_sent[previewDataSetBoxSent[i][0]] = previewDataSetBoxSent[i][1]
+                total_prospects_box_sent_leads[previewDataSetBoxSent[i][0]] = previewDataSetBoxSent[i][2]
+            }
+
+            var series_data_box_sent143 = [];
+            var series_data_box_sent144 = [];
+
+            var categores_box_sent5 = []; // creating empty array for highcharts
+            // categories
+            Object.keys(prospect_quote).map(function (item, key) {
+
+                series_data_box_sent143.push(parseInt(total_prospects_box_sent_leads[item]));
+                series_data_box_sent144.push(parseInt(prospect_box_sent[item]));
+                categores_box_sent5.push(item)
+            });
+
+
+            plotChartProspectsBoxSent(
+                series_data_box_sent143, series_data144, categores_box_sent5);
 
 
             debt_set = [];
@@ -20229,6 +20880,93 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
+        function plotChartBoxSentByLastAssigned(series_data, series_data2, categores) {
+            Highcharts.chart('container_prospect_box_sent_last_assigned', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Last Assigned',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+
         function plotChartOpportunityByLastAssigned(series_data, series_data2, categores) {
             Highcharts.chart('container_prospect_opportunity_last_assigned', {
                 chart: {
@@ -20313,6 +21051,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
         function plotChartQuoteSentByCampaign(series_data, series_data2, categores) {
             Highcharts.chart('container_prospect_quote_sent_campaign', {
                 chart: {
@@ -20397,6 +21136,94 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
+
+        function plotChartBoxSentByCampaign(series_data, series_data2, categores) {
+            Highcharts.chart('container_prospect_box_sent_campaign', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Campaign',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Signed',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
+
         function plotChartOpportunityByCampaign(series_data, series_data2, categores) {
             Highcharts.chart('container_prospect_opportunity_campaign', {
                 chart: {
@@ -20566,6 +21393,92 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             });
         }
+
+        function plotChartBoxSentBySource(series_data, series_data2, categores) {
+            Highcharts.chart('container_prospect_box_sent_source', {
+                chart: {
+                    backgroundColor: '#CFE0CE',
+                    zoomType: 'xy',
+                    type: 'column'
+                }, title: {
+                    text: 'Leads - By Source',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores,
+                    crosshair: true,
+                    color: '#103D39',
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Signed',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            x: -10
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total'
+                },
+                series: series_data
+
+            });
+        }
+
         function plotChartOpportunityBySource(series_data, series_data2, categores) {
             Highcharts.chart('container_prospect_opportunity_source', {
                 chart: {
@@ -20660,6 +21573,96 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     backgroundColor: '#CFE0CE',
                 }, title: {
                     text: 'Prospects - Weekly Quotes',
+                    style: {
+                        fontWeight: 'bold',
+                        color: '#0B2447',
+                        fontSize: '12px'
+                    }
+                },
+                xAxis: {
+                    categories: categores5,
+                    crosshair: true,
+                    style: {
+                        fontWeight: 'bold',
+                    },
+                    labels: {
+                        style: {
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Total Lead Count',
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '12px'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: '#0B2447',
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    },
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            align: 'right',
+                            color: 'black',
+                            style: {
+                                fontSize: '12px'
+                            }
+                        },
+                        pointPadding: 0.1,
+                        groupPadding: 0
+                    }
+                },
+                series: [{
+                    name: 'Prospect - Quote Sent',
+                    data: series_data44,
+                    color: '#ADCF9F',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }]
+            });
+        }
+
+        function plotChartProspectsBoxSent(
+            series_data43, series_data44, categores5) {
+            Highcharts.chart(
+                'container_prospects_box', {
+                chart: {
+                    type: 'column',
+                    backgroundColor: '#CFE0CE',
+                }, title: {
+                    text: 'Prospects - Weekly Box Sent',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
