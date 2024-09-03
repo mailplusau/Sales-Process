@@ -4647,7 +4647,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
             plotChartProspectsBoxSent(
-                series_data_box_sent143, series_data144, categores_box_sent5);
+                series_data_box_sent143, series_data_box_sent144, categores_box_sent5);
 
             if (role == 1000) {
                 // Website New Leads - Suspects - Monthly Reporting
@@ -18976,6 +18976,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             }
             console.log('lastAssignedTeamMemberCategories: ' + JSON.stringify(lastAssignedTeamMemberCategories));
             console.log('series_data_quote_sent: ' + JSON.stringify(series_data_quote_sent));
+            console.log('series_data_box_sent: ' + JSON.stringify(series_data_box_sent));
             plotChartQuoteSentByLastAssigned(series_data_quote_sent, null, lastAssignedTeamMemberCategories)
             plotChartBoxSentByLastAssigned(series_data_box_sent, null, lastAssignedTeamMemberCategories)
             plotChartOpportunityByLastAssigned(series_data_opportunities, null, lastAssignedTeamMemberCategories)
@@ -19438,6 +19439,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var oldTnCAgreedDate = null;
             var oldZeeVisitedDate = null;
             var oldLPOCommsToCustomer = null;
+            var oldGiftBoxActivated = null;
 
             var oldInvoiceNumber = null;
             var oldinvoiceDate = null;
@@ -19711,6 +19713,14 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     name: "custentity_lpo_comms_to_customer",
                     summary: "GROUP",
                 });
+                var giftBoxActivated = custListCommenceTodaySet.getValue({
+                    name: "custentity_gift_box_activated",
+                    summary: "GROUP",
+                });
+
+                if (giftBoxActivated == 1 || giftBoxActivated == '1') {
+                    giftBoxActivated = 'Yes'
+                }
 
                 if (!isNullorEmpty(monthlyServiceValue)) {
                     monthlyServiceValue = parseFloat(monthlyServiceValue);
@@ -19953,61 +19963,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                 } else if (count > 0 && (oldcustInternalID == custInternalID)) {
 
-                    // if (oldInvoiceNumber == invoiceDocumentNumber) {
-                    // } else if (oldInvoiceNumber != invoiceDocumentNumber) {
-                    //     customerActivityCount++
-                    //     if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
-                    //         customerChildDataSet.push({
-                    //             invoiceDocumentNumber: oldInvoiceNumber,
-                    //             invoiceDate: oldinvoiceDate,
-                    //             invoiceType: oldInvoiceType,
-                    //             invoiceAmount: oldInvoiceAmount,
-                    //             invoiceStatus: oldInvoiceStatus,
-                    //         });
 
-                    //         invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
-                    //         if (oldInvoiceType == 'Service') {
-                    //             invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
-                    //         } else {
-                    //             invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
-                    //         }
-                    //     }
-
-                    //     csvCustomerSignedExport.push([
-                    //         oldcustInternalID,
-                    //         oldcustEntityID,
-                    //         oldcustName,
-                    //         oldzeeName,
-                    //         oldSource,
-                    //         oldProdWeeklyUsage,
-                    //         oldPreviousCarrier,
-                    //         express_speed,
-                    //         standard_speed,
-                    //         olddateLeadEntered,
-                    //         oldquoteSentDate,
-                    //         oldemail48h,
-                    //         olddateProspectWon,
-                    //         oldDaysOpen,
-                    //         oldMonthServiceValue,
-                    //         oldsalesRepText,
-                    //         oldAutoSignUp,
-                    //         oldInvoiceNumber,
-                    //         oldinvoiceDate,
-                    //         oldInvoiceType,
-                    //         oldInvoiceAmount,
-                    //         oldInvoiceStatus
-                    //     ]);
-
-                    //     oldInvoiceNumber = null;
-                    //     oldinvoiceDate = null;
-                    //     oldInvoiceType = null;
-                    //     oldInvoiceAmount = null;
-                    //     oldInvoiceStatus = null;
-                    //     oldInvoiceItem = null;
-
-                    //     showInvoice = true;
-
-                    // }
 
 
                 } else if (count > 0 && (oldcustInternalID != custInternalID)) {
@@ -20261,28 +20217,6 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     if (oldcustStage == 'CUSTOMER') {
 
-                        // if (oldInvoiceNumber != invoiceDocumentNumber) {
-                        //     customerActivityCount++
-                        //     if (oldInvoiceNumber != 'Memorized' && parseFloat(oldInvoiceAmount) > 0 && showInvoice == true && isNullorEmpty(oldInvoiceItem)) {
-                        //         customerChildDataSet.push({
-                        //             invoiceDocumentNumber: oldInvoiceNumber,
-                        //             invoiceDate: oldinvoiceDate,
-                        //             invoiceType: oldInvoiceType,
-                        //             invoiceAmount: oldInvoiceAmount,
-                        //             invoiceStatus: oldInvoiceStatus,
-                        //         });
-
-                        //         invoiceTotal = invoiceTotal + parseFloat(oldInvoiceAmount);
-                        //         if (oldInvoiceType == 'Service') {
-                        //             invoiceServiceTotal = invoiceServiceTotal + parseFloat(oldInvoiceAmount);
-                        //         } else {
-                        //             invoiceProductsTotal = invoiceProductsTotal + parseFloat(oldInvoiceAmount);
-                        //         }
-                        //     }
-                        // }
-
-
-
                         totalCustomerCount++;
 
                         var express_speed = 0;
@@ -20456,6 +20390,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
                                 invoiceTotal.toFixed(2),
+                                oldGiftBoxActivated,
                                 oldLeadEnteredByText,
                                 currentCustCampaign,
                                 currentLastAssigned,
@@ -20504,6 +20439,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                                 invoiceServiceTotal.toFixed(2),
                                 invoiceProductsTotal.toFixed(2),
                                 invoiceTotal.toFixed(2),
+                                oldGiftBoxActivated,
                                 oldLeadEnteredByText,
                                 currentCustCampaign,
                                 currentLastAssigned,
@@ -20611,6 +20547,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 oldTnCAgreedDate = tncAgreedDate;
                 oldZeeVisitedDate = zeeVisitedDate;
                 oldLPOCommsToCustomer = lpoCommsToCustomer;
+                oldGiftBoxActivated = giftBoxActivated;
                 // oldInvoiceNumber = invoiceDocumentNumber;
                 // oldinvoiceDate = invoiceDate;
                 // oldInvoiceType = invoiceType;
@@ -21084,6 +21021,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
                             invoiceTotal.toFixed(2),
+                            oldGiftBoxActivated,
                             oldLeadEnteredByText,
                             currentCustCampaign,
                             currentLastAssigned,
@@ -21132,6 +21070,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             invoiceServiceTotal.toFixed(2),
                             invoiceProductsTotal.toFixed(2),
                             invoiceTotal.toFixed(2),
+                            oldGiftBoxActivated,
                             oldLeadEnteredByText,
                             currentCustCampaign,
                             currentLastAssigned,
@@ -21767,20 +21706,21 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     { title: 'Total Service Invoice' },//14
                     { title: 'Total Product Invoice' },//15
                     { title: 'Total Invoice' },//16
-                    { title: 'Lead Entered By' },//17
-                    { title: 'Sales Campaign' },//18
-                    { title: 'Sales Rep' },//19
-                    { title: 'Auto Signed Up' },//20
-                    { title: 'Child Table' }//21
+                    { title: 'Gift Box Activated?' },//17
+                    { title: 'Lead Entered By' },//18
+                    { title: 'Sales Campaign' },//19
+                    { title: 'Sales Rep' },//20
+                    { title: 'Auto Signed Up' },//21
+                    { title: 'Child Table' }//22
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [20, 21],
+                        targets: [21, 22],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 11, 13, 14, 15, 16],
+                        targets: [2, 3, 4, 11, 13, 14, 15, 16, 17],
                         className: 'bolded'
                     }, {
                         targets: [0, 8, 12],
@@ -22349,20 +22289,21 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     { title: 'Total Service Invoice' },//14
                     { title: 'Total Product Invoice' },//15
                     { title: 'Total Invoice' },//16
-                    { title: 'Lead Entered By' },//17
-                    { title: 'Sales Campaign' },//18
-                    { title: 'Sales Rep' },//19
-                    { title: 'Auto Signed Up' },//20
-                    { title: 'Child Table' }//21
+                    { title: 'Gift Box Activated?' },//17
+                    { title: 'Lead Entered By' },//18
+                    { title: 'Sales Campaign' },//19
+                    { title: 'Sales Rep' },//20
+                    { title: 'Auto Signed Up' },//21
+                    { title: 'Child Table' }//22
                 ],
                 autoWidth: false,
                 columnDefs: [
                     {
-                        targets: [20, 21],
+                        targets: [21, 22],
                         visible: false
                     },
                     {
-                        targets: [2, 3, 4, 11, 13, 14, 15, 16],
+                        targets: [2, 3, 4, 11, 13, 14, 15, 16, 17],
                         className: 'bolded'
                     }, {
                         targets: [0, 8, 12],
@@ -22912,6 +22853,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     $('.expand-button').addClass('btn-light')
                 }
             });
+
+            console.log('prospectBoxSentDataSet: ' + prospectBoxSentDataSet)
 
             var dataTableBoxSent = $('#mpexusage-prospects_box_sent').DataTable({
                 data: prospectBoxSentDataSet,
@@ -24468,7 +24411,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             // console.log('customer child row: ' + row.data()[19]);
 
-            row.data()[21].forEach(function (el) {
+            row.data()[22].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -24628,7 +24571,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
             // console.log('customer child row: ' + row.data()[19]);
 
-            row.data()[21].forEach(function (el) {
+            row.data()[22].forEach(function (el) {
                 if (!isNullorEmpty(el)) {
                     var invoiceURL = '';
                     childSet.push([el.invoiceDocumentNumber, el.invoiceDate, el.invoiceType, el.invoiceAmount, el.invoiceStatus
@@ -28822,7 +28765,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 series: [{
-                    name: 'Prospect - Quote Sent',
+                    name: 'Prospect - Box Sent',
                     data: series_data44,
                     color: '#ADCF9F',
                     style: {

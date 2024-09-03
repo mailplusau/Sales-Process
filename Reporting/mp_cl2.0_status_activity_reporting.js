@@ -17099,7 +17099,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
 
             plotChartProspectsBoxSent(
-                series_data_box_sent143, series_data144, categores_box_sent5);
+                series_data_box_sent143, series_data_box_sent144, categores_box_sent5);
 
 
             debt_set = [];
@@ -21734,7 +21734,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     }
                 },
                 series: [{
-                    name: 'Prospect - Quote Sent',
+                    name: 'Prospect - Box Sent',
                     data: series_data44,
                     color: '#ADCF9F',
                     style: {
