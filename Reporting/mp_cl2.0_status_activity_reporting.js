@@ -1672,6 +1672,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             suspect_off_peak_pipeline = 0;
             var prospect_opportunity = 0;
             prospecy_quote_sent = 0;
+            prospecy_box_sent = 0;
             prospect_no_answer = 0;
             prospect_in_contact = 0;
             suspect_follow_up = 0;
@@ -1699,19 +1700,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     summary: 'COUNT'
                 }));
                 var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "date",
-                    join: "systemNotes",
-                    summary: "GROUP",
+                    name: "custentity_date_lead_entered",
+                    summary: "GROUP"
                 });
                 var custStatus = parseInt(prospectListBySalesRepWeeklyResultSet.getValue({
                     name: "entitystatus",
-                    summary: "GROUP",
-                    label: "Status"
+                    summary: "GROUP"
                 }));
                 var custStatusText = prospectListBySalesRepWeeklyResultSet.getText({
                     name: "entitystatus",
-                    summary: "GROUP",
-                    label: "Status"
+                    summary: "GROUP"
                 });
 
                 if (role == 1000) {
@@ -1768,6 +1766,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = parseInt(prospectCount);
+                    } else if (custStatus == 72) {
+                        //PROSPECT - Box SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = parseInt(prospectCount);
@@ -1823,7 +1824,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldDate1 != null &&
                     oldDate1 == startDate) {
@@ -1849,6 +1850,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent += prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - Box SENT
+                        prospecy_box_sent += parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer += prospectCount;
@@ -1904,7 +1908,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldDate1 != null &&
                     oldDate1 != startDate) {
@@ -1933,7 +1937,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         suspect_no_answer: suspect_no_answer,
                         suspect_in_contact: suspect_in_contact,
                         prospect_qualified: prospect_qualified,
-                        customer_free_trial_pending: customer_free_trial_pending
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        prospect_box_sent: prospecy_box_sent
 
                     });
 
@@ -1945,6 +1950,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_off_peak_pipeline = 0;
                     prospect_opportunity = 0;
                     prospecy_quote_sent = 0;
+                    prospecy_box_sent = 0;
                     prospect_no_answer = 0;
                     prospect_in_contact = 0;
                     suspect_oot = 0;
@@ -1983,6 +1989,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - Box SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = prospectCount;
@@ -2038,7 +2047,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
                 }
 
                 count1++;
@@ -2072,7 +2081,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_no_answer: suspect_no_answer,
                     suspect_in_contact: suspect_in_contact,
                     prospect_qualified: prospect_qualified,
-                    customer_free_trial_pending: customer_free_trial_pending
+                    customer_free_trial_pending: customer_free_trial_pending,
+                    prospect_box_sent: prospecy_box_sent
                 });
             }
 
@@ -2093,6 +2103,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         var quoteSentPercentage = parseInt((preview_row.prospecy_quote_sent / preview_row.total_leads) * 100);
                         var quoteSentCol = preview_row.prospecy_quote_sent + ' (' + quoteSentPercentage + '%)';
+
+                        var boxSentPercentage = parseInt((preview_row.prospect_box_sent / preview_row.total_leads) * 100);
+                        var boxSentCol = preview_row.prospect_box_sent + ' (' + boxSentPercentage + '%)';
 
 
                         var reassignPercentage = parseInt((preview_row.suspect_reassign / preview_row.total_leads) * 100);
@@ -2175,6 +2188,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         preview_row.suspect_customer_lost,
                         preview_row.prospect_opportunity,
                         preview_row.prospect_qualified,
+                        preview_row.prospect_box_sent,
                         preview_row.prospecy_quote_sent,
                         preview_row.customer_free_trial_pending,
                         preview_row.customer_free_trial,
@@ -2201,6 +2215,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             custLostCol,
                             oppCol,
                             prospectQualifiedCol,
+                            boxSentCol,
                             quoteSentCol,
                             customerFreeTrialPendingCol,
                             customerFreeTrialCol,
@@ -2291,18 +2306,20 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Prospect - Qualified'//17
                 }, {
-                    title: 'Prospect - Quote Sent'//18
+                    title: 'Prospect - Box Sent'//18
                 }, {
-                    title: 'Customer - Free Trial Pending'//19
+                    title: 'Prospect - Quote Sent'//19
                 }, {
-                    title: 'Customer - Free Trial'//20
+                    title: 'Customer - Free Trial Pending'//20
                 }, {
-                    title: 'Customer - Signed'//21
+                    title: 'Customer - Free Trial'//21
                 }, {
-                    title: 'Total Status Change Count'//22
+                    title: 'Customer - Signed'//22
+                }, {
+                    title: 'Total Lead Count'//23
                 }],
                 columnDefs: [{
-                    targets: [0, 5, 17, 19, 20],
+                    targets: [0, 5, 17, 21, 22],
                     className: 'bolded'
                 }], footerCallback: function (row, data, start, end, display) {
                     var api = this.api(),
@@ -2452,9 +2469,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             return intVal(a) + intVal(b);
                         }, 0);
 
+                    total_prospect_qualified = api
+                        .column(17)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    total_prospect_box_sent = api
+                        .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
                     // Total Prospect Quoite Sent
                     total_prospect_quote_sent = api
-                        .column(18)
+                        .column(19)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -2462,7 +2493,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial Pending
                     total_customer_free_trial_pending = api
-                        .column(19)
+                        .column(20)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -2470,7 +2501,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial
                     total_customer_free_trial = api
-                        .column(20)
+                        .column(21)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -2478,7 +2509,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Signed
                     total_customer_signed = api
-                        .column(21)
+                        .column(22)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -2486,18 +2517,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Lead Count
                     total_lead = api
-                        .column(22)
+                        .column(23)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0);
 
-                    total_prospect_qualified = api
-                        .column(16)
-                        .data()
-                        .reduce(function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0);
+
 
                     // Update footer
                     $(api.column(1).footer()).html(
@@ -2552,22 +2578,23 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         total_prospect_qualified + ' (' + ((total_prospect_qualified / total_lead) * 100).toFixed(0) + '%)'
                     );
                     $(api.column(18).footer()).html(
+                        total_prospect_box_sent + ' (' + ((total_prospect_box_sent / total_lead) * 100).toFixed(0) + '%)'
+                    );
+                    $(api.column(19).footer()).html(
                         total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-
-
-                    $(api.column(19).footer()).html(
+                    $(api.column(20).footer()).html(
                         total_customer_free_trial_pending + ' (' + ((total_customer_free_trial_pending / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-                    $(api.column(20).footer()).html(
+                    $(api.column(21).footer()).html(
                         total_customer_free_trial + ' (' + ((total_customer_free_trial / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(21).footer()).html(
+                    $(api.column(22).footer()).html(
                         total_customer_signed + ' (' + ((total_customer_signed / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(22).footer()).html(
+                    $(api.column(23).footer()).html(
                         total_lead
                     );
 
@@ -2590,6 +2617,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var prospect_opportunity = [];
             var prospect_qualified = [];
             var prospecy_quote_sent = [];
+            var prospecy_box_sent = [];
             var prospect_no_answer = [];
             var prospect_in_contact = [];
             var suspect_follow_up = [];
@@ -2623,12 +2651,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 suspect_customer_lost[data[i][0]] = data[i][15]
                 prospect_opportunity[data[i][0]] = data[i][16]
                 prospect_qualified[data[i][0]] = data[i][17]
-                prospecy_quote_sent[data[i][0]] = data[i][18]
-                customer_free_trial_pending[data[i][0]] = data[i][19];
-                customer_free_trial[data[i][0]] = data[i][20];
-                customer_signed[data[i][0]] = data[i][21];
-                total_leads[data[i][0]] = data[i][22]
+                prospecy_box_sent[data[i][0]] = data[i][18]
+                prospecy_quote_sent[data[i][0]] = data[i][19]
+                customer_free_trial_pending[data[i][0]] = data[i][20];
+                customer_free_trial[data[i][0]] = data[i][21];
+                customer_signed[data[i][0]] = data[i][22];
+                total_leads[data[i][0]] = data[i][23]
             }
+
+            console.log('prospecy_box_sent' + prospecy_box_sent)
+
             var count = {}; // creating object for getting categories with
             // count
             month_year.forEach(function (i) {
@@ -2659,6 +2691,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var series_data26a = [];
             var series_data27a = [];
             var series_data28a = [];
+            var series_data29a = [];
 
             var categores1 = []; // creating empty array for highcharts
             // categories
@@ -2686,6 +2719,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 series_data25a.push(parseInt(suspect_in_contact[item]));
                 series_data26a.push(parseInt(prospect_qualified[item]));
                 series_data27a.push(parseInt(customer_free_trial_pending[item]));
+                series_data29a.push(parseInt(prospecy_box_sent[item]));
                 categores1.push(item)
             });
 
@@ -2699,7 +2733,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 series_data26,
                 series_data27,
                 series_data28,
-                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a)
+                series_data29, series_data31, series_data32, series_data33, series_data34, categores1, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a, series_data29a)
 
 
 
@@ -5121,6 +5155,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var prospect_opportunity = 0;
             var prospect_qualified = 0;
             var prospecy_quote_sent = 0;
+            var prospecy_box_sent = 0;
             var prospect_no_answer = 0;
             var prospect_in_contact = 0;
             var suspect_follow_up = 0;
@@ -5194,6 +5229,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = parseInt(prospectCount);
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = parseInt(prospectCount);
@@ -5249,7 +5287,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldSalesRepAssigned != null &&
                     oldSalesRepAssigned == salesRepAssigned) {
@@ -5275,6 +5313,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent += prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent += parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer += prospectCount;
@@ -5330,7 +5371,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldDate1 != null &&
                     oldSalesRepAssigned != salesRepAssigned) {
@@ -5360,7 +5401,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         suspect_no_answer: suspect_no_answer,
                         suspect_in_contact: suspect_in_contact,
                         prospect_qualified: prospect_qualified,
-                        customer_free_trial_pending: customer_free_trial_pending
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        prospect_box_sent: prospecy_box_sent
                     });
 
                     customer_signed = 0;
@@ -5371,6 +5413,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_off_peak_pipeline = 0;
                     prospect_opportunity = 0;
                     prospecy_quote_sent = 0;
+                    prospecy_box_sent = 0;
                     prospect_no_answer = 0;
                     prospect_in_contact = 0;
                     suspect_oot = 0;
@@ -5409,6 +5452,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = prospectCount;
@@ -5464,7 +5510,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
                 }
 
                 count1++;
@@ -5500,7 +5546,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_no_answer: suspect_no_answer,
                     suspect_in_contact: suspect_in_contact,
                     prospect_qualified: prospect_qualified,
-                    customer_free_trial_pending: customer_free_trial_pending
+                    customer_free_trial_pending: customer_free_trial_pending,
+                    prospect_box_sent: prospecy_box_sent
                 });
             }
 
@@ -5521,6 +5568,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         var quoteSentPercentage = parseInt((preview_row.prospecy_quote_sent / preview_row.total_leads) * 100);
                         var quoteSentCol = preview_row.prospecy_quote_sent + ' (' + quoteSentPercentage + '%)';
+
+                        var boxSentPercentage = parseInt((preview_row.prospect_box_sent / preview_row.total_leads) * 100);
+                        var boxSentCol = preview_row.prospect_box_sent + ' (' + boxSentPercentage + '%)';
 
 
                         var reassignPercentage = parseInt((preview_row.suspect_reassign / preview_row.total_leads) * 100);
@@ -5603,6 +5653,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         preview_row.suspect_customer_lost,
                         preview_row.prospect_opportunity,
                         preview_row.prospect_qualified,
+                        preview_row.prospect_box_sent,
                         preview_row.prospecy_quote_sent,
                         preview_row.customer_free_trial_pending,
                         preview_row.customer_free_trial,
@@ -5630,6 +5681,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             custLostCol,
                             oppCol,
                             prospectQualifiedCol,
+                            boxSentCol,
                             quoteSentCol,
                             customerFreeTrialPendingCol,
                             customerFreeTrialCol,
@@ -5723,29 +5775,31 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Prospect - Qualified'//17
                 }, {
-                    title: 'Prospect - Quote Sent'//18
+                    title: 'Prospect - Box Sent'//18
                 }, {
-                    title: 'Customer - Free Trial Pending'//19
+                    title: 'Prospect - Quote Sent'//19
                 }, {
-                    title: 'Customer - Free Trial'//20
+                    title: 'Customer - Free Trial Pending'//20
                 }, {
-                    title: 'Customer - Signed'//21
+                    title: 'Customer - Free Trial'//21
                 }, {
-                    title: 'Total Lead Count'//22
+                    title: 'Customer - Signed'//22
                 }, {
-                    title: 'Show Leads'//23
+                    title: 'Total Lead Count'//23
                 }, {
-                    title: 'Sales Rep ID'//24
+                    title: 'Show Leads'//24
+                }, {
+                    title: 'Sales Rep ID'//25
                 }],
                 columnDefs: [{
-                    targets: [0, 5, 18, 20, 21, 22],
+                    targets: [0, 5, 18, 21, 22, 23],
                     className: 'bolded'
                 }, {
-                    targets: [24],
+                    targets: [25],
                     visible: false
                 },
                 {
-                    targets: [23, 24],
+                    targets: [24, 25],
                     className: 'notexport'
                 }
                 ],
@@ -5904,9 +5958,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             return intVal(a) + intVal(b);
                         }, 0);
 
+                    total_prospect_box_sent = api
+                        .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
                     // Total Prospect Quoite Sent
                     total_prospect_quote_sent = api
-                        .column(18)
+                        .column(19)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5914,7 +5975,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial Pending
                     total_customer_free_trial_pending = api
-                        .column(19)
+                        .column(20)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5922,7 +5983,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial
                     total_customer_free_trial = api
-                        .column(20)
+                        .column(21)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5930,7 +5991,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Signed
                     total_customer_signed = api
-                        .column(21)
+                        .column(22)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5938,7 +5999,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Lead Count
                     total_lead = api
-                        .column(22)
+                        .column(23)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -5996,22 +6057,28 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     $(api.column(17).footer()).html(
                         total_prospect_qualified + ' (' + ((total_prospect_qualified / total_lead) * 100).toFixed(0) + '%)'
                     );
+
                     $(api.column(18).footer()).html(
+                        total_prospect_box_sent + ' (' + ((total_prospect_box_sent / total_lead) * 100).toFixed(0) + '%)'
+                    );
+
+
+                    $(api.column(19).footer()).html(
                         total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-                    $(api.column(19).footer()).html(
+                    $(api.column(20).footer()).html(
                         total_customer_free_trial_pending + ' (' + ((total_customer_free_trial_pending / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-                    $(api.column(20).footer()).html(
+                    $(api.column(21).footer()).html(
                         total_customer_free_trial + ' (' + ((total_customer_free_trial / total_lead) * 100).toFixed(0) + '%)'
                     );
 
-                    $(api.column(21).footer()).html(
+                    $(api.column(22).footer()).html(
                         total_customer_signed + ' (' + ((total_customer_signed / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(22).footer()).html(
+                    $(api.column(23).footer()).html(
                         total_lead
                     );
 
@@ -6034,6 +6101,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var salesrep_prospect_opportunity = [];
             var salesrep_prospect_qualified = [];
             var salesrep_prospecy_quote_sent = [];
+            var salesrep_prospecy_box_sent = [];
             var salesrep_prospect_no_answer = [];
             var salesrep_prospect_in_contact = [];
             var salesrep_suspect_follow_up = [];
@@ -6067,11 +6135,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 salesrep_suspect_customer_lost[salesrep_data[i][0]] = salesrep_data[i][15]
                 salesrep_prospect_opportunity[salesrep_data[i][0]] = salesrep_data[i][16]
                 salesrep_prospect_qualified[salesrep_data[i][0]] = salesrep_data[i][17]
-                salesrep_prospecy_quote_sent[salesrep_data[i][0]] = salesrep_data[i][18]
-                salesrep_customer_free_trial_pending[salesrep_data[i][0]] = salesrep_data[i][19];
-                salesrep_customer_free_trial[salesrep_data[i][0]] = salesrep_data[i][20];
-                salesrep_customer_signed[salesrep_data[i][0]] = salesrep_data[i][21];
-                salesrep_total_leads[salesrep_data[i][0]] = salesrep_data[i][22]
+                salesrep_prospecy_box_sent[salesrep_data[i][0]] = salesrep_data[i][18]
+                salesrep_prospecy_quote_sent[salesrep_data[i][0]] = salesrep_data[i][19]
+                salesrep_customer_free_trial_pending[salesrep_data[i][0]] = salesrep_data[i][20];
+                salesrep_customer_free_trial[salesrep_data[i][0]] = salesrep_data[i][21];
+                salesrep_customer_signed[salesrep_data[i][0]] = salesrep_data[i][22];
+                salesrep_total_leads[salesrep_data[i][0]] = salesrep_data[i][23]
             }
             var salesrep_count = {}; // creating object for getting categories with
             // count
@@ -6103,6 +6172,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var salesrep_series_data26a = [];
             var salesrep_series_data27a = [];
             var salesrep_series_data28a = [];
+            var salesrep_series_data29a = [];
 
             var salesrep_categores1 = []; // creating empty array for highcharts
             // categories
@@ -6130,6 +6200,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 salesrep_series_data25a.push(parseInt(salesrep_suspect_in_contact[item]));
                 salesrep_series_data26a.push(parseInt(salesrep_prospect_qualified[item]));
                 salesrep_series_data27a.push(parseInt(salesrep_customer_free_trial_pending[item]));
+                salesrep_series_data29a.push(parseInt(salesrep_prospecy_box_sent[item]));
                 salesrep_categores1.push(item)
             });
 
@@ -6143,7 +6214,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 salesrep_series_data26,
                 salesrep_series_data27,
                 salesrep_series_data28,
-                salesrep_series_data29, salesrep_series_data31, salesrep_series_data32, salesrep_series_data33, salesrep_series_data34, salesrep_categores1, salesrep_series_data20a, salesrep_series_data21a, salesrep_series_data22a, salesrep_series_data23a, salesrep_series_data24a, salesrep_series_data25a, salesrep_series_data26a, salesrep_series_data27a, salesrep_series_data28a)
+                salesrep_series_data29, salesrep_series_data31, salesrep_series_data32, salesrep_series_data33, salesrep_series_data34, salesrep_categores1, salesrep_series_data20a, salesrep_series_data21a, salesrep_series_data22a, salesrep_series_data23a, salesrep_series_data24a, salesrep_series_data25a, salesrep_series_data26a, salesrep_series_data27a, salesrep_series_data28a, salesrep_series_data29a)
 
             //? DATA CAPTURE OVERVIEW
 
@@ -6298,6 +6369,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var prospect_opportunity = 0;
             var prospect_qualified = 0;
             var prospecy_quote_sent = 0;
+            var prospecy_box_sent = 0;
             var prospect_no_answer = 0;
             var prospect_in_contact = 0;
             var suspect_follow_up = 0;
@@ -6333,14 +6405,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     summary: "GROUP"
                 });
                 var dataCaptureAssigned = leadsListByDataCaptureStatusSearchResultSet.getText({
-                    name: "name",
-                    join: "systemNotes",
+                    name: "custentity_lead_entered_by",
                     summary: "GROUP",
                 });
 
                 var dataCaptureAssignedId = leadsListByDataCaptureStatusSearchResultSet.getValue({
-                    name: "name",
-                    join: "systemNotes",
+                    name: "custentity_lead_entered_by",
                     summary: "GROUP",
                 });
 
@@ -6371,6 +6441,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = parseInt(prospectCount);
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = parseInt(prospectCount);
@@ -6426,7 +6499,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldDataCaptureAssigned != null &&
                     oldDataCaptureAssigned == dataCaptureAssigned) {
@@ -6452,6 +6525,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent += prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent += parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer += prospectCount;
@@ -6507,7 +6583,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
 
                 } else if (oldDataCaptureAssigned != null &&
                     oldDataCaptureAssigned != dataCaptureAssigned) {
@@ -6537,7 +6613,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         suspect_no_answer: suspect_no_answer,
                         suspect_in_contact: suspect_in_contact,
                         prospect_qualified: prospect_qualified,
-                        customer_free_trial_pending: customer_free_trial_pending
+                        customer_free_trial_pending: customer_free_trial_pending,
+                        prospect_box_sent: prospecy_box_sent
                     });
 
                     customer_signed = 0;
@@ -6548,6 +6625,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_off_peak_pipeline = 0;
                     prospect_opportunity = 0;
                     prospecy_quote_sent = 0;
+                    prospecy_box_sent = 0;
                     prospect_no_answer = 0;
                     prospect_in_contact = 0;
                     suspect_oot = 0;
@@ -6586,6 +6664,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     } else if (custStatus == 50) {
                         //PROSPECT - QUOTE SENT
                         prospecy_quote_sent = prospectCount;
+                    } else if (custStatus == 72) {
+                        //PROSPECT - BOX SENT
+                        prospecy_box_sent = parseInt(prospectCount);
                     } else if (custStatus == 35) {
                         //PROSPECT - NO ANSWER
                         prospect_no_answer = prospectCount;
@@ -6641,7 +6722,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         prospecy_quote_sent +
                         prospect_no_answer +
                         prospect_in_contact +
-                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified
+                        suspect_off_peak_pipeline + prospect_opportunity + suspect_oot + suspect_follow_up + suspect_new + suspect_qualified + suspect_lpo_followup + suspect_validated + customer_free_trial + suspect_no_answer + suspect_in_contact + prospect_qualified + customer_free_trial_pending + suspect_unqualified + prospecy_box_sent
                 }
 
                 count1++;
@@ -6677,7 +6758,8 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     suspect_no_answer: suspect_no_answer,
                     suspect_in_contact: suspect_in_contact,
                     prospect_qualified: prospect_qualified,
-                    customer_free_trial_pending: customer_free_trial_pending
+                    customer_free_trial_pending: customer_free_trial_pending,
+                    prospect_box_sent: prospecy_box_sent
                 });
             }
 
@@ -6698,6 +6780,9 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                         var quoteSentPercentage = parseInt((preview_row.prospecy_quote_sent / preview_row.total_leads) * 100);
                         var quoteSentCol = preview_row.prospecy_quote_sent + ' (' + quoteSentPercentage + '%)';
+
+                        var boxSentPercentage = parseInt((preview_row.prospect_box_sent / preview_row.total_leads) * 100);
+                        var boxSentCol = preview_row.prospect_box_sent + ' (' + boxSentPercentage + '%)';
 
 
                         var reassignPercentage = parseInt((preview_row.suspect_reassign / preview_row.total_leads) * 100);
@@ -6780,6 +6865,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         preview_row.suspect_customer_lost,
                         preview_row.prospect_opportunity,
                         preview_row.prospect_qualified,
+                        preview_row.prospect_box_sent,
                         preview_row.prospecy_quote_sent,
                         preview_row.customer_free_trial_pending,
                         preview_row.customer_free_trial,
@@ -6807,6 +6893,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                             custLostCol,
                             oppCol,
                             prospectQualifiedCol,
+                            boxSentCol,
                             quoteSentCol,
                             customerFreeTrialPendingCol,
                             customerFreeTrialCol,
@@ -6899,23 +6986,25 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     title: 'Prospect - Qualified'//17
                 }, {
-                    title: 'Prospect - Quote Sent'//18
+                    title: 'Prospect - Box Sent'//18
                 }, {
-                    title: 'Customer - Free Trial Pending'//19
+                    title: 'Prospect - Quote Sent'//19
                 }, {
-                    title: 'Customer - Free Trial'//20
+                    title: 'Customer - Free Trial Pending'//20
                 }, {
-                    title: 'Customer - Signed'//21
+                    title: 'Customer - Free Trial'//21
                 }, {
-                    title: 'Total Lead Count'//22
+                    title: 'Customer - Signed'//22
+                }, {
+                    title: 'Total Lead Count'//23
                 }, {
                     title: 'Sales Rep ID'//24
                 }],
                 columnDefs: [{
-                    targets: [0, 5, 18, 20, 21, 22],
+                    targets: [0, 5, 18, 21, 22, 23],
                     className: 'bolded'
                 }, {
-                    targets: [23],
+                    targets: [24],
                     visible: false
                 },
                 {
@@ -7079,8 +7168,16 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                         }, 0);
 
                     // Total Prospect Quoite Sent
-                    total_prospect_quote_sent = api
+                    total_prospect_box_sent = api
                         .column(18)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // Total Prospect Quoite Sent
+                    total_prospect_quote_sent = api
+                        .column(19)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -7088,7 +7185,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial Pending
                     total_customer_free_trial_pending = api
-                        .column(19)
+                        .column(20)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -7096,7 +7193,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Free Trial
                     total_customer_free_trial = api
-                        .column(20)
+                        .column(21)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -7104,7 +7201,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Customer Signed
                     total_customer_signed = api
-                        .column(21)
+                        .column(22)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -7112,7 +7209,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
 
                     // Total Lead Count
                     total_lead = api
-                        .column(22)
+                        .column(23)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);
@@ -7170,22 +7267,27 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     $(api.column(17).footer()).html(
                         total_prospect_qualified + ' (' + ((total_prospect_qualified / total_lead) * 100).toFixed(0) + '%)'
                     );
+
                     $(api.column(18).footer()).html(
-                        total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
+                        total_prospect_box_sent + ' (' + ((total_prospect_box_sent / total_lead) * 100).toFixed(0) + '%)'
                     );
 
                     $(api.column(19).footer()).html(
-                        total_customer_free_trial_pending + ' (' + ((total_customer_free_trial_pending / total_lead) * 100).toFixed(0) + '%)'
+                        total_prospect_quote_sent + ' (' + ((total_prospect_quote_sent / total_lead) * 100).toFixed(0) + '%)'
                     );
 
                     $(api.column(20).footer()).html(
-                        total_customer_free_trial + ' (' + ((total_customer_free_trial / total_lead) * 100).toFixed(0) + '%)'
+                        total_customer_free_trial_pending + ' (' + ((total_customer_free_trial_pending / total_lead) * 100).toFixed(0) + '%)'
                     );
 
                     $(api.column(21).footer()).html(
+                        total_customer_free_trial + ' (' + ((total_customer_free_trial / total_lead) * 100).toFixed(0) + '%)'
+                    );
+
+                    $(api.column(22).footer()).html(
                         total_customer_signed + ' (' + ((total_customer_signed / total_lead) * 100).toFixed(0) + '%)'
                     );
-                    $(api.column(22).footer()).html(
+                    $(api.column(23).footer()).html(
                         total_lead
                     );
 
@@ -7208,6 +7310,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var datacapture_prospect_opportunity = [];
             var datacapture_prospect_qualified = [];
             var datacapture_prospecy_quote_sent = [];
+            var datacapture_prospecy_box_sent = [];
             var datacapture_prospect_no_answer = [];
             var datacapture_prospect_in_contact = [];
             var datacapture_suspect_follow_up = [];
@@ -7241,11 +7344,12 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 datacapture_suspect_customer_lost[datacapture_data[i][0]] = datacapture_data[i][15]
                 datacapture_prospect_opportunity[datacapture_data[i][0]] = datacapture_data[i][16]
                 datacapture_prospect_qualified[datacapture_data[i][0]] = datacapture_data[i][17]
-                datacapture_prospecy_quote_sent[datacapture_data[i][0]] = datacapture_data[i][18]
-                datacapture_customer_free_trial_pending[datacapture_data[i][0]] = datacapture_data[i][19];
-                datacapture_customer_free_trial[datacapture_data[i][0]] = datacapture_data[i][20];
-                datacapture_customer_signed[datacapture_data[i][0]] = datacapture_data[i][21];
-                datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][22]
+                datacapture_prospecy_box_sent[datacapture_data[i][0]] = datacapture_data[i][18]
+                datacapture_prospecy_quote_sent[datacapture_data[i][0]] = datacapture_data[i][19]
+                datacapture_customer_free_trial_pending[datacapture_data[i][0]] = datacapture_data[i][20];
+                datacapture_customer_free_trial[datacapture_data[i][0]] = datacapture_data[i][21];
+                datacapture_customer_signed[datacapture_data[i][0]] = datacapture_data[i][22];
+                datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][23]
             }
             var datacapture_count = {}; // creating object for getting categories with
             // count
@@ -7277,6 +7381,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             var datacapture_series_data26a = [];
             var datacapture_series_data27a = [];
             var datacapture_series_data28a = [];
+            var datacapture_series_data29a = [];
 
             var datacapture_categores1 = []; // creating empty array for highcharts
             // categories
@@ -7304,6 +7409,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 datacapture_series_data25a.push(parseInt(datacapture_suspect_in_contact[item]));
                 datacapture_series_data26a.push(parseInt(datacapture_prospect_qualified[item]));
                 datacapture_series_data27a.push(parseInt(datacapture_customer_free_trial_pending[item]));
+                datacapture_series_data29a.push(parseInt(datacapture_prospecy_box_sent[item]));
                 datacapture_categores1.push(item)
             });
 
@@ -7319,7 +7425,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 datacapture_series_data26,
                 datacapture_series_data27,
                 datacapture_series_data28,
-                datacapture_series_data29, datacapture_series_data31, datacapture_series_data32, datacapture_series_data33, datacapture_series_data34, datacapture_categores1, datacapture_series_data20a, datacapture_series_data21a, datacapture_series_data22a, datacapture_series_data23a, datacapture_series_data24a, datacapture_series_data25a, datacapture_series_data26a, datacapture_series_data27a, datacapture_series_data28a)
+                datacapture_series_data29, datacapture_series_data31, datacapture_series_data32, datacapture_series_data33, datacapture_series_data34, datacapture_categores1, datacapture_series_data20a, datacapture_series_data21a, datacapture_series_data22a, datacapture_series_data23a, datacapture_series_data24a, datacapture_series_data25a, datacapture_series_data26a, datacapture_series_data27a, datacapture_series_data28a, datacapture_series_data29a)
 
             //? Data Capture Grouped by Source & Campaign
             //Leads by Source & Campaign - System Notes - Data Capture Reporting
@@ -17613,7 +17719,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             series_data26,
             series_data27,
             series_data28,
-            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a) {
+            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a, series_data29a) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -17622,7 +17728,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                     type: 'column',
                     backgroundColor: '#CFE0CE',
                 }, title: {
-                    text: 'Leads - By Status - Week Status Changed Activity',
+                    text: 'Leads - By Status - Week Entered',
                     style: {
                         fontWeight: 'bold',
                         color: '#0B2447',
@@ -17645,7 +17751,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Status Changes',
+                        text: 'Total Lead Count',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -17716,6 +17822,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     name: 'Prospect - Quote Sent',
                     data: series_data26,
+                    color: '#ADCF9F',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Prospect - Box Sent',
+                    data: series_data29a,
                     color: '#ADCF9F',
                     style: {
                         fontWeight: 'bold',
@@ -17884,7 +17997,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Status Changes',
+                        text: 'Total Lead Count',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -18116,7 +18229,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Status Changes',
+                        text: 'Total Lead Count',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -18325,7 +18438,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             series_data26,
             series_data27,
             series_data28,
-            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a) {
+            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a, salesrep_series_data29a) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -18357,7 +18470,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Total Status Changes',
+                        text: 'Total Lead Count',
                         style: {
                             fontWeight: 'bold',
                             color: '#0B2447',
@@ -18435,6 +18548,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     name: 'Prospects - Opportunity',
                     data: series_data31,
+                    color: '#3E6D9C',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                }, {
+                    name: 'Prospects - Box Sent',
+                    data: salesrep_series_data29a,
                     color: '#3E6D9C',
                     style: {
                         fontWeight: 'bold',
@@ -18564,7 +18684,7 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
             series_data26,
             series_data27,
             series_data28,
-            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a) {
+            series_data29, series_data31, series_data32, series_data33, series_data34, categores, series_data20a, series_data21a, series_data22a, series_data23a, series_data24a, series_data25a, series_data26a, series_data27a, series_data28a, series_data29a) {
             // console.log(series_data)
 
             Highcharts.chart(
@@ -18668,6 +18788,13 @@ define(['SuiteScripts/jQuery Plugins/Moment JS/moment.min', 'N/email', 'N/runtim
                 }, {
                     name: 'Prospect - Quote Sent',
                     data: series_data26,
+                    color: '#ADCF9F',
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },{
+                    name: 'Prospect - Box Sent',
+                    data: series_data29a,
                     color: '#ADCF9F',
                     style: {
                         fontWeight: 'bold',
