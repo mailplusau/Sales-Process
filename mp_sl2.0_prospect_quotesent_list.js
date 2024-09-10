@@ -849,6 +849,12 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record', 'N/
                     inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
                 }
             } else if (custStage == '2') {
+                if (custStatus == '72') {
+                    inlineHtml += '<option value="72" selected>PROSPECT - BOX SENT</option>';
+                } else {
+                    inlineHtml += '<option value="72">PROSPECT - BOX SENT</option>';
+                }
+
                 if (custStatus == '50') {
                     inlineHtml += '<option value="50" selected>PROSPECT - QUOTE SENT</option>';
                 } else {
