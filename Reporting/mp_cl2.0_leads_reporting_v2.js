@@ -2830,7 +2830,7 @@ define([
 				id: "customsearch_leads_reporting_weekly_2_3",
 			});
 		} else {
-			// Website New Leads - Signed - Weekly Reporting
+			// Sales Dashboard - Leads - Signed - Weekly Reporting
 			var customerListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2",
@@ -3499,13 +3499,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Trial - Weekly Reporting (Monthly)
+			// Sales Dashbaord - Leads - Trial - Weekly Reporting (Monthly)
 			var customerTrialListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_15",
 			});
 		} else {
-			// Website New Leads - Trial - Weekly Reporting
+			// Sales Dashboard - Leads - Trial - Weekly Reporting
 			var customerTrialListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_4",
@@ -4176,13 +4176,13 @@ define([
 
 		//! Update the Search to exlcude Change of Entity & Relocation source
 		if (role == 1000) {
-			// Website New Leads - Trial Pending- Weekly Reporting (Monthly)
+			// Sales Dashboard - Leads - Trial Pending- Weekly Reporting (Monthly)
 			var customerTrialPendingListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_16",
 			});
 		} else {
-			// Website New Leads - Trial Pending - Weekly Reporting
+			// Sales Dashboard - Leads - Trial Pending - Weekly Reporting
 			var customerTrialPendingListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_17",
@@ -4878,13 +4878,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Prospect - Monthly Reporting
+			// Sales Dashbaord - Leads - Prospect - Monthly Reporting
 			var prospectWeeklyReportingSearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__8",
 			});
 		} else {
-			// Website New Leads - Prospect - Weekly Reporting
+			// Sales Dashboard - Leads - Prospect - Weekly Reporting
 			var prospectWeeklyReportingSearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_2",
@@ -5360,13 +5360,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Prospect Quote Sent - Monthly Reporting
+			// Sales Dashboard - Leads - Prospect Quote Sent - Monthly Reporting
 			var prospectOpportunityWeeklyReportingSearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__9",
 			});
 		} else {
-			// Website New Leads - Prospect Quote Sent - Weekly Reporting
+			// Sales Dashboard - Leads - Prospect Quote Sent - Weekly Reporting
 			var prospectOpportunityWeeklyReportingSearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__3",
@@ -5720,7 +5720,7 @@ define([
 		plotChartProspectsQuotes(series_data143, series_data144, categores5);
 
 		//!
-		// Website New Leads - Prospect Box Sent - Weekly Reporting
+		// Sales Dashboard - Leads - Prospect Box Sent - Weekly Reporting
 		var prospectBoxSentWeeklyReportingSearch = search.load({
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_2_21",
@@ -6081,13 +6081,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects - Monthly Reporting
 			var suspectsListBySalesRepWeeklySearch = search.load({
 				type: "lead",
 				id: "customsearch_leads_reporting_weekly_2_10",
 			});
 		} else {
-			// Website New Leads - Suspects - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects - Weekly Reporting
 			var suspectsListBySalesRepWeeklySearch = search.load({
 				type: "lead",
 				id: "customsearch_leads_reporting_weekly_2__2",
@@ -6522,13 +6522,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Lost - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Lost - Monthly Reporting
 			var suspectsLostBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_11",
 			});
 		} else {
-			// Website New Leads - Suspects Lost - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Lost - Weekly Reporting
 			var suspectsLostBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__4",
@@ -6941,13 +6941,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Parking Lot - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Parking Lot - Monthly Reporting
 			var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_12",
 			});
 		} else {
-			// Website New Leads - Suspects Parking Lot - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Parking Lot - Weekly Reporting
 			var suspectsOffPeakPipelineBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__5",
@@ -7282,13 +7282,13 @@ define([
 		plotChartSuspectsOffPeakPipeline(series_data70, categores_suspects_lost);
 
 		if (role == 1000) {
-			// Search Name: Website New Leads - Suspects Out of Territory - Monthly Reporting
+			// Search Name: Sales Dashboard - Leads - Suspects Out of Territory - Monthly Reporting
 			var suspectsOOTBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_13",
 			});
 		} else {
-			// Website New Leads - Suspects Out of Territory - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Out of Territory - Weekly Reporting
 			var suspectsOOTBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__6",
@@ -7618,13 +7618,13 @@ define([
 		plotChartSuspectsOOT(series_data80, categores_suspects_oot);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Qualified - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Qualified - Monthly Reporting
 			var suspectsQualifiedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_monthly",
 			});
 		} else {
-			// Website New Leads - Suspects Qualified - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Qualified - Weekly Reporting
 			var suspectsQualifiedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_weekly",
@@ -7960,13 +7960,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Unqualified - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Unqualified - Monthly Reporting
 			var suspectsUnqualifiedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_month_3",
 			});
 		} else {
-			// Website New Leads - Suspects Unqualified - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Unqualified - Weekly Reporting
 			var suspectsUnqualifiedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_weekl_3",
@@ -8296,13 +8296,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Validated - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Validated - Monthly Reporting
 			var suspectsValidatedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_month_2",
 			});
 		} else {
-			// Website New Leads - Suspects Validated - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Validated - Weekly Reporting
 			var suspectsValidatedSalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_suspect_quali_weekl_2",
@@ -8638,13 +8638,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects Follow Up - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects Follow Up - Monthly Reporting
 			var suspectsFollowUpBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2_14",
 			});
 		} else {
-			// Website New Leads - Suspects Follow Up - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects Follow Up - Weekly Reporting
 			var suspectsFollowUpBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_2__7",
@@ -9016,13 +9016,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects No Answer - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects No Answer - Monthly Reporting
 			var suspectsNoAnswerBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_suspects_no_answer_monthly",
 			});
 		} else {
-			// Website New Leads - Suspects No Answer - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects No Answer - Weekly Reporting
 			var suspectsNoAnswerBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_suspects_no_answer_weekly",
@@ -9363,13 +9363,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads - Suspects In Contact - Monthly Reporting
+			// Sales Dashboard - Leads - Suspects In Contact - Monthly Reporting
 			var suspectsInContactBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_suspects_in_contact_monthly",
 			});
 		} else {
-			// Website New Leads - Suspects In Contact - Weekly Reporting
+			// Sales Dashboard - Leads - Suspects In Contact - Weekly Reporting
 			var suspectsInContactBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_suspects_in_contact_weekly",
@@ -9710,13 +9710,13 @@ define([
 		);
 
 		if (role == 1000) {
-			// Website New Leads by Status - Monthly Reporting
+			// Sales Dashboard - Leads by Status - Monthly Reporting
 			var leadsListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_3",
 			});
 		} else {
-			// Website New Leads by Status - Weekly Reporting
+			// Sales Dashboard - Leads by Status - Weekly Reporting
 			var leadsListBySalesRepWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly",
@@ -11284,13 +11284,13 @@ define([
 			sales_campaign == 76
 		) {
 			if (role == 1000) {
-				// LPO New Leads by Status - Monthly Reporting
+				// Sales Dashboard - LPO New Leads by Status - Monthly Reporting
 				var lpoLeadsListBySalesRepWeeklySearch = search.load({
 					type: "customer",
 					id: "customsearch_leads_reporting_weekly_3_2",
 				});
 			} else {
-				// LPO New Leads by Status - Weekly Reporting
+				// Sales Dashboard - LPO New Leads by Status - Weekly Reporting
 				var lpoLeadsListBySalesRepWeeklySearch = search.load({
 					type: "customer",
 					id: "customsearch_leads_reporting_weekly_4",
@@ -12735,7 +12735,7 @@ define([
 		if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
 			//TODO - Zee Preview
 
-			// Franchisee Generated Leads by Status - Weekly Reporting
+			// Sales Dashboard - Franchisee Generated Leads by Status - Weekly Reporting
 			var zeeLeadsByStatusWeeklySearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_4_2",
@@ -14222,7 +14222,7 @@ define([
 		}
 
 		//TODO - Sales Rep Overview
-		// Website New Leads by Status - Sales Rep Reporting
+		// Sales Dashboard - Leads by Status - Sales Rep Reporting
 		var leadsListBySalesRepStatusSearch = search.load({
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_5",
@@ -15805,7 +15805,7 @@ define([
 
 		//? DATA CAPTURE OVERVIEW
 
-		//Website New Leads by Status - Data Capture Reporting
+		//Sales Dashboard - Leads by Status - Data Capture Reporting
 		var leadsListByDataCaptureStatusSearch = search.load({
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_5_2",
@@ -17429,9 +17429,9 @@ define([
 		);
 
 		//? Data Capture Grouped by Source & Campaign
-		//Website New Leads by Source & Campaign - Data Capture Reporting
+		//Sales Dashboard - Leads by Source & Campaign - Data Capture Reporting
 		console.log(
-			"Website New Leads by Source & Campaign - Data Capture Reporting"
+			"Sales Dashboard - Leads by Source & Campaign - Data Capture Reporting"
 		);
 		console.log("date_signed_up_from: " + date_signed_up_from);
 		console.log("date_signed_up_to: " + date_signed_up_to);
@@ -18246,8 +18246,10 @@ define([
 		);
 
 		//?BY SALES REP ASSIGNED - LEAD ENTERED BY & CAMPAIGN
-		//Website New Leads by Lead Entered - Sales Rep Reporting
-		console.log("Website New Leads by Lead Entered - Sales Rep Reporting");
+		//Sales Dashboard - Leads by Lead Entered - Sales Rep Reporting
+		console.log(
+			"Sales Dashboard - Leads by Lead Entered - Sales Rep Reporting"
+		);
 		console.log("date_signed_up_from: " + date_signed_up_from);
 		console.log("date_signed_up_to: " + date_signed_up_to);
 		var leadsListBySalesRepDataCaptureCampaignSearch = search.load({
@@ -18861,7 +18863,7 @@ define([
 		console.log("date_signed_up_from: " + date_signed_up_from);
 		console.log("date_signed_up_to: " + date_signed_up_to);
 		if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
-			//Franchisee Generated Leads by LAst Assigned - Weekly Reporting
+			//Sales Dashboard - Franchisee Generated Leads by Last Assigned - Weekly Reporting
 			var leadsListByZeeGeneratedLastAssignedSearch = search.load({
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_4__3",
@@ -19351,12 +19353,12 @@ define([
 		if (sales_activity_notes == 1) {
 			var websiteSuspectsLeadsReportingSearch = search.load({
 				type: "customer",
-				id: "customsearch_leads_reporting_5_2_2_2_3", //Website Leads - Suspects - Reporting V3
+				id: "customsearch_leads_reporting_5_2_2_2_3", //Sales Dashboard - Website Leads - Suspects - Reporting V5
 			});
 		} else {
 			var websiteSuspectsLeadsReportingSearch = search.load({
 				type: "customer",
-				id: "customsearch_suspects_reporting_no_activ", //Website Leads - Suspects - Reporting V4 (No Activity)
+				id: "customsearch_suspects_reporting_no_activ", //Sales Dashboard - Leads - Suspects - Reporting V4 (No Activity)
 			});
 		}
 
@@ -22696,7 +22698,7 @@ define([
 
 		var websiteProspectLeadsReportingSearch = search.load({
 			type: "customer",
-			id: "customsearch_leads_reporting_5_2", //Website Leads - Reporting V2
+			id: "customsearch_leads_reporting_5_2", //Sales Dashboard - Leads - Prospects - Reporting V2
 		});
 
 		if (!isNullorEmpty(leadStatus)) {
@@ -25388,7 +25390,7 @@ define([
 			type: "customer",
 			// id: 'customsearch_leads_reporting_4' //Website Leads - Customer Signed - Reporting
 			// id: 'customsearch_leads_reporting_4_2' //Website Leads - Customer Signed - Reporting V2
-			id: "customsearch_leads_reporting_4_2_3", //Website Leads - Customer Signed - Reporting V2
+			id: "customsearch_leads_reporting_4_2_3", //Sales Dashboard - Leads - Customer Signed - Reporting 202408
 		});
 
 		if (!isNullorEmpty(leadStatus)) {
