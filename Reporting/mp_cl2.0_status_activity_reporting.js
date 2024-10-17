@@ -11255,6 +11255,7 @@ define([
 		var oldDaysOpen = null;
 		var oldCancellationReason = null;
 		var oldSource = null;
+		var oldSourceId = null;
 		var oldProdWeeklyUsage = null;
 		var oldAutoSignUp = null;
 		var oldPreviousCarrier = null;
@@ -14975,6 +14976,7 @@ define([
 		var oldDaysOpen = null;
 		var oldCancellationReason = null;
 		var oldSource = null;
+		var oldSourceId = null;
 		var oldProdWeeklyUsage = null;
 		var oldAutoSignUp = null;
 		var oldPreviousCarrier = null;
@@ -15175,6 +15177,10 @@ define([
 				});
 
 				var source = prospectResultSet.getText({
+					name: "leadsource",
+					summary: "GROUP",
+				});
+				var sourceId = prospectResultSet.getValue({
 					name: "leadsource",
 					summary: "GROUP",
 				});
@@ -16472,6 +16478,7 @@ define([
 				oldDaysOpen = daysOpen;
 				oldCancellationReason = cancellationReason;
 				oldSource = source;
+				oldSourceId = sourceId;
 				oldProdWeeklyUsage = productWeeklyUsage;
 				oldAutoSignUp = autoSignUp;
 				oldPreviousCarrier = previousCarrier;
