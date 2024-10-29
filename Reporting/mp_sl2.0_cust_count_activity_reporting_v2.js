@@ -117,7 +117,6 @@ define([
 				title: "Sales Reporting - Status Change Activity",
 			});
 
-
 			var inlineHtml =
 				'<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css"><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA92XGDo8rx11izPYT7z2L-YPMMJ6Ih1s0&callback=initMap&libraries=places"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://blacklabel.github.io/grouped_categories/grouped-categories.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script>';
 			inlineHtml +=
@@ -133,7 +132,7 @@ define([
 				'<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>';
 
 			inlineHtml +=
-				"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}</style>";
+				"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;} td.details-control{background:url('https://www.datatables.net/examples/resources/details_open.png') center center no-repeat;cursor:pointer} tr.shown td.details-control{background:url('https://www.datatables.net/examples/resources/details_close.png') center center no-repeat}</style>";
 
 			//Loading Section that gets displayed when the page is being loaded
 			inlineHtml += loadingSection();
@@ -167,22 +166,27 @@ define([
 				parentLPO,
 				lead_entered_by
 			);
-			inlineHtml += dateFilterSection(
-				monthToDateYYYYMMDD.startDate,
-				monthToDateYYYYMMDD.endDate
-			);
+			if (isNullorEmpty(start_date) && isNullorEmpty(last_date)) {
+				inlineHtml += dateFilterSection(
+					monthToDateYYYYMMDD.startDate,
+					monthToDateYYYYMMDD.endDate
+				);
+			} else {
+				inlineHtml += dateFilterSection(start_date, last_date);
+			}
+			
 			inlineHtml += "</div></div></div></br></br>";
 
 			var tableWebsiteLeads = "";
 
 			tableWebsiteLeads +=
-				"<h2 style='text-align:center;'>Status Change Activity from " +
+				"<h2 class='header_one hide' style='text-align:center;'>Status Change Activity from " +
 				start_date +
 				" to " +
 				last_date +
 				"</br></h2><style>table#websiteLeads {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#websiteLeads th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
 			tableWebsiteLeads +=
-				'<div class="table_section"><table id="websiteLeads" class="table table-responsive display customer tablesorter row-border cell-border compact" style="width: 100%;border: 2px solid #103d39;background-color: #ffffff">';
+				'<div class="table_section_1 hide"><table id="websiteLeads" class="table table-responsive display customer tablesorter row-border cell-border compact" style="width: 100%;border: 2px solid #103d39;background-color: #ffffff">';
 			tableWebsiteLeads +=
 				'<thead style="color: white;background-color: #095C7B;">';
 			tableWebsiteLeads += '<tr class="text-center">';
@@ -194,7 +198,31 @@ define([
 
 			tableWebsiteLeads += '<tbody id="" >';
 
-			tableWebsiteLeads += "</tbody></table>";
+			tableWebsiteLeads +=
+				'</tbody><tfoot><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTALS</th><th></th><th></th><th></th><th></th><th></th>v<th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot></table>';
+
+			inlineHtml += tableWebsiteLeads;
+
+			var tableWebsiteLeads = "";
+
+			tableWebsiteLeads +=
+				"<h2 class='header_one hide' style='text-align:center;'>Status Change Activity - By Sales Rep - from " +
+				start_date +
+				" to " +
+				last_date +
+				"</br></h2><style>table#salesRepLeads {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#salesRepLeads th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
+			tableWebsiteLeads +=
+				'<div class="table_section_1 hide"><table id="salesRepLeads" class="table table-responsive display customer tablesorter row-border cell-border compact" style="width: 100%;border: 2px solid #103d39;background-color: #ffffff">';
+			tableWebsiteLeads +=
+				'<thead style="color: white;background-color: #095C7B;">';
+			tableWebsiteLeads += '<tr class="text-center">';
+
+			tableWebsiteLeads += "</tr>";
+			tableWebsiteLeads += "</thead>";
+			tableWebsiteLeads += '<tbody id="" >';
+
+			tableWebsiteLeads +=
+				'</tbody><tfoot><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan=2>TOTALS</th><th></th><th></th><th></th><th></th>v<th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot></table>';
 
 			inlineHtml += tableWebsiteLeads;
 
@@ -661,7 +689,7 @@ define([
 		inlineHtml += '<div class="col-xs-6 date_from">';
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
-			'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
+			'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY</span>';
 		if (isNullorEmpty(start_date)) {
 			inlineHtml +=
 				'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
