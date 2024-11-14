@@ -1,11 +1,16 @@
 /**
  * @NApiVersion 2.x
  * @NScriptType ClientScript
- * @Author: Ankith Ravindran <ankithravindran>
- * @Date:   2021-11-02T08:24:43+11:00
- * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-24T10:22:37+11:00
+
+ * Author:               Ankith Ravindran
+ * Created on:           Thu Nov 14 2024
+ * Modified on:          Thu Nov 14 2024 13:20:32
+ * SuiteScript Version:   
+ * Description:           
+ *
+ * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
+
 
 define([
 	"N/email",

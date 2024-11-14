@@ -1,11 +1,14 @@
 /**
  * @NApiVersion 2.0
  * @NScriptType Suitelet
- * @Author: Ankith Ravindran <ankithravindran>
- * @Date:   2021-11-01T09:59:04+11:00
- * Module Description: Page that lists customres that are commencing today or have not been onboarded.
- * @Last modified by:   ankithravindran
- * @Last modified time: 2021-11-24T10:22:39+11:00
+
+ * Author:               Ankith Ravindran
+ * Created on:           Thu Nov 14 2024
+ * Modified on:          Thu Nov 14 2024 13:20:42
+ * SuiteScript Version:  2.0 
+ * Description:          List of customers that require ShipMate Onboarding and scheduling of the onboarding task. 
+ *
+ * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
 
 define([
