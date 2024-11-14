@@ -63,25 +63,45 @@ define([
 
 	function sendEmails(onboardingReminderCustomerListSearch) {
 		onboardingReminderCustomerListSearch.run().each(function (searchResult) {
-			var customer_id = searchResult.getValue("internalid");
+			var customerInternalID = searchResult.getValue("internalid");
 			var taskTime = searchResult.getValue({
 				name: "starttime",
 				join: "task",
+			});
+			var taskAssignedToID = searchResult.getValue({
+				name: "assigned",
+				join: "task",
+			});
+			var contactInternalID = searchResult.getValue({
+				name: "internalid",
+				join: "contactPrimary",
+			});
+			var contactFirstName = searchResult.getValue({
+				name: "firstname",
+				join: "contactPrimary",
+			});
+			var contactEmail = searchResult.getValue({
+				name: "email",
+				join: "contactPrimary",
 			});
 
 			var suiteletUrl =
 				"https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=395&deploy=1&compid=1048144&ns-at=AAEJ7tMQgAVHkxJsbXgGwQQm4xn968o7JJ9-Ym7oanOzCSkWO78&rectype=customer&template=229";
 			suiteletUrl +=
 				"&recid=" +
-				customer_id +
+				customerInternalID +
 				"&salesrep=" +
-				sales_rep_id +
+				taskAssignedToID +
 				"&dear=" +
-				"" +
+				contactFirstName +
 				"&contactid=" +
-				contact_id +
+				contactInternalID +
 				"&userid=" +
-				userid;
+				taskAssignedToID +
+				"&tasktime=" +
+				taskTime +
+				"&salesRepName=" +
+				searchResult.getText({ name: "assigned", join: "task" });
 
 			var response = https.get({
 				url: suiteletUrl,
@@ -90,19 +110,24 @@ define([
 			var emailHtml = response.body;
 
 			email.send({
-				author: sales_rep_id,
+				author: taskAssignedToID,
 				body: emailHtml,
-				recipients: contact_email,
+				recipients: contactEmail,
 				subject: "Your ShipMate Onboarding Session is Tomorrow",
-				cc: [sales_rep_id],
-				relatedRecords: { entityId: customer_id },
+				cc: [taskAssignedToID],
+				relatedRecords: { entityId: customerInternalID },
+			});
+
+			log.audit({
+				title: "Email Sent out to:",
+				details: contactEmail + " for customer: " + customerInternalID,
 			});
 
 			return true;
 		});
 
 		log.debug({
-			title: "Emails Sent Out",
+			title: "All Emails Sent Out",
 		});
 	}
 

@@ -11,7 +11,6 @@
  * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
 
-
 define([
 	"N/email",
 	"N/runtime",
@@ -405,7 +404,7 @@ define([
 			destroy: true,
 			data: debtDataSet,
 			pageLength: 1000,
-			order: [],
+			order: [10, "asc"],
 			layout: {
 				topStart: {
 					buttons: [
@@ -489,7 +488,7 @@ define([
 			],
 			columnDefs: [
 				{
-					targets: [],
+					targets: [2, 3, 7, 8, 10],
 					className: "bolded",
 				},
 			],
