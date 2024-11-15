@@ -195,6 +195,12 @@ define([
 		$(".editTaskModalPopUP").click(function () {
 			var taskInternalId = $(this).attr("data-id");
 			var customerInternalID = $(this).attr("date-customerid");
+			console.log("inside modal");
+			console.log("customerInternalID " + customerInternalID);
+			$("#customer_id").val(customerInternalID);
+			$("#task_id").val(taskInternalId);
+			console.log("customerInternalID " + $("#customer_id").val());
+			console.log("taskInternalId " + $("#task_id").val());
 
 			var task_record = record.load({
 				type: "task",
@@ -207,19 +213,17 @@ define([
 			var taskTime = task_record.getValue({
 				fieldId: "starttime",
 			});
+			var taskMessage = task_record.getValue({
+				fieldId: "message",
+			});
 
-			console.log("taskDate " + taskDate);
-			console.log("taskTime " + taskTime);
+			console.log("taskDate " + formatDateToYYYYMMDD(taskDate));
+			console.log("taskTime " + convertTo24HourFormat(taskTime));
 
-			$("#date").val();
-			$("#time").val();
+			$("#date").val(formatDateToYYYYMMDD(taskDate));
+			$("#time").val(convertTo24HourFormat(taskTime));
+			$(".note").val(taskMessage);
 
-			console.log("inside modal");
-			console.log("customerInternalID " + customerInternalID);
-			$("#customer_id").val(customerInternalID);
-			$("#task_id").val(taskInternalId);
-			console.log("customerInternalID " + $("#customer_id").val());
-			console.log("taskInternalId " + $("#task_id").val());
 			$("#myModal").show();
 		});
 
@@ -288,6 +292,8 @@ define([
 			// });
 			// console.log("Start Time! After Format", startTimeVarFormat);
 
+			var existingNote = "";
+
 			if (isNullorEmpty(taskInternalId)) {
 				var task_record = record.create({
 					type: "task",
@@ -296,6 +302,9 @@ define([
 				var task_record = record.load({
 					type: "task",
 					id: taskInternalId,
+				});
+				existingNote = task_record.getValue({
+					fieldId: "message",
 				});
 			}
 			// var task_record = record.create({
@@ -343,10 +352,23 @@ define([
 				fieldId: "title",
 				value: "ShipMate Onboarding - " + companyName,
 			});
-			task_record.setValue({
-				fieldId: "message",
-				value: $(".note").val(),
-			});
+			if (isNullorEmpty(existingNote)) {
+				task_record.setValue({
+					fieldId: "message",
+					value: getCurrentDateTime() + " - " + $(".note").val() + "\n",
+				});
+			} else {
+				task_record.setValue({
+					fieldId: "message",
+					value:
+						existingNote +
+						"\n" +
+						getCurrentDateTime() +
+						" - " +
+						$(".note").val() +
+						"\n",
+				});
+			}
 			task_record.setValue({
 				fieldId: "custevent_organiser",
 				value: runtime.getCurrentUser().id,
@@ -375,6 +397,10 @@ define([
 			task_record.setValue({
 				fieldId: "status",
 				value: "COMPLETE",
+			});
+			task_record.setValue({
+				fieldId: "message",
+				value: getCurrentDateTime() + " - Completed \n",
 			});
 
 			task_record.save({
@@ -495,9 +521,6 @@ define([
 					title: "LINK",
 				},
 				{
-					title: "Customer I nternal ID",
-				},
-				{
 					title: "ID",
 				},
 				{
@@ -524,17 +547,24 @@ define([
 				{
 					title: "Task Status",
 				},
+				{
+					title: "Task Notes",
+				},
 			],
 			columnDefs: [
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [1, 2, 6, 7, 9],
 					className: "bolded",
+				},
+				{
+					targets: [10],
+					className: "col-xs-3",
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[10] == "Not Started") {
+				if (data[9] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[10] == "Completed") {
+				} else if (data[9] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -643,6 +673,7 @@ define([
 				var salesRepAssignedText = "";
 				var taskStatus = "";
 				var taskCount = 0;
+				var taskNotes = "";
 
 				shipMateOnboardingRequiredTaskCreatedSearch
 					.run()
@@ -686,6 +717,11 @@ define([
 								name: "status",
 								join: "task",
 							});
+						taskNotes =
+							shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+								name: "message",
+								join: "task",
+							});
 
 						taskCount++;
 						return true;
@@ -706,6 +742,7 @@ define([
 					salesRepAssigned: salesRepAssigned,
 					salesRepAssignedText: salesRepAssignedText,
 					taskStatus: taskStatus,
+					taskNotes: taskNotes,
 				});
 
 				return true;
@@ -784,7 +821,6 @@ define([
 
 				debtDataSet.push([
 					linkURL,
-					debt_row.custInternalID,
 					customerIDLink,
 					debt_row.custName,
 					debt_row.zeeName,
@@ -794,6 +830,7 @@ define([
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
 					debt_row.taskStatus,
+					debt_row.taskNotes,
 				]);
 			});
 		}
@@ -804,6 +841,88 @@ define([
 		datatable.draw();
 
 		return true;
+	}
+
+	// Function to get current date and time in "dd/mm/yyyy HH:MM" format
+	function getCurrentDateTime() {
+		var now = new Date();
+		var day = customPadStart(now.getDate().toString(), 2, "0");
+		var month = customPadStart((now.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
+		var year = now.getFullYear();
+		var hours = customPadStart((now.getUTCHours() + 11).toString(), 2, "0");
+		var minutes = customPadStart(now.getUTCMinutes().toString(), 2, "0");
+		return day + "/" + month + "/" + year + " " + hours + ":" + minutes;
+	}
+
+	function formatDateToYYYYMMDD(dateStr) {
+		var date = new Date(dateStr);
+		var year = date.getFullYear();
+		var month = customPadStart((date.getMonth() + 1).toString(), 2, "0");
+		var day = customPadStart(date.getDate().toString(), 2, "0");
+		return year + "-" + month + "-" + day;
+	}
+
+	// Function to convert time to 24-hour format
+	function convertTo24HourFormat(dateStr) {
+		var date = new Date(dateStr);
+		var hours = customPadStart((date.getUTCHours() + 11).toString(), 2, "0");
+		var minutes = customPadStart(date.getUTCMinutes().toString(), 2, "0"); // Create a Date object with the given time
+		return hours + ":" + minutes;
+	}
+
+	/**
+	 * @description Pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length. The padding is applied from the start (left) of the current string.
+	 * @param {string} str - The original string to pad.
+	 * @param {number} targetLength - The length of the resulting string once the current string has been padded.
+	 * @param {string} padString - The string to pad the current string with. Defaults to a space if not provided.
+	 * @returns {string} The padded string.
+	 */
+	function customPadStart(str, targetLength, padString) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the target length is less than or equal to the string's length, return the original string
+		if (str.length >= targetLength) {
+			return str;
+		}
+
+		// Calculate the length of the padding needed
+		var paddingLength = targetLength - str.length;
+
+		// Repeat the padString enough times to cover the padding length
+		var repeatedPadString = customRepeat(
+			padString,
+			Math.ceil(paddingLength / padString.length)
+		);
+
+		// Slice the repeated padString to the exact padding length needed and concatenate with the original string
+		return repeatedPadString.slice(0, paddingLength) + str;
+	}
+
+	/**
+	 * @description Repeats the given string a specified number of times.
+	 * @param {string} str - The string to repeat.
+	 * @param {number} count - The number of times to repeat the string.
+	 * @returns {string} The repeated string.
+	 */
+	function customRepeat(str, count) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the count is 0 or less, return an empty string
+		if (count <= 0) {
+			return "";
+		}
+
+		// Initialize the result string
+		var result = "";
+
+		// Repeat the string by concatenating it to the result
+		for (var i = 0; i < count; i++) {
+			result += str;
+		}
+
+		return result;
 	}
 
 	/**
