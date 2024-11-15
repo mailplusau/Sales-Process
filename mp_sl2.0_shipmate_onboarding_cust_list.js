@@ -138,7 +138,7 @@ define([
 		inlineHtml += '<div class="row">';
 
 		inlineHtml +=
-			'<input type="text" id="customer_id" value="" hidden/><div class="col-xs-6 date_section"><div class="input-group"><span class="input-group-addon">SET ONBOARDING DATE <span class="mandatory">*</span></span><input type="date" id="date" class="form-control" /></div></div>';
+			'<input type="text" id="task_id" value="" hidden/><input type="text" id="customer_id" value="" hidden/><div class="col-xs-6 date_section"><div class="input-group"><span class="input-group-addon">SET ONBOARDING DATE <span class="mandatory">*</span></span><input type="date" id="date" class="form-control" /></div></div>';
 		inlineHtml +=
 			'<div class="col-xs-6 time_section"><div class="input-group"><span class="input-group-addon">SET ONBOARDING TIME <span class="mandatory">*</span></span><input type="time" id="time" class="form-control" /></div></div>';
 

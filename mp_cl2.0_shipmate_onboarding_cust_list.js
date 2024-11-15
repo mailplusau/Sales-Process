@@ -192,10 +192,42 @@ define([
 			$("#myModal").show();
 		});
 
+		$(".editTaskModalPopUP").click(function () {
+			var taskInternalId = $(this).attr("data-id");
+			var customerInternalID = $(this).attr("date-customerid");
+
+			var task_record = record.load({
+				type: "task",
+				id: taskInternalId,
+			});
+
+			var taskDate = task_record.getValue({
+				fieldId: "duedate",
+			});
+			var taskTime = task_record.getValue({
+				fieldId: "starttime",
+			});
+
+			console.log("taskDate " + taskDate);
+			console.log("taskTime " + taskTime);
+
+			$("#date").val();
+			$("#time").val();
+
+			console.log("inside modal");
+			console.log("customerInternalID " + customerInternalID);
+			$("#customer_id").val(customerInternalID);
+			$("#task_id").val(taskInternalId);
+			console.log("customerInternalID " + $("#customer_id").val());
+			console.log("taskInternalId " + $("#task_id").val());
+			$("#myModal").show();
+		});
+
 		//Display the modal on click of the link on the table and prefill the fields  based on the customer record
 		$("#scheduleOnboarding").click(function () {
 			console.log("inside modal");
 			var customerInternalID = $("#customer_id").val();
+			var taskInternalId = $("#task_id").val();
 			var date_now = $("#date").val();
 			var time_now = $("#time").val();
 
@@ -256,9 +288,16 @@ define([
 			// });
 			// console.log("Start Time! After Format", startTimeVarFormat);
 
-			var task_record = record.create({
-				type: "task",
-			});
+			if (isNullorEmpty(taskInternalId)) {
+				var task_record = record.create({
+					type: "task",
+				});
+			} else {
+				var task_record = record.load({
+					type: "task",
+					id: taskInternalId,
+				});
+			}
 			// var task_record = record.create({
 			// 	type: "calendarevent",
 			// });
@@ -456,7 +495,7 @@ define([
 					title: "LINK",
 				},
 				{
-					title: "Customer Internal ID",
+					title: "Customer I nternal ID",
 				},
 				{
 					title: "ID",
@@ -494,7 +533,7 @@ define([
 			],
 			rowCallback: function (row, data, index) {
 				if (data[10] == "Not Started") {
-					$("td", row).css("background-color", "#EDBA6CFF");
+					$("td", row).css("background-color", "#FFD07F");
 				} else if (data[10] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
@@ -703,7 +742,11 @@ define([
 					var linkURL = "";
 				} else {
 					var linkURL =
-						'<button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.taskInternalId +
+						'" date-customerid="' +
+						debt_row.custInternalID +
+						'" class="editTaskModalPopUP" style="cursor: pointer !important;color: black;border-radius: 30px;">EDIT TASK</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">COMPLETED</a></button>';
 				}
