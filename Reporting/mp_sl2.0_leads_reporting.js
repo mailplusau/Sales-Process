@@ -97,7 +97,12 @@ define([
 			var showTotal = context.request.parameters.showTotal;
 			var calcprodusage = context.request.parameters.calcprodusage;
 			var sales_activity_notes = context.request.parameters.salesactivitynotes;
+			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
+
+			if (isNullorEmpty(customer_type)) {
+				customer_type = 2
+			}
 
 			//If role is Franchisee
 			if (role == 1000) {
@@ -580,7 +585,8 @@ define([
 				salesrep,
 				campaign,
 				parentLPO,
-				lead_entered_by
+				lead_entered_by,
+				customer_type
 			);
 			inlineHtml += dateFilterSection(
 				start_date,
@@ -947,7 +953,8 @@ define([
 		salesrep,
 		campaign,
 		parentLPO,
-		lead_entered_by
+		lead_entered_by,
+		customer_type
 	) {
 		var inlineHtml =
 			'<div class="form-group container source_salesrep_label_section hide">';
@@ -1210,6 +1217,38 @@ define([
 		inlineHtml += "</select>";
 		inlineHtml += "</div ></div > ";
 		inlineHtml += "</div ></div > ";
+
+		inlineHtml += '<div class="form-group container parent_lpo_label_section">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SECURE CASH CUSTOMER - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container invoice_date_type_div hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml += '<div class="col-xs-12 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="zee_dropdown_text">CUSTOMER TYPE</span>';
+		inlineHtml += '<select id="customer_type" class="form-control">';
+		if (customer_type == "1") {
+			inlineHtml +=
+				'<option value="1" selected>All Customers</option>';
+			inlineHtml += '<option value="2">All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		} else if (customer_type == "2") {
+			inlineHtml += '<option value="1" >All Customers</option>';
+			inlineHtml +=
+				'<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		} else {
+			inlineHtml += '<option value="1">All Customers</option>';
+			inlineHtml +=
+				'<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		}
+
+		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
 
 		// if (campaign == 69) {
 		inlineHtml += '<div class="form-group container parent_lpo_label_section">';

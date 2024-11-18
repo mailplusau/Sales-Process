@@ -82,6 +82,7 @@ define([
 	var lead_entered_by = null;
 	var calcprodusage = null;
 	var sales_activity_notes = null;
+	var customer_type = null;
 	var leadStatus = null;
 
 	var total_months = 14;
@@ -337,6 +338,7 @@ define([
 		invoice_type = $("#invoice_type").val();
 		calcprodusage = $("#calc_prod_usage").val();
 		sales_activity_notes = $("#sales_activity_notes").val();
+		customer_type = $("#customer_type").val();
 		leadStatus = $("#cust_status").val();
 
 		invoice_date_from = $("#invoice_date_from").val();
@@ -413,6 +415,7 @@ define([
 			var lead_entered_by = $("#lead_entered_by").val();
 			calcprodusage = $("#calc_prod_usage").val();
 			sales_activity_notes = $("#sales_activity_notes").val();
+			customer_type = $("#customer_type").val();
 
 			leadStatus = $("#cust_status").val();
 
@@ -495,7 +498,8 @@ define([
 					modified_date_to +
 					"&status=" +
 					leadStatus +
-					"&salesactivitynotes=1";
+					"&salesactivitynotes=1&customertype=" +
+					customer_type;
 			} else {
 				var url =
 					baseURL +
@@ -548,7 +552,9 @@ define([
 					"&status=" +
 					leadStatus +
 					"&salesactivitynotes=" +
-					sales_activity_notes;
+					sales_activity_notes +
+					"&customertype=" +
+					customer_type;
 			}
 
 			window.location.href = url;
@@ -1419,6 +1425,7 @@ define([
 		console.log("date_to:" + date_to);
 		console.log("leadStatus:" + leadStatus);
 		console.log("sales_activity_notes:" + sales_activity_notes);
+		console.log("customer_type:" + customer_type);
 
 		var employee_list_string = currRec.getValue({
 			fieldId: "custpage_employee_list",
@@ -1618,7 +1625,7 @@ define([
 		) {
 			qualifiedLeadCountSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -1627,7 +1634,7 @@ define([
 
 			qualifiedLeadCountSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -1676,6 +1683,57 @@ define([
 					join: "custrecord_sales_customer",
 					operator: search.Operator.ANYOF,
 					values: sales_campaign,
+				})
+			);
+		}
+
+		if (customer_type == "2") {
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
 				})
 			);
 		}
@@ -1937,6 +1995,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			customerCancellationRequestedDateSearch.filters.push(
 				search.createFilter({
@@ -2053,7 +2162,7 @@ define([
 		) {
 			customerCancellationRequestedDateSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -2062,7 +2171,7 @@ define([
 
 			customerCancellationRequestedDateSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -2397,6 +2506,57 @@ define([
 			id: "customsearch_cust_cancellation_request_2",
 		});
 
+		if (customer_type == "2") {
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			customerCancellationRequesteSearch.filters.push(
 				search.createFilter({
@@ -2513,7 +2673,7 @@ define([
 		) {
 			customerCancellationRequesteSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -2522,7 +2682,7 @@ define([
 
 			customerCancellationRequesteSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -3015,6 +3175,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			customerListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -3098,7 +3309,7 @@ define([
 		) {
 			customerListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -3107,7 +3318,7 @@ define([
 
 			customerListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -3736,6 +3947,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			customerTrialListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -3819,7 +4081,7 @@ define([
 		) {
 			customerTrialListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -3828,7 +4090,7 @@ define([
 
 			customerTrialListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -4459,6 +4721,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -4542,7 +4855,7 @@ define([
 		) {
 			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -4551,7 +4864,7 @@ define([
 
 			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -5207,6 +5520,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			prospectWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -5368,7 +5732,7 @@ define([
 		) {
 			prospectWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -5377,7 +5741,7 @@ define([
 
 			prospectWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -5735,6 +6099,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			prospectOpportunityWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -5896,7 +6311,7 @@ define([
 		) {
 			prospectOpportunityWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -5905,7 +6320,7 @@ define([
 
 			prospectOpportunityWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -6134,6 +6549,57 @@ define([
 			id: "customsearch_leads_reporting_weekly_2_21",
 		});
 
+		if (customer_type == "2") {
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			prospectBoxSentWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -6295,7 +6761,7 @@ define([
 		) {
 			prospectBoxSentWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -6304,7 +6770,7 @@ define([
 
 			prospectBoxSentWeeklyReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -6548,6 +7014,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -6720,7 +7237,7 @@ define([
 		) {
 			suspectsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -6729,7 +7246,7 @@ define([
 
 			suspectsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -7035,6 +7552,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsLostBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -7207,7 +7775,7 @@ define([
 		) {
 			suspectsLostBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -7216,7 +7784,7 @@ define([
 
 			suspectsLostBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -7500,6 +8068,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -7672,7 +8291,7 @@ define([
 		) {
 			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -7681,7 +8300,7 @@ define([
 
 			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -7887,6 +8506,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsOOTBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -8059,7 +8729,7 @@ define([
 		) {
 			suspectsOOTBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -8068,7 +8738,7 @@ define([
 
 			suspectsOOTBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -8269,6 +8939,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsQualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -8441,7 +9162,7 @@ define([
 		) {
 			suspectsQualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -8450,7 +9171,7 @@ define([
 
 			suspectsQualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -8657,6 +9378,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -8829,7 +9601,7 @@ define([
 		) {
 			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -8838,7 +9610,7 @@ define([
 
 			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -9039,6 +9811,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsValidatedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -9211,7 +10034,7 @@ define([
 		) {
 			suspectsValidatedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -9220,7 +10043,7 @@ define([
 
 			suspectsValidatedSalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -9427,6 +10250,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -9599,7 +10473,7 @@ define([
 		) {
 			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -9608,7 +10482,7 @@ define([
 
 			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -9851,6 +10725,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -10023,7 +10948,7 @@ define([
 		) {
 			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -10032,7 +10957,7 @@ define([
 
 			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -10244,6 +11169,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			suspectsInContactBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -10416,7 +11392,7 @@ define([
 		) {
 			suspectsInContactBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -10425,7 +11401,7 @@ define([
 
 			suspectsInContactBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -10637,6 +11613,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -10720,7 +11747,7 @@ define([
 		) {
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -10729,7 +11756,7 @@ define([
 
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -12257,6 +13284,57 @@ define([
 				});
 			}
 
+			if (customer_type == "2") {
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
 			if (!isNullorEmpty(leadStatus)) {
 				lpoLeadsListBySalesRepWeeklySearch.filters.push(
 					search.createFilter({
@@ -12340,7 +13418,7 @@ define([
 			) {
 				lpoLeadsListBySalesRepWeeklySearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORAFTER,
 						values: cancelled_start_date,
@@ -12349,7 +13427,7 @@ define([
 
 				lpoLeadsListBySalesRepWeeklySearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORBEFORE,
 						values: cancelled_last_date,
@@ -13747,6 +14825,57 @@ define([
 				id: "customsearch_leads_reporting_weekly_4_2",
 			});
 
+			if (customer_type == "2") {
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
 			if (!isNullorEmpty(leadStatus)) {
 				zeeLeadsByStatusWeeklySearch.filters.push(
 					search.createFilter({
@@ -13830,7 +14959,7 @@ define([
 			) {
 				zeeLeadsByStatusWeeklySearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORAFTER,
 						values: cancelled_start_date,
@@ -13839,7 +14968,7 @@ define([
 
 				zeeLeadsByStatusWeeklySearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORBEFORE,
 						values: cancelled_last_date,
@@ -15280,6 +16409,57 @@ define([
 			id: "customsearch_leads_reporting_weekly_5",
 		});
 
+		if (customer_type == "2") {
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			leadsListBySalesRepStatusSearch.filters.push(
 				search.createFilter({
@@ -15363,7 +16543,7 @@ define([
 		) {
 			leadsListBySalesRepStatusSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -15372,7 +16552,7 @@ define([
 
 			leadsListBySalesRepStatusSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -16909,6 +18089,57 @@ define([
 			id: "customsearch_leads_reporting_weekly_5_2",
 		});
 
+		if (customer_type == "2") {
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			leadsListByDataCaptureStatusSearch.filters.push(
 				search.createFilter({
@@ -16992,7 +18223,7 @@ define([
 		) {
 			leadsListByDataCaptureStatusSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -17001,7 +18232,7 @@ define([
 
 			leadsListByDataCaptureStatusSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -18584,6 +19815,57 @@ define([
 			id: "customsearch_leads_reporting_weekly_5__2",
 		});
 
+		if (customer_type == "2") {
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			leadsListByDataCaptureSourceCampaignSearch.filters.push(
 				search.createFilter({
@@ -18667,7 +19949,7 @@ define([
 		) {
 			leadsListByDataCaptureSourceCampaignSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -18676,7 +19958,7 @@ define([
 
 			leadsListByDataCaptureSourceCampaignSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -19447,6 +20729,57 @@ define([
 			id: "customsearch_leads_reporting_weekly_5_3",
 		});
 
+		if (customer_type == "2") {
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
 				search.createFilter({
@@ -19530,7 +20863,7 @@ define([
 		) {
 			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -19539,7 +20872,7 @@ define([
 
 			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -20105,6 +21438,57 @@ define([
 				id: "customsearch_leads_reporting_weekly_4__3",
 			});
 
+			if (customer_type == "2") {
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
 			if (!isNullorEmpty(leadStatus)) {
 				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
 					search.createFilter({
@@ -20188,7 +21572,7 @@ define([
 			) {
 				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORAFTER,
 						values: cancelled_start_date,
@@ -20197,7 +21581,7 @@ define([
 
 				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
 					search.createFilter({
-						name: "custentity_service_cancelled_on",
+						name: "custentity13",
 						join: null,
 						operator: search.Operator.ONORBEFORE,
 						values: cancelled_last_date,
@@ -20644,6 +22028,57 @@ define([
 			});
 		}
 
+		if (customer_type == "2") {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			websiteSuspectsLeadsReportingSearch.filters.push(
 				search.createFilter({
@@ -20709,7 +22144,6 @@ define([
 			);
 		}
 
-
 		if (
 			!isNullorEmpty(commencement_start_date) &&
 			!isNullorEmpty(commencement_last_date)
@@ -20739,7 +22173,7 @@ define([
 		) {
 			websiteSuspectsLeadsReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -20748,7 +22182,7 @@ define([
 
 			websiteSuspectsLeadsReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -24030,6 +25464,57 @@ define([
 			id: "customsearch_leads_reporting_5_2", //Sales Dashboard - Leads - Prospects - Reporting V2
 		});
 
+		if (customer_type == "2") {
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			websiteProspectLeadsReportingSearch.filters.push(
 				search.createFilter({
@@ -24124,7 +25609,7 @@ define([
 		) {
 			websiteProspectLeadsReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -24133,7 +25618,7 @@ define([
 
 			websiteProspectLeadsReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
@@ -26768,6 +28253,57 @@ define([
 			id: "customsearch_leads_reporting_4_2_3", //Sales Dashboard - Leads - Customer Signed - Reporting 202408
 		});
 
+		if (customer_type == "2") {
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
 		if (!isNullorEmpty(leadStatus)) {
 			websiteCustomersReportingSearch.filters.push(
 				search.createFilter({
@@ -26871,7 +28407,7 @@ define([
 		) {
 			websiteCustomersReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORAFTER,
 					values: cancelled_start_date,
@@ -26880,7 +28416,7 @@ define([
 
 			websiteCustomersReportingSearch.filters.push(
 				search.createFilter({
-					name: "custentity_service_cancelled_on",
+					name: "custentity13",
 					join: null,
 					operator: search.Operator.ONORBEFORE,
 					values: cancelled_last_date,
