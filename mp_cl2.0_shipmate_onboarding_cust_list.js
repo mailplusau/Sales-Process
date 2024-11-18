@@ -112,6 +112,7 @@ define([
 		$(".date_filter_section").addClass("hide");
 		$(".period_dropdown_section").addClass("hide");
 		$(".zee_label_section").removeClass("hide");
+		$(".instruction_div").removeClass("hide");
 		$(".zee_dropdown_section").removeClass("hide");
 		$(".filter_buttons_section").removeClass("hide");
 		$("#customer_benchmark_preview").removeClass("hide");
