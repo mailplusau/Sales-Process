@@ -65,13 +65,13 @@ define([
 
 				var form = ui.createForm({
 					title:
-						"Commencing, Trials and Cancellations on " +
+						"Trials Commencing & Service Commencing on " +
 						todayDateDDMMYYYY +
 						" - Customer List",
 				});
 			} else {
 				var form = ui.createForm({
-					title: "Commencing, Trials and Cancellations - Customer List",
+					title: "Trials Commencing & Service Commencing - Customer List",
 				});
 			}
 
@@ -91,6 +91,9 @@ define([
 
 			inlineHtml +=
 				"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}</style>";
+
+			inlineHtml +=
+				'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br>This page lists down the list of customers that have either their free trial commencing or their services commencing (By default the commencement date will be Today). Please schedule a task to do a call down with the customer, so that the event is added to your NetSuite calender.</br></br><b><u>Action Buttons:</u></b><ul><li><b>SCHEDULE TASK</b>: Button to be clicked to schedule the onboarding call with the customer. This task will be added to your NetSuite Calender and reminder emails will be sent out.</li><li><b>EDIT TASK</b>: Button to be clicked if the onbaording needs to be rescheduled to a different dat or time.</li><li><b>COMPLETED</b>: Button to be clicked once the Onboarding session has been completed with the customer.</li></ul></div></br>';
 
 			form
 				.addField({
@@ -152,48 +155,48 @@ define([
 
 			inlineHtml += "</div></div></div></div>";
 
-			inlineHtml +=
-				'<div class="form-group container signed_up_label_section hide">';
-			inlineHtml += '<div class="row">';
-			inlineHtml +=
-				'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
-			inlineHtml += "</div>";
-			inlineHtml += "</div>";
+			// inlineHtml +=
+			// 	'<div class="form-group container signed_up_label_section hide">';
+			// inlineHtml += '<div class="row">';
+			// inlineHtml +=
+			// 	'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
+			// inlineHtml += "</div>";
+			// inlineHtml += "</div>";
 
-			inlineHtml += '<div class="form-group container signed_up_div hide">';
-			inlineHtml += '<div class="row">';
-			// Date from field
-			inlineHtml += '<div class="col-xs-6 date_from">';
-			inlineHtml += '<div class="input-group">';
-			inlineHtml +=
-				'<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
-			if (isNullorEmpty(cancelled_start_date)) {
-				inlineHtml +=
-					'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
-			} else {
-				inlineHtml +=
-					'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
-					cancelled_start_date +
-					'"/>';
-			}
+			// inlineHtml += '<div class="form-group container signed_up_div hide">';
+			// inlineHtml += '<div class="row">';
+			// // Date from field
+			// inlineHtml += '<div class="col-xs-6 date_from">';
+			// inlineHtml += '<div class="input-group">';
+			// inlineHtml +=
+			// 	'<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
+			// if (isNullorEmpty(cancelled_start_date)) {
+			// 	inlineHtml +=
+			// 		'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
+			// } else {
+			// 	inlineHtml +=
+			// 		'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
+			// 		cancelled_start_date +
+			// 		'"/>';
+			// }
 
-			inlineHtml += "</div></div>";
-			// Date to field
-			inlineHtml += '<div class="col-xs-6 usage_date_to">';
-			inlineHtml += '<div class="input-group">';
-			inlineHtml +=
-				'<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
-			if (isNullorEmpty(cancelled_last_date)) {
-				inlineHtml +=
-					'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
-			} else {
-				inlineHtml +=
-					'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
-					cancelled_last_date +
-					'">';
-			}
+			// inlineHtml += "</div></div>";
+			// // Date to field
+			// inlineHtml += '<div class="col-xs-6 usage_date_to">';
+			// inlineHtml += '<div class="input-group">';
+			// inlineHtml +=
+			// 	'<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
+			// if (isNullorEmpty(cancelled_last_date)) {
+			// 	inlineHtml +=
+			// 		'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
+			// } else {
+			// 	inlineHtml +=
+			// 		'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
+			// 		cancelled_last_date +
+			// 		'">';
+			// }
 
-			inlineHtml += "</div></div></div></div>";
+			// inlineHtml += "</div></div></div></div>";
 
 			inlineHtml +=
 				'<div class="form-group container filter_buttons_section hide">';
@@ -252,7 +255,7 @@ define([
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
 		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
+			'<li role="presentation" class="hide"><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
 
 		inlineHtml += "</ul></div>";
 

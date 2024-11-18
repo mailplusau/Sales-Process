@@ -112,6 +112,7 @@ define([
 		$(".date_filter_section").addClass("hide");
 		$(".period_dropdown_section").addClass("hide");
 		$(".zee_label_section").removeClass("hide");
+		$(".instruction_div").removeClass("hide");
 		$(".zee_dropdown_section").removeClass("hide");
 		$(".filter_buttons_section").removeClass("hide");
 		$("#customer_benchmark_preview").removeClass("hide");
@@ -167,25 +168,28 @@ define([
 		pageLoad();
 
 		$("#applyFilter").click(function () {
-			zee = $("#zee_dropdown").val();
+			// zee = $("#zee_dropdown").val();
 			var commencement_start_date = $("#commencement_date_from").val();
 			var commencement_last_date = $("#commencement_date_to").val();
-			var cancelled_start_date = $("#cancellation_date_from").val();
-			var cancelled_last_date = $("#cancellation_date_to").val();
+			// var cancelled_start_date = $("#cancellation_date_from").val();
+			// var cancelled_last_date = $("#cancellation_date_to").val();
 
 			var url =
 				baseURL +
-				"/app/site/hosting/scriptlet.nl?script=1952&deploy=1&zee=" +
-				zee +
-				"&commence_date_from=" +
+				"/app/site/hosting/scriptlet.nl?script=1952&deploy=1&commence_date_from=" +
 				commencement_start_date +
 				"&commence_date_to=" +
-				commencement_last_date +
-				"&cancel_date_from=" +
-				cancelled_start_date +
-				"&cancel_date_to=" +
-				cancelled_last_date;
+				commencement_last_date;
+			// "&cancel_date_from=" +
+			// cancelled_start_date +
+			// "&cancel_date_to=" +
+			// cancelled_last_date;
 
+			window.location.href = url;
+		});
+
+		$("#clearFilter").click(function () {
+			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1952&deploy=1";
 			window.location.href = url;
 		});
 
