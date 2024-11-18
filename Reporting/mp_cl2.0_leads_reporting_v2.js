@@ -62,6 +62,11 @@ define([
 	var date_signed_up_from = null;
 	var date_signed_up_to = null;
 
+	var commencement_start_date = null;
+	var commencement_last_date = null;
+	var cancelled_start_date = null;
+	var cancelled_last_date = null;
+
 	var date_quote_sent_to = null;
 	var date_quote_sent_from = null;
 
@@ -315,6 +320,15 @@ define([
 		date_quote_sent_to = $("#date_quote_sent_to").val();
 		date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
 
+		commencement_start_date = $("#commencement_date_from").val();
+		commencement_start_date = dateISOToNetsuite(commencement_start_date);
+		commencement_last_date = $("#commencement_date_to").val();
+		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+		cancelled_start_date = $("#cancellation_date_from").val();
+		cancelled_start_date = dateISOToNetsuite(cancelled_start_date);
+		cancelled_last_date = $("#cancellation_date_to").val();
+		cancelled_last_date = dateISOToNetsuite(cancelled_last_date);
+
 		lead_source = $("#lead_source").val();
 		sales_campaign = $("#sales_campaign").val();
 		lead_entered_by = $("#lead_entered_by").val();
@@ -380,6 +394,11 @@ define([
 			var date_signed_up_from = $("#date_signed_up_from").val();
 			var date_signed_up_to = $("#date_signed_up_to").val();
 
+			var commencement_start_date = $("#commencement_date_from").val();
+			var commencement_last_date = $("#commencement_date_to").val();
+			var cancelled_start_date = $("#cancellation_date_from").val();
+			var cancelled_last_date = $("#cancellation_date_to").val();
+
 			var date_quote_sent_from = $("#date_quote_sent_from").val();
 			var date_quote_sent_to = $("#date_quote_sent_to").val();
 
@@ -440,6 +459,14 @@ define([
 					date_signed_up_from +
 					"&date_signed_up_to=" +
 					date_signed_up_to +
+					"&commence_date_from=" +
+					commencement_start_date +
+					"&commence_date_to=" +
+					commencement_last_date +
+					"&cancel_date_from=" +
+					cancelled_start_date +
+					"&cancel_date_to=" +
+					cancelled_last_date +
 					"&source=" +
 					source +
 					"&date_quote_sent_from=" +
@@ -484,6 +511,14 @@ define([
 					date_signed_up_from +
 					"&date_signed_up_to=" +
 					date_signed_up_to +
+					"&commence_date_from=" +
+					commencement_start_date +
+					"&commence_date_to=" +
+					commencement_last_date +
+					"&cancel_date_from=" +
+					cancelled_start_date +
+					"&cancel_date_to=" +
+					cancelled_last_date +
 					"&source=" +
 					source +
 					"&date_quote_sent_from=" +
@@ -1358,6 +1393,11 @@ define([
 		console.log("usage_date_from: " + usage_date_from);
 		console.log("usage_date_to " + usage_date_to);
 
+		console.log("commence_date_from: " + commencement_start_date);
+		console.log("commence_date_to " + commencement_last_date);
+		console.log("cancel_date_from: " + cancelled_start_date);
+		console.log("cancel_date_to " + cancelled_last_date);
+
 		console.log("date_signed_up_from: " + date_signed_up_from);
 		console.log("date_signed_up_to " + date_signed_up_to);
 
@@ -1545,6 +1585,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -1934,6 +2020,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			customerCancellationRequestedDateSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -2348,6 +2480,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			customerCancellationRequesteSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -2887,6 +3065,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			customerListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -3567,6 +3791,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			customerTrialListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(date_quote_sent_from) &&
 			!isNullorEmpty(date_quote_sent_to)
 		) {
@@ -4239,6 +4509,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -5023,6 +5339,52 @@ define([
 			);
 		}
 
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			prospectWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
 		if (!isNullorEmpty(zee_id)) {
 			prospectWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -5505,6 +5867,52 @@ define([
 			);
 		}
 
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			prospectOpportunityWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
 		if (!isNullorEmpty(zee_id)) {
 			prospectOpportunityWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -5854,6 +6262,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			prospectBoxSentWeeklyReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -6233,6 +6687,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -6679,6 +7179,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsLostBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -7098,6 +7644,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsOffPeakPipelineBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -7439,6 +8031,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsOOTBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -7770,6 +8408,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsQualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -8117,6 +8801,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsUnqualifiedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -8448,6 +9178,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsValidatedSalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -8790,6 +9566,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsFollowUpBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -9173,6 +9995,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsNoAnswerBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -9520,6 +10388,52 @@ define([
 		}
 
 		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			suspectsInContactBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (
 			!isNullorEmpty(modified_date_from) &&
 			!isNullorEmpty(modified_date_to)
 		) {
@@ -9773,6 +10687,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -11351,6 +12311,52 @@ define([
 				);
 			}
 
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(cancelled_start_date) &&
+				!isNullorEmpty(cancelled_last_date)
+			) {
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: cancelled_start_date,
+					})
+				);
+
+				lpoLeadsListBySalesRepWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: cancelled_last_date,
+					})
+				);
+			}
+
 			if (!isNullorEmpty(lead_source)) {
 				lpoLeadsListBySalesRepWeeklySearch.filters.push(
 					search.createFilter({
@@ -12791,6 +13797,52 @@ define([
 						join: "CUSTRECORD_CUSTOMER",
 						operator: search.Operator.ONORBEFORE,
 						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(cancelled_start_date) &&
+				!isNullorEmpty(cancelled_last_date)
+			) {
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: cancelled_start_date,
+					})
+				);
+
+				zeeLeadsByStatusWeeklySearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: cancelled_last_date,
 					})
 				);
 			}
@@ -14278,6 +15330,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListBySalesRepStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -15861,6 +16959,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListByDataCaptureStatusSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -17494,6 +18638,52 @@ define([
 			);
 		}
 
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListByDataCaptureSourceCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
 		if (!isNullorEmpty(lead_source)) {
 			leadsListByDataCaptureSourceCampaignSearch.filters.push(
 				search.createFilter({
@@ -18311,6 +19501,52 @@ define([
 			);
 		}
 
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
 		if (!isNullorEmpty(lead_source)) {
 			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
 				search.createFilter({
@@ -18923,6 +20159,52 @@ define([
 				);
 			}
 
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(cancelled_start_date) &&
+				!isNullorEmpty(cancelled_last_date)
+			) {
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: cancelled_start_date,
+					})
+				);
+
+				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+					search.createFilter({
+						name: "custentity_service_cancelled_on",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: cancelled_last_date,
+					})
+				);
+			}
+
 			if (!isNullorEmpty(lead_source)) {
 				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
 					search.createFilter({
@@ -19423,6 +20705,53 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ONORBEFORE,
 					values: date_signed_up_to,
+				})
+			);
+		}
+
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}
@@ -22766,6 +24095,52 @@ define([
 			);
 		}
 
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			websiteProspectLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
 		if (!isNullorEmpty(lead_source)) {
 			websiteProspectLeadsReportingSearch.filters.push(
 				search.createFilter({
@@ -25463,6 +26838,52 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					operator: search.Operator.ANYOF,
 					values: [1, 5, 11],
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			websiteCustomersReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_service_cancelled_on",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
 				})
 			);
 		}

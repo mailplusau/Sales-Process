@@ -65,6 +65,13 @@ define([
 			var modified_start_date = context.request.parameters.modified_date_from;
 			var modified_last_date = context.request.parameters.modified_date_to;
 
+			var commencement_start_date =
+				context.request.parameters.commence_date_from;
+			var commencement_last_date = context.request.parameters.commence_date_to;
+
+			var cancelled_start_date = context.request.parameters.cancel_date_from;
+			var cancelled_last_date = context.request.parameters.cancel_date_to;
+
 			var usage_date_from = context.request.parameters.usage_date_from;
 			var usage_date_to = context.request.parameters.usage_date_to;
 
@@ -164,7 +171,9 @@ define([
 					isNullorEmpty(start_date) &&
 					isNullorEmpty(date_signed_up_from) &&
 					isNullorEmpty(date_quote_sent_from) &&
-					isNullorEmpty(modified_start_date)
+					isNullorEmpty(modified_start_date) &&
+					isNullorEmpty(cancelled_start_date) &&
+					isNullorEmpty(commencement_start_date)
 				) {
 					if (showTotal == "T") {
 						start_date = null;
@@ -216,27 +225,31 @@ define([
 					isNullorEmpty(last_date) &&
 					isNullorEmpty(date_signed_up_to) &&
 					isNullorEmpty(date_quote_sent_to) &&
-					isNullorEmpty(modified_last_date)
+					isNullorEmpty(modified_last_date) &&
+					isNullorEmpty(cancelled_last_date) &&
+					isNullorEmpty(commencement_last_date)
 				) {
 					if (showTotal == "T") {
 						last_date = null;
 						date_signed_up_to = null;
 					} else if (!isNullorEmpty(campaign)) {
-                        if (!isNullorEmpty(campaign)) {
-						if (campaign.indexOf(",") != -1) {
-							var campaignArray = campaign.split(",");
-						} else {
-							var campaignArray = [];
-							campaignArray.push(campaign);
-						}}
+						if (!isNullorEmpty(campaign)) {
+							if (campaign.indexOf(",") != -1) {
+								var campaignArray = campaign.split(",");
+							} else {
+								var campaignArray = [];
+								campaignArray.push(campaign);
+							}
+						}
 
-                        if (!isNullorEmpty(salesrep)) {
-						if (salesrep.indexOf(",") != -1) {
-							var salesRepArray = campaign.split(",");
-						} else {
-							var salesRepArray = [];
-							salesRepArray.push(salesrep);
-						}}
+						if (!isNullorEmpty(salesrep)) {
+							if (salesrep.indexOf(",") != -1) {
+								var salesRepArray = campaign.split(",");
+							} else {
+								var salesRepArray = [];
+								salesRepArray.push(salesrep);
+							}
+						}
 
 						if (
 							campaignArray.indexOf("71") != -1 ||
@@ -584,7 +597,11 @@ define([
 				calcprodusage,
 				modified_start_date,
 				modified_last_date,
-				sales_activity_notes
+				sales_activity_notes,
+				commencement_start_date,
+				commencement_last_date,
+				cancelled_start_date,
+				cancelled_last_date
 			);
 			inlineHtml += "</div></div></div></br></br>";
 			inlineHtml +=
@@ -1291,77 +1308,81 @@ define([
 		calcprodusage,
 		modified_start_date,
 		modified_last_date,
-		sales_activity_notes
+		sales_activity_notes,
+		commencement_start_date,
+		commencement_last_date,
+		cancelled_start_date,
+		cancelled_last_date
 	) {
+		// var inlineHtml =
+		// 	'<div class="form-group container lead_entered_label_section hide">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+
+		// inlineHtml += '<div class="form-group container modified_date_div hide">';
+		// inlineHtml += '<div class="row">';
+
+		// // Last Modified Date from field
+		// inlineHtml += '<div class="col-xs-6 date_from">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
+		// if (isNullorEmpty(modified_start_date)) {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
+		// } else {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' +
+		// 		modified_start_date +
+		// 		'"/>';
+		// }
+
+		// inlineHtml += "</div></div>";
+		// // Last Modified Date to field
+		// inlineHtml += '<div class="col-xs-6 date_to">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
+		// if (isNullorEmpty(modified_last_date)) {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date">';
+		// } else {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' +
+		// 		modified_last_date +
+		// 		'">';
+		// }
+
+		// inlineHtml += "</div></div></div></div>";
+
+		// inlineHtml +=
+		// 	'<div class="form-group container salesactivitynotes_div hide">';
+		// inlineHtml += '<div class="row">';
+
+		// inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
+		// inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+		// inlineHtml += "<option></option>";
+
+		// if (sales_activity_notes == "1") {
+		// 	inlineHtml += '<option value="1" selected>Yes</option>';
+		// 	inlineHtml += '<option value="2">No</option>';
+		// } else if (sales_activity_notes == "2") {
+		// 	inlineHtml += '<option value="1" >Yes</option>';
+		// 	inlineHtml += '<option value="2" selected>No</option>';
+		// } else {
+		// 	inlineHtml += '<option value="1">Yes</option>';
+		// 	inlineHtml += '<option value="2" selected>No</option>';
+		// }
+		// inlineHtml += "</select>";
+		// inlineHtml += "</div></div></div></div>";
+
 		var inlineHtml =
-			'<div class="form-group container lead_entered_label_section hide">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-
-		inlineHtml += '<div class="form-group container modified_date_div hide">';
-		inlineHtml += '<div class="row">';
-
-		// Last Modified Date from field
-		inlineHtml += '<div class="col-xs-6 date_from">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
-		if (isNullorEmpty(modified_start_date)) {
-			inlineHtml +=
-				'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
-		} else {
-			inlineHtml +=
-				'<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' +
-				modified_start_date +
-				'"/>';
-		}
-
-		inlineHtml += "</div></div>";
-		// Last Modified Date to field
-		inlineHtml += '<div class="col-xs-6 date_to">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
-		if (isNullorEmpty(modified_last_date)) {
-			inlineHtml +=
-				'<input id="modified_date_to" class="form-control modified_date_to" type="date">';
-		} else {
-			inlineHtml +=
-				'<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' +
-				modified_last_date +
-				'">';
-		}
-
-		inlineHtml += "</div></div></div></div>";
-
-		inlineHtml +=
-			'<div class="form-group container salesactivitynotes_div hide">';
-		inlineHtml += '<div class="row">';
-
-		inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-		inlineHtml += '<select id="sales_activity_notes" class="form-control">';
-		inlineHtml += "<option></option>";
-
-		if (sales_activity_notes == "1") {
-			inlineHtml += '<option value="1" selected>Yes</option>';
-			inlineHtml += '<option value="2">No</option>';
-		} else if (sales_activity_notes == "2") {
-			inlineHtml += '<option value="1" >Yes</option>';
-			inlineHtml += '<option value="2" selected>No</option>';
-		} else {
-			inlineHtml += '<option value="1">Yes</option>';
-			inlineHtml += '<option value="2" selected>No</option>';
-		}
-		inlineHtml += "</select>";
-		inlineHtml += "</div></div></div></div>";
-
-		inlineHtml +=
 			'<div class="form-group container lead_entered_label_section hide">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
@@ -1485,6 +1506,92 @@ define([
 			inlineHtml +=
 				'<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date" value="' +
 				date_signed_up_to +
+				'">';
+		}
+
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container signed_up_label_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">COMMENCEMENT DATE - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="form-group container signed_up_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
+		if (isNullorEmpty(commencement_start_date)) {
+			inlineHtml +=
+				'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
+				commencement_start_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
+		if (isNullorEmpty(commencement_last_date)) {
+			inlineHtml +=
+				'<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
+				commencement_last_date +
+				'">';
+		}
+
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container signed_up_label_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="form-group container signed_up_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
+		if (isNullorEmpty(cancelled_start_date)) {
+			inlineHtml +=
+				'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
+				cancelled_start_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
+		if (isNullorEmpty(cancelled_last_date)) {
+			inlineHtml +=
+				'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
+				cancelled_last_date +
 				'">';
 		}
 
