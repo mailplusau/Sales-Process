@@ -470,7 +470,10 @@ define([
 			destroy: true,
 			data: debtDataSet,
 			pageLength: 1000,
-			order: [11, "asc"],
+			order: [
+				[11, "asc"],
+				[7, "asc"],
+			],
 			layout: {
 				topStart: {
 					buttons: [
@@ -519,43 +522,43 @@ define([
 			},
 			columns: [
 				{
-					title: "LINK",
+					title: "LINK", //0
 				},
 				{
-					title: "ID",
+					title: "ID", //1
 				},
 				{
-					title: "Company Name",
+					title: "Company Name", //2
 				},
 				{
-					title: "Franchisee",
+					title: "Franchisee", //3
 				},
 				{
-					title: "Email",
+					title: "Email", //4
 				},
 				{
-					title: "Phone Number",
+					title: "Phone Number", //5
 				},
 				{
-					title: "Account Manager",
+					title: "Account Manager", //6
 				},
 				{
-					title: "Commencement Date",
+					title: "Commencement Date", //7
 				},
 				{
-					title: "Task Date",
+					title: "Task Date", //8
 				},
 				{
-					title: "Task Time",
+					title: "Task Time", //9
 				},
 				{
-					title: "Assigned To",
+					title: "Assigned To", //10
 				},
 				{
-					title: "Task Status",
+					title: "Task Status", //11
 				},
 				{
-					title: "Task Notes",
+					title: "Task Notes", //12
 				},
 			],
 			columnDefs: [
