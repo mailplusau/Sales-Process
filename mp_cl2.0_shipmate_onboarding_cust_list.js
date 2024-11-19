@@ -470,7 +470,7 @@ define([
 			destroy: true,
 			data: debtDataSet,
 			pageLength: 1000,
-			order: [10, "asc"],
+			order: [11, "asc"],
 			layout: {
 				topStart: {
 					buttons: [
@@ -537,6 +537,12 @@ define([
 					title: "Phone Number",
 				},
 				{
+					title: "Account Manager",
+				},
+				{
+					title: "Commencement Date",
+				},
+				{
 					title: "Task Date",
 				},
 				{
@@ -558,14 +564,14 @@ define([
 					className: "bolded",
 				},
 				{
-					targets: [10],
+					targets: [2],
 					className: "col-xs-3",
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[9] == "Not Started") {
+				if (data[11] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[9] == "Completed") {
+				} else if (data[11] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -627,30 +633,81 @@ define([
 			.each(function (salesCallUpsellTasksResultSet) {
 				var custInternalID = salesCallUpsellTasksResultSet.getValue({
 					name: "internalid",
+					summary: "GROUP",
 				});
 				var custEntityID = salesCallUpsellTasksResultSet.getValue({
 					name: "entityid",
+					summary: "GROUP",
 				});
 				var custName = salesCallUpsellTasksResultSet.getValue({
 					name: "companyname",
+					summary: "GROUP",
 				});
 				var zeeID = salesCallUpsellTasksResultSet.getValue({
 					name: "partner",
+					summary: "GROUP",
 				});
 				var zeeName = salesCallUpsellTasksResultSet.getText({
 					name: "partner",
+					summary: "GROUP",
 				});
 
 				var email = salesCallUpsellTasksResultSet.getValue({
 					name: "email",
+					summary: "GROUP",
 				});
 				var serviceEmail = salesCallUpsellTasksResultSet.getValue({
 					name: "custentity_email_service",
+					summary: "GROUP",
 				});
 
 				var phone = salesCallUpsellTasksResultSet.getValue({
 					name: "phone",
+					summary: "GROUP",
 				});
+
+				var salesRecordInternalID = salesCallUpsellTasksResultSet.getValue({
+					name: "internalid",
+					join: "CUSTRECORD_SALES_CUSTOMER",
+					summary: "MAX",
+				});
+
+				var salesRecord = record.load({
+					type: "customrecord_sales",
+					id: salesRecordInternalID,
+				});
+				var lastAssigned = salesRecord.getText({
+					fieldId: "custrecord_sales_assigned",
+				});
+
+				var commRegInternalID = salesCallUpsellTasksResultSet.getValue({
+					name: "internalid",
+					join: "CUSTRECORD_CUSTOMER",
+					summary: "MAX",
+				});
+
+				var commRegRecord = record.load({
+					type: "customrecord_commencement_register",
+					id: commRegInternalID,
+				});
+				var dateEffective = commRegRecord.getValue({
+					fieldId: "custrecord_comm_date",
+				});
+
+				console.log("dateEffective", Date(dateEffective));
+
+				var today = new Date(dateEffective);
+				today.setHours(today.getHours() + 17);
+				today.setDate(today.getDate() - 1);
+
+				var year = today.getFullYear();
+				var month = customPadStart((today.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
+				var day = customPadStart(today.getDate().toString(), 2, "0");
+
+				dateEffective = year + "-" + month + "-" + day;
+
+				// console.log("dateEffective", Date(c));
+				// dateEffective = convertDateToYYYYMMDD(dateEffective);
 
 				//Search Name: ShipMate Onboarding Required - Task List
 				var shipMateOnboardingRequiredTaskCreatedSearch = search.load({
@@ -736,6 +793,8 @@ define([
 					zeeName: zeeName,
 					serviceEmail: serviceEmail,
 					phone: phone,
+					lastAssigned: lastAssigned,
+					dateEffective: dateEffective,
 					taskInternalId: taskInternalId,
 					taskTitle: taskTitle,
 					taskDueDate: taskDueDate,
@@ -758,6 +817,13 @@ define([
 		debtDataSet = [];
 		csvSet = [];
 
+		var scheduleTaskIcon =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Schedule Task</title><g id='calendar_add_fill' fill='none'><path d='M24 0v24H0V0zM12.594 23.258l-.012.002-.071.035-.02.004-.014-.004-.071-.036c-.01-.003-.019 0-.024.006l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113-.014.002-.184.093-.01.01-.003.011.018.43.005.012.008.008.201.092c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.003-.011.018-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M7 4a1 1 0 0 1 2 0v1h6V4a1 1 0 1 1 2 0v1h2a2 2 0 0 1 2 2v3H3V7a2 2 0 0 1 2-2h2zm11 10a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1m0-2a3.001 3.001 0 0 0-2.836 2.018 1.9 1.9 0 0 1-1.146 1.146 3.001 3.001 0 0 0-.174 5.605l.174.067c.12.041.236.097.346.164H5a2 2 0 0 1-2-2v-7z'/></g></svg>";
+		var editTaskIcon =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Edit Task</title><g id='schedule_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M16 3a1 1 0 0 1 1 1v1h2a2 2 0 0 1 1.995 1.85L21 7v12a2 2 0 0 1-1.85 1.995L19 21H5a2 2 0 0 1-1.995-1.85L3 19V7a2 2 0 0 1 1.85-1.995L5 5h2V4a1 1 0 0 1 2 0v1h6V4a1 1 0 0 1 1-1m-1.176 6.379-4.242 4.242-1.415-1.414a1 1 0 0 0-1.414 1.414l2.114 2.115a1.01 1.01 0 0 0 1.429 0l4.942-4.943a1 1 0 1 0-1.414-1.414'/></g></svg>";
+		var completeTaskIcon =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
+
 		if (!isNullorEmpty(debt_rows)) {
 			debt_rows.forEach(function (debt_row, index) {
 				// var linkURL =
@@ -775,7 +841,9 @@ define([
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
-						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">SCHEDULE TASK</a></button>';
+						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						scheduleTaskIcon +
+						"</a></button>";
 				} else if (debt_row.taskStatus == "Completed") {
 					var linkURL = "";
 				} else {
@@ -784,9 +852,13 @@ define([
 						debt_row.taskInternalId +
 						'" date-customerid="' +
 						debt_row.custInternalID +
-						'" class="editTaskModalPopUP" style="cursor: pointer !important;color: black;border-radius: 30px;">EDIT TASK</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						'" class="editTaskModalPopUP" style="cursor: pointer !important;color: black;border-radius: 30px;">' +
+						editTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.taskInternalId +
-						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">COMPLETED</a></button>';
+						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						completeTaskIcon +
+						"</a></button>";
 				}
 
 				var customerIDLink =
@@ -827,6 +899,8 @@ define([
 					debt_row.zeeName,
 					debt_row.serviceEmail,
 					debt_row.phone,
+					debt_row.lastAssigned,
+					debt_row.dateEffective,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1231,6 +1305,75 @@ define([
 		}
 		return date_netsuite;
 	}
+
+	/**
+	 * @description Converts a date from "dd/mm/yyyy" format to "yyyy-mm-dd" format.
+	 * @param {string} dateStr - The date string in "dd/mm/yyyy" format.
+	 * @returns {string} The date string in "yyyy-mm-dd" format.
+	 */
+	function convertDateToYYYYMMDD(dateStr) {
+		var parts = dateStr.split("/");
+		var day = parts[0];
+		var month = parts[1];
+		var year = parts[2];
+		return year + "-" + month + "-" + day;
+	}
+
+	/**
+	 * @description Pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length. The padding is applied from the start (left) of the current string.
+	 * @param {string} str - The original string to pad.
+	 * @param {number} targetLength - The length of the resulting string once the current string has been padded.
+	 * @param {string} padString - The string to pad the current string with. Defaults to a space if not provided.
+	 * @returns {string} The padded string.
+	 */
+	function customPadStart(str, targetLength, padString) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the target length is less than or equal to the string's length, return the original string
+		if (str.length >= targetLength) {
+			return str;
+		}
+
+		// Calculate the length of the padding needed
+		var paddingLength = targetLength - str.length;
+
+		// Repeat the padString enough times to cover the padding length
+		var repeatedPadString = customRepeat(
+			padString,
+			Math.ceil(paddingLength / padString.length)
+		);
+
+		// Slice the repeated padString to the exact padding length needed and concatenate with the original string
+		return repeatedPadString.slice(0, paddingLength) + str;
+	}
+
+	/**
+	 * @description Repeats the given string a specified number of times.
+	 * @param {string} str - The string to repeat.
+	 * @param {number} count - The number of times to repeat the string.
+	 * @returns {string} The repeated string.
+	 */
+	function customRepeat(str, count) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the count is 0 or less, return an empty string
+		if (count <= 0) {
+			return "";
+		}
+
+		// Initialize the result string
+		var result = "";
+
+		// Repeat the string by concatenating it to the result
+		for (var i = 0; i < count; i++) {
+			result += str;
+		}
+
+		return result;
+	}
+
 	/**
 	 * [getDate description] - Get the current date
 	 * @return {[String]} [description] - return the string date
