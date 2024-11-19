@@ -64,6 +64,8 @@ define([
 	function sendEmails(onboardingReminderCustomerListSearch) {
 		onboardingReminderCustomerListSearch.run().each(function (searchResult) {
 			var customerInternalID = searchResult.getValue("internalid");
+			var customerID = searchResult.getValue("entityid");
+			var customerCompanyName = searchResult.getValue("companyname");
 			var taskTime = searchResult.getValue({
 				name: "starttime",
 				join: "task",
@@ -82,6 +84,10 @@ define([
 			});
 			var contactEmail = searchResult.getValue({
 				name: "email",
+				join: "contactPrimary",
+			});
+			var contactPhone = searchResult.getValue({
+				name: "phone",
 				join: "contactPrimary",
 			});
 
@@ -116,6 +122,7 @@ define([
 				subject: "Your ShipMate Onboarding Session is Tomorrow",
 				cc: [taskAssignedToID],
 				relatedRecords: { entityId: customerInternalID },
+				replyTo: "liam.pike@mailplus.com.au",
 			});
 
 			log.audit({
@@ -123,12 +130,75 @@ define([
 				details: contactEmail + " for customer: " + customerInternalID,
 			});
 
+			if (isValidAustralianMobileNumber(contactPhone)) {
+				var smsBody =
+					"Get ready for your ShipMate onboarding! For a quick & smooth session tomorrow:\n\n" +
+					"1. Create your ShipMate login if you have not already \n" +
+					"2. Have your Shopify store open if applicable \n" +
+					"3. Have at least 1 unfulfilled Shopify order ready in aplicable \n" +
+					"4. Or at least 1 package ready to go \n" +
+					"5. Set aside 20mins for the call, but we have more time if you need it!  \n\n" +
+					"Need to reschedule? Call/SMS Liam at 0468 796 206 or email liam.pike@mailplus.com.au ";
+
+				var apiResponse = https.post({
+					url: "https://api.twilio.com/2010-04-01/Accounts/ACc4fb93dc175b8f9066ed80bf0caecdb7/Messages.json",
+					body: {
+						Body: smsBody,
+						To: contactPhone,
+						From: "+61488883115",
+					},
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+						Authorization:
+							"Basic U0s0ZTgwNTdiNjZkOGYyMGM0M2ExNGI2Y2E4NmY0MjgwZDo0alpGVDB5aDFWbUxRNWNtVDhoNlNUYkVibGZOTTBhYg==",
+					},
+				});
+
+				var parsedAPIResponseBody = JSON.parse(apiResponse.body);
+				log.debug("parsedAPIResponseBody", parsedAPIResponseBody);
+
+				log.audit({
+					title: "SMS Sent out to:",
+					details: contactPhone + " for customer: " + customerInternalID,
+				});
+			} else {
+				email.send({
+					author: 112209,
+					body:
+						"SMS not sent to: " +
+						contactPhone +
+						" for customer: " +
+						customerID +
+						" - " +
+						customerCompanyName,
+					recipients: ["liam.pike@mailplus.com.au"],
+					subject:
+						"Onboarding Reminder SMS not sent - " +
+						customerID +
+						" - " +
+						customerCompanyName,
+					cc: ["portalsupport@mailplus.com.au"],
+					relatedRecords: { entityId: customerInternalID },
+				});
+			}
+
 			return true;
 		});
 
 		log.debug({
 			title: "All Emails Sent Out",
 		});
+	}
+
+	/**
+	 * @description Checks if the input field contains an Australian mobile number.
+	 * @param {string} phoneNumber - The phone number to validate.
+	 * @returns {boolean} True if the phone number is a valid Australian mobile number, otherwise false.
+	 */
+	function isValidAustralianMobileNumber(phoneNumber) {
+		// Regular expression to match Australian mobile numbers
+		var australianMobileNumberPattern = /^04\d{8}$/;
+		return australianMobileNumberPattern.test(phoneNumber);
 	}
 
 	function isNullorEmpty(strVal) {
