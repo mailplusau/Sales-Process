@@ -6,7 +6,7 @@
  * Created on:           Thu Nov 14 2024
  * Modified on:          Thu Nov 14 2024 13:20:42
  * SuiteScript Version:  2.0 
- * Description:          List of customers that require ShipMate Onboarding and scheduling of the onboarding task. 
+ * Description:          This page shows you customers who are starting their MailPlus journey. This includes those beginning a free trial or starting their paid service.
  *
  * Copyright (c) 2024 MailPlus Pty. Ltd.
  */
