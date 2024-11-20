@@ -924,10 +924,11 @@ define([
 	// Function to get current date and time in "dd/mm/yyyy HH:MM" format
 	function getCurrentDateTime() {
 		var now = new Date();
+		now.setHours(now.getUTCHours() + 11);
 		var day = customPadStart(now.getDate().toString(), 2, "0");
 		var month = customPadStart((now.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
 		var year = now.getFullYear();
-		var hours = customPadStart((now.getUTCHours() + 11).toString(), 2, "0");
+		var hours = customPadStart(now.getUTCHours().toString(), 2, "0");
 		var minutes = customPadStart(now.getUTCMinutes().toString(), 2, "0");
 		return day + "/" + month + "/" + year + " " + hours + ":" + minutes;
 	}

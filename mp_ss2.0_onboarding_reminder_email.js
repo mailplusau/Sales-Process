@@ -132,12 +132,12 @@ define([
 
 			if (isValidAustralianMobileNumber(contactPhone)) {
 				var smsBody =
-					"Get ready for your ShipMate onboarding! For a quick & smooth session tomorrow:\n\n" +
+					"Today: Get ready for your ShipMate onboarding: For a quick & smooth session:\n\n" +
 					"1. Create your ShipMate login if you have not already \n" +
 					"2. Have your Shopify store open if applicable \n" +
-					"3. Have at least 1 unfulfilled Shopify order ready in aplicable \n" +
-					"4. Or at least 1 package ready to go \n" +
-					"5. Set aside 20mins for the call, but we have more time if you need it!  \n\n" +
+					"3. Have at least 1 unfulfilled/item ready  \n" +
+					// "4. Or at least 1 package ready to go \n" +
+					"4. Set aside 30mins for the call, but we have more time if you need it!  \n\n" +
 					"Need to reschedule? Call/SMS Liam at 0468 796 206 or email liam.pike@mailplus.com.au ";
 
 				var apiResponse = https.post({
