@@ -119,7 +119,7 @@ define([
 				author: taskAssignedToID,
 				body: emailHtml,
 				recipients: contactEmail,
-				subject: "Your ShipMate Onboarding Session is Tomorrow",
+				subject: "Today: Your ShipMate Onboarding Session is Soon",
 				cc: [taskAssignedToID],
 				relatedRecords: { entityId: customerInternalID },
 				replyTo: "liam.pike@mailplus.com.au",
