@@ -50,61 +50,12 @@ define([
 
 	var invoiceType = null;
 
-	var no_of_working_days = [];
-	var invoiceTypeServices = [];
-	var invoiceTypeMPEX = [];
-	var invoiceTypeNeoPost = [];
-
-	var customer_count_with_no_mpex_usage = [];
-	var customer_count_with_mpex_usage = [];
-	var customer_count_with_orange_mpex_usage = [];
-	var customer_count_with_white_mpex_usage = [];
-	var customer_count = 0;
-	var uniqueArray = [];
-
-	var total_revenue_per_state = [];
-
-	var month;
-	var weekdays_current_month;
-
-	var total_months = 14;
-
-	var today = new Date();
-	var today_day_in_month = today.getDate();
-	var today_day_in_week = today.getDay();
-	var today_month = today.getMonth() + 1;
-	var today_year = today.getFullYear();
-
-	if (today_day_in_month < 10) {
-		today_day_in_month = "0" + today_day_in_month;
-	}
-
-	if (today_month < 10) {
-		today_month = "0" + today_month;
-	}
-
-	var todayString = today_day_in_month + "/" + today_month + "/" + today_year;
-
-	var current_year_month = today_year + "-" + today_month;
-	var difference_months = total_months - parseInt(today_month);
-
-	function isWeekday(year, month, day) {
-		var day = new Date(year, month, day).getDay();
-		return day != 0 && day != 6;
-	}
-
-	function getWeekdaysInMonth(month, year) {
-		var days = daysInMonth(month, year);
-		var weekdays = 0;
-		for (var i = 0; i < days; i++) {
-			if (isWeekday(year, month, i + 1)) weekdays++;
-		}
-		return weekdays;
-	}
-
-	function daysInMonth(iMonth, iYear) {
-		return 32 - new Date(iYear, iMonth, 32).getDate();
-	}
+	var debtDataSetRequested = [];
+	var debt_set_requested = [];
+	var debtDataSetScheduled = [];
+	var debt_set_scheduled = [];
+	var debtDataSetCompleted = [];
+	var debt_set_completed = [];
 
 	function pageLoad() {
 		$(".range_filter_section").addClass("hide");
@@ -116,6 +67,10 @@ define([
 		$(".zee_dropdown_section").removeClass("hide");
 		$(".filter_buttons_section").removeClass("hide");
 		$("#customer_benchmark_preview").removeClass("hide");
+		$(".tabs_section").removeClass("hide");
+		$(".signed_up_label_section").removeClass("hide");
+		$(".signed_up_div").removeClass("hide");
+		$(".scorecard_percentage").removeClass("hide");
 		$("#customer_benchmark_preview").show();
 
 		$(".loading_section").addClass("hide");
@@ -153,9 +108,6 @@ define([
 		$("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
 		$("#body").css("background-color", "#CFE0CE");
 
-		debtDataSet = [];
-		debt_set = [];
-
 		/**
 		 *  Auto Load Submit Search and Load Results on Page Initialisation
 		 */
@@ -165,11 +117,17 @@ define([
 
 		$("#applyFilter").click(function () {
 			zee = $("#zee_dropdown").val();
+			var commencement_start_date = $("#commencement_date_from").val();
+			var commencement_last_date = $("#commencement_date_to").val();
 
 			var url =
 				baseURL +
 				"/app/site/hosting/scriptlet.nl?script=1948&deploy=1&zee=" +
-				zee;
+				zee +
+				"&commence_date_from=" +
+				commencement_start_date +
+				"&commence_date_to=" +
+				commencement_last_date;
 
 			window.location.href = url;
 		});
@@ -449,26 +407,239 @@ define([
 		});
 	}
 
-	function adhocNewCustomers() {
-		if (isNullorEmpty(invoiceType)) {
-			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1226&deploy=1";
-		} else {
-			var url =
-				baseURL +
-				"/app/site/hosting/scriptlet.nl?script=1226&deploy=1&invoicetype=" +
-				invoiceType;
-		}
-
-		window.location.href = url;
-	}
-
 	//Initialise the DataTable with headers.
 	function submitSearch() {
 		// duringSubmit();
 
-		dataTable = $("#customer_benchmark_preview").DataTable({
+		dataTableRequested = $("#table-requested").DataTable({
 			destroy: true,
-			data: debtDataSet,
+			data: debtDataSetRequested,
+			pageLength: 1000,
+			order: [
+				[11, "asc"],
+				[7, "asc"],
+			],
+			layout: {
+				topStart: {
+					buttons: [
+						{
+							extend: "copy",
+							text: "Copy",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "csv",
+							text: "CSV",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "excel",
+							text: "Excel",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "pdf",
+							text: "PDF",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "print",
+							text: "Print",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+					],
+				},
+			},
+			columns: [
+				{
+					title: "LINK", //0
+				},
+				{
+					title: "ID", //1
+				},
+				{
+					title: "Company Name", //2
+				},
+				{
+					title: "Franchisee", //3
+				},
+				{
+					title: "Email", //4
+				},
+				{
+					title: "Phone Number", //5
+				},
+				{
+					title: "Account Manager", //6
+				},
+				{
+					title: "Commencement Date", //7
+				},
+				{
+					title: "Task Date", //8
+				},
+				{
+					title: "Task Time", //9
+				},
+				{
+					title: "Assigned To", //10
+				},
+				{
+					title: "Task Status", //11
+				},
+				{
+					title: "Task Notes", //12
+				},
+			],
+			columnDefs: [
+				{
+					targets: [1, 2, 6, 7, 9],
+					className: "bolded",
+				},
+				{
+					targets: [2],
+					className: "col-xs-3",
+				},
+			],
+			rowCallback: function (row, data, index) {
+				if (data[11] == "Not Started") {
+					$("td", row).css("background-color", "#FFD07F");
+				} else if (data[11] == "Completed") {
+					$("td", row).css("background-color", "#ADCF9F");
+				}
+			},
+		});
+		dataTableSceduled = $("#table-scheduled").DataTable({
+			destroy: true,
+			data: debtDataSetRequested,
+			pageLength: 1000,
+			order: [
+				[11, "asc"],
+				[7, "asc"],
+			],
+			layout: {
+				topStart: {
+					buttons: [
+						{
+							extend: "copy",
+							text: "Copy",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "csv",
+							text: "CSV",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "excel",
+							text: "Excel",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "pdf",
+							text: "PDF",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "print",
+							text: "Print",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+					],
+				},
+			},
+			columns: [
+				{
+					title: "LINK", //0
+				},
+				{
+					title: "ID", //1
+				},
+				{
+					title: "Company Name", //2
+				},
+				{
+					title: "Franchisee", //3
+				},
+				{
+					title: "Email", //4
+				},
+				{
+					title: "Phone Number", //5
+				},
+				{
+					title: "Account Manager", //6
+				},
+				{
+					title: "Commencement Date", //7
+				},
+				{
+					title: "Task Date", //8
+				},
+				{
+					title: "Task Time", //9
+				},
+				{
+					title: "Assigned To", //10
+				},
+				{
+					title: "Task Status", //11
+				},
+				{
+					title: "Task Notes", //12
+				},
+			],
+			columnDefs: [
+				{
+					targets: [1, 2, 6, 7, 9],
+					className: "bolded",
+				},
+				{
+					targets: [2],
+					className: "col-xs-3",
+				},
+			],
+			rowCallback: function (row, data, index) {
+				if (data[11] == "Not Started") {
+					$("td", row).css("background-color", "#FFD07F");
+				} else if (data[11] == "Completed") {
+					$("td", row).css("background-color", "#ADCF9F");
+				}
+			},
+		});
+		dataTableCompleted = $("#table-completed").DataTable({
+			destroy: true,
+			data: debtDataSetRequested,
 			pageLength: 1000,
 			order: [
 				[11, "asc"],
@@ -583,26 +754,26 @@ define([
 		userId = $("#user_dropdown option:selected").val();
 		zee = $("#zee_dropdown option:selected").val();
 
-		loadOnboardingRequiredCustomerList(zee, userId);
+		commencement_start_date = $("#commencement_date_from").val();
+		commencement_start_date = dateISOToNetsuite(commencement_start_date);
+		commencement_last_date = $("#commencement_date_to").val();
+		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+		loadOnboardingRequiredCustomerList(
+			zee,
+			userId,
+			commencement_start_date,
+			commencement_last_date
+		);
 
 		console.log("Loaded Results");
 	}
 
-	//Function to add the filters and relaod the page
-	function addFilters() {
-		zee = $("#zee_dropdown option:selected").val();
-		userId = $("#user_dropdown option:selected").val();
-
-		var url =
-			baseURL +
-			"/app/site/hosting/scriptlet.nl?script=1376&deploy=1&zee=" +
-			zee +
-			"&user_id=" +
-			userId;
-		window.location.href = url;
-	}
-
-	function loadOnboardingRequiredCustomerList(zee_id, userId) {
+	function loadOnboardingRequiredCustomerList(
+		zee_id,
+		userId,
+		commencement_start_date,
+		commencement_last_date
+	) {
 		//Search Name: ShipMate Onboarding Required - Customer List
 		var shipMateOnboardingRequiredSearch = search.load({
 			type: "customer",
@@ -627,6 +798,29 @@ define([
 					join: "custrecord_customer",
 					operator: search.Operator.IS,
 					values: userId,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			allLeadsReportingDailyPulseCommencementDateSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "custrecord_customer",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			allLeadsReportingDailyPulseCommencementDateSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "custrecord_customer",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
 				})
 			);
 		}
@@ -700,8 +894,7 @@ define([
 				console.log("dateEffective", Date(dateEffective));
 
 				var today = new Date(dateEffective);
-				today.setHours(today.getHours() + 17);
-				today.setDate(today.getDate() - 1);
+				today.setHours(today.getHours() + 11);
 
 				var year = today.getFullYear();
 				var month = customPadStart((today.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
@@ -788,37 +981,85 @@ define([
 						return true;
 					});
 
-				debt_set.push({
-					custInternalID: custInternalID,
-					custEntityID: custEntityID,
-					custName: custName,
-					zeeID: zeeID,
-					zeeName: zeeName,
-					serviceEmail: serviceEmail,
-					phone: phone,
-					lastAssigned: lastAssigned,
-					dateEffective: dateEffective,
-					taskInternalId: taskInternalId,
-					taskTitle: taskTitle,
-					taskDueDate: taskDueDate,
-					taskTime: taskTime,
-					salesRepAssigned: salesRepAssigned,
-					salesRepAssignedText: salesRepAssignedText,
-					taskStatus: taskStatus,
-					taskNotes: taskNotes,
-				});
+				if (taskStatus == "") {
+					debt_set_requested.push({
+						custInternalID: custInternalID,
+						custEntityID: custEntityID,
+						custName: custName,
+						zeeID: zeeID,
+						zeeName: zeeName,
+						serviceEmail: serviceEmail,
+						phone: phone,
+						lastAssigned: lastAssigned,
+						dateEffective: dateEffective,
+						taskInternalId: taskInternalId,
+						taskTitle: taskTitle,
+						taskDueDate: taskDueDate,
+						taskTime: taskTime,
+						salesRepAssigned: salesRepAssigned,
+						salesRepAssignedText: salesRepAssignedText,
+						taskStatus: taskStatus,
+						taskNotes: taskNotes,
+					});
+				} else if (taskStatus == "Not Started") {
+					debt_set_scheduled.push({
+						custInternalID: custInternalID,
+						custEntityID: custEntityID,
+						custName: custName,
+						zeeID: zeeID,
+						zeeName: zeeName,
+						serviceEmail: serviceEmail,
+						phone: phone,
+						lastAssigned: lastAssigned,
+						dateEffective: dateEffective,
+						taskInternalId: taskInternalId,
+						taskTitle: taskTitle,
+						taskDueDate: taskDueDate,
+						taskTime: taskTime,
+						salesRepAssigned: salesRepAssigned,
+						salesRepAssignedText: salesRepAssignedText,
+						taskStatus: taskStatus,
+						taskNotes: taskNotes,
+					});
+				} else if (taskStatus == "Completed") {
+					debt_set_completed.push({
+						custInternalID: custInternalID,
+						custEntityID: custEntityID,
+						custName: custName,
+						zeeID: zeeID,
+						zeeName: zeeName,
+						serviceEmail: serviceEmail,
+						phone: phone,
+						lastAssigned: lastAssigned,
+						dateEffective: dateEffective,
+						taskInternalId: taskInternalId,
+						taskTitle: taskTitle,
+						taskDueDate: taskDueDate,
+						taskTime: taskTime,
+						salesRepAssigned: salesRepAssigned,
+						salesRepAssignedText: salesRepAssignedText,
+						taskStatus: taskStatus,
+						taskNotes: taskNotes,
+					});
+				}
 
 				return true;
 			});
-		console.log(debt_set);
+		console.log("debt_set_requested:" + debt_set_requested);
+		console.log("debt_set_scheduled:" + debt_set_scheduled);
+		console.log("debt_set_completed:" + debt_set_completed);
 
-		loadDatatable(debt_set);
-		debt_set = [];
+		loadDatatable(debt_set_requested, debt_set_scheduled, debt_set_completed);
 	}
 
-	function loadDatatable(debt_rows) {
-		debtDataSet = [];
-		csvSet = [];
+	function loadDatatable(
+		debt_set_requested,
+		debt_set_scheduled,
+		debt_set_completed
+	) {
+		debtDataSetRequested = [];
+		debtDataSetScheduled = [];
+		debtDataSetCompleted = [];
 
 		var scheduleTaskIcon =
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Schedule Task</title><g id='calendar_add_fill' fill='none'><path d='M24 0v24H0V0zM12.594 23.258l-.012.002-.071.035-.02.004-.014-.004-.071-.036c-.01-.003-.019 0-.024.006l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113-.014.002-.184.093-.01.01-.003.011.018.43.005.012.008.008.201.092c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.003-.011.018-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M7 4a1 1 0 0 1 2 0v1h6V4a1 1 0 1 1 2 0v1h2a2 2 0 0 1 2 2v3H3V7a2 2 0 0 1 2-2h2zm11 10a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1m0-2a3.001 3.001 0 0 0-2.836 2.018 1.9 1.9 0 0 1-1.146 1.146 3.001 3.001 0 0 0-.174 5.605l.174.067c.12.041.236.097.346.164H5a2 2 0 0 1-2-2v-7z'/></g></svg>";
@@ -827,8 +1068,8 @@ define([
 		var completeTaskIcon =
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
 
-		if (!isNullorEmpty(debt_rows)) {
-			debt_rows.forEach(function (debt_row, index) {
+		if (!isNullorEmpty(debt_set_requested)) {
+			debt_set_requested.forEach(function (debt_row, index) {
 				// var linkURL =
 				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
 				//     debt_row.taskInternalId +
@@ -895,7 +1136,7 @@ define([
 				//     type: format.Type.DATE
 				// });
 
-				debtDataSet.push([
+				debtDataSetRequested.push([
 					linkURL,
 					customerIDLink,
 					debt_row.custName,
@@ -913,10 +1154,274 @@ define([
 			});
 		}
 
-		var datatable = $("#customer_benchmark_preview").DataTable();
-		datatable.clear();
-		datatable.rows.add(debtDataSet);
-		datatable.draw();
+		var datatableRequested = $("#table-requested").DataTable();
+		datatableRequested.clear();
+		datatableRequested.rows.add(debtDataSetRequested);
+		datatableRequested.draw();
+
+		if (!isNullorEmpty(debt_set_scheduled)) {
+			debt_set_scheduled.forEach(function (debt_row, index) {
+				// var linkURL =
+				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+				//     debt_row.custInternalID +
+				//     '" target="_blank">SEND EMAIL</a></button>';
+
+				if (debt_row.taskStatus == "") {
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						scheduleTaskIcon +
+						"</a></button>";
+				} else if (debt_row.taskStatus == "Completed") {
+					var linkURL = "";
+				} else {
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.taskInternalId +
+						'" date-customerid="' +
+						debt_row.custInternalID +
+						'" class="editTaskModalPopUP" style="cursor: pointer !important;color: black;border-radius: 30px;">' +
+						editTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.taskInternalId +
+						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						completeTaskIcon +
+						"</a></button>";
+				}
+
+				var customerIDLink =
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					debt_row.custInternalID +
+					'&whence=" target="_blank"><b>' +
+					debt_row.custEntityID +
+					"</b></a>";
+
+				// var commDateSplit = debt_row.commDate.split('/');
+				// var signUpDateSplit = debt_row.signUpDate.split('/');
+				// var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+				//     commDateSplit[0]);
+				// var commDateParsed = format.parse({
+				//     value: commDate,
+				//     type: format.Type.DATE
+				// });
+				// var commDateFormatted = format.format({
+				//     value: commDate,
+				//     type: format.Type.DATE
+				// });
+
+				// var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
+				//     1, signUpDateSplit[0]);
+				// var signUpDateParsed = format.parse({
+				//     value: signUpDate,
+				//     type: format.Type.DATE
+				// });
+				// var signUpDateFormatted = format.format({
+				//     value: signUpDate,
+				//     type: format.Type.DATE
+				// });
+
+				debtDataSetScheduled.push([
+					linkURL,
+					customerIDLink,
+					debt_row.custName,
+					debt_row.zeeName,
+					debt_row.serviceEmail,
+					debt_row.phone,
+					debt_row.lastAssigned,
+					debt_row.dateEffective,
+					debt_row.taskDueDate,
+					debt_row.taskTime,
+					debt_row.salesRepAssignedText,
+					debt_row.taskStatus,
+					debt_row.taskNotes,
+				]);
+			});
+		}
+
+		var dataTableSceduled = $("#table-scheduled").DataTable();
+		dataTableSceduled.clear();
+		dataTableSceduled.rows.add(debtDataSetScheduled);
+		dataTableSceduled.draw();
+
+		if (!isNullorEmpty(debt_set_completed)) {
+			debt_set_completed.forEach(function (debt_row, index) {
+				// var linkURL =
+				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
+				//     debt_row.taskInternalId +
+				//     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
+				//     debt_row.custInternalID +
+				//     '" target="_blank">SEND EMAIL</a></button>';
+
+				if (debt_row.taskStatus == "") {
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						scheduleTaskIcon +
+						"</a></button>";
+				} else if (debt_row.taskStatus == "Completed") {
+					var linkURL = "";
+				} else {
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.taskInternalId +
+						'" date-customerid="' +
+						debt_row.custInternalID +
+						'" class="editTaskModalPopUP" style="cursor: pointer !important;color: black;border-radius: 30px;">' +
+						editTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.taskInternalId +
+						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						completeTaskIcon +
+						"</a></button>";
+				}
+
+				var customerIDLink =
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					debt_row.custInternalID +
+					'&whence=" target="_blank"><b>' +
+					debt_row.custEntityID +
+					"</b></a>";
+
+				// var commDateSplit = debt_row.commDate.split('/');
+				// var signUpDateSplit = debt_row.signUpDate.split('/');
+				// var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
+				//     commDateSplit[0]);
+				// var commDateParsed = format.parse({
+				//     value: commDate,
+				//     type: format.Type.DATE
+				// });
+				// var commDateFormatted = format.format({
+				//     value: commDate,
+				//     type: format.Type.DATE
+				// });
+
+				// var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
+				//     1, signUpDateSplit[0]);
+				// var signUpDateParsed = format.parse({
+				//     value: signUpDate,
+				//     type: format.Type.DATE
+				// });
+				// var signUpDateFormatted = format.format({
+				//     value: signUpDate,
+				//     type: format.Type.DATE
+				// });
+
+				debtDataSetCompleted.push([
+					linkURL,
+					customerIDLink,
+					debt_row.custName,
+					debt_row.zeeName,
+					debt_row.serviceEmail,
+					debt_row.phone,
+					debt_row.lastAssigned,
+					debt_row.dateEffective,
+					debt_row.taskDueDate,
+					debt_row.taskTime,
+					debt_row.salesRepAssignedText,
+					debt_row.taskStatus,
+					debt_row.taskNotes,
+				]);
+			});
+		}
+
+		var dataTableCompleted = $("#table-completed").DataTable();
+		dataTableCompleted.clear();
+		dataTableCompleted.rows.add(debtDataSetCompleted);
+		dataTableCompleted.draw();
+
+		// Create the chart
+		Highcharts.chart("container-progress", {
+			chart: {
+				type: "pie",
+				backgroundColor: "#CFE0CE",
+			},
+			title: {
+				text: "",
+			},
+			accessibility: {
+				announceNewData: {
+					enabled: true,
+				},
+				point: {
+					valueSuffix: "",
+				},
+			},
+
+			plotOptions: {
+				series: {
+					allowPointSelect: true,
+					cursor: "pointer",
+					dataLabels: [
+						{
+							enabled: true,
+							distance: 20,
+							style: {
+								fontSize: "1em",
+								textOutline: "none",
+								opacity: 0.7,
+							},
+						},
+						{
+							enabled: true,
+							distance: -40,
+							format: "{point.y:.0f}",
+							style: {
+								fontSize: "1em",
+								textOutline: "none",
+								opacity: 0.7,
+							},
+						},
+					],
+				},
+			},
+
+			tooltip: {
+				valueSuffix: "",
+				style: {
+					fontSize: "1em",
+				},
+			},
+
+			series: [
+				{
+					name: "Leads",
+					colorByPoint: true,
+					data: [
+						{
+							name: "Completed",
+							y: debt_set_completed.length,
+							sliced: true,
+							selected: true,
+							color: "#5cb3b0",
+						},
+						{
+							name: "Scheduled",
+							y: debt_set_scheduled.length,
+							sliced: false,
+							color: "#FEBE8C",
+						},
+						{
+							name: "Requested",
+							y: debt_set_requested.length,
+							sliced: false,
+							color: "#F5F0F0FF",
+						},
+					],
+				},
+			],
+		});
 
 		return true;
 	}
@@ -1004,76 +1509,7 @@ define([
 		return result;
 	}
 
-	/**
-	 * Load the string stored in the hidden field 'custpage_table_csv'.
-	 * Converts it to a CSV file.
-	 * Creates a hidden link to download the file and triggers the click of the link.
-	 */
-	function downloadCsv() {
-		var today = new Date();
-		today = formatDate(today);
-		var val1 = currentRecord.get();
-		var csv = val1.getValue({
-			fieldId: "custpage_table_csv",
-		});
-		today = replaceAll(today);
-		var a = document.createElement("a");
-		document.body.appendChild(a);
-		a.style = "display: none";
-		var content_type = "text/csv";
-		var csvFile = new Blob([csv], {
-			type: content_type,
-		});
-		var url = window.URL.createObjectURL(csvFile);
-		var filename = "MPEX New Customer List_" + today + ".csv";
-		a.href = url;
-		a.download = filename;
-		a.click();
-		window.URL.revokeObjectURL(url);
-	}
-
 	function saveRecord() {}
-
-	/**
-	 * Create the CSV and store it in the hidden field 'custpage_table_csv' as a string.
-	 * @param {Array} ordersDataSet The `billsDataSet` created in `loadDatatable()`.
-	 */
-	function saveCsv(ordersDataSet) {
-		var sep = "sep=;";
-		var headers = [
-			"Customer Internal ID",
-			"Customer Entity ID",
-			"Customer Name",
-			"Franchisee",
-			"Sign Up Date",
-			"Commencement Date",
-			"Sales Rep",
-			"Expected Weekly Usage",
-			"Online Expected Weekly Usage",
-			"No. of Weeks Used",
-			"Total No. of Weeks (since Commencement)",
-			"Avg Weekly Usage",
-			"Sorting",
-			"MPEX Customer",
-		];
-		headers = headers.join(";"); // .join(', ')
-
-		var csv = sep + "\n" + headers + "\n";
-
-		ordersDataSet.forEach(function (row) {
-			row = row.join(";");
-			csv += row;
-			csv += "\n";
-		});
-
-		var val1 = currentRecord.get();
-		val1.setValue({
-			fieldId: "custpage_table_csv",
-			value: csv,
-		});
-
-		return true;
-	}
 
 	function formatDate(testDate) {
 		console.log("testDate: " + testDate);
@@ -1403,8 +1839,5 @@ define([
 	return {
 		pageInit: pageInit,
 		saveRecord: saveRecord,
-		adhocNewCustomers: adhocNewCustomers,
-		downloadCsv: downloadCsv,
-		addFilters: addFilters,
 	};
 });

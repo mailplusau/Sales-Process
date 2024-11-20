@@ -38,6 +38,10 @@ define([
 			zee = context.request.parameters.zee;
 			userId = context.request.parameters.user_id;
 
+			var commencement_start_date =
+				context.request.parameters.commence_date_from;
+			var commencement_last_date = context.request.parameters.commence_date_to;
+
 			if (isNullorEmpty(userId)) {
 				userId = null;
 			}
@@ -97,6 +101,49 @@ define([
 			inlineHtml += franchiseeDropdownSection(context);
 
 			inlineHtml +=
+				'<div class="form-group container signed_up_label_section hide">';
+			inlineHtml += '<div class="row">';
+			inlineHtml +=
+				'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">COMMENCEMENT DATE - FILTER</span></h4></div>';
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
+			inlineHtml += '<div class="form-group container signed_up_div hide">';
+			inlineHtml += '<div class="row">';
+			// Date from field
+			inlineHtml += '<div class="col-xs-6 date_from">';
+			inlineHtml += '<div class="input-group">';
+			inlineHtml +=
+				'<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
+			if (isNullorEmpty(commencement_start_date)) {
+				inlineHtml +=
+					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+			} else {
+				inlineHtml +=
+					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
+					commencement_start_date +
+					'"/>';
+			}
+
+			inlineHtml += "</div></div>";
+			// Date to field
+			inlineHtml += '<div class="col-xs-6 usage_date_to">';
+			inlineHtml += '<div class="input-group">';
+			inlineHtml +=
+				'<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
+			if (isNullorEmpty(commencement_last_date)) {
+				inlineHtml +=
+					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+			} else {
+				inlineHtml +=
+					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
+					commencement_last_date +
+					'">';
+			}
+
+			inlineHtml += "</div></div></div></div>";
+
+			inlineHtml +=
 				'<div class="form-group container filter_buttons_section hide">';
 			inlineHtml += '<div class="row">';
 			inlineHtml += '<div class="col-xs-2"></div>';
@@ -110,7 +157,23 @@ define([
 			inlineHtml += "</div>";
 
 			inlineHtml += '<div id="container"></div>';
-			inlineHtml += dataTable();
+			inlineHtml += spacing();
+			inlineHtml +=
+				'<div class="form-group container scorecard_percentage hide" style="">';
+			inlineHtml += '<div class="row">';
+			inlineHtml += '<div class="col-xs-12">';
+			inlineHtml += '<article class="card">';
+			inlineHtml +=
+				'<h2 style="text-align:center;">ShipMate Onboarding Report</h2>';
+			inlineHtml +=
+				'<small style="text-align:center;font-size: 12px;"></small>';
+			inlineHtml += '<div id="container-progress" style="height: 300px"></div>';
+			inlineHtml += "</article>";
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+			inlineHtml += spacing();
+			inlineHtml += tabsSection();
 
 			//Button to reload the page when the filters have been selected
 			// form.addButton({
@@ -176,22 +239,70 @@ define([
 		return inlineHtml;
 	}
 
+	function tabsSection() {
+		var inlineHtml = '<div class="tabs_section hide">';
+
+		// Tabs headers
+		inlineHtml +=
+			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		inlineHtml +=
+			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		inlineHtml += "</style>";
+
+		inlineHtml +=
+			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+		inlineHtml +=
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#requested" style="border-radius: 30px"><b>REQUESTED</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#scheduled" style="border-radius: 30px"><b>SCHEDULED</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#completed" style="border-radius: 30px"><b>COMPLETED</b></a></li>';
+
+		inlineHtml += "</ul></div>";
+
+		inlineHtml += '<div class="tab-content">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane active" id="requested">';
+		inlineHtml += dataTable("requested");
+		inlineHtml += "</div>";
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="scheduled">';
+		inlineHtml += dataTable("scheduled");
+		inlineHtml += "</div>";
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="completed">';
+		inlineHtml += dataTable("completed");
+		inlineHtml += "</div>";
+		inlineHtml += "</div></div>";
+
+		return inlineHtml;
+	}
+
 	/**
 	 * The table that will display the differents invoices linked to the franchisee and the time period.
 	 * @return  {String}    inlineHtml
 	 */
-	function dataTable() {
+	function dataTable(tableName) {
 		var inlineHtml =
-			"<style>table#customer_benchmark_preview {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#customer_benchmark_preview th{text-align: center;vertical-align: middle;}table#customer_benchmark_preview td{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
+			"<style>table#table-" +
+			tableName +
+			" {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#table-" +
+			tableName +
+			" th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
 		inlineHtml +=
-			'<table id="customer_benchmark_preview" class="table table-responsive table-striped customer tablesorter hide" style="width: 100%;border: 2px solid #103d39;background-color: #ffffff"">';
+			'<table id="table-' +
+			tableName +
+			'" class="table table-responsive table-striped tablesorter" style="width: 100%;border: 2px solid #103d39;background-color: #ffffff"">';
 		inlineHtml += '<thead style="color: white;background-color: #095C7B;">';
 		inlineHtml += '<tr class="text-center">';
 		inlineHtml += "</tr>";
 		inlineHtml += "</thead>";
 
 		inlineHtml +=
-			'<tbody id="result_customer_benchmark" class="result-customer_benchmark"></tbody>';
+			'<tbody id="result_' +
+			tableName +
+			'" class="result-' +
+			tableName +
+			'"></tbody>';
 
 		inlineHtml += "</table>";
 		return inlineHtml;
