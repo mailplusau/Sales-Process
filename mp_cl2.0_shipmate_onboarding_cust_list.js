@@ -132,6 +132,12 @@ define([
 			window.location.href = url;
 		});
 
+		$("#clearFilter").click(function () {
+			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1948&deploy=1";
+
+			window.location.href = url;
+		});
+
 		/**
 		 *  Click for Instructions Section Collapse
 		 */
@@ -591,6 +597,10 @@ define([
 					targets: [3],
 					className: "col-xs-3",
 				},
+				{
+					targets: [1],
+					className: "col-xs-1",
+				},
 			],
 			rowCallback: function (row, data, index) {
 				if (data[12] == "Not Started") {
@@ -719,6 +729,10 @@ define([
 					targets: [3],
 					className: "col-xs-3",
 				},
+				{
+					targets: [1],
+					className: "col-xs-1 tableContentAlignCenter",
+				},
 			],
 			rowCallback: function (row, data, index) {
 				if (data[12] == "Not Started") {
@@ -845,7 +859,7 @@ define([
 				},
 				{
 					targets: [3],
-					className: "col-xs-3",
+					className: "col-xs-3 tableContentAlignCenter",
 				},
 			],
 			rowCallback: function (row, data, index) {
@@ -1343,7 +1357,11 @@ define([
 					var linkURL = "";
 				} else {
 					var linkURL =
-						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="createUserNote" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						notesTask +
+						'</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.taskInternalId +
 						'" date-customerid="' +
 						debt_row.custInternalID +
