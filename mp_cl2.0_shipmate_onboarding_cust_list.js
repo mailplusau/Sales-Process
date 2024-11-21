@@ -151,6 +151,15 @@ define([
 			$("#myModal").show();
 		});
 
+		$(".createUserNote").click(function () {
+			var customerInternalID = $(this).attr("data-id");
+			console.log("inside modal");
+			console.log("customerInternalID " + customerInternalID);
+			$("#customer_id").val(customerInternalID);
+			console.log("customerInternalID " + $("#customer_id").val());
+			$("#myModalUserNote").show();
+		});
+
 		$(".editTaskModalPopUP").click(function () {
 			var taskInternalId = $(this).attr("data-id");
 			var customerInternalID = $(this).attr("date-customerid");
@@ -344,6 +353,58 @@ define([
 			window.location.href = url;
 		});
 
+		$("#createNote").click(function () {
+			console.log("inside create note modal");
+			var customerInternalID = $("#customer_id").val();
+
+			console.log(customerInternalID);
+
+			var userNoteRecord = record.create({
+				type: record.Type.NOTE,
+				isDynamic: true,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "entity",
+				value: parseInt(customerInternalID),
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "title",
+				value: "ShipMate Onboarding - Notes",
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "direction",
+				value: 1,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "notetype",
+				value: 7,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "author",
+				value: runtime.getCurrentUser().id,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "notedate",
+				value: getDateStoreNS(),
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "note",
+				value: getCurrentDateTime() + " - " + $(".userNote").val() + "\n",
+			});
+
+			var userNoteRecordId = userNoteRecord.save();
+
+			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1948&deploy=1";
+			window.location.href = url;
+		});
+
 		$(".onboardingCompleted").click(function () {
 			var taskInternalId = $(this).attr("data-id");
 			console.log(taskInternalId);
@@ -372,6 +433,7 @@ define([
 		//On click of close icon in the modal
 		$(".close").click(function () {
 			$("#myModal").hide();
+			$("#myModalUserNote").hide();
 		});
 
 		//Update the customer record on click of the button in the modal
@@ -467,63 +529,78 @@ define([
 			},
 			columns: [
 				{
-					title: "LINK", //0
+					title: "User Notes",
+					className: "dt-control tableContentAlignCenter",
+					orderable: false,
+					data: null,
+					defaultContent: "",
+				}, //0
+				{
+					title: "LINK", //1
 				},
 				{
-					title: "ID", //1
+					title: "ID", //2
 				},
 				{
-					title: "Company Name", //2
+					title: "Company Name", //3
 				},
 				{
-					title: "Franchisee", //3
+					title: "Franchisee", //4
 				},
 				{
-					title: "Email", //4
+					title: "Email", //5
 				},
 				{
-					title: "Phone Number", //5
+					title: "Phone Number", //6
 				},
 				{
-					title: "Account Manager", //6
+					title: "Account Manager", //7
 				},
 				{
-					title: "Commencement Date", //7
+					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //8
+					title: "Task Date", //9
 				},
 				{
-					title: "Task Time", //9
+					title: "Task Time", //10
 				},
 				{
-					title: "Assigned To", //10
+					title: "Assigned To", //11
 				},
 				{
-					title: "Task Status", //11
+					title: "Task Status", //12
 				},
 				{
-					title: "Task Notes", //12
+					title: "Task Notes", //13
+				},
+				{
+					title: "Child Table", //14
 				},
 			],
 			columnDefs: [
 				{
-					targets: [1, 2, 6, 7, 9],
+					targets: [14],
+					visible: false,
+				},
+				{
+					targets: [2, 3, 7, 8, 10],
 					className: "bolded",
 				},
 				{
-					targets: [2],
+					targets: [3],
 					className: "col-xs-3",
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[11] == "Not Started") {
+				if (data[12] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[11] == "Completed") {
+				} else if (data[12] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
 		});
+
 		dataTableSceduled = $("#table-scheduled").DataTable({
 			destroy: true,
 			data: debtDataSetRequested,
@@ -580,63 +657,78 @@ define([
 			},
 			columns: [
 				{
-					title: "LINK", //0
+					title: "User Notes",
+					className: "dt-control tableContentAlignCenter",
+					orderable: false,
+					data: null,
+					defaultContent: "",
+				}, //0
+				{
+					title: "LINK", //1
 				},
 				{
-					title: "ID", //1
+					title: "ID", //2
 				},
 				{
-					title: "Company Name", //2
+					title: "Company Name", //3
 				},
 				{
-					title: "Franchisee", //3
+					title: "Franchisee", //4
 				},
 				{
-					title: "Email", //4
+					title: "Email", //5
 				},
 				{
-					title: "Phone Number", //5
+					title: "Phone Number", //6
 				},
 				{
-					title: "Account Manager", //6
+					title: "Account Manager", //7
 				},
 				{
-					title: "Commencement Date", //7
+					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //8
+					title: "Task Date", //9
 				},
 				{
-					title: "Task Time", //9
+					title: "Task Time", //10
 				},
 				{
-					title: "Assigned To", //10
+					title: "Assigned To", //11
 				},
 				{
-					title: "Task Status", //11
+					title: "Task Status", //12
 				},
 				{
-					title: "Task Notes", //12
+					title: "Task Notes", //13
+				},
+				{
+					title: "Child Table", //14
 				},
 			],
 			columnDefs: [
 				{
-					targets: [1, 2, 6, 7, 9],
+					targets: [14],
+					visible: false,
+				},
+				{
+					targets: [2, 3, 7, 8, 10],
 					className: "bolded",
 				},
 				{
-					targets: [2],
+					targets: [3],
 					className: "col-xs-3",
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[11] == "Not Started") {
+				if (data[12] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[11] == "Completed") {
+				} else if (data[12] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
 		});
+
 		dataTableCompleted = $("#table-completed").DataTable({
 			destroy: true,
 			data: debtDataSetRequested,
@@ -693,59 +785,73 @@ define([
 			},
 			columns: [
 				{
-					title: "LINK", //0
+					title: "User Notes",
+					className: "dt-control tableContentAlignCenter",
+					orderable: false,
+					data: null,
+					defaultContent: "",
+				}, //0
+				{
+					title: "LINK", //1
 				},
 				{
-					title: "ID", //1
+					title: "ID", //2
 				},
 				{
-					title: "Company Name", //2
+					title: "Company Name", //3
 				},
 				{
-					title: "Franchisee", //3
+					title: "Franchisee", //4
 				},
 				{
-					title: "Email", //4
+					title: "Email", //5
 				},
 				{
-					title: "Phone Number", //5
+					title: "Phone Number", //6
 				},
 				{
-					title: "Account Manager", //6
+					title: "Account Manager", //7
 				},
 				{
-					title: "Commencement Date", //7
+					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //8
+					title: "Task Date", //9
 				},
 				{
-					title: "Task Time", //9
+					title: "Task Time", //10
 				},
 				{
-					title: "Assigned To", //10
+					title: "Assigned To", //11
 				},
 				{
-					title: "Task Status", //11
+					title: "Task Status", //12
 				},
 				{
-					title: "Task Notes", //12
+					title: "Task Notes", //13
+				},
+				{
+					title: "Child Table", //14
 				},
 			],
 			columnDefs: [
 				{
-					targets: [1, 2, 6, 7, 9],
+					targets: [14],
+					visible: false,
+				},
+				{
+					targets: [2, 3, 7, 8, 10],
 					className: "bolded",
 				},
 				{
-					targets: [2],
+					targets: [3],
 					className: "col-xs-3",
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[11] == "Not Started") {
+				if (data[12] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[11] == "Completed") {
+				} else if (data[12] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -758,6 +864,7 @@ define([
 		commencement_start_date = dateISOToNetsuite(commencement_start_date);
 		commencement_last_date = $("#commencement_date_to").val();
 		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+
 		loadOnboardingRequiredCustomerList(
 			zee,
 			userId,
@@ -806,7 +913,7 @@ define([
 			!isNullorEmpty(commencement_start_date) &&
 			!isNullorEmpty(commencement_last_date)
 		) {
-			allLeadsReportingDailyPulseCommencementDateSearch.filters.push(
+			shipMateOnboardingRequiredSearch.filters.push(
 				search.createFilter({
 					name: "custrecord_comm_date",
 					join: "custrecord_customer",
@@ -815,7 +922,7 @@ define([
 				})
 			);
 
-			allLeadsReportingDailyPulseCommencementDateSearch.filters.push(
+			shipMateOnboardingRequiredSearch.filters.push(
 				search.createFilter({
 					name: "custrecord_comm_date",
 					join: "custrecord_customer",
@@ -950,6 +1057,9 @@ define([
 								name: "duedate",
 								join: "task",
 							});
+						console.log("taskDueDate", taskDueDate);
+						taskDueDate = convertDateToYYYYMMDD(taskDueDate);
+
 						taskTime =
 							shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
 								name: "starttime",
@@ -1067,32 +1177,33 @@ define([
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Edit Task</title><g id='schedule_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M16 3a1 1 0 0 1 1 1v1h2a2 2 0 0 1 1.995 1.85L21 7v12a2 2 0 0 1-1.85 1.995L19 21H5a2 2 0 0 1-1.995-1.85L3 19V7a2 2 0 0 1 1.85-1.995L5 5h2V4a1 1 0 0 1 2 0v1h6V4a1 1 0 0 1 1-1m-1.176 6.379-4.242 4.242-1.415-1.414a1 1 0 0 0-1.414 1.414l2.114 2.115a1.01 1.01 0 0 0 1.429 0l4.942-4.943a1 1 0 1 0-1.414-1.414'/></g></svg>";
 		var completeTaskIcon =
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
+		var notesTask =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Create User Note</title><g id='notebook_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M8 2v19H6c-1.054 0-2-.95-2-2V4c0-1.054.95-2 2-2zm9 0c1.598 0 3 1.3 3 3v13c0 1.7-1.4 3-3 3h-7V2z'/></g></svg>";
+
+		var childCustomerUserNotes = [];
 
 		if (!isNullorEmpty(debt_set_requested)) {
 			debt_set_requested.forEach(function (debt_row, index) {
-				// var linkURL =
-				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
-				//     debt_row.custInternalID +
-				//     '" target="_blank">SEND EMAIL</a></button>';
-
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						scheduleTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="createUserNote" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						notesTask +
 						"</a></button>";
 				} else if (debt_row.taskStatus == "Completed") {
 					var linkURL = "";
 				} else {
 					var linkURL =
-						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="createUserNote" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						notesTask +
+						'</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.taskInternalId +
 						'" date-customerid="' +
 						debt_row.custInternalID +
@@ -1112,31 +1223,56 @@ define([
 					debt_row.custEntityID +
 					"</b></a>";
 
-				// var commDateSplit = debt_row.commDate.split('/');
-				// var signUpDateSplit = debt_row.signUpDate.split('/');
-				// var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-				//     commDateSplit[0]);
-				// var commDateParsed = format.parse({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
-				// var commDateFormatted = format.format({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
+				//Search Name: User Notes - Signed Customers
+				var customerSignedUserNotesSearch = search.load({
+					type: "customer",
+					id: "customsearch_user_notes_signed_customers",
+				});
+				customerSignedUserNotesSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: null,
+						operator: search.Operator.IS,
+						values: debt_row.custInternalID,
+					})
+				);
+				customerSignedUserNotesSearch
+					.run()
+					.each(function (customerSignedUserNotesSearchResultSet) {
+						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "notedate",
+								join: "userNotes",
+							}
+						);
+						var userNotesAuthor =
+							customerSignedUserNotesSearchResultSet.getText({
+								name: "author",
+								join: "userNotes",
+							});
+						var userNotesTitle =
+							customerSignedUserNotesSearchResultSet.getValue({
+								name: "title",
+								join: "userNotes",
+							});
+						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "note",
+								join: "userNotes",
+							}
+						);
 
-				// var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
-				//     1, signUpDateSplit[0]);
-				// var signUpDateParsed = format.parse({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
-				// var signUpDateFormatted = format.format({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
+						childCustomerUserNotes.push({
+							userNotesDate: userNotesDate,
+							userNotesAuthor: userNotesAuthor,
+							userNotesTitle: userNotesTitle,
+							userNotesNote: userNotesNote,
+						});
+						return true;
+					});
 
 				debtDataSetRequested.push([
+					"",
 					linkURL,
 					customerIDLink,
 					debt_row.custName,
@@ -1150,6 +1286,7 @@ define([
 					debt_row.salesRepAssignedText,
 					debt_row.taskStatus,
 					debt_row.taskNotes,
+					childCustomerUserNotes,
 				]);
 			});
 		}
@@ -1159,19 +1296,42 @@ define([
 		datatableRequested.rows.add(debtDataSetRequested);
 		datatableRequested.draw();
 
+		console.log("datatableRequested", datatableRequested);
+		console.log("childCustomerUserNotes", childCustomerUserNotes);
+
+		datatableRequested.rows().every(function () {
+			// this.child(format(this.data())).show();
+			this.child(createChildUserNotes(this)); // Add Child Tables
+			this.child.hide(); // Hide Child Tables on Open
+		});
+
+		$("#table-requested tbody").on("click", "td.dt-control", function () {
+			var tr = $(this).closest("tr");
+			var row = datatableRequested.row(tr);
+
+			if (row.child.isShown()) {
+				// This row is already open - close it
+				destroyChild(row);
+				tr.removeClass("shown");
+				tr.removeClass("parent");
+
+				$(".expand-button").addClass("btn-primary");
+				$(".expand-button").removeClass("btn-light");
+			} else {
+				// Open this row
+				row.child.show();
+				tr.addClass("shown");
+				tr.addClass("parent");
+
+				$(".expand-button").removeClass("btn-primary");
+				$(".expand-button").addClass("btn-light");
+			}
+		});
+
+		var childCustomerUserNotes = [];
+
 		if (!isNullorEmpty(debt_set_scheduled)) {
 			debt_set_scheduled.forEach(function (debt_row, index) {
-				// var linkURL =
-				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
-				//     debt_row.custInternalID +
-				//     '" target="_blank">SEND EMAIL</a></button>';
-
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1203,31 +1363,56 @@ define([
 					debt_row.custEntityID +
 					"</b></a>";
 
-				// var commDateSplit = debt_row.commDate.split('/');
-				// var signUpDateSplit = debt_row.signUpDate.split('/');
-				// var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-				//     commDateSplit[0]);
-				// var commDateParsed = format.parse({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
-				// var commDateFormatted = format.format({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
+				//Search Name: User Notes - Signed Customers
+				var customerSignedUserNotesSearch = search.load({
+					type: "customer",
+					id: "customsearch_user_notes_signed_customers",
+				});
+				customerSignedUserNotesSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: null,
+						operator: search.Operator.IS,
+						values: debt_row.custInternalID,
+					})
+				);
+				customerSignedUserNotesSearch
+					.run()
+					.each(function (customerSignedUserNotesSearchResultSet) {
+						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "notedate",
+								join: "userNotes",
+							}
+						);
+						var userNotesAuthor =
+							customerSignedUserNotesSearchResultSet.getText({
+								name: "author",
+								join: "userNotes",
+							});
+						var userNotesTitle =
+							customerSignedUserNotesSearchResultSet.getValue({
+								name: "title",
+								join: "userNotes",
+							});
+						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "note",
+								join: "userNotes",
+							}
+						);
 
-				// var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
-				//     1, signUpDateSplit[0]);
-				// var signUpDateParsed = format.parse({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
-				// var signUpDateFormatted = format.format({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
+						childCustomerUserNotes.push({
+							userNotesDate: userNotesDate,
+							userNotesAuthor: userNotesAuthor,
+							userNotesTitle: userNotesTitle,
+							userNotesNote: userNotesNote,
+						});
+						return true;
+					});
 
 				debtDataSetScheduled.push([
+					"",
 					linkURL,
 					customerIDLink,
 					debt_row.custName,
@@ -1241,6 +1426,7 @@ define([
 					debt_row.salesRepAssignedText,
 					debt_row.taskStatus,
 					debt_row.taskNotes,
+					childCustomerUserNotes,
 				]);
 			});
 		}
@@ -1250,19 +1436,42 @@ define([
 		dataTableSceduled.rows.add(debtDataSetScheduled);
 		dataTableSceduled.draw();
 
+		console.log("dataTableSceduled", dataTableSceduled);
+		console.log("childCustomerUserNotes", childCustomerUserNotes);
+
+		dataTableSceduled.rows().every(function () {
+			// this.child(format(this.data())).show();
+			this.child(createChildUserNotes(this)); // Add Child Tables
+			this.child.hide(); // Hide Child Tables on Open
+		});
+
+		$("#table-scheduled tbody").on("click", "td.dt-control", function () {
+			var tr = $(this).closest("tr");
+			var row = dataTableSceduled.row(tr);
+
+			if (row.child.isShown()) {
+				// This row is already open - close it
+				destroyChild(row);
+				tr.removeClass("shown");
+				tr.removeClass("parent");
+
+				$(".expand-button").addClass("btn-primary");
+				$(".expand-button").removeClass("btn-light");
+			} else {
+				// Open this row
+				row.child.show();
+				tr.addClass("shown");
+				tr.addClass("parent");
+
+				$(".expand-button").removeClass("btn-primary");
+				$(".expand-button").addClass("btn-light");
+			}
+		});
+
+		var childCustomerUserNotes = [];
+
 		if (!isNullorEmpty(debt_set_completed)) {
 			debt_set_completed.forEach(function (debt_row, index) {
-				// var linkURL =
-				//     '<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" class="" style="cursor: pointer !important;color: white;">SCHEDULE DATE/TIME</a></button> <button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="noanswer" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">NO ANSWER</a></button> <button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;"><a data-id="' +
-				//     debt_row.taskInternalId +
-				//     '" data-type="completed" class="2WeekCallCompletedModalPopUP" style="cursor: pointer !important;color: white;">COMPLETED</a></button>  </br> <button class="form-control btn btn-xs" style="background-color: #0f3d39;cursor: not-allowed !important;width: fit-content;"><a style="color:white;" href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=744&deploy=1&compid=1048144&custid=' +
-				//     debt_row.custInternalID +
-				//     '" target="_blank">SEND EMAIL</a></button>';
-
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1294,31 +1503,56 @@ define([
 					debt_row.custEntityID +
 					"</b></a>";
 
-				// var commDateSplit = debt_row.commDate.split('/');
-				// var signUpDateSplit = debt_row.signUpDate.split('/');
-				// var commDate = new Date(commDateSplit[2], commDateSplit[1] - 1,
-				//     commDateSplit[0]);
-				// var commDateParsed = format.parse({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
-				// var commDateFormatted = format.format({
-				//     value: commDate,
-				//     type: format.Type.DATE
-				// });
+				//Search Name: User Notes - Signed Customers
+				var customerSignedUserNotesSearch = search.load({
+					type: "customer",
+					id: "customsearch_user_notes_signed_customers",
+				});
+				customerSignedUserNotesSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: null,
+						operator: search.Operator.IS,
+						values: debt_row.custInternalID,
+					})
+				);
+				customerSignedUserNotesSearch
+					.run()
+					.each(function (customerSignedUserNotesSearchResultSet) {
+						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "notedate",
+								join: "userNotes",
+							}
+						);
+						var userNotesAuthor =
+							customerSignedUserNotesSearchResultSet.getText({
+								name: "author",
+								join: "userNotes",
+							});
+						var userNotesTitle =
+							customerSignedUserNotesSearchResultSet.getValue({
+								name: "title",
+								join: "userNotes",
+							});
+						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+							{
+								name: "note",
+								join: "userNotes",
+							}
+						);
 
-				// var signUpDate = new Date(signUpDateSplit[2], signUpDateSplit[1] -
-				//     1, signUpDateSplit[0]);
-				// var signUpDateParsed = format.parse({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
-				// var signUpDateFormatted = format.format({
-				//     value: signUpDate,
-				//     type: format.Type.DATE
-				// });
+						childCustomerUserNotes.push({
+							userNotesDate: userNotesDate,
+							userNotesAuthor: userNotesAuthor,
+							userNotesTitle: userNotesTitle,
+							userNotesNote: userNotesNote,
+						});
+						return true;
+					});
 
 				debtDataSetCompleted.push([
+					"",
 					linkURL,
 					customerIDLink,
 					debt_row.custName,
@@ -1332,6 +1566,7 @@ define([
 					debt_row.salesRepAssignedText,
 					debt_row.taskStatus,
 					debt_row.taskNotes,
+					childCustomerUserNotes,
 				]);
 			});
 		}
@@ -1340,6 +1575,38 @@ define([
 		dataTableCompleted.clear();
 		dataTableCompleted.rows.add(debtDataSetCompleted);
 		dataTableCompleted.draw();
+
+		console.log("dataTableCompleted", dataTableCompleted);
+		console.log("childCustomerUserNotes", childCustomerUserNotes);
+
+		dataTableCompleted.rows().every(function () {
+			// this.child(format(this.data())).show();
+			this.child(createChildUserNotes(this)); // Add Child Tables
+			this.child.hide(); // Hide Child Tables on Open
+		});
+
+		$("#table-completed tbody").on("click", "td.dt-control", function () {
+			var tr = $(this).closest("tr");
+			var row = dataTableCompleted.row(tr);
+
+			if (row.child.isShown()) {
+				// This row is already open - close it
+				destroyChild(row);
+				tr.removeClass("shown");
+				tr.removeClass("parent");
+
+				$(".expand-button").addClass("btn-primary");
+				$(".expand-button").removeClass("btn-light");
+			} else {
+				// Open this row
+				row.child.show();
+				tr.addClass("shown");
+				tr.addClass("parent");
+
+				$(".expand-button").removeClass("btn-primary");
+				$(".expand-button").addClass("btn-light");
+			}
+		});
 
 		// Create the chart
 		Highcharts.chart("container-progress", {
@@ -1424,6 +1691,54 @@ define([
 		});
 
 		return true;
+	}
+
+	function createChildUserNotes(row) {
+		// This is the table we'll convert into a DataTable
+		var table = $('<table class="display" width="50%"/>');
+		var childSet = [];
+
+		row.data()[14].forEach(function (el) {
+			if (!isNullorEmpty(el)) {
+				childSet.push([
+					el.userNotesDate,
+					el.userNotesAuthor,
+					el.userNotesTitle,
+					el.userNotesNote,
+				]);
+			}
+		});
+		// Display it the child row
+		row.child(table).show();
+
+		// Initialise as a DataTable
+		var usersTable = table.DataTable({
+			bPaginate: true,
+			bLengthChange: false,
+			bFilter: true,
+			bInfo: false,
+			bAutoWidth: false,
+			data: childSet,
+			pageLength: 5,
+			order: [0, "desc"],
+			columns: [
+				{ title: "DATE" }, //0
+				{ title: "AUTHOR" }, //1
+				{ title: "TITLE" }, //2
+				{ title: "NOTE" }, //3
+			],
+			columnDefs: [
+				{
+					targets: [3],
+					className: "col-xs-3",
+				},
+			],
+			rowCallback: function (row, data) {},
+		});
+	}
+	function destroyChild(row) {
+		// And then hide the row
+		row.child.hide();
 	}
 
 	// Function to get current date and time in "dd/mm/yyyy HH:MM" format
@@ -1525,209 +1840,21 @@ define([
 		return string.split("/").join("-");
 	}
 
-	function stateIDPublicHolidaysRecord(state) {
-		switch (state) {
-			case 1:
-				return 1; //NSW
-				break;
-			case 2:
-				return 6; //QLD
-				break;
-			case 3:
-				return 5; //VIC
-				break;
-			case 4:
-				return 3; //SA
-				break;
-			case 5:
-				return 7; //TAS
-				break;
-			case 6:
-				return 4; //ACT
-				break;
-			case 7:
-				return 2; //WA
-				break;
-			case 8:
-				return 8; //NT
-				break;
-			default:
-				return null;
-				break;
-		}
-	}
-
-	function stateID(state) {
-		state = state.toUpperCase();
-		switch (state) {
-			case "ACT":
-				return 6;
-				break;
-			case "NSW":
-				return 1;
-				break;
-			case "NT":
-				return 8;
-				break;
-			case "QLD":
-				return 2;
-				break;
-			case "SA":
-				return 4;
-				break;
-			case "TAS":
-				return 5;
-				break;
-			case "VIC":
-				return 3;
-				break;
-			case "WA":
-				return 7;
-				break;
-			default:
-				return 0;
-				break;
-		}
-	}
-	/**
-	 * Sets the values of `date_from` and `date_to` based on the selected option in the '#period_dropdown'.
-	 */
-	function selectDate() {
-		var period_selected = $("#period_dropdown option:selected").val();
-		var today = new Date();
-		var today_day_in_month = today.getDate();
-		var today_day_in_week = today.getDay();
-		var today_month = today.getMonth();
-		var today_year = today.getFullYear();
-
-		var today_date = new Date(
-			Date.UTC(today_year, today_month, today_day_in_month)
-		);
-
-		switch (period_selected) {
-			case "this_week":
-				// This method changes the variable "today" and sets it on the previous monday
-				if (today_day_in_week == 0) {
-					var monday = new Date(
-						Date.UTC(today_year, today_month, today_day_in_month - 6)
-					);
-				} else {
-					var monday = new Date(
-						Date.UTC(
-							today_year,
-							today_month,
-							today_day_in_month - today_day_in_week + 1
-						)
-					);
-				}
-				var date_from = monday.toISOString().split("T")[0];
-				var date_to = today_date.toISOString().split("T")[0];
-				break;
-
-			case "last_week":
-				var today_day_in_month = today.getDate();
-				var today_day_in_week = today.getDay();
-				// This method changes the variable "today" and sets it on the previous monday
-				if (today_day_in_week == 0) {
-					var previous_sunday = new Date(
-						Date.UTC(today_year, today_month, today_day_in_month - 7)
-					);
-				} else {
-					var previous_sunday = new Date(
-						Date.UTC(
-							today_year,
-							today_month,
-							today_day_in_month - today_day_in_week
-						)
-					);
-				}
-
-				var previous_sunday_year = previous_sunday.getFullYear();
-				var previous_sunday_month = previous_sunday.getMonth();
-				var previous_sunday_day_in_month = previous_sunday.getDate();
-
-				var monday_before_sunday = new Date(
-					Date.UTC(
-						previous_sunday_year,
-						previous_sunday_month,
-						previous_sunday_day_in_month - 6
-					)
-				);
-
-				var date_from = monday_before_sunday.toISOString().split("T")[0];
-				var date_to = previous_sunday.toISOString().split("T")[0];
-				break;
-
-			case "this_month":
-				var first_day_month = new Date(Date.UTC(today_year, today_month));
-				var date_from = first_day_month.toISOString().split("T")[0];
-				var date_to = today_date.toISOString().split("T")[0];
-				break;
-
-			case "last_month":
-				var first_day_previous_month = new Date(
-					Date.UTC(today_year, today_month - 1)
-				);
-				var last_day_previous_month = new Date(
-					Date.UTC(today_year, today_month, 0)
-				);
-				var date_from = first_day_previous_month.toISOString().split("T")[0];
-				var date_to = last_day_previous_month.toISOString().split("T")[0];
-				break;
-
-			case "full_year":
-				var first_day_in_year = new Date(Date.UTC(today_year, 0));
-				var date_from = first_day_in_year.toISOString().split("T")[0];
-				var date_to = today_date.toISOString().split("T")[0];
-				break;
-
-			case "financial_year":
-				if (today_month >= 6) {
-					var first_july = new Date(Date.UTC(today_year, 6));
-				} else {
-					var first_july = new Date(Date.UTC(today_year - 1, 6));
-				}
-				var date_from = first_july.toISOString().split("T")[0];
-				var date_to = today_date.toISOString().split("T")[0];
-				break;
-
-			default:
-				var date_from = "";
-				var date_to = "";
-				break;
-		}
-		$("#date_from").val(date_from);
-		$("#date_to").val(date_to);
-	}
-
-	function formatAMPM() {
+	function getDateStoreNS() {
 		var date = new Date();
-		var hours = date.getHours();
-		var minutes = date.getMinutes();
-		var ampm = hours >= 12 ? "pm" : "am";
-		hours = hours % 12;
-		hours = hours ? hours : 12; // the hour '0' should be '12'
-		minutes = minutes < 10 ? "0" + minutes : minutes;
-		var strTime = hours + ":" + minutes + " " + ampm;
-		return strTime;
+		// if (date.getHours() > 6) {
+		//     date.setDate(date.getDate() + 1);
+		// }
+
+		format.format({
+			value: date,
+			type: format.Type.DATE,
+			timezone: format.Timezone.AUSTRALIA_SYDNEY,
+		});
+
+		return date;
 	}
-	/**
-	 * @param   {Number} x
-	 * @returns {String} The same number, formatted in Australian dollars.
-	 */
-	function financial(x) {
-		if (typeof x == "string") {
-			x = parseFloat(x);
-		}
-		if (isNullorEmpty(x) || isNaN(x)) {
-			return "$0.00";
-		} else {
-			return x.toLocaleString("en-AU", {
-				style: "currency",
-				currency: "AUD",
-			});
-		}
-	}
+
 	/**
 	 * Used to pass the values of `date_from` and `date_to` between the scripts and to Netsuite for the records and the search.
 	 * @param   {String} date_iso       "2020-06-01"
