@@ -566,31 +566,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -603,9 +615,9 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
+				} else if (data[16] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -698,31 +710,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -735,9 +759,9 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
+				} else if (data[16] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -830,31 +854,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -863,10 +899,14 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
-					$("td", row).css("background-color", "#ADCF9F");
+				} else if (data[16] == "Completed") {
+					if (data[12] > 0) {
+						$("td", row).css("background-color", "#6C8696FF");
+					} else {
+						$("td", row).css("background-color", "#ADCF9F");
+					}
 				}
 			},
 		});
@@ -1105,6 +1145,105 @@ define([
 						return true;
 					});
 
+				// All MP Products - Total Customer Usage
+				var mpProdsScansPerCustomerSearch = search.load({
+					type: "customrecord_customer_product_stock",
+					id: "customsearch_prod_stock_usage_report___4",
+				});
+
+				mpProdsScansPerCustomerSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custrecord_cust_prod_stock_customer",
+						operator: search.Operator.ANYOF,
+						values: parseInt(custInternalID),
+					})
+				);
+
+				var count3 = 0;
+				var oldCustomerId = null;
+				var oldCustomerName = null;
+				var oldFranchiseeName = null;
+				var oldIntegrationText = null;
+				var express_speed_cust_usage = 0;
+				var premium_speed_cust_usage = 0;
+				var standard_speed_cust_usage = 0;
+				var sendle_au_express_cust_usage = 0;
+				var total_usage_cust_usage = 0;
+
+				mpProdsScansPerCustomerSearch
+					.run()
+					.each(function (mpProdsScansPerCustomerSearchSet) {
+						var customerId = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_cust_prod_stock_customer",
+							summary: "GROUP",
+						});
+
+						var customerName = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_cust_prod_stock_customer",
+							summary: "GROUP",
+						});
+
+						var franchiseeName = mpProdsScansPerCustomerSearchSet.getText({
+							name: "partner",
+							join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
+							summary: "GROUP",
+						});
+
+						var deliverySpeed = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_delivery_speed",
+							summary: "GROUP",
+						});
+						var deliverySpeedText = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_delivery_speed",
+							summary: "GROUP",
+						});
+
+						var integration = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_integration",
+							summary: "GROUP",
+						});
+						var integrationText = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_integration",
+							summary: "GROUP",
+						});
+
+						var mpexUsage = parseInt(
+							mpProdsScansPerCustomerSearchSet.getValue({
+								name: "name",
+								summary: "COUNT",
+							})
+						);
+
+						if (integrationText == "- None -") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								express_speed_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 4) {
+								premium_speed_cust_usage = mpexUsage;
+							}
+						} else if (integrationText == "Sendle") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								// sendle_au_express_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 1) {
+								standard_speed_cust_usage = mpexUsage;
+							}
+						} else if (integrationText == "API Integration") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								sendle_au_express_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 1) {
+								standard_speed_cust_usage = mpexUsage;
+							}
+						}
+
+						total_usage_cust_usage =
+							express_speed_cust_usage +
+							standard_speed_cust_usage +
+							sendle_au_express_cust_usage +
+							premium_speed_cust_usage;
+
+						return true;
+					});
+
 				if (taskStatus == "") {
 					debt_set_requested.push({
 						custInternalID: custInternalID,
@@ -1124,6 +1263,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				} else if (taskStatus == "Not Started") {
 					debt_set_scheduled.push({
@@ -1144,6 +1287,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				} else if (taskStatus == "Completed") {
 					debt_set_completed.push({
@@ -1164,6 +1311,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				}
 
@@ -1295,6 +1446,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1439,6 +1594,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1579,6 +1738,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1716,7 +1879,7 @@ define([
 		var table = $('<table class="display" width="50%"/>');
 		var childSet = [];
 
-		row.data()[14].forEach(function (el) {
+		row.data()[18].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
 					el.userNotesDate,
