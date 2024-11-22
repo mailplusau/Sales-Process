@@ -47,6 +47,55 @@ define([
 	var source_list = [];
 	var source_list_color = [];
 
+	var mainLeadStatusArray = [
+		"13",
+		"66",
+		"32",
+		"71",
+		"22",
+		"57",
+		"38",
+		"42",
+		"6",
+		"20",
+		"69",
+		"18",
+		"67",
+		"62",
+		"68",
+		"60",
+		"7",
+		"70",
+		"50",
+		"58",
+		"8",
+		"35",
+	];
+	var mainLeadStatusNameArray = [
+		"CUSTOMER - SIGNED",
+		"CUSTOMER - To Be Finalised",
+		"CUSTOMER - Free Trail",
+		"CUSTOMER - Free Trail Pending",
+		"SUSPECT - Customer - Lost",
+		"SUSPECT - HOT LEAD",
+		"SUSPECT - UNQUALIFIED",
+		"SUSPECT - QUALIFIED",
+		"SUSPECT - NEW",
+		"SUSPECT - NO ANSWER",
+		"SUSPECT - IN CONTACT",
+		"SUSPECT - FOLLOW UP",
+		"SUSPECT - LPO FOLLOW UP",
+		"SUSPECT - PARKING LOT",
+		"SUSPECT - VALIDATED",
+		"SUSPECT - REP REASSIGN",
+		"SUSPECT - REJECTED",
+		"PROSPECT - QUALIFIED",
+		"PROSPECT - QUOTE SENT",
+		"PROSPECT - OPPORTUNITY",
+		"PROSPECT - IN CONTACT",
+		"PROSPECT - NO ANSWER",
+	];
+
 	function onRequest(context) {
 		var baseURL = "https://system.na2.netsuite.com";
 		if (runtime.EnvType == "SANDBOX") {
@@ -64,6 +113,13 @@ define([
 
 			var modified_start_date = context.request.parameters.modified_date_from;
 			var modified_last_date = context.request.parameters.modified_date_to;
+
+			var commencement_start_date =
+				context.request.parameters.commence_date_from;
+			var commencement_last_date = context.request.parameters.commence_date_to;
+
+			var cancelled_start_date = context.request.parameters.cancel_date_from;
+			var cancelled_last_date = context.request.parameters.cancel_date_to;
 
 			var usage_date_from = context.request.parameters.usage_date_from;
 			var usage_date_to = context.request.parameters.usage_date_to;
@@ -90,7 +146,33 @@ define([
 			var showTotal = context.request.parameters.showTotal;
 			var calcprodusage = context.request.parameters.calcprodusage;
 			var sales_activity_notes = context.request.parameters.salesactivitynotes;
+			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
+
+			log.debug({
+				title: "leadStatus",
+				details: leadStatus,
+			});
+
+			if (!isNullorEmpty(leadStatus)) {
+				if (leadStatus.indexOf(",") != -1) {
+					var leadStatusArray = leadStatus.split(",");
+				} else {
+					var leadStatusArray = [];
+					leadStatusArray.push(leadStatus);
+				}
+			} else {
+				var leadStatusArray = [];
+			}
+
+			log.debug({
+				title: "leadStatusArray",
+				details: leadStatusArray,
+			});
+
+			if (isNullorEmpty(customer_type)) {
+				customer_type = 2;
+			}
 
 			//If role is Franchisee
 			if (role == 1000) {
@@ -164,7 +246,9 @@ define([
 					isNullorEmpty(start_date) &&
 					isNullorEmpty(date_signed_up_from) &&
 					isNullorEmpty(date_quote_sent_from) &&
-					isNullorEmpty(modified_start_date)
+					isNullorEmpty(modified_start_date) &&
+					isNullorEmpty(cancelled_start_date) &&
+					isNullorEmpty(commencement_start_date)
 				) {
 					if (showTotal == "T") {
 						start_date = null;
@@ -216,27 +300,31 @@ define([
 					isNullorEmpty(last_date) &&
 					isNullorEmpty(date_signed_up_to) &&
 					isNullorEmpty(date_quote_sent_to) &&
-					isNullorEmpty(modified_last_date)
+					isNullorEmpty(modified_last_date) &&
+					isNullorEmpty(cancelled_last_date) &&
+					isNullorEmpty(commencement_last_date)
 				) {
 					if (showTotal == "T") {
 						last_date = null;
 						date_signed_up_to = null;
 					} else if (!isNullorEmpty(campaign)) {
-                        if (!isNullorEmpty(campaign)) {
-						if (campaign.indexOf(",") != -1) {
-							var campaignArray = campaign.split(",");
-						} else {
-							var campaignArray = [];
-							campaignArray.push(campaign);
-						}}
+						if (!isNullorEmpty(campaign)) {
+							if (campaign.indexOf(",") != -1) {
+								var campaignArray = campaign.split(",");
+							} else {
+								var campaignArray = [];
+								campaignArray.push(campaign);
+							}
+						}
 
-                        if (!isNullorEmpty(salesrep)) {
-						if (salesrep.indexOf(",") != -1) {
-							var salesRepArray = campaign.split(",");
-						} else {
-							var salesRepArray = [];
-							salesRepArray.push(salesrep);
-						}}
+						if (!isNullorEmpty(salesrep)) {
+							if (salesrep.indexOf(",") != -1) {
+								var salesRepArray = campaign.split(",");
+							} else {
+								var salesRepArray = [];
+								salesRepArray.push(salesrep);
+							}
+						}
 
 						if (
 							campaignArray.indexOf("71") != -1 ||
@@ -561,13 +649,14 @@ define([
 			var resultSetZees = searchZees.run();
 
 			inlineHtml += franchiseeDropdownSection(resultSetZees, context);
-			inlineHtml += leadStatusDropdown(leadStatus);
+			inlineHtml += leadStatusDropdown(leadStatusArray);
 			inlineHtml += leadSourceFilterSection(
 				source,
 				salesrep,
 				campaign,
 				parentLPO,
-				lead_entered_by
+				lead_entered_by,
+				customer_type
 			);
 			inlineHtml += dateFilterSection(
 				start_date,
@@ -584,7 +673,11 @@ define([
 				calcprodusage,
 				modified_start_date,
 				modified_last_date,
-				sales_activity_notes
+				sales_activity_notes,
+				commencement_start_date,
+				commencement_last_date,
+				cancelled_start_date,
+				cancelled_last_date
 			);
 			inlineHtml += "</div></div></div></br></br>";
 			inlineHtml +=
@@ -740,7 +833,7 @@ define([
 		return inlineHtml;
 	}
 
-	function leadStatusDropdown(custStatus) {
+	function leadStatusDropdown(leadStatusArray) {
 		var inlineHtml =
 			'<div class="form-group container status_dropdown_section hide">';
 		inlineHtml += '<div class="row">';
@@ -757,143 +850,171 @@ define([
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
 			'<span class="input-group-addon" id="cust_status_text">STATUS</span>';
-		inlineHtml += '<select id="cust_status" class="form-control">';
+		inlineHtml +=
+			'<select id="cust_status" class="js-example-basic-multiple form-control" multiple="multiple" style="width: 100%">';
 		inlineHtml += '<option value="0"></option>';
 
-		if (custStatus == "13") {
-			inlineHtml += '<option value="13" selected>CUSTOMER - SIGNED</option>';
-		} else {
-			inlineHtml += '<option value="13">CUSTOMER - SIGNED</option>';
+		for (var a = 0; a < mainLeadStatusArray.length; a++) {
+			if (isNullorEmpty(leadStatusArray)) {
+				inlineHtml +=
+					'<option value="' +
+					mainLeadStatusArray[a] +
+					'" >' +
+					mainLeadStatusNameArray[a] +
+					"</option>";
+			} else {
+				if (leadStatusArray.indexOf(mainLeadStatusArray[a]) != -1) {
+					inlineHtml +=
+						'<option value="' +
+						mainLeadStatusArray[a] +
+						'" selected>' +
+						mainLeadStatusNameArray[a] +
+						"</option>";
+				} else {
+					inlineHtml +=
+						'<option value="' +
+						mainLeadStatusArray[a] +
+						'" >' +
+						mainLeadStatusNameArray[a] +
+						"</option>";
+				}
+			}
 		}
 
-		if (custStatus == "66") {
-			inlineHtml +=
-				'<option value="66" selected>CUSTOMER - To Be Finalised</option>';
-		} else {
-			inlineHtml += '<option value="66">CUSTOMER - To Be Finalised</option>';
-		}
+		// if (custStatus == "13") {
+		// 	inlineHtml += '<option value="13" selected>CUSTOMER - SIGNED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="13">CUSTOMER - SIGNED</option>';
+		// }
 
-		if (custStatus == "32") {
-			inlineHtml +=
-				'<option value="32" selected>CUSTOMER - Free Trail</option>';
-		} else {
-			inlineHtml += '<option value="32">CUSTOMER - Free Trial</option>';
-		}
+		// if (custStatus == "66") {
+		// 	inlineHtml +=
+		// 		'<option value="66" selected>CUSTOMER - To Be Finalised</option>';
+		// } else {
+		// 	inlineHtml += '<option value="66">CUSTOMER - To Be Finalised</option>';
+		// }
 
-		if (custStatus == "71") {
-			inlineHtml +=
-				'<option value="32" selected>CUSTOMER - Free Trail Pending</option>';
-		} else {
-			inlineHtml += '<option value="32">CUSTOMER - Free Trial Pending</option>';
-		}
+		// if (custStatus == "32") {
+		// 	inlineHtml +=
+		// 		'<option value="32" selected>CUSTOMER - Free Trail</option>';
+		// } else {
+		// 	inlineHtml += '<option value="32">CUSTOMER - Free Trial</option>';
+		// }
 
-		if (custStatus == "57") {
-			inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
-		} else {
-			inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
-		}
+		// if (custStatus == "71") {
+		// 	inlineHtml +=
+		// 		'<option value="32" selected>CUSTOMER - Free Trail Pending</option>';
+		// } else {
+		// 	inlineHtml += '<option value="32">CUSTOMER - Free Trial Pending</option>';
+		// }
 
-		if (custStatus == "38") {
-			inlineHtml +=
-				'<option value="38" selected>SUSPECT - UNQUALIFIED</option>';
-		} else {
-			inlineHtml += '<option value="38">SUSPECT - UNQUALIFIED</option>';
-		}
+		// if (custStatus == "57") {
+		// 	inlineHtml += '<option value="57" selected>SUSPECT - HOT LEAD</option>';
+		// } else {
+		// 	inlineHtml += '<option value="57">SUSPECT - HOT LEAD</option>';
+		// }
 
-		if (custStatus == "42") {
-			inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
-		} else {
-			inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
-		}
+		// if (custStatus == "38") {
+		// 	inlineHtml +=
+		// 		'<option value="38" selected>SUSPECT - UNQUALIFIED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="38">SUSPECT - UNQUALIFIED</option>';
+		// }
 
-		if (custStatus == "6") {
-			inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
-		} else {
-			inlineHtml += '<option value="6">SUSPECT - NEW</option>';
-		}
+		// if (custStatus == "42") {
+		// 	inlineHtml += '<option value="42" selected>SUSPECT - QUALIFIED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="42">SUSPECT - QUALIFIED</option>';
+		// }
 
-		if (custStatus == "20") {
-			inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
-		} else {
-			inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
-		}
+		// if (custStatus == "6") {
+		// 	inlineHtml += '<option value="6" selected>SUSPECT - NEW</option>';
+		// } else {
+		// 	inlineHtml += '<option value="6">SUSPECT - NEW</option>';
+		// }
 
-		if (custStatus == "69") {
-			inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
-		} else {
-			inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
-		}
+		// if (custStatus == "20") {
+		// 	inlineHtml += '<option value="20" selected>SUSPECT - NO ANSWER</option>';
+		// } else {
+		// 	inlineHtml += '<option value="20">SUSPECT - NO ANSWER</option>';
+		// }
 
-		if (custStatus == "18") {
-			inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
-		} else {
-			inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
-		}
+		// if (custStatus == "69") {
+		// 	inlineHtml += '<option value="69" selected>SUSPECT - IN CONTACT</option>';
+		// } else {
+		// 	inlineHtml += '<option value="69">SUSPECT - IN CONTACT</option>';
+		// }
 
-		if (custStatus == "67") {
-			inlineHtml +=
-				'<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
-		} else {
-			inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
-		}
+		// if (custStatus == "18") {
+		// 	inlineHtml += '<option value="18" selected>SUSPECT - FOLLOW UP</option>';
+		// } else {
+		// 	inlineHtml += '<option value="18">SUSPECT - FOLLOW UP</option>';
+		// }
 
-		if (custStatus == "62") {
-			inlineHtml +=
-				'<option value="62" selected>SUSPECT - PARKING LOT</option>';
-		} else {
-			inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
-		}
+		// if (custStatus == "67") {
+		// 	inlineHtml +=
+		// 		'<option value="67" selected>SUSPECT - LPO FOLLOW UP</option>';
+		// } else {
+		// 	inlineHtml += '<option value="67">SUSPECT - LPO FOLLOW UP</option>';
+		// }
 
-		if (custStatus == "68") {
-			inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
-		} else {
-			inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
-		}
+		// if (custStatus == "62") {
+		// 	inlineHtml +=
+		// 		'<option value="62" selected>SUSPECT - PARKING LOT</option>';
+		// } else {
+		// 	inlineHtml += '<option value="62">SUSPECT - PARKING LOT</option>';
+		// }
 
-		if (custStatus == "60") {
-			inlineHtml +=
-				'<option value="60" selected>SUSPECT - REP REASSIGN</option>';
-		} else {
-			inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
-		}
+		// if (custStatus == "68") {
+		// 	inlineHtml += '<option value="68" selected>SUSPECT - VALIDATED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="68">SUSPECT - VALIDATED</option>';
+		// }
 
-		if (custStatus == "7") {
-			inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
-		} else {
-			inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
-		}
+		// if (custStatus == "60") {
+		// 	inlineHtml +=
+		// 		'<option value="60" selected>SUSPECT - REP REASSIGN</option>';
+		// } else {
+		// 	inlineHtml += '<option value="60">SUSPECT - REP REASSIGN</option>';
+		// }
 
-		if (custStatus == "70") {
-			inlineHtml += '<option value="70" selected>PROSPECT - QUALIFIED</option>';
-		} else {
-			inlineHtml += '<option value="70">PROSPECT - QUALIFIED</option>';
-		}
+		// if (custStatus == "7") {
+		// 	inlineHtml += '<option value="7" selected>SUSPECT - REJECTED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="7">SUSPECT - REJECTED</option>';
+		// }
 
-		if (custStatus == "50") {
-			inlineHtml +=
-				'<option value="50" selected>PROSPECT - QUOTE SENT</option>';
-		} else {
-			inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
-		}
+		// if (custStatus == "70") {
+		// 	inlineHtml += '<option value="70" selected>PROSPECT - QUALIFIED</option>';
+		// } else {
+		// 	inlineHtml += '<option value="70">PROSPECT - QUALIFIED</option>';
+		// }
 
-		if (custStatus == "58") {
-			inlineHtml +=
-				'<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
-		} else {
-			inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
-		}
+		// if (custStatus == "50") {
+		// 	inlineHtml +=
+		// 		'<option value="50" selected>PROSPECT - QUOTE SENT</option>';
+		// } else {
+		// 	inlineHtml += '<option value="50">PROSPECT - QUOTE SENT</option>';
+		// }
 
-		if (custStatus == "8") {
-			inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
-		} else {
-			inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
-		}
+		// if (custStatus == "58") {
+		// 	inlineHtml +=
+		// 		'<option value="58" selected>PROSPECT - OPPORTUNITY</option>';
+		// } else {
+		// 	inlineHtml += '<option value="58">PROSPECT - OPPORTUNITY</option>';
+		// }
 
-		if (custStatus == "35") {
-			inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
-		} else {
-			inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
-		}
+		// if (custStatus == "8") {
+		// 	inlineHtml += '<option value="8" selected>PROSPECT - IN CONTACT</option>';
+		// } else {
+		// 	inlineHtml += '<option value="8">PROSPECT - IN CONTACT</option>';
+		// }
+
+		// if (custStatus == "35") {
+		// 	inlineHtml += '<option value="35" selected>PROSPECT - NO ANSWER</option>';
+		// } else {
+		// 	inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
+		// }
 
 		inlineHtml += "</select>";
 		inlineHtml += "</div></div></div></div>";
@@ -930,7 +1051,8 @@ define([
 		salesrep,
 		campaign,
 		parentLPO,
-		lead_entered_by
+		lead_entered_by,
+		customer_type
 	) {
 		var inlineHtml =
 			'<div class="form-group container source_salesrep_label_section hide">';
@@ -1194,6 +1316,38 @@ define([
 		inlineHtml += "</div ></div > ";
 		inlineHtml += "</div ></div > ";
 
+		inlineHtml += '<div class="form-group container parent_lpo_label_section">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SECURE CASH CUSTOMER - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container invoice_date_type_div hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml += '<div class="col-xs-12 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="zee_dropdown_text">CUSTOMER TYPE</span>';
+		inlineHtml += '<select id="customer_type" class="form-control">';
+		if (customer_type == "1") {
+			inlineHtml += '<option value="1" selected>All Customers</option>';
+			inlineHtml +=
+				'<option value="2">All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		} else if (customer_type == "2") {
+			inlineHtml += '<option value="1" >All Customers</option>';
+			inlineHtml +=
+				'<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		} else {
+			inlineHtml += '<option value="1">All Customers</option>';
+			inlineHtml +=
+				'<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
+		}
+
+		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
+
 		// if (campaign == 69) {
 		inlineHtml += '<div class="form-group container parent_lpo_label_section">';
 		inlineHtml += '<div class="row">';
@@ -1291,77 +1445,81 @@ define([
 		calcprodusage,
 		modified_start_date,
 		modified_last_date,
-		sales_activity_notes
+		sales_activity_notes,
+		commencement_start_date,
+		commencement_last_date,
+		cancelled_start_date,
+		cancelled_last_date
 	) {
+		// var inlineHtml =
+		// 	'<div class="form-group container lead_entered_label_section hide">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+
+		// inlineHtml += '<div class="form-group container modified_date_div hide">';
+		// inlineHtml += '<div class="row">';
+
+		// // Last Modified Date from field
+		// inlineHtml += '<div class="col-xs-6 date_from">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
+		// if (isNullorEmpty(modified_start_date)) {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
+		// } else {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' +
+		// 		modified_start_date +
+		// 		'"/>';
+		// }
+
+		// inlineHtml += "</div></div>";
+		// // Last Modified Date to field
+		// inlineHtml += '<div class="col-xs-6 date_to">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
+		// if (isNullorEmpty(modified_last_date)) {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date">';
+		// } else {
+		// 	inlineHtml +=
+		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' +
+		// 		modified_last_date +
+		// 		'">';
+		// }
+
+		// inlineHtml += "</div></div></div></div>";
+
+		// inlineHtml +=
+		// 	'<div class="form-group container salesactivitynotes_div hide">';
+		// inlineHtml += '<div class="row">';
+
+		// inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
+		// inlineHtml += '<div class="input-group">';
+		// inlineHtml +=
+		// 	'<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
+		// inlineHtml += '<select id="sales_activity_notes" class="form-control">';
+		// inlineHtml += "<option></option>";
+
+		// if (sales_activity_notes == "1") {
+		// 	inlineHtml += '<option value="1" selected>Yes</option>';
+		// 	inlineHtml += '<option value="2">No</option>';
+		// } else if (sales_activity_notes == "2") {
+		// 	inlineHtml += '<option value="1" >Yes</option>';
+		// 	inlineHtml += '<option value="2" selected>No</option>';
+		// } else {
+		// 	inlineHtml += '<option value="1">Yes</option>';
+		// 	inlineHtml += '<option value="2" selected>No</option>';
+		// }
+		// inlineHtml += "</select>";
+		// inlineHtml += "</div></div></div></div>";
+
 		var inlineHtml =
-			'<div class="form-group container lead_entered_label_section hide">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-
-		inlineHtml += '<div class="form-group container modified_date_div hide">';
-		inlineHtml += '<div class="row">';
-
-		// Last Modified Date from field
-		inlineHtml += '<div class="col-xs-6 date_from">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
-		if (isNullorEmpty(modified_start_date)) {
-			inlineHtml +=
-				'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
-		} else {
-			inlineHtml +=
-				'<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' +
-				modified_start_date +
-				'"/>';
-		}
-
-		inlineHtml += "</div></div>";
-		// Last Modified Date to field
-		inlineHtml += '<div class="col-xs-6 date_to">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
-		if (isNullorEmpty(modified_last_date)) {
-			inlineHtml +=
-				'<input id="modified_date_to" class="form-control modified_date_to" type="date">';
-		} else {
-			inlineHtml +=
-				'<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' +
-				modified_last_date +
-				'">';
-		}
-
-		inlineHtml += "</div></div></div></div>";
-
-		inlineHtml +=
-			'<div class="form-group container salesactivitynotes_div hide">';
-		inlineHtml += '<div class="row">';
-
-		inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-		inlineHtml += '<select id="sales_activity_notes" class="form-control">';
-		inlineHtml += "<option></option>";
-
-		if (sales_activity_notes == "1") {
-			inlineHtml += '<option value="1" selected>Yes</option>';
-			inlineHtml += '<option value="2">No</option>';
-		} else if (sales_activity_notes == "2") {
-			inlineHtml += '<option value="1" >Yes</option>';
-			inlineHtml += '<option value="2" selected>No</option>';
-		} else {
-			inlineHtml += '<option value="1">Yes</option>';
-			inlineHtml += '<option value="2" selected>No</option>';
-		}
-		inlineHtml += "</select>";
-		inlineHtml += "</div></div></div></div>";
-
-		inlineHtml +=
 			'<div class="form-group container lead_entered_label_section hide">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
@@ -1485,6 +1643,92 @@ define([
 			inlineHtml +=
 				'<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date" value="' +
 				date_signed_up_to +
+				'">';
+		}
+
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container signed_up_label_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">COMMENCEMENT DATE - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="form-group container signed_up_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
+		if (isNullorEmpty(commencement_start_date)) {
+			inlineHtml +=
+				'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
+				commencement_start_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
+		if (isNullorEmpty(commencement_last_date)) {
+			inlineHtml +=
+				'<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
+				commencement_last_date +
+				'">';
+		}
+
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container signed_up_label_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="form-group container signed_up_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
+		if (isNullorEmpty(cancelled_start_date)) {
+			inlineHtml +=
+				'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
+				cancelled_start_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 usage_date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
+		if (isNullorEmpty(cancelled_last_date)) {
+			inlineHtml +=
+				'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
+				cancelled_last_date +
 				'">';
 		}
 

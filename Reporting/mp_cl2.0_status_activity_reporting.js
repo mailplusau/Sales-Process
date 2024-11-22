@@ -121,6 +121,7 @@ define([
 	}
 
 	var salesRecordLastAssignedListIds = [
+		-4, //System Notes
 		409635, //Ankith
 		1623053, //Aleyna
 		1822089, //Alison
@@ -133,6 +134,7 @@ define([
 		1844985, //Shaheer
 		1819701, //Stefania
 		1850370, //Jason
+		1862659, //Leone
 	];
 
 	var debtDataSet = [];
@@ -1921,9 +1923,42 @@ define([
 				"default search filters: " + JSON.stringify(defaultSearchFilters)
 			);
 
-			var modifiedDateFilters = [
-				["systemnotes.date", "within", [modified_date_from, modified_date_to]],
-			];
+			if (!isNullorEmpty(sales_rep)) {
+				// var salesRepArray = sales_rep.split(",");
+				sales_rep.push("-4");
+				var modifiedDateFilters = [
+					["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"],
+					"AND",
+					[
+						"systemnotes.date",
+						"within",
+						[modified_date_from, modified_date_to],
+					],
+					"AND",
+					["systemnotes.name", "anyof", sales_rep],
+				];
+			} else {
+				var modifiedDateFilters = [
+					["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"],
+					"AND",
+					[
+						"systemnotes.date",
+						"within",
+						[modified_date_from, modified_date_to],
+					],
+					"AND",[
+						"systemnotes.name",
+						"anyof",
+						salesRecordLastAssignedListIds,
+					]
+				];
+			}
+
+			// var modifiedDateFilters = [
+			// 	["systemnotes.date", "within", [modified_date_from, modified_date_to]],
+			// 	"AND",
+			// 	systemNotesSetByFilter,
+			// ];
 			console.log(
 				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
 			);
@@ -6280,10 +6315,19 @@ define([
 				"default search filters: " + JSON.stringify(defaultSearchFilters)
 			);
 
+			var systemNotesSetByFilter = [
+				"systemnotes.name",
+				"anyof",
+				salesRecordLastAssignedListIds,
+			];
+			if (!isNullorEmpty(sales_rep)) {
+				systemNotesSetByFilter = ["systemnotes.name", "anyof", sales_rep];
+			}
+
 			var modifiedDateFilters = [
 				["systemnotes.field", "anyof", "CUSTJOB.KENTITYSTATUS"],
 				"AND",
-				["systemnotes.name", "anyof", salesRecordLastAssignedListIds],
+				systemNotesSetByFilter,
 				"AND",
 				["systemnotes.date", "within", [modified_date_from, modified_date_to]],
 			];
