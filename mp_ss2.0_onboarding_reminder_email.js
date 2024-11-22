@@ -115,20 +115,22 @@ define([
 
 			var emailHtml = response.body;
 
-			email.send({
-				author: taskAssignedToID,
-				body: emailHtml,
-				recipients: contactEmail,
-				subject: "Today: Your ShipMate Onboarding Session is Soon",
-				cc: [taskAssignedToID],
-				relatedRecords: { entityId: customerInternalID },
-				replyTo: "liam.pike@mailplus.com.au",
-			});
+			// email.send({
+			// 	author: taskAssignedToID,
+			// 	body: emailHtml,
+			// 	recipients: contactEmail,
+			// 	subject: "Today: Your ShipMate Onboarding Session is Soon",
+			// 	cc: [taskAssignedToID],
+			// 	relatedRecords: { entityId: customerInternalID },
+			// 	replyTo: "liam.pike@mailplus.com.au",
+			// });
 
 			log.audit({
 				title: "Email Sent out to:",
 				details: contactEmail + " for customer: " + customerInternalID,
 			});
+
+			contactPhone = contactPhone.replace(/\s+/g, "");
 
 			if (isValidAustralianMobileNumber(contactPhone)) {
 				var smsBody =
