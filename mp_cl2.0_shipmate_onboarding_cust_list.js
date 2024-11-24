@@ -1349,6 +1349,7 @@ define([
 
 		if (!isNullorEmpty(debt_set_requested)) {
 			debt_set_requested.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1465,7 +1466,7 @@ define([
 		datatableRequested.rows.add(debtDataSetRequested);
 		datatableRequested.draw();
 
-		console.log("datatableRequested", datatableRequested);
+		console.log("debtDataSetRequested", debtDataSetRequested);
 		console.log("childCustomerUserNotes", childCustomerUserNotes);
 
 		datatableRequested.rows().every(function () {
@@ -1501,6 +1502,7 @@ define([
 
 		if (!isNullorEmpty(debt_set_scheduled)) {
 			debt_set_scheduled.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1649,6 +1651,7 @@ define([
 
 		if (!isNullorEmpty(debt_set_completed)) {
 			debt_set_completed.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
