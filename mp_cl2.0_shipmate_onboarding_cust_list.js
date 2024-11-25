@@ -772,8 +772,8 @@ define([
 			data: debtDataSetRequested,
 			pageLength: 1000,
 			order: [
-				[11, "asc"],
-				[7, "asc"],
+				[12, "desc"],
+				[8, "asc"],
 			],
 			layout: {
 				topStart: {
@@ -903,7 +903,7 @@ define([
 					$("td", row).css("background-color", "#FFD07F");
 				} else if (data[16] == "Completed") {
 					if (data[12] > 0) {
-						$("td", row).css("background-color", "#6C8696FF");
+						$("td", row).css("background-color", "#40f589");
 					} else {
 						$("td", row).css("background-color", "#ADCF9F");
 					}
