@@ -564,6 +564,10 @@ define([
 				fieldId: "custevent_task_cancelled",
 				value: 1,
 			});
+			task_record.setValue({
+				fieldId: "status",
+				value: "COMPLETE",
+			});
 
 			task_record.save({
 				ignoreMandatoryFields: true,
