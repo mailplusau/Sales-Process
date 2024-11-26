@@ -166,6 +166,27 @@ define([
 			$("#myModalUserNote").show();
 		});
 
+		$(".cancelOnboarding").click(function () {
+			var customerInternalID = $(this).attr("data-id");
+			console.log("inside modal");
+			console.log("customerInternalID " + customerInternalID);
+			$("#customer_id").val(customerInternalID);
+			console.log("customerInternalID " + $("#customer_id").val());
+			$("#myModalCancelOnboarding").show();
+		});
+
+		$(".cancelScheduledOnboarding").click(function () {
+			var customerInternalID = $(this).attr("data-id");
+			var taskInternalId = $(this).attr("taskid");
+			console.log("inside modal");
+			console.log("customerInternalID " + customerInternalID);
+			$("#customer_id").val(customerInternalID);
+			$("#task_id").val(taskInternalId);
+			console.log("customerInternalID " + $("#customer_id").val());
+			console.log("taskInternalId " + $("#task_id").val());
+			$("#myModalCancelOnboarding").show();
+		});
+
 		$(".editTaskModalPopUP").click(function () {
 			var taskInternalId = $(this).attr("data-id");
 			var customerInternalID = $(this).attr("date-customerid");
@@ -411,6 +432,147 @@ define([
 			window.location.href = url;
 		});
 
+		$("#cancelOnBoarding").click(function () {
+			console.log("inside create note modal");
+			var customerInternalID = $("#customer_id").val();
+			var taskInternalId = $("#task_id").val();
+
+			var customer_record = record.load({
+				type: record.Type.CUSTOMER,
+				id: customerInternalID,
+			});
+
+			var companyName = customer_record.getValue({
+				fieldId: "companyname",
+			});
+
+			console.log(customerInternalID);
+
+			var userNoteRecord = record.create({
+				type: record.Type.NOTE,
+				isDynamic: true,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "entity",
+				value: parseInt(customerInternalID),
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "title",
+				value: "ShipMate Onboarding - Notes",
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "direction",
+				value: 1,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "notetype",
+				value: 7,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "author",
+				value: runtime.getCurrentUser().id,
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "notedate",
+				value: getDateStoreNS(),
+			});
+
+			userNoteRecord.setValue({
+				fieldId: "note",
+				value:
+					getCurrentDateTime() +
+					" - Onboarding Cancelled - " +
+					$(".cancelOnboardingNotes").val() +
+					"\n",
+			});
+
+			var userNoteRecordId = userNoteRecord.save();
+
+			var date = new Date();
+			format.format({
+				value: date,
+				type: format.Type.DATE,
+				timezone: format.Timezone.AUSTRALIA_SYDNEY,
+			});
+
+			console.log(date);
+			var existingNote = "";
+
+			if (isNullorEmpty(taskInternalId)) {
+				var task_record = record.create({
+					type: "task",
+				});
+			} else {
+				var task_record = record.load({
+					type: "task",
+					id: taskInternalId,
+				});
+				existingNote = task_record.getValue({
+					fieldId: "message",
+				});
+			}
+
+			task_record.setValue({
+				fieldId: "duedate",
+				value: date,
+			});
+			task_record.setValue({
+				fieldId: "company",
+				value: customerInternalID,
+			});
+			task_record.setValue({
+				fieldId: "title",
+				value: "ShipMate Onboarding Cancelled - " + companyName,
+			});
+			if (isNullorEmpty(existingNote)) {
+				task_record.setValue({
+					fieldId: "message",
+					value:
+						getCurrentDateTime() +
+						" - Onboarding Cancelled - " +
+						$(".cancelOnboardingNotes").val() +
+						"\n",
+				});
+			} else {
+				task_record.setValue({
+					fieldId: "message",
+					value:
+						existingNote +
+						"\n" +
+						getCurrentDateTime() +
+						" - Onboarding Cancelled - " +
+						$(".cancelOnboardingNotes").val() +
+						"\n",
+				});
+			}
+
+			task_record.setValue({
+				fieldId: "custevent_organiser",
+				value: runtime.getCurrentUser().id,
+			});
+			task_record.setValue({
+				fieldId: "assigned",
+				value: runtime.getCurrentUser().id,
+			});
+			task_record.setValue({
+				fieldId: "custevent_task_cancelled",
+				value: 1,
+			});
+
+			task_record.save({
+				ignoreMandatoryFields: true,
+			});
+
+			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1948&deploy=1";
+			window.location.href = url;
+		});
+
 		$(".onboardingCompleted").click(function () {
 			var taskInternalId = $(this).attr("data-id");
 			console.log(taskInternalId);
@@ -440,6 +602,7 @@ define([
 		$(".close").click(function () {
 			$("#myModal").hide();
 			$("#myModalUserNote").hide();
+			$("#myModalCancelOnboarding").hide();
 		});
 
 		//Update the customer record on click of the button in the modal
@@ -893,6 +1056,9 @@ define([
 				{
 					title: "Child Table", //18
 				},
+				{
+					title: "Task Cancelled", //19
+				},
 			],
 			columnDefs: [
 				{
@@ -912,7 +1078,9 @@ define([
 				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
 				} else if (data[16] == "Completed") {
-					if (data[12] > 0) {
+					if (data[19] == "Yes") {
+						$("td", row).css("background-color", "#FF7F7FFF");
+					} else if (data[12] > 0) {
 						$("td", row).css("background-color", "#40f589");
 					} else {
 						$("td", row).css("background-color", "#ADCF9F");
@@ -1099,6 +1267,7 @@ define([
 				var taskStatus = "";
 				var taskCount = 0;
 				var taskNotes = "";
+				var taskCancelled = "No";
 
 				shipMateOnboardingRequiredTaskCreatedSearch
 					.run()
@@ -1150,6 +1319,15 @@ define([
 								name: "message",
 								join: "task",
 							});
+						taskCancelled =
+							shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+								name: "custevent_task_cancelled",
+								join: "task",
+							});
+
+						if (taskCancelled == 1) {
+							taskCancelled = "Yes";
+						}
 
 						taskCount++;
 						return true;
@@ -1273,6 +1451,7 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						taskCancelled: taskCancelled,
 						express_speed_cust_usage: express_speed_cust_usage,
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
@@ -1297,6 +1476,7 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						taskCancelled: taskCancelled,
 						express_speed_cust_usage: express_speed_cust_usage,
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
@@ -1321,6 +1501,7 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						taskCancelled: taskCancelled,
 						express_speed_cust_usage: express_speed_cust_usage,
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
@@ -1356,6 +1537,8 @@ define([
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Create User Note</title><g id='notebook_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M8 2v19H6c-1.054 0-2-.95-2-2V4c0-1.054.95-2 2-2zm9 0c1.598 0 3 1.3 3 3v13c0 1.7-1.4 3-3 3h-7V2z'/></g></svg>";
 		var cancelTask =
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Cancel Customer</title><g id='close_circle_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2M9.879 8.464a1 1 0 0 0-1.498 1.32l.084.095 2.12 2.12-2.12 2.122a1 1 0 0 0 1.32 1.498l.094-.083L12 13.414l2.121 2.122a1 1 0 0 0 1.498-1.32l-.083-.095L13.414 12l2.122-2.121a1 1 0 0 0-1.32-1.498l-.095.083L12 10.586z'/></g></svg>";
+		var taskCancel =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Cancel Onboarding Task</title><g id='delete_2_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zM9 10a1 1 0 0 0-.993.883L8 11v6a1 1 0 0 0 1.993.117L10 17v-6a1 1 0 0 0-1-1m6 0a1 1 0 0 0-1 1v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-1-1m-.72-6H9.72l-.333 1h5.226z'/></g></svg>";
 
 		var childCustomerUserNotes = [];
 
@@ -1368,10 +1551,10 @@ define([
 						debt_row.custInternalID +
 						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						scheduleTaskIcon +
-						'</a></button> <button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
-						'" data-type="completed" class="createUserNote" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
-						notesTask +
+						'" data-type="completed" class="cancelOnboarding" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						taskCancel +
 						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
@@ -1400,6 +1583,12 @@ define([
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						completeTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" date-taskid="' +
+						debt_row.taskInternalId +
+						'" data-type="completed" class="cancelScheduledOnboarding" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						taskCancel +
 						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
@@ -1536,9 +1725,13 @@ define([
 						scheduleTaskIcon +
 						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
+						'" data-type="completed" class="cancelOnboarding" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						taskCancel +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
 						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						cancelTask +
-						"</a></button>";
+						"</a></button> ";
 				} else if (debt_row.taskStatus == "Completed") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1562,6 +1755,12 @@ define([
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						completeTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" date-taskid="' +
+						debt_row.taskInternalId +
+						'" data-type="completed" class="cancelScheduledOnboarding" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						taskCancel +
 						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
@@ -1802,6 +2001,7 @@ define([
 					debt_row.taskStatus,
 					debt_row.taskNotes,
 					childCustomerUserNotes,
+					debt_row.taskCancelled,
 				]);
 			});
 		}
