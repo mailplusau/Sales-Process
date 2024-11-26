@@ -471,7 +471,7 @@ define([
 
 			userNoteRecord.setValue({
 				fieldId: "title",
-				value: "ShipMate Onboarding - Notes",
+				value: "ShipMate Onboarding Cancelled - Notes",
 			});
 
 			userNoteRecord.setValue({
