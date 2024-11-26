@@ -473,6 +473,16 @@ define([
 				userId;
 			window.location.href = url;
 		});
+
+		//On click of cancel button
+		$(".cancelCustomer").click(function () {
+			var customerInternalId = $(this).attr("data-id");
+
+			var cancelURL =
+				"https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1717&deploy=1&compid=1048144&custid=" +
+				parseInt(customerInternalId);
+			window.location.href = cancelURL;
+		});
 	}
 
 	//Initialise the DataTable with headers.
@@ -566,31 +576,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -603,9 +625,9 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
+				} else if (data[16] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -698,31 +720,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -735,9 +769,9 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
+				} else if (data[16] == "Completed") {
 					$("td", row).css("background-color", "#ADCF9F");
 				}
 			},
@@ -748,8 +782,8 @@ define([
 			data: debtDataSetRequested,
 			pageLength: 1000,
 			order: [
-				[11, "asc"],
-				[7, "asc"],
+				[12, "desc"],
+				[8, "asc"],
 			],
 			layout: {
 				topStart: {
@@ -830,31 +864,43 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Task Date", //9
+					title: "Express", //9
 				},
 				{
-					title: "Task Time", //10
+					title: "Premium", //10
 				},
 				{
-					title: "Assigned To", //11
+					title: "Standard", //11
 				},
 				{
-					title: "Task Status", //12
+					title: "Total", //12
 				},
 				{
-					title: "Task Notes", //13
+					title: "Task Date", //13
 				},
 				{
-					title: "Child Table", //14
+					title: "Task Time", //14
+				},
+				{
+					title: "Assigned To", //15
+				},
+				{
+					title: "Task Status", //16
+				},
+				{
+					title: "Task Notes", //17
+				},
+				{
+					title: "Child Table", //18
 				},
 			],
 			columnDefs: [
 				{
-					targets: [14],
+					targets: [18],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 7, 8, 10],
+					targets: [2, 3, 7, 8, 12, 13],
 					className: "bolded",
 				},
 				{
@@ -863,10 +909,14 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				if (data[12] == "Not Started") {
+				if (data[16] == "Not Started") {
 					$("td", row).css("background-color", "#FFD07F");
-				} else if (data[12] == "Completed") {
-					$("td", row).css("background-color", "#ADCF9F");
+				} else if (data[16] == "Completed") {
+					if (data[12] > 0) {
+						$("td", row).css("background-color", "#40f589");
+					} else {
+						$("td", row).css("background-color", "#ADCF9F");
+					}
 				}
 			},
 		});
@@ -1105,6 +1155,105 @@ define([
 						return true;
 					});
 
+				// All MP Products - Total Customer Usage
+				var mpProdsScansPerCustomerSearch = search.load({
+					type: "customrecord_customer_product_stock",
+					id: "customsearch_prod_stock_usage_report___4",
+				});
+
+				mpProdsScansPerCustomerSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custrecord_cust_prod_stock_customer",
+						operator: search.Operator.ANYOF,
+						values: parseInt(custInternalID),
+					})
+				);
+
+				var count3 = 0;
+				var oldCustomerId = null;
+				var oldCustomerName = null;
+				var oldFranchiseeName = null;
+				var oldIntegrationText = null;
+				var express_speed_cust_usage = 0;
+				var premium_speed_cust_usage = 0;
+				var standard_speed_cust_usage = 0;
+				var sendle_au_express_cust_usage = 0;
+				var total_usage_cust_usage = 0;
+
+				mpProdsScansPerCustomerSearch
+					.run()
+					.each(function (mpProdsScansPerCustomerSearchSet) {
+						var customerId = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_cust_prod_stock_customer",
+							summary: "GROUP",
+						});
+
+						var customerName = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_cust_prod_stock_customer",
+							summary: "GROUP",
+						});
+
+						var franchiseeName = mpProdsScansPerCustomerSearchSet.getText({
+							name: "partner",
+							join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
+							summary: "GROUP",
+						});
+
+						var deliverySpeed = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_delivery_speed",
+							summary: "GROUP",
+						});
+						var deliverySpeedText = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_delivery_speed",
+							summary: "GROUP",
+						});
+
+						var integration = mpProdsScansPerCustomerSearchSet.getValue({
+							name: "custrecord_integration",
+							summary: "GROUP",
+						});
+						var integrationText = mpProdsScansPerCustomerSearchSet.getText({
+							name: "custrecord_integration",
+							summary: "GROUP",
+						});
+
+						var mpexUsage = parseInt(
+							mpProdsScansPerCustomerSearchSet.getValue({
+								name: "name",
+								summary: "COUNT",
+							})
+						);
+
+						if (integrationText == "- None -") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								express_speed_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 4) {
+								premium_speed_cust_usage = mpexUsage;
+							}
+						} else if (integrationText == "Sendle") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								// sendle_au_express_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 1) {
+								standard_speed_cust_usage = mpexUsage;
+							}
+						} else if (integrationText == "API Integration") {
+							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+								sendle_au_express_cust_usage = mpexUsage;
+							} else if (deliverySpeed == 1) {
+								standard_speed_cust_usage = mpexUsage;
+							}
+						}
+
+						total_usage_cust_usage =
+							express_speed_cust_usage +
+							standard_speed_cust_usage +
+							sendle_au_express_cust_usage +
+							premium_speed_cust_usage;
+
+						return true;
+					});
+
 				if (taskStatus == "") {
 					debt_set_requested.push({
 						custInternalID: custInternalID,
@@ -1124,6 +1273,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				} else if (taskStatus == "Not Started") {
 					debt_set_scheduled.push({
@@ -1144,6 +1297,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				} else if (taskStatus == "Completed") {
 					debt_set_completed.push({
@@ -1164,6 +1321,10 @@ define([
 						salesRepAssignedText: salesRepAssignedText,
 						taskStatus: taskStatus,
 						taskNotes: taskNotes,
+						express_speed_cust_usage: express_speed_cust_usage,
+						premium_speed_cust_usage: premium_speed_cust_usage,
+						standard_speed_cust_usage: standard_speed_cust_usage,
+						total_usage_cust_usage: total_usage_cust_usage,
 					});
 				}
 
@@ -1193,11 +1354,14 @@ define([
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
 		var notesTask =
 			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Create User Note</title><g id='notebook_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M8 2v19H6c-1.054 0-2-.95-2-2V4c0-1.054.95-2 2-2zm9 0c1.598 0 3 1.3 3 3v13c0 1.7-1.4 3-3 3h-7V2z'/></g></svg>";
+		var cancelTask =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Cancel Customer</title><g id='close_circle_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2M9.879 8.464a1 1 0 0 0-1.498 1.32l.084.095 2.12 2.12-2.12 2.122a1 1 0 0 0 1.32 1.498l.094-.083L12 13.414l2.121 2.122a1 1 0 0 0 1.498-1.32l-.083-.095L13.414 12l2.122-2.121a1 1 0 0 0-1.32-1.498l-.095.083L12 10.586z'/></g></svg>";
 
 		var childCustomerUserNotes = [];
 
 		if (!isNullorEmpty(debt_set_requested)) {
 			debt_set_requested.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1208,9 +1372,18 @@ define([
 						debt_row.custInternalID +
 						'" data-type="completed" class="createUserNote" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						notesTask +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				} else if (debt_row.taskStatus == "Completed") {
-					var linkURL = "";
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
+						"</a></button>";
 				} else {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1227,6 +1400,10 @@ define([
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						completeTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				}
 
@@ -1295,6 +1472,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1310,7 +1491,7 @@ define([
 		datatableRequested.rows.add(debtDataSetRequested);
 		datatableRequested.draw();
 
-		console.log("datatableRequested", datatableRequested);
+		console.log("debtDataSetRequested", debtDataSetRequested);
 		console.log("childCustomerUserNotes", childCustomerUserNotes);
 
 		datatableRequested.rows().every(function () {
@@ -1346,15 +1527,25 @@ define([
 
 		if (!isNullorEmpty(debt_set_scheduled)) {
 			debt_set_scheduled.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						scheduleTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				} else if (debt_row.taskStatus == "Completed") {
-					var linkURL = "";
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
+						"</a></button>";
 				} else {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1371,6 +1562,10 @@ define([
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						completeTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				}
 
@@ -1439,6 +1634,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1490,15 +1689,25 @@ define([
 
 		if (!isNullorEmpty(debt_set_completed)) {
 			debt_set_completed.forEach(function (debt_row, index) {
+				childCustomerUserNotes = [];
 				if (debt_row.taskStatus == "") {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
 						debt_row.custInternalID +
 						'" class="taskModalPopUP" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						scheduleTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				} else if (debt_row.taskStatus == "Completed") {
-					var linkURL = "";
+					var linkURL =
+						'<button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
+						"</a></button>";
 				} else {
 					var linkURL =
 						'<button class="form-control btn btn-xs btn-warning" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
@@ -1511,6 +1720,10 @@ define([
 						debt_row.taskInternalId +
 						'" data-type="completed" class="onboardingCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
 						completeTaskIcon +
+						'</a></button> <button class="form-control btn btn-xs btn-danger" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+						debt_row.custInternalID +
+						'" data-type="completed" class="cancelCustomer" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						cancelTask +
 						"</a></button>";
 				}
 
@@ -1579,6 +1792,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
+					debt_row.express_speed_cust_usage,
+					debt_row.premium_speed_cust_usage,
+					debt_row.standard_speed_cust_usage,
+					debt_row.total_usage_cust_usage,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1716,7 +1933,7 @@ define([
 		var table = $('<table class="display" width="50%"/>');
 		var childSet = [];
 
-		row.data()[14].forEach(function (el) {
+		row.data()[18].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
 					el.userNotesDate,
