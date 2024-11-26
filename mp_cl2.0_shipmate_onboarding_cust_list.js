@@ -385,6 +385,11 @@ define([
 			console.log("inside create note modal");
 			var customerInternalID = $("#customer_id").val();
 
+			if (isNullorEmpty($(".userNote").val())) { 
+				alert("Please enter the note");
+				return false;
+			}
+
 			console.log(customerInternalID);
 
 			var userNoteRecord = record.create({
