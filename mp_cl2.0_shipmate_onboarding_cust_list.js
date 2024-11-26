@@ -56,6 +56,7 @@ define([
 	var debt_set_scheduled = [];
 	var debtDataSetCompleted = [];
 	var debt_set_completed = [];
+	var taskCancelledCount = 0;
 
 	function pageLoad() {
 		$(".range_filter_section").addClass("hide");
@@ -436,6 +437,11 @@ define([
 			console.log("inside create note modal");
 			var customerInternalID = $("#customer_id").val();
 			var taskInternalId = $("#task_id").val();
+
+			if (isNullorEmpty($(".cancelOnboardingNotes").val())) { 
+				alert("Please enter the reason for cancelling the onboarding");
+				return false;
+			}
 
 			var customer_record = record.load({
 				type: record.Type.CUSTOMER,
@@ -1511,6 +1517,9 @@ define([
 						standard_speed_cust_usage: standard_speed_cust_usage,
 						total_usage_cust_usage: total_usage_cust_usage,
 					});
+					if (taskCancelled == "Yes") {
+						taskCancelledCount++;
+					}
 				}
 
 				return true;
@@ -1519,13 +1528,19 @@ define([
 		console.log("debt_set_scheduled:" + debt_set_scheduled);
 		console.log("debt_set_completed:" + debt_set_completed);
 
-		loadDatatable(debt_set_requested, debt_set_scheduled, debt_set_completed);
+		loadDatatable(
+			debt_set_requested,
+			debt_set_scheduled,
+			debt_set_completed,
+			taskCancelledCount
+		);
 	}
 
 	function loadDatatable(
 		debt_set_requested,
 		debt_set_scheduled,
-		debt_set_completed
+		debt_set_completed,
+		taskCancelledCount
 	) {
 		debtDataSetRequested = [];
 		debtDataSetScheduled = [];
@@ -2047,6 +2062,8 @@ define([
 			}
 		});
 
+		var tasksCompleted = debt_set_completed.length - taskCancelledCount;
+
 		// Create the chart
 		Highcharts.chart("container-progress", {
 			chart: {
@@ -2107,10 +2124,16 @@ define([
 					data: [
 						{
 							name: "Completed",
-							y: debt_set_completed.length,
+							y: tasksCompleted,
 							sliced: true,
 							selected: true,
 							color: "#5cb3b0",
+						},
+						{
+							name: "Onboarding Cancelled",
+							y: taskCancelledCount,
+							sliced: false,
+							color: "#FF7F7FFF",
 						},
 						{
 							name: "Scheduled",

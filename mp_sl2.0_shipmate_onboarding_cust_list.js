@@ -131,12 +131,12 @@ define([
 				'<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
 			if (isNullorEmpty(commencement_start_date)) {
 				inlineHtml +=
-					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" style="width: 100%;position: initial;"/>';
 			} else {
 				inlineHtml +=
 					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
 					commencement_start_date +
-					'"/>';
+					'" style="width: 100%;position: initial;"/>';
 			}
 
 			inlineHtml += "</div></div>";
@@ -147,12 +147,12 @@ define([
 				'<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
 			if (isNullorEmpty(commencement_last_date)) {
 				inlineHtml +=
-					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" style="width: 100%;position: initial;">';
 			} else {
 				inlineHtml +=
 					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
 					commencement_last_date +
-					'">';
+					'" style="width: 100%;position: initial;">';
 			}
 
 			inlineHtml += "</div></div></div></div>";
@@ -224,8 +224,6 @@ define([
 			'<div id="myModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888;/* width: 80%; */left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h3 class="modal-title" id="modal-title">ShipMate Onboarding Task</h3></div>';
 
 		inlineHtml += '<div class="modal-body" style="padding: 2px 16px;">';
-
-		inlineHtml += spacing();
 
 		inlineHtml += '<div class="form-group container row_call_back">';
 		inlineHtml += '<div class="row">';
