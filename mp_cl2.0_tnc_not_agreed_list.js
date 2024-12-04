@@ -328,6 +328,32 @@ define([
 					baseURL + "/app/site/hosting/scriptlet.nl?script=1956&deploy=1";
 				window.location.href = url;
 			});
+
+			$(".taskCompleted").click(function () {
+				var taskInternalId = $(this).attr("data-id");
+				console.log(taskInternalId);
+
+				var task_record = record.load({
+					type: "task",
+					id: taskInternalId,
+				});
+
+				task_record.setValue({
+					fieldId: "status",
+					value: "COMPLETE",
+				});
+				task_record.setValue({
+					fieldId: "message",
+					value: getCurrentDateTime() + " - Completed \n",
+				});
+
+				task_record.save({
+					ignoreMandatoryFields: true,
+				});
+				var url =
+					baseURL + "/app/site/hosting/scriptlet.nl?script=1956&deploy=1";
+				window.location.href = url;
+			});
 		});
 
 		debtDataSet = [];
@@ -345,7 +371,10 @@ define([
 			responsive: true,
 			scrollCollapse: true,
 			pageLength: 250,
-			order: [[10, "asc"]],
+			order: [
+				[10, "asc"],
+				[7, "asc"],
+			],
 			layout: {
 				topStart: {
 					buttons: [
@@ -438,7 +467,13 @@ define([
 					className: "col-xs-1",
 				},
 			],
-			rowCallback: function (row, data, index) {},
+			rowCallback: function (row, data, index) {
+				if (data[10] == getTodayDate()) {
+					$("td", row).css("background-color", "#FEBE8C");
+				} else if (data[10] < getTodayDate()) {
+					$("td", row).css("background-color", "#e97677");
+				}
+			},
 			footerCallback: function (row, data, start, end, display) {},
 		});
 
@@ -558,7 +593,13 @@ define([
 					className: "col-xs-1",
 				},
 			],
-			rowCallback: function (row, data, index) {},
+			rowCallback: function (row, data, index) {
+				if (data[10] == getTodayDate()) {
+					$("td", row).css("background-color", "#FEBE8C");
+				} else if (data[10] < getTodayDate()) {
+					$("td", row).css("background-color", "#e97677");
+				}
+			},
 			footerCallback: function (row, data, start, end, display) {},
 		});
 	}
@@ -842,6 +883,15 @@ define([
 		var hours = customPadStart(now.getUTCHours().toString(), 2, "0");
 		var minutes = customPadStart(now.getUTCMinutes().toString(), 2, "0");
 		return day + "/" + month + "/" + year + " " + hours + ":" + minutes;
+	}
+
+	function getTodayDate() {
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = customPadStart((today.getMonth() + 1).toString(), 2, "0");
+		var day = customPadStart(today.getDate().toString(), 2, "0");
+
+		return year + "-" + month + "-" + day;
 	}
 
 	/**

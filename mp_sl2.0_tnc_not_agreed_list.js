@@ -77,6 +77,8 @@ define([
 
 			inlineHtml +=
 				"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;} .tableVerticalAlign{vertical-align: middle !important;} .tableAlignTextCenter{text-align: center !important;} .buttonShadow{border-radius:30px;background:#fff;box-shadow:18px 18px 36px #a3a3a3,-18px -18px 36px #fff}</style>";
+			var completeTaskIcon =
+				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#5cb85c' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
 
 			//Loading Section that gets displayed when the page is being loaded
 			inlineHtml += loadingSection();
@@ -87,7 +89,7 @@ define([
 			inlineHtml +=
 				'<div class="container instruction_div hide" style="background-color: #F6F8F9FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b>Purpose</b>: This page list down customers that have not accepted the T&C\'s with a commencement date on or after 1st September 2024.</br><ol><li><b>INITIAL CUSTOMER LIST</b>: Tab shows the list of customers that have not accepted the T&C\'s and no reminder Email/SMS has been sent out or task been setup for the Sales Rep<ul><li><b>' +
 				scheduleTaskIcon +
-				" REMINDER EMAIL/SMS & SCHEDULE TASK</b>: Click this button to send out a reminder Email and SMS to the customer to accept the T&C's. This will also setup a task for the Sales Rep to followup.</li></ul></li><li><b>EMAIL/SMS SENT & TASK SETUP</b>: Tab shows the list of customers for which the reminder email has been sent out and task created for the Sales Rep</li></ol></div>";
+				" REMINDER EMAIL/SMS & SCHEDULE TASK</b>: Click this button to send out a reminder Email and SMS to the customer to accept the T&C's. This will also setup a task for the Sales Rep to followup.</li></ul></li><li><b>EMAIL/SMS SENT & TASK SETUP</b>: Tab shows the list of customers for which the reminder email has been sent out and task created for the Sales Rep. </br></li></ol><b><i style='color: red;'>If the commencement date is earlier than today's date, the row is highlighted in red. If the commencement date is the same as today's date, the row is highlighted in orange.</i></b></div>";
 
 			inlineHtml += spacing();
 
@@ -112,6 +114,8 @@ define([
 
 			var scheduleTaskIcon =
 				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Send Reminder Email/SMS to Customer and Setup Task for Sales Rep</title><g id='mail_send_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#FFFFFFFF' d='M20 4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-1h2v1h16V7.423l-6.935 6.935a1.5 1.5 0 0 1-2.121 0L4 7.414V8H2V6a2 2 0 0 1 2-2zM6 13a1 1 0 0 1 .117 1.993L6 15H1a1 1 0 0 1-.117-1.993L1 13zm-1-3a1 1 0 1 1 0 2H2a1 1 0 1 1 0-2z'/></g></svg>";
+			var completeTaskIcon =
+				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Complete Task</title><g id='check_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#F6F8F9FF' d='M21.546 5.111a1.5 1.5 0 0 1 0 2.121L10.303 18.475a1.6 1.6 0 0 1-2.263 0L2.454 12.89a1.5 1.5 0 1 1 2.121-2.121l4.596 4.596L19.424 5.111a1.5 1.5 0 0 1 2.122 0'/></g></svg>";
 
 			var count = 0;
 
@@ -358,9 +362,19 @@ define([
 						customerListTNCNotAcceptedTableHTML +=
 							"<td class='tableVerticalAlign'>" + commDate + "</td></tr>";
 					} else {
-						//Create the Table Rows for the Unqualified Leads.
-						customerListTNCNotAcceptedTaskSetupTableHTML +=
-							'<tr><td class="tableVerticalAlign"></td>'; //0
+						if (taskStatus == "Completed") {
+							//Create the Table Rows for the Unqualified Leads.
+							customerListTNCNotAcceptedTaskSetupTableHTML +=
+								'<tr><td class="tableVerticalAlign"></td>';
+						} else {
+							//Create the Table Rows for the Unqualified Leads.
+							customerListTNCNotAcceptedTaskSetupTableHTML +=
+								'<tr><td class="tableVerticalAlign"><button class="form-control btn btn-xs btn-success" style="cursor: not-allowed !important;width: fit-content;border-radius: 30px;"><a data-id="' +
+								taskInternalId +
+								'" data-type="completed" class="taskCompleted" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+								completeTaskIcon +
+								"</a></button></td>";
+						}
 
 						customerListTNCNotAcceptedTaskSetupTableHTML +=
 							"<td class='tableVerticalAlign'>" + custInternalID + "</td>"; //1
@@ -626,16 +640,16 @@ define([
 		});
 		var [year, month, day] = date.split("-");
 		var inputDate = new Date(year, month - 1, day);
-        var today = new Date();
-        log.debug({
-            title: 'inside calculatedaysbetween > today',
-            details: today
-        })
-        today.setHours(today.getHours() + 11);
-        log.debug({
-            title: 'inside calculatedaysbetween > today',
-            details: today
-        })
+		var today = new Date();
+		log.debug({
+			title: "inside calculatedaysbetween > today",
+			details: today,
+		});
+		today.setHours(today.getHours() + 11);
+		log.debug({
+			title: "inside calculatedaysbetween > today",
+			details: today,
+		});
 		// var inputDate = new Date(date);
 		var timeDifference = today - inputDate;
 		var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -645,7 +659,6 @@ define([
 		});
 		return daysDifference;
 	}
-
 
 	function convertDateTimeToYYYYMMDD(dateTime) {
 		var datePart = dateTime.split(" ")[0];
