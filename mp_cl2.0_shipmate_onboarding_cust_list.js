@@ -385,7 +385,7 @@ define([
 			console.log("inside create note modal");
 			var customerInternalID = $("#customer_id").val();
 
-			if (isNullorEmpty($(".userNote").val())) { 
+			if (isNullorEmpty($(".userNote").val())) {
 				alert("Please enter the note");
 				return false;
 			}
@@ -443,7 +443,7 @@ define([
 			var customerInternalID = $("#customer_id").val();
 			var taskInternalId = $("#task_id").val();
 
-			if (isNullorEmpty($(".cancelOnboardingNotes").val())) { 
+			if (isNullorEmpty($(".cancelOnboardingNotes").val())) {
 				alert("Please enter the reason for cancelling the onboarding");
 				return false;
 			}
@@ -754,16 +754,16 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Express", //9
+					title: "First Week Usage", //9
 				},
 				{
-					title: "Premium", //10
+					title: "Last Week Usage", //10
 				},
 				{
-					title: "Standard", //11
+					title: "Weeks of Usage", //11
 				},
 				{
-					title: "Total", //12
+					title: "Average Weekly Usage", //12
 				},
 				{
 					title: "Task Date", //13
@@ -898,16 +898,16 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Express", //9
+					title: "First Week Usage", //9
 				},
 				{
-					title: "Premium", //10
+					title: "Last Week Usage", //10
 				},
 				{
-					title: "Standard", //11
+					title: "Weeks of Usage", //11
 				},
 				{
-					title: "Total", //12
+					title: "Average Weekly Usage", //12
 				},
 				{
 					title: "Task Date", //13
@@ -1042,16 +1042,16 @@ define([
 					title: "Commencement Date", //8
 				},
 				{
-					title: "Express", //9
+					title: "First Week Usage", //9
 				},
 				{
-					title: "Premium", //10
+					title: "Last Week Usage", //10
 				},
 				{
-					title: "Standard", //11
+					title: "Weeks of Usage", //11
 				},
 				{
-					title: "Total", //12
+					title: "Average Weekly Usage", //12
 				},
 				{
 					title: "Task Date", //13
@@ -1245,8 +1245,6 @@ define([
 					fieldId: "custrecord_comm_date",
 				});
 
-				console.log("dateEffective", Date(dateEffective));
-
 				var today = new Date(dateEffective);
 				today.setHours(today.getHours() + 11);
 
@@ -1305,7 +1303,6 @@ define([
 								name: "duedate",
 								join: "task",
 							});
-						console.log("taskDueDate", taskDueDate);
 						taskDueDate = convertDateToYYYYMMDD(taskDueDate);
 
 						taskTime =
@@ -1348,20 +1345,76 @@ define([
 						return true;
 					});
 
-				// All MP Products - Total Customer Usage
-				var mpProdsScansPerCustomerSearch = search.load({
-					type: "customrecord_customer_product_stock",
-					id: "customsearch_prod_stock_usage_report___4",
+				console.log("custInternalID: " + custInternalID);
+				console.log("custName: " + custName);
+
+				var customer_record = record.load({
+					type: "customer",
+					id: parseInt(custInternalID),
 				});
 
-				mpProdsScansPerCustomerSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custrecord_cust_prod_stock_customer",
-						operator: search.Operator.ANYOF,
-						values: parseInt(custInternalID),
-					})
-				);
+				var mpProdWeeklyUsage = customer_record.getValue({
+					fieldId: "custentity_actual_mpex_weekly_usage",
+				});
+				console.log("mpProdWeeklyUsage: " + mpProdWeeklyUsage);
+
+				var firstWeekofUsage = "";
+				var lastWeekofUsage = "";
+				var lastWeekUsageCount = 0;
+				var avgWeeklyUsageCount = 0;
+				var noOfWeeks = 0;
+				var tempTotal = 0;
+
+				if (!isNullorEmpty(mpProdWeeklyUsage)) {
+					var parsedUsage = JSON.parse(mpProdWeeklyUsage);
+					noOfWeeks = parsedUsage["Usage"].length;
+					for (var x = 0; x < parsedUsage["Usage"].length; x++) {
+						var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
+
+						if (x == 0) {
+							firstWeekofUsage =
+								"Week Starting: " +
+								parts[2] +
+								"-" +
+								("0" + parts[1]).slice(-2) +
+								"-" +
+								("0" + parts[0]).slice(-2) +
+								"</br> Usage: " +
+								parsedUsage["Usage"][x]["Count"];
+						}
+
+						if (x == parsedUsage["Usage"].length - 1) {
+							lastWeekofUsage =
+								"Week Starting: " +
+								parts[2] +
+								"-" +
+								("0" + parts[1]).slice(-2) +
+								"-" +
+								("0" + parts[0]).slice(-2) +
+								"</br>Usage: " +
+								parsedUsage["Usage"][x]["Count"];
+							lastWeekUsageCount = parseInt(parsedUsage["Usage"][x]["Count"]);
+						}
+
+						tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
+					}
+					avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(2);
+				}
+
+				// All MP Products - Total Customer Usage
+				// var mpProdsScansPerCustomerSearch = search.load({
+				// 	type: "customrecord_customer_product_stock",
+				// 	id: "customsearch_prod_stock_usage_report___4",
+				// });
+
+				// mpProdsScansPerCustomerSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "internalid",
+				// 		join: "custrecord_cust_prod_stock_customer",
+				// 		operator: search.Operator.ANYOF,
+				// 		values: parseInt(custInternalID),
+				// 	})
+				// );
 
 				var count3 = 0;
 				var oldCustomerId = null;
@@ -1374,78 +1427,78 @@ define([
 				var sendle_au_express_cust_usage = 0;
 				var total_usage_cust_usage = 0;
 
-				mpProdsScansPerCustomerSearch
-					.run()
-					.each(function (mpProdsScansPerCustomerSearchSet) {
-						var customerId = mpProdsScansPerCustomerSearchSet.getValue({
-							name: "custrecord_cust_prod_stock_customer",
-							summary: "GROUP",
-						});
+				// mpProdsScansPerCustomerSearch
+				// 	.run()
+				// 	.each(function (mpProdsScansPerCustomerSearchSet) {
+				// 		var customerId = mpProdsScansPerCustomerSearchSet.getValue({
+				// 			name: "custrecord_cust_prod_stock_customer",
+				// 			summary: "GROUP",
+				// 		});
 
-						var customerName = mpProdsScansPerCustomerSearchSet.getText({
-							name: "custrecord_cust_prod_stock_customer",
-							summary: "GROUP",
-						});
+				// 		var customerName = mpProdsScansPerCustomerSearchSet.getText({
+				// 			name: "custrecord_cust_prod_stock_customer",
+				// 			summary: "GROUP",
+				// 		});
 
-						var franchiseeName = mpProdsScansPerCustomerSearchSet.getText({
-							name: "partner",
-							join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
-							summary: "GROUP",
-						});
+				// 		var franchiseeName = mpProdsScansPerCustomerSearchSet.getText({
+				// 			name: "partner",
+				// 			join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
+				// 			summary: "GROUP",
+				// 		});
 
-						var deliverySpeed = mpProdsScansPerCustomerSearchSet.getValue({
-							name: "custrecord_delivery_speed",
-							summary: "GROUP",
-						});
-						var deliverySpeedText = mpProdsScansPerCustomerSearchSet.getText({
-							name: "custrecord_delivery_speed",
-							summary: "GROUP",
-						});
+				// 		var deliverySpeed = mpProdsScansPerCustomerSearchSet.getValue({
+				// 			name: "custrecord_delivery_speed",
+				// 			summary: "GROUP",
+				// 		});
+				// 		var deliverySpeedText = mpProdsScansPerCustomerSearchSet.getText({
+				// 			name: "custrecord_delivery_speed",
+				// 			summary: "GROUP",
+				// 		});
 
-						var integration = mpProdsScansPerCustomerSearchSet.getValue({
-							name: "custrecord_integration",
-							summary: "GROUP",
-						});
-						var integrationText = mpProdsScansPerCustomerSearchSet.getText({
-							name: "custrecord_integration",
-							summary: "GROUP",
-						});
+				// 		var integration = mpProdsScansPerCustomerSearchSet.getValue({
+				// 			name: "custrecord_integration",
+				// 			summary: "GROUP",
+				// 		});
+				// 		var integrationText = mpProdsScansPerCustomerSearchSet.getText({
+				// 			name: "custrecord_integration",
+				// 			summary: "GROUP",
+				// 		});
 
-						var mpexUsage = parseInt(
-							mpProdsScansPerCustomerSearchSet.getValue({
-								name: "name",
-								summary: "COUNT",
-							})
-						);
+				// 		var mpexUsage = parseInt(
+				// 			mpProdsScansPerCustomerSearchSet.getValue({
+				// 				name: "name",
+				// 				summary: "COUNT",
+				// 			})
+				// 		);
 
-						if (integrationText == "- None -") {
-							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-								express_speed_cust_usage = mpexUsage;
-							} else if (deliverySpeed == 4) {
-								premium_speed_cust_usage = mpexUsage;
-							}
-						} else if (integrationText == "Sendle") {
-							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-								// sendle_au_express_cust_usage = mpexUsage;
-							} else if (deliverySpeed == 1) {
-								standard_speed_cust_usage = mpexUsage;
-							}
-						} else if (integrationText == "API Integration") {
-							if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-								sendle_au_express_cust_usage = mpexUsage;
-							} else if (deliverySpeed == 1) {
-								standard_speed_cust_usage = mpexUsage;
-							}
-						}
+				// 		if (integrationText == "- None -") {
+				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+				// 				express_speed_cust_usage = mpexUsage;
+				// 			} else if (deliverySpeed == 4) {
+				// 				premium_speed_cust_usage = mpexUsage;
+				// 			}
+				// 		} else if (integrationText == "Sendle") {
+				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+				// 				// sendle_au_express_cust_usage = mpexUsage;
+				// 			} else if (deliverySpeed == 1) {
+				// 				standard_speed_cust_usage = mpexUsage;
+				// 			}
+				// 		} else if (integrationText == "API Integration") {
+				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
+				// 				sendle_au_express_cust_usage = mpexUsage;
+				// 			} else if (deliverySpeed == 1) {
+				// 				standard_speed_cust_usage = mpexUsage;
+				// 			}
+				// 		}
 
-						total_usage_cust_usage =
-							express_speed_cust_usage +
-							standard_speed_cust_usage +
-							sendle_au_express_cust_usage +
-							premium_speed_cust_usage;
+				// 		total_usage_cust_usage =
+				// 			express_speed_cust_usage +
+				// 			standard_speed_cust_usage +
+				// 			sendle_au_express_cust_usage +
+				// 			premium_speed_cust_usage;
 
-						return true;
-					});
+				// 		return true;
+				// 	});
 
 				if (taskStatus == "") {
 					debt_set_requested.push({
@@ -1471,6 +1524,10 @@ define([
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
 						total_usage_cust_usage: total_usage_cust_usage,
+						firstWeekofUsage: firstWeekofUsage,
+						lastWeekofUsage: lastWeekofUsage,
+						noOfWeeks: noOfWeeks,
+						avgWeeklyUsageCount: avgWeeklyUsageCount,
 					});
 				} else if (taskStatus == "Not Started") {
 					debt_set_scheduled.push({
@@ -1496,6 +1553,10 @@ define([
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
 						total_usage_cust_usage: total_usage_cust_usage,
+						firstWeekofUsage: firstWeekofUsage,
+						lastWeekofUsage: lastWeekofUsage,
+						noOfWeeks: noOfWeeks,
+						avgWeeklyUsageCount: avgWeeklyUsageCount,
 					});
 				} else if (taskStatus == "Completed") {
 					debt_set_completed.push({
@@ -1521,6 +1582,10 @@ define([
 						premium_speed_cust_usage: premium_speed_cust_usage,
 						standard_speed_cust_usage: standard_speed_cust_usage,
 						total_usage_cust_usage: total_usage_cust_usage,
+						firstWeekofUsage: firstWeekofUsage,
+						lastWeekofUsage: lastWeekofUsage,
+						noOfWeeks: noOfWeeks,
+						avgWeeklyUsageCount: avgWeeklyUsageCount,
 					});
 					if (taskCancelled == "Yes") {
 						taskCancelledCount++;
@@ -1628,52 +1693,52 @@ define([
 					"</b></a>";
 
 				//Search Name: User Notes - Signed Customers
-				var customerSignedUserNotesSearch = search.load({
-					type: "customer",
-					id: "customsearch_user_notes_signed_customers",
-				});
-				customerSignedUserNotesSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: null,
-						operator: search.Operator.IS,
-						values: debt_row.custInternalID,
-					})
-				);
-				customerSignedUserNotesSearch
-					.run()
-					.each(function (customerSignedUserNotesSearchResultSet) {
-						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "notedate",
-								join: "userNotes",
-							}
-						);
-						var userNotesAuthor =
-							customerSignedUserNotesSearchResultSet.getText({
-								name: "author",
-								join: "userNotes",
-							});
-						var userNotesTitle =
-							customerSignedUserNotesSearchResultSet.getValue({
-								name: "title",
-								join: "userNotes",
-							});
-						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "note",
-								join: "userNotes",
-							}
-						);
+				// var customerSignedUserNotesSearch = search.load({
+				// 	type: "customer",
+				// 	id: "customsearch_user_notes_signed_customers",
+				// });
+				// customerSignedUserNotesSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "internalid",
+				// 		join: null,
+				// 		operator: search.Operator.IS,
+				// 		values: debt_row.custInternalID,
+				// 	})
+				// );
+				// customerSignedUserNotesSearch
+				// 	.run()
+				// 	.each(function (customerSignedUserNotesSearchResultSet) {
+				// 		var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "notedate",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
+				// 		var userNotesAuthor =
+				// 			customerSignedUserNotesSearchResultSet.getText({
+				// 				name: "author",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesTitle =
+				// 			customerSignedUserNotesSearchResultSet.getValue({
+				// 				name: "title",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "note",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
 
-						childCustomerUserNotes.push({
-							userNotesDate: userNotesDate,
-							userNotesAuthor: userNotesAuthor,
-							userNotesTitle: userNotesTitle,
-							userNotesNote: userNotesNote,
-						});
-						return true;
-					});
+				// 		childCustomerUserNotes.push({
+				// 			userNotesDate: userNotesDate,
+				// 			userNotesAuthor: userNotesAuthor,
+				// 			userNotesTitle: userNotesTitle,
+				// 			userNotesNote: userNotesNote,
+				// 		});
+				// 		return true;
+				// 	});
 
 				debtDataSetRequested.push([
 					"",
@@ -1685,10 +1750,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
-					debt_row.express_speed_cust_usage,
-					debt_row.premium_speed_cust_usage,
-					debt_row.standard_speed_cust_usage,
-					debt_row.total_usage_cust_usage,
+					debt_row.firstWeekofUsage,
+					debt_row.lastWeekofUsage,
+					debt_row.noOfWeeks,
+					debt_row.avgWeeklyUsageCount,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1704,8 +1769,6 @@ define([
 		datatableRequested.rows.add(debtDataSetRequested);
 		datatableRequested.draw();
 
-		console.log("debtDataSetRequested", debtDataSetRequested);
-		console.log("childCustomerUserNotes", childCustomerUserNotes);
 
 		datatableRequested.rows().every(function () {
 			// this.child(format(this.data())).show();
@@ -1800,52 +1863,52 @@ define([
 					"</b></a>";
 
 				//Search Name: User Notes - Signed Customers
-				var customerSignedUserNotesSearch = search.load({
-					type: "customer",
-					id: "customsearch_user_notes_signed_customers",
-				});
-				customerSignedUserNotesSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: null,
-						operator: search.Operator.IS,
-						values: debt_row.custInternalID,
-					})
-				);
-				customerSignedUserNotesSearch
-					.run()
-					.each(function (customerSignedUserNotesSearchResultSet) {
-						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "notedate",
-								join: "userNotes",
-							}
-						);
-						var userNotesAuthor =
-							customerSignedUserNotesSearchResultSet.getText({
-								name: "author",
-								join: "userNotes",
-							});
-						var userNotesTitle =
-							customerSignedUserNotesSearchResultSet.getValue({
-								name: "title",
-								join: "userNotes",
-							});
-						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "note",
-								join: "userNotes",
-							}
-						);
+				// var customerSignedUserNotesSearch = search.load({
+				// 	type: "customer",
+				// 	id: "customsearch_user_notes_signed_customers",
+				// });
+				// customerSignedUserNotesSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "internalid",
+				// 		join: null,
+				// 		operator: search.Operator.IS,
+				// 		values: debt_row.custInternalID,
+				// 	})
+				// );
+				// customerSignedUserNotesSearch
+				// 	.run()
+				// 	.each(function (customerSignedUserNotesSearchResultSet) {
+				// 		var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "notedate",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
+				// 		var userNotesAuthor =
+				// 			customerSignedUserNotesSearchResultSet.getText({
+				// 				name: "author",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesTitle =
+				// 			customerSignedUserNotesSearchResultSet.getValue({
+				// 				name: "title",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "note",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
 
-						childCustomerUserNotes.push({
-							userNotesDate: userNotesDate,
-							userNotesAuthor: userNotesAuthor,
-							userNotesTitle: userNotesTitle,
-							userNotesNote: userNotesNote,
-						});
-						return true;
-					});
+				// 		childCustomerUserNotes.push({
+				// 			userNotesDate: userNotesDate,
+				// 			userNotesAuthor: userNotesAuthor,
+				// 			userNotesTitle: userNotesTitle,
+				// 			userNotesNote: userNotesNote,
+				// 		});
+				// 		return true;
+				// 	});
 
 				debtDataSetScheduled.push([
 					"",
@@ -1857,10 +1920,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
-					debt_row.express_speed_cust_usage,
-					debt_row.premium_speed_cust_usage,
-					debt_row.standard_speed_cust_usage,
-					debt_row.total_usage_cust_usage,
+					debt_row.firstWeekofUsage,
+					debt_row.lastWeekofUsage,
+					debt_row.noOfWeeks,
+					debt_row.avgWeeklyUsageCount,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -1876,8 +1939,6 @@ define([
 		dataTableSceduled.rows.add(debtDataSetScheduled);
 		dataTableSceduled.draw();
 
-		console.log("dataTableSceduled", dataTableSceduled);
-		console.log("childCustomerUserNotes", childCustomerUserNotes);
 
 		dataTableSceduled.rows().every(function () {
 			// this.child(format(this.data())).show();
@@ -1958,52 +2019,52 @@ define([
 					"</b></a>";
 
 				//Search Name: User Notes - Signed Customers
-				var customerSignedUserNotesSearch = search.load({
-					type: "customer",
-					id: "customsearch_user_notes_signed_customers",
-				});
-				customerSignedUserNotesSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: null,
-						operator: search.Operator.IS,
-						values: debt_row.custInternalID,
-					})
-				);
-				customerSignedUserNotesSearch
-					.run()
-					.each(function (customerSignedUserNotesSearchResultSet) {
-						var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "notedate",
-								join: "userNotes",
-							}
-						);
-						var userNotesAuthor =
-							customerSignedUserNotesSearchResultSet.getText({
-								name: "author",
-								join: "userNotes",
-							});
-						var userNotesTitle =
-							customerSignedUserNotesSearchResultSet.getValue({
-								name: "title",
-								join: "userNotes",
-							});
-						var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
-							{
-								name: "note",
-								join: "userNotes",
-							}
-						);
+				// var customerSignedUserNotesSearch = search.load({
+				// 	type: "customer",
+				// 	id: "customsearch_user_notes_signed_customers",
+				// });
+				// customerSignedUserNotesSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "internalid",
+				// 		join: null,
+				// 		operator: search.Operator.IS,
+				// 		values: debt_row.custInternalID,
+				// 	})
+				// );
+				// customerSignedUserNotesSearch
+				// 	.run()
+				// 	.each(function (customerSignedUserNotesSearchResultSet) {
+				// 		var userNotesDate = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "notedate",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
+				// 		var userNotesAuthor =
+				// 			customerSignedUserNotesSearchResultSet.getText({
+				// 				name: "author",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesTitle =
+				// 			customerSignedUserNotesSearchResultSet.getValue({
+				// 				name: "title",
+				// 				join: "userNotes",
+				// 			});
+				// 		var userNotesNote = customerSignedUserNotesSearchResultSet.getValue(
+				// 			{
+				// 				name: "note",
+				// 				join: "userNotes",
+				// 			}
+				// 		);
 
-						childCustomerUserNotes.push({
-							userNotesDate: userNotesDate,
-							userNotesAuthor: userNotesAuthor,
-							userNotesTitle: userNotesTitle,
-							userNotesNote: userNotesNote,
-						});
-						return true;
-					});
+				// 		childCustomerUserNotes.push({
+				// 			userNotesDate: userNotesDate,
+				// 			userNotesAuthor: userNotesAuthor,
+				// 			userNotesTitle: userNotesTitle,
+				// 			userNotesNote: userNotesNote,
+				// 		});
+				// 		return true;
+				// 	});
 
 				debtDataSetCompleted.push([
 					"",
@@ -2015,10 +2076,10 @@ define([
 					debt_row.phone,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
-					debt_row.express_speed_cust_usage,
-					debt_row.premium_speed_cust_usage,
-					debt_row.standard_speed_cust_usage,
-					debt_row.total_usage_cust_usage,
+					debt_row.firstWeekofUsage,
+					debt_row.lastWeekofUsage,
+					debt_row.noOfWeeks,
+					debt_row.avgWeeklyUsageCount,
 					debt_row.taskDueDate,
 					debt_row.taskTime,
 					debt_row.salesRepAssignedText,
@@ -2035,8 +2096,6 @@ define([
 		dataTableCompleted.rows.add(debtDataSetCompleted);
 		dataTableCompleted.draw();
 
-		console.log("dataTableCompleted", dataTableCompleted);
-		console.log("childCustomerUserNotes", childCustomerUserNotes);
 
 		dataTableCompleted.rows().every(function () {
 			// this.child(format(this.data())).show();
@@ -2294,12 +2353,10 @@ define([
 	function saveRecord() {}
 
 	function formatDate(testDate) {
-		console.log("testDate: " + testDate);
 		var responseDate = format.format({
 			value: testDate,
 			type: format.Type.DATE,
 		});
-		console.log("responseDate: " + responseDate);
 		return responseDate;
 	}
 

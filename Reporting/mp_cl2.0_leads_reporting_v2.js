@@ -13268,7 +13268,8 @@ define([
 			lead_source == 282085 ||
 			lead_source == 281559 ||
 			sales_campaign == 69 ||
-			sales_campaign == 76
+			sales_campaign == 76 ||
+			sales_campaign == 84
 		) {
 			if (role == 1000) {
 				// Sales Dashboard - LPO New Leads by Status - Monthly Reporting
