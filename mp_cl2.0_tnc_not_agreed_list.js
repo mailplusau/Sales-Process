@@ -216,7 +216,7 @@ define([
 				});
 
 				var tncLink =
-					"https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=1691&deploy=1&compid=1048144&ns-at=AAEJ7tMQyfjW_zd73TI9xN0dtYrMz5CVSZiOimJE-xwIQ7z1GxI&custinternalid=" +
+					"https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=1959&deploy=1&compid=1048144&ns-at=AAEJ7tMQCuxUJvJ4RvyaI99vrX6kaBIKkbBebvVixmguZdaobdA&custinternalid=" +
 					customerInternalID;
 
 				var smsMessage =
