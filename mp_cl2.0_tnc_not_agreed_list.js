@@ -278,27 +278,64 @@ define([
 					type: "task",
 				});
 				var date = new Date();
+				var startDate = new Date();
+				var endDate = new Date();
+
+				format.format({
+					value: startDate,
+					type: format.Type.DATE,
+					timezone: format.Timezone.AUSTRALIA_SYDNEY,
+				});
+
+
+				format.format({
+					value: endDate,
+					type: format.Type.DATE,
+					timezone: format.Timezone.AUSTRALIA_SYDNEY,
+				});
+
+				var currentTime = getCurrentTime();
+				console.log("Date: " + date);
+				console.log("startDate: " + startDate);
+				console.log("endDate: " + endDate);
+				
+
+				var currentTimeSplit = currentTime.split(":");
+
+				// startDate.setHours(currentTimeSplit[0], currentTimeSplit[1], 0, 0);
+				endDate.setHours(
+					startDate.getHours(),
+					startDate.getMinutes() + 15,
+					0,
+					0
+				);
 				format.format({
 					value: date,
 					type: format.Type.DATE,
 					timezone: format.Timezone.AUSTRALIA_SYDNEY,
 				});
+
+				console.log("startDate: " + startDate);
+				console.log("endDate: " + endDate);
+
+				// return false;
 				task_record.setValue({
 					fieldId: "duedate",
 					value: date,
 				});
+
 				task_record.setValue({
-					fieldId: "sendemail",
+					fieldId: "timedevent",
 					value: true,
 				});
 
 				task_record.setValue({
-					fieldId: "remindertype",
-					value: "EMAIL",
+					fieldId: "starttime",
+					value: startDate,
 				});
 				task_record.setValue({
-					fieldId: "reminderminutes",
-					value: "60",
+					fieldId: "endtime",
+					value: endDate,
 				});
 
 				task_record.setValue({
@@ -871,6 +908,17 @@ define([
 		// Regular expression to match Australian mobile numbers
 		var australianMobileNumberPattern = /^04\d{8}$/;
 		return australianMobileNumberPattern.test(phoneNumber);
+	}
+
+	function getCurrentTime() {
+		var now = new Date();
+		// now.setHours(now.getUTCHours() + 11);
+		// var day = customPadStart(now.getDate().toString(), 2, "0");
+		// var month = customPadStart((now.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
+		// var year = now.getFullYear();
+		var hours = customPadStart(now.getUTCHours().toString(), 2, "0");
+		var minutes = customPadStart(now.getUTCMinutes().toString(), 2, "0");
+		return hours + ":" + minutes;
 	}
 
 	// Function to get current date and time in "dd/mm/yyyy HH:MM" format
