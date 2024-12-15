@@ -332,6 +332,10 @@ define([
 			// });
 
 			task_record.setValue({
+				fieldId: "startdate",
+				value: date,
+			});
+			task_record.setValue({
 				fieldId: "duedate",
 				value: date,
 			});

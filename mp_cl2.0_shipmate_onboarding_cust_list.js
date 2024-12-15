@@ -308,13 +308,17 @@ define([
 			// });
 
 			task_record.setValue({
-				fieldId: "duedate",
+				fieldId: "startdate",
 				value: date,
 			});
 			task_record.setValue({
-				fieldId: "sendemail",
-				value: true,
+				fieldId: "duedate",
+				value: date,
 			});
+			// task_record.setValue({
+			// 	fieldId: "sendemail",
+			// 	value: true,
+			// });
 			task_record.setValue({
 				fieldId: "timedevent",
 				value: true,
@@ -327,14 +331,14 @@ define([
 				fieldId: "endtime",
 				value: endTimeVar,
 			});
-			task_record.setValue({
-				fieldId: "remindertype",
-				value: "EMAIL",
-			});
-			task_record.setValue({
-				fieldId: "reminderminutes",
-				value: "60",
-			});
+			// task_record.setValue({
+			// 	fieldId: "remindertype",
+			// 	value: "EMAIL",
+			// });
+			// task_record.setValue({
+			// 	fieldId: "reminderminutes",
+			// 	value: "60",
+			// });
 
 			task_record.setValue({
 				fieldId: "company",
