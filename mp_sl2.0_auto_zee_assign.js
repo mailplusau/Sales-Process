@@ -592,7 +592,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                             //     });
                             // } 
 
-                            if (leadSource == 97943) {
+                            if (leadSource == 97943 || leadSource == 295896) {
 
                                 //Lead Source: Head Office Generated
 
