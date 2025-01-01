@@ -1352,15 +1352,15 @@ define([
 				console.log("custInternalID: " + custInternalID);
 				console.log("custName: " + custName);
 
-				var customer_record = record.load({
-					type: "customer",
-					id: parseInt(custInternalID),
-				});
+				// var customer_record = record.load({
+				// 	type: "customer",
+				// 	id: parseInt(custInternalID),
+				// });
 
-				var mpProdWeeklyUsage = customer_record.getValue({
-					fieldId: "custentity_actual_mpex_weekly_usage",
-				});
-				console.log("mpProdWeeklyUsage: " + mpProdWeeklyUsage);
+				// var mpProdWeeklyUsage = customer_record.getValue({
+				// 	fieldId: "custentity_actual_mpex_weekly_usage",
+				// });
+				// console.log("mpProdWeeklyUsage: " + mpProdWeeklyUsage);
 
 				var firstWeekofUsage = "";
 				var lastWeekofUsage = "";
@@ -1369,41 +1369,43 @@ define([
 				var noOfWeeks = 0;
 				var tempTotal = 0;
 
-				if (!isNullorEmpty(mpProdWeeklyUsage)) {
-					var parsedUsage = JSON.parse(mpProdWeeklyUsage);
-					noOfWeeks = parsedUsage["Usage"].length;
-					for (var x = 0; x < parsedUsage["Usage"].length; x++) {
-						var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
 
-						if (x == 0) {
-							firstWeekofUsage =
-								"Week Starting: " +
-								parts[2] +
-								"-" +
-								("0" + parts[1]).slice(-2) +
-								"-" +
-								("0" + parts[0]).slice(-2) +
-								"</br> Usage: " +
-								parsedUsage["Usage"][x]["Count"];
-						}
 
-						if (x == parsedUsage["Usage"].length - 1) {
-							lastWeekofUsage =
-								"Week Starting: " +
-								parts[2] +
-								"-" +
-								("0" + parts[1]).slice(-2) +
-								"-" +
-								("0" + parts[0]).slice(-2) +
-								"</br>Usage: " +
-								parsedUsage["Usage"][x]["Count"];
-							lastWeekUsageCount = parseInt(parsedUsage["Usage"][x]["Count"]);
-						}
+				// if (!isNullorEmpty(mpProdWeeklyUsage)) {
+				// 	var parsedUsage = JSON.parse(mpProdWeeklyUsage);
+				// 	noOfWeeks = parsedUsage["Usage"].length;
+				// 	for (var x = 0; x < parsedUsage["Usage"].length; x++) {
+				// 		var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
 
-						tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
-					}
-					avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(2);
-				}
+				// 		if (x == 0) {
+				// 			firstWeekofUsage =
+				// 				"Week Starting: " +
+				// 				parts[2] +
+				// 				"-" +
+				// 				("0" + parts[1]).slice(-2) +
+				// 				"-" +
+				// 				("0" + parts[0]).slice(-2) +
+				// 				"</br> Usage: " +
+				// 				parsedUsage["Usage"][x]["Count"];
+				// 		}
+
+				// 		if (x == parsedUsage["Usage"].length - 1) {
+				// 			lastWeekofUsage =
+				// 				"Week Starting: " +
+				// 				parts[2] +
+				// 				"-" +
+				// 				("0" + parts[1]).slice(-2) +
+				// 				"-" +
+				// 				("0" + parts[0]).slice(-2) +
+				// 				"</br>Usage: " +
+				// 				parsedUsage["Usage"][x]["Count"];
+				// 			lastWeekUsageCount = parseInt(parsedUsage["Usage"][x]["Count"]);
+				// 		}
+
+				// 		tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
+				// 	}
+				// 	avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(2);
+				// }
 
 				// All MP Products - Total Customer Usage
 				// var mpProdsScansPerCustomerSearch = search.load({
