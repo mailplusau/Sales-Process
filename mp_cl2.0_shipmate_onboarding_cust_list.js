@@ -1227,13 +1227,17 @@ define([
 					summary: "MAX",
 				});
 
-				var salesRecord = record.load({
-					type: "customrecord_sales",
-					id: salesRecordInternalID,
-				});
-				var lastAssigned = salesRecord.getText({
-					fieldId: "custrecord_sales_assigned",
-				});
+				if (isNullorEmpty(salesRecordInternalID)) {
+					var salesRecord = record.load({
+						type: "customrecord_sales",
+						id: salesRecordInternalID,
+					});
+					var lastAssigned = salesRecord.getText({
+						fieldId: "custrecord_sales_assigned",
+					});
+				} else {
+					var lastAssigned = "";
+				}
 
 				var commRegInternalID = salesCallUpsellTasksResultSet.getValue({
 					name: "internalid",
@@ -1241,22 +1245,25 @@ define([
 					summary: "MAX",
 				});
 
-				var commRegRecord = record.load({
-					type: "customrecord_commencement_register",
-					id: commRegInternalID,
-				});
-				var dateEffective = commRegRecord.getValue({
-					fieldId: "custrecord_comm_date",
-				});
+				if (isNullorEmpty(commRegInternalID)) {
+					var commRegRecord = record.load({
+						type: "customrecord_commencement_register",
+						id: commRegInternalID,
+					});
+					var dateEffective = commRegRecord.getValue({
+						fieldId: "custrecord_comm_date",
+					});
+					var today = new Date(dateEffective);
+					today.setHours(today.getHours() + 11);
 
-				var today = new Date(dateEffective);
-				today.setHours(today.getHours() + 11);
+					var year = today.getFullYear();
+					var month = customPadStart((today.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
+					var day = customPadStart(today.getDate().toString(), 2, "0");
 
-				var year = today.getFullYear();
-				var month = customPadStart((today.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
-				var day = customPadStart(today.getDate().toString(), 2, "0");
-
-				dateEffective = year + "-" + month + "-" + day;
+					dateEffective = year + "-" + month + "-" + day;
+				} else {
+					var dateEffective = "";
+				}
 
 				// console.log("dateEffective", Date(c));
 				// dateEffective = convertDateToYYYYMMDD(dateEffective);
@@ -1285,12 +1292,24 @@ define([
 				var taskCount = 0;
 				var taskNotes = "";
 				var taskCancelled = "No";
+				var mpProdWeeklyUsage = null;
+
+				var firstWeekofUsage = "";
+				var lastWeekofUsage = "";
+				var lastWeekUsageCount = 0;
+				var avgWeeklyUsageCount = 0;
+				var noOfWeeks = 0;
+				var tempTotal = 0;
 
 				shipMateOnboardingRequiredTaskCreatedSearch
 					.run()
 					.each(function (
 						shipMateOnboardingRequiredTaskCreatedSearchResultSet
 					) {
+						mpProdWeeklyUsage =
+							shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+								name: "custentity_actual_mpex_weekly_usage",
+							});
 						taskInternalId =
 							shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
 								name: "internalid",
@@ -1345,6 +1364,46 @@ define([
 							taskCancelled = "Yes";
 						}
 
+						if (!isNullorEmpty(mpProdWeeklyUsage)) {
+							var parsedUsage = JSON.parse(mpProdWeeklyUsage);
+							noOfWeeks = parsedUsage["Usage"].length;
+							for (var x = 0; x < parsedUsage["Usage"].length; x++) {
+								var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
+
+								if (x == 0) {
+									firstWeekofUsage =
+										"Week Starting: " +
+										parts[2] +
+										"-" +
+										("0" + parts[1]).slice(-2) +
+										"-" +
+										("0" + parts[0]).slice(-2) +
+										"</br> Usage: " +
+										parsedUsage["Usage"][x]["Count"];
+								}
+
+								if (x == parsedUsage["Usage"].length - 1) {
+									lastWeekofUsage =
+										"Week Starting: " +
+										parts[2] +
+										"-" +
+										("0" + parts[1]).slice(-2) +
+										"-" +
+										("0" + parts[0]).slice(-2) +
+										"</br>Usage: " +
+										parsedUsage["Usage"][x]["Count"];
+									lastWeekUsageCount = parseInt(
+										parsedUsage["Usage"][x]["Count"]
+									);
+								}
+
+								tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
+							}
+							avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(
+								2
+							);
+						}
+
 						taskCount++;
 						return true;
 					});
@@ -1362,66 +1421,6 @@ define([
 				// });
 				// console.log("mpProdWeeklyUsage: " + mpProdWeeklyUsage);
 
-				var firstWeekofUsage = "";
-				var lastWeekofUsage = "";
-				var lastWeekUsageCount = 0;
-				var avgWeeklyUsageCount = 0;
-				var noOfWeeks = 0;
-				var tempTotal = 0;
-
-
-
-				// if (!isNullorEmpty(mpProdWeeklyUsage)) {
-				// 	var parsedUsage = JSON.parse(mpProdWeeklyUsage);
-				// 	noOfWeeks = parsedUsage["Usage"].length;
-				// 	for (var x = 0; x < parsedUsage["Usage"].length; x++) {
-				// 		var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
-
-				// 		if (x == 0) {
-				// 			firstWeekofUsage =
-				// 				"Week Starting: " +
-				// 				parts[2] +
-				// 				"-" +
-				// 				("0" + parts[1]).slice(-2) +
-				// 				"-" +
-				// 				("0" + parts[0]).slice(-2) +
-				// 				"</br> Usage: " +
-				// 				parsedUsage["Usage"][x]["Count"];
-				// 		}
-
-				// 		if (x == parsedUsage["Usage"].length - 1) {
-				// 			lastWeekofUsage =
-				// 				"Week Starting: " +
-				// 				parts[2] +
-				// 				"-" +
-				// 				("0" + parts[1]).slice(-2) +
-				// 				"-" +
-				// 				("0" + parts[0]).slice(-2) +
-				// 				"</br>Usage: " +
-				// 				parsedUsage["Usage"][x]["Count"];
-				// 			lastWeekUsageCount = parseInt(parsedUsage["Usage"][x]["Count"]);
-				// 		}
-
-				// 		tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
-				// 	}
-				// 	avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(2);
-				// }
-
-				// All MP Products - Total Customer Usage
-				// var mpProdsScansPerCustomerSearch = search.load({
-				// 	type: "customrecord_customer_product_stock",
-				// 	id: "customsearch_prod_stock_usage_report___4",
-				// });
-
-				// mpProdsScansPerCustomerSearch.filters.push(
-				// 	search.createFilter({
-				// 		name: "internalid",
-				// 		join: "custrecord_cust_prod_stock_customer",
-				// 		operator: search.Operator.ANYOF,
-				// 		values: parseInt(custInternalID),
-				// 	})
-				// );
-
 				var count3 = 0;
 				var oldCustomerId = null;
 				var oldCustomerName = null;
@@ -1433,78 +1432,6 @@ define([
 				var sendle_au_express_cust_usage = 0;
 				var total_usage_cust_usage = 0;
 
-				// mpProdsScansPerCustomerSearch
-				// 	.run()
-				// 	.each(function (mpProdsScansPerCustomerSearchSet) {
-				// 		var customerId = mpProdsScansPerCustomerSearchSet.getValue({
-				// 			name: "custrecord_cust_prod_stock_customer",
-				// 			summary: "GROUP",
-				// 		});
-
-				// 		var customerName = mpProdsScansPerCustomerSearchSet.getText({
-				// 			name: "custrecord_cust_prod_stock_customer",
-				// 			summary: "GROUP",
-				// 		});
-
-				// 		var franchiseeName = mpProdsScansPerCustomerSearchSet.getText({
-				// 			name: "partner",
-				// 			join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
-				// 			summary: "GROUP",
-				// 		});
-
-				// 		var deliverySpeed = mpProdsScansPerCustomerSearchSet.getValue({
-				// 			name: "custrecord_delivery_speed",
-				// 			summary: "GROUP",
-				// 		});
-				// 		var deliverySpeedText = mpProdsScansPerCustomerSearchSet.getText({
-				// 			name: "custrecord_delivery_speed",
-				// 			summary: "GROUP",
-				// 		});
-
-				// 		var integration = mpProdsScansPerCustomerSearchSet.getValue({
-				// 			name: "custrecord_integration",
-				// 			summary: "GROUP",
-				// 		});
-				// 		var integrationText = mpProdsScansPerCustomerSearchSet.getText({
-				// 			name: "custrecord_integration",
-				// 			summary: "GROUP",
-				// 		});
-
-				// 		var mpexUsage = parseInt(
-				// 			mpProdsScansPerCustomerSearchSet.getValue({
-				// 				name: "name",
-				// 				summary: "COUNT",
-				// 			})
-				// 		);
-
-				// 		if (integrationText == "- None -") {
-				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-				// 				express_speed_cust_usage = mpexUsage;
-				// 			} else if (deliverySpeed == 4) {
-				// 				premium_speed_cust_usage = mpexUsage;
-				// 			}
-				// 		} else if (integrationText == "Sendle") {
-				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-				// 				// sendle_au_express_cust_usage = mpexUsage;
-				// 			} else if (deliverySpeed == 1) {
-				// 				standard_speed_cust_usage = mpexUsage;
-				// 			}
-				// 		} else if (integrationText == "API Integration") {
-				// 			if (deliverySpeed == 2 || deliverySpeedText == "- None -") {
-				// 				sendle_au_express_cust_usage = mpexUsage;
-				// 			} else if (deliverySpeed == 1) {
-				// 				standard_speed_cust_usage = mpexUsage;
-				// 			}
-				// 		}
-
-				// 		total_usage_cust_usage =
-				// 			express_speed_cust_usage +
-				// 			standard_speed_cust_usage +
-				// 			sendle_au_express_cust_usage +
-				// 			premium_speed_cust_usage;
-
-				// 		return true;
-				// 	});
 
 				if (taskStatus == "") {
 					debt_set_requested.push({
@@ -1775,7 +1702,6 @@ define([
 		datatableRequested.rows.add(debtDataSetRequested);
 		datatableRequested.draw();
 
-
 		datatableRequested.rows().every(function () {
 			// this.child(format(this.data())).show();
 			this.child(createChildUserNotes(this)); // Add Child Tables
@@ -1945,7 +1871,6 @@ define([
 		dataTableSceduled.rows.add(debtDataSetScheduled);
 		dataTableSceduled.draw();
 
-
 		dataTableSceduled.rows().every(function () {
 			// this.child(format(this.data())).show();
 			this.child(createChildUserNotes(this)); // Add Child Tables
@@ -2101,7 +2026,6 @@ define([
 		dataTableCompleted.clear();
 		dataTableCompleted.rows.add(debtDataSetCompleted);
 		dataTableCompleted.draw();
-
 
 		dataTableCompleted.rows().every(function () {
 			// this.child(format(this.data())).show();
