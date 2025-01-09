@@ -328,6 +328,13 @@ define([
 							var lpoSuburbMappingJSON = partnerRecord.getValue({
 								fieldId: "custentity_ap_suburbs_json",
 							});
+							var zeeSalesRepAssigned = partnerRecord.getValue({
+								fieldId: "custentity_sales_rep_assigned",
+							});
+
+							if (isNullorEmpty(salesrepid)) {
+								salesrepid = zeeSalesRepAssigned;
+							}
 
 							if (role != 1032) {
 								if (
@@ -551,119 +558,13 @@ define([
 					} else if (salesRep == 668711) {
 						salesRepEmail = "lee.russell@mailplus.com.au";
 						salesRepName = "Lee Russell";
+					} else if (salesRep == 1862659) {
+						salesRepEmail = "leonie.feata@mailplus.com.au";
+						salesRepName = "Leonie Feata";
 					}
 
 					if (role != 1032) {
-						//Update 2024-08-01T01:58:55.342Z - LPO - Head Office Generated no longer a lead source.
-						// if (leadSource == 282051) {
-						//     //Lead Source: LPO - Head Office Generated
-
-						//     /*
-						//     Create Sales Record
-						//     Assign to BDM select via the LPO Profiler Page depending on the franchisee
-						//     Assign to LPO
-						//      */
-						//     var salesRecord = record.create({
-						//         type: 'customrecord_sales'
-						//     });
-
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_customer',
-						//         value: customerInternalId,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_campaign',
-						//         value: 69, //LPO
-						//     })
-
-						//     if (!isNullorEmpty(lpoLeadBDMAssigned)) {
-						//         salesRecord.setValue({
-						//             fieldId: 'custrecord_sales_assigned',
-						//             value: lpoLeadBDMAssigned,
-						//         })
-						//     } else {
-						//         salesRecord.setValue({
-						//             fieldId: 'custrecord_sales_assigned',
-						//             value: userId,
-						//         })
-						//     }
-
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_outcome',
-						//         value: 20,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_callbackdate',
-						//         value: date_now,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_callbacktime',
-						//         value: time_now,
-						//     })
-
-						//     salesRecord.save({
-						//         ignoreMandatoryFields: true
-						//     });
-						// }
-						//Update 2024-08-01T01:59:27.724Z - Lead Source: Sales Coordinator Generated no longer a lead source.
-						// if (leadSource == 282094) {
-						//     //Lead Source: Sales Coordinator Generated
-
-						//     /*
-						//     Create Sales Record
-						//     Assign to Sales Rep depending on the franchisee
-						//     Assign to Field Sales
-						//      */
-						//     var salesRecord = record.create({
-						//         type: 'customrecord_sales'
-						//     });
-
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_customer',
-						//         value: customerInternalId,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_campaign',
-						//         value: 62, //Field Sales
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_assigned',
-						//         value: salesRep, // Assign to Sales Rep
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_outcome',
-						//         value: 20,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_callbackdate',
-						//         value: date_now,
-						//     })
-						//     salesRecord.setValue({
-						//         fieldId: 'custrecord_sales_callbacktime',
-						//         value: time_now,
-						//     })
-
-						//     salesRecord.save({
-						//         ignoreMandatoryFields: true
-						//     });
-
-						//     var subject = 'Sales Coordinator Head Office Generated - ' + entity_id + ' ' + customer_name;
-						//     var cust_id_link =
-						//         'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						//         customerInternalId;
-						//     var body =
-						//         'New lead entered into the system by Sales Coordinator. \n Customer Name: ' +
-						//         entity_id + ' ' + customer_name + '\nLink: ' + cust_id_link + '\nFranchisee: ' + zee_text;
-
-						//     email.send({
-						//         author: 112209,
-						//         body: body,
-						//         recipients: salesRepEmail, // Email to Sales Rep
-						//         subject: subject,
-						//         cc: ['luke.forbes@mailplus.com.au', 'belinda.urbani@mailplus.com.au'],
-						//         relatedRecords: { entityId: customerInternalId }
-						//     });
-						// }
+						
 
 						if (leadSource == 97943 || leadSource == 295896) {
 							//Lead Source: Head Office Generated
