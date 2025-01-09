@@ -718,7 +718,7 @@ define([
 		inlineHtml += '<div class="col-xs-6 date_from">';
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
-			'<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM <span class="mandatory" style="font-size: 16px">*</span></span>';
+			'<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM </span>';
 		if (isNullorEmpty(start_date)) {
 			inlineHtml +=
 				'<input id="date_from" class="form-control date_from" type="date" />';
@@ -734,7 +734,7 @@ define([
 		inlineHtml += '<div class="col-xs-6 date_to">';
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
-			'<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO <span class="mandatory" style="font-size: 16px">*</span></span>';
+			'<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO </span>';
 		if (isNullorEmpty(last_date)) {
 			inlineHtml +=
 				'<input id="date_to" class="form-control date_to" type="date">';
@@ -1553,12 +1553,12 @@ define([
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
-						'" style="background-color: #eaf143; color: #103D39;"/></br></div>';
+						'" style="background-color: #eaf143; color: #103D39;border-radius:30px;"/></br></div>';
 				} else {
 					inlineHtml +=
 						'<div class="col-xs-' +
 						divBreak +
-						'" style="text-align: center;"><input type="button" value="' +
+						'" style="text-align: center;"><input type="button" style="border-radius:30px;" value="' +
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
@@ -1739,12 +1739,12 @@ define([
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
-						'" style="background-color: #eaf143; color: #103D39;"/></br></div>';
+						'" style="background-color: #eaf143; color: #103D39;border-radius:30px;"/></br></div>';
 				} else {
 					inlineHtml +=
 						'<div class="col-xs-' +
 						divBreak +
-						'" style="text-align: center;"><input type="button" value="' +
+						'" style="text-align: center;"><input type="button" style="border-radius:30px;" value="' +
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
