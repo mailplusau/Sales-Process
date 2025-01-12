@@ -141,6 +141,12 @@ define([
 				fieldId: "companyname",
 			});
 
+			if (leadSource == -4) {
+				zee_id = customerRecord.getValue({
+					fieldId: "partner",
+				});
+			}
+
 			if (role != 1032) {
 				if (
 					!isNullorEmpty(siteAddressZipCode) &&
@@ -515,6 +521,18 @@ define([
 							//     fieldId: 'custentity_sales_rep_assigned'
 							// });
 						}
+					} else if (leadSource == -4) {
+						var partnerRecord = record.load({
+							type: record.Type.PARTNER,
+							id: zee_id,
+						});
+						var zeeSalesRepAssigned = partnerRecord.getValue({
+							fieldId: "custentity_sales_rep_assigned",
+						});
+
+						if (isNullorEmpty(salesrepid)) {
+							salesrepid = zeeSalesRepAssigned;
+						}
 					}
 
 					//?DEBUG DATA
@@ -564,8 +582,6 @@ define([
 					}
 
 					if (role != 1032) {
-						
-
 						if (leadSource == 97943 || leadSource == 295896) {
 							//Lead Source: Head Office Generated
 
