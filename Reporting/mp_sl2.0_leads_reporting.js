@@ -694,7 +694,7 @@ define([
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
-			inlineHtml += tabsSection();
+			inlineHtml += tabsSection(campaign);
 			inlineHtml += dataTable();
 
 			form
@@ -1881,7 +1881,7 @@ define([
 		return inlineHtml;
 	}
 
-	function tabsSection() {
+	function tabsSection(campaign) {
 		var inlineHtml = '<div class="tabs_section hide">';
 
 		// Tabs headers
@@ -1893,6 +1893,32 @@ define([
 
 		inlineHtml +=
 			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+		if (isNullorEmpty(campaign)) {
+			inlineHtml +=
+				'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+		} else {
+			if (campaign.indexOf(",") != -1) {
+				var campaignArray = campaign.split(",");
+			} else {
+				var campaignArray = [];
+				campaignArray.push(campaign);
+			}
+
+			log.debug({
+				title: "campaignArray",
+				details: campaignArray,
+			});
+			log.debug({
+				title: "campaignArray.indexOf('84')",
+				details: campaignArray.indexOf("84"),
+			});
+
+			if (campaignArray.indexOf("84") != -1) {
+				inlineHtml +=
+					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+			}
+		}
 
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
@@ -1909,6 +1935,50 @@ define([
 
 		// Tabs content
 		inlineHtml += '<div class="tab-content">';
+
+		log.debug({
+			title: "Inside Tabs Section Function",
+			details: campaign,
+		});
+
+		if (isNullorEmpty(campaign)) {
+			inlineHtml +=
+				'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+
+			inlineHtml += '<figure class="highcharts-figure">';
+			inlineHtml += '<div id="container_callforcetasks"></div>';
+			inlineHtml += "</figure><br></br>";
+			inlineHtml += dataTable("callforcetasks");
+			inlineHtml += "</div>";
+		} else {
+			if (campaign.indexOf(",") != -1) {
+				var campaignArray = campaign.split(",");
+			} else {
+				var campaignArray = [];
+				campaignArray.push(campaign);
+			}
+
+			log.debug({
+				title: "campaignArray",
+				details: campaignArray,
+			});
+			log.debug({
+				title: "campaignArray.indexOf('84')",
+				details: campaignArray.indexOf("84"),
+			});
+
+			if (campaignArray.indexOf("84") != -1) {
+				inlineHtml +=
+					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+
+				inlineHtml += '<figure class="highcharts-figure">';
+				inlineHtml += '<div id="container_callforcetasks"></div>';
+				inlineHtml += "</figure><br></br>";
+				inlineHtml += dataTable("callforcetasks");
+				inlineHtml += "</div>";
+			}
+		}
+
 		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
 
 		// Overview Tabs headers
@@ -2429,6 +2499,11 @@ define([
 		inlineHtml += "</thead>";
 
 		inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
+
+		if (name == "callforcetasks") {
+			inlineHtml +=
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th></tr></tfoot>';
+		}
 
 		if (name == "preview") {
 			inlineHtml +=

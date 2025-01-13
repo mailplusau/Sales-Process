@@ -213,6 +213,7 @@ define([
 	var suspectValidatedChildDataSet = [];
 	var suspectFollowUpChildDataSet = [];
 	var customerCancellationRequestDataSet = [];
+	var callForceTasksDataSet = [];
 
 	var totalSuspectCount = 0;
 	var customerActivityCount = 0;
@@ -1980,6 +1981,437 @@ define([
 				},
 			],
 		});
+
+		var showCallForceTasks = false;
+
+		if (isNullorEmpty(sales_campaign)) {
+			showCallForceTasks = true;
+		} else {
+			if (sales_campaign.indexOf(",") != -1) {
+				var campaignArray = sales_campaign.split(",");
+			} else {
+				var campaignArray = [];
+				campaignArray.push(sales_campaign);
+			}
+
+			for (var y = 0; y < campaignArray.length; y++) {
+				if (campaignArray[y] == "84") {
+					showCallForceTasks = true;
+				}
+			}
+		}
+
+		console.log("showCallForceTasks: " + showCallForceTasks);
+
+		//!Creating a reporting tab based on the tasks created for the Call Force campaign.
+		if (showCallForceTasks == true) {
+			//Sales Reporting - Call Force Campaign - With Tasks
+			var callForceTasksSearch = search.load({
+				type: "customer",
+				id: "customsearch_lpo_unqualifed_list_2_2_2",
+			});
+
+			if (customer_type == "2") {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				callForceTasksSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var countCallForceTasks = 0;
+			var oldCallForceDate = null;
+
+			var scheduledCallForceTasks = 0;
+			var completedCallForceTasks = 0;
+			var totalCallForceTasks = 0;
+
+			callForceTasksSearch.run().each(function (callForceTasksSearchResultSet) {
+				var tasksCount = parseInt(
+					callForceTasksSearchResultSet.getValue({
+						name: "internalid",
+						join: "task",
+						summary: "COUNT",
+					})
+				);
+
+				var taskDate = callForceTasksSearchResultSet.getValue({
+					name: "duedate",
+					join: "task",
+					summary: "GROUP",
+				});
+
+				var taskStatus = callForceTasksSearchResultSet.getText({
+					name: "status",
+					join: "task",
+					summary: "GROUP",
+				});
+
+				if (countCallForceTasks == 0 || taskDate == oldCallForceDate) {
+					if (taskStatus == "Completed") {
+						completedCallForceTasks = completedCallForceTasks + tasksCount;
+					} else if (taskStatus == "Not Started") {
+						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+					}
+					totalCallForceTasks = totalCallForceTasks + tasksCount;
+				} else if (taskDate != oldCallForceDate) {
+					var taskDueDate = convertToDateInputFormat(oldCallForceDate);
+
+					callForceTasksDataSet.push([
+						taskDueDate,
+						scheduledCallForceTasks,
+						completedCallForceTasks,
+						totalCallForceTasks,
+					]);
+
+					scheduledCallForceTasks = 0;
+					completedCallForceTasks = 0;
+					totalCallForceTasks = 0;
+
+					if (taskStatus == "Completed") {
+						completedCallForceTasks = completedCallForceTasks + tasksCount;
+					} else if (taskStatus == "Not Started") {
+						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+					}
+					totalCallForceTasks = totalCallForceTasks + tasksCount;
+				}
+
+				oldCallForceDate = taskDate;
+				countCallForceTasks++;
+				return true;
+			});
+
+			if (countCallForceTasks > 0) {
+				var taskDueDate = convertToDateInputFormat(oldCallForceDate);
+
+				callForceTasksDataSet.push([
+					taskDueDate,
+					scheduledCallForceTasks,
+					completedCallForceTasks,
+					totalCallForceTasks,
+				]);
+			}
+
+			console.log("callForceTasksDataSet" + callForceTasksDataSet);
+
+			var dataTable3 = $("#mpexusage-callforcetasks").DataTable({
+				data: callForceTasksDataSet,
+				pageLength: 250,
+				order: [],
+				layout: {
+					topStart: {
+						buttons: [
+							{
+								extend: "copy",
+								text: "Copy",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "csv",
+								text: "CSV",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "excel",
+								text: "Excel",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "pdf",
+								text: "PDF",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "print",
+								text: "Print",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+						],
+					},
+				},
+				columns: [
+					{ title: "Task Date" },
+					{ title: "Scheduled" },
+					{ title: "Completed" },
+					{ title: "Total" },
+				],
+				autoWidth: true,
+				columnDefs: [
+					{
+						targets: [0, 3],
+						className: "bolded",
+					},
+				],
+				rowCallback: function (row, data, index) {
+					var row_color = "";
+					if (parseInt(data[1]) > 0) {
+						$(row).find("td:eq(1)").css("background-color", "#f9c67a");
+					}
+					if (parseInt(data[2]) > 0) {
+						$(row).find("td:eq(2)").css("background-color", "#439A97");
+					}
+				},
+				footerCallback: function (row, data, start, end, display) {
+					var api = this.api(),
+						data;
+
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return parseInt(i);
+					};
+
+					// Total Customer Free Trial Pending
+					total_scheduled = api
+						.column(1)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial
+					total_completed = api
+						.column(2)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_total = api
+						.column(3)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					$(api.column(1).footer()).html(total_scheduled);
+					$(api.column(2).footer()).html(total_completed);
+					$(api.column(3).footer()).html(total_total);
+				},
+			});
+		}
 
 		if (role == 1000) {
 			//Customer Cancellation - Requested Date - All (Monthly)
@@ -40600,6 +41032,79 @@ define([
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * @description Converts a date from "M/D/YYYY" format to "YYYY-DD-MM" format.
+	 * @param {String} date_mdyyyy - The date string in "D/M/YYYY" format.
+	 * @returns {String} The date string in "YYYY-DD-MM" format.
+	 */
+	function convertToDateInputFormat(date_mdyyyy) {
+		// Split the input date string into components
+		const [day, month, year] = date_mdyyyy.split("/");
+
+		// Format the date to "YYYY-MM-DD"
+		const formattedDate =
+			year +
+			"-" +
+			customPadStart(month, 2, "0") +
+			"-" +
+			customPadStart(day, 2, "0");
+
+		return formattedDate;
+	}
+	/**
+	 * @description Pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length. The padding is applied from the start (left) of the current string.
+	 * @param {string} str - The original string to pad.
+	 * @param {number} targetLength - The length of the resulting string once the current string has been padded.
+	 * @param {string} padString - The string to pad the current string with. Defaults to a space if not provided.
+	 * @returns {string} The padded string.
+	 */
+	function customPadStart(str, targetLength, padString) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the target length is less than or equal to the string's length, return the original string
+		if (str.length >= targetLength) {
+			return str;
+		}
+
+		// Calculate the length of the padding needed
+		var paddingLength = targetLength - str.length;
+
+		// Repeat the padString enough times to cover the padding length
+		var repeatedPadString = customRepeat(
+			padString,
+			Math.ceil(paddingLength / padString.length)
+		);
+
+		// Slice the repeated padString to the exact padding length needed and concatenate with the original string
+		return repeatedPadString.slice(0, paddingLength) + str;
+	}
+	/**
+	 * @description Repeats the given string a specified number of times.
+	 * @param {string} str - The string to repeat.
+	 * @param {number} count - The number of times to repeat the string.
+	 * @returns {string} The repeated string.
+	 */
+	function customRepeat(str, count) {
+		// Convert the input to a string
+		str = String(str);
+
+		// If the count is 0 or less, return an empty string
+		if (count <= 0) {
+			return "";
+		}
+
+		// Initialize the result string
+		var result = "";
+
+		// Repeat the string by concatenating it to the result
+		for (var i = 0; i < count; i++) {
+			result += str;
+		}
+
+		return result;
 	}
 
 	function convertTo24Hour(time) {
