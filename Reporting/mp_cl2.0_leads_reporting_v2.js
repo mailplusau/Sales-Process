@@ -2352,10 +2352,10 @@ define([
 					},
 				},
 				columns: [
-					{ title: "Task Date" },
-					{ title: "Scheduled" },
-					{ title: "Completed" },
-					{ title: "Total" },
+					{ title: "Task Date (Week Starting)" },
+					{ title: "Scheduled Tasks" },
+					{ title: "Completed Tasks" },
+					{ title: "Total Tasks" },
 				],
 				autoWidth: true,
 				columnDefs: [
