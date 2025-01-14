@@ -680,20 +680,74 @@ define([
 				cancelled_last_date
 			);
 			inlineHtml += "</div></div></div></br></br>";
-			inlineHtml +=
-				'<div class="form-group container scorecard_percentage hide" style="">';
-			inlineHtml += '<div class="row">';
-			inlineHtml += '<div class="col-xs-12">';
-			inlineHtml += '<article class="card">';
-			inlineHtml +=
-				'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
-			inlineHtml +=
-				'<small style="text-align:center;font-size: 12px;"></small>';
-			inlineHtml += '<div id="container-progress" style="height: 300px"></div>';
-			inlineHtml += "</article>";
-			inlineHtml += "</div>";
-			inlineHtml += "</div>";
-			inlineHtml += "</div>";
+
+			var showFranchiseeGeneratedLeadsPieChart = false;
+			var showCallForceTasksPieChart = false;
+
+			if (isNullorEmpty(campaign)) {
+				showFranchiseeGeneratedLeadsPieChart = true;
+				showCallForceTasksPieChart = true;
+			} else {
+				if (campaign.indexOf(",") != -1) {
+					var campaignArray = campaign.split(",");
+				} else {
+					var campaignArray = [];
+					campaignArray.push(campaign);
+				}
+
+				log.debug({
+					title: "campaignArray",
+					details: campaignArray,
+				});
+				log.debug({
+					title: "campaignArray.indexOf('84')",
+					details: campaignArray.indexOf("84"),
+				});
+
+				if (campaignArray.indexOf("84") != -1) {
+					showCallForceTasksPieChart = true;
+				}
+
+				if (campaignArray.indexOf("70") != -1) {
+					showFranchiseeGeneratedLeadsPieChart = true;
+				}
+			}
+
+			if (showFranchiseeGeneratedLeadsPieChart == true) {
+				inlineHtml +=
+					'<div class="form-group container scorecard_percentage hide" style="">';
+				inlineHtml += '<div class="row">';
+				inlineHtml += '<div class="col-xs-12">';
+				inlineHtml += '<article class="card">';
+				inlineHtml +=
+					'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
+				inlineHtml +=
+					'<small style="text-align:center;font-size: 12px;"></small>';
+				inlineHtml +=
+					'<div id="container-progress" style="height: 300px"></div>';
+				inlineHtml += "</article>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+			}
+
+			if (showCallForceTasksPieChart == true) {
+				inlineHtml +=
+					'<div class="form-group container scorecard_percentage hide" style="">';
+				inlineHtml += '<div class="row">';
+				inlineHtml += '<div class="col-xs-12">';
+				inlineHtml += '<article class="card">';
+				inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
+				inlineHtml +=
+					'<small style="text-align:center;font-size: 12px;"></small>';
+				inlineHtml +=
+					'<div id="container-callforce_progress" style="height: 300px"></div>';
+				inlineHtml += "</article>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+			}
+
 			inlineHtml += tabsSection(campaign);
 			inlineHtml += dataTable();
 

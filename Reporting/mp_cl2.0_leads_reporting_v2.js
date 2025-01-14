@@ -1495,497 +1495,12 @@ define([
 			return false;
 		}
 
-		console.log("Before Search Name: Zee Lead by Status - Weekly Reporting");
-		if (role == 1000) {
-			//Search Name: Zee Lead by Status - Monthly Reporting
-			var qualifiedLeadCountSearch = search.load({
-				type: "customer",
-				id: "customsearch_zee_lead_by_status_monthly",
-			});
-		} else {
-			//Search Name: Zee Lead by Status - Weekly Reporting
-			var qualifiedLeadCountSearch = search.load({
-				type: "customer",
-				id: "customsearch_leads_reporting_weekly_3__2",
-			});
-		}
-
-		if (!isNullorEmpty(zee_id)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(leadStatus)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
-
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_rep)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_entered_by)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
-
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
-
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
-
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
-
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_source)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: lead_source,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_campaign)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
-
-		if (customer_type == "2") {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "TEST",
-				})
-			);
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTCONTAIN,
-					values: "- Parent",
-				})
-			);
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Shippit Pty Ltd ",
-				})
-			);
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Sendle",
-				})
-			);
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "SC -",
-				})
-			);
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custentity_np_np_customer",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: "@NONE@",
-				})
-			);
-		}
-
-		if (!isNullorEmpty(parent_lpo)) {
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
-		) {
-			var defaultSearchFilters = qualifiedLeadCountSearch.filterExpression;
-
-			console.log(
-				"default search filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
-
-			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
-
-			console.log(
-				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
-		}
-
-		var totalLeadCount = 0;
-		var totalCustomerCount = 0;
-		var totalSuspectCount = 0;
-		var totalProspectCount = 0;
-		var totalCustomerLostCount = 0;
-		var totalQualifiedLeadCount = 0;
-		var totalLeadLost = 0;
-
-		qualifiedLeadCountSearch
-			.run()
-			.each(function (qualifiedLeadCountSearchResultSet) {
-				var leadCount = parseInt(
-					qualifiedLeadCountSearchResultSet.getValue({
-						name: "internalid",
-						summary: "COUNT",
-					})
-				);
-				var dateLeadEntered = qualifiedLeadCountSearchResultSet.getValue({
-					name: "custentity_date_lead_entered",
-					summary: "GROUP",
-				});
-				var leadStatus = qualifiedLeadCountSearchResultSet.getText({
-					name: "entitystatus",
-					summary: "GROUP",
-				});
-				var leadStatusId = qualifiedLeadCountSearchResultSet.getValue({
-					name: "entitystatus",
-					summary: "GROUP",
-				});
-
-				var leadStatusSplit = leadStatus.split("-");
-
-				totalLeadCount = totalLeadCount + leadCount;
-
-				if (leadStatusId == 22) {
-					totalCustomerLostCount = totalCustomerLostCount + leadCount;
-				}
-
-				if (leadStatusId == 13 || leadStatusId == 66) {
-					totalCustomerCount = totalCustomerCount + leadCount;
-				}
-
-				if (
-					leadStatusSplit[0].toUpperCase() == "SUSPECT" &&
-					leadStatusId != 59
-				) {
-					totalSuspectCount = totalSuspectCount + leadCount;
-				}
-
-				if (leadStatusSplit[0].toUpperCase() == "PROSPECT") {
-					totalProspectCount = totalProspectCount + leadCount;
-				}
-
-				if (leadStatusId == 59) {
-					totalLeadLost = totalLeadLost + leadCount;
-				}
-
-				return true;
-			});
-
-		// Create the chart
-		Highcharts.chart("container-progress", {
-			chart: {
-				type: "pie",
-				backgroundColor: "#CFE0CE",
-			},
-			title: {
-				text: "",
-			},
-			accessibility: {
-				announceNewData: {
-					enabled: true,
-				},
-				point: {
-					valueSuffix: "",
-				},
-			},
-
-			plotOptions: {
-				series: {
-					allowPointSelect: true,
-					cursor: "pointer",
-					dataLabels: [
-						{
-							enabled: true,
-							distance: 20,
-							style: {
-								fontSize: "1.2em",
-								textOutline: "none",
-								opacity: 0.7,
-							},
-						},
-						{
-							enabled: true,
-							distance: -40,
-							format: "{point.y:.0f}",
-							style: {
-								fontSize: "1.2em",
-								textOutline: "none",
-								opacity: 0.7,
-							},
-						},
-					],
-				},
-			},
-
-			tooltip: {
-				valueSuffix: "",
-				style: {
-					fontSize: "1.2em",
-				},
-			},
-
-			series: [
-				{
-					name: "Leads",
-					colorByPoint: true,
-					data: [
-						{
-							name: "Customers",
-							y: totalCustomerCount,
-							sliced: true,
-							selected: true,
-							color: "#5cb3b0",
-						},
-						{
-							name: "Prospects",
-							y: totalProspectCount,
-							sliced: true,
-							color: "#adcf9f",
-						},
-						{
-							name: "Suspects",
-							y: totalSuspectCount,
-							sliced: true,
-							color: "#FEBE8C",
-						},
-						{
-							name: "Suspects - Lost",
-							y: totalLeadLost,
-							sliced: true,
-							color: "#e97677",
-						},
-						{
-							name: "Customers - Lost",
-							y: totalCustomerLostCount,
-							sliced: true,
-							color: "#e76252",
-						},
-					],
-				},
-			],
-		});
-
 		var showCallForceTasks = false;
+		var showFranchiseeLeadsPieChart = false;
 
 		if (isNullorEmpty(sales_campaign)) {
 			showCallForceTasks = true;
+			showFranchiseeLeadsPieChart = true;
 		} else {
 			if (sales_campaign.indexOf(",") != -1) {
 				var campaignArray = sales_campaign.split(",");
@@ -1994,17 +1509,990 @@ define([
 				campaignArray.push(sales_campaign);
 			}
 
+			console.log("campaignArray.length: " + campaignArray.length);
+
 			for (var y = 0; y < campaignArray.length; y++) {
-				if (campaignArray[y] == "84") {
+				if (parseInt(campaignArray[y]) == 84) {
 					showCallForceTasks = true;
 				}
+				if (parseInt(campaignArray[y]) == 70) {
+					showFranchiseeLeadsPieChart = true;
+				}
 			}
+		}
+
+		if (showFranchiseeLeadsPieChart == true) {
+			console.log("Before Search Name: Zee Lead by Status - Weekly Reporting");
+			if (role == 1000) {
+				//Search Name: Zee Lead by Status - Monthly Reporting
+				var qualifiedLeadCountSearch = search.load({
+					type: "customer",
+					id: "customsearch_zee_lead_by_status_monthly",
+				});
+			} else {
+				//Search Name: Zee Lead by Status - Weekly Reporting
+				var qualifiedLeadCountSearch = search.load({
+					type: "customer",
+					id: "customsearch_leads_reporting_weekly_3__2",
+				});
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(cancelled_start_date) &&
+				!isNullorEmpty(cancelled_last_date)
+			) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity13",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: cancelled_start_date,
+					})
+				);
+
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity13",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: cancelled_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+
+			if (customer_type == "2") {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(parent_lpo)) {
+				qualifiedLeadCountSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(modified_date_from) &&
+				!isNullorEmpty(modified_date_to)
+			) {
+				var defaultSearchFilters = qualifiedLeadCountSearch.filterExpression;
+
+				console.log(
+					"default search filters: " + JSON.stringify(defaultSearchFilters)
+				);
+
+				var modifiedDateFilters = [
+					[
+						["activity.date", "within", [modified_date_from, modified_date_to]],
+						"AND",
+						[
+							"activity.custevent_organiser",
+							"anyof",
+							"1623053",
+							"668712",
+							"1797389",
+							"1809334",
+							"690145",
+							"1771076",
+							"1813424",
+							"696160",
+							"668711",
+							"1809382",
+							"653718",
+							"1777309",
+							"1819701",
+							"1820151",
+							"1822089",
+						],
+					],
+					"AND",
+					[
+						[
+							"usernotes.notedate",
+							"within",
+							[modified_date_from, modified_date_to],
+						],
+						"AND",
+						[
+							"usernotes.author",
+							"anyof",
+							"anyof",
+							"1623053",
+							"668712",
+							"1797389",
+							"1809334",
+							"690145",
+							"1771076",
+							"1813424",
+							"696160",
+							"668711",
+							"1809382",
+							"653718",
+							"1777309",
+							"1819701",
+							"1820151",
+							"1822089",
+						],
+					],
+				];
+				console.log(
+					"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+				);
+
+				defaultSearchFilters.push("AND");
+				defaultSearchFilters.push(modifiedDateFilters);
+
+				console.log(
+					"defaultSearchFilters filters: " +
+						JSON.stringify(defaultSearchFilters)
+				);
+
+				qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
+			}
+
+			var totalLeadCount = 0;
+			var totalCustomerCount = 0;
+			var totalSuspectCount = 0;
+			var totalProspectCount = 0;
+			var totalCustomerLostCount = 0;
+			var totalQualifiedLeadCount = 0;
+			var totalLeadLost = 0;
+
+			qualifiedLeadCountSearch
+				.run()
+				.each(function (qualifiedLeadCountSearchResultSet) {
+					var leadCount = parseInt(
+						qualifiedLeadCountSearchResultSet.getValue({
+							name: "internalid",
+							summary: "COUNT",
+						})
+					);
+					var dateLeadEntered = qualifiedLeadCountSearchResultSet.getValue({
+						name: "custentity_date_lead_entered",
+						summary: "GROUP",
+					});
+					var leadStatus = qualifiedLeadCountSearchResultSet.getText({
+						name: "entitystatus",
+						summary: "GROUP",
+					});
+					var leadStatusId = qualifiedLeadCountSearchResultSet.getValue({
+						name: "entitystatus",
+						summary: "GROUP",
+					});
+
+					var leadStatusSplit = leadStatus.split("-");
+
+					totalLeadCount = totalLeadCount + leadCount;
+
+					if (leadStatusId == 22) {
+						totalCustomerLostCount = totalCustomerLostCount + leadCount;
+					}
+
+					if (leadStatusId == 13 || leadStatusId == 66) {
+						totalCustomerCount = totalCustomerCount + leadCount;
+					}
+
+					if (
+						leadStatusSplit[0].toUpperCase() == "SUSPECT" &&
+						leadStatusId != 59
+					) {
+						totalSuspectCount = totalSuspectCount + leadCount;
+					}
+
+					if (leadStatusSplit[0].toUpperCase() == "PROSPECT") {
+						totalProspectCount = totalProspectCount + leadCount;
+					}
+
+					if (leadStatusId == 59) {
+						totalLeadLost = totalLeadLost + leadCount;
+					}
+
+					return true;
+				});
+
+			// Create the chart
+			Highcharts.chart("container-progress", {
+				chart: {
+					type: "pie",
+					backgroundColor: "#CFE0CE",
+				},
+				title: {
+					text: "",
+				},
+				accessibility: {
+					announceNewData: {
+						enabled: true,
+					},
+					point: {
+						valueSuffix: "",
+					},
+				},
+
+				plotOptions: {
+					series: {
+						allowPointSelect: true,
+						cursor: "pointer",
+						dataLabels: [
+							{
+								enabled: true,
+								distance: 20,
+								style: {
+									fontSize: "1.2em",
+									textOutline: "none",
+									opacity: 0.7,
+								},
+							},
+							{
+								enabled: true,
+								distance: -40,
+								format: "{point.y:.0f}",
+								style: {
+									fontSize: "1.2em",
+									textOutline: "none",
+									opacity: 0.7,
+								},
+							},
+						],
+					},
+				},
+
+				tooltip: {
+					valueSuffix: "",
+					style: {
+						fontSize: "1.2em",
+					},
+				},
+
+				series: [
+					{
+						name: "Leads",
+						colorByPoint: true,
+						data: [
+							{
+								name: "Customers",
+								y: totalCustomerCount,
+								sliced: true,
+								selected: true,
+								color: "#5cb3b0",
+							},
+							{
+								name: "Prospects",
+								y: totalProspectCount,
+								sliced: true,
+								color: "#adcf9f",
+							},
+							{
+								name: "Suspects",
+								y: totalSuspectCount,
+								sliced: true,
+								color: "#FEBE8C",
+							},
+							{
+								name: "Suspects - Lost",
+								y: totalLeadLost,
+								sliced: true,
+								color: "#e97677",
+							},
+							{
+								name: "Customers - Lost",
+								y: totalCustomerLostCount,
+								sliced: true,
+								color: "#e76252",
+							},
+						],
+					},
+				],
+			});
 		}
 
 		console.log("showCallForceTasks: " + showCallForceTasks);
 
 		//!Creating a reporting tab based on the tasks created for the Call Force campaign.
 		if (showCallForceTasks == true) {
+			//Get the count of the list of leads sent to Call Force
+			//Call Force Campaign - Suspect Unqualified List
+			var callForceLeadsListSearch = search.load({
+				type: "customer",
+				id: "customsearch_lpo_unqualifed_list_3",
+			});
+
+			if (customer_type == "2") {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				callForceLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var callForceLeadsListCount = callForceLeadsListSearch.runPaged().count;
+
+			//Get the count of leads that is Qualified but with No Appointment
+			//NetSuite Search:Call Force Campaign - Suspect Qualified List - With No Tasks
+			var qualifiedLeadsListWithNoTasksSearch = search.load({
+				type: "customer",
+				id: "customsearch_lpo_unqualifed_list_2_3",
+			});
+
+			if (customer_type == "2") {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var totalQualifiedLeadWithNoTasks = 0;
+
+			qualifiedLeadsListWithNoTasksSearch
+				.run()
+				.each(function (qualifiedLeadsListSearchResult) {
+					var custInternalID = qualifiedLeadsListSearchResult.getValue({
+						name: "internalid",
+						summary: "GROUP",
+					});
+					//NetSuite Search: Call Force Tasks - All
+					var callForceAllTasksSearch = search.load({
+						type: "task",
+						id: "customsearch9085",
+					});
+					callForceAllTasksSearch.filters.push(
+						search.createFilter({
+							name: "internalid",
+							join: "companyCustomer",
+							operator: search.Operator.IS,
+							values: custInternalID,
+						})
+					);
+
+					var callForceAllTasksSearchCount =
+						callForceAllTasksSearch.runPaged().count;
+
+					if (callForceAllTasksSearchCount == 0) {
+						totalQualifiedLeadWithNoTasks++;
+					}
+					return true;
+				});
+
 			//Sales Reporting - Call Force Campaign - With Tasks
 			var callForceTasksSearch = search.load({
 				type: "customer",
@@ -2233,6 +2721,9 @@ define([
 			var completedCallForceTasks = 0;
 			var totalCallForceTasks = 0;
 
+			var totalCompletedTasks = 0;
+			var totalScheduledTasks = 0;
+
 			callForceTasksSearch.run().each(function (callForceTasksSearchResultSet) {
 				var tasksCount = parseInt(
 					callForceTasksSearchResultSet.getValue({
@@ -2257,8 +2748,10 @@ define([
 				if (countCallForceTasks == 0 || taskDate == oldCallForceDate) {
 					if (taskStatus == "Completed") {
 						completedCallForceTasks = completedCallForceTasks + tasksCount;
+						totalCompletedTasks = totalCompletedTasks + tasksCount;
 					} else if (taskStatus == "Not Started") {
 						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+						totalScheduledTasks = totalScheduledTasks + tasksCount;
 					}
 					totalCallForceTasks = totalCallForceTasks + tasksCount;
 				} else if (taskDate != oldCallForceDate) {
@@ -2277,8 +2770,10 @@ define([
 
 					if (taskStatus == "Completed") {
 						completedCallForceTasks = completedCallForceTasks + tasksCount;
+						totalCompletedTasks = totalCompletedTasks + tasksCount;
 					} else if (taskStatus == "Not Started") {
 						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+						totalScheduledTasks = totalScheduledTasks + tasksCount;
 					}
 					totalCallForceTasks = totalCallForceTasks + tasksCount;
 				}
@@ -2410,6 +2905,84 @@ define([
 					$(api.column(2).footer()).html(total_completed);
 					$(api.column(3).footer()).html(total_total);
 				},
+			});
+
+			// Create the pie chart for Call Force Tasks & Leads
+			Highcharts.chart("container-callforce_progress", {
+				chart: {
+					type: "pie",
+					backgroundColor: "#CFE0CE",
+				},
+				title: {
+					text: "",
+				},
+				accessibility: {
+					announceNewData: {
+						enabled: true,
+					},
+					point: {
+						valueSuffix: "",
+					},
+				},
+
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						borderWidth: 2,
+						cursor: "pointer",
+						dataLabels: {
+							enabled: true,
+							format: "<b>{point.name}</b><br>{point.y:.0f}",
+							distance: 20,
+							style: {
+								textOutline: "none",
+								opacity: 0.7,
+							},
+						},
+					},
+				},
+				tooltip: {
+					headerFormat: "",
+					pointFormat:
+						'<span style="color:{point.color}">\u25cf</span> ' +
+						"{point.name}: <b>{point.y:.0f}</b>",
+				},
+				series: [
+					{
+						name: "Leads",
+						colorByPoint: true,
+						animation: {
+							duration: 2000,
+						},
+						data: [
+							{
+								name: "Qualified Leads - Completed Appointment",
+								y: totalCompletedTasks,
+								sliced: true,
+								selected: true,
+								color: "#5cb3b0",
+							},
+							{
+								name: "Unqualified Leads - Sent to Call Force",
+								y: callForceLeadsListCount,
+								sliced: false,
+								color: "#7FCAFFFF",
+							},
+							{
+								name: "Qualified Leads - Scheduled Appointment",
+								y: totalScheduledTasks,
+								sliced: false,
+								color: "#FEBE8C",
+							},
+							{
+								name: "Qualified Leads - No Appointment",
+								y: totalQualifiedLeadWithNoTasks,
+								sliced: false,
+								color: "#F5F0F0FF",
+							},
+						],
+					},
+				],
 			});
 		}
 
@@ -22449,17 +23022,21 @@ define([
 			);
 		}
 
-		if (sales_activity_notes == 1) {
-			var websiteSuspectsLeadsReportingSearch = search.load({
-				type: "customer",
-				id: "customsearch_leads_reporting_5_2_2_2_3", //Sales Dashboard - Website Leads - Suspects - Reporting V5
-			});
-		} else {
-			var websiteSuspectsLeadsReportingSearch = search.load({
-				type: "customer",
-				id: "customsearch_suspects_reporting_no_activ", //Sales Dashboard - Leads - Suspects - Reporting V4 (No Activity)
-			});
-		}
+		// if (sales_activity_notes == 1) {
+		// 	var websiteSuspectsLeadsReportingSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_leads_reporting_5_2_2_2_3", //Sales Dashboard - Website Leads - Suspects - Reporting V5
+		// 	});
+		// } else {
+		// var websiteSuspectsLeadsReportingSearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_suspects_reporting_no_activ", //Sales Dashboard - Leads - Suspects - Reporting V4 (No Activity)
+		// });
+		var websiteSuspectsLeadsReportingSearch = search.load({
+			type: "customer",
+			id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
+		});
+		// }
 
 		if (customer_type == "2") {
 			websiteSuspectsLeadsReportingSearch.filters.push(
@@ -22801,3092 +23378,3155 @@ define([
 		);
 		var count = 0;
 
-		if (sales_activity_notes == 1) {
-			console.log("websiteSuspectsLeadsReportingSearch with activity");
-			websiteSuspectsLeadsReportingSearch
-				.run()
-				.each(function (suspectsResultSet) {
-					var custInternalID = suspectsResultSet.getValue({
-						name: "internalid",
-						summary: "GROUP",
-					});
-					var custEntityID = suspectsResultSet.getValue({
-						name: "entityid",
-						summary: "GROUP",
-					});
-					var custName = suspectsResultSet.getValue({
-						name: "companyname",
-						summary: "GROUP",
-					});
-					var zeeID = suspectsResultSet.getValue({
-						name: "partner",
-						summary: "GROUP",
-					});
-					var zeeName = suspectsResultSet.getText({
-						name: "partner",
-						summary: "GROUP",
-					});
+		// if (sales_activity_notes == 1) {
+		console.log("websiteSuspectsLeadsReportingSearch with activity");
+		websiteSuspectsLeadsReportingSearch
+			.run()
+			.each(function (suspectsResultSet) {
+				var custInternalID = suspectsResultSet.getValue({
+					name: "internalid",
+					summary: "GROUP",
+				});
+				var custEntityID = suspectsResultSet.getValue({
+					name: "entityid",
+					summary: "GROUP",
+				});
+				var custName = suspectsResultSet.getValue({
+					name: "companyname",
+					summary: "GROUP",
+				});
+				var zeeID = suspectsResultSet.getValue({
+					name: "partner",
+					summary: "GROUP",
+				});
+				var zeeName = suspectsResultSet.getText({
+					name: "partner",
+					summary: "GROUP",
+				});
 
-					var custStage = suspectsResultSet
-						.getText({
-							name: "stage",
-							summary: "GROUP",
-						})
-						.toUpperCase();
+				var custStage = suspectsResultSet
+					.getText({
+						name: "stage",
+						summary: "GROUP",
+					})
+					.toUpperCase();
 
-					var custStatusId = suspectsResultSet.getValue({
+				var custStatusId = suspectsResultSet.getValue({
+					name: "entitystatus",
+					summary: "GROUP",
+				});
+
+				var custStatus = suspectsResultSet
+					.getText({
 						name: "entitystatus",
 						summary: "GROUP",
-					});
-
-					var custStatus = suspectsResultSet
-						.getText({
-							name: "entitystatus",
-							summary: "GROUP",
-						})
-						.toUpperCase();
-
-					var dateLeadEntered = suspectsResultSet.getValue({
-						name: "custentity_date_lead_entered",
-						summary: "GROUP",
-					});
-
-					var quoteSentDate = suspectsResultSet.getValue({
-						name: "custentity_date_lead_quote_sent",
-						summary: "GROUP",
-					});
-
-					var dateLeadLost = suspectsResultSet.getValue({
-						name: "custentity_date_lead_lost",
-						summary: "GROUP",
-					});
-					var dateLeadinContact = suspectsResultSet.getValue({
-						name: "custentity_date_prospect_in_contact",
-						summary: "GROUP",
-					});
-
-					var dateProspectWon = suspectsResultSet.getValue({
-						name: "custentity_date_prospect_opportunity",
-						summary: "GROUP",
-					});
-
-					var dateLeadReassigned = suspectsResultSet.getValue({
-						name: "custentity_date_suspect_reassign",
-						summary: "GROUP",
-					});
-
-					var salesRepId = suspectsResultSet.getValue({
-						name: "custrecord_sales_assigned",
-						join: "CUSTRECORD_SALES_CUSTOMER",
-						summary: "GROUP",
-					});
-					var salesRepText = suspectsResultSet.getText({
-						name: "custrecord_sales_assigned",
-						join: "CUSTRECORD_SALES_CUSTOMER",
-						summary: "GROUP",
-					});
-
-					var email48h = suspectsResultSet.getText({
-						name: "custentity_48h_email_sent",
-						summary: "GROUP",
-					});
-
-					var daysOpen = suspectsResultSet.getValue({
-						name: "formulanumeric",
-						summary: "GROUP",
-					});
-
-					var cancellationReason = suspectsResultSet.getText({
-						name: "custentity_service_cancellation_reason",
-						summary: "GROUP",
-					});
-
-					var source = suspectsResultSet.getText({
-						name: "leadsource",
-						summary: "GROUP",
-					});
-
-					var productWeeklyUsage = suspectsResultSet.getText({
-						name: "custentity_form_mpex_usage_per_week",
-						summary: "GROUP",
-					});
-
-					var autoSignUp = suspectsResultSet.getValue({
-						name: "custentity_auto_sign_up",
-						summary: "GROUP",
-					});
-
-					var previousCarrier = suspectsResultSet.getText({
-						name: "custentity_previous_carrier",
-						summary: "GROUP",
-					});
-
-					var monthlyServiceValue = suspectsResultSet.getValue({
-						name: "custentity_cust_monthly_service_value",
-						summary: "GROUP",
-					});
-
-					var avgInvoiceValue = suspectsResultSet.getValue({
-						name: "total",
-						join: "transaction",
-						summary: "AVG",
-					});
-
-					var dateLPOValidated = suspectsResultSet.getValue({
-						name: "custentity_date_lpo_validated",
-						summary: "GROUP",
-					});
-
-					var userNotesInternalID = suspectsResultSet.getValue({
-						name: "internalid",
-						join: "userNotes",
-						summary: "GROUP",
-					});
-					var userNotesTitle = suspectsResultSet.getValue({
-						name: "title",
-						join: "userNotes",
-						summary: "GROUP",
-					});
-					var userNotesStartDate = suspectsResultSet.getValue({
-						name: "notedate",
-						join: "userNotes",
-						summary: "GROUP",
-					});
-					if (!isNullorEmpty(userNotesStartDate)) {
-						var userNotesStartDateTimeArray = userNotesStartDate.split(" ");
-						var userNotesStartDateArray =
-							userNotesStartDateTimeArray[0].split("/");
-						if (parseInt(userNotesStartDateArray[1]) < 10) {
-							userNotesStartDateArray[1] = "0" + userNotesStartDateArray[1];
-						}
-
-						if (parseInt(userNotesStartDateArray[0]) < 10) {
-							userNotesStartDateArray[0] = "0" + userNotesStartDateArray[0];
-						}
-						userNotesStartDate =
-							userNotesStartDateArray[2] +
-							"-" +
-							userNotesStartDateArray[1] +
-							"-" +
-							userNotesStartDateArray[0];
-					}
-					var userNotesOrganiser = suspectsResultSet.getText({
-						name: "author",
-						join: "userNotes",
-						summary: "GROUP",
-					});
-					var userNotesMessage = suspectsResultSet.getValue({
-						name: "note",
-						join: "userNotes",
-						summary: "GROUP",
-					});
-
-					console.log("userNotesInternalID: " + userNotesInternalID);
-					console.log("userNotesTitle: " + userNotesTitle);
-					console.log("userNotesStartDate: " + userNotesStartDate);
-					console.log("userNotesOrganiser: " + userNotesOrganiser);
-					console.log("userNotesMessage: " + userNotesMessage);
-					console.log("custStage: " + custStage);
-					console.log("custStatus: " + custStatus);
-
-					if (!isNullorEmpty(monthlyServiceValue)) {
-						monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
-					} else {
-						monthlyServiceValue = 0.0;
-					}
-
-					if (
-						!isNullorEmpty(avgInvoiceValue) &&
-						parseInt(avgInvoiceValue) > 0
-					) {
-						avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
-					} else {
-						avgInvoiceValue = 0.0;
-					}
-
-					var dateLeadEnteredSplit = dateLeadEntered.split("/");
-					if (parseInt(dateLeadEnteredSplit[1]) < 10) {
-						dateLeadEnteredSplit[1] = "0" + dateLeadEnteredSplit[1];
-					}
-
-					if (parseInt(dateLeadEnteredSplit[0]) < 10) {
-						dateLeadEnteredSplit[0] = "0" + dateLeadEnteredSplit[0];
-					}
-					dateLeadEntered =
-						dateLeadEnteredSplit[2] +
-						"-" +
-						dateLeadEnteredSplit[1] +
-						"-" +
-						dateLeadEnteredSplit[0];
-
-					if (!isNullorEmpty(dateLeadLost)) {
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var dateLost = new Date(
-							dateLeadLostSplit[2],
-							dateLeadLostSplit[1] - 1,
-							dateLeadLostSplit[0]
-						);
-
-						var difference = dateLost.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateLost.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					} else if (!isNullorEmpty(dateProspectWon)) {
-						var dateProspectWonSplit = dateProspectWon.split("/");
-
-						if (parseInt(dateProspectWonSplit[1]) < 10) {
-							dateProspectWonSplit[1] = "0" + dateProspectWonSplit[1];
-						}
-
-						if (parseInt(dateProspectWonSplit[0]) < 10) {
-							dateProspectWonSplit[0] = "0" + dateProspectWonSplit[0];
-						}
-
-						dateProspectWon =
-							dateProspectWonSplit[2] +
-							"-" +
-							dateProspectWonSplit[1] +
-							"-" +
-							dateProspectWonSplit[0];
-
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						dateProspectWon = new Date(
-							dateProspectWonSplit[2],
-							dateProspectWonSplit[1] - 1,
-							dateProspectWonSplit[0]
-						);
-
-						var difference = dateProspectWon.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateProspectWon.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-
-						dateProspectWon =
-							dateProspectWonSplit[2] +
-							"-" +
-							dateProspectWonSplit[1] +
-							"-" +
-							dateProspectWonSplit[0];
-					} else if (!isNullorEmpty(quoteSentDate)) {
-						var dateQuoteSentSplit = quoteSentDate.split("/");
-
-						if (parseInt(dateQuoteSentSplit[1]) < 10) {
-							dateQuoteSentSplit[1] = "0" + dateQuoteSentSplit[1];
-						}
-
-						if (parseInt(dateQuoteSentSplit[0]) < 10) {
-							dateQuoteSentSplit[0] = "0" + dateQuoteSentSplit[0];
-						}
-
-						quoteSentDate =
-							dateQuoteSentSplit[2] +
-							"-" +
-							dateQuoteSentSplit[1] +
-							"-" +
-							dateQuoteSentSplit[0];
-
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						quoteSentDate = new Date(
-							dateQuoteSentSplit[2],
-							dateQuoteSentSplit[1] - 1,
-							dateQuoteSentSplit[0]
-						);
-
-						var difference = quoteSentDate.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = quoteSentDate.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-
-						quoteSentDate =
-							dateQuoteSentSplit[2] +
-							"-" +
-							dateQuoteSentSplit[1] +
-							"-" +
-							dateQuoteSentSplit[0];
-					}
-					if (!isNullorEmpty(dateLPOValidated)) {
-						var dateLPOValidatedSplit = dateLPOValidated.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var dateValidated = new Date(
-							dateLPOValidatedSplit[2],
-							dateLPOValidatedSplit[1] - 1,
-							dateLPOValidatedSplit[0]
-						);
-
-						var difference = dateValidated.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateValidated.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					} else {
-						// var dateLeadLostSplit = dateLeadLost.split('/');
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var todayDate = new Date();
-
-						var difference = todayDate.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = todayDate.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					}
-
-					if (count == 0) {
-						console.log("inside count == 0");
-
-						if (!isNullorEmpty(userNotesInternalID)) {
-							console.log("inside usernotes internal id");
-							console.log("custStage: " + custStage);
-							console.log("custStatus: " + custStatus);
-							if (
-								custStage == "SUSPECT" &&
-								custStatus != "SUSPECT-CUSTOMER - LOST" &&
-								custStatus != "SUSPECT-PARKING LOT" &&
-								custStatus != "SUSPECT-LOST" &&
-								custStatus != "SUSPECT-OUT OF TERRITORY" &&
-								custStatus != "SUSPECT-FOLLOW-UP" &&
-								custStatus != "SUSPECT-QUALIFIED" &&
-								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
-								custStatus != "SUSPECT-NO ANSWER" &&
-								custStatus != "SUSPECT-IN CONTACT"
-							) {
-								console.log("inside suspect new");
-								suspectActivityCount++;
-								suspectChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
-									custStatus == "SUSPECT-LOST")
-							) {
-								console.log("inside suspect lost");
-								suspectActivityCount++;
-								suspectLostChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-PARKING LOT"
-							) {
-								console.log("inside suspect parking lot");
-								suspectActivityCount++;
-								suspectOffPeakChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-OUT OF TERRITORY"
-							) {
-								console.log("inside suspect OOT");
-								suspectActivityCount++;
-								suspectOOTChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-FOLLOW-UP" ||
-									custStatus == "SUSPECT-LPO FOLLOW-UP")
-							) {
-								console.log("inside suspect follow-up");
-								suspectActivityCount++;
-								suspectFollowUpChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-QUALIFIED"
-							) {
-								console.log("inside suspect qualifeid");
-								suspectActivityCount++;
-								suspectQualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-UNQUALIFIED"
-							) {
-								console.log("inside suspect unqualifeid");
-								suspectActivityCount++;
-								suspectUnqualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-VALIDATED"
-							) {
-								console.log("inside suspect validated");
-								suspectActivityCount++;
-								suspectValidatedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-NO ANSWER"
-							) {
-								console.log("inside suspect no answer");
-								suspectActivityCount++;
-								suspectNoAnswerChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-IN CONTACT"
-							) {
-								console.log("inside SUSPECT-IN CONTACT");
-								suspectActivityCount++;
-								suspectInContactChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							}
-						}
-					} else if (count > 0 && oldcustInternalID == custInternalID) {
-						console.log(
-							"inside count > 0 && (oldcustInternalID == custInternalID)"
-						);
-
-						if (!isNullorEmpty(userNotesInternalID)) {
-							console.log("inside usernotes internal id");
-							if (
-								custStage == "SUSPECT" &&
-								custStatus != "SUSPECT-CUSTOMER - LOST" &&
-								custStatus != "SUSPECT-PARKING LOT" &&
-								custStatus != "SUSPECT-LOST" &&
-								custStatus != "SUSPECT-OUT OF TERRITORY" &&
-								custStatus != "SUSPECT-FOLLOW-UP" &&
-								custStatus != "SUSPECT-QUALIFIED" &&
-								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
-								custStatus != "SUSPECT-NO ANSWER" &&
-								custStatus != "SUSPECT-IN CONTACT"
-							) {
-								console.log("inside suspect new");
-								suspectActivityCount++;
-								suspectChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
-									custStatus == "SUSPECT-LOST")
-							) {
-								console.log("inside suspect lost");
-								suspectActivityCount++;
-								suspectLostChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-PARKING LOT"
-							) {
-								console.log("inside suspect parking lot");
-								suspectActivityCount++;
-								suspectOffPeakChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-OUT OF TERRITORY"
-							) {
-								console.log("inside suspect OOT");
-								suspectActivityCount++;
-								suspectOOTChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-FOLLOW-UP" ||
-									custStatus == "SUSPECT-LPO FOLLOW-UP")
-							) {
-								console.log("inside suspect follow-up");
-								suspectActivityCount++;
-								suspectFollowUpChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-QUALIFIED"
-							) {
-								console.log("inside suspect qualifeid");
-								suspectActivityCount++;
-								suspectQualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-UNQUALIFIED"
-							) {
-								console.log("inside suspect unqualifeid");
-								suspectActivityCount++;
-								suspectUnqualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-VALIDATED"
-							) {
-								console.log("inside suspect validated");
-								suspectActivityCount++;
-								suspectValidatedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-NO ANSWER"
-							) {
-								console.log("inside suspect no answer");
-								suspectActivityCount++;
-								suspectNoAnswerChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-IN CONTACT"
-							) {
-								console.log("inside SUSPECT-IN CONTACT");
-								suspectActivityCount++;
-								suspectInContactChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							}
-						}
-					} else if (count > 0 && oldcustInternalID != custInternalID) {
-						if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
-							oldcustStatus != "SUSPECT-PARKING LOT" &&
-							oldcustStatus != "SUSPECT-LOST" &&
-							oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
-							oldcustStatus != "SUSPECT-FOLLOW-UP" &&
-							oldcustStatus != "SUSPECT-QUALIFIED" &&
-							oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
-							oldcustStatus != "SUSPECT-VALIDATED" &&
-							oldcustStatus != "SUSPECT-NO ANSWER" &&
-							oldcustStatus != "SUSPECT-IN CONTACT" &&
-							oldcustStatus != "SUSPECT-UNQUALIFIED"
-						) {
-							suspectDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectChildDataSet,
-							]);
-
-							csvSuspectDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldemail48h,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
-								oldcustStatus == "SUSPECT-LOST")
-						) {
-							suspectLostDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateProspectWon,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldAvgInvoiceValue,
-								oldsalesRepText,
-								suspectLostChildDataSet,
-							]);
-							csvSuspectLostDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateProspectWon,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldAvgInvoiceValue,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-PARKING LOT"
-						) {
-							suspectOffPeakDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectOffPeakChildDataSet,
-							]);
-							csvSuspectOffPeakDataSet.push([
-								,
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-OUT OF TERRITORY"
-						) {
-							suspectOOTDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectOOTChildDataSet,
-							]);
-
-							csvSuspectOOTDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							(oldcustStatus == "SUSPECT-FOLLOW-UP" ||
-								oldcustStatus == "SUSPECT-LPO FOLLOW-UP")
-						) {
-							suspectFollowUpDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectFollowUpChildDataSet,
-							]);
-
-							csvSuspectFollowUpDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-QUALIFIED"
-						) {
-							suspectQualifiedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
-
-							csvSuspectQualifiedDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-UNQUALIFIED"
-						) {
-							suspectUnqualifiedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
-
-							csvSuspectQualifiedDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-VALIDATED"
-						) {
-							suspectValidatedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDateLPOValidated,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-NO ANSWER"
-						) {
-							suspectNoAnswerDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectNoAnswerChildDataSet,
-							]);
-						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-IN CONTACT"
-						) {
-							suspectInContactDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectInContactChildDataSet,
-							]);
-						}
-						prospectChildDataSet = [];
-						prospectOpportunityChildDataSet = [];
-						prospectQuoteSentChildDataSet = [];
-						prospectBoxSentChildDataSet = [];
-						suspectChildDataSet = [];
-						suspectFollowUpChildDataSet = [];
-						suspectLostChildDataSet = [];
-						suspectOOTChildDataSet = [];
-						suspectQualifiedChildDataSet = [];
-						suspectUnqualifiedChildDataSet = [];
-						suspectOffPeakChildDataSet = [];
-						suspectNoAnswerChildDataSet = [];
-						suspectInContactChildDataSet = [];
-
-						if (!isNullorEmpty(userNotesInternalID)) {
-							if (
-								custStage == "SUSPECT" &&
-								custStatus != "SUSPECT-CUSTOMER - LOST" &&
-								custStatus != "SUSPECT-PARKING LOT" &&
-								custStatus != "SUSPECT-LOST" &&
-								custStatus != "SUSPECT-OUT OF TERRITORY" &&
-								custStatus != "SUSPECT-FOLLOW-UP" &&
-								custStatus != "SUSPECT-QUALIFIED" &&
-								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
-								custStatus != "SUSPECT-NO ANSWER" &&
-								custStatus != "SUSPECT-IN CONTACT"
-							) {
-								suspectActivityCount++;
-								suspectChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
-									custStatus == "SUSPECT-LOST")
-							) {
-								suspectActivityCount++;
-								suspectLostChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-PARKING LOT"
-							) {
-								suspectActivityCount++;
-								suspectOffPeakChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-OUT OF TERRITORY"
-							) {
-								suspectActivityCount++;
-								suspectOOTChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								(custStatus == "SUSPECT-FOLLOW-UP" ||
-									custStatus == "SUSPECT-LPO FOLLOW-UP")
-							) {
-								suspectActivityCount++;
-								suspectFollowUpChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-QUALIFIED"
-							) {
-								suspectActivityCount++;
-								suspectQualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-UNQUALIFIED"
-							) {
-								suspectActivityCount++;
-								suspectUnqualifiedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-VALIDATED"
-							) {
-								suspectActivityCount++;
-								suspectValidatedChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-NO ANSWER"
-							) {
-								suspectActivityCount++;
-								suspectNoAnswerChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							} else if (
-								custStage == "SUSPECT" &&
-								custStatus == "SUSPECT-IN CONTACT"
-							) {
-								suspectActivityCount++;
-								suspectInContactChildDataSet.push({
-									activityInternalID: userNotesInternalID,
-									activityStartDate: userNotesStartDate,
-									activityTitle: userNotesTitle,
-									activityOrganiser: userNotesOrganiser,
-									activityMessage: userNotesMessage,
-								});
-							}
-						}
-					}
-					console.log(
-						"suspectInContactChildDataSet: " + suspectInContactChildDataSet
+					})
+					.toUpperCase();
+
+				var dateLeadEntered = suspectsResultSet.getValue({
+					name: "custentity_date_lead_entered",
+					summary: "GROUP",
+				});
+
+				var quoteSentDate = suspectsResultSet.getValue({
+					name: "custentity_date_lead_quote_sent",
+					summary: "GROUP",
+				});
+
+				var dateLeadLost = suspectsResultSet.getValue({
+					name: "custentity_date_lead_lost",
+					summary: "GROUP",
+				});
+				var dateLeadinContact = suspectsResultSet.getValue({
+					name: "custentity_date_prospect_in_contact",
+					summary: "GROUP",
+				});
+
+				var dateProspectWon = suspectsResultSet.getValue({
+					name: "custentity_date_prospect_opportunity",
+					summary: "GROUP",
+				});
+
+				var dateLeadReassigned = suspectsResultSet.getValue({
+					name: "custentity_date_suspect_reassign",
+					summary: "GROUP",
+				});
+
+				var salesRepId = suspectsResultSet.getValue({
+					name: "custrecord_sales_assigned",
+					join: "CUSTRECORD_SALES_CUSTOMER",
+					summary: "GROUP",
+				});
+				var salesRepText = suspectsResultSet.getText({
+					name: "custrecord_sales_assigned",
+					join: "CUSTRECORD_SALES_CUSTOMER",
+					summary: "GROUP",
+				});
+
+				var email48h = suspectsResultSet.getText({
+					name: "custentity_48h_email_sent",
+					summary: "GROUP",
+				});
+
+				var daysOpen = suspectsResultSet.getValue({
+					name: "formulanumeric",
+					summary: "GROUP",
+				});
+
+				var cancellationReason = suspectsResultSet.getText({
+					name: "custentity_service_cancellation_reason",
+					summary: "GROUP",
+				});
+
+				var source = suspectsResultSet.getText({
+					name: "leadsource",
+					summary: "GROUP",
+				});
+
+				var productWeeklyUsage = suspectsResultSet.getText({
+					name: "custentity_form_mpex_usage_per_week",
+					summary: "GROUP",
+				});
+
+				var autoSignUp = suspectsResultSet.getValue({
+					name: "custentity_auto_sign_up",
+					summary: "GROUP",
+				});
+
+				var previousCarrier = suspectsResultSet.getText({
+					name: "custentity_previous_carrier",
+					summary: "GROUP",
+				});
+
+				var monthlyServiceValue = suspectsResultSet.getValue({
+					name: "custentity_cust_monthly_service_value",
+					summary: "GROUP",
+				});
+
+				var avgInvoiceValue = suspectsResultSet.getValue({
+					name: "total",
+					join: "transaction",
+					summary: "AVG",
+				});
+
+				var dateLPOValidated = suspectsResultSet.getValue({
+					name: "custentity_date_lpo_validated",
+					summary: "GROUP",
+				});
+
+				var tasksInternalID = suspectsResultSet.getValue({
+					name: "internalid",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskDate = suspectsResultSet.getValue({
+					name: "duedate",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskTitle = suspectsResultSet.getValue({
+					name: "title",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskAssignedTo = suspectsResultSet.getText({
+					name: "assigned",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskAssignedTo = suspectsResultSet.getText({
+					name: "assigned",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskStatus = suspectsResultSet.getText({
+					name: "status",
+					join: "task",
+					summary: "GROUP",
+				});
+				var taskComment = suspectsResultSet.getText({
+					name: "message",
+					join: "task",
+					summary: "GROUP",
+				});
+
+				// var userNotesInternalID = suspectsResultSet.getValue({
+				// 	name: "internalid",
+				// 	join: "userNotes",
+				// 	summary: "GROUP",
+				// });
+				// var userNotesTitle = suspectsResultSet.getValue({
+				// 	name: "title",
+				// 	join: "userNotes",
+				// 	summary: "GROUP",
+				// });
+				// var userNotesStartDate = suspectsResultSet.getValue({
+				// 	name: "notedate",
+				// 	join: "userNotes",
+				// 	summary: "GROUP",
+				// });
+				// if (!isNullorEmpty(userNotesStartDate)) {
+				// 	var userNotesStartDateTimeArray = userNotesStartDate.split(" ");
+				// 	var userNotesStartDateArray =
+				// 		userNotesStartDateTimeArray[0].split("/");
+				// 	if (parseInt(userNotesStartDateArray[1]) < 10) {
+				// 		userNotesStartDateArray[1] = "0" + userNotesStartDateArray[1];
+				// 	}
+
+				// 	if (parseInt(userNotesStartDateArray[0]) < 10) {
+				// 		userNotesStartDateArray[0] = "0" + userNotesStartDateArray[0];
+				// 	}
+				// 	userNotesStartDate =
+				// 		userNotesStartDateArray[2] +
+				// 		"-" +
+				// 		userNotesStartDateArray[1] +
+				// 		"-" +
+				// 		userNotesStartDateArray[0];
+				// }
+				// var userNotesOrganiser = suspectsResultSet.getText({
+				// 	name: "author",
+				// 	join: "userNotes",
+				// 	summary: "GROUP",
+				// });
+				// var userNotesMessage = suspectsResultSet.getValue({
+				// 	name: "note",
+				// 	join: "userNotes",
+				// 	summary: "GROUP",
+				// });
+
+				// console.log("userNotesInternalID: " + userNotesInternalID);
+				// console.log("userNotesTitle: " + userNotesTitle);
+				// console.log("userNotesStartDate: " + userNotesStartDate);
+				// console.log("userNotesOrganiser: " + userNotesOrganiser);
+				// console.log("userNotesMessage: " + userNotesMessage);
+				console.log("custStage: " + custStage);
+				console.log("custStatus: " + custStatus);
+
+				if (!isNullorEmpty(monthlyServiceValue)) {
+					monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+				} else {
+					monthlyServiceValue = 0.0;
+				}
+
+				if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+					avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+				} else {
+					avgInvoiceValue = 0.0;
+				}
+
+				var dateLeadEnteredSplit = dateLeadEntered.split("/");
+				if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+					dateLeadEnteredSplit[1] = "0" + dateLeadEnteredSplit[1];
+				}
+
+				if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+					dateLeadEnteredSplit[0] = "0" + dateLeadEnteredSplit[0];
+				}
+				dateLeadEntered =
+					dateLeadEnteredSplit[2] +
+					"-" +
+					dateLeadEnteredSplit[1] +
+					"-" +
+					dateLeadEnteredSplit[0];
+
+				if (!isNullorEmpty(dateLeadLost)) {
+					var dateLeadLostSplit = dateLeadLost.split("/");
+					// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+					var dateEntered = new Date(
+						dateLeadEnteredSplit[2],
+						dateLeadEnteredSplit[1] - 1,
+						dateLeadEnteredSplit[0]
 					);
-					oldcustInternalID = custInternalID;
-					oldcustEntityID = custEntityID;
-					oldcustName = custName;
-					oldzeeID = zeeID;
-					oldzeeName = zeeName;
-					oldcustStage = custStage;
-					oldcustStatus = custStatus;
-					oldCustStatusId = custStatusId;
-					olddateLeadEntered = dateLeadEntered;
-					oldquoteSentDate = quoteSentDate;
-					olddateLeadLost = dateLeadLost;
-					olddateLeadinContact = dateLeadinContact;
-					olddateProspectWon = dateProspectWon;
-					oldDateLPOValidated = dateLPOValidated;
-					olddateLeadReassigned = dateLeadReassigned;
-					oldsalesRepId = salesRepId;
-					oldsalesRepText = salesRepText;
-					oldemail48h = email48h;
-					oldDaysOpen = daysOpen;
-					oldCancellationReason = cancellationReason;
-					oldSource = source;
-					oldProdWeeklyUsage = productWeeklyUsage;
-					oldAutoSignUp = autoSignUp;
-					oldPreviousCarrier = previousCarrier;
-					oldMonthServiceValue = monthlyServiceValue;
-					oldAvgInvoiceValue = avgInvoiceValue;
-					count++;
-					return true;
-				});
-			console.log(
-				"suspectInContactChildDataSet: " + suspectInContactChildDataSet
-			);
-			if (count > 0) {
-				if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
-					oldcustStatus != "SUSPECT-PARKING LOT" &&
-					oldcustStatus != "SUSPECT-LOST" &&
-					oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
-					oldcustStatus != "SUSPECT-FOLLOW-UP" &&
-					oldcustStatus != "SUSPECT-QUALIFIED" &&
-					oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
-					oldcustStatus != "SUSPECT-VALIDATED" &&
-					oldcustStatus != "SUSPECT-NO ANSWER" &&
-					oldcustStatus != "SUSPECT-IN CONTACT" &&
-					oldcustStatus != "SUSPECT-UNQUALIFIED"
-				) {
-					suspectDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectChildDataSet,
-					]);
+					var dateLost = new Date(
+						dateLeadLostSplit[2],
+						dateLeadLostSplit[1] - 1,
+						dateLeadLostSplit[0]
+					);
 
-					csvSuspectDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldemail48h,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
-						oldcustStatus == "SUSPECT-LOST")
-				) {
-					suspectLostDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateProspectWon,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldAvgInvoiceValue,
-						oldsalesRepText,
-						suspectLostChildDataSet,
-					]);
+					var difference = dateLost.getTime() - dateEntered.getTime();
+					daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
 
-					csvSuspectLostDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateProspectWon,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldAvgInvoiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-PARKING LOT"
-				) {
-					suspectOffPeakDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectOffPeakChildDataSet,
-					]);
+					var weeks = Math.floor(daysOpen / 7);
+					daysOpen = daysOpen - weeks * 2;
 
-					csvSuspectOffPeakDataSet.push([
-						,
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-QUALIFIED"
-				) {
-					suspectQualifiedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
+					// Handle special cases
+					var startDay = dateEntered.getDay();
+					var endDay = dateLost.getDay();
 
-					csvSuspectQualifiedDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-UNQUALIFIED"
-				) {
-					suspectUnqualifiedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
+					// Remove weekend not previously removed.
+					if (startDay - endDay > 1) daysOpen = daysOpen - 2;
 
-					csvSuspectQualifiedDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-VALIDATED"
-				) {
-					suspectValidatedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDateLPOValidated,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-NO ANSWER"
-				) {
-					suspectNoAnswerDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectNoAnswerChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-IN CONTACT"
-				) {
-					suspectInContactDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectInContactChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-OUT OF TERRITORY"
-				) {
-					suspectOOTDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectOOTChildDataSet,
-					]);
+					// Remove start day if span starts on Sunday but ends before Saturday
+					if (startDay == 0 && endDay != 6) {
+						daysOpen = daysOpen - 1;
+					}
 
-					csvSuspectOOTDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-FOLLOW-UP"
-				) {
-					suspectFollowUpDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectFollowUpChildDataSet,
-					]);
+					// Remove end day if span ends on Saturday but starts after Sunday
+					if (endDay == 6 && startDay != 0) {
+						daysOpen = daysOpen - 1;
+					}
+				} else if (!isNullorEmpty(dateProspectWon)) {
+					var dateProspectWonSplit = dateProspectWon.split("/");
 
-					csvSuspectFollowUpDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
+					if (parseInt(dateProspectWonSplit[1]) < 10) {
+						dateProspectWonSplit[1] = "0" + dateProspectWonSplit[1];
+					}
+
+					if (parseInt(dateProspectWonSplit[0]) < 10) {
+						dateProspectWonSplit[0] = "0" + dateProspectWonSplit[0];
+					}
+
+					dateProspectWon =
+						dateProspectWonSplit[2] +
+						"-" +
+						dateProspectWonSplit[1] +
+						"-" +
+						dateProspectWonSplit[0];
+
+					var dateLeadLostSplit = dateLeadLost.split("/");
+					// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+					var dateEntered = new Date(
+						dateLeadEnteredSplit[2],
+						dateLeadEnteredSplit[1] - 1,
+						dateLeadEnteredSplit[0]
+					);
+					dateProspectWon = new Date(
+						dateProspectWonSplit[2],
+						dateProspectWonSplit[1] - 1,
+						dateProspectWonSplit[0]
+					);
+
+					var difference = dateProspectWon.getTime() - dateEntered.getTime();
+					daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+					var weeks = Math.floor(daysOpen / 7);
+					daysOpen = daysOpen - weeks * 2;
+
+					// Handle special cases
+					var startDay = dateEntered.getDay();
+					var endDay = dateProspectWon.getDay();
+
+					// Remove weekend not previously removed.
+					if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+					// Remove start day if span starts on Sunday but ends before Saturday
+					if (startDay == 0 && endDay != 6) {
+						daysOpen = daysOpen - 1;
+					}
+
+					// Remove end day if span ends on Saturday but starts after Sunday
+					if (endDay == 6 && startDay != 0) {
+						daysOpen = daysOpen - 1;
+					}
+
+					dateProspectWon =
+						dateProspectWonSplit[2] +
+						"-" +
+						dateProspectWonSplit[1] +
+						"-" +
+						dateProspectWonSplit[0];
+				} else if (!isNullorEmpty(quoteSentDate)) {
+					var dateQuoteSentSplit = quoteSentDate.split("/");
+
+					if (parseInt(dateQuoteSentSplit[1]) < 10) {
+						dateQuoteSentSplit[1] = "0" + dateQuoteSentSplit[1];
+					}
+
+					if (parseInt(dateQuoteSentSplit[0]) < 10) {
+						dateQuoteSentSplit[0] = "0" + dateQuoteSentSplit[0];
+					}
+
+					quoteSentDate =
+						dateQuoteSentSplit[2] +
+						"-" +
+						dateQuoteSentSplit[1] +
+						"-" +
+						dateQuoteSentSplit[0];
+
+					var dateLeadLostSplit = dateLeadLost.split("/");
+					// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+					var dateEntered = new Date(
+						dateLeadEnteredSplit[2],
+						dateLeadEnteredSplit[1] - 1,
+						dateLeadEnteredSplit[0]
+					);
+					quoteSentDate = new Date(
+						dateQuoteSentSplit[2],
+						dateQuoteSentSplit[1] - 1,
+						dateQuoteSentSplit[0]
+					);
+
+					var difference = quoteSentDate.getTime() - dateEntered.getTime();
+					daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+					var weeks = Math.floor(daysOpen / 7);
+					daysOpen = daysOpen - weeks * 2;
+
+					// Handle special cases
+					var startDay = dateEntered.getDay();
+					var endDay = quoteSentDate.getDay();
+
+					// Remove weekend not previously removed.
+					if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+					// Remove start day if span starts on Sunday but ends before Saturday
+					if (startDay == 0 && endDay != 6) {
+						daysOpen = daysOpen - 1;
+					}
+
+					// Remove end day if span ends on Saturday but starts after Sunday
+					if (endDay == 6 && startDay != 0) {
+						daysOpen = daysOpen - 1;
+					}
+
+					quoteSentDate =
+						dateQuoteSentSplit[2] +
+						"-" +
+						dateQuoteSentSplit[1] +
+						"-" +
+						dateQuoteSentSplit[0];
 				}
-			}
-		} else {
-			console.log("websiteSuspectsLeadsReportingSearch without activity");
-			websiteSuspectsLeadsReportingSearch
-				.run()
-				.each(function (suspectsResultSet) {
-					var custInternalID = suspectsResultSet.getValue({
-						name: "internalid",
-						summary: "GROUP",
-					});
-					var custEntityID = suspectsResultSet.getValue({
-						name: "entityid",
-						summary: "GROUP",
-					});
-					var custName = suspectsResultSet.getValue({
-						name: "companyname",
-						summary: "GROUP",
-					});
-					var zeeID = suspectsResultSet.getValue({
-						name: "partner",
-						summary: "GROUP",
-					});
-					var zeeName = suspectsResultSet.getText({
-						name: "partner",
-						summary: "GROUP",
-					});
+				if (!isNullorEmpty(dateLPOValidated)) {
+					var dateLPOValidatedSplit = dateLPOValidated.split("/");
+					// var dateLeadEnteredSplit = dateLeadEntered.split('/');
 
-					var custStage = suspectsResultSet
-						.getText({
-							name: "stage",
-							summary: "GROUP",
-						})
-						.toUpperCase();
+					var dateEntered = new Date(
+						dateLeadEnteredSplit[2],
+						dateLeadEnteredSplit[1] - 1,
+						dateLeadEnteredSplit[0]
+					);
+					var dateValidated = new Date(
+						dateLPOValidatedSplit[2],
+						dateLPOValidatedSplit[1] - 1,
+						dateLPOValidatedSplit[0]
+					);
 
-					var custStatusId = suspectsResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
+					var difference = dateValidated.getTime() - dateEntered.getTime();
+					daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
 
-					var custStatus = suspectsResultSet
-						.getText({
-							name: "entitystatus",
-							summary: "GROUP",
-						})
-						.toUpperCase();
+					var weeks = Math.floor(daysOpen / 7);
+					daysOpen = daysOpen - weeks * 2;
 
-					var dateLeadEntered = suspectsResultSet.getValue({
-						name: "custentity_date_lead_entered",
-						summary: "GROUP",
-					});
+					// Handle special cases
+					var startDay = dateEntered.getDay();
+					var endDay = dateValidated.getDay();
 
-					var quoteSentDate = suspectsResultSet.getValue({
-						name: "custentity_date_lead_quote_sent",
-						summary: "GROUP",
-					});
+					// Remove weekend not previously removed.
+					if (startDay - endDay > 1) daysOpen = daysOpen - 2;
 
-					var dateLeadLost = suspectsResultSet.getValue({
-						name: "custentity_date_lead_lost",
-						summary: "GROUP",
-					});
-					var dateLeadinContact = suspectsResultSet.getValue({
-						name: "custentity_date_prospect_in_contact",
-						summary: "GROUP",
-					});
-
-					var dateProspectWon = suspectsResultSet.getValue({
-						name: "custentity_date_prospect_opportunity",
-						summary: "GROUP",
-					});
-
-					var dateLeadReassigned = suspectsResultSet.getValue({
-						name: "custentity_date_suspect_reassign",
-						summary: "GROUP",
-					});
-
-					var salesRepId = suspectsResultSet.getValue({
-						name: "custrecord_sales_assigned",
-						join: "CUSTRECORD_SALES_CUSTOMER",
-						summary: "GROUP",
-					});
-					var salesRepText = suspectsResultSet.getText({
-						name: "custrecord_sales_assigned",
-						join: "CUSTRECORD_SALES_CUSTOMER",
-						summary: "GROUP",
-					});
-
-					var email48h = suspectsResultSet.getText({
-						name: "custentity_48h_email_sent",
-						summary: "GROUP",
-					});
-
-					var daysOpen = suspectsResultSet.getValue({
-						name: "formulanumeric",
-						summary: "GROUP",
-					});
-
-					var cancellationReason = suspectsResultSet.getText({
-						name: "custentity_service_cancellation_reason",
-						summary: "GROUP",
-					});
-
-					var source = suspectsResultSet.getText({
-						name: "leadsource",
-						summary: "GROUP",
-					});
-
-					var productWeeklyUsage = suspectsResultSet.getText({
-						name: "custentity_form_mpex_usage_per_week",
-						summary: "GROUP",
-					});
-
-					var autoSignUp = suspectsResultSet.getValue({
-						name: "custentity_auto_sign_up",
-						summary: "GROUP",
-					});
-
-					var previousCarrier = suspectsResultSet.getText({
-						name: "custentity_previous_carrier",
-						summary: "GROUP",
-					});
-
-					var monthlyServiceValue = suspectsResultSet.getValue({
-						name: "custentity_cust_monthly_service_value",
-						summary: "GROUP",
-					});
-
-					var avgInvoiceValue = suspectsResultSet.getValue({
-						name: "total",
-						join: "transaction",
-						summary: "AVG",
-					});
-
-					var dateLPOValidated = suspectsResultSet.getValue({
-						name: "custentity_date_lpo_validated",
-						summary: "GROUP",
-					});
-
-					if (!isNullorEmpty(monthlyServiceValue)) {
-						monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
-					} else {
-						monthlyServiceValue = 0.0;
+					// Remove start day if span starts on Sunday but ends before Saturday
+					if (startDay == 0 && endDay != 6) {
+						daysOpen = daysOpen - 1;
 					}
 
-					if (
-						!isNullorEmpty(avgInvoiceValue) &&
-						parseInt(avgInvoiceValue) > 0
-					) {
-						avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
-					} else {
-						avgInvoiceValue = 0.0;
+					// Remove end day if span ends on Saturday but starts after Sunday
+					if (endDay == 6 && startDay != 0) {
+						daysOpen = daysOpen - 1;
+					}
+				} else {
+					// var dateLeadLostSplit = dateLeadLost.split('/');
+					// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+					var dateEntered = new Date(
+						dateLeadEnteredSplit[2],
+						dateLeadEnteredSplit[1] - 1,
+						dateLeadEnteredSplit[0]
+					);
+					var todayDate = new Date();
+
+					var difference = todayDate.getTime() - dateEntered.getTime();
+					daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+					var weeks = Math.floor(daysOpen / 7);
+					daysOpen = daysOpen - weeks * 2;
+
+					// Handle special cases
+					var startDay = dateEntered.getDay();
+					var endDay = todayDate.getDay();
+
+					// Remove weekend not previously removed.
+					if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+					// Remove start day if span starts on Sunday but ends before Saturday
+					if (startDay == 0 && endDay != 6) {
+						daysOpen = daysOpen - 1;
 					}
 
-					var dateLeadEnteredSplit = dateLeadEntered.split("/");
-					if (parseInt(dateLeadEnteredSplit[1]) < 10) {
-						dateLeadEnteredSplit[1] = "0" + dateLeadEnteredSplit[1];
+					// Remove end day if span ends on Saturday but starts after Sunday
+					if (endDay == 6 && startDay != 0) {
+						daysOpen = daysOpen - 1;
 					}
+				}
 
-					if (parseInt(dateLeadEnteredSplit[0]) < 10) {
-						dateLeadEnteredSplit[0] = "0" + dateLeadEnteredSplit[0];
-					}
-					dateLeadEntered =
-						dateLeadEnteredSplit[2] +
-						"-" +
-						dateLeadEnteredSplit[1] +
-						"-" +
-						dateLeadEnteredSplit[0];
+				if (count == 0) {
+					console.log("inside count == 0");
 
-					if (!isNullorEmpty(dateLeadLost)) {
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var dateLost = new Date(
-							dateLeadLostSplit[2],
-							dateLeadLostSplit[1] - 1,
-							dateLeadLostSplit[0]
-						);
-
-						var difference = dateLost.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateLost.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					} else if (!isNullorEmpty(dateProspectWon)) {
-						var dateProspectWonSplit = dateProspectWon.split("/");
-
-						if (parseInt(dateProspectWonSplit[1]) < 10) {
-							dateProspectWonSplit[1] = "0" + dateProspectWonSplit[1];
-						}
-
-						if (parseInt(dateProspectWonSplit[0]) < 10) {
-							dateProspectWonSplit[0] = "0" + dateProspectWonSplit[0];
-						}
-
-						dateProspectWon =
-							dateProspectWonSplit[2] +
-							"-" +
-							dateProspectWonSplit[1] +
-							"-" +
-							dateProspectWonSplit[0];
-
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						dateProspectWon = new Date(
-							dateProspectWonSplit[2],
-							dateProspectWonSplit[1] - 1,
-							dateProspectWonSplit[0]
-						);
-
-						var difference = dateProspectWon.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateProspectWon.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-
-						dateProspectWon =
-							dateProspectWonSplit[2] +
-							"-" +
-							dateProspectWonSplit[1] +
-							"-" +
-							dateProspectWonSplit[0];
-					} else if (!isNullorEmpty(quoteSentDate)) {
-						var dateQuoteSentSplit = quoteSentDate.split("/");
-
-						if (parseInt(dateQuoteSentSplit[1]) < 10) {
-							dateQuoteSentSplit[1] = "0" + dateQuoteSentSplit[1];
-						}
-
-						if (parseInt(dateQuoteSentSplit[0]) < 10) {
-							dateQuoteSentSplit[0] = "0" + dateQuoteSentSplit[0];
-						}
-
-						quoteSentDate =
-							dateQuoteSentSplit[2] +
-							"-" +
-							dateQuoteSentSplit[1] +
-							"-" +
-							dateQuoteSentSplit[0];
-
-						var dateLeadLostSplit = dateLeadLost.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						quoteSentDate = new Date(
-							dateQuoteSentSplit[2],
-							dateQuoteSentSplit[1] - 1,
-							dateQuoteSentSplit[0]
-						);
-
-						var difference = quoteSentDate.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = quoteSentDate.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-
-						quoteSentDate =
-							dateQuoteSentSplit[2] +
-							"-" +
-							dateQuoteSentSplit[1] +
-							"-" +
-							dateQuoteSentSplit[0];
-					}
-					if (!isNullorEmpty(dateLPOValidated)) {
-						var dateLPOValidatedSplit = dateLPOValidated.split("/");
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var dateValidated = new Date(
-							dateLPOValidatedSplit[2],
-							dateLPOValidatedSplit[1] - 1,
-							dateLPOValidatedSplit[0]
-						);
-
-						var difference = dateValidated.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = dateValidated.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					} else {
-						// var dateLeadLostSplit = dateLeadLost.split('/');
-						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
-
-						var dateEntered = new Date(
-							dateLeadEnteredSplit[2],
-							dateLeadEnteredSplit[1] - 1,
-							dateLeadEnteredSplit[0]
-						);
-						var todayDate = new Date();
-
-						var difference = todayDate.getTime() - dateEntered.getTime();
-						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
-
-						var weeks = Math.floor(daysOpen / 7);
-						daysOpen = daysOpen - weeks * 2;
-
-						// Handle special cases
-						var startDay = dateEntered.getDay();
-						var endDay = todayDate.getDay();
-
-						// Remove weekend not previously removed.
-						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
-
-						// Remove start day if span starts on Sunday but ends before Saturday
-						if (startDay == 0 && endDay != 6) {
-							daysOpen = daysOpen - 1;
-						}
-
-						// Remove end day if span ends on Saturday but starts after Sunday
-						if (endDay == 6 && startDay != 0) {
-							daysOpen = daysOpen - 1;
-						}
-					}
-
-					if (count == 0) {
-					} else if (count > 0 && oldcustInternalID == custInternalID) {
-					} else if (count > 0 && oldcustInternalID != custInternalID) {
+					if (!isNullorEmpty(tasksInternalID)) {
+						console.log("inside usernotes internal id");
+						console.log("custStage: " + custStage);
+						console.log("custStatus: " + custStatus);
 						if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
-							oldcustStatus != "SUSPECT-PARKING LOT" &&
-							oldcustStatus != "SUSPECT-LOST" &&
-							oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
-							oldcustStatus != "SUSPECT-FOLLOW-UP" &&
-							oldcustStatus != "SUSPECT-QUALIFIED" &&
-							oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
-							oldcustStatus != "SUSPECT-VALIDATED" &&
-							oldcustStatus != "SUSPECT-NO ANSWER" &&
-							oldcustStatus != "SUSPECT-IN CONTACT" &&
-							oldcustStatus != "SUSPECT-UNQUALIFIED"
+							custStage == "SUSPECT" &&
+							custStatus != "SUSPECT-CUSTOMER - LOST" &&
+							custStatus != "SUSPECT-PARKING LOT" &&
+							custStatus != "SUSPECT-LOST" &&
+							custStatus != "SUSPECT-OUT OF TERRITORY" &&
+							custStatus != "SUSPECT-FOLLOW-UP" &&
+							custStatus != "SUSPECT-QUALIFIED" &&
+							custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+							custStatus != "SUSPECT-NO ANSWER" &&
+							custStatus != "SUSPECT-IN CONTACT"
 						) {
-							suspectDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectChildDataSet,
-							]);
-
-							csvSuspectDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldemail48h,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect new");
+							suspectActivityCount++;
+							suspectChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
-								oldcustStatus == "SUSPECT-LOST")
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+								custStatus == "SUSPECT-LOST")
 						) {
-							suspectLostDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateProspectWon,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldAvgInvoiceValue,
-								oldsalesRepText,
-								suspectLostChildDataSet,
-							]);
-							csvSuspectLostDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateProspectWon,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldAvgInvoiceValue,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect lost");
+							suspectActivityCount++;
+							suspectLostChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-PARKING LOT"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-PARKING LOT"
 						) {
-							suspectOffPeakDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectOffPeakChildDataSet,
-							]);
-							csvSuspectOffPeakDataSet.push([
-								,
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect parking lot");
+							suspectActivityCount++;
+							suspectOffPeakChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-OUT OF TERRITORY"
 						) {
-							suspectOOTDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectOOTChildDataSet,
-							]);
-
-							csvSuspectOOTDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect OOT");
+							suspectActivityCount++;
+							suspectOOTChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							(oldcustStatus == "SUSPECT-FOLLOW-UP" ||
-								oldcustStatus == "SUSPECT-LPO FOLLOW-UP")
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-FOLLOW-UP" ||
+								custStatus == "SUSPECT-LPO FOLLOW-UP")
 						) {
-							suspectFollowUpDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-								suspectFollowUpChildDataSet,
-							]);
-
-							csvSuspectFollowUpDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldProdWeeklyUsage,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldquoteSentDate,
-								olddateLeadReassigned,
-								olddateLeadLost,
-								oldemail48h,
-								oldDaysOpen,
-								oldCancellationReason,
-								oldMonthServiceValue,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect follow-up");
+							suspectActivityCount++;
+							suspectFollowUpChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-QUALIFIED"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-QUALIFIED"
 						) {
-							suspectQualifiedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
-
-							csvSuspectQualifiedDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect qualifeid");
+							suspectActivityCount++;
+							suspectQualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-UNQUALIFIED"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-UNQUALIFIED"
 						) {
-							suspectUnqualifiedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
-
-							csvSuspectQualifiedDataSet.push([
-								oldcustInternalID,
-								oldcustEntityID,
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDaysOpen,
-								oldsalesRepText,
-							]);
+							console.log("inside suspect unqualifeid");
+							suspectActivityCount++;
+							suspectUnqualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-VALIDATED"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-VALIDATED"
 						) {
-							suspectValidatedDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								oldDateLPOValidated,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectQualifiedChildDataSet,
-							]);
+							console.log("inside suspect validated");
+							suspectActivityCount++;
+							suspectValidatedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-NO ANSWER"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-NO ANSWER"
 						) {
-							suspectNoAnswerDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectNoAnswerChildDataSet,
-							]);
+							console.log("inside suspect no answer");
+							suspectActivityCount++;
+							suspectNoAnswerChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						} else if (
-							oldcustStage == "SUSPECT" &&
-							oldcustStatus == "SUSPECT-IN CONTACT"
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-IN CONTACT"
 						) {
-							suspectInContactDataSet.push([
-								"",
-								oldcustInternalID,
-								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-									oldcustInternalID +
-									'" target="_blank" style="">' +
-									oldcustEntityID +
-									"</a>",
-								oldcustName,
-								oldzeeName,
-								oldcustStatus,
-								oldSource,
-								oldPreviousCarrier,
-								olddateLeadEntered,
-								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
-								oldsalesRepText,
-								suspectInContactChildDataSet,
-							]);
+							console.log("inside SUSPECT-IN CONTACT");
+							suspectActivityCount++;
+							suspectInContactChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
 						}
-						prospectChildDataSet = [];
-						prospectOpportunityChildDataSet = [];
-						prospectQuoteSentChildDataSet = [];
-						prospectBoxSentChildDataSet = [];
-						suspectChildDataSet = [];
-						suspectFollowUpChildDataSet = [];
-						suspectLostChildDataSet = [];
-						suspectOOTChildDataSet = [];
-						suspectQualifiedChildDataSet = [];
-						suspectUnqualifiedChildDataSet = [];
-						suspectOffPeakChildDataSet = [];
-						suspectNoAnswerChildDataSet = [];
-						suspectInContactChildDataSet = [];
 					}
+				} else if (count > 0 && oldcustInternalID == custInternalID) {
+					console.log(
+						"inside count > 0 && (oldcustInternalID == custInternalID)"
+					);
 
-					oldcustInternalID = custInternalID;
-					oldcustEntityID = custEntityID;
-					oldcustName = custName;
-					oldzeeID = zeeID;
-					oldzeeName = zeeName;
-					oldcustStage = custStage;
-					oldcustStatus = custStatus;
-					oldCustStatusId = custStatusId;
-					olddateLeadEntered = dateLeadEntered;
-					oldquoteSentDate = quoteSentDate;
-					olddateLeadLost = dateLeadLost;
-					olddateLeadinContact = dateLeadinContact;
-					olddateProspectWon = dateProspectWon;
-					oldDateLPOValidated = dateLPOValidated;
-					olddateLeadReassigned = dateLeadReassigned;
-					oldsalesRepId = salesRepId;
-					oldsalesRepText = salesRepText;
-					// oldactivityInternalID = activityInternalID;
-					// oldactivityStartDate = activityStartDate;
-					// oldactivityTitle = activityTitle;
-					// oldactivityOrganiser = activityOrganiser;
-					// oldactivityMessage = activityMessage;
-					oldemail48h = email48h;
-					oldDaysOpen = daysOpen;
-					oldCancellationReason = cancellationReason;
-					oldSource = source;
-					oldProdWeeklyUsage = productWeeklyUsage;
-					oldAutoSignUp = autoSignUp;
-					oldPreviousCarrier = previousCarrier;
-					oldMonthServiceValue = monthlyServiceValue;
-					oldAvgInvoiceValue = avgInvoiceValue;
-					count++;
-					return true;
-				});
+					if (!isNullorEmpty(tasksInternalID)) {
+						console.log("inside usernotes internal id");
+						if (
+							custStage == "SUSPECT" &&
+							custStatus != "SUSPECT-CUSTOMER - LOST" &&
+							custStatus != "SUSPECT-PARKING LOT" &&
+							custStatus != "SUSPECT-LOST" &&
+							custStatus != "SUSPECT-OUT OF TERRITORY" &&
+							custStatus != "SUSPECT-FOLLOW-UP" &&
+							custStatus != "SUSPECT-QUALIFIED" &&
+							custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+							custStatus != "SUSPECT-NO ANSWER" &&
+							custStatus != "SUSPECT-IN CONTACT"
+						) {
+							console.log("inside suspect new");
+							suspectActivityCount++;
+							suspectChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+								custStatus == "SUSPECT-LOST")
+						) {
+							console.log("inside suspect lost");
+							suspectActivityCount++;
+							suspectLostChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-PARKING LOT"
+						) {
+							console.log("inside suspect parking lot");
+							suspectActivityCount++;
+							suspectOffPeakChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-OUT OF TERRITORY"
+						) {
+							console.log("inside suspect OOT");
+							suspectActivityCount++;
+							suspectOOTChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-FOLLOW-UP" ||
+								custStatus == "SUSPECT-LPO FOLLOW-UP")
+						) {
+							console.log("inside suspect follow-up");
+							suspectActivityCount++;
+							suspectFollowUpChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-QUALIFIED"
+						) {
+							console.log("inside suspect qualifeid");
+							suspectActivityCount++;
+							suspectQualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-UNQUALIFIED"
+						) {
+							console.log("inside suspect unqualifeid");
+							suspectActivityCount++;
+							suspectUnqualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-VALIDATED"
+						) {
+							console.log("inside suspect validated");
+							suspectActivityCount++;
+							suspectValidatedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-NO ANSWER"
+						) {
+							console.log("inside suspect no answer");
+							suspectActivityCount++;
+							suspectNoAnswerChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-IN CONTACT"
+						) {
+							console.log("inside SUSPECT-IN CONTACT");
+							suspectActivityCount++;
+							suspectInContactChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						}
+					}
+				} else if (count > 0 && oldcustInternalID != custInternalID) {
+					if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+						oldcustStatus != "SUSPECT-PARKING LOT" &&
+						oldcustStatus != "SUSPECT-LOST" &&
+						oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+						oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+						oldcustStatus != "SUSPECT-QUALIFIED" &&
+						oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+						oldcustStatus != "SUSPECT-VALIDATED" &&
+						oldcustStatus != "SUSPECT-NO ANSWER" &&
+						oldcustStatus != "SUSPECT-IN CONTACT" &&
+						oldcustStatus != "SUSPECT-UNQUALIFIED"
+					) {
+						suspectDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldemail48h,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectChildDataSet,
+						]);
 
-			if (count > 0) {
-				if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
-					oldcustStatus != "SUSPECT-PARKING LOT" &&
-					oldcustStatus != "SUSPECT-LOST" &&
-					oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
-					oldcustStatus != "SUSPECT-FOLLOW-UP" &&
-					oldcustStatus != "SUSPECT-QUALIFIED" &&
-					oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
-					oldcustStatus != "SUSPECT-VALIDATED" &&
-					oldcustStatus != "SUSPECT-NO ANSWER" &&
-					oldcustStatus != "SUSPECT-IN CONTACT" &&
-					oldcustStatus != "SUSPECT-UNQUALIFIED"
-				) {
-					suspectDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectChildDataSet,
-					]);
+						csvSuspectDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldemail48h,
+							oldDaysOpen,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+							oldcustStatus == "SUSPECT-LOST")
+					) {
+						suspectLostDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateProspectWon,
+							olddateLeadLost,
+							oldemail48h,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldAvgInvoiceValue,
+							oldsalesRepText,
+							suspectLostChildDataSet,
+						]);
+						csvSuspectLostDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateProspectWon,
+							olddateLeadLost,
+							oldemail48h,
+							oldDaysOpen,
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldAvgInvoiceValue,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-PARKING LOT"
+					) {
+						suspectOffPeakDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+							suspectOffPeakChildDataSet,
+						]);
+						csvSuspectOffPeakDataSet.push([
+							,
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							oldDaysOpen,
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+					) {
+						suspectOOTDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+							suspectOOTChildDataSet,
+						]);
 
-					csvSuspectDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldemail48h,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
-						oldcustStatus == "SUSPECT-LOST")
-				) {
-					suspectLostDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateProspectWon,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldAvgInvoiceValue,
-						oldsalesRepText,
-						suspectLostChildDataSet,
-					]);
+						csvSuspectOOTDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							oldDaysOpen,
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						(oldcustStatus == "SUSPECT-FOLLOW-UP" ||
+							oldcustStatus == "SUSPECT-LPO FOLLOW-UP")
+					) {
+						suspectFollowUpDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+							suspectFollowUpChildDataSet,
+						]);
 
-					csvSuspectLostDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateProspectWon,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldAvgInvoiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-PARKING LOT"
-				) {
-					suspectOffPeakDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectOffPeakChildDataSet,
-					]);
+						csvSuspectFollowUpDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldProdWeeklyUsage,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldquoteSentDate,
+							olddateLeadReassigned,
+							olddateLeadLost,
+							oldemail48h,
+							oldDaysOpen,
+							oldCancellationReason,
+							oldMonthServiceValue,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-QUALIFIED"
+					) {
+						suspectQualifiedDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectQualifiedChildDataSet,
+						]);
 
-					csvSuspectOffPeakDataSet.push([
-						,
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-QUALIFIED"
-				) {
-					suspectQualifiedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
+						csvSuspectQualifiedDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldDaysOpen,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-UNQUALIFIED"
+					) {
+						suspectUnqualifiedDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectQualifiedChildDataSet,
+						]);
 
-					csvSuspectQualifiedDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-UNQUALIFIED"
-				) {
-					suspectUnqualifiedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
+						csvSuspectQualifiedDataSet.push([
+							oldcustInternalID,
+							oldcustEntityID,
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldDaysOpen,
+							oldsalesRepText,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-VALIDATED"
+					) {
+						suspectValidatedDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldDateLPOValidated,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectQualifiedChildDataSet,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-NO ANSWER"
+					) {
+						suspectNoAnswerDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectNoAnswerChildDataSet,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-IN CONTACT"
+					) {
+						suspectInContactDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectInContactChildDataSet,
+						]);
+					}
+					prospectChildDataSet = [];
+					prospectOpportunityChildDataSet = [];
+					prospectQuoteSentChildDataSet = [];
+					prospectBoxSentChildDataSet = [];
+					suspectChildDataSet = [];
+					suspectFollowUpChildDataSet = [];
+					suspectLostChildDataSet = [];
+					suspectOOTChildDataSet = [];
+					suspectQualifiedChildDataSet = [];
+					suspectUnqualifiedChildDataSet = [];
+					suspectOffPeakChildDataSet = [];
+					suspectNoAnswerChildDataSet = [];
+					suspectInContactChildDataSet = [];
 
-					csvSuspectQualifiedDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDaysOpen,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-VALIDATED"
-				) {
-					suspectValidatedDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldDateLPOValidated,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectQualifiedChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-NO ANSWER"
-				) {
-					suspectNoAnswerDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectNoAnswerChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-IN CONTACT"
-				) {
-					suspectInContactDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldsalesRepText,
-						suspectInContactChildDataSet,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-OUT OF TERRITORY"
-				) {
-					suspectOOTDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectOOTChildDataSet,
-					]);
-
-					csvSuspectOOTDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
-				} else if (
-					oldcustStage == "SUSPECT" &&
-					oldcustStatus == "SUSPECT-FOLLOW-UP"
-				) {
-					suspectFollowUpDataSet.push([
-						"",
-						oldcustInternalID,
-						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-							oldcustInternalID +
-							'" target="_blank" style="">' +
-							oldcustEntityID +
-							"</a>",
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-						suspectFollowUpChildDataSet,
-					]);
-
-					csvSuspectFollowUpDataSet.push([
-						oldcustInternalID,
-						oldcustEntityID,
-						oldcustName,
-						oldzeeName,
-						oldcustStatus,
-						oldSource,
-						oldProdWeeklyUsage,
-						oldPreviousCarrier,
-						olddateLeadEntered,
-						oldquoteSentDate,
-						olddateLeadReassigned,
-						olddateLeadLost,
-						oldemail48h,
-						oldDaysOpen,
-						oldCancellationReason,
-						oldMonthServiceValue,
-						oldsalesRepText,
-					]);
+					if (!isNullorEmpty(tasksInternalID)) {
+						if (
+							custStage == "SUSPECT" &&
+							custStatus != "SUSPECT-CUSTOMER - LOST" &&
+							custStatus != "SUSPECT-PARKING LOT" &&
+							custStatus != "SUSPECT-LOST" &&
+							custStatus != "SUSPECT-OUT OF TERRITORY" &&
+							custStatus != "SUSPECT-FOLLOW-UP" &&
+							custStatus != "SUSPECT-QUALIFIED" &&
+							custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+							custStatus != "SUSPECT-NO ANSWER" &&
+							custStatus != "SUSPECT-IN CONTACT"
+						) {
+							suspectActivityCount++;
+							suspectChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+								custStatus == "SUSPECT-LOST")
+						) {
+							suspectActivityCount++;
+							suspectLostChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-PARKING LOT"
+						) {
+							suspectActivityCount++;
+							suspectOffPeakChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-OUT OF TERRITORY"
+						) {
+							suspectActivityCount++;
+							suspectOOTChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							(custStatus == "SUSPECT-FOLLOW-UP" ||
+								custStatus == "SUSPECT-LPO FOLLOW-UP")
+						) {
+							suspectActivityCount++;
+							suspectFollowUpChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-QUALIFIED"
+						) {
+							suspectActivityCount++;
+							suspectQualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-UNQUALIFIED"
+						) {
+							suspectActivityCount++;
+							suspectUnqualifiedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-VALIDATED"
+						) {
+							suspectActivityCount++;
+							suspectValidatedChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-NO ANSWER"
+						) {
+							suspectActivityCount++;
+							suspectNoAnswerChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-IN CONTACT"
+						) {
+							suspectActivityCount++;
+							suspectInContactChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						}
+					}
 				}
+				console.log(
+					"suspectInContactChildDataSet: " + suspectInContactChildDataSet
+				);
+				oldcustInternalID = custInternalID;
+				oldcustEntityID = custEntityID;
+				oldcustName = custName;
+				oldzeeID = zeeID;
+				oldzeeName = zeeName;
+				oldcustStage = custStage;
+				oldcustStatus = custStatus;
+				oldCustStatusId = custStatusId;
+				olddateLeadEntered = dateLeadEntered;
+				oldquoteSentDate = quoteSentDate;
+				olddateLeadLost = dateLeadLost;
+				olddateLeadinContact = dateLeadinContact;
+				olddateProspectWon = dateProspectWon;
+				oldDateLPOValidated = dateLPOValidated;
+				olddateLeadReassigned = dateLeadReassigned;
+				oldsalesRepId = salesRepId;
+				oldsalesRepText = salesRepText;
+				oldemail48h = email48h;
+				oldDaysOpen = daysOpen;
+				oldCancellationReason = cancellationReason;
+				oldSource = source;
+				oldProdWeeklyUsage = productWeeklyUsage;
+				oldAutoSignUp = autoSignUp;
+				oldPreviousCarrier = previousCarrier;
+				oldMonthServiceValue = monthlyServiceValue;
+				oldAvgInvoiceValue = avgInvoiceValue;
+				count++;
+				return true;
+			});
+		console.log(
+			"suspectInContactChildDataSet: " + suspectInContactChildDataSet
+		);
+		if (count > 0) {
+			if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+				oldcustStatus != "SUSPECT-PARKING LOT" &&
+				oldcustStatus != "SUSPECT-LOST" &&
+				oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+				oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+				oldcustStatus != "SUSPECT-QUALIFIED" &&
+				oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+				oldcustStatus != "SUSPECT-VALIDATED" &&
+				oldcustStatus != "SUSPECT-NO ANSWER" &&
+				oldcustStatus != "SUSPECT-IN CONTACT" &&
+				oldcustStatus != "SUSPECT-UNQUALIFIED"
+			) {
+				suspectDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldemail48h,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectChildDataSet,
+				]);
+
+				csvSuspectDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldemail48h,
+					oldDaysOpen,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+					oldcustStatus == "SUSPECT-LOST")
+			) {
+				suspectLostDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateProspectWon,
+					olddateLeadLost,
+					oldemail48h,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldAvgInvoiceValue,
+					oldsalesRepText,
+					suspectLostChildDataSet,
+				]);
+
+				csvSuspectLostDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateProspectWon,
+					olddateLeadLost,
+					oldemail48h,
+					oldDaysOpen,
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldAvgInvoiceValue,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-PARKING LOT"
+			) {
+				suspectOffPeakDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+					suspectOffPeakChildDataSet,
+				]);
+
+				csvSuspectOffPeakDataSet.push([
+					,
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					oldDaysOpen,
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-QUALIFIED"
+			) {
+				suspectQualifiedDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectQualifiedChildDataSet,
+				]);
+
+				csvSuspectQualifiedDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldDaysOpen,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-UNQUALIFIED"
+			) {
+				suspectUnqualifiedDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectQualifiedChildDataSet,
+				]);
+
+				csvSuspectQualifiedDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldDaysOpen,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-VALIDATED"
+			) {
+				suspectValidatedDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldDateLPOValidated,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectQualifiedChildDataSet,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-NO ANSWER"
+			) {
+				suspectNoAnswerDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectNoAnswerChildDataSet,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-IN CONTACT"
+			) {
+				suspectInContactDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldsalesRepText,
+					suspectInContactChildDataSet,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+			) {
+				suspectOOTDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+					suspectOOTChildDataSet,
+				]);
+
+				csvSuspectOOTDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					oldDaysOpen,
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+				]);
+			} else if (
+				oldcustStage == "SUSPECT" &&
+				oldcustStatus == "SUSPECT-FOLLOW-UP"
+			) {
+				suspectFollowUpDataSet.push([
+					"",
+					oldcustInternalID,
+					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+					suspectFollowUpChildDataSet,
+				]);
+
+				csvSuspectFollowUpDataSet.push([
+					oldcustInternalID,
+					oldcustEntityID,
+					oldcustName,
+					oldzeeName,
+					oldcustStatus,
+					oldSource,
+					oldProdWeeklyUsage,
+					oldPreviousCarrier,
+					olddateLeadEntered,
+					oldquoteSentDate,
+					olddateLeadReassigned,
+					olddateLeadLost,
+					oldemail48h,
+					oldDaysOpen,
+					oldCancellationReason,
+					oldMonthServiceValue,
+					oldsalesRepText,
+				]);
 			}
 		}
+		// } else {
+		// 	console.log("websiteSuspectsLeadsReportingSearch without activity");
+		// 	websiteSuspectsLeadsReportingSearch
+		// 		.run()
+		// 		.each(function (suspectsResultSet) {
+		// 			var custInternalID = suspectsResultSet.getValue({
+		// 				name: "internalid",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var custEntityID = suspectsResultSet.getValue({
+		// 				name: "entityid",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var custName = suspectsResultSet.getValue({
+		// 				name: "companyname",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var zeeID = suspectsResultSet.getValue({
+		// 				name: "partner",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var zeeName = suspectsResultSet.getText({
+		// 				name: "partner",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var custStage = suspectsResultSet
+		// 				.getText({
+		// 					name: "stage",
+		// 					summary: "GROUP",
+		// 				})
+		// 				.toUpperCase();
+
+		// 			var custStatusId = suspectsResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var custStatus = suspectsResultSet
+		// 				.getText({
+		// 					name: "entitystatus",
+		// 					summary: "GROUP",
+		// 				})
+		// 				.toUpperCase();
+
+		// 			var dateLeadEntered = suspectsResultSet.getValue({
+		// 				name: "custentity_date_lead_entered",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var quoteSentDate = suspectsResultSet.getValue({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var dateLeadLost = suspectsResultSet.getValue({
+		// 				name: "custentity_date_lead_lost",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var dateLeadinContact = suspectsResultSet.getValue({
+		// 				name: "custentity_date_prospect_in_contact",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var dateProspectWon = suspectsResultSet.getValue({
+		// 				name: "custentity_date_prospect_opportunity",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var dateLeadReassigned = suspectsResultSet.getValue({
+		// 				name: "custentity_date_suspect_reassign",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var salesRepId = suspectsResultSet.getValue({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "CUSTRECORD_SALES_CUSTOMER",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var salesRepText = suspectsResultSet.getText({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "CUSTRECORD_SALES_CUSTOMER",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var email48h = suspectsResultSet.getText({
+		// 				name: "custentity_48h_email_sent",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var daysOpen = suspectsResultSet.getValue({
+		// 				name: "formulanumeric",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var cancellationReason = suspectsResultSet.getText({
+		// 				name: "custentity_service_cancellation_reason",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var source = suspectsResultSet.getText({
+		// 				name: "leadsource",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var productWeeklyUsage = suspectsResultSet.getText({
+		// 				name: "custentity_form_mpex_usage_per_week",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var autoSignUp = suspectsResultSet.getValue({
+		// 				name: "custentity_auto_sign_up",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var previousCarrier = suspectsResultSet.getText({
+		// 				name: "custentity_previous_carrier",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var monthlyServiceValue = suspectsResultSet.getValue({
+		// 				name: "custentity_cust_monthly_service_value",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			var avgInvoiceValue = suspectsResultSet.getValue({
+		// 				name: "total",
+		// 				join: "transaction",
+		// 				summary: "AVG",
+		// 			});
+
+		// 			var dateLPOValidated = suspectsResultSet.getValue({
+		// 				name: "custentity_date_lpo_validated",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			if (!isNullorEmpty(monthlyServiceValue)) {
+		// 				monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+		// 			} else {
+		// 				monthlyServiceValue = 0.0;
+		// 			}
+
+		// 			if (
+		// 				!isNullorEmpty(avgInvoiceValue) &&
+		// 				parseInt(avgInvoiceValue) > 0
+		// 			) {
+		// 				avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+		// 			} else {
+		// 				avgInvoiceValue = 0.0;
+		// 			}
+
+		// 			var dateLeadEnteredSplit = dateLeadEntered.split("/");
+		// 			if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+		// 				dateLeadEnteredSplit[1] = "0" + dateLeadEnteredSplit[1];
+		// 			}
+
+		// 			if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+		// 				dateLeadEnteredSplit[0] = "0" + dateLeadEnteredSplit[0];
+		// 			}
+		// 			dateLeadEntered =
+		// 				dateLeadEnteredSplit[2] +
+		// 				"-" +
+		// 				dateLeadEnteredSplit[1] +
+		// 				"-" +
+		// 				dateLeadEnteredSplit[0];
+
+		// 			if (!isNullorEmpty(dateLeadLost)) {
+		// 				var dateLeadLostSplit = dateLeadLost.split("/");
+		// 				// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+		// 				var dateEntered = new Date(
+		// 					dateLeadEnteredSplit[2],
+		// 					dateLeadEnteredSplit[1] - 1,
+		// 					dateLeadEnteredSplit[0]
+		// 				);
+		// 				var dateLost = new Date(
+		// 					dateLeadLostSplit[2],
+		// 					dateLeadLostSplit[1] - 1,
+		// 					dateLeadLostSplit[0]
+		// 				);
+
+		// 				var difference = dateLost.getTime() - dateEntered.getTime();
+		// 				daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+		// 				var weeks = Math.floor(daysOpen / 7);
+		// 				daysOpen = daysOpen - weeks * 2;
+
+		// 				// Handle special cases
+		// 				var startDay = dateEntered.getDay();
+		// 				var endDay = dateLost.getDay();
+
+		// 				// Remove weekend not previously removed.
+		// 				if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+		// 				// Remove start day if span starts on Sunday but ends before Saturday
+		// 				if (startDay == 0 && endDay != 6) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				// Remove end day if span ends on Saturday but starts after Sunday
+		// 				if (endDay == 6 && startDay != 0) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+		// 			} else if (!isNullorEmpty(dateProspectWon)) {
+		// 				var dateProspectWonSplit = dateProspectWon.split("/");
+
+		// 				if (parseInt(dateProspectWonSplit[1]) < 10) {
+		// 					dateProspectWonSplit[1] = "0" + dateProspectWonSplit[1];
+		// 				}
+
+		// 				if (parseInt(dateProspectWonSplit[0]) < 10) {
+		// 					dateProspectWonSplit[0] = "0" + dateProspectWonSplit[0];
+		// 				}
+
+		// 				dateProspectWon =
+		// 					dateProspectWonSplit[2] +
+		// 					"-" +
+		// 					dateProspectWonSplit[1] +
+		// 					"-" +
+		// 					dateProspectWonSplit[0];
+
+		// 				var dateLeadLostSplit = dateLeadLost.split("/");
+		// 				// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+		// 				var dateEntered = new Date(
+		// 					dateLeadEnteredSplit[2],
+		// 					dateLeadEnteredSplit[1] - 1,
+		// 					dateLeadEnteredSplit[0]
+		// 				);
+		// 				dateProspectWon = new Date(
+		// 					dateProspectWonSplit[2],
+		// 					dateProspectWonSplit[1] - 1,
+		// 					dateProspectWonSplit[0]
+		// 				);
+
+		// 				var difference = dateProspectWon.getTime() - dateEntered.getTime();
+		// 				daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+		// 				var weeks = Math.floor(daysOpen / 7);
+		// 				daysOpen = daysOpen - weeks * 2;
+
+		// 				// Handle special cases
+		// 				var startDay = dateEntered.getDay();
+		// 				var endDay = dateProspectWon.getDay();
+
+		// 				// Remove weekend not previously removed.
+		// 				if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+		// 				// Remove start day if span starts on Sunday but ends before Saturday
+		// 				if (startDay == 0 && endDay != 6) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				// Remove end day if span ends on Saturday but starts after Sunday
+		// 				if (endDay == 6 && startDay != 0) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				dateProspectWon =
+		// 					dateProspectWonSplit[2] +
+		// 					"-" +
+		// 					dateProspectWonSplit[1] +
+		// 					"-" +
+		// 					dateProspectWonSplit[0];
+		// 			} else if (!isNullorEmpty(quoteSentDate)) {
+		// 				var dateQuoteSentSplit = quoteSentDate.split("/");
+
+		// 				if (parseInt(dateQuoteSentSplit[1]) < 10) {
+		// 					dateQuoteSentSplit[1] = "0" + dateQuoteSentSplit[1];
+		// 				}
+
+		// 				if (parseInt(dateQuoteSentSplit[0]) < 10) {
+		// 					dateQuoteSentSplit[0] = "0" + dateQuoteSentSplit[0];
+		// 				}
+
+		// 				quoteSentDate =
+		// 					dateQuoteSentSplit[2] +
+		// 					"-" +
+		// 					dateQuoteSentSplit[1] +
+		// 					"-" +
+		// 					dateQuoteSentSplit[0];
+
+		// 				var dateLeadLostSplit = dateLeadLost.split("/");
+		// 				// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+		// 				var dateEntered = new Date(
+		// 					dateLeadEnteredSplit[2],
+		// 					dateLeadEnteredSplit[1] - 1,
+		// 					dateLeadEnteredSplit[0]
+		// 				);
+		// 				quoteSentDate = new Date(
+		// 					dateQuoteSentSplit[2],
+		// 					dateQuoteSentSplit[1] - 1,
+		// 					dateQuoteSentSplit[0]
+		// 				);
+
+		// 				var difference = quoteSentDate.getTime() - dateEntered.getTime();
+		// 				daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+		// 				var weeks = Math.floor(daysOpen / 7);
+		// 				daysOpen = daysOpen - weeks * 2;
+
+		// 				// Handle special cases
+		// 				var startDay = dateEntered.getDay();
+		// 				var endDay = quoteSentDate.getDay();
+
+		// 				// Remove weekend not previously removed.
+		// 				if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+		// 				// Remove start day if span starts on Sunday but ends before Saturday
+		// 				if (startDay == 0 && endDay != 6) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				// Remove end day if span ends on Saturday but starts after Sunday
+		// 				if (endDay == 6 && startDay != 0) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				quoteSentDate =
+		// 					dateQuoteSentSplit[2] +
+		// 					"-" +
+		// 					dateQuoteSentSplit[1] +
+		// 					"-" +
+		// 					dateQuoteSentSplit[0];
+		// 			}
+		// 			if (!isNullorEmpty(dateLPOValidated)) {
+		// 				var dateLPOValidatedSplit = dateLPOValidated.split("/");
+		// 				// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+		// 				var dateEntered = new Date(
+		// 					dateLeadEnteredSplit[2],
+		// 					dateLeadEnteredSplit[1] - 1,
+		// 					dateLeadEnteredSplit[0]
+		// 				);
+		// 				var dateValidated = new Date(
+		// 					dateLPOValidatedSplit[2],
+		// 					dateLPOValidatedSplit[1] - 1,
+		// 					dateLPOValidatedSplit[0]
+		// 				);
+
+		// 				var difference = dateValidated.getTime() - dateEntered.getTime();
+		// 				daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+		// 				var weeks = Math.floor(daysOpen / 7);
+		// 				daysOpen = daysOpen - weeks * 2;
+
+		// 				// Handle special cases
+		// 				var startDay = dateEntered.getDay();
+		// 				var endDay = dateValidated.getDay();
+
+		// 				// Remove weekend not previously removed.
+		// 				if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+		// 				// Remove start day if span starts on Sunday but ends before Saturday
+		// 				if (startDay == 0 && endDay != 6) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				// Remove end day if span ends on Saturday but starts after Sunday
+		// 				if (endDay == 6 && startDay != 0) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+		// 			} else {
+		// 				// var dateLeadLostSplit = dateLeadLost.split('/');
+		// 				// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+		// 				var dateEntered = new Date(
+		// 					dateLeadEnteredSplit[2],
+		// 					dateLeadEnteredSplit[1] - 1,
+		// 					dateLeadEnteredSplit[0]
+		// 				);
+		// 				var todayDate = new Date();
+
+		// 				var difference = todayDate.getTime() - dateEntered.getTime();
+		// 				daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+		// 				var weeks = Math.floor(daysOpen / 7);
+		// 				daysOpen = daysOpen - weeks * 2;
+
+		// 				// Handle special cases
+		// 				var startDay = dateEntered.getDay();
+		// 				var endDay = todayDate.getDay();
+
+		// 				// Remove weekend not previously removed.
+		// 				if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+		// 				// Remove start day if span starts on Sunday but ends before Saturday
+		// 				if (startDay == 0 && endDay != 6) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+
+		// 				// Remove end day if span ends on Saturday but starts after Sunday
+		// 				if (endDay == 6 && startDay != 0) {
+		// 					daysOpen = daysOpen - 1;
+		// 				}
+		// 			}
+
+		// 			if (count == 0) {
+		// 			} else if (count > 0 && oldcustInternalID == custInternalID) {
+		// 			} else if (count > 0 && oldcustInternalID != custInternalID) {
+		// 				if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+		// 					oldcustStatus != "SUSPECT-PARKING LOT" &&
+		// 					oldcustStatus != "SUSPECT-LOST" &&
+		// 					oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+		// 					oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+		// 					oldcustStatus != "SUSPECT-QUALIFIED" &&
+		// 					oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+		// 					oldcustStatus != "SUSPECT-VALIDATED" &&
+		// 					oldcustStatus != "SUSPECT-NO ANSWER" &&
+		// 					oldcustStatus != "SUSPECT-IN CONTACT" &&
+		// 					oldcustStatus != "SUSPECT-UNQUALIFIED"
+		// 				) {
+		// 					suspectDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldemail48h,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectChildDataSet,
+		// 					]);
+
+		// 					csvSuspectDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldemail48h,
+		// 						oldDaysOpen,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+		// 						oldcustStatus == "SUSPECT-LOST")
+		// 				) {
+		// 					suspectLostDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateProspectWon,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldAvgInvoiceValue,
+		// 						oldsalesRepText,
+		// 						suspectLostChildDataSet,
+		// 					]);
+		// 					csvSuspectLostDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateProspectWon,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						oldDaysOpen,
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldAvgInvoiceValue,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-PARKING LOT"
+		// 				) {
+		// 					suspectOffPeakDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 						suspectOffPeakChildDataSet,
+		// 					]);
+		// 					csvSuspectOffPeakDataSet.push([
+		// 						,
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						oldDaysOpen,
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+		// 				) {
+		// 					suspectOOTDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 						suspectOOTChildDataSet,
+		// 					]);
+
+		// 					csvSuspectOOTDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						oldDaysOpen,
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					(oldcustStatus == "SUSPECT-FOLLOW-UP" ||
+		// 						oldcustStatus == "SUSPECT-LPO FOLLOW-UP")
+		// 				) {
+		// 					suspectFollowUpDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 						suspectFollowUpChildDataSet,
+		// 					]);
+
+		// 					csvSuspectFollowUpDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldProdWeeklyUsage,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldquoteSentDate,
+		// 						olddateLeadReassigned,
+		// 						olddateLeadLost,
+		// 						oldemail48h,
+		// 						oldDaysOpen,
+		// 						oldCancellationReason,
+		// 						oldMonthServiceValue,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-QUALIFIED"
+		// 				) {
+		// 					suspectQualifiedDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectQualifiedChildDataSet,
+		// 					]);
+
+		// 					csvSuspectQualifiedDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldDaysOpen,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-UNQUALIFIED"
+		// 				) {
+		// 					suspectUnqualifiedDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectQualifiedChildDataSet,
+		// 					]);
+
+		// 					csvSuspectQualifiedDataSet.push([
+		// 						oldcustInternalID,
+		// 						oldcustEntityID,
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldDaysOpen,
+		// 						oldsalesRepText,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-VALIDATED"
+		// 				) {
+		// 					suspectValidatedDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						oldDateLPOValidated,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectQualifiedChildDataSet,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-NO ANSWER"
+		// 				) {
+		// 					suspectNoAnswerDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectNoAnswerChildDataSet,
+		// 					]);
+		// 				} else if (
+		// 					oldcustStage == "SUSPECT" &&
+		// 					oldcustStatus == "SUSPECT-IN CONTACT"
+		// 				) {
+		// 					suspectInContactDataSet.push([
+		// 						"",
+		// 						oldcustInternalID,
+		// 						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 							oldcustInternalID +
+		// 							'" target="_blank" style="">' +
+		// 							oldcustEntityID +
+		// 							"</a>",
+		// 						oldcustName,
+		// 						oldzeeName,
+		// 						oldcustStatus,
+		// 						oldSource,
+		// 						oldPreviousCarrier,
+		// 						olddateLeadEntered,
+		// 						'<input type="button" value="' +
+		// 							oldDaysOpen +
+		// 							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 							oldcustInternalID +
+		// 							'" style="background-color: #095C7B;border-radius: 30px">',
+		// 						oldsalesRepText,
+		// 						suspectInContactChildDataSet,
+		// 					]);
+		// 				}
+		// 				prospectChildDataSet = [];
+		// 				prospectOpportunityChildDataSet = [];
+		// 				prospectQuoteSentChildDataSet = [];
+		// 				prospectBoxSentChildDataSet = [];
+		// 				suspectChildDataSet = [];
+		// 				suspectFollowUpChildDataSet = [];
+		// 				suspectLostChildDataSet = [];
+		// 				suspectOOTChildDataSet = [];
+		// 				suspectQualifiedChildDataSet = [];
+		// 				suspectUnqualifiedChildDataSet = [];
+		// 				suspectOffPeakChildDataSet = [];
+		// 				suspectNoAnswerChildDataSet = [];
+		// 				suspectInContactChildDataSet = [];
+		// 			}
+
+		// 			oldcustInternalID = custInternalID;
+		// 			oldcustEntityID = custEntityID;
+		// 			oldcustName = custName;
+		// 			oldzeeID = zeeID;
+		// 			oldzeeName = zeeName;
+		// 			oldcustStage = custStage;
+		// 			oldcustStatus = custStatus;
+		// 			oldCustStatusId = custStatusId;
+		// 			olddateLeadEntered = dateLeadEntered;
+		// 			oldquoteSentDate = quoteSentDate;
+		// 			olddateLeadLost = dateLeadLost;
+		// 			olddateLeadinContact = dateLeadinContact;
+		// 			olddateProspectWon = dateProspectWon;
+		// 			oldDateLPOValidated = dateLPOValidated;
+		// 			olddateLeadReassigned = dateLeadReassigned;
+		// 			oldsalesRepId = salesRepId;
+		// 			oldsalesRepText = salesRepText;
+		// 			// oldactivityInternalID = activityInternalID;
+		// 			// oldactivityStartDate = activityStartDate;
+		// 			// oldactivityTitle = activityTitle;
+		// 			// oldactivityOrganiser = activityOrganiser;
+		// 			// oldactivityMessage = activityMessage;
+		// 			oldemail48h = email48h;
+		// 			oldDaysOpen = daysOpen;
+		// 			oldCancellationReason = cancellationReason;
+		// 			oldSource = source;
+		// 			oldProdWeeklyUsage = productWeeklyUsage;
+		// 			oldAutoSignUp = autoSignUp;
+		// 			oldPreviousCarrier = previousCarrier;
+		// 			oldMonthServiceValue = monthlyServiceValue;
+		// 			oldAvgInvoiceValue = avgInvoiceValue;
+		// 			count++;
+		// 			return true;
+		// 		});
+
+		// 	if (count > 0) {
+		// 		if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+		// 			oldcustStatus != "SUSPECT-PARKING LOT" &&
+		// 			oldcustStatus != "SUSPECT-LOST" &&
+		// 			oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+		// 			oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+		// 			oldcustStatus != "SUSPECT-QUALIFIED" &&
+		// 			oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+		// 			oldcustStatus != "SUSPECT-VALIDATED" &&
+		// 			oldcustStatus != "SUSPECT-NO ANSWER" &&
+		// 			oldcustStatus != "SUSPECT-IN CONTACT" &&
+		// 			oldcustStatus != "SUSPECT-UNQUALIFIED"
+		// 		) {
+		// 			suspectDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldemail48h,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectChildDataSet,
+		// 			]);
+
+		// 			csvSuspectDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldemail48h,
+		// 				oldDaysOpen,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+		// 				oldcustStatus == "SUSPECT-LOST")
+		// 		) {
+		// 			suspectLostDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateProspectWon,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldAvgInvoiceValue,
+		// 				oldsalesRepText,
+		// 				suspectLostChildDataSet,
+		// 			]);
+
+		// 			csvSuspectLostDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateProspectWon,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				oldDaysOpen,
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldAvgInvoiceValue,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-PARKING LOT"
+		// 		) {
+		// 			suspectOffPeakDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 				suspectOffPeakChildDataSet,
+		// 			]);
+
+		// 			csvSuspectOffPeakDataSet.push([
+		// 				,
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				oldDaysOpen,
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-QUALIFIED"
+		// 		) {
+		// 			suspectQualifiedDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectQualifiedChildDataSet,
+		// 			]);
+
+		// 			csvSuspectQualifiedDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldDaysOpen,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-UNQUALIFIED"
+		// 		) {
+		// 			suspectUnqualifiedDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectQualifiedChildDataSet,
+		// 			]);
+
+		// 			csvSuspectQualifiedDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldDaysOpen,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-VALIDATED"
+		// 		) {
+		// 			suspectValidatedDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldDateLPOValidated,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectQualifiedChildDataSet,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-NO ANSWER"
+		// 		) {
+		// 			suspectNoAnswerDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectNoAnswerChildDataSet,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-IN CONTACT"
+		// 		) {
+		// 			suspectInContactDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldsalesRepText,
+		// 				suspectInContactChildDataSet,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+		// 		) {
+		// 			suspectOOTDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 				suspectOOTChildDataSet,
+		// 			]);
+
+		// 			csvSuspectOOTDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				oldDaysOpen,
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		} else if (
+		// 			oldcustStage == "SUSPECT" &&
+		// 			oldcustStatus == "SUSPECT-FOLLOW-UP"
+		// 		) {
+		// 			suspectFollowUpDataSet.push([
+		// 				"",
+		// 				oldcustInternalID,
+		// 				'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+		// 					oldcustInternalID +
+		// 					'" target="_blank" style="">' +
+		// 					oldcustEntityID +
+		// 					"</a>",
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				'<input type="button" value="' +
+		// 					oldDaysOpen +
+		// 					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+		// 					oldcustInternalID +
+		// 					'" style="background-color: #095C7B;border-radius: 30px">',
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 				suspectFollowUpChildDataSet,
+		// 			]);
+
+		// 			csvSuspectFollowUpDataSet.push([
+		// 				oldcustInternalID,
+		// 				oldcustEntityID,
+		// 				oldcustName,
+		// 				oldzeeName,
+		// 				oldcustStatus,
+		// 				oldSource,
+		// 				oldProdWeeklyUsage,
+		// 				oldPreviousCarrier,
+		// 				olddateLeadEntered,
+		// 				oldquoteSentDate,
+		// 				olddateLeadReassigned,
+		// 				olddateLeadLost,
+		// 				oldemail48h,
+		// 				oldDaysOpen,
+		// 				oldCancellationReason,
+		// 				oldMonthServiceValue,
+		// 				oldsalesRepText,
+		// 			]);
+		// 		}
+		// 	}
+		// }
 
 		console.log("suspectNoAnswerDatSet: " + suspectNoAnswerDataSet);
 		console.log("suspectInContactDataSet: " + suspectInContactDataSet);
@@ -32285,14 +32925,14 @@ define([
 				},
 			},
 			columns: [
-				{
-					title: "Expand",
-					className: "dt-control",
-					orderable: false,
-					data: null,
-					defaultContent:
-						'<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
-				}, //0
+				// {
+				// 	title: "Expand",
+				// 	className: "dt-control",
+				// 	orderable: false,
+				// 	data: null,
+				// 	defaultContent:
+				// 		'<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+				// }, //0
 				{ title: "Internal ID" }, //1
 				{ title: "ID" }, //2
 				{ title: "Company Name" }, //3
@@ -32317,40 +32957,54 @@ define([
 				{ title: "Sales Campaign" }, //19
 				{ title: "Sales Rep" }, //20
 				{ title: "Auto Signed Up" }, //21
-				{ title: "Child Table" }, //22
+				// { title: "Child Table" }, //22
 			],
 			autoWidth: false,
+			// columnDefs: [
+			// 	{
+			// 		targets: [21, 22],
+			// 		visible: false,
+			// 	},
+			// 	{
+			// 		targets: [2, 3, 4, 11, 13, 14, 15, 16, 17],
+			// 		className: "bolded",
+			// 	},
+			// 	{
+			// 		targets: [0, 8, 12],
+			// 		className: "notexport",
+			// 	},
+			// ],
 			columnDefs: [
 				{
-					targets: [21, 22],
+					targets: [20],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 4, 11, 13, 14, 15, 16, 17],
+					targets: [1, 2, 3, 10, 12, 13, 14, 15, 16],
 					className: "bolded",
 				},
 				{
-					targets: [0, 8, 12],
+					targets: [7, 11],
 					className: "notexport",
 				},
 			],
 			rowCallback: function (row, data, index) {
 				var row_color = "";
-				if (data[5] == "Additional Services") {
-					$("td", row).css("background-color", "#86A3B8");
-					// } else if (!isNullorEmpty(data[19])) {
-					//     data[21].forEach(function (el) {
-					//         if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
-					//             row_color = ''
+				// if (data[5] == "Additional Services") {
+				// 	$("td", row).css("background-color", "#86A3B8");
+				// 	// } else if (!isNullorEmpty(data[19])) {
+				// 	//     data[21].forEach(function (el) {
+				// 	//         if (isNullorEmpty(el.invoiceDocumentNumber) || parseFloat(el.invoiceAmount) == 0 || el.invoiceDocumentNumber == 'Memorized') {
+				// 	//             row_color = ''
 
-					//         } else {
-					//             row_color = '#53BF9D'
-					//         }
-					//     });
-					//     $('td', row).css('background-color', row_color);
-				} else if (!isNullorEmpty(data[13])) {
-					$("td", row).css("background-color", "#ADCF9F");
-				}
+				// 	//         } else {
+				// 	//             row_color = '#53BF9D'
+				// 	//         }
+				// 	//     });
+				// 	//     $('td', row).css('background-color', row_color);
+				// } else if (!isNullorEmpty(data[13])) {
+				// 	$("td", row).css("background-color", "#ADCF9F");
+				// }
 			},
 			footerCallback: function (row, data, start, end, display) {
 				var api = this.api(),
@@ -32506,34 +33160,34 @@ define([
 			},
 		});
 
-		dataTable.rows().every(function () {
-			// this.child(format(this.data())).show();
-			this.child(createChild(this)); // Add Child Tables
-			this.child.hide(); // Hide Child Tables on Open
-		});
+		// dataTable.rows().every(function () {
+		// 	// this.child(format(this.data())).show();
+		// 	this.child(createChild(this)); // Add Child Tables
+		// 	this.child.hide(); // Hide Child Tables on Open
+		// });
 
-		$("#mpexusage-customer tbody").on("click", "td.dt-control", function () {
-			var tr = $(this).closest("tr");
-			var row = dataTable.row(tr);
+		// $("#mpexusage-customer tbody").on("click", "td.dt-control", function () {
+		// 	var tr = $(this).closest("tr");
+		// 	var row = dataTable.row(tr);
 
-			if (row.child.isShown()) {
-				// This row is already open - close it
-				destroyChild(row);
-				tr.removeClass("shown");
-				tr.removeClass("parent");
+		// 	if (row.child.isShown()) {
+		// 		// This row is already open - close it
+		// 		destroyChild(row);
+		// 		tr.removeClass("shown");
+		// 		tr.removeClass("parent");
 
-				$(".expand-button").addClass("btn-primary");
-				$(".expand-button").removeClass("btn-light");
-			} else {
-				// Open this row
-				row.child.show();
-				tr.addClass("shown");
-				tr.addClass("parent");
+		// 		$(".expand-button").addClass("btn-primary");
+		// 		$(".expand-button").removeClass("btn-light");
+		// 	} else {
+		// 		// Open this row
+		// 		row.child.show();
+		// 		tr.addClass("shown");
+		// 		tr.addClass("parent");
 
-				$(".expand-button").removeClass("btn-primary");
-				$(".expand-button").addClass("btn-light");
-			}
-		});
+		// 		$(".expand-button").removeClass("btn-primary");
+		// 		$(".expand-button").addClass("btn-light");
+		// 	}
+		// });
 
 		console.log("prospectDataSet: " + prospectDataSet);
 
@@ -34892,11 +35546,12 @@ define([
 		row.data()[19].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -34916,8 +35571,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -34930,11 +35586,12 @@ define([
 		row.data()[18].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -34951,11 +35608,12 @@ define([
 			data: childSet,
 			order: [1, "desc"],
 			columns: [
-				{ title: "Internal Id " },
+				{ title: "Internal Id" },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -34969,11 +35627,12 @@ define([
 		row.data()[12].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -34993,8 +35652,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -35008,11 +35668,12 @@ define([
 		row.data()[11].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -35032,8 +35693,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -35047,11 +35709,12 @@ define([
 		row.data()[11].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -35071,8 +35734,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -35086,11 +35750,12 @@ define([
 		row.data()[12].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -35110,8 +35775,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
@@ -35125,11 +35791,12 @@ define([
 		row.data()[11].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
-					el.activityInternalID,
-					el.activityStartDate,
-					el.activityTitle,
-					el.activityOrganiser,
-					el.activityMessage,
+					el.tasksInternalID,
+					el.taskDate,
+					el.taskTitle,
+					el.taskAssignedTo,
+					el.taskStatus,
+					el.taskComment,
 				]);
 			}
 		});
@@ -35149,8 +35816,9 @@ define([
 				{ title: "Internal Id " },
 				{ title: "Date" },
 				{ title: "Title" },
-				{ title: "Organiser" },
-				{ title: "Message" },
+				{ title: "Assigned To" },
+				{ title: "Status" },
+				{ title: "Comment" },
 			],
 			columnDefs: [],
 			rowCallback: function (row, data) {},
