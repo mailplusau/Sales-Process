@@ -134,7 +134,7 @@ define([
 		$(".lead_entered_label_section").removeClass("hide");
 		$(".lead_entered_div").removeClass("hide");
 		$(".modified_date_div").removeClass("hide");
-		$(".salesactivitynotes_div").removeClass("hide");
+		// $(".salesactivitynotes_div").removeClass("hide");
 
 		$(".loading_section").addClass("hide");
 
@@ -1339,7 +1339,7 @@ define([
 			scrollCollapse: true,
 			// scrollY: '200px',
 			pageLength: 1000,
-			order: [[12, "des"]],
+			order: [[11, "des"]],
 			layout: {
 				topStart: {
 					buttons: [
@@ -1387,13 +1387,13 @@ define([
 				},
 			},
 			columns: [
-				{
-					title: "Expand",
-					className: "dt-control",
-					orderable: false,
-					data: null,
-					defaultContent: "", //0
-				},
+				// {
+				// 	title: "Expand",
+				// 	className: "dt-control",
+				// 	orderable: false,
+				// 	data: null,
+				// 	defaultContent: "", //0
+				// },
 				{
 					title: "LINK", //1
 				},
@@ -1463,23 +1463,20 @@ define([
 				{
 					title: "Premium Activated", //23
 				},
-				{
-					title: "Child", //24
-				},
+				// {
+				// 	title: "Child", //24
+				// },
 			],
 			columnDefs: [
 				{
-					targets: [3, 4, 5, 6, 7, 8, 12, 13, 14, 21, 22, 23],
+					targets: [2, 3, 4, 5, 6, 7, 11, 12, 13, 20, 21, 22],
 					className: "bolded",
 				},
 				{
-					targets: [2, 15, 16, 17, 18, 19, 20, 24],
+					targets: [1, 14, 15, 16, 17, 18, 19],
 					visible: false,
 				},
-				{
-					targets: [0, 1],
-					className: "col-xs-2",
-				},
+
 			],
 			rowCallback: function (row, data, index) {
 				// if (!isNullorEmpty(data[10])) {
@@ -1514,7 +1511,7 @@ define([
 			pageLength: 1000,
 			scrollCollapse: true,
 			// scrollY: '200px',
-			order: [[2, "asc"]],
+			order: [[1, "asc"]],
 			layout: {
 				topStart: {
 					buttons: [
@@ -1562,13 +1559,13 @@ define([
 				},
 			},
 			columns: [
-				{
-					title: "Expand",
-					className: "dt-control",
-					orderable: false,
-					data: null,
-					defaultContent: "", //0
-				},
+				// {
+				// 	title: "Expand",
+				// 	className: "dt-control",
+				// 	orderable: false,
+				// 	data: null,
+				// 	defaultContent: "", //0
+				// },
 				{
 					title: "LINK", //1
 				},
@@ -1635,21 +1632,17 @@ define([
 				{
 					title: "Premium Activated", //22
 				},
-				{
-					title: "Child", //23
-				},
+				// {
+				// 	title: "Child", //23
+				// },
 			],
 			columnDefs: [
 				{
-					targets: [5],
-					className: "col-xs-2",
-				},
-				{
-					targets: [2, 4, 5, 6, 7, 8, 9, 20, 21, 22],
+					targets: [1, 3, 4, 5, 6, 7, 8, 19, 20, 21],
 					className: "bolded",
 				},
 				{
-					targets: [3, 13, 18, 15, 16, 17, 19, 23],
+					targets: [2, 12, 17, 14, 15, 16, 18],
 					visible: false,
 				},
 			],
@@ -1962,89 +1955,89 @@ define([
 						join: "partner",
 					});
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Suspects - Activity List
-						var suspectActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_9",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Suspects - Activity List
+					// 	var suspectActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_9",
+					// 	});
 
-						suspectActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	suspectActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var suspectChildDataSet = [];
+					// 	var suspectChildDataSet = [];
 
-						suspectActivityListSearch
-							.run()
-							.each(function (suspectActivityListSearchResultSet) {
-								var activityInternalID =
-									suspectActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									suspectActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle = suspectActivityListSearchResultSet.getValue(
-									{
-										name: "title",
-										join: "activity",
-									}
-								);
-								if (
-									isNullorEmpty(
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	suspectActivityListSearch
+					// 		.run()
+					// 		.each(function (suspectActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle = suspectActivityListSearchResultSet.getValue(
+					// 				{
+					// 					name: "title",
+					// 					join: "activity",
+					// 				}
+					// 			);
+					// 			if (
+					// 				isNullorEmpty(
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									suspectActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								if (!isNullorEmpty(activityTitle)) {
-									suspectChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				suspectChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								return true;
-							});
-					} else {
-						var suspectChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var suspectChildDataSet = [];
+					// }
 
-					console.log(
-						"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
-					);
+					// console.log(
+					// 	"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
+					// );
 
 					debt_set4.push({
 						custInternalID: custInternalID,
@@ -2073,7 +2066,7 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: suspectChildDataSet,
+						// child: suspectChildDataSet,
 					});
 				}
 			} else {
@@ -2194,89 +2187,89 @@ define([
 						join: "partner",
 					});
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Suspects - Activity List
-						var suspectActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_9",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Suspects - Activity List
+					// 	var suspectActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_9",
+					// 	});
 
-						suspectActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	suspectActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var suspectChildDataSet = [];
+					// 	var suspectChildDataSet = [];
 
-						suspectActivityListSearch
-							.run()
-							.each(function (suspectActivityListSearchResultSet) {
-								var activityInternalID =
-									suspectActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									suspectActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle = suspectActivityListSearchResultSet.getValue(
-									{
-										name: "title",
-										join: "activity",
-									}
-								);
-								if (
-									isNullorEmpty(
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	suspectActivityListSearch
+					// 		.run()
+					// 		.each(function (suspectActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle = suspectActivityListSearchResultSet.getValue(
+					// 				{
+					// 					name: "title",
+					// 					join: "activity",
+					// 				}
+					// 			);
+					// 			if (
+					// 				isNullorEmpty(
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									suspectActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								if (!isNullorEmpty(activityTitle)) {
-									suspectChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				suspectChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								return true;
-							});
-					} else {
-						var suspectChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var suspectChildDataSet = [];
+					// }
 
-					console.log(
-						"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
-					);
+					// console.log(
+					// 	"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
+					// );
 
 					debt_set4.push({
 						custInternalID: custInternalID,
@@ -2305,7 +2298,7 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: suspectChildDataSet,
+						// child: suspectChildDataSet,
 					});
 
 					return true;
@@ -2589,98 +2582,98 @@ define([
 					}
 					// }
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Prospect Quote Sent - Activity List
-						var prospectQuoteSentActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_8",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Prospect Quote Sent - Activity List
+					// 	var prospectQuoteSentActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_8",
+					// 	});
 
-						prospectQuoteSentActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	prospectQuoteSentActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var prospectQuoteChildDataSet = [];
+					// 	var prospectQuoteChildDataSet = [];
 
-						prospectQuoteSentActivityListSearch
-							.run()
-							.each(function (prospectQuoteSentActivityListSearchResultSet) {
-								var activityInternalID =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "title",
-										join: "activity",
-									});
-								if (
-									isNullorEmpty(
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	prospectQuoteSentActivityListSearch
+					// 		.run()
+					// 		.each(function (prospectQuoteSentActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "title",
+					// 					join: "activity",
+					// 				});
+					// 			if (
+					// 				isNullorEmpty(
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								console.log("activityInternalID: " + activityInternalID);
-								console.log("activityTitle: " + activityTitle);
-								console.log("activityMessage: " + activityMessage);
+					// 			console.log("activityInternalID: " + activityInternalID);
+					// 			console.log("activityTitle: " + activityTitle);
+					// 			console.log("activityMessage: " + activityMessage);
 
-								if (!isNullorEmpty(activityTitle)) {
-									prospectQuoteChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				prospectQuoteChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								console.log(
-									"prospectQuoteChildDataSet: " +
-										JSON.stringify(prospectQuoteChildDataSet)
-								);
+					// 			console.log(
+					// 				"prospectQuoteChildDataSet: " +
+					// 					JSON.stringify(prospectQuoteChildDataSet)
+					// 			);
 
-								return true;
-							});
-					} else {
-						var prospectQuoteChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var prospectQuoteChildDataSet = [];
+					// }
 
-					console.log(
-						"prospectQuoteChildDataSet: " +
-							JSON.stringify(prospectQuoteChildDataSet)
-					);
+					// console.log(
+					// 	"prospectQuoteChildDataSet: " +
+					// 		JSON.stringify(prospectQuoteChildDataSet)
+					// );
 
 					debt_set.push({
 						custInternalID: custInternalID,
@@ -2710,7 +2703,7 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: prospectQuoteChildDataSet,
+						// child: prospectQuoteChildDataSet,
 					});
 				}
 			} else {
@@ -2855,98 +2848,98 @@ define([
 						}
 						// }
 
-						if (sales_activity_notes == 1) {
-							//Website Leads - Prospect Quote Sent - Activity List
-							var prospectQuoteSentActivityListSearch = search.load({
-								type: "customer",
-								id: "customsearch_web_leads_prosp_quote_sen_8",
-							});
+						// if (sales_activity_notes == 1) {
+						// 	//Website Leads - Prospect Quote Sent - Activity List
+						// 	var prospectQuoteSentActivityListSearch = search.load({
+						// 		type: "customer",
+						// 		id: "customsearch_web_leads_prosp_quote_sen_8",
+						// 	});
 
-							prospectQuoteSentActivityListSearch.filters.push(
-								search.createFilter({
-									name: "internalid",
-									join: null,
-									operator: search.Operator.ANYOF,
-									values: custInternalID,
-								})
-							);
+						// 	prospectQuoteSentActivityListSearch.filters.push(
+						// 		search.createFilter({
+						// 			name: "internalid",
+						// 			join: null,
+						// 			operator: search.Operator.ANYOF,
+						// 			values: custInternalID,
+						// 		})
+						// 	);
 
-							var prospectQuoteChildDataSet = [];
+						// 	var prospectQuoteChildDataSet = [];
 
-							prospectQuoteSentActivityListSearch
-								.run()
-								.each(function (prospectQuoteSentActivityListSearchResultSet) {
-									var activityInternalID =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "internalid",
-											join: "activity",
-										});
-									var activityStartDate =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "startdate",
-											join: "activity",
-										});
-									var activityTitle =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "title",
-											join: "activity",
-										});
-									if (
-										isNullorEmpty(
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "custevent_organiser",
-												join: "activity",
-											})
-										)
-									) {
-										var activityOrganiser =
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "assigned",
-												join: "activity",
-											});
-									} else {
-										var activityOrganiser =
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "custevent_organiser",
-												join: "activity",
-											});
-									}
+						// 	prospectQuoteSentActivityListSearch
+						// 		.run()
+						// 		.each(function (prospectQuoteSentActivityListSearchResultSet) {
+						// 			var activityInternalID =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "internalid",
+						// 					join: "activity",
+						// 				});
+						// 			var activityStartDate =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "startdate",
+						// 					join: "activity",
+						// 				});
+						// 			var activityTitle =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "title",
+						// 					join: "activity",
+						// 				});
+						// 			if (
+						// 				isNullorEmpty(
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "custevent_organiser",
+						// 						join: "activity",
+						// 					})
+						// 				)
+						// 			) {
+						// 				var activityOrganiser =
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "assigned",
+						// 						join: "activity",
+						// 					});
+						// 			} else {
+						// 				var activityOrganiser =
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "custevent_organiser",
+						// 						join: "activity",
+						// 					});
+						// 			}
 
-									var activityMessage =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "message",
-											join: "activity",
-										});
+						// 			var activityMessage =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "message",
+						// 					join: "activity",
+						// 				});
 
-									console.log("activityInternalID: " + activityInternalID);
-									console.log("activityTitle: " + activityTitle);
-									console.log("activityMessage: " + activityMessage);
+						// 			console.log("activityInternalID: " + activityInternalID);
+						// 			console.log("activityTitle: " + activityTitle);
+						// 			console.log("activityMessage: " + activityMessage);
 
-									if (!isNullorEmpty(activityTitle)) {
-										prospectQuoteChildDataSet.push({
-											activityInternalID: activityInternalID,
-											activityStartDate: activityStartDate,
-											activityTitle: activityTitle,
-											activityOrganiser: activityOrganiser,
-											activityMessage: activityMessage,
-										});
-									}
+						// 			if (!isNullorEmpty(activityTitle)) {
+						// 				prospectQuoteChildDataSet.push({
+						// 					activityInternalID: activityInternalID,
+						// 					activityStartDate: activityStartDate,
+						// 					activityTitle: activityTitle,
+						// 					activityOrganiser: activityOrganiser,
+						// 					activityMessage: activityMessage,
+						// 				});
+						// 			}
 
-									console.log(
-										"prospectQuoteChildDataSet: " +
-											JSON.stringify(prospectQuoteChildDataSet)
-									);
+						// 			console.log(
+						// 				"prospectQuoteChildDataSet: " +
+						// 					JSON.stringify(prospectQuoteChildDataSet)
+						// 			);
 
-									return true;
-								});
-						} else {
-							var prospectQuoteChildDataSet = [];
-						}
+						// 			return true;
+						// 		});
+						// } else {
+						// 	var prospectQuoteChildDataSet = [];
+						// }
 
-						console.log(
-							"prospectQuoteChildDataSet: " +
-								JSON.stringify(prospectQuoteChildDataSet)
-						);
+						// console.log(
+						// 	"prospectQuoteChildDataSet: " +
+						// 		JSON.stringify(prospectQuoteChildDataSet)
+						// );
 
 						debt_set.push({
 							custInternalID: custInternalID,
@@ -2976,7 +2969,7 @@ define([
 							zeeMpExpActivated: zeeMpExpActivated,
 							zeeMPStdActivated: zeeMPStdActivated,
 							zeeMPPrmActivated: zeeMPPrmActivated,
-							child: prospectQuoteChildDataSet,
+							// child: prospectQuoteChildDataSet,
 						});
 
 						return true;
@@ -3055,7 +3048,7 @@ define([
 				});
 
 				debtDataSet.push([
-					"",
+					// "",
 					linkURL,
 					debt_row.custInternalID,
 					customerIDLink,
@@ -3079,7 +3072,7 @@ define([
 					debt_row.zeeMpExpActivated,
 					debt_row.zeeMPStdActivated,
 					debt_row.zeeMPPrmActivated,
-					debt_row.child,
+					// debt_row.child,
 				]);
 			});
 		}
@@ -3089,34 +3082,34 @@ define([
 		datatable.rows.add(debtDataSet);
 		datatable.draw();
 
-		datatable.rows().every(function () {
-			// this.child(format(this.data())).show();
-			this.child(createChild(this)); // Add Child Tables
-			this.child.hide(); // Hide Child Tables on Open
-		});
+		// datatable.rows().every(function () {
+		// 	// this.child(format(this.data())).show();
+		// 	this.child(createChild(this)); // Add Child Tables
+		// 	this.child.hide(); // Hide Child Tables on Open
+		// });
 
-		$("#mpexusage-prospects tbody").on("click", "td.dt-control", function () {
-			var tr = $(this).closest("tr");
-			var row = datatable.row(tr);
+		// $("#mpexusage-prospects tbody").on("click", "td.dt-control", function () {
+		// 	var tr = $(this).closest("tr");
+		// 	var row = datatable.row(tr);
 
-			if (row.child.isShown()) {
-				// This row is already open - close it
-				destroyChild(row);
-				tr.removeClass("shown");
-				tr.removeClass("parent");
+		// 	if (row.child.isShown()) {
+		// 		// This row is already open - close it
+		// 		destroyChild(row);
+		// 		tr.removeClass("shown");
+		// 		tr.removeClass("parent");
 
-				$(".expand-button").addClass("btn-primary");
-				$(".expand-button").removeClass("btn-light");
-			} else {
-				// Open this row
-				row.child.show();
-				tr.addClass("shown");
-				tr.addClass("parent");
+		// 		$(".expand-button").addClass("btn-primary");
+		// 		$(".expand-button").removeClass("btn-light");
+		// 	} else {
+		// 		// Open this row
+		// 		row.child.show();
+		// 		tr.addClass("shown");
+		// 		tr.addClass("parent");
 
-				$(".expand-button").removeClass("btn-primary");
-				$(".expand-button").addClass("btn-light");
-			}
-		});
+		// 		$(".expand-button").removeClass("btn-primary");
+		// 		$(".expand-button").addClass("btn-light");
+		// 	}
+		// });
 
 		// if (!isNullorEmpty(debt_rows2)) {
 		//     debt_rows2.forEach(function (debt_row2, index) {
@@ -3509,7 +3502,7 @@ define([
 				});
 
 				debtDataSet4.push([
-					"",
+					// "",
 					linkURL,
 					newDate,
 					debt_row4.custInternalID,
@@ -3532,7 +3525,7 @@ define([
 					debt_row4.zeeMpExpActivated,
 					debt_row4.zeeMPStdActivated,
 					debt_row4.zeeMPPrmActivated,
-					debt_row4.child,
+					// debt_row4.child,
 				]);
 			});
 		}
@@ -3542,34 +3535,34 @@ define([
 		datatable4.rows.add(debtDataSet4);
 		datatable4.draw();
 
-		datatable4.rows().every(function () {
-			// this.child(format(this.data())).show();
-			this.child(createChild3(this)); // Add Child Tables
-			this.child.hide(); // Hide Child Tables on Open
-		});
+		// datatable4.rows().every(function () {
+		// 	// this.child(format(this.data())).show();
+		// 	this.child(createChild3(this)); // Add Child Tables
+		// 	this.child.hide(); // Hide Child Tables on Open
+		// });
 
-		$("#mpexusage-suspects tbody").on("click", "td.dt-control", function () {
-			var tr = $(this).closest("tr");
-			var row = datatable4.row(tr);
+		// $("#mpexusage-suspects tbody").on("click", "td.dt-control", function () {
+		// 	var tr = $(this).closest("tr");
+		// 	var row = datatable4.row(tr);
 
-			if (row.child.isShown()) {
-				// This row is already open - close it
-				destroyChild(row);
-				tr.removeClass("shown");
-				tr.removeClass("parent");
+		// 	if (row.child.isShown()) {
+		// 		// This row is already open - close it
+		// 		destroyChild(row);
+		// 		tr.removeClass("shown");
+		// 		tr.removeClass("parent");
 
-				$(".expand-button").addClass("btn-primary");
-				$(".expand-button").removeClass("btn-light");
-			} else {
-				// Open this row
-				row.child.show();
-				tr.addClass("shown");
-				tr.addClass("parent");
+		// 		$(".expand-button").addClass("btn-primary");
+		// 		$(".expand-button").removeClass("btn-light");
+		// 	} else {
+		// 		// Open this row
+		// 		row.child.show();
+		// 		tr.addClass("shown");
+		// 		tr.addClass("parent");
 
-				$(".expand-button").removeClass("btn-primary");
-				$(".expand-button").addClass("btn-light");
-			}
-		});
+		// 		$(".expand-button").removeClass("btn-primary");
+		// 		$(".expand-button").addClass("btn-light");
+		// 	}
+		// });
 
 		return true;
 	}
