@@ -700,11 +700,11 @@ define([
 					details: campaignArray,
 				});
 				log.debug({
-					title: "campaignArray.indexOf('84')",
-					details: campaignArray.indexOf("84"),
+					title: "campaignArray.indexOf('87')",
+					details: campaignArray.indexOf("87"),
 				});
 
-				if (campaignArray.indexOf("84") != -1) {
+				if (campaignArray.indexOf("87") != -1) {
 					showCallForceTasksPieChart = true;
 				}
 
@@ -1964,11 +1964,11 @@ define([
 				details: campaignArray,
 			});
 			log.debug({
-				title: "campaignArray.indexOf('84')",
-				details: campaignArray.indexOf("84"),
+				title: "campaignArray.indexOf('87')",
+				details: campaignArray.indexOf("87"),
 			});
 
-			if (campaignArray.indexOf("84") != -1) {
+			if (campaignArray.indexOf("87") != -1) {
 				inlineHtml +=
 					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
 			}
@@ -2017,11 +2017,11 @@ define([
 				details: campaignArray,
 			});
 			log.debug({
-				title: "campaignArray.indexOf('84')",
-				details: campaignArray.indexOf("84"),
+				title: "campaignArray.indexOf('87')",
+				details: campaignArray.indexOf("87"),
 			});
 
-			if (campaignArray.indexOf("84") != -1) {
+			if (campaignArray.indexOf("87") != -1) {
 				inlineHtml +=
 					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
@@ -2415,15 +2415,15 @@ define([
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
 		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
 		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - LPO VALIDATED</b></a></li>';
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
 		inlineHtml +=

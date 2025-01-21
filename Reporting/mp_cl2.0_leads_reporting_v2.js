@@ -1512,7 +1512,7 @@ define([
 			console.log("campaignArray.length: " + campaignArray.length);
 
 			for (var y = 0; y < campaignArray.length; y++) {
-				if (parseInt(campaignArray[y]) == 84) {
+				if (parseInt(campaignArray[y]) == 87) {
 					showCallForceTasks = true;
 				}
 				if (parseInt(campaignArray[y]) == 70) {
@@ -14274,7 +14274,7 @@ define([
 			lead_source == 281559 ||
 			sales_campaign == 69 ||
 			sales_campaign == 76 ||
-			sales_campaign == 84
+			sales_campaign == 87
 		) {
 			if (role == 1000) {
 				// Sales Dashboard - LPO New Leads by Status - Monthly Reporting
@@ -20087,9 +20087,9 @@ define([
 					preview_row.lpoparentname,
 					suspectNewCol,
 					hotLeadCol,
-					suspectQualifiedCol,
-					suspectUnqualifiedCol,
 					suspectValidatedCol,
+					suspectUnqualifiedCol,
+					suspectQualifiedCol,
 					reassignCol,
 					followUpCol,
 					suspectLPOFollowupwCol,
@@ -20178,13 +20178,13 @@ define([
 					title: "Suspect - Hot Lead", //2
 				},
 				{
-					title: "Suspect - Qualified", //3
+					title: "Suspect - Validated", //3
 				},
 				{
 					title: "Suspect - Unqualified", //4
 				},
 				{
-					title: "Suspect - Validated", //5
+					title: "Suspect - Qualified", //5
 				},
 				{
 					title: "Suspect - Reassign", //6
@@ -20246,7 +20246,7 @@ define([
 			],
 			columnDefs: [
 				{
-					targets: [0, 5, 18, 21, 22, 23],
+					targets: [0, 3, 5, 18, 21, 22, 23],
 					className: "bolded",
 				},
 				{
