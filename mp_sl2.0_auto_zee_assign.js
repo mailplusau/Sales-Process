@@ -143,6 +143,9 @@ define([
 			var lead_entered_by = customerRecord.getValue({
 				fieldId: "custentity_lead_entered_by",
 			});
+			var lead_customer_type = customerRecord.getValue({
+				fieldId: "custentity_customer_type",
+			});
 
 			if (leadSource == -4) {
 				zee_id = customerRecord.getValue({
@@ -512,9 +515,13 @@ define([
 										// 	fieldId: "entitystatus",
 										// 	value: 38, // SUSPECT - UNQUALIFIED
 										// });
-									} else if (leadSource == 295896 || leadSource == 296333) {
+									} else if (
+										!isNullorEmpty(lead_customer_type) &&
+										(leadSource == 295896 || leadSource == 296333)
+									) {
 										//Lead Source: Outsourced - Head Office Generated
 										//Lead Source: Outsourced - Head Office Validated
+										//Lead Entered By is Aleyna
 										if (lead_entered_by == 1623053) {
 											customerRecord.setValue({
 												fieldId: "entitystatus",
@@ -619,10 +626,32 @@ define([
 									fieldId: "custrecord_sales_customer",
 									value: customerInternalId,
 								});
-								salesRecord.setValue({
-									fieldId: "custrecord_sales_campaign",
-									value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
-								});
+								if (leadSource == 295896 || leadSource == 296333) {
+									if (isNullorEmpty(lead_customer_type)) {
+										salesRecord.setValue({
+											fieldId: "custrecord_sales_campaign",
+											value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+										});
+									} else if (lead_customer_type == 5) {
+										// Service Customer
+										salesRecord.setValue({
+											fieldId: "custrecord_sales_campaign",
+											value: 85, //Allocate to the Service-BAU campaign
+										});
+									} else if (lead_customer_type == 6) {
+										//Product Customer
+										salesRecord.setValue({
+											fieldId: "custrecord_sales_campaign",
+											value: 87, //Allocate to the Call Force - 202501 campaign
+										});
+									}
+								} else {
+									salesRecord.setValue({
+										fieldId: "custrecord_sales_campaign",
+										value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+									});
+								}
+
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
 									value: salesRep, //Assign to the Sales Rep selected from the Prospect Capture Form
