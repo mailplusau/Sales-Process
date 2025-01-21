@@ -519,15 +519,13 @@ define([
 										!isNullorEmpty(lead_customer_type) &&
 										(leadSource == 295896 || leadSource == 296333)
 									) {
+										//Customer Type has been selected either Service or Product
 										//Lead Source: Outsourced - Head Office Generated
 										//Lead Source: Outsourced - Head Office Validated
-										//Lead Entered By is Aleyna
-										if (lead_entered_by == 1623053) {
-											customerRecord.setValue({
-												fieldId: "entitystatus",
-												value: 68, //Status to SUSPECT - VALIDATED
-											});
-										}
+										customerRecord.setValue({
+											fieldId: "entitystatus",
+											value: 68, //Status to SUSPECT - VALIDATED
+										});
 									}
 								}
 							}
