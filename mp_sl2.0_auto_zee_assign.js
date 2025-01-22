@@ -153,6 +153,11 @@ define([
 				});
 			}
 
+			log.debug({
+				title: "lead_customer_type",
+				details: lead_customer_type,
+			});
+
 			if (role != 1032) {
 				if (
 					!isNullorEmpty(siteAddressZipCode) &&
@@ -344,7 +349,7 @@ define([
 								fieldId: "custentity_sales_rep_assigned",
 							});
 
-							if (isNullorEmpty(salesrepid)) {
+							if (isNullorEmpty(salesrepid) || lead_customer_type == 5) {
 								salesrepid = zeeSalesRepAssigned;
 							}
 
@@ -549,6 +554,7 @@ define([
 
 						if (isNullorEmpty(salesrepid)) {
 							salesrepid = zeeSalesRepAssigned;
+							salesRep = zeeSalesRepAssigned;
 						}
 					}
 
@@ -671,16 +677,11 @@ define([
 									ignoreMandatoryFields: true,
 								});
 
-								var subject =
-									"Sales Head Office Generated - " +
-									entity_id +
-									" " +
-									customer_name;
 								var cust_id_link =
 									"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
 									customerInternalId;
 								var body =
-									"New lead entered into the system by Head Office. \n Customer Name: " +
+									"New lead entered into the system. \n Customer Name: " +
 									entity_id +
 									" " +
 									customer_name +
@@ -688,6 +689,45 @@ define([
 									cust_id_link;
 
 								if (leadSource == 97943) {
+									var subject =
+										"Sales Head Office Generated Lead - " +
+										entity_id +
+										" " +
+										customer_name;
+									email.send({
+										author: 112209,
+										body: body,
+										recipients: salesRep,
+										subject: subject,
+										cc: [
+											"luke.forbes@mailplus.com.au",
+											"lee.russell@mailplus.com.au",
+										],
+										relatedRecords: { entityId: customerInternalId },
+									});
+								} else if (leadSource == 295896 && lead_customer_type == 5) {
+									var subject =
+										"Sales Outsourced - Head Office Generated Lead - " +
+										entity_id +
+										" " +
+										customer_name;
+									email.send({
+										author: 112209,
+										body: body,
+										recipients: salesRep,
+										subject: subject,
+										cc: [
+											"luke.forbes@mailplus.com.au",
+											"lee.russell@mailplus.com.au",
+										],
+										relatedRecords: { entityId: customerInternalId },
+									});
+								} else if (leadSource == 296333 && lead_customer_type == 5) {
+									var subject =
+										"Sales Outsourced - Head Office Validated Lead - " +
+										entity_id +
+										" " +
+										customer_name;
 									email.send({
 										author: 112209,
 										body: body,
