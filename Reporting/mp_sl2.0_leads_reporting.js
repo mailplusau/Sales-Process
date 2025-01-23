@@ -1329,7 +1329,7 @@ define([
 		inlineHtml +=
 			'<span class="input-group-addon" id="source_text">LEAD ENTERED BY</span>';
 		inlineHtml +=
-			'<select id="lead_entered_by" class="form-control" style="width: 100%" >';
+			'<select id="lead_entered_by" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
 		inlineHtml += "<option></option>";
 
 		//Search: Leads Entered By List
@@ -1351,17 +1351,41 @@ define([
 				summary: "GROUP",
 			});
 
-			if (lead_entered_by == employeeId) {
-				inlineHtml +=
-					'<option value="' +
-					employeeId +
-					'" selected="selected">' +
-					employeeText +
-					"</option>";
-			} else {
+			if (isNullorEmpty(lead_entered_by)) {
 				inlineHtml +=
 					'<option value="' + employeeId + '">' + employeeText + "</option>";
+			} else {
+				if (lead_entered_by.indexOf(",") != -1) {
+					var lead_entered_byArray = lead_entered_by.split(",");
+				} else {
+					var lead_entered_byArray = [];
+					lead_entered_byArray.push(lead_entered_by);
+				}
+
+				if (lead_entered_byArray.indexOf(employeeId) != -1) {
+					inlineHtml +=
+						'<option value="' +
+						employeeId +
+						'" selected="selected">' +
+						employeeText +
+						"</option>";
+				} else {
+					inlineHtml +=
+						'<option value="' + employeeId + '">' + employeeText + "</option>";
+				}
 			}
+
+			// if (lead_entered_by == employeeId) {
+			// 	inlineHtml +=
+			// 		'<option value="' +
+			// 		employeeId +
+			// 		'" selected="selected">' +
+			// 		employeeText +
+			// 		"</option>";
+			// } else {
+			// 	inlineHtml +=
+			// 		'<option value="' + employeeId + '">' + employeeText + "</option>";
+			// }
 
 			return true;
 		});
