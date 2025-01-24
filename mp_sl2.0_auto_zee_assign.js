@@ -349,7 +349,7 @@ define([
 								fieldId: "custentity_sales_rep_assigned",
 							});
 
-							if (isNullorEmpty(salesrepid) || lead_customer_type == 5) {
+							if (isNullorEmpty(salesrepid)) {
 								salesrepid = zeeSalesRepAssigned;
 							}
 
@@ -630,31 +630,31 @@ define([
 									fieldId: "custrecord_sales_customer",
 									value: customerInternalId,
 								});
-								if (leadSource == 295896 || leadSource == 296333) {
-									if (isNullorEmpty(lead_customer_type)) {
-										salesRecord.setValue({
-											fieldId: "custrecord_sales_campaign",
-											value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
-										});
-									} else if (lead_customer_type == 5) {
-										// Service Customer
-										salesRecord.setValue({
-											fieldId: "custrecord_sales_campaign",
-											value: 85, //Allocate to the Service-BAU campaign
-										});
-									} else if (lead_customer_type == 6) {
-										//Product Customer
-										salesRecord.setValue({
-											fieldId: "custrecord_sales_campaign",
-											value: 87, //Allocate to the Call Force - 202501 campaign
-										});
-									}
-								} else {
-									salesRecord.setValue({
-										fieldId: "custrecord_sales_campaign",
-										value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
-									});
-								}
+								// if (leadSource == 295896 || leadSource == 296333) {
+								// 	if (isNullorEmpty(lead_customer_type)) {
+								// 		salesRecord.setValue({
+								// 			fieldId: "custrecord_sales_campaign",
+								// 			value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+								// 		});
+								// 	} else if (lead_customer_type == 5) {
+								// 		// Service Customer
+								// 		salesRecord.setValue({
+								// 			fieldId: "custrecord_sales_campaign",
+								// 			value: 87, //Allocate to the Call Force - 202501 campaign
+								// 		});
+								// 	} else if (lead_customer_type == 6) {
+								// 		//Product Customer
+								// 		salesRecord.setValue({
+								// 			fieldId: "custrecord_sales_campaign",
+								// 			value: 87, //Allocate to the Call Force - 202501 campaign
+								// 		});
+								// 	}
+								// } else {
+								salesRecord.setValue({
+									fieldId: "custrecord_sales_campaign",
+									value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+								});
+								// }
 
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
