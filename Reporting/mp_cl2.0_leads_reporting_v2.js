@@ -1499,8 +1499,8 @@ define([
 		var showFranchiseeLeadsPieChart = false;
 
 		if (isNullorEmpty(sales_campaign)) {
-			showCallForceTasks = true;
-			showFranchiseeLeadsPieChart = true;
+			// showCallForceTasks = true;
+			// showFranchiseeLeadsPieChart = true;
 		} else {
 			if (sales_campaign.indexOf(",") != -1) {
 				var campaignArray = sales_campaign.split(",");
