@@ -306,35 +306,23 @@ define([
 								) {
 									salesRep = 668711; //Lee Russell
 								}
-
-								// if (siteAddressZipCode >= 2000 && siteAddressZipCode <= 2999) {
-								//     if (siteAddressZipCode == 2481 || siteAddressZipCode == 2482 || siteAddressZipCode == 2485 ||
-								//         siteAddressZipCode == 2486 || siteAddressZipCode == 2487 || siteAddressZipCode == 2488 || siteAddressZipCode ==
-								//         2479) {
-								//         //Lee
-								//         salesRep = 668711;
-								//     } else if (siteAddressZipCode == 2481) { //Albury
-								//         //Belinda
-								//         salesRep = 668712;
-								//     } else {
-								//         //Kerina
-								//         salesRep = 696160;
-								//     }
-								// } else {
-								//     if ((siteAddressZipCode >= 3000 && siteAddressZipCode <= 3999) || (siteAddressZipCode >= 7000 && siteAddressZipCode <= 7999)) { //VIC & SA & TAS siteAddressZipCodes
-								//         salesRep = 668712; //Belinda Urbani
-								//     } else if ((siteAddressZipCode >= 5000 &&
-								//         siteAddressZipCode <= 5999)) {
-								//         salesRep = 668712; //Belinda Urbani
-								//     } else if ((siteAddressZipCode >= 4000 && siteAddressZipCode <= 4999) || (siteAddressZipCode >= 800 &&
-								//         siteAddressZipCode <= 999) || (siteAddressZipCode >= 6000 && siteAddressZipCode <= 6999)) { //QLD & NT & WA siteAddressZipCodes
-								//         salesRep = 668711; //Lee Russell
-								//     } else { //Everything else
-								//         salesRep = 668712; //Belinda Urbani
-								//     }
-								// }
 							} else {
 								salesRep = salesrepid;
+							}
+
+							if (
+								zeeCount > 1 &&
+								!isNullorEmpty(lead_customer_type) &&
+								(leadSource == 295896 || leadSource == 296333)
+							) {
+								//Multiple Franchisees found for the suburb
+								//Customer Type has been selected either Service or Product
+								//Lead Source: Outsourced - Head Office Generated
+								//Lead Source: Outsourced - Head Office Validated
+								customerRecord.setValue({
+									fieldId: "entitystatus",
+									value: 68, //Status to SUSPECT - VALIDATED
+								});
 							}
 						} else if (!isNullorEmpty(zee_id) && zeeCount == 1) {
 							var partnerRecord = record.load({
