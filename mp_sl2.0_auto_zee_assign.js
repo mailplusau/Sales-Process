@@ -693,7 +693,11 @@ define([
 										],
 										relatedRecords: { entityId: customerInternalId },
 									});
-								} else if (leadSource == 295896 && lead_customer_type == 5) {
+								} else if (
+									leadSource == 295896 &&
+									lead_customer_type == 5 &&
+									salesRep != 1874329
+								) {
 									var subject =
 										"Sales Outsourced - Head Office Generated Lead - " +
 										entity_id +
@@ -710,7 +714,11 @@ define([
 										],
 										relatedRecords: { entityId: customerInternalId },
 									});
-								} else if (leadSource == 296333 && lead_customer_type == 5) {
+								} else if (
+									leadSource == 296333 &&
+									lead_customer_type == 5 &&
+									salesRep != 1874329
+								) {
 									var subject =
 										"Sales Outsourced - Head Office Validated Lead - " +
 										entity_id +
