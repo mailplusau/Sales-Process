@@ -2027,6 +2027,8 @@ define([
 			inlineHtml += '<div id="container_callforcetasks"></div>';
 			inlineHtml += "</figure><br></br>";
 			inlineHtml += dataTable("callforcetasks");
+			inlineHtml += "</br>";
+			inlineHtml += dataTable("callForceDateSyncedOutcome");
 			inlineHtml += "</div>";
 		} else {
 			if (campaign.indexOf(",") != -1) {
@@ -2053,6 +2055,10 @@ define([
 				inlineHtml += '<div id="container_callforcetasks"></div>';
 				inlineHtml += "</figure><br></br>";
 				inlineHtml += dataTable("callforcetasks");
+				inlineHtml += "</br>";
+				inlineHtml += dataTable("callForceDateSyncedOutcome");
+				inlineHtml += "</br>";
+				inlineHtml += dataTable("callForceOutcomeStatus");
 				inlineHtml += "</div>";
 			}
 		}
@@ -2581,6 +2587,16 @@ define([
 		if (name == "callforcetasks") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th></tr></tfoot>';
+		}
+
+		if (name == "callForceDateSyncedOutcome") {
+			inlineHtml +=
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+		}
+
+		if (name == "callForceOutcomeStatus") {
+			inlineHtml +=
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (name == "preview") {
