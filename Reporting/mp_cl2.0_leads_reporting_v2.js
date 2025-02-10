@@ -825,6 +825,15 @@ define([
 				);
 			}
 
+			leadSalesRepTimelineSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
 				leadSalesRepTimelineSearch.filters.push(
 					search.createFilter({
@@ -1539,6 +1548,15 @@ define([
 				});
 			}
 
+			qualifiedLeadCountSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (!isNullorEmpty(zee_id)) {
 				qualifiedLeadCountSearch.filters.push(
 					search.createFilter({
@@ -2024,6 +2042,15 @@ define([
 				id: "customsearch_lpo_unqualifed_list_3",
 			});
 
+			callForceLeadsListSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (customer_type == "2") {
 				callForceLeadsListSearch.filters.push(
 					search.createFilter({
@@ -2247,6 +2274,15 @@ define([
 				type: "customer",
 				id: "customsearch_lpo_unqualifed_list_2_3",
 			});
+
+			qualifiedLeadsListWithNoTasksSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
 
 			if (customer_type == "2") {
 				qualifiedLeadsListWithNoTasksSearch.filters.push(
@@ -2500,6 +2536,15 @@ define([
 				type: "customer",
 				id: "customsearch_lpo_unqualifed_list_2_2_2",
 			});
+
+			callForceTasksSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
 
 			if (customer_type == "2") {
 				callForceTasksSearch.filters.push(
@@ -2993,6 +3038,15 @@ define([
 				id: "customsearch_callforce_count_sync_outcom",
 			});
 
+			callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (customer_type == "2") {
 				// callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
 				// 	search.createFilter({
@@ -3245,7 +3299,7 @@ define([
 							name: "custrecord_cf_call_outcome",
 							join: "CUSTRECORD_SALES_CUSTOMER",
 							summary: "GROUP",
-						});
+						}).toLowerCase();
 
 					console.log("callforceSyncDate: " + callforceSyncDate);
 					console.log("callforceOutcome: " + callforceOutcome);
@@ -3534,6 +3588,15 @@ define([
 				type: "customer",
 				id: "customsearch_callforce202501_unqualifi_7",
 			});
+
+			callForceLeadsCountByOutcomeStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
 
 			if (customer_type == "2") {
 				// callForceLeadsCountByOutcomeStatusSearch.filters.push(
@@ -4695,6 +4758,15 @@ define([
 			});
 		}
 
+		customerCancellationRequestedDateSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			customerCancellationRequestedDateSearch.filters.push(
 				search.createFilter({
@@ -5205,6 +5277,15 @@ define([
 			type: "customer",
 			id: "customsearch_cust_cancellation_request_2",
 		});
+
+		customerCancellationRequesteSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			customerCancellationRequesteSearch.filters.push(
@@ -5874,6 +5955,15 @@ define([
 				id: "customsearch_leads_reporting_weekly_2",
 			});
 		}
+
+		customerListBySalesRepWeeklySearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			customerListBySalesRepWeeklySearch.filters.push(
@@ -6646,6 +6736,15 @@ define([
 				id: "customsearch_leads_reporting_weekly_2_4",
 			});
 		}
+
+		customerTrialListBySalesRepWeeklySearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			customerTrialListBySalesRepWeeklySearch.filters.push(
@@ -7420,6 +7519,15 @@ define([
 				id: "customsearch_leads_reporting_weekly_2_17",
 			});
 		}
+
+		customerTrialPendingListBySalesRepWeeklySearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			customerTrialPendingListBySalesRepWeeklySearch.filters.push(
@@ -8220,6 +8328,15 @@ define([
 			});
 		}
 
+		prospectWeeklyReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			prospectWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -8799,6 +8916,15 @@ define([
 			});
 		}
 
+		prospectOpportunityWeeklyReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			prospectOpportunityWeeklyReportingSearch.filters.push(
 				search.createFilter({
@@ -9248,6 +9374,15 @@ define([
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_2_21",
 		});
+
+		prospectBoxSentWeeklyReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			prospectBoxSentWeeklyReportingSearch.filters.push(
@@ -14313,6 +14448,15 @@ define([
 			});
 		}
 
+		leadsListBySalesRepWeeklySearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
@@ -15985,6 +16129,15 @@ define([
 				});
 			}
 
+			lpoLeadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (customer_type == "2") {
 				lpoLeadsListBySalesRepWeeklySearch.filters.push(
 					search.createFilter({
@@ -17525,6 +17678,15 @@ define([
 				type: "customer",
 				id: "customsearch_leads_reporting_weekly_4_2",
 			});
+
+			zeeLeadsByStatusWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
 
 			if (customer_type == "2") {
 				zeeLeadsByStatusWeeklySearch.filters.push(
@@ -19109,6 +19271,15 @@ define([
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_5",
 		});
+
+		leadsListBySalesRepStatusSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			leadsListBySalesRepStatusSearch.filters.push(
@@ -20789,6 +20960,15 @@ define([
 			type: "customer",
 			id: "customsearch_leads_reporting_weekly_5_2",
 		});
+
+		leadsListByDataCaptureStatusSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			leadsListByDataCaptureStatusSearch.filters.push(
@@ -22516,6 +22696,15 @@ define([
 			id: "customsearch_leads_reporting_weekly_5__2",
 		});
 
+		leadsListByDataCaptureSourceCampaignSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			leadsListByDataCaptureSourceCampaignSearch.filters.push(
 				search.createFilter({
@@ -23430,6 +23619,15 @@ define([
 			id: "customsearch_leads_reporting_weekly_5_3",
 		});
 
+		leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			leadsListBySalesRepDataCaptureCampaignSearch.filters.push(
 				search.createFilter({
@@ -24139,6 +24337,15 @@ define([
 				id: "customsearch_leads_reporting_weekly_4__3",
 			});
 
+			leadsListByZeeGeneratedLastAssignedSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
 			if (customer_type == "2") {
 				leadsListByZeeGeneratedLastAssignedSearch.filters.push(
 					search.createFilter({
@@ -24732,6 +24939,15 @@ define([
 			id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
 		});
 		// }
+
+		websiteSuspectsLeadsReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
 
 		if (customer_type == "2") {
 			websiteSuspectsLeadsReportingSearch.filters.push(
@@ -28232,6 +28448,15 @@ define([
 			id: "customsearch_leads_reporting_5_2", //Sales Dashboard - Leads - Prospects - Reporting V2
 		});
 
+		websiteProspectLeadsReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			websiteProspectLeadsReportingSearch.filters.push(
 				search.createFilter({
@@ -31021,6 +31246,15 @@ define([
 			id: "customsearch_leads_reporting_4_2_3", //Sales Dashboard - Leads - Customer Signed - Reporting 202408
 		});
 
+		websiteCustomersReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
 		if (customer_type == "2") {
 			websiteCustomersReportingSearch.filters.push(
 				search.createFilter({
@@ -31136,14 +31370,14 @@ define([
 				})
 			);
 
-			websiteCustomersReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sale_type",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ANYOF,
-					values: [1, 5, 11],
-				})
-			);
+			// websiteCustomersReportingSearch.filters.push(
+			// 	search.createFilter({
+			// 		name: "custrecord_sale_type",
+			// 		join: "CUSTRECORD_CUSTOMER",
+			// 		operator: search.Operator.ANYOF,
+			// 		values: [1, 5, 11],
+			// 	})
+			// );
 		}
 
 		if (
@@ -32535,7 +32769,6 @@ define([
 							]);
 						} else {
 							customerDataSet.push([
-								"",
 								oldcustInternalID,
 								customerIdLink,
 								oldcustName,
@@ -33261,7 +33494,6 @@ define([
 					]);
 				} else {
 					customerDataSet.push([
-						"",
 						oldcustInternalID,
 						customerIdLink,
 						oldcustName,
@@ -42283,7 +42515,7 @@ define([
 	function plotChartSuspectsUnqualified(series_data90, categores_qualified) {
 		// console.log(series_data)
 
-		Highcharts.chart("container_suspects_qualified", {
+		Highcharts.chart("container_suspects_unqualified", {
 			chart: {
 				type: "column",
 				backgroundColor: "#CFE0CE",

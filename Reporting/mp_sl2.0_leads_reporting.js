@@ -1994,7 +1994,7 @@ define([
 
 			if (campaignArray.indexOf("87") != -1) {
 				inlineHtml +=
-					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
 			}
 		}
 
@@ -2051,14 +2051,20 @@ define([
 				inlineHtml +=
 					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
+				inlineHtml +=
+					'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
+				inlineHtml += dataTable("callForceDateSyncedOutcome");
+				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Call Force Appointments</h2>';
 				inlineHtml += '<figure class="highcharts-figure">';
 				inlineHtml += '<div id="container_callforcetasks"></div>';
 				inlineHtml += "</figure><br></br>";
 				inlineHtml += dataTable("callforcetasks");
-				inlineHtml += "</br>";
-				inlineHtml += dataTable("callForceDateSyncedOutcome");
-				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Outcome vs NetSuite Status</h2>';
 				inlineHtml += dataTable("callForceOutcomeStatus");
+				inlineHtml += "</br>";
 				inlineHtml += "</div>";
 			}
 		}
