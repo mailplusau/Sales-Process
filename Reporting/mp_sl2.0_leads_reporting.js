@@ -2061,8 +2061,13 @@ define([
 				inlineHtml += '<div id="container_callforcetasks"></div>';
 				inlineHtml += "</figure><br></br>";
 				inlineHtml += dataTable("callforcetasks");
+				inlineHtml += "</br>";
 				inlineHtml +=
-					'<h2 style="text-align:center;">Outcome vs NetSuite Status</h2>';
+					'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
+				inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
+				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
 				inlineHtml += dataTable("callForceOutcomeStatus");
 				inlineHtml += "</br>";
 				inlineHtml += "</div>";
@@ -2577,7 +2582,9 @@ define([
 			name +
 			" {color: #103D39 !important; font-size: 12px;text-align: center;border: none;}.dataTables_wrapper {font-size: 14px;}table#mpexusage-" +
 			name +
-			" th{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
+			" th{text-align: center;vertical-align: middle;} table#mpexusage-" +
+			name +
+			" td{text-align: center;vertical-align: middle;} .bolded{font-weight: bold;} .exportButtons{background-color: #045d7b !important;color: white !important;border-radius: 25px !important;}</style>";
 		inlineHtml +=
 			'<div class="table_section hide"><table id="mpexusage-' +
 			name +
@@ -2597,21 +2604,24 @@ define([
 
 		if (name == "callForceDateSyncedOutcome") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
-		if (name == "callForceOutcomeStatus") {
+		if (
+			name == "callForceOutcomeStatus" ||
+			name == "callForceCompletedTasksCurrentStatus"
+		) {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (name == "preview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "zee_overview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "lpo_overview") {
 			inlineHtml +=
@@ -2624,12 +2634,12 @@ define([
 		}
 		if (name == "datacapture_overview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (name == "customer" || name == "existing_customers") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "trial_customers" || name == "trial_pending_customers") {
 			inlineHtml +=
