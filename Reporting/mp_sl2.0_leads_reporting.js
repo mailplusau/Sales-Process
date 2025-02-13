@@ -2057,9 +2057,6 @@ define([
 				inlineHtml += "</br>";
 				inlineHtml +=
 					'<h2 style="text-align:center;">Call Force Appointments</h2>';
-				inlineHtml += '<figure class="highcharts-figure">';
-				inlineHtml += '<div id="container_callforcetasks"></div>';
-				inlineHtml += "</figure><br></br>";
 				inlineHtml += dataTable("callforcetasks");
 				inlineHtml += "</br>";
 				inlineHtml +=

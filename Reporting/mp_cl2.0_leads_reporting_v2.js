@@ -3312,20 +3312,100 @@ define([
 						countCallforceSyncDateCount != 0 &&
 						callforceSyncDate != oldCallforceSyncDate
 					) {
+						var totalNoOutcomePercentage = parseInt(
+							(total_no_outcome / total_leads) * 100
+						);
+						var totalNoOutcomeCol =
+							total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+						var totalNotInterestedPercentage = parseInt(
+							(total_not_interested / total_leads) * 100
+						);
+						var totalNotInterestedCol =
+							total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+						var totalNoAnswerPercentage = parseInt(
+							(total_no_answer / total_leads) * 100
+						);
+						var totalNoAnswerCol =
+							total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+						var totalVoicemailPercentage = parseInt(
+							(total_voicemail / total_leads) * 100
+						);
+						var totalVoicemailCol =
+							total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+						var totalWrongNumberPercentage = parseInt(
+							(total_wrong_number / total_leads) * 100
+						);
+						var totalWrongNumberCol =
+							total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+						var totalDisconnectedPercentage = parseInt(
+							(total_disconnected / total_leads) * 100
+						);
+						var totalDisconnectedCol =
+							total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+						var totalRemoveFromListPercentage = parseInt(
+							(total_remove_from_list / total_leads) * 100
+						);
+						var totalRemoveFromListCol =
+							total_remove_from_list +
+							" (" +
+							totalRemoveFromListPercentage +
+							"%)";
+
+						var totalBusyPercentage = parseInt(
+							(total_busy / total_leads) * 100
+						);
+						var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+						var totalCallBackPercentage = parseInt(
+							(total_callback / total_leads) * 100
+						);
+						var totalCallBackCol =
+							total_callback + " (" + totalCallBackPercentage + "%)";
+
+						var totalEmailInterestedPercentage = parseInt(
+							(total_email_interested / total_leads) * 100
+						);
+						var totalEmailInterestedCol =
+							total_email_interested +
+							" (" +
+							totalEmailInterestedPercentage +
+							"%)";
+
+						var totalEmailBrushOffPercentage = parseInt(
+							(total_email_brush_off / total_leads) * 100
+						);
+						var totalEmailBrushOffCol =
+							total_email_brush_off +
+							" (" +
+							totalEmailBrushOffPercentage +
+							"%)";
+
+						var totalInterestedPercentage = parseInt(
+							(total_interested / total_leads) * 100
+						);
+						var totalInterestedCol =
+							total_interested + " (" + totalInterestedPercentage + "%)";
+
 						callForceDateSyncedOutcomeDataSet.push([
 							oldCallforceSyncDate,
-							total_no_outcome,
-							total_not_interested,
-							total_no_answer,
-							total_voicemail,
-							total_wrong_number,
-							total_disconnected,
-							total_remove_from_list,
-							total_busy,
-							total_callback,
-							total_email_interested,
-							total_email_brush_off,
-							total_interested,
+							totalNoOutcomeCol,
+							totalNotInterestedCol,
+							totalNoAnswerCol,
+							totalVoicemailCol,
+							totalWrongNumberCol,
+							totalDisconnectedCol,
+							totalRemoveFromListCol,
+							totalBusyCol,
+							totalCallBackCol,
+							totalEmailInterestedCol,
+							totalEmailBrushOffCol,
+							totalInterestedCol,
 							total_leads,
 						]);
 
@@ -3381,20 +3461,91 @@ define([
 				"countCallforceSyncDateCount: " + countCallforceSyncDateCount
 			);
 			if (countCallforceSyncDateCount > 0) {
+				var totalNoOutcomePercentage = parseInt(
+					(total_no_outcome / total_leads) * 100
+				).toFixed(0);
+				var totalNoOutcomeCol =
+					total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+				var totalNotInterestedPercentage = parseInt(
+					(total_not_interested / total_leads) * 100
+				).toFixed(0);
+				var totalNotInterestedCol =
+					total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+				var totalNoAnswerPercentage = parseInt(
+					(total_no_answer / total_leads) * 100
+				).toFixed(0);
+				var totalNoAnswerCol =
+					total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+				var totalVoicemailPercentage = parseInt(
+					(total_voicemail / total_leads) * 100
+				).toFixed(0);
+				var totalVoicemailCol =
+					total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+				var totalWrongNumberPercentage = parseInt(
+					(total_wrong_number / total_leads) * 100
+				).toFixed(0);
+				var totalWrongNumberCol =
+					total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+				var totalDisconnectedPercentage = parseInt(
+					(total_disconnected / total_leads) * 100
+				).toFixed(0);
+				var totalDisconnectedCol =
+					total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+				var totalRemoveFromListPercentage = parseInt(
+					(total_remove_from_list / total_leads) * 100
+				).toFixed(0);
+				var totalRemoveFromListCol =
+					total_remove_from_list + " (" + totalRemoveFromListPercentage + "%)";
+
+				var totalBusyPercentage = parseInt(
+					(total_busy / total_leads) * 100
+				).toFixed(0);
+				var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+				var totalCallBackPercentage = parseInt(
+					(total_callback / total_leads) * 100
+				).toFixed(0);
+				var totalCallBackCol =
+					total_callback + " (" + totalCallBackPercentage + "%)";
+
+				var totalEmailInterestedPercentage = parseInt(
+					(total_email_interested / total_leads) * 100
+				).toFixed(0);
+				var totalEmailInterestedCol =
+					total_email_interested + " (" + totalEmailInterestedPercentage + "%)";
+
+				var totalEmailBrushOffPercentage = parseInt(
+					(total_email_brush_off / total_leads) * 100
+				).toFixed(0);
+				var totalEmailBrushOffCol =
+					total_email_brush_off + " (" + totalEmailBrushOffPercentage + "%)";
+
+				var totalInterestedPercentage = parseInt(
+					(total_interested / total_leads) * 100
+				).toFixed(0);
+				var totalInterestedCol =
+					total_interested + " (" + totalInterestedPercentage + "%)";
+
 				callForceDateSyncedOutcomeDataSet.push([
 					oldCallforceSyncDate,
-					total_no_outcome,
-					total_not_interested,
-					total_no_answer,
-					total_voicemail,
-					total_wrong_number,
-					total_disconnected,
-					total_remove_from_list,
-					total_busy,
-					total_callback,
-					total_email_interested,
-					total_email_brush_off,
-					total_interested,
+					totalNoOutcomeCol,
+					totalNotInterestedCol,
+					totalNoAnswerCol,
+					totalVoicemailCol,
+					totalWrongNumberCol,
+					totalDisconnectedCol,
+					totalRemoveFromListCol,
+					totalBusyCol,
+					totalCallBackCol,
+					totalEmailInterestedCol,
+					totalEmailBrushOffCol,
+					totalInterestedCol,
 					total_leads,
 				]);
 			}
@@ -3583,18 +3734,91 @@ define([
 							return intVal(a) + intVal(b);
 						}, 0);
 
-					$(api.column(1).footer()).html(total_no_outcome);
-					$(api.column(2).footer()).html(total_not_interested);
-					$(api.column(3).footer()).html(total_no_answer);
-					$(api.column(4).footer()).html(total_voicemail);
-					$(api.column(5).footer()).html(total_wrong_number);
-					$(api.column(6).footer()).html(total_disconnected);
-					$(api.column(7).footer()).html(total_remove_from_list);
-					$(api.column(8).footer()).html(total_busy);
-					$(api.column(9).footer()).html(total_callback);
-					$(api.column(10).footer()).html(total_email_interested);
-					$(api.column(11).footer()).html(total_email_brush_off);
-					$(api.column(12).footer()).html(total_interested);
+					$(api.column(1).footer()).html(
+						total_no_outcome +
+							" (" +
+							((total_no_outcome / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(2).footer()).html(
+						total_not_interested +
+							" (" +
+							((total_not_interested / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(3).footer()).html(
+						total_no_answer +
+							" (" +
+							((total_no_answer / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(4).footer()).html(
+						total_voicemail +
+							" (" +
+							((total_voicemail / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(5).footer()).html(
+						total_wrong_number +
+							" (" +
+							((total_wrong_number / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(6).footer()).html(
+						total_disconnected +
+							" (" +
+							((total_disconnected / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(7).footer()).html(
+						total_remove_from_list +
+							" (" +
+							((total_remove_from_list / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(8).footer()).html(
+						total_busy +
+							" (" +
+							((total_busy / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(9).footer()).html(
+						total_callback +
+							" (" +
+							((total_callback / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(10).footer()).html(
+						total_email_interested +
+							" (" +
+							((total_email_interested / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(11).footer()).html(
+						total_email_brush_off +
+							" (" +
+							((total_email_brush_off / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+					$(api.column(12).footer()).html(
+						total_interested +
+							" (" +
+							((total_interested / total_leads) * 100).toFixed(0) +
+							"%)"
+					);
+
+					// $(api.column(1).footer()).html(total_no_outcome);
+					// $(api.column(2).footer()).html(total_not_interested);
+					// $(api.column(3).footer()).html(total_no_answer);
+					// $(api.column(4).footer()).html(total_voicemail);
+					// $(api.column(5).footer()).html(total_wrong_number);
+					// $(api.column(6).footer()).html(total_disconnected);
+					// $(api.column(7).footer()).html(total_remove_from_list);
+					// $(api.column(8).footer()).html(total_busy);
+					// $(api.column(9).footer()).html(total_callback);
+					// $(api.column(10).footer()).html(total_email_interested);
+					// $(api.column(11).footer()).html(total_email_brush_off);
+					// $(api.column(12).footer()).html(total_interested);
 					$(api.column(13).footer()).html(total_leads);
 				},
 			});
@@ -4262,12 +4486,12 @@ define([
 						preview_row.callOutcome,
 						suspectNewCol,
 						hotLeadCol,
-						suspectQualifiedCol,
-						suspectUnqualifiedCol,
 						suspectValidatedCol,
-						reassignCol,
+						suspectUnqualifiedCol,
+						suspectQualifiedCol,
 						preQualiCol,
 						inQualiCol,
+						reassignCol,
 						suspectNoAnswerCol,
 						suspectInContactCol,
 						inContactCol,
@@ -4292,7 +4516,7 @@ define([
 			).DataTable({
 				data: outcomeStatusDataSet,
 				pageLength: 250,
-				order: [],
+				order: [23, "desc"],
 				responsive: true,
 				layout: {
 					topStart: {
@@ -4351,22 +4575,22 @@ define([
 						title: "Suspect - Hot Lead", //2
 					},
 					{
-						title: "Suspect - Qualified", //3
+						title: "Suspect - Validated", //5
 					},
 					{
 						title: "Suspect - Unqualified", //4
 					},
 					{
-						title: "Suspect - Validated", //5
-					},
-					{
-						title: "Suspect - Reassign", //6
+						title: "Suspect - Qualified", //3
 					},
 					{
 						title: "Suspect - Pre Qualification", //7
 					},
 					{
 						title: "Suspect - In Qualification", //8
+					},
+					{
+						title: "Suspect - Reassign", //6
 					},
 					{
 						title: "Suspect - No Answer", //9
@@ -4416,7 +4640,7 @@ define([
 				],
 				columnDefs: [
 					{
-						targets: [0, 5, 17, 21, 22],
+						targets: [0, 5, 6, 7, 17, 19, 22],
 						className: "bolded",
 					},
 				],
@@ -5425,12 +5649,12 @@ define([
 						preview_row.callOutcome,
 						suspectNewCol,
 						hotLeadCol,
-						suspectQualifiedCol,
-						suspectUnqualifiedCol,
 						suspectValidatedCol,
-						reassignCol,
+						suspectUnqualifiedCol,
+						suspectQualifiedCol,
 						preQualiCol,
 						inQualiCol,
+						reassignCol,
 						suspectNoAnswerCol,
 						suspectInContactCol,
 						inContactCol,
@@ -5514,22 +5738,22 @@ define([
 						title: "Suspect - Hot Lead", //2
 					},
 					{
-						title: "Suspect - Qualified", //3
+						title: "Suspect - Validated", //5
 					},
 					{
 						title: "Suspect - Unqualified", //4
 					},
 					{
-						title: "Suspect - Validated", //5
-					},
-					{
-						title: "Suspect - Reassign", //6
+						title: "Suspect - Qualified", //3
 					},
 					{
 						title: "Suspect - Pre Qualification", //7
 					},
 					{
 						title: "Suspect - In Qualification", //8
+					},
+					{
+						title: "Suspect - Reassign", //6
 					},
 					{
 						title: "Suspect - No Answer", //9
@@ -5579,7 +5803,7 @@ define([
 				],
 				columnDefs: [
 					{
-						targets: [0, 5, 17, 21, 22],
+						targets: [0, 5, 6, 7, 19, 22],
 						className: "bolded",
 					},
 				],
