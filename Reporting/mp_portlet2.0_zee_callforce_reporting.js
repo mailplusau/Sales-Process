@@ -152,10 +152,10 @@ define([
 			'<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>';
 
 		inlineHtml +=
-			"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}</style>";
+			"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;} .completeddot{height:25px;width:25px;background-color:#5cb3b0;border-radius:50%;display:inline-block}</style>";
 		inlineHtml += loadingSection();
-		inlineHtml +=
-			'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
+		// inlineHtml +=
+		// 	'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
 		inlineHtml +=
 			'<div class="form-group container show_buttons_section hide">';
@@ -210,20 +210,6 @@ define([
 			cancelled_last_date
 		);
 		inlineHtml += "</div></div></div></br></br>";
-
-		// inlineHtml +=
-		// 	'<div class="form-group container scorecard_percentage hide" style="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml += '<div class="col-xs-12">';
-		// inlineHtml += '<article class="card">';
-		// inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
-		// inlineHtml += '<small style="text-align:center;font-size: 12px;"></small>';
-		// inlineHtml +=
-		// 	'<div id="container-callforce_progress" style="height: 300px"></div>';
-		// inlineHtml += "</article>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
 
 		inlineHtml += tabsSection(campaign);
 		// inlineHtml += dataTable();
@@ -414,14 +400,6 @@ define([
 						"</option>";
 				}
 			}
-
-			// if (salesCampaignInternalId == campaign) {
-			//     inlineHtml += '<option value="' + salesCampaignInternalId + '" selected>' +
-			//         salesCampaignName + '</option>';
-			// } else {
-			//     inlineHtml += '<option value="' + salesCampaignInternalId + '" >' +
-			//         salesCampaignName + '</option>';
-			// }
 
 			return true;
 		});
@@ -736,12 +714,7 @@ define([
 
 		return inlineHtml;
 	}
-	/**
-	 * The date input fields to filter the invoices.
-	 * Even if the parameters `date_from` and `date_to` are defined, they can't be initiated in the HTML code.
-	 * They are initiated with jQuery in the `pageInit()` function.
-	 * @return  {String} `inlineHtml`
-	 */
+
 	/**
 	 * The date input fields to filter the invoices.
 	 * Even if the parameters `date_from` and `date_to` are defined, they can't be initiated in the HTML code.
@@ -769,74 +742,6 @@ define([
 		cancelled_start_date,
 		cancelled_last_date
 	) {
-		// var inlineHtml =
-		// 	'<div class="form-group container lead_entered_label_section hide">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">STATUS CHANGE ACTIVITY - FILTER</span></h4></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-
-		// inlineHtml += '<div class="form-group container modified_date_div hide">';
-		// inlineHtml += '<div class="row">';
-
-		// // Last Modified Date from field
-		// inlineHtml += '<div class="col-xs-6 date_from">';
-		// inlineHtml += '<div class="input-group">';
-		// inlineHtml +=
-		// 	'<span class="input-group-addon" id="modified_date_from_text">STATUS CHANGE ACTIVITY - FROM</span>';
-		// if (isNullorEmpty(modified_start_date)) {
-		// 	inlineHtml +=
-		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" />';
-		// } else {
-		// 	inlineHtml +=
-		// 		'<input id="modified_date_from" class="form-control modified_date_from" type="date" value="' +
-		// 		modified_start_date +
-		// 		'"/>';
-		// }
-
-		// inlineHtml += "</div></div>";
-		// // Last Modified Date to field
-		// inlineHtml += '<div class="col-xs-6 date_to">';
-		// inlineHtml += '<div class="input-group">';
-		// inlineHtml +=
-		// 	'<span class="input-group-addon" id="date_to_text">STATUS CHANGE ACTIVITY - TO</span>';
-		// if (isNullorEmpty(modified_last_date)) {
-		// 	inlineHtml +=
-		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date">';
-		// } else {
-		// 	inlineHtml +=
-		// 		'<input id="modified_date_to" class="form-control modified_date_to" type="date" value="' +
-		// 		modified_last_date +
-		// 		'">';
-		// }
-
-		// inlineHtml += "</div></div></div></div>";
-
-		// inlineHtml +=
-		// 	'<div class="form-group container salesactivitynotes_div hide">';
-		// inlineHtml += '<div class="row">';
-
-		// inlineHtml += '<div class="col-xs-12 salesactivitynotes">';
-		// inlineHtml += '<div class="input-group">';
-		// inlineHtml +=
-		// 	'<span class="input-group-addon" id="salesactivitynotes_text">DISPLAY USER/ACTIVITY NOTES?</span>';
-		// inlineHtml += '<select id="sales_activity_notes" class="form-control">';
-		// inlineHtml += "<option></option>";
-
-		// if (sales_activity_notes == "1") {
-		// 	inlineHtml += '<option value="1" selected>Yes</option>';
-		// 	inlineHtml += '<option value="2">No</option>';
-		// } else if (sales_activity_notes == "2") {
-		// 	inlineHtml += '<option value="1" >Yes</option>';
-		// 	inlineHtml += '<option value="2" selected>No</option>';
-		// } else {
-		// 	inlineHtml += '<option value="1">Yes</option>';
-		// 	inlineHtml += '<option value="2" selected>No</option>';
-		// }
-		// inlineHtml += "</select>";
-		// inlineHtml += "</div></div></div></div>";
-
 		var inlineHtml =
 			'<div class="form-group container lead_entered_label_section hide">';
 		inlineHtml += '<div class="row">';
@@ -1212,34 +1117,10 @@ define([
 		inlineHtml +=
 			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		if (isNullorEmpty(campaign)) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
-		} else {
-			if (campaign.indexOf(",") != -1) {
-				var campaignArray = campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(campaign);
-			}
-
-			log.debug({
-				title: "campaignArray",
-				details: campaignArray,
-			});
-			log.debug({
-				title: "campaignArray.indexOf('87')",
-				details: campaignArray.indexOf("87"),
-			});
-
-			if (campaignArray.indexOf("87") != -1) {
-				inlineHtml +=
-					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
-			}
-		}
-
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
 		inlineHtml +=
@@ -1259,59 +1140,15 @@ define([
 			details: campaign,
 		});
 
-		// if (isNullorEmpty(campaign)) {
-		// 	inlineHtml +=
-		// 		'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
-
-		// 	inlineHtml += '<figure class="highcharts-figure">';
-		// 	inlineHtml += '<div id="container_callforcetasks"></div>';
-		// 	inlineHtml += "</figure><br></br>";
-		// 	inlineHtml += dataTable("callforcetasks");
-		// 	inlineHtml += "</br>";
-		// 	inlineHtml += dataTable("callForceDateSyncedOutcome");
-		// 	inlineHtml += "</div>";
-		// } else {
-		// 	if (campaign.indexOf(",") != -1) {
-		// 		var campaignArray = campaign.split(",");
-		// 	} else {
-		// 		var campaignArray = [];
-		// 		campaignArray.push(campaign);
-		// 	}
-
-		// 	log.debug({
-		// 		title: "campaignArray",
-		// 		details: campaignArray,
-		// 	});
-		// 	log.debug({
-		// 		title: "campaignArray.indexOf('87')",
-		// 		details: campaignArray.indexOf("87"),
-		// 	});
-
-		// if (campaignArray.indexOf("87") != -1) {
 		inlineHtml += '<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 		inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
-		inlineHtml += '<small style="text-align:center;font-size: 12px;"></small>';
 		inlineHtml +=
-			'<div id="container-callforce_progress" style="height: 50vh;"></div>';
+			'<div class="container instruction_div hide" style="background-color: #F6F8F9FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><ol><li><b><u>UNQUALIFIED LEADS - SENT TO CALL FORCE</u></b>:</br>Leads that have been sent to Call Force for cold calling.<li><b><u>QUALIFIED LEADS - NO APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force but no Appointment has been scheduled.</br></li><li><b><u>QUALIFIED LEADS - SCHEDULED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled</br></li><li><b class=""><u>QUALIFIED LEADS - COMPLETED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled which has now been completed by the Sales Rep.</br></li></ol></div>';
+		inlineHtml += "</br></br>";
+		inlineHtml +=
+			'<div id="container-callforce_progress" style="height: 25vh;"></div>';
 
-		// inlineHtml +=
-		// 	'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
-		// inlineHtml += dataTable("callForceDateSyncedOutcome");
-		// inlineHtml += "</br>";
-		// inlineHtml += '<h2 style="text-align:center;">Call Force Appointments</h2>';
-		// inlineHtml += dataTable("callforcetasks");
-		// inlineHtml += "</br>";
-		// inlineHtml +=
-		// 	'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
-		// inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
-		// inlineHtml += "</br>";
-		// inlineHtml +=
-		// 	'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
-		// inlineHtml += dataTable("callForceOutcomeStatus");
-		// inlineHtml += "</br>";
 		inlineHtml += "</div>";
-		// }
-		// }
 
 		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
 
@@ -1345,13 +1182,13 @@ define([
 			'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_preview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
@@ -1368,13 +1205,13 @@ define([
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
@@ -1388,13 +1225,13 @@ define([
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div id="container_lpo_overview"></div>';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_lpo_overview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_lpo_source_datacapture_preview"></div></div>';
@@ -1410,13 +1247,13 @@ define([
 			'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
@@ -1432,13 +1269,13 @@ define([
 			'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
@@ -1481,7 +1318,7 @@ define([
 			'<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_customer"></div></div>';
@@ -1510,7 +1347,7 @@ define([
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
@@ -1539,7 +1376,7 @@ define([
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
@@ -1599,7 +1436,7 @@ define([
 			'<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_quoteSent_incontact_noanswer"></div></div>';
@@ -1626,7 +1463,7 @@ define([
 		inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
@@ -1654,7 +1491,7 @@ define([
 			'<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
 			'<div class="col-xs-12"><div id="container_prospects_opportunites"></div></div>';

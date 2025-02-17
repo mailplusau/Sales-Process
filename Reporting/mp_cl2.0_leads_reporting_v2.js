@@ -19170,13 +19170,19 @@ define([
 			);
 		}
 
-		if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
-			//TODO - Zee Preview
+		if (role != 1000) {
+			// TODO - Zee Preview
 
 			// Sales Dashboard - Franchisee Generated Leads by Status - Weekly Reporting
+			// var zeeLeadsByStatusWeeklySearch = search.load({
+			// 	type: "customer",
+			// 	id: "customsearch_leads_reporting_weekly_4_2",
+			// });
+
+			//Sales Dashboard - Leads by Status & Zee - Weekly Reporting
 			var zeeLeadsByStatusWeeklySearch = search.load({
 				type: "customer",
-				id: "customsearch_leads_reporting_weekly_4_2",
+				id: "customsearch_leads_reporting_weekly_4__5",
 			});
 
 			zeeLeadsByStatusWeeklySearch.filters.push(
@@ -20225,6 +20231,7 @@ define([
 				destroy: true,
 				data: zee_previewDataSet,
 				pageLength: 1000,
+				order: [24, "desc"],
 				layout: {
 					topStart: {
 						buttons: [
@@ -26119,11 +26126,17 @@ define([
 		console.log("lead_source: " + lead_source);
 		console.log("date_signed_up_from: " + date_signed_up_from);
 		console.log("date_signed_up_to: " + date_signed_up_to);
-		if (role != 1000 && (isNullorEmpty(lead_source) || lead_source == -4)) {
+		if (role != 1000) {
 			//Sales Dashboard - Franchisee Generated Leads by Last Assigned - Weekly Reporting
+			// var leadsListByZeeGeneratedLastAssignedSearch = search.load({
+			// 	type: "customer",
+			// 	id: "customsearch_leads_reporting_weekly_4__3",
+			// });
+
+			//Sales Dashboard - Leads by Zee & Last Assigned - Weekly Reporting
 			var leadsListByZeeGeneratedLastAssignedSearch = search.load({
 				type: "customer",
-				id: "customsearch_leads_reporting_weekly_4__3",
+				id: "customsearch_leads_reporting_weekly_4__6",
 			});
 
 			leadsListByZeeGeneratedLastAssignedSearch.filters.push(
@@ -39599,7 +39612,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -39624,7 +39637,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -39685,7 +39698,10 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				// formatter: function () {
+				// 	return '<b>{this.key}</b>: <b>{this.x}</b><br/>{this.series.name}: {this.y}<br/>Total: {this.stackTotal}';
+				// },
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -39709,11 +39725,11 @@ define([
 					groupPadding: 0,
 				},
 			},
-			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
-				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
-			},
+			// tooltip: {
+			// 	headerFormat: "<b>{point.key}</b><br/>",
+			// 	pointFormat:
+			// 		"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+			// },
 			series: series_data,
 		});
 	}
@@ -39771,7 +39787,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -39796,7 +39812,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -39885,7 +39901,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -40185,7 +40201,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -40456,7 +40472,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -40750,7 +40766,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41039,7 +41055,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41315,7 +41331,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41340,7 +41356,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41401,7 +41417,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41426,7 +41442,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41491,7 +41507,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41516,7 +41532,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41581,7 +41597,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41606,7 +41622,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41671,7 +41687,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41696,7 +41712,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41761,7 +41777,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41786,7 +41802,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41851,7 +41867,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41876,7 +41892,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -41937,7 +41953,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -41962,7 +41978,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42023,7 +42039,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42048,7 +42064,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42109,7 +42125,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42134,7 +42150,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42195,7 +42211,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42220,7 +42236,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42285,7 +42301,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42310,7 +42326,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42375,7 +42391,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42400,7 +42416,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42461,7 +42477,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42486,7 +42502,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42547,7 +42563,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42572,7 +42588,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42633,7 +42649,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42658,7 +42674,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42719,7 +42735,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42744,7 +42760,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42805,7 +42821,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42830,7 +42846,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42895,7 +42911,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -42920,7 +42936,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -42981,7 +42997,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43006,7 +43022,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -43067,7 +43083,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43092,7 +43108,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -43157,7 +43173,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43182,7 +43198,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -43243,7 +43259,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43268,7 +43284,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -43329,7 +43345,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43354,7 +43370,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
@@ -43421,7 +43437,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43538,7 +43554,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43633,7 +43649,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43724,7 +43740,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43824,7 +43840,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -43938,7 +43954,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44042,7 +44058,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44135,7 +44151,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44226,7 +44242,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44316,7 +44332,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44407,7 +44423,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44502,7 +44518,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44605,7 +44621,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44700,7 +44716,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -44811,7 +44827,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -45018,7 +45034,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
@@ -45225,7 +45241,7 @@ define([
 				},
 			},
 			tooltip: {
-				headerFormat: "<b>{point.x}</b><br/>",
+				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
