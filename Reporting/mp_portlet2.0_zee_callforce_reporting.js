@@ -41,7 +41,7 @@ define([
 
 		var portlet = params.portlet;
 
-		portlet.title = "Call Force Dashboard";
+		portlet.title = "Sales Dashboard";
 
 		var baseURL = "https://system.na2.netsuite.com";
 		if (runtime.EnvType == "SANDBOX") {
@@ -73,7 +73,7 @@ define([
 		var invoice_date_to = null;
 		var invoice_type = null;
 
-		var source = null;
+		var source = ["296333", "295896", "254557", "-4"];
 		var parentLPO = null;
 		var salesrep = null;
 		var lead_entered_by = null;
@@ -82,7 +82,7 @@ define([
 		var calcprodusage = 2;
 		var sales_activity_notes = 2;
 		var leadStatus = null;
-		var campaign = "87";
+		var campaign = null;
 		var customer_type = 2;
 
 		//If role is Franchisee
@@ -209,7 +209,7 @@ define([
 			cancelled_start_date,
 			cancelled_last_date
 		);
-		inlineHtml += "</div></div></div></br></br>";
+		inlineHtml += "</div></div></div>";
 
 		inlineHtml += tabsSection(campaign);
 		// inlineHtml += dataTable();
@@ -1105,543 +1105,546 @@ define([
 	}
 
 	function tabsSection(campaign) {
-		var inlineHtml = '<div class="tabs_section hide">';
+		// var inlineHtml = '<div class="tabs_section hide">';
 
 		// Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
 		// Tabs content
-		inlineHtml += '<div class="tab-content">';
+		// inlineHtml += '<div class="tab-content">';
 
 		log.debug({
 			title: "Inside Tabs Section Function",
 			details: campaign,
 		});
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="callforcetasks">';
-		inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
-		inlineHtml +=
-			'<div class="container instruction_div hide" style="background-color: #F6F8F9FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><ol><li><b><u>UNQUALIFIED LEADS - SENT TO CALL FORCE</u></b>:</br>Leads that have been sent to Call Force for cold calling.<li><b><u>QUALIFIED LEADS - NO APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force but no Appointment has been scheduled.</br></li><li><b><u>QUALIFIED LEADS - SCHEDULED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled</br></li><li><b class=""><u>QUALIFIED LEADS - COMPLETED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled which has now been completed by the Sales Rep.</br></li></ol></div>';
-		inlineHtml += "</br></br>";
-		inlineHtml +=
-			'<div id="container-callforce_progress" style="height: 25vh;"></div>';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+		// inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
+		// inlineHtml +=
+		// 	'<div class="container instruction_div hide" style="background-color: #F6F8F9FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><ol><li><b><u>UNQUALIFIED LEADS - SENT TO CALL FORCE</u></b>:</br>Leads that have been sent to Call Force for cold calling.<li><b><u>QUALIFIED LEADS - NO APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force but no Appointment has been scheduled.</br></li><li><b><u>QUALIFIED LEADS - SCHEDULED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled</br></li><li><b class=""><u>QUALIFIED LEADS - COMPLETED APPOINTMENT</u></b>:</br>Leads that have been qualified by Call Force and an Appointment has been scheduled which has now been completed by the Sales Rep.</br></li></ol></div>';
+		// inlineHtml += "</br></br>";
+		// inlineHtml +=
+		// 	'<div id="container-callforce_progress" style="height: 25vh;"></div>';
 
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
 
 		// Overview Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO & LPO-BAU OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
-		if (role != 1000) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
-		}
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO & LPO-BAU OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
+		// if (role != 1000) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
+		// }
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
+		// inlineHtml += '<div class="tab-content">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
+		var inlineHtml = '<figure class="highcharts-figure">';
 		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_preview"></div></div>';
+			'<div class="col-xs-12" style="background-color: #d0e0cf;"><div id="container_preview"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
+		// inlineHtml +=
+		// 	'<div id="container-callforce_progress" style="height: 50vh;"></div>';
+		// // inlineHtml +=
+		// // 	'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
+		// // inlineHtml +=
+		// // 	'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
 		inlineHtml += "</figure><br></br>";
 		// inlineHtml += dataTable("preview");
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("zee_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id=""></div>';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("zee_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_lpo_overview"></div>';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_lpo_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_lpo_source_datacapture_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_lpo_campaign_datacapture_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("lpo_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_lpo_overview"></div>';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_lpo_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_lpo_source_datacapture_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_lpo_campaign_datacapture_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("lpo_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("salesrep_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("salesrep_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("datacapture_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("datacapture_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
 
-		// Customers Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// // Customers Tabs headers
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="new_customers">';
+		// inlineHtml += '<div class="tab-content">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_customer"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_signed_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_signed_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("customer");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_customer"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_signed_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_signed_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("customer");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="trial_customers">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="trial_customers">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_trial_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_trial_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_trial_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("trial_customers");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id=""></div>';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_trial_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_trial_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_trial_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("trial_customers");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_trial_pending_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_trial_pending_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_trial_pending_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("trial_pending_customers");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id=""></div>';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_trial_pending_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_trial_pending_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_trial_pending_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("trial_pending_customers");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="existing_customers">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="existing_customers">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_existing_customers"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("existing_customers");
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_existing_customers"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("existing_customers");
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
 
-		// Prospects Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// // Prospects Tabs headers
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_box" style="border-radius: 30px"><b>PROSPECTS - BOX SENT</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_box" style="border-radius: 30px"><b>PROSPECTS - BOX SENT</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+		// inlineHtml += '<div class="tab-content">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_quoteSent_incontact_noanswer"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_prospect_opportunity_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_opportunity_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_opportunity_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_quoteSent_incontact_noanswer");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_quoteSent_incontact_noanswer"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_prospect_opportunity_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_opportunity_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_opportunity_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("prospects_quoteSent_incontact_noanswer");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_prospect_box_sent_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_box_sent_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_box_sent_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_box_sent");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_prospect_box_sent_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_box_sent_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_box_sent_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("prospects_box_sent");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_prospects_opportunites"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_prospect_quote_sent_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_quote_sent_source"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_prospect_quote_sent_campaign"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_opportunites");
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="" style="background-color: #d0e0cf;">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_prospects_opportunites"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_prospect_quote_sent_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_quote_sent_source"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_prospect_quote_sent_campaign"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("prospects_opportunites");
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
 
-		// Suspects Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// // Suspects Tabs headers
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
-		if (role != 1000) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
-		}
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
+		// if (role != 1000) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
+		// }
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
+		// inlineHtml += '<div class="tab-content">';
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_no_answer"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_no_answer");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_no_answer"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_no_answer");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_in_contact"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_in_contact");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_in_contact"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_in_contact");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_qualified"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_qualified");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_qualified"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_qualified");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_unqualified"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_unqualified");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_unqualified"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_unqualified");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_validated">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_validated"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_validated");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_validated">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_validated"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_validated");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_followup">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_followup"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_followup");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_followup">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_followup"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_followup");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_off_peak_pipeline");
-		inlineHtml += "</div>";
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_off_peak_pipeline");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_lost"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_lost");
-		inlineHtml += "</div>";
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_lost"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_lost");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_suspects_oot"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_oot");
-		inlineHtml += "</div>";
-		inlineHtml += "</div></div>";
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_suspects_oot"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("suspects_oot");
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div></div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_cancellation"></div>';
-		inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("cancellation");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_cancellation"></div>';
+		// inlineHtml += "</figure><br></br>";
+		// // inlineHtml += dataTable("cancellation");
+		// inlineHtml += "</div>";
 
 		return inlineHtml;
 	}

@@ -17480,8 +17480,8 @@ define([
 			month_year.push(data[i][0]);
 			suspect_new[data[i][0]] = data[i][1];
 			suspect_hot_lead[data[i][0]] = data[i][2];
-			suspect_qualified[data[i][0]] = data[i][5];
-			suspect_unqualified[data[i][0]] = data[i][4];
+			suspect_qualified[data[i][0]] = data[i][4];
+			suspect_unqualified[data[i][0]] = data[i][5];
 			suspect_validated[data[i][0]] = data[i][3];
 			suspect_pre_qualification[data[i][0]] = data[i][6];
 			suspect_in_qualification[data[i][0]] = data[i][7];
