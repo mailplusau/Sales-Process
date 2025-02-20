@@ -158,6 +158,16 @@ define([
 		// 	'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
 		inlineHtml +=
+			'<div class="form-group container filter_buttons_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml += '<div class="col-xs-4"></div>';
+		inlineHtml +=
+			'<div class="col-xs-4"><input type="button" value="FULL REPORT" class="form-control btn btn-primary button-shadow" id="fullReport" style="background-color: #095C7B;border-radius: 30px;" /></div>';
+		inlineHtml += '<div class="col-xs-4"></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
 			'<div class="form-group container show_buttons_section hide">';
 		inlineHtml += '<div class="row">';
 		inlineHtml += '<div class="col-xs-5"></div>';
@@ -179,7 +189,6 @@ define([
 		var resultSetZees = searchZees.run();
 
 		inlineHtml += franchiseeDropdownSection(resultSetZees);
-		// inlineHtml += leadStatusDropdown(leadStatusArray);
 		inlineHtml += leadSourceFilterSection(
 			source,
 			salesrep,
@@ -274,52 +283,6 @@ define([
 		return inlineHtml;
 	}
 
-	/*
-	 * PURPOSE : HTML code to generate the Modal Pop-up
-	 *  PARAMS :  -
-	 * RETURNS : HTML
-	 *   NOTES :
-	 */
-	function updateCustomerModal() {
-		var yes_no_search = search.create({
-			type: "customlist107_2",
-			columns: [
-				{
-					name: "name",
-				},
-				{
-					name: "internalId",
-				},
-			],
-		});
-
-		var resultSetYesNo = yes_no_search.run();
-		var inlineHtml =
-			'<div id="myModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888;/* width: 80%; */left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h3 class="modal-title" id="modal-title">Lost Reasons</h3></div>';
-
-		inlineHtml += '<div class="modal-body" style="padding: 2px 16px;">';
-		inlineHtml += '<div class="form-group container mpex_customer2_section">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-4 mpex_customer"><input type="text" id="customerInternalID" value="" hidden/>';
-		inlineHtml +=
-			'<select class="form-control service_cancellation_reason text-center">';
-
-		inlineHtml +=
-			' <option value="0"></option><option value="46">Lost - Off Peak</option><option value="48">Lost - Over 5Kg</option><option value="47">Lost - Box Solution</option><option value="45">Lost – Integration / IT</option><option value="39">Unserviceable Territory</option><option value="29">Unserviceable Banking</option><option value="37">Duplicate Customer</option><option value="41">No Response</option><option value="40">Not a Lead</option><option value="17">Not Interested</option><option value="18">Price</option>';
-
-		inlineHtml += "</select>";
-
-		inlineHtml += "</div > ";
-
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-
-		inlineHtml +=
-			'</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="Save" class="form-control btn-primary" id="customerOnboardingCompleted" style=""/></div></div></div>';
-
-		return inlineHtml;
-	}
 
 	function leadSourceFilterSection(
 		source,
@@ -1088,18 +1051,18 @@ define([
 		inlineHtml += "</select>";
 		inlineHtml += "</div></div></div></div>";
 
-		inlineHtml +=
-			'<div class="form-group container filter_buttons_section hide">';
-		inlineHtml += '<div class="row">';
-		inlineHtml += '<div class="col-xs-2"></div>';
-		inlineHtml +=
-			'<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" style="background-color: #095C7B; border-radius: 30px" /></div>';
-		inlineHtml +=
-			'<div class="col-xs-4"><input type="button" value="CLEAR FILTER" class="form-control btn btn-primary" id="clearFilter" style="background-color: #F0AECB; color: #103d39;border-radius: 30px" /></div>';
-		inlineHtml += '<div class="col-xs-2"></div>';
+		// inlineHtml +=
+		// 	'<div class="form-group container filter_buttons_section hide">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml += '<div class="col-xs-2"></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-4"><input type="button" value="APPLY FILTER" class="form-control btn btn-primary" id="applyFilter" style="background-color: #095C7B; border-radius: 30px" /></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-4"><input type="button" value="CLEAR FILTER" class="form-control btn btn-primary" id="clearFilter" style="background-color: #F0AECB; color: #103d39;border-radius: 30px" /></div>';
+		// inlineHtml += '<div class="col-xs-2"></div>';
 
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
 		return inlineHtml;
 	}
