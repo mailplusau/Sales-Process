@@ -3047,6 +3047,8 @@ define([
 					type: format.Type.DATE,
 				});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row.phone + ')">' + debt_row.phone + '</a>'
+
 				debtDataSet.push([
 					// "",
 					linkURL,
@@ -3059,7 +3061,7 @@ define([
 					debt_row.linkedLPOName,
 					debt_row.contactName,
 					debt_row.serviceEmail,
-					debt_row.phone,
+					clickToDialNumber,
 					commDateFormatted,
 					debt_row.email48h,
 					debt_row.salesRepName,
@@ -3501,6 +3503,8 @@ define([
 					type: format.Type.DATE,
 				});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row4.phone + ')">' + debt_row4.phone + '</a>'
+
 				debtDataSet4.push([
 					// "",
 					linkURL,
@@ -3514,7 +3518,7 @@ define([
 					debt_row4.linkedLPOName,
 					debt_row4.contactName,
 					debt_row4.serviceEmail,
-					debt_row4.phone,
+					clickToDialNumber,
 					debt_row4.servicesOfInterest,
 					debt_row4.salesRepName,
 					debt_row4.dateFirstNoContact,
