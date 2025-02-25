@@ -1673,6 +1673,8 @@ define([
 				// 		return true;
 				// 	});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row.phone + ')">' + debt_row.phone + '</a>'
+
 				debtDataSetRequested.push([
 					"",
 					linkURL,
@@ -1680,7 +1682,7 @@ define([
 					debt_row.custName,
 					debt_row.zeeName,
 					debt_row.serviceEmail,
-					debt_row.phone,
+					clickToDialNumber,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
 					debt_row.firstWeekofUsage,
@@ -1842,6 +1844,8 @@ define([
 				// 		return true;
 				// 	});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row.phone + ')">' + debt_row.phone + '</a>'
+
 				debtDataSetScheduled.push([
 					"",
 					linkURL,
@@ -1849,7 +1853,7 @@ define([
 					debt_row.custName,
 					debt_row.zeeName,
 					debt_row.serviceEmail,
-					debt_row.phone,
+					clickToDialNumber,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
 					debt_row.firstWeekofUsage,
@@ -1997,6 +2001,8 @@ define([
 				// 		return true;
 				// 	});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row.phone + ')">' + debt_row.phone + '</a>'
+
 				debtDataSetCompleted.push([
 					"",
 					linkURL,
@@ -2004,7 +2010,7 @@ define([
 					debt_row.custName,
 					debt_row.zeeName,
 					debt_row.serviceEmail,
-					debt_row.phone,
+					clickToDialNumber,
 					debt_row.lastAssigned,
 					debt_row.dateEffective,
 					debt_row.firstWeekofUsage,
@@ -2189,7 +2195,7 @@ define([
 					className: "col-xs-3",
 				},
 			],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 	function destroyChild(row) {
@@ -2280,7 +2286,7 @@ define([
 		return result;
 	}
 
-	function saveRecord() {}
+	function saveRecord() { }
 
 	function formatDate(testDate) {
 		var responseDate = format.format({
