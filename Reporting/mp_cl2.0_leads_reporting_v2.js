@@ -26736,10 +26736,18 @@ define([
 		// 	type: "customer",
 		// 	id: "customsearch_suspects_reporting_no_activ", //Sales Dashboard - Leads - Suspects - Reporting V4 (No Activity)
 		// });
-		var websiteSuspectsLeadsReportingSearch = search.load({
-			type: "customer",
-			id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
-		});
+		if (role == 1000) {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
+			});
+		} else {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_3", //Sales Dashboard - Website Leads - Suspects with no Tasks - Reporting V6
+			});
+		}
+
 		// }
 
 		websiteSuspectsLeadsReportingSearch.filters.push(
