@@ -331,7 +331,7 @@ define([
 							campaignArray.indexOf("72") != -1 ||
 							campaignArray.indexOf("69") != -1 ||
 							(campaignArray.indexOf("77") != -1) |
-								(campaignArray.indexOf("76") != -1) ||
+							(campaignArray.indexOf("76") != -1) ||
 							!isNullorEmpty(salesRepArray)
 						) {
 							last_date = null;
@@ -625,7 +625,7 @@ define([
 			inlineHtml += stepByStepGuideModal();
 
 			inlineHtml +=
-				'<div class="container instruction_div hide" style="background-color: #e97777;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>IMPORTANT UPDATE:</u></b> We\'re currently enhancing your experience! A new page is under development to provide a comprehensive, detailed report of your Customers, Prospects, and Suspects. This current page will continue to offer a valuable overview and summary of key numbers. Stay tuned for the release of the detailed report!</div></br>';
+				'<div class="container instruction_div hide" style="background-color: #98F6B2FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b>**UPDATE: Detailed Customer, Prospect, and Suspect Report Now Available!**</b></br></br>The development of the detailed report page is now complete! You can now access a full, comprehensive list of your Customers, Prospects, and Suspects. To view the detailed report, simply click the <b>"SHOW DETAIL REPORT"</b> button.</br></br>This page will continue to provide the overall overview and summary numbers.</div></br>';
 
 			// inlineHtml +=
 			// 	'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
@@ -641,6 +641,20 @@ define([
 
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
+
+
+			inlineHtml +=
+				'<div class="form-group container show_buttons_section hide">';
+			inlineHtml += '<div class="row">';
+			inlineHtml += '<div class="col-xs-4"></div>';
+
+			inlineHtml +=
+				'<div class="col-xs-4"><input type="button" value="SHOW DETAIL REPORT" class="form-control btn btn-primary" id="full_report" aria-expanded="false" style="background-color: #095C7B; color: #ECF0F0FF; border-radius: 30px" /></div>';
+			inlineHtml += '<div class="col-xs-4"></div>';
+
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
 			inlineHtml +=
 				'<div class="collapse" id="collapseExample"><div class="card card-body">';
 			inlineHtml += "<div>";
@@ -2810,18 +2824,18 @@ define([
 			const financialYearStart = moment().month(6).startOf("month"); // April 1st
 			today.isBefore(financialYearStart)
 				? returnDate.push({
-						startDate: financialYearStart
-							.subtract(1, "years")
-							.format(dateFormat), // Previous financial year
-						endDate: today.clone().endOf("month").format(dateFormat), // Last day of current month
-				  })
+					startDate: financialYearStart
+						.subtract(1, "years")
+						.format(dateFormat), // Previous financial year
+					endDate: today.clone().endOf("month").format(dateFormat), // Last day of current month
+				})
 				: returnDate.push({
-						startDate: financialYearStart,
-						endDate: financialYearStart
-							.add(1, "years")
-							.subtract(1, "days")
-							.format(dateFormat), // Last day of March next year
-				  });
+					startDate: financialYearStart,
+					endDate: financialYearStart
+						.add(1, "years")
+						.subtract(1, "days")
+						.format(dateFormat), // Last day of March next year
+				});
 		} else if (period == "lastFinancialYear") {
 			const lastFinancialYearStart = moment()
 				.month(6)

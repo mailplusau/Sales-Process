@@ -564,6 +564,126 @@ define([
 			window.location.href = url;
 		});
 
+		$("#full_report").click(function () {
+			var date_from = $("#date_from").val();
+			var date_to = $("#date_to").val();
+
+			var modified_date_from = $("#modified_date_from").val();
+			var modified_date_to = $("#modified_date_to").val();
+
+			var usage_date_from = $("#usage_date_from").val();
+			var usage_date_to = $("#usage_date_to").val();
+
+			var date_signed_up_from = $("#date_signed_up_from").val();
+			var date_signed_up_to = $("#date_signed_up_to").val();
+
+			var commencement_start_date = $("#commencement_date_from").val();
+			var commencement_last_date = $("#commencement_date_to").val();
+			var cancelled_start_date = $("#cancellation_date_from").val();
+			var cancelled_last_date = $("#cancellation_date_to").val();
+
+			var date_quote_sent_from = $("#date_quote_sent_from").val();
+			var date_quote_sent_to = $("#date_quote_sent_to").val();
+
+			var invoice_date_from = $("#invoice_date_from").val();
+			var invoice_date_to = $("#invoice_date_to").val();
+			var invoice_type = $("#invoice_type").val();
+			var source = $("#lead_source").val();
+			var sales_campaign = $("#sales_campaign").val();
+			var parent_lpo = $("#parent_lpo").val();
+
+			var sales_rep = $("#sales_rep").val();
+			var lead_entered_by = $("#lead_entered_by").val();
+			calcprodusage = $("#calc_prod_usage").val();
+			sales_activity_notes = $("#sales_activity_notes").val();
+			customer_type = $("#customer_type").val();
+
+			leadStatus = $("#cust_status").val();
+
+			zee = $("#zee_dropdown").val();
+
+			if (
+				!isNullorEmpty(invoice_date_from) &&
+				!isNullorEmpty(invoice_date_to)
+			) {
+				if (
+					isNullorEmpty(date_signed_up_from) ||
+					isNullorEmpty(date_signed_up_to)
+				) {
+					alert("Please enter the date signed up filter");
+					return false;
+				}
+			} else if (
+				(isNullorEmpty(date_to) || isNullorEmpty(date_from)) &&
+				(isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to)) &&
+				(isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))
+			) {
+				alert("Please enter the date filter");
+				return false;
+			}
+
+			if (!(isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to))) {
+			}
+
+			var url =
+				baseURL +
+				"/app/site/hosting/scriptlet.nl?script=1989&deploy=1&start_date=" +
+				date_from +
+				"&last_date=" +
+				date_to +
+				"&usage_date_from=" +
+				usage_date_from +
+				"&usage_date_to=" +
+				usage_date_to +
+				"&date_signed_up_from=" +
+				date_signed_up_from +
+				"&date_signed_up_to=" +
+				date_signed_up_to +
+				"&commence_date_from=" +
+				commencement_start_date +
+				"&commence_date_to=" +
+				commencement_last_date +
+				"&cancel_date_from=" +
+				cancelled_start_date +
+				"&cancel_date_to=" +
+				cancelled_last_date +
+				"&source=" +
+				source +
+				"&date_quote_sent_from=" +
+				date_quote_sent_from +
+				"&date_quote_sent_to=" +
+				date_quote_sent_to +
+				"&sales_rep=" +
+				sales_rep +
+				"&zee=" +
+				zee +
+				"&calcprodusage=" +
+				calcprodusage +
+				"&invoice_date_from=" +
+				invoice_date_from +
+				"&invoice_date_to=" +
+				invoice_date_to +
+				"&campaign=" +
+				sales_campaign +
+				"&lpo=" +
+				parent_lpo +
+				"&lead_entered_by=" +
+				lead_entered_by +
+				"&modified_date_from=" +
+				modified_date_from +
+				"&modified_date_to=" +
+				modified_date_to +
+				"&status=" +
+				leadStatus +
+				"&salesactivitynotes=" +
+				sales_activity_notes +
+				"&customertype=" +
+				customer_type;
+
+			window.open(url, "_blank");
+			// window.location.href = url;
+		});
+
 		$("#clearFilter").click(function () {
 			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1";
 
