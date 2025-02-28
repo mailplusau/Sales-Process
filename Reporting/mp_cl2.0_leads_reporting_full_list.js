@@ -93,6 +93,8 @@ define([
 	var today_month = today.getMonth() + 1;
 	var today_year = today.getFullYear();
 
+	var page_no = 1;
+
 	var total_leads = 0;
 
 	if (today_day_in_month < 10) {
@@ -507,7 +509,188 @@ define([
 			} else {
 				var url =
 					baseURL +
-					"/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" +
+					"/app/site/hosting/scriptlet.nl?script=1989&deploy=1&start_date=" +
+					date_from +
+					"&last_date=" +
+					date_to +
+					"&usage_date_from=" +
+					usage_date_from +
+					"&usage_date_to=" +
+					usage_date_to +
+					"&date_signed_up_from=" +
+					date_signed_up_from +
+					"&date_signed_up_to=" +
+					date_signed_up_to +
+					"&commence_date_from=" +
+					commencement_start_date +
+					"&commence_date_to=" +
+					commencement_last_date +
+					"&cancel_date_from=" +
+					cancelled_start_date +
+					"&cancel_date_to=" +
+					cancelled_last_date +
+					"&source=" +
+					source +
+					"&date_quote_sent_from=" +
+					date_quote_sent_from +
+					"&date_quote_sent_to=" +
+					date_quote_sent_to +
+					"&sales_rep=" +
+					sales_rep +
+					"&zee=" +
+					zee +
+					"&calcprodusage=" +
+					calcprodusage +
+					"&invoice_date_from=" +
+					invoice_date_from +
+					"&invoice_date_to=" +
+					invoice_date_to +
+					"&campaign=" +
+					sales_campaign +
+					"&lpo=" +
+					parent_lpo +
+					"&lead_entered_by=" +
+					lead_entered_by +
+					"&modified_date_from=" +
+					modified_date_from +
+					"&modified_date_to=" +
+					modified_date_to +
+					"&status=" +
+					leadStatus +
+					"&salesactivitynotes=" +
+					sales_activity_notes +
+					"&customertype=" +
+					customer_type;
+			}
+
+			window.location.href = url;
+		});
+
+
+		$(".page_number").click(function () {
+			var page_number = $(this).attr("data-id");
+			console.log("page_number: " + page_number);
+			var date_from = $("#date_from").val();
+			var date_to = $("#date_to").val();
+
+			var modified_date_from = $("#modified_date_from").val();
+			var modified_date_to = $("#modified_date_to").val();
+
+			var usage_date_from = $("#usage_date_from").val();
+			var usage_date_to = $("#usage_date_to").val();
+
+			var date_signed_up_from = $("#date_signed_up_from").val();
+			var date_signed_up_to = $("#date_signed_up_to").val();
+
+			var commencement_start_date = $("#commencement_date_from").val();
+			var commencement_last_date = $("#commencement_date_to").val();
+			var cancelled_start_date = $("#cancellation_date_from").val();
+			var cancelled_last_date = $("#cancellation_date_to").val();
+
+			var date_quote_sent_from = $("#date_quote_sent_from").val();
+			var date_quote_sent_to = $("#date_quote_sent_to").val();
+
+			var invoice_date_from = $("#invoice_date_from").val();
+			var invoice_date_to = $("#invoice_date_to").val();
+			var invoice_type = $("#invoice_type").val();
+			var source = $("#lead_source").val();
+			var sales_campaign = $("#sales_campaign").val();
+			var parent_lpo = $("#parent_lpo").val();
+
+			var sales_rep = $("#sales_rep").val();
+			var lead_entered_by = $("#lead_entered_by").val();
+			calcprodusage = $("#calc_prod_usage").val();
+			sales_activity_notes = $("#sales_activity_notes").val();
+			customer_type = $("#customer_type").val();
+
+			leadStatus = $("#cust_status").val();
+
+			zee = $("#zee_dropdown").val();
+
+			if (
+				!isNullorEmpty(invoice_date_from) &&
+				!isNullorEmpty(invoice_date_to)
+			) {
+				if (
+					isNullorEmpty(date_signed_up_from) ||
+					isNullorEmpty(date_signed_up_to)
+				) {
+					alert("Please enter the date signed up filter");
+					return false;
+				}
+			} else if (
+				(isNullorEmpty(date_to) || isNullorEmpty(date_from)) &&
+				(isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to)) &&
+				(isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))
+			) {
+				alert("Please enter the date filter");
+				return false;
+			}
+
+			if (!(isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to))) {
+			}
+
+			if (
+				!isNullorEmpty(modified_date_from) &&
+				!isNullorEmpty(modified_date_to)
+			) {
+				var url =
+					baseURL +
+					"/app/site/hosting/scriptlet.nl?script=1915&deploy=1&start_date=" +
+					date_from +
+					"&last_date=" +
+					date_to +
+					"&usage_date_from=" +
+					usage_date_from +
+					"&usage_date_to=" +
+					usage_date_to +
+					"&date_signed_up_from=" +
+					date_signed_up_from +
+					"&date_signed_up_to=" +
+					date_signed_up_to +
+					"&commence_date_from=" +
+					commencement_start_date +
+					"&commence_date_to=" +
+					commencement_last_date +
+					"&cancel_date_from=" +
+					cancelled_start_date +
+					"&cancel_date_to=" +
+					cancelled_last_date +
+					"&source=" +
+					source +
+					"&date_quote_sent_from=" +
+					date_quote_sent_from +
+					"&date_quote_sent_to=" +
+					date_quote_sent_to +
+					"&sales_rep=" +
+					sales_rep +
+					"&zee=" +
+					zee +
+					"&calcprodusage=" +
+					calcprodusage +
+					"&invoice_date_from=" +
+					invoice_date_from +
+					"&invoice_date_to=" +
+					invoice_date_to +
+					"&campaign=" +
+					sales_campaign +
+					"&lpo=" +
+					parent_lpo +
+					"&lead_entered_by=" +
+					lead_entered_by +
+					"&modified_date_from=" +
+					modified_date_from +
+					"&modified_date_to=" +
+					modified_date_to +
+					"&status=" +
+					leadStatus +
+					"&salesactivitynotes=1&customertype=" +
+					customer_type;
+			} else {
+				var url =
+					baseURL +
+					"/app/site/hosting/scriptlet.nl?script=1989&deploy=1&page_no=" +
+					page_number + "&start_date=" +
 					date_from +
 					"&last_date=" +
 					date_to +
@@ -565,7 +748,7 @@ define([
 		});
 
 		$("#clearFilter").click(function () {
-			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1678&deploy=1";
+			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1989&deploy=1";
 
 			window.location.href = url;
 		});
@@ -1044,7 +1227,7 @@ define([
 
 				console.log(
 					"defaultSearchFilters filters: " +
-						JSON.stringify(defaultSearchFilters)
+					JSON.stringify(defaultSearchFilters)
 				);
 
 				leadSalesRepTimelineSearch.filterExpression = defaultSearchFilters;
@@ -1169,10 +1352,10 @@ define([
 						salesRepTimeLineCustomerArray.push([
 							"",
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldCustomerInternalId +
-								'" target="_blank" style="">' +
-								oldCustomerId +
-								"</a>",
+							oldCustomerInternalId +
+							'" target="_blank" style="">' +
+							oldCustomerId +
+							"</a>",
 							oldCustomerName,
 							oldCustomerZee,
 							oldCustomerCurrentStatus,
@@ -1207,10 +1390,10 @@ define([
 				salesRepTimeLineCustomerArray.push([
 					"",
 					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldCustomerInternalId +
-						'" target="_blank" style="">' +
-						oldCustomerId +
-						"</a>",
+					oldCustomerInternalId +
+					'" target="_blank" style="">' +
+					oldCustomerId +
+					"</a>",
 					oldCustomerName,
 					oldCustomerZee,
 					oldCustomerCurrentStatus,
@@ -1324,7 +1507,7 @@ define([
 						$("td", row).css("background-color", "#ADCF9F");
 					}
 				},
-				footerCallback: function (row, data, start, end, display) {},
+				footerCallback: function (row, data, start, end, display) { },
 			});
 
 			dataTableSalesRepTimelinePreview.rows().every(function () {
@@ -1507,4645 +1690,4645 @@ define([
 			return false;
 		}
 
-		var showCallForceTasks = false;
-		var showFranchiseeLeadsPieChart = false;
+		// var showCallForceTasks = false;
+		// var showFranchiseeLeadsPieChart = false;
 
-		if (isNullorEmpty(sales_campaign)) {
-			// showCallForceTasks = true;
-			// showFranchiseeLeadsPieChart = true;
-		} else {
-			if (sales_campaign.indexOf(",") != -1) {
-				var campaignArray = sales_campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(sales_campaign);
-			}
+		// if (isNullorEmpty(sales_campaign)) {
+		// 	// showCallForceTasks = true;
+		// 	// showFranchiseeLeadsPieChart = true;
+		// } else {
+		// 	if (sales_campaign.indexOf(",") != -1) {
+		// 		var campaignArray = sales_campaign.split(",");
+		// 	} else {
+		// 		var campaignArray = [];
+		// 		campaignArray.push(sales_campaign);
+		// 	}
 
-			console.log("campaignArray.length: " + campaignArray.length);
+		// 	console.log("campaignArray.length: " + campaignArray.length);
 
-			for (var y = 0; y < campaignArray.length; y++) {
-				if (parseInt(campaignArray[y]) == 87) {
-					showCallForceTasks = true;
-				}
-				if (parseInt(campaignArray[y]) == 70) {
-					showFranchiseeLeadsPieChart = true;
-				}
-			}
-		}
+		// 	for (var y = 0; y < campaignArray.length; y++) {
+		// 		if (parseInt(campaignArray[y]) == 87) {
+		// 			showCallForceTasks = true;
+		// 		}
+		// 		if (parseInt(campaignArray[y]) == 70) {
+		// 			showFranchiseeLeadsPieChart = true;
+		// 		}
+		// 	}
+		// }
 
-		if (showFranchiseeLeadsPieChart == true) {
-			console.log("Before Search Name: Zee Lead by Status - Weekly Reporting");
-			if (role == 1000) {
-				//Search Name: Zee Lead by Status - Monthly Reporting
-				var qualifiedLeadCountSearch = search.load({
-					type: "customer",
-					id: "customsearch_zee_lead_by_status_monthly",
-				});
-			} else {
-				//Search Name: Zee Lead by Status - Weekly Reporting
-				var qualifiedLeadCountSearch = search.load({
-					type: "customer",
-					id: "customsearch_leads_reporting_weekly_3__2",
-				});
-			}
+		// if (showFranchiseeLeadsPieChart == true) {
+		// 	console.log("Before Search Name: Zee Lead by Status - Weekly Reporting");
+		// 	if (role == 1000) {
+		// 		//Search Name: Zee Lead by Status - Monthly Reporting
+		// 		var qualifiedLeadCountSearch = search.load({
+		// 			type: "customer",
+		// 			id: "customsearch_zee_lead_by_status_monthly",
+		// 		});
+		// 	} else {
+		// 		//Search Name: Zee Lead by Status - Weekly Reporting
+		// 		var qualifiedLeadCountSearch = search.load({
+		// 			type: "customer",
+		// 			id: "customsearch_leads_reporting_weekly_3__2",
+		// 		});
+		// 	}
 
-			qualifiedLeadCountSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
+		// 	qualifiedLeadCountSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
 
-			if (!isNullorEmpty(zee_id)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(leadStatus)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
 
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(sales_rep)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(lead_entered_by)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
 
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
 
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
 
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
 
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
 
-			if (
-				!isNullorEmpty(cancelled_start_date) &&
-				!isNullorEmpty(cancelled_last_date)
-			) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: cancelled_start_date,
-					})
-				);
+		// 	if (
+		// 		!isNullorEmpty(cancelled_start_date) &&
+		// 		!isNullorEmpty(cancelled_last_date)
+		// 	) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: cancelled_start_date,
+		// 			})
+		// 		);
 
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: cancelled_last_date,
-					})
-				);
-			}
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: cancelled_last_date,
+		// 			})
+		// 		);
+		// 	}
 
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
 
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(lead_source)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(sales_campaign)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
 
-			if (customer_type == "2") {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
+		// 	if (customer_type == "2") {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
 
-			if (!isNullorEmpty(parent_lpo)) {
-				qualifiedLeadCountSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		qualifiedLeadCountSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
 
-			if (
-				!isNullorEmpty(modified_date_from) &&
-				!isNullorEmpty(modified_date_to)
-			) {
-				var defaultSearchFilters = qualifiedLeadCountSearch.filterExpression;
+		// 	if (
+		// 		!isNullorEmpty(modified_date_from) &&
+		// 		!isNullorEmpty(modified_date_to)
+		// 	) {
+		// 		var defaultSearchFilters = qualifiedLeadCountSearch.filterExpression;
 
-				console.log(
-					"default search filters: " + JSON.stringify(defaultSearchFilters)
-				);
+		// 		console.log(
+		// 			"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 		);
 
-				var modifiedDateFilters = [
-					[
-						["activity.date", "within", [modified_date_from, modified_date_to]],
-						"AND",
-						[
-							"activity.custevent_organiser",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-					"AND",
-					[
-						[
-							"usernotes.notedate",
-							"within",
-							[modified_date_from, modified_date_to],
-						],
-						"AND",
-						[
-							"usernotes.author",
-							"anyof",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-				];
-				console.log(
-					"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-				);
+		// 		var modifiedDateFilters = [
+		// 			[
+		// 				["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 				"AND",
+		// 				[
+		// 					"activity.custevent_organiser",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				[
+		// 					"usernotes.notedate",
+		// 					"within",
+		// 					[modified_date_from, modified_date_to],
+		// 				],
+		// 				"AND",
+		// 				[
+		// 					"usernotes.author",
+		// 					"anyof",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 		];
+		// 		console.log(
+		// 			"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 		);
 
-				defaultSearchFilters.push("AND");
-				defaultSearchFilters.push(modifiedDateFilters);
+		// 		defaultSearchFilters.push("AND");
+		// 		defaultSearchFilters.push(modifiedDateFilters);
 
-				console.log(
-					"defaultSearchFilters filters: " +
-						JSON.stringify(defaultSearchFilters)
-				);
+		// 		console.log(
+		// 			"defaultSearchFilters filters: " +
+		// 				JSON.stringify(defaultSearchFilters)
+		// 		);
 
-				qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
-			}
+		// 		qualifiedLeadCountSearch.filterExpression = defaultSearchFilters;
+		// 	}
 
-			var totalLeadCount = 0;
-			var totalCustomerCount = 0;
-			var totalSuspectCount = 0;
-			var totalProspectCount = 0;
-			var totalCustomerLostCount = 0;
-			var totalQualifiedLeadCount = 0;
-			var totalLeadLost = 0;
+		// 	var totalLeadCount = 0;
+		// 	var totalCustomerCount = 0;
+		// 	var totalSuspectCount = 0;
+		// 	var totalProspectCount = 0;
+		// 	var totalCustomerLostCount = 0;
+		// 	var totalQualifiedLeadCount = 0;
+		// 	var totalLeadLost = 0;
 
-			qualifiedLeadCountSearch
-				.run()
-				.each(function (qualifiedLeadCountSearchResultSet) {
-					var leadCount = parseInt(
-						qualifiedLeadCountSearchResultSet.getValue({
-							name: "internalid",
-							summary: "COUNT",
-						})
-					);
-					var dateLeadEntered = qualifiedLeadCountSearchResultSet.getValue({
-						name: "custentity_date_lead_entered",
-						summary: "GROUP",
-					});
-					var leadStatus = qualifiedLeadCountSearchResultSet.getText({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
-					var leadStatusId = qualifiedLeadCountSearchResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
+		// 	qualifiedLeadCountSearch
+		// 		.run()
+		// 		.each(function (qualifiedLeadCountSearchResultSet) {
+		// 			var leadCount = parseInt(
+		// 				qualifiedLeadCountSearchResultSet.getValue({
+		// 					name: "internalid",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+		// 			var dateLeadEntered = qualifiedLeadCountSearchResultSet.getValue({
+		// 				name: "custentity_date_lead_entered",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var leadStatus = qualifiedLeadCountSearchResultSet.getText({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var leadStatusId = qualifiedLeadCountSearchResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
 
-					var leadStatusSplit = leadStatus.split("-");
+		// 			var leadStatusSplit = leadStatus.split("-");
 
-					totalLeadCount = totalLeadCount + leadCount;
+		// 			totalLeadCount = totalLeadCount + leadCount;
 
-					if (leadStatusId == 22) {
-						totalCustomerLostCount = totalCustomerLostCount + leadCount;
-					}
+		// 			if (leadStatusId == 22) {
+		// 				totalCustomerLostCount = totalCustomerLostCount + leadCount;
+		// 			}
 
-					if (leadStatusId == 13 || leadStatusId == 66) {
-						totalCustomerCount = totalCustomerCount + leadCount;
-					}
+		// 			if (leadStatusId == 13 || leadStatusId == 66) {
+		// 				totalCustomerCount = totalCustomerCount + leadCount;
+		// 			}
 
-					if (
-						leadStatusSplit[0].toUpperCase() == "SUSPECT" &&
-						leadStatusId != 59
-					) {
-						totalSuspectCount = totalSuspectCount + leadCount;
-					}
+		// 			if (
+		// 				leadStatusSplit[0].toUpperCase() == "SUSPECT" &&
+		// 				leadStatusId != 59
+		// 			) {
+		// 				totalSuspectCount = totalSuspectCount + leadCount;
+		// 			}
 
-					if (leadStatusSplit[0].toUpperCase() == "PROSPECT") {
-						totalProspectCount = totalProspectCount + leadCount;
-					}
+		// 			if (leadStatusSplit[0].toUpperCase() == "PROSPECT") {
+		// 				totalProspectCount = totalProspectCount + leadCount;
+		// 			}
 
-					if (leadStatusId == 59) {
-						totalLeadLost = totalLeadLost + leadCount;
-					}
+		// 			if (leadStatusId == 59) {
+		// 				totalLeadLost = totalLeadLost + leadCount;
+		// 			}
 
-					return true;
-				});
+		// 			return true;
+		// 		});
 
-			// Create the chart
-			Highcharts.chart("container-progress", {
-				chart: {
-					type: "pie",
-					backgroundColor: "#CFE0CE",
-				},
-				title: {
-					text: "",
-				},
-				accessibility: {
-					announceNewData: {
-						enabled: true,
-					},
-					point: {
-						valueSuffix: "",
-					},
-				},
+		// 	// Create the chart
+		// 	Highcharts.chart("container-progress", {
+		// 		chart: {
+		// 			type: "pie",
+		// 			backgroundColor: "#CFE0CE",
+		// 		},
+		// 		title: {
+		// 			text: "",
+		// 		},
+		// 		accessibility: {
+		// 			announceNewData: {
+		// 				enabled: true,
+		// 			},
+		// 			point: {
+		// 				valueSuffix: "",
+		// 			},
+		// 		},
 
-				plotOptions: {
-					series: {
-						allowPointSelect: true,
-						cursor: "pointer",
-						dataLabels: [
-							{
-								enabled: true,
-								distance: 20,
-								style: {
-									fontSize: "1.2em",
-									textOutline: "none",
-									opacity: 0.7,
-								},
-							},
-							{
-								enabled: true,
-								distance: -40,
-								format: "{point.y:.0f}",
-								style: {
-									fontSize: "1.2em",
-									textOutline: "none",
-									opacity: 0.7,
-								},
-							},
-						],
-					},
-				},
+		// 		plotOptions: {
+		// 			series: {
+		// 				allowPointSelect: true,
+		// 				cursor: "pointer",
+		// 				dataLabels: [
+		// 					{
+		// 						enabled: true,
+		// 						distance: 20,
+		// 						style: {
+		// 							fontSize: "1.2em",
+		// 							textOutline: "none",
+		// 							opacity: 0.7,
+		// 						},
+		// 					},
+		// 					{
+		// 						enabled: true,
+		// 						distance: -40,
+		// 						format: "{point.y:.0f}",
+		// 						style: {
+		// 							fontSize: "1.2em",
+		// 							textOutline: "none",
+		// 							opacity: 0.7,
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
 
-				tooltip: {
-					valueSuffix: "",
-					style: {
-						fontSize: "1.2em",
-					},
-				},
+		// 		tooltip: {
+		// 			valueSuffix: "",
+		// 			style: {
+		// 				fontSize: "1.2em",
+		// 			},
+		// 		},
 
-				series: [
-					{
-						name: "Leads",
-						colorByPoint: true,
-						data: [
-							{
-								name: "Customers",
-								y: totalCustomerCount,
-								sliced: true,
-								selected: true,
-								color: "#5cb3b0",
-							},
-							{
-								name: "Prospects",
-								y: totalProspectCount,
-								sliced: true,
-								color: "#adcf9f",
-							},
-							{
-								name: "Suspects",
-								y: totalSuspectCount,
-								sliced: true,
-								color: "#FEBE8C",
-							},
-							{
-								name: "Suspects - Lost",
-								y: totalLeadLost,
-								sliced: true,
-								color: "#e97677",
-							},
-							{
-								name: "Customers - Lost",
-								y: totalCustomerLostCount,
-								sliced: true,
-								color: "#e76252",
-							},
-						],
-					},
-				],
-			});
-		}
+		// 		series: [
+		// 			{
+		// 				name: "Leads",
+		// 				colorByPoint: true,
+		// 				data: [
+		// 					{
+		// 						name: "Customers",
+		// 						y: totalCustomerCount,
+		// 						sliced: true,
+		// 						selected: true,
+		// 						color: "#5cb3b0",
+		// 					},
+		// 					{
+		// 						name: "Prospects",
+		// 						y: totalProspectCount,
+		// 						sliced: true,
+		// 						color: "#adcf9f",
+		// 					},
+		// 					{
+		// 						name: "Suspects",
+		// 						y: totalSuspectCount,
+		// 						sliced: true,
+		// 						color: "#FEBE8C",
+		// 					},
+		// 					{
+		// 						name: "Suspects - Lost",
+		// 						y: totalLeadLost,
+		// 						sliced: true,
+		// 						color: "#e97677",
+		// 					},
+		// 					{
+		// 						name: "Customers - Lost",
+		// 						y: totalCustomerLostCount,
+		// 						sliced: true,
+		// 						color: "#e76252",
+		// 					},
+		// 				],
+		// 			},
+		// 		],
+		// 	});
+		// }
 
-		console.log("showCallForceTasks: " + showCallForceTasks);
+		// console.log("showCallForceTasks: " + showCallForceTasks);
 
 		//!Creating a reporting tab based on the tasks created for the Call Force campaign.
-		if (showCallForceTasks == true) {
-			//Get the count of the list of leads sent to Call Force
-			//Call Force Campaign - Suspect Unqualified List
-			var callForceLeadsListSearch = search.load({
-				type: "customer",
-				id: "customsearch_lpo_unqualifed_list_3",
-			});
-
-			callForceLeadsListSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-			if (!isNullorEmpty(sales_campaign)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
-			if (!isNullorEmpty(parent_lpo)) {
-				callForceLeadsListSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var callForceLeadsListCount = callForceLeadsListSearch.runPaged().count;
-
-			//Get the count of leads that is Qualified but with No Appointment
-			//NetSuite Search:Call Force Campaign - Suspect Qualified List - With No Tasks
-			var qualifiedLeadsListWithNoTasksSearch = search.load({
-				type: "customer",
-				id: "customsearch_lpo_unqualifed_list_2_3",
-			});
-
-			qualifiedLeadsListWithNoTasksSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-			if (!isNullorEmpty(sales_campaign)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
-			if (!isNullorEmpty(parent_lpo)) {
-				qualifiedLeadsListWithNoTasksSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var totalQualifiedLeadWithNoTasks = 0;
-
-			qualifiedLeadsListWithNoTasksSearch
-				.run()
-				.each(function (qualifiedLeadsListSearchResult) {
-					var custInternalID = qualifiedLeadsListSearchResult.getValue({
-						name: "internalid",
-						summary: "GROUP",
-					});
-					//NetSuite Search: Call Force Tasks - All
-					var callForceAllTasksSearch = search.load({
-						type: "task",
-						id: "customsearch9085",
-					});
-					callForceAllTasksSearch.filters.push(
-						search.createFilter({
-							name: "internalid",
-							join: "companyCustomer",
-							operator: search.Operator.IS,
-							values: custInternalID,
-						})
-					);
-
-					var callForceAllTasksSearchCount =
-						callForceAllTasksSearch.runPaged().count;
-
-					if (callForceAllTasksSearchCount == 0) {
-						totalQualifiedLeadWithNoTasks++;
-					}
-					return true;
-				});
-
-			//Sales Reporting - Call Force Campaign - With Tasks
-			var callForceTasksSearch = search.load({
-				type: "customer",
-				id: "customsearch_lpo_unqualifed_list_2_2_2",
-			});
-
-			callForceTasksSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-			if (!isNullorEmpty(sales_campaign)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
-			if (!isNullorEmpty(parent_lpo)) {
-				callForceTasksSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var countCallForceTasks = 0;
-			var oldCallForceDate = null;
-
-			var scheduledCallForceTasks = 0;
-			var completedCallForceTasks = 0;
-			var totalCallForceTasks = 0;
-
-			var totalCompletedTasks = 0;
-			var totalScheduledTasks = 0;
-
-			callForceTasksSearch.run().each(function (callForceTasksSearchResultSet) {
-				var tasksCount = parseInt(
-					callForceTasksSearchResultSet.getValue({
-						name: "internalid",
-						join: "task",
-						summary: "COUNT",
-					})
-				);
-
-				var taskDate = callForceTasksSearchResultSet.getValue({
-					name: "duedate",
-					join: "task",
-					summary: "GROUP",
-				});
-
-				var taskStatus = callForceTasksSearchResultSet.getText({
-					name: "status",
-					join: "task",
-					summary: "GROUP",
-				});
-
-				if (countCallForceTasks == 0 || taskDate == oldCallForceDate) {
-					if (taskStatus == "Completed") {
-						completedCallForceTasks = completedCallForceTasks + tasksCount;
-						totalCompletedTasks = totalCompletedTasks + tasksCount;
-					} else if (taskStatus == "Not Started") {
-						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
-						totalScheduledTasks = totalScheduledTasks + tasksCount;
-					}
-					totalCallForceTasks = totalCallForceTasks + tasksCount;
-				} else if (taskDate != oldCallForceDate) {
-					var taskDueDate = convertToDateInputFormat(oldCallForceDate);
-
-					callForceTasksDataSet.push([
-						taskDueDate,
-						scheduledCallForceTasks,
-						completedCallForceTasks,
-						totalCallForceTasks,
-					]);
-
-					scheduledCallForceTasks = 0;
-					completedCallForceTasks = 0;
-					totalCallForceTasks = 0;
-
-					if (taskStatus == "Completed") {
-						completedCallForceTasks = completedCallForceTasks + tasksCount;
-						totalCompletedTasks = totalCompletedTasks + tasksCount;
-					} else if (taskStatus == "Not Started") {
-						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
-						totalScheduledTasks = totalScheduledTasks + tasksCount;
-					}
-					totalCallForceTasks = totalCallForceTasks + tasksCount;
-				}
-
-				oldCallForceDate = taskDate;
-				countCallForceTasks++;
-				return true;
-			});
-
-			if (countCallForceTasks > 0) {
-				var taskDueDate = convertToDateInputFormat(oldCallForceDate);
-
-				callForceTasksDataSet.push([
-					taskDueDate,
-					scheduledCallForceTasks,
-					completedCallForceTasks,
-					totalCallForceTasks,
-				]);
-			}
-
-			console.log("callForceTasksDataSet" + callForceTasksDataSet);
-
-			var dataTable3 = $("#mpexusage-callforcetasks").DataTable({
-				data: callForceTasksDataSet,
-				pageLength: 250,
-				order: [],
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{ title: "Task Date (Week Starting)" },
-					{ title: "Scheduled Tasks" },
-					{ title: "Completed Tasks" },
-					{ title: "Total Tasks" },
-				],
-				autoWidth: true,
-				columnDefs: [
-					{
-						targets: [0, 3],
-						className: "bolded",
-					},
-				],
-				rowCallback: function (row, data, index) {
-					var row_color = "";
-					if (parseInt(data[1]) > 0) {
-						$(row).find("td:eq(1)").css("background-color", "#f9c67a");
-					}
-					if (parseInt(data[2]) > 0) {
-						$(row).find("td:eq(2)").css("background-color", "#439A97");
-					}
-				},
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					// Total Customer Free Trial Pending
-					total_scheduled = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_completed = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_total = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					$(api.column(1).footer()).html(total_scheduled);
-					$(api.column(2).footer()).html(total_completed);
-					$(api.column(3).footer()).html(total_total);
-				},
-			});
-
-			// Create the pie chart for Call Force Tasks & Leads
-			Highcharts.chart("container-callforce_progress", {
-				chart: {
-					type: "pie",
-					backgroundColor: "#CFE0CE",
-				},
-				title: {
-					text: "",
-				},
-				accessibility: {
-					announceNewData: {
-						enabled: true,
-					},
-					point: {
-						valueSuffix: "",
-					},
-				},
-
-				plotOptions: {
-					pie: {
-						allowPointSelect: true,
-						borderWidth: 2,
-						cursor: "pointer",
-						dataLabels: {
-							enabled: true,
-							format: "<b>{point.name}</b><br>{point.y:.0f}",
-							distance: 20,
-							style: {
-								textOutline: "none",
-								opacity: 0.7,
-							},
-						},
-					},
-				},
-				tooltip: {
-					headerFormat: "",
-					pointFormat:
-						'<span style="color:{point.color}">\u25cf</span> ' +
-						"{point.name}: <b>{point.y:.0f}</b>",
-				},
-				series: [
-					{
-						name: "Leads",
-						colorByPoint: true,
-						animation: {
-							duration: 2000,
-						},
-						data: [
-							{
-								name: "Qualified Leads - Completed Appointment",
-								y: totalCompletedTasks,
-								sliced: true,
-								selected: true,
-								color: "#5cb3b0",
-							},
-							{
-								name: "Unqualified Leads - Sent to Call Force",
-								y: callForceLeadsListCount,
-								sliced: false,
-								color: "#7FCAFFFF",
-							},
-							{
-								name: "Qualified Leads - Scheduled Appointment",
-								y: totalScheduledTasks,
-								sliced: false,
-								color: "#FEBE8C",
-							},
-							{
-								name: "Qualified Leads - No Appointment",
-								y: totalQualifiedLeadWithNoTasks,
-								sliced: false,
-								color: "#F5F0F0FF",
-							},
-						],
-					},
-				],
-			});
-
-			//Call Force 202501 Campaign - Count by Date Synced and Outcome
-			var callForceLeadsCountBydateSyncedOutcomeSearch = search.load({
-				type: "customer",
-				id: "customsearch_callforce_count_sync_outcom",
-			});
-
-			callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				// callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-				// 	search.createFilter({
-				// 		name: "companyname",
-				// 		join: null,
-				// 		operator: search.Operator.DOESNOTSTARTWITH,
-				// 		values: "TEST",
-				// 	})
-				// );
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(parent_lpo)) {
-				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var oldCallforceSyncDate = null;
-			var countCallforceSyncDateCount = 0;
-
-			var total_no_outcome = 0;
-			var total_not_interested = 0;
-			var total_no_answer = 0;
-			var total_voicemail = 0;
-			var total_wrong_number = 0;
-			var total_disconnected = 0;
-			var total_remove_from_list = 0;
-			var total_busy = 0;
-			var total_callback = 0;
-			var total_email_interested = 0;
-			var total_email_brush_off = 0;
-			var total_interested = 0;
-			var total_leads = 0;
-
-			callForceLeadsCountBydateSyncedOutcomeSearch
-				.run()
-				.each(function (callForceLeadsCountBydateSyncedOutcomeResultSet) {
-					var callforceLeadCount = parseInt(
-						callForceLeadsCountBydateSyncedOutcomeResultSet.getValue({
-							name: "internalid",
-							summary: "COUNT",
-						})
-					);
-
-					var callforceSyncDate =
-						callForceLeadsCountBydateSyncedOutcomeResultSet.getValue({
-							name: "custrecord_cf_date_sent",
-							join: "CUSTRECORD_SALES_CUSTOMER",
-							summary: "GROUP",
-						});
-
-					var callforceSyncDateSplit = callforceSyncDate.split("/");
-					callforceSyncDate =
-						callforceSyncDateSplit[2] +
-						"-" +
-						callforceSyncDateSplit[1] +
-						"-" +
-						callforceSyncDateSplit[0];
-
-					var callforceOutcome = callForceLeadsCountBydateSyncedOutcomeResultSet
-						.getValue({
-							name: "custrecord_cf_call_outcome",
-							join: "CUSTRECORD_SALES_CUSTOMER",
-							summary: "GROUP",
-						})
-						.toLowerCase();
-
-					console.log("callforceSyncDate: " + callforceSyncDate);
-					console.log("callforceOutcome: " + callforceOutcome);
-					console.log("callforceLeadCount: " + callforceLeadCount);
-
-					if (
-						countCallforceSyncDateCount != 0 &&
-						callforceSyncDate != oldCallforceSyncDate
-					) {
-						var totalNoOutcomePercentage = parseInt(
-							(total_no_outcome / total_leads) * 100
-						);
-						var totalNoOutcomeCol =
-							total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
-
-						var totalNotInterestedPercentage = parseInt(
-							(total_not_interested / total_leads) * 100
-						);
-						var totalNotInterestedCol =
-							total_not_interested + " (" + totalNotInterestedPercentage + "%)";
-
-						var totalNoAnswerPercentage = parseInt(
-							(total_no_answer / total_leads) * 100
-						);
-						var totalNoAnswerCol =
-							total_no_answer + " (" + totalNoAnswerPercentage + "%)";
-
-						var totalVoicemailPercentage = parseInt(
-							(total_voicemail / total_leads) * 100
-						);
-						var totalVoicemailCol =
-							total_voicemail + " (" + totalVoicemailPercentage + "%)";
-
-						var totalWrongNumberPercentage = parseInt(
-							(total_wrong_number / total_leads) * 100
-						);
-						var totalWrongNumberCol =
-							total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
-
-						var totalDisconnectedPercentage = parseInt(
-							(total_disconnected / total_leads) * 100
-						);
-						var totalDisconnectedCol =
-							total_disconnected + " (" + totalDisconnectedPercentage + "%)";
-
-						var totalRemoveFromListPercentage = parseInt(
-							(total_remove_from_list / total_leads) * 100
-						);
-						var totalRemoveFromListCol =
-							total_remove_from_list +
-							" (" +
-							totalRemoveFromListPercentage +
-							"%)";
-
-						var totalBusyPercentage = parseInt(
-							(total_busy / total_leads) * 100
-						);
-						var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
-
-						var totalCallBackPercentage = parseInt(
-							(total_callback / total_leads) * 100
-						);
-						var totalCallBackCol =
-							total_callback + " (" + totalCallBackPercentage + "%)";
-
-						var totalEmailInterestedPercentage = parseInt(
-							(total_email_interested / total_leads) * 100
-						);
-						var totalEmailInterestedCol =
-							total_email_interested +
-							" (" +
-							totalEmailInterestedPercentage +
-							"%)";
-
-						var totalEmailBrushOffPercentage = parseInt(
-							(total_email_brush_off / total_leads) * 100
-						);
-						var totalEmailBrushOffCol =
-							total_email_brush_off +
-							" (" +
-							totalEmailBrushOffPercentage +
-							"%)";
-
-						var totalInterestedPercentage = parseInt(
-							(total_interested / total_leads) * 100
-						);
-						var totalInterestedCol =
-							total_interested + " (" + totalInterestedPercentage + "%)";
-
-						callForceDateSyncedOutcomeDataSet.push([
-							oldCallforceSyncDate,
-							totalNoOutcomeCol,
-							totalNotInterestedCol,
-							totalNoAnswerCol,
-							totalVoicemailCol,
-							totalWrongNumberCol,
-							totalDisconnectedCol,
-							totalRemoveFromListCol,
-							totalBusyCol,
-							totalCallBackCol,
-							totalEmailInterestedCol,
-							totalEmailBrushOffCol,
-							totalInterestedCol,
-							total_leads,
-						]);
-
-						total_no_outcome = 0;
-						total_not_interested = 0;
-						total_no_answer = 0;
-						total_voicemail = 0;
-						total_wrong_number = 0;
-						total_disconnected = 0;
-						total_remove_from_list = 0;
-						total_busy = 0;
-						total_callback = 0;
-						total_email_interested = 0;
-						total_email_brush_off = 0;
-						total_interested = 0;
-						total_leads = 0;
-					}
-
-					if (callforceOutcome == "not_interested") {
-						total_not_interested += callforceLeadCount;
-					} else if (callforceOutcome == "no_answer") {
-						total_no_answer += callforceLeadCount;
-					} else if (callforceOutcome == "voicemail") {
-						total_voicemail += callforceLeadCount;
-					} else if (callforceOutcome == "wrong_number") {
-						total_wrong_number += callforceLeadCount;
-					} else if (callforceOutcome == "disconnected") {
-						total_disconnected += callforceLeadCount;
-					} else if (callforceOutcome == "remove_from_list") {
-						total_remove_from_list += callforceLeadCount;
-					} else if (callforceOutcome == "busy") {
-						total_busy += callforceLeadCount;
-					} else if (callforceOutcome == "callback") {
-						total_callback += callforceLeadCount;
-					} else if (callforceOutcome == "email_interested") {
-						total_email_interested += callforceLeadCount;
-					} else if (callforceOutcome == "email_brush_off") {
-						total_email_brush_off += callforceLeadCount;
-					} else if (callforceOutcome == "interested") {
-						total_interested += callforceLeadCount;
-					} else {
-						total_no_outcome += callforceLeadCount;
-					}
-
-					total_leads += callforceLeadCount;
-
-					oldCallforceSyncDate = callforceSyncDate;
-					countCallforceSyncDateCount++;
-					return true;
-				});
-
-			console.log(
-				"countCallforceSyncDateCount: " + countCallforceSyncDateCount
-			);
-			if (countCallforceSyncDateCount > 0) {
-				var totalNoOutcomePercentage = parseInt(
-					(total_no_outcome / total_leads) * 100
-				).toFixed(0);
-				var totalNoOutcomeCol =
-					total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
-
-				var totalNotInterestedPercentage = parseInt(
-					(total_not_interested / total_leads) * 100
-				).toFixed(0);
-				var totalNotInterestedCol =
-					total_not_interested + " (" + totalNotInterestedPercentage + "%)";
-
-				var totalNoAnswerPercentage = parseInt(
-					(total_no_answer / total_leads) * 100
-				).toFixed(0);
-				var totalNoAnswerCol =
-					total_no_answer + " (" + totalNoAnswerPercentage + "%)";
-
-				var totalVoicemailPercentage = parseInt(
-					(total_voicemail / total_leads) * 100
-				).toFixed(0);
-				var totalVoicemailCol =
-					total_voicemail + " (" + totalVoicemailPercentage + "%)";
-
-				var totalWrongNumberPercentage = parseInt(
-					(total_wrong_number / total_leads) * 100
-				).toFixed(0);
-				var totalWrongNumberCol =
-					total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
-
-				var totalDisconnectedPercentage = parseInt(
-					(total_disconnected / total_leads) * 100
-				).toFixed(0);
-				var totalDisconnectedCol =
-					total_disconnected + " (" + totalDisconnectedPercentage + "%)";
-
-				var totalRemoveFromListPercentage = parseInt(
-					(total_remove_from_list / total_leads) * 100
-				).toFixed(0);
-				var totalRemoveFromListCol =
-					total_remove_from_list + " (" + totalRemoveFromListPercentage + "%)";
-
-				var totalBusyPercentage = parseInt(
-					(total_busy / total_leads) * 100
-				).toFixed(0);
-				var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
-
-				var totalCallBackPercentage = parseInt(
-					(total_callback / total_leads) * 100
-				).toFixed(0);
-				var totalCallBackCol =
-					total_callback + " (" + totalCallBackPercentage + "%)";
-
-				var totalEmailInterestedPercentage = parseInt(
-					(total_email_interested / total_leads) * 100
-				).toFixed(0);
-				var totalEmailInterestedCol =
-					total_email_interested + " (" + totalEmailInterestedPercentage + "%)";
-
-				var totalEmailBrushOffPercentage = parseInt(
-					(total_email_brush_off / total_leads) * 100
-				).toFixed(0);
-				var totalEmailBrushOffCol =
-					total_email_brush_off + " (" + totalEmailBrushOffPercentage + "%)";
-
-				var totalInterestedPercentage = parseInt(
-					(total_interested / total_leads) * 100
-				).toFixed(0);
-				var totalInterestedCol =
-					total_interested + " (" + totalInterestedPercentage + "%)";
-
-				callForceDateSyncedOutcomeDataSet.push([
-					oldCallforceSyncDate,
-					totalNoOutcomeCol,
-					totalNotInterestedCol,
-					totalNoAnswerCol,
-					totalVoicemailCol,
-					totalWrongNumberCol,
-					totalDisconnectedCol,
-					totalRemoveFromListCol,
-					totalBusyCol,
-					totalCallBackCol,
-					totalEmailInterestedCol,
-					totalEmailBrushOffCol,
-					totalInterestedCol,
-					total_leads,
-				]);
-			}
-
-			console.log(
-				"callForceDateSyncedOutcomeDataSet" + callForceDateSyncedOutcomeDataSet
-			);
-
-			var dataTableCallForceDateSyncedOutcome = $(
-				"#mpexusage-callForceDateSyncedOutcome"
-			).DataTable({
-				data: callForceDateSyncedOutcomeDataSet,
-				pageLength: 250,
-				order: [],
-				responsive: true,
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{ title: "Period" }, //0
-					{ title: "No Outcome" }, //1
-					{ title: "Not Interested" }, //2
-					{ title: "No Answer" }, //3
-					{ title: "Voicemail" }, //4
-					{ title: "Wrong Number" }, //5
-					{ title: "Disconnected" }, //6
-					{ title: "Remove From List" }, //7
-					{ title: "Busy" }, //8
-					{ title: "Call Back" }, //9
-					{ title: "Email Interested" }, //10
-					{ title: "Email Brush Off" }, //11
-					{ title: "Interested" }, //12
-					{ title: "Total" }, //13
-				],
-				autoWidth: true,
-				columnDefs: [
-					{
-						targets: [0, 12],
-						className: "bolded",
-					},
-				],
-				rowCallback: function (row, data, index) {
-					var row_color = "";
-					// if (parseInt(data[1]) > 0) {
-					// 	$(row).find("td:eq(1)").css("background-color", "#f9c67a");
-					// }
-					// if (parseInt(data[2]) > 0) {
-					// 	$(row).find("td:eq(2)").css("background-color", "#439A97");
-					// }
-				},
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					// Total Customer Free Trial Pending
-					total_no_outcome = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_not_interested = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_no_answer = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_voicemail = api
-						.column(4)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_wrong_number = api
-						.column(5)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_disconnected = api
-						.column(6)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_remove_from_list = api
-						.column(7)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_busy = api
-						.column(8)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_callback = api
-						.column(9)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_email_interested = api
-						.column(10)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_email_brush_off = api
-						.column(11)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_interested = api
-						.column(12)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-					total_leads = api
-						.column(13)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					$(api.column(1).footer()).html(
-						total_no_outcome +
-							" (" +
-							((total_no_outcome / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(2).footer()).html(
-						total_not_interested +
-							" (" +
-							((total_not_interested / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(3).footer()).html(
-						total_no_answer +
-							" (" +
-							((total_no_answer / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(4).footer()).html(
-						total_voicemail +
-							" (" +
-							((total_voicemail / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(5).footer()).html(
-						total_wrong_number +
-							" (" +
-							((total_wrong_number / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(6).footer()).html(
-						total_disconnected +
-							" (" +
-							((total_disconnected / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(7).footer()).html(
-						total_remove_from_list +
-							" (" +
-							((total_remove_from_list / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(8).footer()).html(
-						total_busy +
-							" (" +
-							((total_busy / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(9).footer()).html(
-						total_callback +
-							" (" +
-							((total_callback / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(10).footer()).html(
-						total_email_interested +
-							" (" +
-							((total_email_interested / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(11).footer()).html(
-						total_email_brush_off +
-							" (" +
-							((total_email_brush_off / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(12).footer()).html(
-						total_interested +
-							" (" +
-							((total_interested / total_leads) * 100).toFixed(0) +
-							"%)"
-					);
-
-					// $(api.column(1).footer()).html(total_no_outcome);
-					// $(api.column(2).footer()).html(total_not_interested);
-					// $(api.column(3).footer()).html(total_no_answer);
-					// $(api.column(4).footer()).html(total_voicemail);
-					// $(api.column(5).footer()).html(total_wrong_number);
-					// $(api.column(6).footer()).html(total_disconnected);
-					// $(api.column(7).footer()).html(total_remove_from_list);
-					// $(api.column(8).footer()).html(total_busy);
-					// $(api.column(9).footer()).html(total_callback);
-					// $(api.column(10).footer()).html(total_email_interested);
-					// $(api.column(11).footer()).html(total_email_brush_off);
-					// $(api.column(12).footer()).html(total_interested);
-					$(api.column(13).footer()).html(total_leads);
-				},
-			});
-
-			//Call Force 202501 Campaign - Count by Outcome & Lead Status
-			var callForceLeadsCountByOutcomeStatusSearch = search.load({
-				type: "customer",
-				id: "customsearch_callforce202501_unqualifi_7",
-			});
-
-			callForceLeadsCountByOutcomeStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				// callForceLeadsCountByOutcomeStatusSearch.filters.push(
-				// 	search.createFilter({
-				// 		name: "companyname",
-				// 		join: null,
-				// 		operator: search.Operator.DOESNOTSTARTWITH,
-				// 		values: "TEST",
-				// 	})
-				// );
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(parent_lpo)) {
-				callForceLeadsCountByOutcomeStatusSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var oldCallforceOutcome = null;
-			var countCallforceSyncOutcomeCount = 0;
-
-			var customer_signed = 0;
-			var suspect_hot_lead = 0;
-			var suspect_reassign = 0;
-			var suspect_lost = 0;
-			var suspect_customer_lost = 0;
-			var suspect_off_peak_pipeline = 0;
-			var prospect_opportunity = 0;
-			var prospecy_quote_sent = 0;
-			var prospecy_box_sent = 0;
-			var prospect_no_answer = 0;
-			var prospect_in_contact = 0;
-			var suspect_oot = 0;
-			var suspect_pre_qualification = 0;
-			var suspect_new = 0;
-			var suspect_qualified = 0;
-			var suspect_pre_qualification = 0;
-			var suspect_in_qualification = 0;
-			var suspect_unqualified = 0;
-			var suspect_in_qualification = 0;
-			var total_leads = 0;
-			var prospect_qualified = 0;
-
-			var suspect_validated = 0;
-			var customer_free_trial = 0;
-			var customer_free_trial_pending = 0;
-			var suspect_no_answer = 0;
-			var suspect_in_contact = 0;
-
-			callForceLeadsCountByOutcomeStatusSearch
-				.run()
-				.each(function (callForceLeadsCountByOutcomeStatusResultSet) {
-					var prospectCount = parseInt(
-						callForceLeadsCountByOutcomeStatusResultSet.getValue({
-							name: "internalid",
-							summary: "COUNT",
-						})
-					);
-
-					var custStatus = callForceLeadsCountByOutcomeStatusResultSet.getValue(
-						{
-							name: "entitystatus",
-							summary: "GROUP",
-						}
-					);
-
-					var callforceOutcome =
-						callForceLeadsCountByOutcomeStatusResultSet.getValue({
-							name: "custrecord_cf_call_outcome",
-							join: "CUSTRECORD_SALES_CUSTOMER",
-							summary: "GROUP",
-						});
-
-					console.log("prospectCount: " + prospectCount);
-					console.log("custStatus: " + custStatus);
-					console.log("callforceOutcome: " + callforceOutcome);
-
-					if (
-						countCallforceSyncOutcomeCount != 0 &&
-						callforceOutcome != oldCallforceOutcome
-					) {
-						callForceOutcomeStatusDataSet.push({
-							callOutcome: oldCallforceOutcome,
-							suspect_hot_lead: suspect_hot_lead,
-							prospecy_quote_sent: prospecy_quote_sent,
-							suspect_reassign: suspect_reassign,
-							prospect_no_answer: prospect_no_answer,
-							prospect_in_contact: prospect_in_contact,
-							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-							suspect_lost: suspect_lost,
-							suspect_customer_lost: suspect_customer_lost,
-							prospect_opportunity: prospect_opportunity,
-							customer_signed: customer_signed,
-							total_leads: total_leads,
-							suspect_oot: suspect_oot,
-							suspect_pre_qualification: suspect_pre_qualification,
-							suspect_new: suspect_new,
-							suspect_qualified: suspect_qualified,
-							suspect_unqualified: suspect_unqualified,
-							suspect_in_qualification: suspect_in_qualification,
-							suspect_validated: suspect_validated,
-							customer_free_trial: customer_free_trial,
-							suspect_no_answer: suspect_no_answer,
-							suspect_in_contact: suspect_in_contact,
-							prospect_qualified: prospect_qualified,
-							customer_free_trial_pending: customer_free_trial_pending,
-							prospect_box_sent: prospecy_box_sent,
-						});
-
-						customer_signed = 0;
-						suspect_hot_lead = 0;
-						suspect_reassign = 0;
-						suspect_lost = 0;
-						suspect_customer_lost = 0;
-						suspect_off_peak_pipeline = 0;
-						prospect_opportunity = 0;
-						prospecy_quote_sent = 0;
-						prospecy_box_sent = 0;
-						prospect_no_answer = 0;
-						prospect_in_contact = 0;
-						suspect_oot = 0;
-						suspect_pre_qualification = 0;
-						suspect_new = 0;
-						suspect_qualified = 0;
-						suspect_pre_qualification = 0;
-						suspect_in_qualification = 0;
-						suspect_unqualified = 0;
-						suspect_in_qualification = 0;
-						total_leads = 0;
-						prospect_qualified = 0;
-
-						suspect_validated = 0;
-						customer_free_trial = 0;
-						customer_free_trial_pending = 0;
-						suspect_no_answer = 0;
-						suspect_in_contact = 0;
-					}
-
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//SUSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//SUSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_pre_qualification +
-						suspect_new +
-						suspect_qualified +
-						suspect_in_qualification +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent;
-
-					oldCallforceOutcome = callforceOutcome;
-					countCallforceSyncOutcomeCount++;
-					return true;
-				});
-
-			console.log(
-				"countCallforceSyncOutcomeCount: " + countCallforceSyncOutcomeCount
-			);
-			if (countCallforceSyncOutcomeCount > 0) {
-				callForceOutcomeStatusDataSet.push({
-					callOutcome: oldCallforceOutcome,
-					suspect_hot_lead: suspect_hot_lead,
-					prospecy_quote_sent: prospecy_quote_sent,
-					suspect_reassign: suspect_reassign,
-					prospect_no_answer: prospect_no_answer,
-					prospect_in_contact: prospect_in_contact,
-					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-					suspect_lost: suspect_lost,
-					suspect_customer_lost: suspect_customer_lost,
-					prospect_opportunity: prospect_opportunity,
-					customer_signed: customer_signed,
-					total_leads: total_leads,
-					suspect_oot: suspect_oot,
-					suspect_pre_qualification: suspect_pre_qualification,
-					suspect_new: suspect_new,
-					suspect_qualified: suspect_qualified,
-					suspect_unqualified: suspect_unqualified,
-					suspect_in_qualification: suspect_in_qualification,
-					suspect_validated: suspect_validated,
-					customer_free_trial: customer_free_trial,
-					suspect_no_answer: suspect_no_answer,
-					suspect_in_contact: suspect_in_contact,
-					prospect_qualified: prospect_qualified,
-					customer_free_trial_pending: customer_free_trial_pending,
-					prospect_box_sent: prospecy_box_sent,
-				});
-			}
-
-			console.log(
-				"callForceOutcomeStatusDataSet" + callForceOutcomeStatusDataSet
-			);
-
-			outcomeStatusDataSet = [];
-			if (!isNullorEmpty(callForceOutcomeStatusDataSet)) {
-				callForceOutcomeStatusDataSet.forEach(function (preview_row, index) {
-					var hotLeadPercentage = parseInt(
-						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-					);
-					var hotLeadCol =
-						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-					var quoteSentPercentage = parseInt(
-						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-					);
-					var quoteSentCol =
-						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-					var boxSentPercentage = parseInt(
-						(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-					);
-					var boxSentCol =
-						preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-					var reassignPercentage = parseInt(
-						(preview_row.suspect_reassign / preview_row.total_leads) * 100
-					);
-					var reassignCol =
-						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-					var noAnswerPercentage = parseInt(
-						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-					);
-					var noAnswerCol =
-						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-					var inContactPercentage = parseInt(
-						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-					);
-					var inContactCol =
-						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-					var offPeakPercentage = parseInt(
-						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-							100
-					);
-					var offPeakCol =
-						preview_row.suspect_off_peak_pipeline +
-						" (" +
-						offPeakPercentage +
-						"%)";
-
-					var lostPercentage = parseInt(
-						(preview_row.suspect_lost / preview_row.total_leads) * 100
-					);
-					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-					var ootPercentage = parseInt(
-						(preview_row.suspect_oot / preview_row.total_leads) * 100
-					);
-					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-					var custLostPercentage = parseInt(
-						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-					);
-					var custLostCol =
-						preview_row.suspect_customer_lost +
-						" (" +
-						custLostPercentage +
-						"%)";
-
-					var oppPercentage = parseInt(
-						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-					);
-					var oppCol =
-						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-					var signedPercentage = parseInt(
-						(preview_row.customer_signed / preview_row.total_leads) * 100
-					);
-					var signedCol =
-						preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-					var suspectPreQualificationPercentage = parseInt(
-						(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-							100
-					);
-					var preQualiCol =
-						preview_row.suspect_pre_qualification +
-						" (" +
-						suspectPreQualificationPercentage +
-						"%)";
-
-					var suspectNewPercentage = parseInt(
-						(preview_row.suspect_new / preview_row.total_leads) * 100
-					);
-					var suspectNewCol =
-						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-					var suspectQualifiedPercentage = parseInt(
-						(preview_row.suspect_qualified / preview_row.total_leads) * 100
-					);
-					var suspectQualifiedCol =
-						preview_row.suspect_qualified +
-						" (" +
-						suspectQualifiedPercentage +
-						"%)";
-
-					var suspectUnqualifiedPercentage = parseInt(
-						(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-					);
-					var suspectUnqualifiedCol =
-						preview_row.suspect_unqualified +
-						" (" +
-						suspectUnqualifiedPercentage +
-						"%)";
-
-					var suspectInQualificationPercentage = parseInt(
-						(preview_row.suspect_in_qualification / preview_row.total_leads) *
-							100
-					);
-					var inQualiCol =
-						preview_row.suspect_in_qualification +
-						" (" +
-						suspectInQualificationPercentage +
-						"%)";
-
-					var suspectValidatedPercentage = parseInt(
-						(preview_row.suspect_validated / preview_row.total_leads) * 100
-					);
-					var suspectValidatedCol =
-						preview_row.suspect_validated +
-						" (" +
-						suspectValidatedPercentage +
-						"%)";
-
-					var customerFreeTrialPercentage = parseInt(
-						(preview_row.customer_free_trial / preview_row.total_leads) * 100
-					);
-					var customerFreeTrialCol =
-						preview_row.customer_free_trial +
-						" (" +
-						customerFreeTrialPercentage +
-						"%)";
-
-					var customerFreeTrialPendingPercentage = parseInt(
-						(preview_row.customer_free_trial_pending /
-							preview_row.total_leads) *
-							100
-					);
-					var customerFreeTrialPendingCol =
-						preview_row.customer_free_trial_pending +
-						" (" +
-						customerFreeTrialPendingPercentage +
-						"%)";
-
-					var suspectNoAnswerPercentage = parseInt(
-						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-					);
-					var suspectNoAnswerCol =
-						preview_row.suspect_no_answer +
-						" (" +
-						suspectNoAnswerPercentage +
-						"%)";
-
-					var suspectInContactPercentage = parseInt(
-						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-					);
-					var suspectInContactCol =
-						preview_row.suspect_in_contact +
-						" (" +
-						suspectInContactPercentage +
-						"%)";
-
-					var prospectQualifiedPercentage = parseInt(
-						(preview_row.prospect_qualified / preview_row.total_leads) * 100
-					);
-					var prospectQualifiedCol =
-						preview_row.prospect_qualified +
-						" (" +
-						prospectQualifiedPercentage +
-						"%)";
-
-					outcomeStatusDataSet.push([
-						preview_row.callOutcome,
-						suspectNewCol,
-						hotLeadCol,
-						suspectValidatedCol,
-						suspectUnqualifiedCol,
-						suspectQualifiedCol,
-						preQualiCol,
-						inQualiCol,
-						reassignCol,
-						suspectNoAnswerCol,
-						suspectInContactCol,
-						inContactCol,
-						offPeakCol,
-						lostCol,
-						ootCol,
-						custLostCol,
-						oppCol,
-						prospectQualifiedCol,
-						boxSentCol,
-						quoteSentCol,
-						customerFreeTrialPendingCol,
-						customerFreeTrialCol,
-						signedCol,
-						preview_row.total_leads,
-					]);
-				});
-			}
-
-			var dataTableCallForceDateSyncedOutcome = $(
-				"#mpexusage-callForceOutcomeStatus"
-			).DataTable({
-				data: outcomeStatusDataSet,
-				pageLength: 250,
-				order: [23, "desc"],
-				responsive: true,
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{
-						title: "Outcome", //0
-					},
-					{
-						title: "Suspect - New", //1
-					},
-					{
-						title: "Suspect - Hot Lead", //2
-					},
-					{
-						title: "Suspect - Validated", //5
-					},
-					{
-						title: "Suspect - Unqualified", //4
-					},
-					{
-						title: "Suspect - Qualified", //3
-					},
-					{
-						title: "Suspect - Pre Qualification", //7
-					},
-					{
-						title: "Suspect - In Qualification", //8
-					},
-					{
-						title: "Suspect - Reassign", //6
-					},
-					{
-						title: "Suspect - No Answer", //9
-					},
-					{
-						title: "Suspect - In Contact", //10
-					},
-					{
-						title: "Prospect - In Contact", //11
-					},
-					{
-						title: "Suspect - Parking Lot", //12
-					},
-					{
-						title: "Suspect - Lost", //13
-					},
-					{
-						title: "Suspect - Out of Territory", //14
-					},
-					{
-						title: "Suspect - Customer - Lost", //15
-					},
-					{
-						title: "Prospect - Opportunity", //16
-					},
-					{
-						title: "Prospect - Qualified", //17
-					},
-					{
-						title: "Prospect - Box Sent", //18
-					},
-					{
-						title: "Prospect - Quote Sent", //19
-					},
-					{
-						title: "Customer - Free Trial Pending", //20
-					},
-					{
-						title: "Customer - Free Trial", //21
-					},
-					{
-						title: "Customer - Signed", //22
-					},
-					{
-						title: "Total Lead Count", //23
-					},
-				],
-				columnDefs: [
-					{
-						targets: [0, 5, 6, 7, 17, 19, 22],
-						className: "bolded",
-					},
-				],
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					const formatter = new Intl.NumberFormat("en-AU", {
-						style: "currency",
-						currency: "AUD",
-						minimumFractionDigits: 2,
-					});
-					// Total Suspect New Lead Count
-					total_suspect_new = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Hot Lead Count
-					total_suspect_hot_lead = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Qualified Count
-					total_suspect_qualified = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Unqualified Count
-					total_suspect_unqualified = api
-						.column(4)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Validated
-					total_suspect_validated = api
-						.column(5)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Reassign
-					total_suspect_reassign = api
-						.column(6)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Follow Up
-					total_suspect_followup = api
-						.column(7)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect LPO Follow Up
-					total_suspect_lpo_followup = api
-						.column(8)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect No Answer
-					total_suspect_no_answer = api
-						.column(9)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect In Contact
-					total_suspect_in_contact = api
-						.column(10)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect In Contact
-					total_prospect_in_contact = api
-						.column(11)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Off Peak Pipline
-					total_suspect_off_peak_pipeline = api
-						.column(12)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Lost
-					total_suspect_lost = api
-						.column(13)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Out of Territory
-					total_suspect_oot = api
-						.column(14)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Customer Lost
-					total_suspect_customer_lost = api
-						.column(15)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Opportunity
-					total_prospect_opportunity = api
-						.column(16)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_qualified = api
-						.column(17)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_box_sent = api
-						.column(18)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Quoite Sent
-					total_prospect_quote_sent = api
-						.column(19)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial Pending
-					total_customer_free_trial_pending = api
-						.column(20)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_customer_free_trial = api
-						.column(21)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_customer_signed = api
-						.column(22)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Lead Count
-					total_lead = api
-						.column(23)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Update footer
-					$(api.column(1).footer()).html(
-						total_suspect_new +
-							" (" +
-							((total_suspect_new / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(2).footer()).html(
-						total_suspect_hot_lead +
-							" (" +
-							((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(3).footer()).html(
-						total_suspect_qualified +
-							" (" +
-							((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(4).footer()).html(
-						total_suspect_unqualified +
-							" (" +
-							((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(5).footer()).html(
-						total_suspect_validated +
-							" (" +
-							((total_suspect_validated / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(6).footer()).html(
-						total_suspect_reassign +
-							" (" +
-							((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(7).footer()).html(
-						total_suspect_followup +
-							" (" +
-							((total_suspect_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(8).footer()).html(
-						total_suspect_lpo_followup +
-							" (" +
-							((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(9).footer()).html(
-						total_suspect_no_answer +
-							" (" +
-							((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(10).footer()).html(
-						total_suspect_in_contact +
-							" (" +
-							((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(11).footer()).html(
-						total_prospect_in_contact +
-							" (" +
-							((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(12).footer()).html(
-						total_suspect_off_peak_pipeline +
-							" (" +
-							((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-					$(api.column(13).footer()).html(
-						total_suspect_lost +
-							" (" +
-							((total_suspect_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(14).footer()).html(
-						total_suspect_oot +
-							" (" +
-							((total_suspect_oot / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(15).footer()).html(
-						total_suspect_customer_lost +
-							" (" +
-							((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(16).footer()).html(
-						total_prospect_opportunity +
-							" (" +
-							((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(17).footer()).html(
-						total_prospect_qualified +
-							" (" +
-							((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(18).footer()).html(
-						total_prospect_box_sent +
-							" (" +
-							((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(19).footer()).html(
-						total_prospect_quote_sent +
-							" (" +
-							((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(20).footer()).html(
-						total_customer_free_trial_pending +
-							" (" +
-							((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-
-					$(api.column(21).footer()).html(
-						total_customer_free_trial +
-							" (" +
-							((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(22).footer()).html(
-						total_customer_signed +
-							" (" +
-							((total_customer_signed / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(23).footer()).html(total_lead);
-				},
-			});
-
-			//Sales Reporting - Call Force Campaign - Completed Tasks
-			var callForceCompletedTasksCurrentStatusSearch = search.load({
-				type: "customer",
-				id: "customsearch_lpo_unqualifed_list_2_2_2_2",
-			});
-
-			callForceCompletedTasksCurrentStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				// callForceCompletedTasksCurrentStatusSearch.filters.push(
-				// 	search.createFilter({
-				// 		name: "companyname",
-				// 		join: null,
-				// 		operator: search.Operator.DOESNOTSTARTWITH,
-				// 		values: "TEST",
-				// 	})
-				// );
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: lead_source,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(parent_lpo)) {
-				callForceCompletedTasksCurrentStatusSearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			var oldCompletedTaskDate = null;
-			var countCompletedTasks = 0;
-
-			var customer_signed = 0;
-			var suspect_hot_lead = 0;
-			var suspect_reassign = 0;
-			var suspect_lost = 0;
-			var suspect_customer_lost = 0;
-			var suspect_off_peak_pipeline = 0;
-			var prospect_opportunity = 0;
-			var prospecy_quote_sent = 0;
-			var prospecy_box_sent = 0;
-			var prospect_no_answer = 0;
-			var prospect_in_contact = 0;
-			var suspect_oot = 0;
-			var suspect_pre_qualification = 0;
-			var suspect_new = 0;
-			var suspect_qualified = 0;
-			var suspect_pre_qualification = 0;
-			var suspect_in_qualification = 0;
-			var suspect_unqualified = 0;
-			var suspect_in_qualification = 0;
-			var total_leads = 0;
-			var prospect_qualified = 0;
-
-			var suspect_validated = 0;
-			var customer_free_trial = 0;
-			var customer_free_trial_pending = 0;
-			var suspect_no_answer = 0;
-			var suspect_in_contact = 0;
-
-			callForceCompletedTasksCurrentStatusSearch
-				.run()
-				.each(function (callForceLeadsCountByOutcomeStatusResultSet) {
-					var prospectCount = parseInt(
-						callForceLeadsCountByOutcomeStatusResultSet.getValue({
-							name: "internalid",
-							join: "task",
-							summary: "COUNT",
-						})
-					);
-
-					var custStatus = callForceLeadsCountByOutcomeStatusResultSet.getValue(
-						{
-							name: "entitystatus",
-							summary: "GROUP",
-						}
-					);
-
-					var completedTaskDate =
-						callForceLeadsCountByOutcomeStatusResultSet.getValue({
-							name: "completeddate",
-							join: "task",
-							summary: "GROUP",
-						});
-
-					var callforceCompletedDateSplit = completedTaskDate.split("/");
-					completedTaskDate =
-						callforceCompletedDateSplit[2] +
-						"-" +
-						callforceCompletedDateSplit[1] +
-						"-" +
-						callforceCompletedDateSplit[0];
-
-					if (
-						countCompletedTasks != 0 &&
-						completedTaskDate != oldCompletedTaskDate
-					) {
-						callForceCompletedTasksDataSet.push({
-							callOutcome: oldCompletedTaskDate,
-							suspect_hot_lead: suspect_hot_lead,
-							prospecy_quote_sent: prospecy_quote_sent,
-							suspect_reassign: suspect_reassign,
-							prospect_no_answer: prospect_no_answer,
-							prospect_in_contact: prospect_in_contact,
-							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-							suspect_lost: suspect_lost,
-							suspect_customer_lost: suspect_customer_lost,
-							prospect_opportunity: prospect_opportunity,
-							customer_signed: customer_signed,
-							total_leads: total_leads,
-							suspect_oot: suspect_oot,
-							suspect_pre_qualification: suspect_pre_qualification,
-							suspect_new: suspect_new,
-							suspect_qualified: suspect_qualified,
-							suspect_unqualified: suspect_unqualified,
-							suspect_in_qualification: suspect_in_qualification,
-							suspect_validated: suspect_validated,
-							customer_free_trial: customer_free_trial,
-							suspect_no_answer: suspect_no_answer,
-							suspect_in_contact: suspect_in_contact,
-							prospect_qualified: prospect_qualified,
-							customer_free_trial_pending: customer_free_trial_pending,
-							prospect_box_sent: prospecy_box_sent,
-						});
-
-						customer_signed = 0;
-						suspect_hot_lead = 0;
-						suspect_reassign = 0;
-						suspect_lost = 0;
-						suspect_customer_lost = 0;
-						suspect_off_peak_pipeline = 0;
-						prospect_opportunity = 0;
-						prospecy_quote_sent = 0;
-						prospecy_box_sent = 0;
-						prospect_no_answer = 0;
-						prospect_in_contact = 0;
-						suspect_oot = 0;
-						suspect_pre_qualification = 0;
-						suspect_new = 0;
-						suspect_qualified = 0;
-						suspect_pre_qualification = 0;
-						suspect_in_qualification = 0;
-						suspect_unqualified = 0;
-						suspect_in_qualification = 0;
-						total_leads = 0;
-						prospect_qualified = 0;
-
-						suspect_validated = 0;
-						customer_free_trial = 0;
-						customer_free_trial_pending = 0;
-						suspect_no_answer = 0;
-						suspect_in_contact = 0;
-					}
-
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//SUSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//SUSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_pre_qualification +
-						suspect_new +
-						suspect_qualified +
-						suspect_in_qualification +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent;
-
-					oldCompletedTaskDate = completedTaskDate;
-					countCompletedTasks++;
-					return true;
-				});
-
-			console.log("countCompletedTasks: " + countCompletedTasks);
-			if (countCompletedTasks > 0) {
-				callForceCompletedTasksDataSet.push({
-					callOutcome: oldCompletedTaskDate,
-					suspect_hot_lead: suspect_hot_lead,
-					prospecy_quote_sent: prospecy_quote_sent,
-					suspect_reassign: suspect_reassign,
-					prospect_no_answer: prospect_no_answer,
-					prospect_in_contact: prospect_in_contact,
-					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-					suspect_lost: suspect_lost,
-					suspect_customer_lost: suspect_customer_lost,
-					prospect_opportunity: prospect_opportunity,
-					customer_signed: customer_signed,
-					total_leads: total_leads,
-					suspect_oot: suspect_oot,
-					suspect_pre_qualification: suspect_pre_qualification,
-					suspect_new: suspect_new,
-					suspect_qualified: suspect_qualified,
-					suspect_unqualified: suspect_unqualified,
-					suspect_in_qualification: suspect_in_qualification,
-					suspect_validated: suspect_validated,
-					customer_free_trial: customer_free_trial,
-					suspect_no_answer: suspect_no_answer,
-					suspect_in_contact: suspect_in_contact,
-					prospect_qualified: prospect_qualified,
-					customer_free_trial_pending: customer_free_trial_pending,
-					prospect_box_sent: prospecy_box_sent,
-				});
-			}
-
-			console.log(
-				"callForceOutcomeStatusDataSet" + callForceOutcomeStatusDataSet
-			);
-
-			completedTasksStatusDataSet = [];
-			if (!isNullorEmpty(callForceCompletedTasksDataSet)) {
-				callForceCompletedTasksDataSet.forEach(function (preview_row, index) {
-					var hotLeadPercentage = parseInt(
-						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-					);
-					var hotLeadCol =
-						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-					var quoteSentPercentage = parseInt(
-						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-					);
-					var quoteSentCol =
-						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-					var boxSentPercentage = parseInt(
-						(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-					);
-					var boxSentCol =
-						preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-					var reassignPercentage = parseInt(
-						(preview_row.suspect_reassign / preview_row.total_leads) * 100
-					);
-					var reassignCol =
-						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-					var noAnswerPercentage = parseInt(
-						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-					);
-					var noAnswerCol =
-						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-					var inContactPercentage = parseInt(
-						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-					);
-					var inContactCol =
-						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-					var offPeakPercentage = parseInt(
-						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-							100
-					);
-					var offPeakCol =
-						preview_row.suspect_off_peak_pipeline +
-						" (" +
-						offPeakPercentage +
-						"%)";
-
-					var lostPercentage = parseInt(
-						(preview_row.suspect_lost / preview_row.total_leads) * 100
-					);
-					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-					var ootPercentage = parseInt(
-						(preview_row.suspect_oot / preview_row.total_leads) * 100
-					);
-					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-					var custLostPercentage = parseInt(
-						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-					);
-					var custLostCol =
-						preview_row.suspect_customer_lost +
-						" (" +
-						custLostPercentage +
-						"%)";
-
-					var oppPercentage = parseInt(
-						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-					);
-					var oppCol =
-						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-					var signedPercentage = parseInt(
-						(preview_row.customer_signed / preview_row.total_leads) * 100
-					);
-					var signedCol =
-						preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-					var suspectPreQualificationPercentage = parseInt(
-						(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-							100
-					);
-					var preQualiCol =
-						preview_row.suspect_pre_qualification +
-						" (" +
-						suspectPreQualificationPercentage +
-						"%)";
-
-					var suspectNewPercentage = parseInt(
-						(preview_row.suspect_new / preview_row.total_leads) * 100
-					);
-					var suspectNewCol =
-						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-					var suspectQualifiedPercentage = parseInt(
-						(preview_row.suspect_qualified / preview_row.total_leads) * 100
-					);
-					var suspectQualifiedCol =
-						preview_row.suspect_qualified +
-						" (" +
-						suspectQualifiedPercentage +
-						"%)";
-
-					var suspectUnqualifiedPercentage = parseInt(
-						(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-					);
-					var suspectUnqualifiedCol =
-						preview_row.suspect_unqualified +
-						" (" +
-						suspectUnqualifiedPercentage +
-						"%)";
-
-					var suspectInQualificationPercentage = parseInt(
-						(preview_row.suspect_in_qualification / preview_row.total_leads) *
-							100
-					);
-					var inQualiCol =
-						preview_row.suspect_in_qualification +
-						" (" +
-						suspectInQualificationPercentage +
-						"%)";
-
-					var suspectValidatedPercentage = parseInt(
-						(preview_row.suspect_validated / preview_row.total_leads) * 100
-					);
-					var suspectValidatedCol =
-						preview_row.suspect_validated +
-						" (" +
-						suspectValidatedPercentage +
-						"%)";
-
-					var customerFreeTrialPercentage = parseInt(
-						(preview_row.customer_free_trial / preview_row.total_leads) * 100
-					);
-					var customerFreeTrialCol =
-						preview_row.customer_free_trial +
-						" (" +
-						customerFreeTrialPercentage +
-						"%)";
-
-					var customerFreeTrialPendingPercentage = parseInt(
-						(preview_row.customer_free_trial_pending /
-							preview_row.total_leads) *
-							100
-					);
-					var customerFreeTrialPendingCol =
-						preview_row.customer_free_trial_pending +
-						" (" +
-						customerFreeTrialPendingPercentage +
-						"%)";
-
-					var suspectNoAnswerPercentage = parseInt(
-						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-					);
-					var suspectNoAnswerCol =
-						preview_row.suspect_no_answer +
-						" (" +
-						suspectNoAnswerPercentage +
-						"%)";
-
-					var suspectInContactPercentage = parseInt(
-						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-					);
-					var suspectInContactCol =
-						preview_row.suspect_in_contact +
-						" (" +
-						suspectInContactPercentage +
-						"%)";
-
-					var prospectQualifiedPercentage = parseInt(
-						(preview_row.prospect_qualified / preview_row.total_leads) * 100
-					);
-					var prospectQualifiedCol =
-						preview_row.prospect_qualified +
-						" (" +
-						prospectQualifiedPercentage +
-						"%)";
-
-					completedTasksStatusDataSet.push([
-						preview_row.callOutcome,
-						suspectNewCol,
-						hotLeadCol,
-						suspectValidatedCol,
-						suspectUnqualifiedCol,
-						suspectQualifiedCol,
-						preQualiCol,
-						inQualiCol,
-						reassignCol,
-						suspectNoAnswerCol,
-						suspectInContactCol,
-						inContactCol,
-						offPeakCol,
-						lostCol,
-						ootCol,
-						custLostCol,
-						oppCol,
-						prospectQualifiedCol,
-						boxSentCol,
-						quoteSentCol,
-						customerFreeTrialPendingCol,
-						customerFreeTrialCol,
-						signedCol,
-						preview_row.total_leads,
-					]);
-				});
-			}
-
-			var dataTableCallForceDateSyncedOutcome = $(
-				"#mpexusage-callForceCompletedTasksCurrentStatus"
-			).DataTable({
-				data: completedTasksStatusDataSet,
-				pageLength: 250,
-				order: [],
-				responsive: true,
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{
-						title: "Date Appointment Completed", //0
-					},
-					{
-						title: "Suspect - New", //1
-					},
-					{
-						title: "Suspect - Hot Lead", //2
-					},
-					{
-						title: "Suspect - Validated", //5
-					},
-					{
-						title: "Suspect - Unqualified", //4
-					},
-					{
-						title: "Suspect - Qualified", //3
-					},
-					{
-						title: "Suspect - Pre Qualification", //7
-					},
-					{
-						title: "Suspect - In Qualification", //8
-					},
-					{
-						title: "Suspect - Reassign", //6
-					},
-					{
-						title: "Suspect - No Answer", //9
-					},
-					{
-						title: "Suspect - In Contact", //10
-					},
-					{
-						title: "Prospect - In Contact", //11
-					},
-					{
-						title: "Suspect - Parking Lot", //12
-					},
-					{
-						title: "Suspect - Lost", //13
-					},
-					{
-						title: "Suspect - Out of Territory", //14
-					},
-					{
-						title: "Suspect - Customer - Lost", //15
-					},
-					{
-						title: "Prospect - Opportunity", //16
-					},
-					{
-						title: "Prospect - Qualified", //17
-					},
-					{
-						title: "Prospect - Box Sent", //18
-					},
-					{
-						title: "Prospect - Quote Sent", //19
-					},
-					{
-						title: "Customer - Free Trial Pending", //20
-					},
-					{
-						title: "Customer - Free Trial", //21
-					},
-					{
-						title: "Customer - Signed", //22
-					},
-					{
-						title: "Total Lead Count", //23
-					},
-				],
-				columnDefs: [
-					{
-						targets: [0, 5, 6, 7, 19, 22],
-						className: "bolded",
-					},
-				],
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					const formatter = new Intl.NumberFormat("en-AU", {
-						style: "currency",
-						currency: "AUD",
-						minimumFractionDigits: 2,
-					});
-					// Total Suspect New Lead Count
-					total_suspect_new = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Hot Lead Count
-					total_suspect_hot_lead = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Qualified Count
-					total_suspect_qualified = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Unqualified Count
-					total_suspect_unqualified = api
-						.column(4)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Validated
-					total_suspect_validated = api
-						.column(5)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Reassign
-					total_suspect_reassign = api
-						.column(6)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Follow Up
-					total_suspect_followup = api
-						.column(7)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect LPO Follow Up
-					total_suspect_lpo_followup = api
-						.column(8)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect No Answer
-					total_suspect_no_answer = api
-						.column(9)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect In Contact
-					total_suspect_in_contact = api
-						.column(10)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect In Contact
-					total_prospect_in_contact = api
-						.column(11)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Off Peak Pipline
-					total_suspect_off_peak_pipeline = api
-						.column(12)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Lost
-					total_suspect_lost = api
-						.column(13)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Out of Territory
-					total_suspect_oot = api
-						.column(14)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Customer Lost
-					total_suspect_customer_lost = api
-						.column(15)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Opportunity
-					total_prospect_opportunity = api
-						.column(16)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_qualified = api
-						.column(17)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_box_sent = api
-						.column(18)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Quoite Sent
-					total_prospect_quote_sent = api
-						.column(19)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial Pending
-					total_customer_free_trial_pending = api
-						.column(20)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_customer_free_trial = api
-						.column(21)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_customer_signed = api
-						.column(22)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Lead Count
-					total_lead = api
-						.column(23)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Update footer
-					$(api.column(1).footer()).html(
-						total_suspect_new +
-							" (" +
-							((total_suspect_new / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(2).footer()).html(
-						total_suspect_hot_lead +
-							" (" +
-							((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(3).footer()).html(
-						total_suspect_qualified +
-							" (" +
-							((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(4).footer()).html(
-						total_suspect_unqualified +
-							" (" +
-							((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(5).footer()).html(
-						total_suspect_validated +
-							" (" +
-							((total_suspect_validated / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(6).footer()).html(
-						total_suspect_reassign +
-							" (" +
-							((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(7).footer()).html(
-						total_suspect_followup +
-							" (" +
-							((total_suspect_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(8).footer()).html(
-						total_suspect_lpo_followup +
-							" (" +
-							((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(9).footer()).html(
-						total_suspect_no_answer +
-							" (" +
-							((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(10).footer()).html(
-						total_suspect_in_contact +
-							" (" +
-							((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(11).footer()).html(
-						total_prospect_in_contact +
-							" (" +
-							((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(12).footer()).html(
-						total_suspect_off_peak_pipeline +
-							" (" +
-							((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-					$(api.column(13).footer()).html(
-						total_suspect_lost +
-							" (" +
-							((total_suspect_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(14).footer()).html(
-						total_suspect_oot +
-							" (" +
-							((total_suspect_oot / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(15).footer()).html(
-						total_suspect_customer_lost +
-							" (" +
-							((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(16).footer()).html(
-						total_prospect_opportunity +
-							" (" +
-							((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(17).footer()).html(
-						total_prospect_qualified +
-							" (" +
-							((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(18).footer()).html(
-						total_prospect_box_sent +
-							" (" +
-							((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(19).footer()).html(
-						total_prospect_quote_sent +
-							" (" +
-							((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(20).footer()).html(
-						total_customer_free_trial_pending +
-							" (" +
-							((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-
-					$(api.column(21).footer()).html(
-						total_customer_free_trial +
-							" (" +
-							((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(22).footer()).html(
-						total_customer_signed +
-							" (" +
-							((total_customer_signed / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(23).footer()).html(total_lead);
-				},
-			});
-		}
+		// if (showCallForceTasks == true) {
+		// 	//Get the count of the list of leads sent to Call Force
+		// 	//Call Force Campaign - Suspect Unqualified List
+		// 	var callForceLeadsListSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_lpo_unqualifed_list_3",
+		// 	});
+
+		// 	callForceLeadsListSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		callForceLeadsListSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var callForceLeadsListCount = callForceLeadsListSearch.runPaged().count;
+
+		// 	//Get the count of leads that is Qualified but with No Appointment
+		// 	//NetSuite Search:Call Force Campaign - Suspect Qualified List - With No Tasks
+		// 	var qualifiedLeadsListWithNoTasksSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_lpo_unqualifed_list_2_3",
+		// 	});
+
+		// 	qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		qualifiedLeadsListWithNoTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var totalQualifiedLeadWithNoTasks = 0;
+
+		// 	qualifiedLeadsListWithNoTasksSearch
+		// 		.run()
+		// 		.each(function (qualifiedLeadsListSearchResult) {
+		// 			var custInternalID = qualifiedLeadsListSearchResult.getValue({
+		// 				name: "internalid",
+		// 				summary: "GROUP",
+		// 			});
+		// 			//NetSuite Search: Call Force Tasks - All
+		// 			var callForceAllTasksSearch = search.load({
+		// 				type: "task",
+		// 				id: "customsearch9085",
+		// 			});
+		// 			callForceAllTasksSearch.filters.push(
+		// 				search.createFilter({
+		// 					name: "internalid",
+		// 					join: "companyCustomer",
+		// 					operator: search.Operator.IS,
+		// 					values: custInternalID,
+		// 				})
+		// 			);
+
+		// 			var callForceAllTasksSearchCount =
+		// 				callForceAllTasksSearch.runPaged().count;
+
+		// 			if (callForceAllTasksSearchCount == 0) {
+		// 				totalQualifiedLeadWithNoTasks++;
+		// 			}
+		// 			return true;
+		// 		});
+
+		// 	//Sales Reporting - Call Force Campaign - With Tasks
+		// 	var callForceTasksSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_lpo_unqualifed_list_2_2_2",
+		// 	});
+
+		// 	callForceTasksSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		callForceTasksSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var countCallForceTasks = 0;
+		// 	var oldCallForceDate = null;
+
+		// 	var scheduledCallForceTasks = 0;
+		// 	var completedCallForceTasks = 0;
+		// 	var totalCallForceTasks = 0;
+
+		// 	var totalCompletedTasks = 0;
+		// 	var totalScheduledTasks = 0;
+
+		// 	callForceTasksSearch.run().each(function (callForceTasksSearchResultSet) {
+		// 		var tasksCount = parseInt(
+		// 			callForceTasksSearchResultSet.getValue({
+		// 				name: "internalid",
+		// 				join: "task",
+		// 				summary: "COUNT",
+		// 			})
+		// 		);
+
+		// 		var taskDate = callForceTasksSearchResultSet.getValue({
+		// 			name: "duedate",
+		// 			join: "task",
+		// 			summary: "GROUP",
+		// 		});
+
+		// 		var taskStatus = callForceTasksSearchResultSet.getText({
+		// 			name: "status",
+		// 			join: "task",
+		// 			summary: "GROUP",
+		// 		});
+
+		// 		if (countCallForceTasks == 0 || taskDate == oldCallForceDate) {
+		// 			if (taskStatus == "Completed") {
+		// 				completedCallForceTasks = completedCallForceTasks + tasksCount;
+		// 				totalCompletedTasks = totalCompletedTasks + tasksCount;
+		// 			} else if (taskStatus == "Not Started") {
+		// 				scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+		// 				totalScheduledTasks = totalScheduledTasks + tasksCount;
+		// 			}
+		// 			totalCallForceTasks = totalCallForceTasks + tasksCount;
+		// 		} else if (taskDate != oldCallForceDate) {
+		// 			var taskDueDate = convertToDateInputFormat(oldCallForceDate);
+
+		// 			callForceTasksDataSet.push([
+		// 				taskDueDate,
+		// 				scheduledCallForceTasks,
+		// 				completedCallForceTasks,
+		// 				totalCallForceTasks,
+		// 			]);
+
+		// 			scheduledCallForceTasks = 0;
+		// 			completedCallForceTasks = 0;
+		// 			totalCallForceTasks = 0;
+
+		// 			if (taskStatus == "Completed") {
+		// 				completedCallForceTasks = completedCallForceTasks + tasksCount;
+		// 				totalCompletedTasks = totalCompletedTasks + tasksCount;
+		// 			} else if (taskStatus == "Not Started") {
+		// 				scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+		// 				totalScheduledTasks = totalScheduledTasks + tasksCount;
+		// 			}
+		// 			totalCallForceTasks = totalCallForceTasks + tasksCount;
+		// 		}
+
+		// 		oldCallForceDate = taskDate;
+		// 		countCallForceTasks++;
+		// 		return true;
+		// 	});
+
+		// 	if (countCallForceTasks > 0) {
+		// 		var taskDueDate = convertToDateInputFormat(oldCallForceDate);
+
+		// 		callForceTasksDataSet.push([
+		// 			taskDueDate,
+		// 			scheduledCallForceTasks,
+		// 			completedCallForceTasks,
+		// 			totalCallForceTasks,
+		// 		]);
+		// 	}
+
+		// 	console.log("callForceTasksDataSet" + callForceTasksDataSet);
+
+		// 	var dataTable3 = $("#mpexusage-callforcetasks").DataTable({
+		// 		data: callForceTasksDataSet,
+		// 		pageLength: 250,
+		// 		order: [],
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{ title: "Task Date (Week Starting)" },
+		// 			{ title: "Scheduled Tasks" },
+		// 			{ title: "Completed Tasks" },
+		// 			{ title: "Total Tasks" },
+		// 		],
+		// 		autoWidth: true,
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 3],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		rowCallback: function (row, data, index) {
+		// 			var row_color = "";
+		// 			if (parseInt(data[1]) > 0) {
+		// 				$(row).find("td:eq(1)").css("background-color", "#f9c67a");
+		// 			}
+		// 			if (parseInt(data[2]) > 0) {
+		// 				$(row).find("td:eq(2)").css("background-color", "#439A97");
+		// 			}
+		// 		},
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_scheduled = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_completed = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_total = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			$(api.column(1).footer()).html(total_scheduled);
+		// 			$(api.column(2).footer()).html(total_completed);
+		// 			$(api.column(3).footer()).html(total_total);
+		// 		},
+		// 	});
+
+		// 	// Create the pie chart for Call Force Tasks & Leads
+		// 	Highcharts.chart("container-callforce_progress", {
+		// 		chart: {
+		// 			type: "pie",
+		// 			backgroundColor: "#CFE0CE",
+		// 		},
+		// 		title: {
+		// 			text: "",
+		// 		},
+		// 		accessibility: {
+		// 			announceNewData: {
+		// 				enabled: true,
+		// 			},
+		// 			point: {
+		// 				valueSuffix: "",
+		// 			},
+		// 		},
+
+		// 		plotOptions: {
+		// 			pie: {
+		// 				allowPointSelect: true,
+		// 				borderWidth: 2,
+		// 				cursor: "pointer",
+		// 				dataLabels: {
+		// 					enabled: true,
+		// 					format: "<b>{point.name}</b><br>{point.y:.0f}",
+		// 					distance: 20,
+		// 					style: {
+		// 						textOutline: "none",
+		// 						opacity: 0.7,
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 		tooltip: {
+		// 			headerFormat: "",
+		// 			pointFormat:
+		// 				'<span style="color:{point.color}">\u25cf</span> ' +
+		// 				"{point.name}: <b>{point.y:.0f}</b>",
+		// 		},
+		// 		series: [
+		// 			{
+		// 				name: "Leads",
+		// 				colorByPoint: true,
+		// 				animation: {
+		// 					duration: 2000,
+		// 				},
+		// 				data: [
+		// 					{
+		// 						name: "Qualified Leads - Completed Appointment",
+		// 						y: totalCompletedTasks,
+		// 						sliced: true,
+		// 						selected: true,
+		// 						color: "#5cb3b0",
+		// 					},
+		// 					{
+		// 						name: "Unqualified Leads - Sent to Call Force",
+		// 						y: callForceLeadsListCount,
+		// 						sliced: false,
+		// 						color: "#7FCAFFFF",
+		// 					},
+		// 					{
+		// 						name: "Qualified Leads - Scheduled Appointment",
+		// 						y: totalScheduledTasks,
+		// 						sliced: false,
+		// 						color: "#FEBE8C",
+		// 					},
+		// 					{
+		// 						name: "Qualified Leads - No Appointment",
+		// 						y: totalQualifiedLeadWithNoTasks,
+		// 						sliced: false,
+		// 						color: "#F5F0F0FF",
+		// 					},
+		// 				],
+		// 			},
+		// 		],
+		// 	});
+
+		// 	//Call Force 202501 Campaign - Count by Date Synced and Outcome
+		// 	var callForceLeadsCountBydateSyncedOutcomeSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_callforce_count_sync_outcom",
+		// 	});
+
+		// 	callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		// callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 		// 	search.createFilter({
+		// 		// 		name: "companyname",
+		// 		// 		join: null,
+		// 		// 		operator: search.Operator.DOESNOTSTARTWITH,
+		// 		// 		values: "TEST",
+		// 		// 	})
+		// 		// );
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var oldCallforceSyncDate = null;
+		// 	var countCallforceSyncDateCount = 0;
+
+		// 	var total_no_outcome = 0;
+		// 	var total_not_interested = 0;
+		// 	var total_no_answer = 0;
+		// 	var total_voicemail = 0;
+		// 	var total_wrong_number = 0;
+		// 	var total_disconnected = 0;
+		// 	var total_remove_from_list = 0;
+		// 	var total_busy = 0;
+		// 	var total_callback = 0;
+		// 	var total_email_interested = 0;
+		// 	var total_email_brush_off = 0;
+		// 	var total_interested = 0;
+		// 	var total_leads = 0;
+
+		// 	callForceLeadsCountBydateSyncedOutcomeSearch
+		// 		.run()
+		// 		.each(function (callForceLeadsCountBydateSyncedOutcomeResultSet) {
+		// 			var callforceLeadCount = parseInt(
+		// 				callForceLeadsCountBydateSyncedOutcomeResultSet.getValue({
+		// 					name: "internalid",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+
+		// 			var callforceSyncDate =
+		// 				callForceLeadsCountBydateSyncedOutcomeResultSet.getValue({
+		// 					name: "custrecord_cf_date_sent",
+		// 					join: "CUSTRECORD_SALES_CUSTOMER",
+		// 					summary: "GROUP",
+		// 				});
+
+		// 			var callforceSyncDateSplit = callforceSyncDate.split("/");
+		// 			callforceSyncDate =
+		// 				callforceSyncDateSplit[2] +
+		// 				"-" +
+		// 				callforceSyncDateSplit[1] +
+		// 				"-" +
+		// 				callforceSyncDateSplit[0];
+
+		// 			var callforceOutcome = callForceLeadsCountBydateSyncedOutcomeResultSet
+		// 				.getValue({
+		// 					name: "custrecord_cf_call_outcome",
+		// 					join: "CUSTRECORD_SALES_CUSTOMER",
+		// 					summary: "GROUP",
+		// 				})
+		// 				.toLowerCase();
+
+		// 			console.log("callforceSyncDate: " + callforceSyncDate);
+		// 			console.log("callforceOutcome: " + callforceOutcome);
+		// 			console.log("callforceLeadCount: " + callforceLeadCount);
+
+		// 			if (
+		// 				countCallforceSyncDateCount != 0 &&
+		// 				callforceSyncDate != oldCallforceSyncDate
+		// 			) {
+		// 				var totalNoOutcomePercentage = parseInt(
+		// 					(total_no_outcome / total_leads) * 100
+		// 				);
+		// 				var totalNoOutcomeCol =
+		// 					total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+		// 				var totalNotInterestedPercentage = parseInt(
+		// 					(total_not_interested / total_leads) * 100
+		// 				);
+		// 				var totalNotInterestedCol =
+		// 					total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+		// 				var totalNoAnswerPercentage = parseInt(
+		// 					(total_no_answer / total_leads) * 100
+		// 				);
+		// 				var totalNoAnswerCol =
+		// 					total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+		// 				var totalVoicemailPercentage = parseInt(
+		// 					(total_voicemail / total_leads) * 100
+		// 				);
+		// 				var totalVoicemailCol =
+		// 					total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+		// 				var totalWrongNumberPercentage = parseInt(
+		// 					(total_wrong_number / total_leads) * 100
+		// 				);
+		// 				var totalWrongNumberCol =
+		// 					total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+		// 				var totalDisconnectedPercentage = parseInt(
+		// 					(total_disconnected / total_leads) * 100
+		// 				);
+		// 				var totalDisconnectedCol =
+		// 					total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+		// 				var totalRemoveFromListPercentage = parseInt(
+		// 					(total_remove_from_list / total_leads) * 100
+		// 				);
+		// 				var totalRemoveFromListCol =
+		// 					total_remove_from_list +
+		// 					" (" +
+		// 					totalRemoveFromListPercentage +
+		// 					"%)";
+
+		// 				var totalBusyPercentage = parseInt(
+		// 					(total_busy / total_leads) * 100
+		// 				);
+		// 				var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+		// 				var totalCallBackPercentage = parseInt(
+		// 					(total_callback / total_leads) * 100
+		// 				);
+		// 				var totalCallBackCol =
+		// 					total_callback + " (" + totalCallBackPercentage + "%)";
+
+		// 				var totalEmailInterestedPercentage = parseInt(
+		// 					(total_email_interested / total_leads) * 100
+		// 				);
+		// 				var totalEmailInterestedCol =
+		// 					total_email_interested +
+		// 					" (" +
+		// 					totalEmailInterestedPercentage +
+		// 					"%)";
+
+		// 				var totalEmailBrushOffPercentage = parseInt(
+		// 					(total_email_brush_off / total_leads) * 100
+		// 				);
+		// 				var totalEmailBrushOffCol =
+		// 					total_email_brush_off +
+		// 					" (" +
+		// 					totalEmailBrushOffPercentage +
+		// 					"%)";
+
+		// 				var totalInterestedPercentage = parseInt(
+		// 					(total_interested / total_leads) * 100
+		// 				);
+		// 				var totalInterestedCol =
+		// 					total_interested + " (" + totalInterestedPercentage + "%)";
+
+		// 				callForceDateSyncedOutcomeDataSet.push([
+		// 					oldCallforceSyncDate,
+		// 					totalNoOutcomeCol,
+		// 					totalNotInterestedCol,
+		// 					totalNoAnswerCol,
+		// 					totalVoicemailCol,
+		// 					totalWrongNumberCol,
+		// 					totalDisconnectedCol,
+		// 					totalRemoveFromListCol,
+		// 					totalBusyCol,
+		// 					totalCallBackCol,
+		// 					totalEmailInterestedCol,
+		// 					totalEmailBrushOffCol,
+		// 					totalInterestedCol,
+		// 					total_leads,
+		// 				]);
+
+		// 				total_no_outcome = 0;
+		// 				total_not_interested = 0;
+		// 				total_no_answer = 0;
+		// 				total_voicemail = 0;
+		// 				total_wrong_number = 0;
+		// 				total_disconnected = 0;
+		// 				total_remove_from_list = 0;
+		// 				total_busy = 0;
+		// 				total_callback = 0;
+		// 				total_email_interested = 0;
+		// 				total_email_brush_off = 0;
+		// 				total_interested = 0;
+		// 				total_leads = 0;
+		// 			}
+
+		// 			if (callforceOutcome == "not_interested") {
+		// 				total_not_interested += callforceLeadCount;
+		// 			} else if (callforceOutcome == "no_answer") {
+		// 				total_no_answer += callforceLeadCount;
+		// 			} else if (callforceOutcome == "voicemail") {
+		// 				total_voicemail += callforceLeadCount;
+		// 			} else if (callforceOutcome == "wrong_number") {
+		// 				total_wrong_number += callforceLeadCount;
+		// 			} else if (callforceOutcome == "disconnected") {
+		// 				total_disconnected += callforceLeadCount;
+		// 			} else if (callforceOutcome == "remove_from_list") {
+		// 				total_remove_from_list += callforceLeadCount;
+		// 			} else if (callforceOutcome == "busy") {
+		// 				total_busy += callforceLeadCount;
+		// 			} else if (callforceOutcome == "callback") {
+		// 				total_callback += callforceLeadCount;
+		// 			} else if (callforceOutcome == "email_interested") {
+		// 				total_email_interested += callforceLeadCount;
+		// 			} else if (callforceOutcome == "email_brush_off") {
+		// 				total_email_brush_off += callforceLeadCount;
+		// 			} else if (callforceOutcome == "interested") {
+		// 				total_interested += callforceLeadCount;
+		// 			} else {
+		// 				total_no_outcome += callforceLeadCount;
+		// 			}
+
+		// 			total_leads += callforceLeadCount;
+
+		// 			oldCallforceSyncDate = callforceSyncDate;
+		// 			countCallforceSyncDateCount++;
+		// 			return true;
+		// 		});
+
+		// 	console.log(
+		// 		"countCallforceSyncDateCount: " + countCallforceSyncDateCount
+		// 	);
+		// 	if (countCallforceSyncDateCount > 0) {
+		// 		var totalNoOutcomePercentage = parseInt(
+		// 			(total_no_outcome / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalNoOutcomeCol =
+		// 			total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+		// 		var totalNotInterestedPercentage = parseInt(
+		// 			(total_not_interested / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalNotInterestedCol =
+		// 			total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+		// 		var totalNoAnswerPercentage = parseInt(
+		// 			(total_no_answer / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalNoAnswerCol =
+		// 			total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+		// 		var totalVoicemailPercentage = parseInt(
+		// 			(total_voicemail / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalVoicemailCol =
+		// 			total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+		// 		var totalWrongNumberPercentage = parseInt(
+		// 			(total_wrong_number / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalWrongNumberCol =
+		// 			total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+		// 		var totalDisconnectedPercentage = parseInt(
+		// 			(total_disconnected / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalDisconnectedCol =
+		// 			total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+		// 		var totalRemoveFromListPercentage = parseInt(
+		// 			(total_remove_from_list / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalRemoveFromListCol =
+		// 			total_remove_from_list + " (" + totalRemoveFromListPercentage + "%)";
+
+		// 		var totalBusyPercentage = parseInt(
+		// 			(total_busy / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+		// 		var totalCallBackPercentage = parseInt(
+		// 			(total_callback / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalCallBackCol =
+		// 			total_callback + " (" + totalCallBackPercentage + "%)";
+
+		// 		var totalEmailInterestedPercentage = parseInt(
+		// 			(total_email_interested / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalEmailInterestedCol =
+		// 			total_email_interested + " (" + totalEmailInterestedPercentage + "%)";
+
+		// 		var totalEmailBrushOffPercentage = parseInt(
+		// 			(total_email_brush_off / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalEmailBrushOffCol =
+		// 			total_email_brush_off + " (" + totalEmailBrushOffPercentage + "%)";
+
+		// 		var totalInterestedPercentage = parseInt(
+		// 			(total_interested / total_leads) * 100
+		// 		).toFixed(0);
+		// 		var totalInterestedCol =
+		// 			total_interested + " (" + totalInterestedPercentage + "%)";
+
+		// 		callForceDateSyncedOutcomeDataSet.push([
+		// 			oldCallforceSyncDate,
+		// 			totalNoOutcomeCol,
+		// 			totalNotInterestedCol,
+		// 			totalNoAnswerCol,
+		// 			totalVoicemailCol,
+		// 			totalWrongNumberCol,
+		// 			totalDisconnectedCol,
+		// 			totalRemoveFromListCol,
+		// 			totalBusyCol,
+		// 			totalCallBackCol,
+		// 			totalEmailInterestedCol,
+		// 			totalEmailBrushOffCol,
+		// 			totalInterestedCol,
+		// 			total_leads,
+		// 		]);
+		// 	}
+
+		// 	console.log(
+		// 		"callForceDateSyncedOutcomeDataSet" + callForceDateSyncedOutcomeDataSet
+		// 	);
+
+		// 	var dataTableCallForceDateSyncedOutcome = $(
+		// 		"#mpexusage-callForceDateSyncedOutcome"
+		// 	).DataTable({
+		// 		data: callForceDateSyncedOutcomeDataSet,
+		// 		pageLength: 250,
+		// 		order: [],
+		// 		responsive: true,
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{ title: "Period" }, //0
+		// 			{ title: "No Outcome" }, //1
+		// 			{ title: "Not Interested" }, //2
+		// 			{ title: "No Answer" }, //3
+		// 			{ title: "Voicemail" }, //4
+		// 			{ title: "Wrong Number" }, //5
+		// 			{ title: "Disconnected" }, //6
+		// 			{ title: "Remove From List" }, //7
+		// 			{ title: "Busy" }, //8
+		// 			{ title: "Call Back" }, //9
+		// 			{ title: "Email Interested" }, //10
+		// 			{ title: "Email Brush Off" }, //11
+		// 			{ title: "Interested" }, //12
+		// 			{ title: "Total" }, //13
+		// 		],
+		// 		autoWidth: true,
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 12],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		rowCallback: function (row, data, index) {
+		// 			var row_color = "";
+		// 			// if (parseInt(data[1]) > 0) {
+		// 			// 	$(row).find("td:eq(1)").css("background-color", "#f9c67a");
+		// 			// }
+		// 			// if (parseInt(data[2]) > 0) {
+		// 			// 	$(row).find("td:eq(2)").css("background-color", "#439A97");
+		// 			// }
+		// 		},
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_no_outcome = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_not_interested = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_no_answer = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_voicemail = api
+		// 				.column(4)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_wrong_number = api
+		// 				.column(5)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_disconnected = api
+		// 				.column(6)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_remove_from_list = api
+		// 				.column(7)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_busy = api
+		// 				.column(8)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_callback = api
+		// 				.column(9)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_email_interested = api
+		// 				.column(10)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_email_brush_off = api
+		// 				.column(11)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_interested = api
+		// 				.column(12)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+		// 			total_leads = api
+		// 				.column(13)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			$(api.column(1).footer()).html(
+		// 				total_no_outcome +
+		// 					" (" +
+		// 					((total_no_outcome / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(2).footer()).html(
+		// 				total_not_interested +
+		// 					" (" +
+		// 					((total_not_interested / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(3).footer()).html(
+		// 				total_no_answer +
+		// 					" (" +
+		// 					((total_no_answer / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(4).footer()).html(
+		// 				total_voicemail +
+		// 					" (" +
+		// 					((total_voicemail / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(5).footer()).html(
+		// 				total_wrong_number +
+		// 					" (" +
+		// 					((total_wrong_number / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(6).footer()).html(
+		// 				total_disconnected +
+		// 					" (" +
+		// 					((total_disconnected / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(7).footer()).html(
+		// 				total_remove_from_list +
+		// 					" (" +
+		// 					((total_remove_from_list / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(8).footer()).html(
+		// 				total_busy +
+		// 					" (" +
+		// 					((total_busy / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(9).footer()).html(
+		// 				total_callback +
+		// 					" (" +
+		// 					((total_callback / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(10).footer()).html(
+		// 				total_email_interested +
+		// 					" (" +
+		// 					((total_email_interested / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(11).footer()).html(
+		// 				total_email_brush_off +
+		// 					" (" +
+		// 					((total_email_brush_off / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(12).footer()).html(
+		// 				total_interested +
+		// 					" (" +
+		// 					((total_interested / total_leads) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			// $(api.column(1).footer()).html(total_no_outcome);
+		// 			// $(api.column(2).footer()).html(total_not_interested);
+		// 			// $(api.column(3).footer()).html(total_no_answer);
+		// 			// $(api.column(4).footer()).html(total_voicemail);
+		// 			// $(api.column(5).footer()).html(total_wrong_number);
+		// 			// $(api.column(6).footer()).html(total_disconnected);
+		// 			// $(api.column(7).footer()).html(total_remove_from_list);
+		// 			// $(api.column(8).footer()).html(total_busy);
+		// 			// $(api.column(9).footer()).html(total_callback);
+		// 			// $(api.column(10).footer()).html(total_email_interested);
+		// 			// $(api.column(11).footer()).html(total_email_brush_off);
+		// 			// $(api.column(12).footer()).html(total_interested);
+		// 			$(api.column(13).footer()).html(total_leads);
+		// 		},
+		// 	});
+
+		// 	//Call Force 202501 Campaign - Count by Outcome & Lead Status
+		// 	var callForceLeadsCountByOutcomeStatusSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_callforce202501_unqualifi_7",
+		// 	});
+
+		// 	callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		// callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 		// 	search.createFilter({
+		// 		// 		name: "companyname",
+		// 		// 		join: null,
+		// 		// 		operator: search.Operator.DOESNOTSTARTWITH,
+		// 		// 		values: "TEST",
+		// 		// 	})
+		// 		// );
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		callForceLeadsCountByOutcomeStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var oldCallforceOutcome = null;
+		// 	var countCallforceSyncOutcomeCount = 0;
+
+		// 	var customer_signed = 0;
+		// 	var suspect_hot_lead = 0;
+		// 	var suspect_reassign = 0;
+		// 	var suspect_lost = 0;
+		// 	var suspect_customer_lost = 0;
+		// 	var suspect_off_peak_pipeline = 0;
+		// 	var prospect_opportunity = 0;
+		// 	var prospecy_quote_sent = 0;
+		// 	var prospecy_box_sent = 0;
+		// 	var prospect_no_answer = 0;
+		// 	var prospect_in_contact = 0;
+		// 	var suspect_oot = 0;
+		// 	var suspect_pre_qualification = 0;
+		// 	var suspect_new = 0;
+		// 	var suspect_qualified = 0;
+		// 	var suspect_pre_qualification = 0;
+		// 	var suspect_in_qualification = 0;
+		// 	var suspect_unqualified = 0;
+		// 	var suspect_in_qualification = 0;
+		// 	var total_leads = 0;
+		// 	var prospect_qualified = 0;
+
+		// 	var suspect_validated = 0;
+		// 	var customer_free_trial = 0;
+		// 	var customer_free_trial_pending = 0;
+		// 	var suspect_no_answer = 0;
+		// 	var suspect_in_contact = 0;
+
+		// 	callForceLeadsCountByOutcomeStatusSearch
+		// 		.run()
+		// 		.each(function (callForceLeadsCountByOutcomeStatusResultSet) {
+		// 			var prospectCount = parseInt(
+		// 				callForceLeadsCountByOutcomeStatusResultSet.getValue({
+		// 					name: "internalid",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+
+		// 			var custStatus = callForceLeadsCountByOutcomeStatusResultSet.getValue(
+		// 				{
+		// 					name: "entitystatus",
+		// 					summary: "GROUP",
+		// 				}
+		// 			);
+
+		// 			var callforceOutcome =
+		// 				callForceLeadsCountByOutcomeStatusResultSet.getValue({
+		// 					name: "custrecord_cf_call_outcome",
+		// 					join: "CUSTRECORD_SALES_CUSTOMER",
+		// 					summary: "GROUP",
+		// 				});
+
+		// 			console.log("prospectCount: " + prospectCount);
+		// 			console.log("custStatus: " + custStatus);
+		// 			console.log("callforceOutcome: " + callforceOutcome);
+
+		// 			if (
+		// 				countCallforceSyncOutcomeCount != 0 &&
+		// 				callforceOutcome != oldCallforceOutcome
+		// 			) {
+		// 				callForceOutcomeStatusDataSet.push({
+		// 					callOutcome: oldCallforceOutcome,
+		// 					suspect_hot_lead: suspect_hot_lead,
+		// 					prospecy_quote_sent: prospecy_quote_sent,
+		// 					suspect_reassign: suspect_reassign,
+		// 					prospect_no_answer: prospect_no_answer,
+		// 					prospect_in_contact: prospect_in_contact,
+		// 					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 					suspect_lost: suspect_lost,
+		// 					suspect_customer_lost: suspect_customer_lost,
+		// 					prospect_opportunity: prospect_opportunity,
+		// 					customer_signed: customer_signed,
+		// 					total_leads: total_leads,
+		// 					suspect_oot: suspect_oot,
+		// 					suspect_pre_qualification: suspect_pre_qualification,
+		// 					suspect_new: suspect_new,
+		// 					suspect_qualified: suspect_qualified,
+		// 					suspect_unqualified: suspect_unqualified,
+		// 					suspect_in_qualification: suspect_in_qualification,
+		// 					suspect_validated: suspect_validated,
+		// 					customer_free_trial: customer_free_trial,
+		// 					suspect_no_answer: suspect_no_answer,
+		// 					suspect_in_contact: suspect_in_contact,
+		// 					prospect_qualified: prospect_qualified,
+		// 					customer_free_trial_pending: customer_free_trial_pending,
+		// 					prospect_box_sent: prospecy_box_sent,
+		// 				});
+
+		// 				customer_signed = 0;
+		// 				suspect_hot_lead = 0;
+		// 				suspect_reassign = 0;
+		// 				suspect_lost = 0;
+		// 				suspect_customer_lost = 0;
+		// 				suspect_off_peak_pipeline = 0;
+		// 				prospect_opportunity = 0;
+		// 				prospecy_quote_sent = 0;
+		// 				prospecy_box_sent = 0;
+		// 				prospect_no_answer = 0;
+		// 				prospect_in_contact = 0;
+		// 				suspect_oot = 0;
+		// 				suspect_pre_qualification = 0;
+		// 				suspect_new = 0;
+		// 				suspect_qualified = 0;
+		// 				suspect_pre_qualification = 0;
+		// 				suspect_in_qualification = 0;
+		// 				suspect_unqualified = 0;
+		// 				suspect_in_qualification = 0;
+		// 				total_leads = 0;
+		// 				prospect_qualified = 0;
+
+		// 				suspect_validated = 0;
+		// 				customer_free_trial = 0;
+		// 				customer_free_trial_pending = 0;
+		// 				suspect_no_answer = 0;
+		// 				suspect_in_contact = 0;
+		// 			}
+
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - Box SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//SUSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//SUSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_pre_qualification +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_in_qualification +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent;
+
+		// 			oldCallforceOutcome = callforceOutcome;
+		// 			countCallforceSyncOutcomeCount++;
+		// 			return true;
+		// 		});
+
+		// 	console.log(
+		// 		"countCallforceSyncOutcomeCount: " + countCallforceSyncOutcomeCount
+		// 	);
+		// 	if (countCallforceSyncOutcomeCount > 0) {
+		// 		callForceOutcomeStatusDataSet.push({
+		// 			callOutcome: oldCallforceOutcome,
+		// 			suspect_hot_lead: suspect_hot_lead,
+		// 			prospecy_quote_sent: prospecy_quote_sent,
+		// 			suspect_reassign: suspect_reassign,
+		// 			prospect_no_answer: prospect_no_answer,
+		// 			prospect_in_contact: prospect_in_contact,
+		// 			suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 			suspect_lost: suspect_lost,
+		// 			suspect_customer_lost: suspect_customer_lost,
+		// 			prospect_opportunity: prospect_opportunity,
+		// 			customer_signed: customer_signed,
+		// 			total_leads: total_leads,
+		// 			suspect_oot: suspect_oot,
+		// 			suspect_pre_qualification: suspect_pre_qualification,
+		// 			suspect_new: suspect_new,
+		// 			suspect_qualified: suspect_qualified,
+		// 			suspect_unqualified: suspect_unqualified,
+		// 			suspect_in_qualification: suspect_in_qualification,
+		// 			suspect_validated: suspect_validated,
+		// 			customer_free_trial: customer_free_trial,
+		// 			suspect_no_answer: suspect_no_answer,
+		// 			suspect_in_contact: suspect_in_contact,
+		// 			prospect_qualified: prospect_qualified,
+		// 			customer_free_trial_pending: customer_free_trial_pending,
+		// 			prospect_box_sent: prospecy_box_sent,
+		// 		});
+		// 	}
+
+		// 	console.log(
+		// 		"callForceOutcomeStatusDataSet" + callForceOutcomeStatusDataSet
+		// 	);
+
+		// 	outcomeStatusDataSet = [];
+		// 	if (!isNullorEmpty(callForceOutcomeStatusDataSet)) {
+		// 		callForceOutcomeStatusDataSet.forEach(function (preview_row, index) {
+		// 			var hotLeadPercentage = parseInt(
+		// 				(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+		// 			);
+		// 			var hotLeadCol =
+		// 				preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 			var quoteSentPercentage = parseInt(
+		// 				(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var quoteSentCol =
+		// 				preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 			var boxSentPercentage = parseInt(
+		// 				(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var boxSentCol =
+		// 				preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+		// 			var reassignPercentage = parseInt(
+		// 				(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 			);
+		// 			var reassignCol =
+		// 				preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 			var noAnswerPercentage = parseInt(
+		// 				(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var noAnswerCol =
+		// 				preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 			var inContactPercentage = parseInt(
+		// 				(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var inContactCol =
+		// 				preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 			var offPeakPercentage = parseInt(
+		// 				(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var offPeakCol =
+		// 				preview_row.suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				offPeakPercentage +
+		// 				"%)";
+
+		// 			var lostPercentage = parseInt(
+		// 				(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 			var ootPercentage = parseInt(
+		// 				(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 			);
+		// 			var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 			var custLostPercentage = parseInt(
+		// 				(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var custLostCol =
+		// 				preview_row.suspect_customer_lost +
+		// 				" (" +
+		// 				custLostPercentage +
+		// 				"%)";
+
+		// 			var oppPercentage = parseInt(
+		// 				(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 			);
+		// 			var oppCol =
+		// 				preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 			var signedPercentage = parseInt(
+		// 				(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 			);
+		// 			var signedCol =
+		// 				preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 			var suspectPreQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var preQualiCol =
+		// 				preview_row.suspect_pre_qualification +
+		// 				" (" +
+		// 				suspectPreQualificationPercentage +
+		// 				"%)";
+
+		// 			var suspectNewPercentage = parseInt(
+		// 				(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNewCol =
+		// 				preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 			var suspectQualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectQualifiedCol =
+		// 				preview_row.suspect_qualified +
+		// 				" (" +
+		// 				suspectQualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectUnqualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectUnqualifiedCol =
+		// 				preview_row.suspect_unqualified +
+		// 				" (" +
+		// 				suspectUnqualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectInQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_in_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var inQualiCol =
+		// 				preview_row.suspect_in_qualification +
+		// 				" (" +
+		// 				suspectInQualificationPercentage +
+		// 				"%)";
+
+		// 			var suspectValidatedPercentage = parseInt(
+		// 				(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectValidatedCol =
+		// 				preview_row.suspect_validated +
+		// 				" (" +
+		// 				suspectValidatedPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPercentage = parseInt(
+		// 				(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 			);
+		// 			var customerFreeTrialCol =
+		// 				preview_row.customer_free_trial +
+		// 				" (" +
+		// 				customerFreeTrialPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPendingPercentage = parseInt(
+		// 				(preview_row.customer_free_trial_pending /
+		// 					preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var customerFreeTrialPendingCol =
+		// 				preview_row.customer_free_trial_pending +
+		// 				" (" +
+		// 				customerFreeTrialPendingPercentage +
+		// 				"%)";
+
+		// 			var suspectNoAnswerPercentage = parseInt(
+		// 				(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNoAnswerCol =
+		// 				preview_row.suspect_no_answer +
+		// 				" (" +
+		// 				suspectNoAnswerPercentage +
+		// 				"%)";
+
+		// 			var suspectInContactPercentage = parseInt(
+		// 				(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectInContactCol =
+		// 				preview_row.suspect_in_contact +
+		// 				" (" +
+		// 				suspectInContactPercentage +
+		// 				"%)";
+
+		// 			var prospectQualifiedPercentage = parseInt(
+		// 				(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var prospectQualifiedCol =
+		// 				preview_row.prospect_qualified +
+		// 				" (" +
+		// 				prospectQualifiedPercentage +
+		// 				"%)";
+
+		// 			outcomeStatusDataSet.push([
+		// 				preview_row.callOutcome,
+		// 				suspectNewCol,
+		// 				hotLeadCol,
+		// 				suspectValidatedCol,
+		// 				suspectUnqualifiedCol,
+		// 				suspectQualifiedCol,
+		// 				preQualiCol,
+		// 				inQualiCol,
+		// 				reassignCol,
+		// 				suspectNoAnswerCol,
+		// 				suspectInContactCol,
+		// 				inContactCol,
+		// 				offPeakCol,
+		// 				lostCol,
+		// 				ootCol,
+		// 				custLostCol,
+		// 				oppCol,
+		// 				prospectQualifiedCol,
+		// 				boxSentCol,
+		// 				quoteSentCol,
+		// 				customerFreeTrialPendingCol,
+		// 				customerFreeTrialCol,
+		// 				signedCol,
+		// 				preview_row.total_leads,
+		// 			]);
+		// 		});
+		// 	}
+
+		// 	var dataTableCallForceDateSyncedOutcome = $(
+		// 		"#mpexusage-callForceOutcomeStatus"
+		// 	).DataTable({
+		// 		data: outcomeStatusDataSet,
+		// 		pageLength: 250,
+		// 		order: [23, "desc"],
+		// 		responsive: true,
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{
+		// 				title: "Outcome", //0
+		// 			},
+		// 			{
+		// 				title: "Suspect - New", //1
+		// 			},
+		// 			{
+		// 				title: "Suspect - Hot Lead", //2
+		// 			},
+		// 			{
+		// 				title: "Suspect - Validated", //5
+		// 			},
+		// 			{
+		// 				title: "Suspect - Unqualified", //4
+		// 			},
+		// 			{
+		// 				title: "Suspect - Qualified", //3
+		// 			},
+		// 			{
+		// 				title: "Suspect - Pre Qualification", //7
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Qualification", //8
+		// 			},
+		// 			{
+		// 				title: "Suspect - Reassign", //6
+		// 			},
+		// 			{
+		// 				title: "Suspect - No Answer", //9
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Contact", //10
+		// 			},
+		// 			{
+		// 				title: "Prospect - In Contact", //11
+		// 			},
+		// 			{
+		// 				title: "Suspect - Parking Lot", //12
+		// 			},
+		// 			{
+		// 				title: "Suspect - Lost", //13
+		// 			},
+		// 			{
+		// 				title: "Suspect - Out of Territory", //14
+		// 			},
+		// 			{
+		// 				title: "Suspect - Customer - Lost", //15
+		// 			},
+		// 			{
+		// 				title: "Prospect - Opportunity", //16
+		// 			},
+		// 			{
+		// 				title: "Prospect - Qualified", //17
+		// 			},
+		// 			{
+		// 				title: "Prospect - Box Sent", //18
+		// 			},
+		// 			{
+		// 				title: "Prospect - Quote Sent", //19
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial Pending", //20
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial", //21
+		// 			},
+		// 			{
+		// 				title: "Customer - Signed", //22
+		// 			},
+		// 			{
+		// 				title: "Total Lead Count", //23
+		// 			},
+		// 		],
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 5, 6, 7, 17, 19, 22],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			const formatter = new Intl.NumberFormat("en-AU", {
+		// 				style: "currency",
+		// 				currency: "AUD",
+		// 				minimumFractionDigits: 2,
+		// 			});
+		// 			// Total Suspect New Lead Count
+		// 			total_suspect_new = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Hot Lead Count
+		// 			total_suspect_hot_lead = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Qualified Count
+		// 			total_suspect_qualified = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Unqualified Count
+		// 			total_suspect_unqualified = api
+		// 				.column(4)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Validated
+		// 			total_suspect_validated = api
+		// 				.column(5)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Reassign
+		// 			total_suspect_reassign = api
+		// 				.column(6)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Follow Up
+		// 			total_suspect_followup = api
+		// 				.column(7)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect LPO Follow Up
+		// 			total_suspect_lpo_followup = api
+		// 				.column(8)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect No Answer
+		// 			total_suspect_no_answer = api
+		// 				.column(9)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect In Contact
+		// 			total_suspect_in_contact = api
+		// 				.column(10)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect In Contact
+		// 			total_prospect_in_contact = api
+		// 				.column(11)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Off Peak Pipline
+		// 			total_suspect_off_peak_pipeline = api
+		// 				.column(12)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Lost
+		// 			total_suspect_lost = api
+		// 				.column(13)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Out of Territory
+		// 			total_suspect_oot = api
+		// 				.column(14)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Customer Lost
+		// 			total_suspect_customer_lost = api
+		// 				.column(15)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Opportunity
+		// 			total_prospect_opportunity = api
+		// 				.column(16)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_qualified = api
+		// 				.column(17)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_box_sent = api
+		// 				.column(18)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Quoite Sent
+		// 			total_prospect_quote_sent = api
+		// 				.column(19)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_customer_free_trial_pending = api
+		// 				.column(20)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_customer_free_trial = api
+		// 				.column(21)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_customer_signed = api
+		// 				.column(22)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Lead Count
+		// 			total_lead = api
+		// 				.column(23)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Update footer
+		// 			$(api.column(1).footer()).html(
+		// 				total_suspect_new +
+		// 					" (" +
+		// 					((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(2).footer()).html(
+		// 				total_suspect_hot_lead +
+		// 					" (" +
+		// 					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(3).footer()).html(
+		// 				total_suspect_qualified +
+		// 					" (" +
+		// 					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(4).footer()).html(
+		// 				total_suspect_unqualified +
+		// 					" (" +
+		// 					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(5).footer()).html(
+		// 				total_suspect_validated +
+		// 					" (" +
+		// 					((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(6).footer()).html(
+		// 				total_suspect_reassign +
+		// 					" (" +
+		// 					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(7).footer()).html(
+		// 				total_suspect_followup +
+		// 					" (" +
+		// 					((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(8).footer()).html(
+		// 				total_suspect_lpo_followup +
+		// 					" (" +
+		// 					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(9).footer()).html(
+		// 				total_suspect_no_answer +
+		// 					" (" +
+		// 					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(10).footer()).html(
+		// 				total_suspect_in_contact +
+		// 					" (" +
+		// 					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(11).footer()).html(
+		// 				total_prospect_in_contact +
+		// 					" (" +
+		// 					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(12).footer()).html(
+		// 				total_suspect_off_peak_pipeline +
+		// 					" (" +
+		// 					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(13).footer()).html(
+		// 				total_suspect_lost +
+		// 					" (" +
+		// 					((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(14).footer()).html(
+		// 				total_suspect_oot +
+		// 					" (" +
+		// 					((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(15).footer()).html(
+		// 				total_suspect_customer_lost +
+		// 					" (" +
+		// 					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(16).footer()).html(
+		// 				total_prospect_opportunity +
+		// 					" (" +
+		// 					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(17).footer()).html(
+		// 				total_prospect_qualified +
+		// 					" (" +
+		// 					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(18).footer()).html(
+		// 				total_prospect_box_sent +
+		// 					" (" +
+		// 					((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(19).footer()).html(
+		// 				total_prospect_quote_sent +
+		// 					" (" +
+		// 					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(20).footer()).html(
+		// 				total_customer_free_trial_pending +
+		// 					" (" +
+		// 					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(21).footer()).html(
+		// 				total_customer_free_trial +
+		// 					" (" +
+		// 					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(22).footer()).html(
+		// 				total_customer_signed +
+		// 					" (" +
+		// 					((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(23).footer()).html(total_lead);
+		// 		},
+		// 	});
+
+		// 	//Sales Reporting - Call Force Campaign - Completed Tasks
+		// 	var callForceCompletedTasksCurrentStatusSearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_lpo_unqualifed_list_2_2_2_2",
+		// 	});
+
+		// 	callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		// callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 		// 	search.createFilter({
+		// 		// 		name: "companyname",
+		// 		// 		join: null,
+		// 		// 		operator: search.Operator.DOESNOTSTARTWITH,
+		// 		// 		values: "TEST",
+		// 		// 	})
+		// 		// );
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		callForceCompletedTasksCurrentStatusSearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	var oldCompletedTaskDate = null;
+		// 	var countCompletedTasks = 0;
+
+		// 	var customer_signed = 0;
+		// 	var suspect_hot_lead = 0;
+		// 	var suspect_reassign = 0;
+		// 	var suspect_lost = 0;
+		// 	var suspect_customer_lost = 0;
+		// 	var suspect_off_peak_pipeline = 0;
+		// 	var prospect_opportunity = 0;
+		// 	var prospecy_quote_sent = 0;
+		// 	var prospecy_box_sent = 0;
+		// 	var prospect_no_answer = 0;
+		// 	var prospect_in_contact = 0;
+		// 	var suspect_oot = 0;
+		// 	var suspect_pre_qualification = 0;
+		// 	var suspect_new = 0;
+		// 	var suspect_qualified = 0;
+		// 	var suspect_pre_qualification = 0;
+		// 	var suspect_in_qualification = 0;
+		// 	var suspect_unqualified = 0;
+		// 	var suspect_in_qualification = 0;
+		// 	var total_leads = 0;
+		// 	var prospect_qualified = 0;
+
+		// 	var suspect_validated = 0;
+		// 	var customer_free_trial = 0;
+		// 	var customer_free_trial_pending = 0;
+		// 	var suspect_no_answer = 0;
+		// 	var suspect_in_contact = 0;
+
+		// 	callForceCompletedTasksCurrentStatusSearch
+		// 		.run()
+		// 		.each(function (callForceLeadsCountByOutcomeStatusResultSet) {
+		// 			var prospectCount = parseInt(
+		// 				callForceLeadsCountByOutcomeStatusResultSet.getValue({
+		// 					name: "internalid",
+		// 					join: "task",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+
+		// 			var custStatus = callForceLeadsCountByOutcomeStatusResultSet.getValue(
+		// 				{
+		// 					name: "entitystatus",
+		// 					summary: "GROUP",
+		// 				}
+		// 			);
+
+		// 			var completedTaskDate =
+		// 				callForceLeadsCountByOutcomeStatusResultSet.getValue({
+		// 					name: "completeddate",
+		// 					join: "task",
+		// 					summary: "GROUP",
+		// 				});
+
+		// 			var callforceCompletedDateSplit = completedTaskDate.split("/");
+		// 			completedTaskDate =
+		// 				callforceCompletedDateSplit[2] +
+		// 				"-" +
+		// 				callforceCompletedDateSplit[1] +
+		// 				"-" +
+		// 				callforceCompletedDateSplit[0];
+
+		// 			if (
+		// 				countCompletedTasks != 0 &&
+		// 				completedTaskDate != oldCompletedTaskDate
+		// 			) {
+		// 				callForceCompletedTasksDataSet.push({
+		// 					callOutcome: oldCompletedTaskDate,
+		// 					suspect_hot_lead: suspect_hot_lead,
+		// 					prospecy_quote_sent: prospecy_quote_sent,
+		// 					suspect_reassign: suspect_reassign,
+		// 					prospect_no_answer: prospect_no_answer,
+		// 					prospect_in_contact: prospect_in_contact,
+		// 					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 					suspect_lost: suspect_lost,
+		// 					suspect_customer_lost: suspect_customer_lost,
+		// 					prospect_opportunity: prospect_opportunity,
+		// 					customer_signed: customer_signed,
+		// 					total_leads: total_leads,
+		// 					suspect_oot: suspect_oot,
+		// 					suspect_pre_qualification: suspect_pre_qualification,
+		// 					suspect_new: suspect_new,
+		// 					suspect_qualified: suspect_qualified,
+		// 					suspect_unqualified: suspect_unqualified,
+		// 					suspect_in_qualification: suspect_in_qualification,
+		// 					suspect_validated: suspect_validated,
+		// 					customer_free_trial: customer_free_trial,
+		// 					suspect_no_answer: suspect_no_answer,
+		// 					suspect_in_contact: suspect_in_contact,
+		// 					prospect_qualified: prospect_qualified,
+		// 					customer_free_trial_pending: customer_free_trial_pending,
+		// 					prospect_box_sent: prospecy_box_sent,
+		// 				});
+
+		// 				customer_signed = 0;
+		// 				suspect_hot_lead = 0;
+		// 				suspect_reassign = 0;
+		// 				suspect_lost = 0;
+		// 				suspect_customer_lost = 0;
+		// 				suspect_off_peak_pipeline = 0;
+		// 				prospect_opportunity = 0;
+		// 				prospecy_quote_sent = 0;
+		// 				prospecy_box_sent = 0;
+		// 				prospect_no_answer = 0;
+		// 				prospect_in_contact = 0;
+		// 				suspect_oot = 0;
+		// 				suspect_pre_qualification = 0;
+		// 				suspect_new = 0;
+		// 				suspect_qualified = 0;
+		// 				suspect_pre_qualification = 0;
+		// 				suspect_in_qualification = 0;
+		// 				suspect_unqualified = 0;
+		// 				suspect_in_qualification = 0;
+		// 				total_leads = 0;
+		// 				prospect_qualified = 0;
+
+		// 				suspect_validated = 0;
+		// 				customer_free_trial = 0;
+		// 				customer_free_trial_pending = 0;
+		// 				suspect_no_answer = 0;
+		// 				suspect_in_contact = 0;
+		// 			}
+
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - Box SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//SUSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//SUSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_pre_qualification +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_in_qualification +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent;
+
+		// 			oldCompletedTaskDate = completedTaskDate;
+		// 			countCompletedTasks++;
+		// 			return true;
+		// 		});
+
+		// 	console.log("countCompletedTasks: " + countCompletedTasks);
+		// 	if (countCompletedTasks > 0) {
+		// 		callForceCompletedTasksDataSet.push({
+		// 			callOutcome: oldCompletedTaskDate,
+		// 			suspect_hot_lead: suspect_hot_lead,
+		// 			prospecy_quote_sent: prospecy_quote_sent,
+		// 			suspect_reassign: suspect_reassign,
+		// 			prospect_no_answer: prospect_no_answer,
+		// 			prospect_in_contact: prospect_in_contact,
+		// 			suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 			suspect_lost: suspect_lost,
+		// 			suspect_customer_lost: suspect_customer_lost,
+		// 			prospect_opportunity: prospect_opportunity,
+		// 			customer_signed: customer_signed,
+		// 			total_leads: total_leads,
+		// 			suspect_oot: suspect_oot,
+		// 			suspect_pre_qualification: suspect_pre_qualification,
+		// 			suspect_new: suspect_new,
+		// 			suspect_qualified: suspect_qualified,
+		// 			suspect_unqualified: suspect_unqualified,
+		// 			suspect_in_qualification: suspect_in_qualification,
+		// 			suspect_validated: suspect_validated,
+		// 			customer_free_trial: customer_free_trial,
+		// 			suspect_no_answer: suspect_no_answer,
+		// 			suspect_in_contact: suspect_in_contact,
+		// 			prospect_qualified: prospect_qualified,
+		// 			customer_free_trial_pending: customer_free_trial_pending,
+		// 			prospect_box_sent: prospecy_box_sent,
+		// 		});
+		// 	}
+
+		// 	console.log(
+		// 		"callForceOutcomeStatusDataSet" + callForceOutcomeStatusDataSet
+		// 	);
+
+		// 	completedTasksStatusDataSet = [];
+		// 	if (!isNullorEmpty(callForceCompletedTasksDataSet)) {
+		// 		callForceCompletedTasksDataSet.forEach(function (preview_row, index) {
+		// 			var hotLeadPercentage = parseInt(
+		// 				(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+		// 			);
+		// 			var hotLeadCol =
+		// 				preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 			var quoteSentPercentage = parseInt(
+		// 				(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var quoteSentCol =
+		// 				preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 			var boxSentPercentage = parseInt(
+		// 				(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var boxSentCol =
+		// 				preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+		// 			var reassignPercentage = parseInt(
+		// 				(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 			);
+		// 			var reassignCol =
+		// 				preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 			var noAnswerPercentage = parseInt(
+		// 				(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var noAnswerCol =
+		// 				preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 			var inContactPercentage = parseInt(
+		// 				(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var inContactCol =
+		// 				preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 			var offPeakPercentage = parseInt(
+		// 				(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var offPeakCol =
+		// 				preview_row.suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				offPeakPercentage +
+		// 				"%)";
+
+		// 			var lostPercentage = parseInt(
+		// 				(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 			var ootPercentage = parseInt(
+		// 				(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 			);
+		// 			var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 			var custLostPercentage = parseInt(
+		// 				(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var custLostCol =
+		// 				preview_row.suspect_customer_lost +
+		// 				" (" +
+		// 				custLostPercentage +
+		// 				"%)";
+
+		// 			var oppPercentage = parseInt(
+		// 				(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 			);
+		// 			var oppCol =
+		// 				preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 			var signedPercentage = parseInt(
+		// 				(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 			);
+		// 			var signedCol =
+		// 				preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 			var suspectPreQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var preQualiCol =
+		// 				preview_row.suspect_pre_qualification +
+		// 				" (" +
+		// 				suspectPreQualificationPercentage +
+		// 				"%)";
+
+		// 			var suspectNewPercentage = parseInt(
+		// 				(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNewCol =
+		// 				preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 			var suspectQualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectQualifiedCol =
+		// 				preview_row.suspect_qualified +
+		// 				" (" +
+		// 				suspectQualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectUnqualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectUnqualifiedCol =
+		// 				preview_row.suspect_unqualified +
+		// 				" (" +
+		// 				suspectUnqualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectInQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_in_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var inQualiCol =
+		// 				preview_row.suspect_in_qualification +
+		// 				" (" +
+		// 				suspectInQualificationPercentage +
+		// 				"%)";
+
+		// 			var suspectValidatedPercentage = parseInt(
+		// 				(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectValidatedCol =
+		// 				preview_row.suspect_validated +
+		// 				" (" +
+		// 				suspectValidatedPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPercentage = parseInt(
+		// 				(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 			);
+		// 			var customerFreeTrialCol =
+		// 				preview_row.customer_free_trial +
+		// 				" (" +
+		// 				customerFreeTrialPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPendingPercentage = parseInt(
+		// 				(preview_row.customer_free_trial_pending /
+		// 					preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var customerFreeTrialPendingCol =
+		// 				preview_row.customer_free_trial_pending +
+		// 				" (" +
+		// 				customerFreeTrialPendingPercentage +
+		// 				"%)";
+
+		// 			var suspectNoAnswerPercentage = parseInt(
+		// 				(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNoAnswerCol =
+		// 				preview_row.suspect_no_answer +
+		// 				" (" +
+		// 				suspectNoAnswerPercentage +
+		// 				"%)";
+
+		// 			var suspectInContactPercentage = parseInt(
+		// 				(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectInContactCol =
+		// 				preview_row.suspect_in_contact +
+		// 				" (" +
+		// 				suspectInContactPercentage +
+		// 				"%)";
+
+		// 			var prospectQualifiedPercentage = parseInt(
+		// 				(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var prospectQualifiedCol =
+		// 				preview_row.prospect_qualified +
+		// 				" (" +
+		// 				prospectQualifiedPercentage +
+		// 				"%)";
+
+		// 			completedTasksStatusDataSet.push([
+		// 				preview_row.callOutcome,
+		// 				suspectNewCol,
+		// 				hotLeadCol,
+		// 				suspectValidatedCol,
+		// 				suspectUnqualifiedCol,
+		// 				suspectQualifiedCol,
+		// 				preQualiCol,
+		// 				inQualiCol,
+		// 				reassignCol,
+		// 				suspectNoAnswerCol,
+		// 				suspectInContactCol,
+		// 				inContactCol,
+		// 				offPeakCol,
+		// 				lostCol,
+		// 				ootCol,
+		// 				custLostCol,
+		// 				oppCol,
+		// 				prospectQualifiedCol,
+		// 				boxSentCol,
+		// 				quoteSentCol,
+		// 				customerFreeTrialPendingCol,
+		// 				customerFreeTrialCol,
+		// 				signedCol,
+		// 				preview_row.total_leads,
+		// 			]);
+		// 		});
+		// 	}
+
+		// 	var dataTableCallForceDateSyncedOutcome = $(
+		// 		"#mpexusage-callForceCompletedTasksCurrentStatus"
+		// 	).DataTable({
+		// 		data: completedTasksStatusDataSet,
+		// 		pageLength: 250,
+		// 		order: [],
+		// 		responsive: true,
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{
+		// 				title: "Date Appointment Completed", //0
+		// 			},
+		// 			{
+		// 				title: "Suspect - New", //1
+		// 			},
+		// 			{
+		// 				title: "Suspect - Hot Lead", //2
+		// 			},
+		// 			{
+		// 				title: "Suspect - Validated", //5
+		// 			},
+		// 			{
+		// 				title: "Suspect - Unqualified", //4
+		// 			},
+		// 			{
+		// 				title: "Suspect - Qualified", //3
+		// 			},
+		// 			{
+		// 				title: "Suspect - Pre Qualification", //7
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Qualification", //8
+		// 			},
+		// 			{
+		// 				title: "Suspect - Reassign", //6
+		// 			},
+		// 			{
+		// 				title: "Suspect - No Answer", //9
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Contact", //10
+		// 			},
+		// 			{
+		// 				title: "Prospect - In Contact", //11
+		// 			},
+		// 			{
+		// 				title: "Suspect - Parking Lot", //12
+		// 			},
+		// 			{
+		// 				title: "Suspect - Lost", //13
+		// 			},
+		// 			{
+		// 				title: "Suspect - Out of Territory", //14
+		// 			},
+		// 			{
+		// 				title: "Suspect - Customer - Lost", //15
+		// 			},
+		// 			{
+		// 				title: "Prospect - Opportunity", //16
+		// 			},
+		// 			{
+		// 				title: "Prospect - Qualified", //17
+		// 			},
+		// 			{
+		// 				title: "Prospect - Box Sent", //18
+		// 			},
+		// 			{
+		// 				title: "Prospect - Quote Sent", //19
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial Pending", //20
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial", //21
+		// 			},
+		// 			{
+		// 				title: "Customer - Signed", //22
+		// 			},
+		// 			{
+		// 				title: "Total Lead Count", //23
+		// 			},
+		// 		],
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 5, 6, 7, 19, 22],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			const formatter = new Intl.NumberFormat("en-AU", {
+		// 				style: "currency",
+		// 				currency: "AUD",
+		// 				minimumFractionDigits: 2,
+		// 			});
+		// 			// Total Suspect New Lead Count
+		// 			total_suspect_new = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Hot Lead Count
+		// 			total_suspect_hot_lead = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Qualified Count
+		// 			total_suspect_qualified = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Unqualified Count
+		// 			total_suspect_unqualified = api
+		// 				.column(4)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Validated
+		// 			total_suspect_validated = api
+		// 				.column(5)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Reassign
+		// 			total_suspect_reassign = api
+		// 				.column(6)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Follow Up
+		// 			total_suspect_followup = api
+		// 				.column(7)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect LPO Follow Up
+		// 			total_suspect_lpo_followup = api
+		// 				.column(8)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect No Answer
+		// 			total_suspect_no_answer = api
+		// 				.column(9)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect In Contact
+		// 			total_suspect_in_contact = api
+		// 				.column(10)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect In Contact
+		// 			total_prospect_in_contact = api
+		// 				.column(11)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Off Peak Pipline
+		// 			total_suspect_off_peak_pipeline = api
+		// 				.column(12)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Lost
+		// 			total_suspect_lost = api
+		// 				.column(13)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Out of Territory
+		// 			total_suspect_oot = api
+		// 				.column(14)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Customer Lost
+		// 			total_suspect_customer_lost = api
+		// 				.column(15)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Opportunity
+		// 			total_prospect_opportunity = api
+		// 				.column(16)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_qualified = api
+		// 				.column(17)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_box_sent = api
+		// 				.column(18)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Quoite Sent
+		// 			total_prospect_quote_sent = api
+		// 				.column(19)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_customer_free_trial_pending = api
+		// 				.column(20)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_customer_free_trial = api
+		// 				.column(21)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_customer_signed = api
+		// 				.column(22)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Lead Count
+		// 			total_lead = api
+		// 				.column(23)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Update footer
+		// 			$(api.column(1).footer()).html(
+		// 				total_suspect_new +
+		// 					" (" +
+		// 					((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(2).footer()).html(
+		// 				total_suspect_hot_lead +
+		// 					" (" +
+		// 					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(3).footer()).html(
+		// 				total_suspect_qualified +
+		// 					" (" +
+		// 					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(4).footer()).html(
+		// 				total_suspect_unqualified +
+		// 					" (" +
+		// 					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(5).footer()).html(
+		// 				total_suspect_validated +
+		// 					" (" +
+		// 					((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(6).footer()).html(
+		// 				total_suspect_reassign +
+		// 					" (" +
+		// 					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(7).footer()).html(
+		// 				total_suspect_followup +
+		// 					" (" +
+		// 					((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(8).footer()).html(
+		// 				total_suspect_lpo_followup +
+		// 					" (" +
+		// 					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(9).footer()).html(
+		// 				total_suspect_no_answer +
+		// 					" (" +
+		// 					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(10).footer()).html(
+		// 				total_suspect_in_contact +
+		// 					" (" +
+		// 					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(11).footer()).html(
+		// 				total_prospect_in_contact +
+		// 					" (" +
+		// 					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(12).footer()).html(
+		// 				total_suspect_off_peak_pipeline +
+		// 					" (" +
+		// 					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(13).footer()).html(
+		// 				total_suspect_lost +
+		// 					" (" +
+		// 					((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(14).footer()).html(
+		// 				total_suspect_oot +
+		// 					" (" +
+		// 					((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(15).footer()).html(
+		// 				total_suspect_customer_lost +
+		// 					" (" +
+		// 					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(16).footer()).html(
+		// 				total_prospect_opportunity +
+		// 					" (" +
+		// 					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(17).footer()).html(
+		// 				total_prospect_qualified +
+		// 					" (" +
+		// 					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(18).footer()).html(
+		// 				total_prospect_box_sent +
+		// 					" (" +
+		// 					((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(19).footer()).html(
+		// 				total_prospect_quote_sent +
+		// 					" (" +
+		// 					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(20).footer()).html(
+		// 				total_customer_free_trial_pending +
+		// 					" (" +
+		// 					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(21).footer()).html(
+		// 				total_customer_free_trial +
+		// 					" (" +
+		// 					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(22).footer()).html(
+		// 				total_customer_signed +
+		// 					" (" +
+		// 					((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(23).footer()).html(total_lead);
+		// 		},
+		// 	});
+		// }
 
 		if (role == 1000) {
 			//Customer Cancellation - Requested Date - All (Monthly)
@@ -6616,7 +6799,7 @@ define([
 		}
 		console.log(
 			"customerCancellationRequestDateDataSet: " +
-				customerCancellationRequestDateDataSet
+			customerCancellationRequestDateDataSet
 		);
 
 		var month_year_customer = []; // creating array for storing browser
@@ -7084,10 +7267,10 @@ define([
 
 				var formattedDate = dateISOToNetsuite(
 					customerCancellationRequestDateSplit[2] +
-						"-" +
-						customerCancellationRequestDateSplit[1] +
-						"-" +
-						customerCancellationRequestDateSplit[0]
+					"-" +
+					customerCancellationRequestDateSplit[1] +
+					"-" +
+					customerCancellationRequestDateSplit[0]
 				);
 
 				var firstDayCustomerCancellationRequestDate = new Date(
@@ -7138,10 +7321,10 @@ define([
 
 					var formattedDate = dateISOToNetsuite(
 						customerSavedDateDateSplit[2] +
-							"-" +
-							customerSavedDateDateSplit[1] +
-							"-" +
-							customerSavedDateDateSplit[0]
+						"-" +
+						customerSavedDateDateSplit[1] +
+						"-" +
+						customerSavedDateDateSplit[0]
 					);
 
 					var firstDayCustomerSavedDate = new Date(
@@ -7288,8 +7471,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -10773,470 +10956,470 @@ define([
 
 		//!
 		// Sales Dashboard - Leads - Prospect Box Sent - Weekly Reporting
-		var prospectBoxSentWeeklyReportingSearch = search.load({
-			type: "customer",
-			id: "customsearch_leads_reporting_weekly_2_21",
-		});
+		// var prospectBoxSentWeeklyReportingSearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_2_21",
+		// });
 
-		prospectBoxSentWeeklyReportingSearch.filters.push(
-			search.createFilter({
-				name: "custrecord_salesrep",
-				join: "CUSTRECORD_CUSTOMER",
-				operator: search.Operator.NONEOF,
-				values: [109783],
-			})
-		);
+		// prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 	search.createFilter({
+		// 		name: "custrecord_salesrep",
+		// 		join: "CUSTRECORD_CUSTOMER",
+		// 		operator: search.Operator.NONEOF,
+		// 		values: [109783],
+		// 	})
+		// );
 
-		if (customer_type == "2") {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "TEST",
-				})
-			);
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTCONTAIN,
-					values: "- Parent",
-				})
-			);
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Shippit Pty Ltd ",
-				})
-			);
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Sendle",
-				})
-			);
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "SC -",
-				})
-			);
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_np_np_customer",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: "@NONE@",
-				})
-			);
-		}
+		// if (customer_type == "2") {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "TEST",
+		// 		})
+		// 	);
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTCONTAIN,
+		// 			values: "- Parent",
+		// 		})
+		// 	);
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Shippit Pty Ltd ",
+		// 		})
+		// 	);
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Sendle",
+		// 		})
+		// 	);
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "SC -",
+		// 		})
+		// 	);
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_np_np_customer",
+		// 			join: null,
+		// 			operator: search.Operator.ANYOF,
+		// 			values: "@NONE@",
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(leadStatus)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
+		// if (!isNullorEmpty(leadStatus)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "entitystatus",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: leadStatus,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(lead_source)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_source,
-				})
-			);
-		}
+		// if (!isNullorEmpty(lead_source)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "leadsource",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_source,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(sales_rep)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
+		// if (!isNullorEmpty(sales_rep)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.IS,
+		// 			values: sales_rep,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(lead_entered_by)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
+		// if (!isNullorEmpty(lead_entered_by)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_lead_entered_by",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_entered_by,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(sales_campaign)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
+		// if (!isNullorEmpty(sales_campaign)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_campaign",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: sales_campaign,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(parent_lpo)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
+		// if (!isNullorEmpty(parent_lpo)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "internalid",
+		// 			join: "custentity_lpo_parent_account",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: parent_lpo,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
+		// if (
+		// 	!isNullorEmpty(date_quote_sent_from) &&
+		// 	!isNullorEmpty(date_quote_sent_to)
+		// ) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_quote_sent_from,
+		// 		})
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_quote_sent_to,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
+		// if (
+		// 	!isNullorEmpty(date_signed_up_from) &&
+		// 	!isNullorEmpty(date_signed_up_to)
+		// ) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_signed_up_from,
+		// 		})
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_signed_up_to,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
+		// if (
+		// 	!isNullorEmpty(commencement_start_date) &&
+		// 	!isNullorEmpty(commencement_last_date)
+		// ) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: commencement_start_date,
+		// 		})
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: commencement_last_date,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
+		// if (
+		// 	!isNullorEmpty(cancelled_start_date) &&
+		// 	!isNullorEmpty(cancelled_last_date)
+		// ) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: cancelled_start_date,
+		// 		})
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: cancelled_last_date,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(zee_id)) {
-			prospectBoxSentWeeklyReportingSearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
+		// if (!isNullorEmpty(zee_id)) {
+		// 	prospectBoxSentWeeklyReportingSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "partner",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: zee_id,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
-		) {
-			var defaultSearchFilters =
-				prospectBoxSentWeeklyReportingSearch.filterExpression;
+		// if (
+		// 	!isNullorEmpty(modified_date_from) &&
+		// 	!isNullorEmpty(modified_date_to)
+		// ) {
+		// 	var defaultSearchFilters =
+		// 		prospectBoxSentWeeklyReportingSearch.filterExpression;
 
-			console.log(
-				"default search filters: " + JSON.stringify(defaultSearchFilters)
-			);
+		// 	console.log(
+		// 		"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
 
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
+		// 	var modifiedDateFilters = [
+		// 		[
+		// 			["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 			"AND",
+		// 			[
+		// 				"activity.custevent_organiser",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 		"AND",
+		// 		[
+		// 			[
+		// 				"usernotes.notedate",
+		// 				"within",
+		// 				[modified_date_from, modified_date_to],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				"usernotes.author",
+		// 				"anyof",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 	];
+		// 	console.log(
+		// 		"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 	);
 
-			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
+		// 	defaultSearchFilters.push("AND");
+		// 	defaultSearchFilters.push(modifiedDateFilters);
 
-			console.log(
-				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
-			);
+		// 	console.log(
+		// 		"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
 
-			prospectBoxSentWeeklyReportingSearch.filterExpression =
-				defaultSearchFilters;
-		}
+		// 	prospectBoxSentWeeklyReportingSearch.filterExpression =
+		// 		defaultSearchFilters;
+		// }
 
-		var count2 = 0;
-		var oldDate2 = null;
+		// var count2 = 0;
+		// var oldDate2 = null;
 
-		total_prospect_count = 0;
-		prospecy_quote_sent = 0;
-		prospect_no_answer = 0;
-		prospect_in_contact = 0;
-		var prospect_opportunity = 0;
+		// total_prospect_count = 0;
+		// prospecy_quote_sent = 0;
+		// prospect_no_answer = 0;
+		// prospect_in_contact = 0;
+		// var prospect_opportunity = 0;
 
-		prospectBoxSentWeeklyReportingSearch
-			.run()
-			.each(function (prospectBoxSentWeeklyReportingSearchResultSet) {
-				var prospectCount = parseInt(
-					prospectBoxSentWeeklyReportingSearchResultSet.getValue({
-						name: "internalid",
-						summary: "COUNT",
-					})
-				);
-				var weekLeadEntered =
-					prospectBoxSentWeeklyReportingSearchResultSet.getValue({
-						name: "formuladate",
-						summary: "GROUP",
-					});
-				var custStatus = parseInt(
-					prospectBoxSentWeeklyReportingSearchResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					})
-				);
-				var custStatusText =
-					prospectBoxSentWeeklyReportingSearchResultSet.getText({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
+		// prospectBoxSentWeeklyReportingSearch
+		// 	.run()
+		// 	.each(function (prospectBoxSentWeeklyReportingSearchResultSet) {
+		// 		var prospectCount = parseInt(
+		// 			prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+		// 				name: "internalid",
+		// 				summary: "COUNT",
+		// 			})
+		// 		);
+		// 		var weekLeadEntered =
+		// 			prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+		// 				name: "formuladate",
+		// 				summary: "GROUP",
+		// 			});
+		// 		var custStatus = parseInt(
+		// 			prospectBoxSentWeeklyReportingSearchResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			})
+		// 		);
+		// 		var custStatusText =
+		// 			prospectBoxSentWeeklyReportingSearchResultSet.getText({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
 
-				if (role == 1000) {
-					var startDate = weekLeadEntered;
-				} else {
-					if (!isNullorEmpty(weekLeadEntered)) {
-						var splitMonthV2 = weekLeadEntered.split("/");
+		// 		if (role == 1000) {
+		// 			var startDate = weekLeadEntered;
+		// 		} else {
+		// 			if (!isNullorEmpty(weekLeadEntered)) {
+		// 				var splitMonthV2 = weekLeadEntered.split("/");
 
-						var formattedDate = dateISOToNetsuite(
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
-						);
+		// 				var formattedDate = dateISOToNetsuite(
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+		// 				);
 
-						var firstDay = new Date(
-							splitMonthV2[0],
-							splitMonthV2[1],
-							1
-						).getDate();
-						var lastDay = new Date(
-							splitMonthV2[0],
-							splitMonthV2[1],
-							0
-						).getDate();
+		// 				var firstDay = new Date(
+		// 					splitMonthV2[0],
+		// 					splitMonthV2[1],
+		// 					1
+		// 				).getDate();
+		// 				var lastDay = new Date(
+		// 					splitMonthV2[0],
+		// 					splitMonthV2[1],
+		// 					0
+		// 				).getDate();
 
-						if (firstDay < 10) {
-							firstDay = "0" + firstDay;
-						}
+		// 				if (firstDay < 10) {
+		// 					firstDay = "0" + firstDay;
+		// 				}
 
-						// var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-						var startDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
-						var monthsStartDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
-						// var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-						var lastDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
-					} else {
-						var startDate = "NO DATE";
-					}
-				}
+		// 				// var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+		// 				var startDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+		// 				var monthsStartDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+		// 				// var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+		// 				var lastDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+		// 			} else {
+		// 				var startDate = "NO DATE";
+		// 			}
+		// 		}
 
-				debt_set7.push({
-					dateUsed: startDate,
-					prospect_quote: prospectCount,
-					total_prospect_count: prospectCount,
-				});
+		// 		debt_set7.push({
+		// 			dateUsed: startDate,
+		// 			prospect_quote: prospectCount,
+		// 			total_prospect_count: prospectCount,
+		// 		});
 
-				return true;
-			});
+		// 		return true;
+		// 	});
 
-		previewDataSetBoxSent = [];
-		csvPreviewSet2 = [];
+		// previewDataSetBoxSent = [];
+		// csvPreviewSet2 = [];
 
-		console.log("debt_set7: " + debt_set7);
+		// console.log("debt_set7: " + debt_set7);
 
-		if (!isNullorEmpty(debt_set7)) {
-			debt_set7.forEach(function (preview_row, index) {
-				previewDataSetBoxSent.push([
-					preview_row.dateUsed,
-					preview_row.prospect_quote,
-					preview_row.total_prospect_count,
-				]);
-			});
-		}
+		// if (!isNullorEmpty(debt_set7)) {
+		// 	debt_set7.forEach(function (preview_row, index) {
+		// 		previewDataSetBoxSent.push([
+		// 			preview_row.dateUsed,
+		// 			preview_row.prospect_quote,
+		// 			preview_row.total_prospect_count,
+		// 		]);
+		// 	});
+		// }
 
-		console.log("previewDataSetBoxSent: " + previewDataSetBoxSent);
+		// console.log("previewDataSetBoxSent: " + previewDataSetBoxSent);
 
-		var month_year = []; // creating array for storing browse
+		// var month_year = []; // creating array for storing browse
 
-		var prospect_box_sent = [];
-		var total_prospects_box_sent_leads = [];
+		// var prospect_box_sent = [];
+		// var total_prospects_box_sent_leads = [];
 
-		for (var i = 0; i < previewDataSetBoxSent.length; i++) {
-			month_year.push(previewDataSetBoxSent[i][0]);
-			prospect_box_sent[previewDataSetBoxSent[i][0]] =
-				previewDataSetBoxSent[i][1];
-			total_prospects_box_sent_leads[previewDataSetBoxSent[i][0]] =
-				previewDataSetBoxSent[i][2];
-		}
+		// for (var i = 0; i < previewDataSetBoxSent.length; i++) {
+		// 	month_year.push(previewDataSetBoxSent[i][0]);
+		// 	prospect_box_sent[previewDataSetBoxSent[i][0]] =
+		// 		previewDataSetBoxSent[i][1];
+		// 	total_prospects_box_sent_leads[previewDataSetBoxSent[i][0]] =
+		// 		previewDataSetBoxSent[i][2];
+		// }
 
-		var series_data_box_sent143 = [];
-		var series_data_box_sent144 = [];
+		// var series_data_box_sent143 = [];
+		// var series_data_box_sent144 = [];
 
-		var categores_box_sent5 = []; // creating empty array for highcharts
-		// categories
-		Object.keys(prospect_box_sent).map(function (item, key) {
-			series_data_box_sent143.push(
-				parseInt(total_prospects_box_sent_leads[item])
-			);
-			series_data_box_sent144.push(parseInt(prospect_box_sent[item]));
-			categores_box_sent5.push(item);
-		});
+		// var categores_box_sent5 = []; // creating empty array for highcharts
+		// // categories
+		// Object.keys(prospect_box_sent).map(function (item, key) {
+		// 	series_data_box_sent143.push(
+		// 		parseInt(total_prospects_box_sent_leads[item])
+		// 	);
+		// 	series_data_box_sent144.push(parseInt(prospect_box_sent[item]));
+		// 	categores_box_sent5.push(item);
+		// });
 
-		plotChartProspectsBoxSent(
-			series_data_box_sent143,
-			series_data_box_sent144,
-			categores_box_sent5
-		);
+		// plotChartProspectsBoxSent(
+		// 	series_data_box_sent143,
+		// 	series_data_box_sent144,
+		// 	categores_box_sent5
+		// );
 
 		if (role == 1000) {
 			// Sales Dashboard - Leads - Suspects - Monthly Reporting
@@ -12701,7 +12884,7 @@ define([
 
 		console.log(
 			"SUSPECTS OFF PEAK PIPELINE GRAPH DATA: " +
-				suspectsOffPeakPipelineChartDatSet
+			suspectsOffPeakPipelineChartDatSet
 		);
 
 		var month_year_suspects_off_peak_pipeline = []; // creating array for storing browser
@@ -15837,8650 +16020,8650 @@ define([
 			series_data301
 		);
 
-		if (role == 1000) {
-			// Sales Dashboard - Leads by Status - Monthly Reporting
-			var leadsListBySalesRepWeeklySearch = search.load({
-				type: "customer",
-				id: "customsearch_leads_reporting_weekly_3",
-			});
-		} else {
-			// Sales Dashboard - Leads by Status - Weekly Reporting
-			var leadsListBySalesRepWeeklySearch = search.load({
-				type: "customer",
-				id: "customsearch_leads_reporting_weekly",
-			});
-		}
-
-		leadsListBySalesRepWeeklySearch.filters.push(
-			search.createFilter({
-				name: "custrecord_salesrep",
-				join: "CUSTRECORD_CUSTOMER",
-				operator: search.Operator.NONEOF,
-				values: [109783],
-			})
-		);
-
-		if (customer_type == "2") {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "TEST",
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTCONTAIN,
-					values: "- Parent",
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Shippit Pty Ltd ",
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Sendle",
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "SC -",
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_np_np_customer",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: "@NONE@",
-				})
-			);
-		}
-
-		if (!isNullorEmpty(leadStatus)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_source)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_source,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_rep)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_entered_by)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_campaign)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(parent_lpo)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(zee_id)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
-		) {
-			var defaultSearchFilters =
-				leadsListBySalesRepWeeklySearch.filterExpression;
-
-			console.log(
-				"default search filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
-
-			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
-
-			console.log(
-				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			leadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
-		}
-
-		var count1 = 0;
-		var oldDate1 = null;
-
-		customer_signed = 0;
-		suspect_hot_lead = 0;
-		suspect_reassign = 0;
-		suspect_lost = 0;
-		var suspect_oot = 0;
-		suspect_customer_lost = 0;
-		suspect_off_peak_pipeline = 0;
-		var prospect_opportunity = 0;
-		prospecy_quote_sent = 0;
-		prospecy_box_sent = 0;
-		prospect_no_answer = 0;
-		prospect_in_contact = 0;
-		suspect_follow_up = 0;
-		var prospect_qualified = 0;
-		suspect_new = 0;
-
-		suspect_lpo_followup = 0;
-		suspect_qualified = 0;
-		suspect_unqualified = 0;
-		var suspect_pre_qualification = 0;
-		var suspect_in_qualification = 0;
-
-		suspect_validated = 0;
-		customer_free_trial = 0;
-		customer_free_trial_pending = 0;
-
-		suspect_no_answer = 0;
-		suspect_in_contact = 0;
-
-		leadsListBySalesRepWeeklySearch
-			.run()
-			.each(function (prospectListBySalesRepWeeklyResultSet) {
-				var prospectCount = parseInt(
-					prospectListBySalesRepWeeklyResultSet.getValue({
-						name: "internalid",
-						summary: "COUNT",
-					})
-				);
-				var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-					name: "custentity_date_lead_entered",
-					summary: "GROUP",
-				});
-				var custStatus = parseInt(
-					prospectListBySalesRepWeeklyResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					})
-				);
-				var custStatusText = prospectListBySalesRepWeeklyResultSet.getText({
-					name: "entitystatus",
-					summary: "GROUP",
-				});
-
-				if (role == 1000) {
-					var startDate = weekLeadEntered;
-				} else {
-					if (!isNullorEmpty(weekLeadEntered)) {
-						var splitMonthV2 = weekLeadEntered.split("/");
-
-						var formattedDate = dateISOToNetsuite(
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
-						);
-
-						var firstDay = new Date(
-							splitMonthV2[0],
-							splitMonthV2[1],
-							1
-						).getDate();
-						var lastDay = new Date(
-							splitMonthV2[0],
-							splitMonthV2[1],
-							0
-						).getDate();
-
-						if (firstDay < 10) {
-							firstDay = "0" + firstDay;
-						}
-
-						// var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-						var startDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
-						var monthsStartDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
-						// var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-						var lastDate =
-							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
-					} else {
-						var startDate = "NO DATE";
-					}
-				}
-
-				if (count1 == 0) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = parseInt(prospectCount);
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = parseInt(prospectCount);
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = parseInt(prospectCount);
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = parseInt(prospectCount);
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = parseInt(prospectCount);
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = parseInt(prospectCount);
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = parseInt(prospectCount);
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification;
-				} else if (oldDate1 != null && oldDate1 == startDate) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed += prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead += prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost += prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot += parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost += prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign += prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent += prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent += parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer += prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact += prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline += prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity += parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up += parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new += parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified += parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup += parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated += parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial += parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial_pending += parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer += parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact += parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification += parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification += parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification;
-				} else if (oldDate1 != null && oldDate1 != startDate) {
-					debt_set2.push({
-						dateUsed: oldDate1,
-						suspect_hot_lead: suspect_hot_lead,
-						prospecy_quote_sent: prospecy_quote_sent,
-						suspect_reassign: suspect_reassign,
-						prospect_no_answer: prospect_no_answer,
-						prospect_in_contact: prospect_in_contact,
-						suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-						suspect_lost: suspect_lost,
-						suspect_customer_lost: suspect_customer_lost,
-						prospect_opportunity: prospect_opportunity,
-						customer_signed: customer_signed,
-						total_leads: total_leads,
-						suspect_oot: suspect_oot,
-						suspect_follow_up: suspect_follow_up,
-						suspect_new: suspect_new,
-						suspect_qualified: suspect_qualified,
-						suspect_unqualified: suspect_unqualified,
-						suspect_lpo_followup: suspect_lpo_followup,
-						suspect_validated: suspect_validated,
-						customer_free_trial: customer_free_trial,
-						suspect_no_answer: suspect_no_answer,
-						suspect_in_contact: suspect_in_contact,
-						prospect_qualified: prospect_qualified,
-						customer_free_trial_pending: customer_free_trial_pending,
-						prospect_box_sent: prospecy_box_sent,
-						suspect_pre_qualification: suspect_pre_qualification,
-						suspect_in_qualification: suspect_in_qualification,
-					});
-
-					customer_signed = 0;
-					suspect_hot_lead = 0;
-					suspect_reassign = 0;
-					suspect_lost = 0;
-					suspect_customer_lost = 0;
-					suspect_off_peak_pipeline = 0;
-					prospect_opportunity = 0;
-					prospecy_quote_sent = 0;
-					prospecy_box_sent = 0;
-					prospect_no_answer = 0;
-					prospect_in_contact = 0;
-					suspect_oot = 0;
-					suspect_follow_up = 0;
-					suspect_new = 0;
-					suspect_qualified = 0;
-					suspect_unqualified = 0;
-					suspect_lpo_followup = 0;
-					total_leads = 0;
-					prospect_qualified = 0;
-
-					suspect_validated = 0;
-					customer_free_trial = 0;
-					customer_free_trial_pending = 0;
-					suspect_no_answer = 0;
-					suspect_in_contact = 0;
-					suspect_pre_qualification = 0;
-					suspect_in_qualification = 0;
-
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification;
-				}
-
-				count1++;
-				oldDate1 = startDate;
-				return true;
-			});
-
-		if (count1 > 0) {
-			debt_set2.push({
-				dateUsed: oldDate1,
-				suspect_hot_lead: suspect_hot_lead,
-				prospecy_quote_sent: prospecy_quote_sent,
-				suspect_reassign: suspect_reassign,
-				prospect_no_answer: prospect_no_answer,
-				prospect_in_contact: prospect_in_contact,
-				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-				suspect_lost: suspect_lost,
-				suspect_customer_lost: suspect_customer_lost,
-				prospect_opportunity: prospect_opportunity,
-				customer_signed: customer_signed,
-				total_leads: total_leads,
-				suspect_oot: suspect_oot,
-				suspect_follow_up: suspect_follow_up,
-				suspect_new: suspect_new,
-				suspect_qualified: suspect_qualified,
-				suspect_unqualified: suspect_unqualified,
-				suspect_lpo_followup: suspect_lpo_followup,
-				suspect_validated: suspect_validated,
-				customer_free_trial: customer_free_trial,
-				suspect_no_answer: suspect_no_answer,
-				suspect_in_contact: suspect_in_contact,
-				prospect_qualified: prospect_qualified,
-				customer_free_trial_pending: customer_free_trial_pending,
-				prospect_box_sent: prospecy_box_sent,
-				suspect_pre_qualification: suspect_pre_qualification,
-				suspect_in_qualification: suspect_in_qualification,
-			});
-		}
-
-		console.log("debt_set2: " + JSON.stringify(debt_set2));
-
-		previewDataSet = [];
-		csvPreviewSet = [];
-
-		var overDataSet = [];
-
-		if (!isNullorEmpty(debt_set2)) {
-			debt_set2.forEach(function (preview_row, index) {
-				var hotLeadPercentage = parseInt(
-					(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-				);
-				var hotLeadCol =
-					preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-				var quoteSentPercentage = parseInt(
-					(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-				);
-				var quoteSentCol =
-					preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-				var boxSentPercentage = parseInt(
-					(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-				);
-				var boxSentCol =
-					preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-				var reassignPercentage = parseInt(
-					(preview_row.suspect_reassign / preview_row.total_leads) * 100
-				);
-				var reassignCol =
-					preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-				var noAnswerPercentage = parseInt(
-					(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-				);
-				var noAnswerCol =
-					preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-				var inContactPercentage = parseInt(
-					(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-				);
-				var inContactCol =
-					preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-				var offPeakPercentage = parseInt(
-					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-						100
-				);
-				var offPeakCol =
-					preview_row.suspect_off_peak_pipeline +
-					" (" +
-					offPeakPercentage +
-					"%)";
-
-				var lostPercentage = parseInt(
-					(preview_row.suspect_lost / preview_row.total_leads) * 100
-				);
-				var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-				var ootPercentage = parseInt(
-					(preview_row.suspect_oot / preview_row.total_leads) * 100
-				);
-				var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-				var custLostPercentage = parseInt(
-					(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-				);
-				var custLostCol =
-					preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
-
-				var oppPercentage = parseInt(
-					(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-				);
-				var oppCol =
-					preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-				var signedPercentage = parseInt(
-					(preview_row.customer_signed / preview_row.total_leads) * 100
-				);
-				var signedCol =
-					preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-				var suspectFollowUpPErcentage = parseInt(
-					(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-				);
-				var followUpCol =
-					preview_row.suspect_follow_up +
-					" (" +
-					suspectFollowUpPErcentage +
-					"%)";
-
-				var suspectNewPercentage = parseInt(
-					(preview_row.suspect_new / preview_row.total_leads) * 100
-				);
-				var suspectNewCol =
-					preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-				var suspectQualifiedPercentage = parseInt(
-					(preview_row.suspect_qualified / preview_row.total_leads) * 100
-				);
-				var suspectQualifiedCol =
-					preview_row.suspect_qualified +
-					" (" +
-					suspectQualifiedPercentage +
-					"%)";
-
-				var suspectUnqualifiedPercentage = parseInt(
-					(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-				);
-				var suspectUnqualifiedCol =
-					preview_row.suspect_unqualified +
-					" (" +
-					suspectUnqualifiedPercentage +
-					"%)";
-
-				var suspectLPOFollowupPercentage = parseInt(
-					(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-				);
-				var suspectLPOFollowupwCol =
-					preview_row.suspect_lpo_followup +
-					" (" +
-					suspectLPOFollowupPercentage +
-					"%)";
-
-				var suspectValidatedPercentage = parseInt(
-					(preview_row.suspect_validated / preview_row.total_leads) * 100
-				);
-				var suspectValidatedCol =
-					preview_row.suspect_validated +
-					" (" +
-					suspectValidatedPercentage +
-					"%)";
-
-				var customerFreeTrialPercentage = parseInt(
-					(preview_row.customer_free_trial / preview_row.total_leads) * 100
-				);
-				var customerFreeTrialCol =
-					preview_row.customer_free_trial +
-					" (" +
-					customerFreeTrialPercentage +
-					"%)";
-
-				var customerFreeTrialPendingPercentage = parseInt(
-					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
-						100
-				);
-				var customerFreeTrialPendingCol =
-					preview_row.customer_free_trial_pending +
-					" (" +
-					customerFreeTrialPendingPercentage +
-					"%)";
-
-				var suspectNoAnswerPercentage = parseInt(
-					(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-				);
-				var suspectNoAnswerCol =
-					preview_row.suspect_no_answer +
-					" (" +
-					suspectNoAnswerPercentage +
-					"%)";
-
-				var suspectInContactPercentage = parseInt(
-					(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-				);
-				var suspectInContactCol =
-					preview_row.suspect_in_contact +
-					" (" +
-					suspectInContactPercentage +
-					"%)";
-
-				var prospectQualifiedPercentage = parseInt(
-					(preview_row.prospect_qualified / preview_row.total_leads) * 100
-				);
-				var prospectQualifiedCol =
-					preview_row.prospect_qualified +
-					" (" +
-					prospectQualifiedPercentage +
-					"%)";
-
-				var suspectPreQualifcationPercentage = parseInt(
-					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-						100
-				);
-				var suspectPreQualificationCol =
-					preview_row.suspect_pre_qualification +
-					" (" +
-					suspectPreQualifcationPercentage +
-					"%)";
-
-				var suspectInQualificationPercentage = parseInt(
-					(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
-				);
-				var suspectInQualificationCol =
-					preview_row.suspect_in_qualification +
-					" (" +
-					suspectInQualificationPercentage +
-					"%)";
-
-				overDataSet.push([
-					preview_row.dateUsed,
-					preview_row.suspect_new,
-					preview_row.suspect_hot_lead,
-					preview_row.suspect_validated,
-					preview_row.suspect_qualified,
-					preview_row.suspect_unqualified,
-					preview_row.suspect_pre_qualification,
-					preview_row.suspect_in_qualification,
-					preview_row.suspect_reassign,
-					preview_row.suspect_follow_up,
-					preview_row.suspect_no_answer,
-					preview_row.suspect_in_contact,
-					preview_row.suspect_lpo_followup,
-					preview_row.prospect_in_contact,
-					preview_row.suspect_off_peak_pipeline,
-					preview_row.suspect_lost,
-					preview_row.suspect_oot,
-					preview_row.suspect_customer_lost,
-					preview_row.prospect_opportunity,
-					preview_row.prospect_qualified,
-					preview_row.prospect_box_sent,
-					preview_row.prospecy_quote_sent,
-					preview_row.customer_free_trial_pending,
-					preview_row.customer_free_trial,
-					preview_row.customer_signed,
-					preview_row.total_leads,
-				]);
-
-				previewDataSet.push([
-					preview_row.dateUsed,
-					suspectNewCol,
-					hotLeadCol,
-					suspectValidatedCol,
-					suspectQualifiedCol,
-					suspectUnqualifiedCol,
-					suspectPreQualificationCol,
-					suspectInQualificationCol,
-					reassignCol,
-					followUpCol,
-					suspectLPOFollowupwCol,
-					suspectNoAnswerCol,
-					suspectInContactCol,
-					inContactCol,
-					offPeakCol,
-					lostCol,
-					ootCol,
-					custLostCol,
-					oppCol,
-					prospectQualifiedCol,
-					boxSentCol,
-					quoteSentCol,
-					customerFreeTrialPendingCol,
-					customerFreeTrialCol,
-					signedCol,
-					preview_row.total_leads,
-				]);
-			});
-		}
-
-		console.log("previewDataSet");
-		console.log(previewDataSet);
-
-		var dataTablePreview = $("#mpexusage-preview").DataTable({
-			destroy: true,
-			data: previewDataSet,
-			pageLength: 1000,
-			responsive: true,
-			layout: {
-				topStart: {
-					buttons: [
-						{
-							extend: "copy",
-							text: "Copy",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "csv",
-							text: "CSV",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "excel",
-							text: "Excel",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "pdf",
-							text: "PDF",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "print",
-							text: "Print",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-					],
-				},
-			},
-			columns: [
-				{
-					title: "Period", //0
-				},
-				{
-					title: "Suspect - New", //1
-				},
-				{
-					title: "Suspect - Hot Lead", //2
-				},
-				{
-					title: "Suspect - Validated", //3
-				},
-				{
-					title: "Suspect - Qualified", //4
-				},
-				{
-					title: "Suspect - Unqualified", //5
-				},
-				{
-					title: "Suspect - Pre Qualification", //6
-				},
-				{
-					title: "Suspect - In Qualification", //7
-				},
-				{
-					title: "Suspect - Reassign", //8
-				},
-				{
-					title: "Suspect - Follow Up", //9
-				},
-				{
-					title: "Suspect - LPO Follow Up", //10
-				},
-				{
-					title: "Suspect - No Answer", //11
-				},
-				{
-					title: "Suspect - In Contact", //12
-				},
-				{
-					title: "Prospect - In Contact", //13
-				},
-				{
-					title: "Suspect - Parking Lot", //14
-				},
-				{
-					title: "Suspect - Lost", //15
-				},
-				{
-					title: "Suspect - Out of Territory", //16
-				},
-				{
-					title: "Suspect - Customer - Lost", //17
-				},
-				{
-					title: "Prospect - Opportunity", //18
-				},
-				{
-					title: "Prospect - Qualified", //19
-				},
-				{
-					title: "Prospect - Box Sent", //20
-				},
-				{
-					title: "Prospect - Quote Sent", //21
-				},
-				{
-					title: "Customer - Free Trial Pending", //22
-				},
-				{
-					title: "Customer - Free Trial", //23
-				},
-				{
-					title: "Customer - Signed", //24
-				},
-				{
-					title: "Total Lead Count", //25
-				},
-			],
-			columnDefs: [
-				{
-					targets: [0, 5, 19, 23, 24],
-					className: "bolded",
-				},
-			],
-			footerCallback: function (row, data, start, end, display) {
-				var api = this.api(),
-					data;
-
-				// Remove the formatting to get integer data for summation
-				var intVal = function (i) {
-					return parseInt(i);
-				};
-
-				const formatter = new Intl.NumberFormat("en-AU", {
-					style: "currency",
-					currency: "AUD",
-					minimumFractionDigits: 2,
-				});
-				// Total Suspect New Lead Count
-				total_suspect_new = api
-					.column(1)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Hot Lead Count
-				total_suspect_hot_lead = api
-					.column(2)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Qualified Count
-				total_suspect_qualified = api
-					.column(3)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Unqualified Count
-				total_suspect_unqualified = api
-					.column(4)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Validated
-				total_suspect_validated = api
-					.column(5)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Reassign
-				total_suspect_reassign = api
-					.column(6)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Follow Up
-				total_suspect_followup = api
-					.column(7)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect LPO Follow Up
-				total_suspect_lpo_followup = api
-					.column(8)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect No Answer
-				total_suspect_no_answer = api
-					.column(9)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect In Contact
-				total_suspect_in_contact = api
-					.column(10)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect In Contact
-				total_prospect_in_contact = api
-					.column(11)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Off Peak Pipline
-				total_suspect_off_peak_pipeline = api
-					.column(12)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Lost
-				total_suspect_lost = api
-					.column(13)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Out of Territory
-				total_suspect_oot = api
-					.column(14)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Customer Lost
-				total_suspect_customer_lost = api
-					.column(15)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Opportunity
-				total_prospect_opportunity = api
-					.column(16)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_qualified = api
-					.column(17)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_box_sent = api
-					.column(18)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Quoite Sent
-				total_prospect_quote_sent = api
-					.column(19)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial Pending
-				total_customer_free_trial_pending = api
-					.column(20)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial
-				total_customer_free_trial = api
-					.column(21)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Signed
-				total_customer_signed = api
-					.column(22)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v1 = api
-					.column(23)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v2 = api
-					.column(24)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Lead Count
-				total_lead = api
-					.column(25)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Update footer
-				$(api.column(1).footer()).html(
-					total_suspect_new +
-						" (" +
-						((total_suspect_new / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(2).footer()).html(
-					total_suspect_hot_lead +
-						" (" +
-						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(3).footer()).html(
-					total_suspect_qualified +
-						" (" +
-						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(4).footer()).html(
-					total_suspect_unqualified +
-						" (" +
-						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(5).footer()).html(
-					total_suspect_validated +
-						" (" +
-						((total_suspect_validated / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(6).footer()).html(
-					total_suspect_reassign +
-						" (" +
-						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(7).footer()).html(
-					total_suspect_followup +
-						" (" +
-						((total_suspect_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(8).footer()).html(
-					total_suspect_lpo_followup +
-						" (" +
-						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(9).footer()).html(
-					total_suspect_no_answer +
-						" (" +
-						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(10).footer()).html(
-					total_suspect_in_contact +
-						" (" +
-						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(11).footer()).html(
-					total_prospect_in_contact +
-						" (" +
-						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(12).footer()).html(
-					total_suspect_off_peak_pipeline +
-						" (" +
-						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(13).footer()).html(
-					total_suspect_lost +
-						" (" +
-						((total_suspect_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(14).footer()).html(
-					total_suspect_oot +
-						" (" +
-						((total_suspect_oot / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(15).footer()).html(
-					total_suspect_customer_lost +
-						" (" +
-						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(16).footer()).html(
-					total_prospect_opportunity +
-						" (" +
-						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(17).footer()).html(
-					total_prospect_qualified +
-						" (" +
-						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(18).footer()).html(
-					total_prospect_box_sent +
-						" (" +
-						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(19).footer()).html(
-					total_prospect_quote_sent +
-						" (" +
-						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(20).footer()).html(
-					total_customer_free_trial_pending +
-						" (" +
-						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-							0
-						) +
-						"%)"
-				);
-
-				$(api.column(21).footer()).html(
-					total_customer_free_trial +
-						" (" +
-						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(22).footer()).html(
-					total_customer_signed +
-						" (" +
-						((total_customer_signed / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(23).footer()).html(
-					total_lead_v1 +
-						" (" +
-						((total_lead_v1 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(24).footer()).html(
-					total_lead_v2 +
-						" (" +
-						((total_lead_v2 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(25).footer()).html(total_lead);
-			},
-		});
-
-		saveCsv(previewDataSet);
-
-		var data = overDataSet;
-
-		var month_year = []; // creating array for storing browser
-		var customer_signed = [];
-		var suspect_hot_lead = [];
-		var suspect_reassign = [];
-		var suspect_lost = [];
-		var suspect_oot = [];
-		var suspect_customer_lost = [];
-		var suspect_off_peak_pipeline = [];
-		var prospect_opportunity = [];
-		var prospect_qualified = [];
-		var prospecy_quote_sent = [];
-		var prospecy_box_sent = [];
-		var prospect_no_answer = [];
-		var prospect_in_contact = [];
-		var suspect_follow_up = [];
-		var suspect_new = [];
-		var suspect_qualified = [];
-		var suspect_unqualified = [];
-		var suspect_lpo_followup = [];
-		var suspect_validated = [];
-		var customer_free_trial = [];
-		var customer_free_trial_pending = [];
-		var susect_no_answer = [];
-		var suspect_in_contact = [];
-		var suspect_pre_qualification = [];
-		var suspect_in_qualification = [];
-		var total_leads = [];
-
-		for (var i = 0; i < data.length; i++) {
-			month_year.push(data[i][0]);
-			suspect_new[data[i][0]] = data[i][1];
-			suspect_hot_lead[data[i][0]] = data[i][2];
-			suspect_qualified[data[i][0]] = data[i][4];
-			suspect_unqualified[data[i][0]] = data[i][5];
-			suspect_validated[data[i][0]] = data[i][3];
-			suspect_pre_qualification[data[i][0]] = data[i][6];
-			suspect_in_qualification[data[i][0]] = data[i][7];
-			suspect_reassign[data[i][0]] = data[i][8];
-			suspect_follow_up[data[i][0]] = data[i][9];
-			suspect_lpo_followup[data[i][0]] = data[i][10];
-			suspect_no_answer[data[i][0]] = data[i][11];
-			suspect_in_contact[data[i][0]] = data[i][12];
-			prospect_in_contact[data[i][0]] = data[i][13];
-			suspect_off_peak_pipeline[data[i][0]] = data[i][14];
-			suspect_lost[data[i][0]] = data[i][15];
-			suspect_oot[data[i][0]] = data[i][16];
-			suspect_customer_lost[data[i][0]] = data[i][17];
-			prospect_opportunity[data[i][0]] = data[i][18];
-			prospect_qualified[data[i][0]] = data[i][19];
-			prospecy_box_sent[data[i][0]] = data[i][20];
-			prospecy_quote_sent[data[i][0]] = data[i][21];
-			customer_free_trial_pending[data[i][0]] = data[i][22];
-			customer_free_trial[data[i][0]] = data[i][23];
-			customer_signed[data[i][0]] = data[i][24];
-			total_leads[data[i][0]] = data[i][25];
-		}
-
-		console.log("prospecy_box_sent" + prospecy_box_sent);
-
-		var count = {}; // creating object for getting categories with
-		// count
-		month_year.forEach(function (i) {
-			count[i] = (count[i] || 0) + 1;
-		});
-
-		var series_data20 = [];
-		var series_data21 = [];
-		var series_data22 = [];
-		var series_data23 = [];
-		var series_data24 = [];
-		var series_data25 = [];
-		var series_data26 = [];
-		var series_data27 = [];
-		var series_data28 = [];
-		var series_data29 = [];
-		var series_data30 = [];
-		var series_data31 = [];
-		var series_data32 = [];
-		var series_data33 = [];
-		var series_data34 = [];
-		var series_data20a = [];
-		var series_data21a = [];
-		var series_data22a = [];
-		var series_data23a = [];
-		var series_data24a = [];
-		var series_data25a = [];
-		var series_data26a = [];
-		var series_data27a = [];
-		var series_data28a = [];
-		var series_data29a = [];
-		var series_data30a = [];
-		var series_data31a = [];
-
-		var categores1 = []; // creating empty array for highcharts
-		// categories
-		Object.keys(prospecy_quote_sent).map(function (item, key) {
-			series_data20.push(parseInt(customer_signed[item]));
-			series_data21.push(parseInt(suspect_hot_lead[item]));
-			series_data22.push(parseInt(suspect_reassign[item]));
-			series_data23.push(parseInt(suspect_lost[item]));
-			series_data24.push(parseInt(suspect_customer_lost[item]));
-			series_data25.push(parseInt(suspect_off_peak_pipeline[item]));
-			series_data26.push(parseInt(prospecy_quote_sent[item]));
-			series_data27.push(parseInt(prospect_no_answer[item]));
-			series_data28.push(parseInt(prospect_in_contact[item]));
-			series_data29.push(parseInt(total_leads[item]));
-			series_data31.push(parseInt(prospect_opportunity[item]));
-			series_data32.push(parseInt(suspect_oot[item]));
-			series_data33.push(parseInt(suspect_follow_up[item]));
-			series_data34.push(parseInt(suspect_new[item]));
-			series_data20a.push(parseInt(suspect_qualified[item]));
-			series_data28a.push(parseInt(suspect_unqualified[item]));
-			series_data21a.push(parseInt(suspect_lpo_followup[item]));
-			series_data22a.push(parseInt(suspect_validated[item]));
-			series_data23a.push(parseInt(customer_free_trial[item]));
-			series_data24a.push(parseInt(suspect_no_answer[item]));
-			series_data25a.push(parseInt(suspect_in_contact[item]));
-			series_data26a.push(parseInt(prospect_qualified[item]));
-			series_data27a.push(parseInt(customer_free_trial_pending[item]));
-			series_data29a.push(parseInt(prospecy_box_sent[item]));
-			series_data30a.push(parseInt(suspect_pre_qualification[item]));
-			series_data31a.push(parseInt(suspect_in_qualification[item]));
-			categores1.push(item);
-		});
-
-		plotChartPreview(
-			series_data20,
-			series_data21,
-			series_data22,
-			series_data23,
-			series_data24,
-			series_data25,
-			series_data26,
-			series_data27,
-			series_data28,
-			series_data29,
-			series_data31,
-			series_data32,
-			series_data33,
-			series_data34,
-			categores1,
-			series_data20a,
-			series_data21a,
-			series_data22a,
-			series_data23a,
-			series_data24a,
-			series_data25a,
-			series_data26a,
-			series_data27a,
-			series_data28a,
-			series_data29a,
-			series_data30a,
-			series_data31a
-		);
+		// if (role == 1000) {
+		// 	// Sales Dashboard - Leads by Status - Monthly Reporting
+		// 	var leadsListBySalesRepWeeklySearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_leads_reporting_weekly_3",
+		// 	});
+		// } else {
+		// 	// Sales Dashboard - Leads by Status - Weekly Reporting
+		// 	var leadsListBySalesRepWeeklySearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_leads_reporting_weekly",
+		// 	});
+		// }
+
+		// leadsListBySalesRepWeeklySearch.filters.push(
+		// 	search.createFilter({
+		// 		name: "custrecord_salesrep",
+		// 		join: "CUSTRECORD_CUSTOMER",
+		// 		operator: search.Operator.NONEOF,
+		// 		values: [109783],
+		// 	})
+		// );
+
+		// if (customer_type == "2") {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "TEST",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTCONTAIN,
+		// 			values: "- Parent",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Shippit Pty Ltd ",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Sendle",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "SC -",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_np_np_customer",
+		// 			join: null,
+		// 			operator: search.Operator.ANYOF,
+		// 			values: "@NONE@",
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(leadStatus)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "entitystatus",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: leadStatus,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_signed_up_from) &&
+		// 	!isNullorEmpty(date_signed_up_to)
+		// ) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_signed_up_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_signed_up_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(commencement_start_date) &&
+		// 	!isNullorEmpty(commencement_last_date)
+		// ) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: commencement_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: commencement_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(cancelled_start_date) &&
+		// 	!isNullorEmpty(cancelled_last_date)
+		// ) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: cancelled_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: cancelled_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_source)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "leadsource",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_source,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_rep)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.IS,
+		// 			values: sales_rep,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_entered_by)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_lead_entered_by",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_entered_by,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_campaign)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_campaign",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: sales_campaign,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(parent_lpo)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "internalid",
+		// 			join: "custentity_lpo_parent_account",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: parent_lpo,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_quote_sent_from) &&
+		// 	!isNullorEmpty(date_quote_sent_to)
+		// ) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_quote_sent_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_quote_sent_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(zee_id)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "partner",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: zee_id,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(modified_date_from) &&
+		// 	!isNullorEmpty(modified_date_to)
+		// ) {
+		// 	var defaultSearchFilters =
+		// 		leadsListBySalesRepWeeklySearch.filterExpression;
+
+		// 	console.log(
+		// 		"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	var modifiedDateFilters = [
+		// 		[
+		// 			["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 			"AND",
+		// 			[
+		// 				"activity.custevent_organiser",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 		"AND",
+		// 		[
+		// 			[
+		// 				"usernotes.notedate",
+		// 				"within",
+		// 				[modified_date_from, modified_date_to],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				"usernotes.author",
+		// 				"anyof",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 	];
+		// 	console.log(
+		// 		"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 	);
+
+		// 	defaultSearchFilters.push("AND");
+		// 	defaultSearchFilters.push(modifiedDateFilters);
+
+		// 	console.log(
+		// 		"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filterExpression = defaultSearchFilters;
+		// }
+
+		// var count1 = 0;
+		// var oldDate1 = null;
+
+		// customer_signed = 0;
+		// suspect_hot_lead = 0;
+		// suspect_reassign = 0;
+		// suspect_lost = 0;
+		// var suspect_oot = 0;
+		// suspect_customer_lost = 0;
+		// suspect_off_peak_pipeline = 0;
+		// var prospect_opportunity = 0;
+		// prospecy_quote_sent = 0;
+		// prospecy_box_sent = 0;
+		// prospect_no_answer = 0;
+		// prospect_in_contact = 0;
+		// suspect_follow_up = 0;
+		// var prospect_qualified = 0;
+		// suspect_new = 0;
+
+		// suspect_lpo_followup = 0;
+		// suspect_qualified = 0;
+		// suspect_unqualified = 0;
+		// var suspect_pre_qualification = 0;
+		// var suspect_in_qualification = 0;
+
+		// suspect_validated = 0;
+		// customer_free_trial = 0;
+		// customer_free_trial_pending = 0;
+
+		// suspect_no_answer = 0;
+		// suspect_in_contact = 0;
+
+		// leadsListBySalesRepWeeklySearch
+		// 	.run()
+		// 	.each(function (prospectListBySalesRepWeeklyResultSet) {
+		// 		var prospectCount = parseInt(
+		// 			prospectListBySalesRepWeeklyResultSet.getValue({
+		// 				name: "internalid",
+		// 				summary: "COUNT",
+		// 			})
+		// 		);
+		// 		var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+		// 			name: "custentity_date_lead_entered",
+		// 			summary: "GROUP",
+		// 		});
+		// 		var custStatus = parseInt(
+		// 			prospectListBySalesRepWeeklyResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			})
+		// 		);
+		// 		var custStatusText = prospectListBySalesRepWeeklyResultSet.getText({
+		// 			name: "entitystatus",
+		// 			summary: "GROUP",
+		// 		});
+
+		// 		if (role == 1000) {
+		// 			var startDate = weekLeadEntered;
+		// 		} else {
+		// 			if (!isNullorEmpty(weekLeadEntered)) {
+		// 				var splitMonthV2 = weekLeadEntered.split("/");
+
+		// 				var formattedDate = dateISOToNetsuite(
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+		// 				);
+
+		// 				var firstDay = new Date(
+		// 					splitMonthV2[0],
+		// 					splitMonthV2[1],
+		// 					1
+		// 				).getDate();
+		// 				var lastDay = new Date(
+		// 					splitMonthV2[0],
+		// 					splitMonthV2[1],
+		// 					0
+		// 				).getDate();
+
+		// 				if (firstDay < 10) {
+		// 					firstDay = "0" + firstDay;
+		// 				}
+
+		// 				// var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+		// 				var startDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+		// 				var monthsStartDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+		// 				// var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+		// 				var lastDate =
+		// 					splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+		// 			} else {
+		// 				var startDate = "NO DATE";
+		// 			}
+		// 		}
+
+		// 		if (count1 == 0) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = parseInt(prospectCount);
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = parseInt(prospectCount);
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = parseInt(prospectCount);
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - Box SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = parseInt(prospectCount);
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_pre_qualification +
+		// 				suspect_in_qualification;
+		// 		} else if (oldDate1 != null && oldDate1 == startDate) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed += prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead += prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost += prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot += parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost += prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign += prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent += prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - Box SENT
+		// 				prospecy_box_sent += parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer += prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact += prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline += prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity += parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up += parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new += parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup += parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated += parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial += parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial_pending += parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer += parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact += parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification += parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification += parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_pre_qualification +
+		// 				suspect_in_qualification;
+		// 		} else if (oldDate1 != null && oldDate1 != startDate) {
+		// 			debt_set2.push({
+		// 				dateUsed: oldDate1,
+		// 				suspect_hot_lead: suspect_hot_lead,
+		// 				prospecy_quote_sent: prospecy_quote_sent,
+		// 				suspect_reassign: suspect_reassign,
+		// 				prospect_no_answer: prospect_no_answer,
+		// 				prospect_in_contact: prospect_in_contact,
+		// 				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 				suspect_lost: suspect_lost,
+		// 				suspect_customer_lost: suspect_customer_lost,
+		// 				prospect_opportunity: prospect_opportunity,
+		// 				customer_signed: customer_signed,
+		// 				total_leads: total_leads,
+		// 				suspect_oot: suspect_oot,
+		// 				suspect_follow_up: suspect_follow_up,
+		// 				suspect_new: suspect_new,
+		// 				suspect_qualified: suspect_qualified,
+		// 				suspect_unqualified: suspect_unqualified,
+		// 				suspect_lpo_followup: suspect_lpo_followup,
+		// 				suspect_validated: suspect_validated,
+		// 				customer_free_trial: customer_free_trial,
+		// 				suspect_no_answer: suspect_no_answer,
+		// 				suspect_in_contact: suspect_in_contact,
+		// 				prospect_qualified: prospect_qualified,
+		// 				customer_free_trial_pending: customer_free_trial_pending,
+		// 				prospect_box_sent: prospecy_box_sent,
+		// 				suspect_pre_qualification: suspect_pre_qualification,
+		// 				suspect_in_qualification: suspect_in_qualification,
+		// 			});
+
+		// 			customer_signed = 0;
+		// 			suspect_hot_lead = 0;
+		// 			suspect_reassign = 0;
+		// 			suspect_lost = 0;
+		// 			suspect_customer_lost = 0;
+		// 			suspect_off_peak_pipeline = 0;
+		// 			prospect_opportunity = 0;
+		// 			prospecy_quote_sent = 0;
+		// 			prospecy_box_sent = 0;
+		// 			prospect_no_answer = 0;
+		// 			prospect_in_contact = 0;
+		// 			suspect_oot = 0;
+		// 			suspect_follow_up = 0;
+		// 			suspect_new = 0;
+		// 			suspect_qualified = 0;
+		// 			suspect_unqualified = 0;
+		// 			suspect_lpo_followup = 0;
+		// 			total_leads = 0;
+		// 			prospect_qualified = 0;
+
+		// 			suspect_validated = 0;
+		// 			customer_free_trial = 0;
+		// 			customer_free_trial_pending = 0;
+		// 			suspect_no_answer = 0;
+		// 			suspect_in_contact = 0;
+		// 			suspect_pre_qualification = 0;
+		// 			suspect_in_qualification = 0;
+
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - Box SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_pre_qualification +
+		// 				suspect_in_qualification;
+		// 		}
+
+		// 		count1++;
+		// 		oldDate1 = startDate;
+		// 		return true;
+		// 	});
+
+		// if (count1 > 0) {
+		// 	debt_set2.push({
+		// 		dateUsed: oldDate1,
+		// 		suspect_hot_lead: suspect_hot_lead,
+		// 		prospecy_quote_sent: prospecy_quote_sent,
+		// 		suspect_reassign: suspect_reassign,
+		// 		prospect_no_answer: prospect_no_answer,
+		// 		prospect_in_contact: prospect_in_contact,
+		// 		suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 		suspect_lost: suspect_lost,
+		// 		suspect_customer_lost: suspect_customer_lost,
+		// 		prospect_opportunity: prospect_opportunity,
+		// 		customer_signed: customer_signed,
+		// 		total_leads: total_leads,
+		// 		suspect_oot: suspect_oot,
+		// 		suspect_follow_up: suspect_follow_up,
+		// 		suspect_new: suspect_new,
+		// 		suspect_qualified: suspect_qualified,
+		// 		suspect_unqualified: suspect_unqualified,
+		// 		suspect_lpo_followup: suspect_lpo_followup,
+		// 		suspect_validated: suspect_validated,
+		// 		customer_free_trial: customer_free_trial,
+		// 		suspect_no_answer: suspect_no_answer,
+		// 		suspect_in_contact: suspect_in_contact,
+		// 		prospect_qualified: prospect_qualified,
+		// 		customer_free_trial_pending: customer_free_trial_pending,
+		// 		prospect_box_sent: prospecy_box_sent,
+		// 		suspect_pre_qualification: suspect_pre_qualification,
+		// 		suspect_in_qualification: suspect_in_qualification,
+		// 	});
+		// }
+
+		// console.log("debt_set2: " + JSON.stringify(debt_set2));
+
+		// previewDataSet = [];
+		// csvPreviewSet = [];
+
+		// var overDataSet = [];
+
+		// if (!isNullorEmpty(debt_set2)) {
+		// 	debt_set2.forEach(function (preview_row, index) {
+		// 		var hotLeadPercentage = parseInt(
+		// 			(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+		// 		);
+		// 		var hotLeadCol =
+		// 			preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 		var quoteSentPercentage = parseInt(
+		// 			(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var quoteSentCol =
+		// 			preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 		var boxSentPercentage = parseInt(
+		// 			(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var boxSentCol =
+		// 			preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+		// 		var reassignPercentage = parseInt(
+		// 			(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 		);
+		// 		var reassignCol =
+		// 			preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 		var noAnswerPercentage = parseInt(
+		// 			(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var noAnswerCol =
+		// 			preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 		var inContactPercentage = parseInt(
+		// 			(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var inContactCol =
+		// 			preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 		var offPeakPercentage = parseInt(
+		// 			(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var offPeakCol =
+		// 			preview_row.suspect_off_peak_pipeline +
+		// 			" (" +
+		// 			offPeakPercentage +
+		// 			"%)";
+
+		// 		var lostPercentage = parseInt(
+		// 			(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 		var ootPercentage = parseInt(
+		// 			(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 		);
+		// 		var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 		var custLostPercentage = parseInt(
+		// 			(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var custLostCol =
+		// 			preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
+
+		// 		var oppPercentage = parseInt(
+		// 			(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 		);
+		// 		var oppCol =
+		// 			preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 		var signedPercentage = parseInt(
+		// 			(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 		);
+		// 		var signedCol =
+		// 			preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 		var suspectFollowUpPErcentage = parseInt(
+		// 			(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+		// 		);
+		// 		var followUpCol =
+		// 			preview_row.suspect_follow_up +
+		// 			" (" +
+		// 			suspectFollowUpPErcentage +
+		// 			"%)";
+
+		// 		var suspectNewPercentage = parseInt(
+		// 			(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNewCol =
+		// 			preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 		var suspectQualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectQualifiedCol =
+		// 			preview_row.suspect_qualified +
+		// 			" (" +
+		// 			suspectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectUnqualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectUnqualifiedCol =
+		// 			preview_row.suspect_unqualified +
+		// 			" (" +
+		// 			suspectUnqualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectLPOFollowupPercentage = parseInt(
+		// 			(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectLPOFollowupwCol =
+		// 			preview_row.suspect_lpo_followup +
+		// 			" (" +
+		// 			suspectLPOFollowupPercentage +
+		// 			"%)";
+
+		// 		var suspectValidatedPercentage = parseInt(
+		// 			(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectValidatedCol =
+		// 			preview_row.suspect_validated +
+		// 			" (" +
+		// 			suspectValidatedPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPercentage = parseInt(
+		// 			(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 		);
+		// 		var customerFreeTrialCol =
+		// 			preview_row.customer_free_trial +
+		// 			" (" +
+		// 			customerFreeTrialPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPendingPercentage = parseInt(
+		// 			(preview_row.customer_free_trial_pending / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var customerFreeTrialPendingCol =
+		// 			preview_row.customer_free_trial_pending +
+		// 			" (" +
+		// 			customerFreeTrialPendingPercentage +
+		// 			"%)";
+
+		// 		var suspectNoAnswerPercentage = parseInt(
+		// 			(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNoAnswerCol =
+		// 			preview_row.suspect_no_answer +
+		// 			" (" +
+		// 			suspectNoAnswerPercentage +
+		// 			"%)";
+
+		// 		var suspectInContactPercentage = parseInt(
+		// 			(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInContactCol =
+		// 			preview_row.suspect_in_contact +
+		// 			" (" +
+		// 			suspectInContactPercentage +
+		// 			"%)";
+
+		// 		var prospectQualifiedPercentage = parseInt(
+		// 			(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var prospectQualifiedCol =
+		// 			preview_row.prospect_qualified +
+		// 			" (" +
+		// 			prospectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectPreQualifcationPercentage = parseInt(
+		// 			(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var suspectPreQualificationCol =
+		// 			preview_row.suspect_pre_qualification +
+		// 			" (" +
+		// 			suspectPreQualifcationPercentage +
+		// 			"%)";
+
+		// 		var suspectInQualificationPercentage = parseInt(
+		// 			(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInQualificationCol =
+		// 			preview_row.suspect_in_qualification +
+		// 			" (" +
+		// 			suspectInQualificationPercentage +
+		// 			"%)";
+
+		// 		overDataSet.push([
+		// 			preview_row.dateUsed,
+		// 			preview_row.suspect_new,
+		// 			preview_row.suspect_hot_lead,
+		// 			preview_row.suspect_validated,
+		// 			preview_row.suspect_qualified,
+		// 			preview_row.suspect_unqualified,
+		// 			preview_row.suspect_pre_qualification,
+		// 			preview_row.suspect_in_qualification,
+		// 			preview_row.suspect_reassign,
+		// 			preview_row.suspect_follow_up,
+		// 			preview_row.suspect_no_answer,
+		// 			preview_row.suspect_in_contact,
+		// 			preview_row.suspect_lpo_followup,
+		// 			preview_row.prospect_in_contact,
+		// 			preview_row.suspect_off_peak_pipeline,
+		// 			preview_row.suspect_lost,
+		// 			preview_row.suspect_oot,
+		// 			preview_row.suspect_customer_lost,
+		// 			preview_row.prospect_opportunity,
+		// 			preview_row.prospect_qualified,
+		// 			preview_row.prospect_box_sent,
+		// 			preview_row.prospecy_quote_sent,
+		// 			preview_row.customer_free_trial_pending,
+		// 			preview_row.customer_free_trial,
+		// 			preview_row.customer_signed,
+		// 			preview_row.total_leads,
+		// 		]);
+
+		// 		previewDataSet.push([
+		// 			preview_row.dateUsed,
+		// 			suspectNewCol,
+		// 			hotLeadCol,
+		// 			suspectValidatedCol,
+		// 			suspectQualifiedCol,
+		// 			suspectUnqualifiedCol,
+		// 			suspectPreQualificationCol,
+		// 			suspectInQualificationCol,
+		// 			reassignCol,
+		// 			followUpCol,
+		// 			suspectLPOFollowupwCol,
+		// 			suspectNoAnswerCol,
+		// 			suspectInContactCol,
+		// 			inContactCol,
+		// 			offPeakCol,
+		// 			lostCol,
+		// 			ootCol,
+		// 			custLostCol,
+		// 			oppCol,
+		// 			prospectQualifiedCol,
+		// 			boxSentCol,
+		// 			quoteSentCol,
+		// 			customerFreeTrialPendingCol,
+		// 			customerFreeTrialCol,
+		// 			signedCol,
+		// 			preview_row.total_leads,
+		// 		]);
+		// 	});
+		// }
+
+		// console.log("previewDataSet");
+		// console.log(previewDataSet);
+
+		// var dataTablePreview = $("#mpexusage-preview").DataTable({
+		// 	destroy: true,
+		// 	data: previewDataSet,
+		// 	pageLength: 1000,
+		// 	responsive: true,
+		// 	layout: {
+		// 		topStart: {
+		// 			buttons: [
+		// 				{
+		// 					extend: "copy",
+		// 					text: "Copy",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "csv",
+		// 					text: "CSV",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "excel",
+		// 					text: "Excel",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "pdf",
+		// 					text: "PDF",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "print",
+		// 					text: "Print",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 			],
+		// 		},
+		// 	},
+		// 	columns: [
+		// 		{
+		// 			title: "Period", //0
+		// 		},
+		// 		{
+		// 			title: "Suspect - New", //1
+		// 		},
+		// 		{
+		// 			title: "Suspect - Hot Lead", //2
+		// 		},
+		// 		{
+		// 			title: "Suspect - Validated", //3
+		// 		},
+		// 		{
+		// 			title: "Suspect - Qualified", //4
+		// 		},
+		// 		{
+		// 			title: "Suspect - Unqualified", //5
+		// 		},
+		// 		{
+		// 			title: "Suspect - Pre Qualification", //6
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Qualification", //7
+		// 		},
+		// 		{
+		// 			title: "Suspect - Reassign", //8
+		// 		},
+		// 		{
+		// 			title: "Suspect - Follow Up", //9
+		// 		},
+		// 		{
+		// 			title: "Suspect - LPO Follow Up", //10
+		// 		},
+		// 		{
+		// 			title: "Suspect - No Answer", //11
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Contact", //12
+		// 		},
+		// 		{
+		// 			title: "Prospect - In Contact", //13
+		// 		},
+		// 		{
+		// 			title: "Suspect - Parking Lot", //14
+		// 		},
+		// 		{
+		// 			title: "Suspect - Lost", //15
+		// 		},
+		// 		{
+		// 			title: "Suspect - Out of Territory", //16
+		// 		},
+		// 		{
+		// 			title: "Suspect - Customer - Lost", //17
+		// 		},
+		// 		{
+		// 			title: "Prospect - Opportunity", //18
+		// 		},
+		// 		{
+		// 			title: "Prospect - Qualified", //19
+		// 		},
+		// 		{
+		// 			title: "Prospect - Box Sent", //20
+		// 		},
+		// 		{
+		// 			title: "Prospect - Quote Sent", //21
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial Pending", //22
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial", //23
+		// 		},
+		// 		{
+		// 			title: "Customer - Signed", //24
+		// 		},
+		// 		{
+		// 			title: "Total Lead Count", //25
+		// 		},
+		// 	],
+		// 	columnDefs: [
+		// 		{
+		// 			targets: [0, 5, 19, 23, 24],
+		// 			className: "bolded",
+		// 		},
+		// 	],
+		// 	footerCallback: function (row, data, start, end, display) {
+		// 		var api = this.api(),
+		// 			data;
+
+		// 		// Remove the formatting to get integer data for summation
+		// 		var intVal = function (i) {
+		// 			return parseInt(i);
+		// 		};
+
+		// 		const formatter = new Intl.NumberFormat("en-AU", {
+		// 			style: "currency",
+		// 			currency: "AUD",
+		// 			minimumFractionDigits: 2,
+		// 		});
+		// 		// Total Suspect New Lead Count
+		// 		total_suspect_new = api
+		// 			.column(1)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Hot Lead Count
+		// 		total_suspect_hot_lead = api
+		// 			.column(2)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Qualified Count
+		// 		total_suspect_qualified = api
+		// 			.column(3)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Unqualified Count
+		// 		total_suspect_unqualified = api
+		// 			.column(4)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Validated
+		// 		total_suspect_validated = api
+		// 			.column(5)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Reassign
+		// 		total_suspect_reassign = api
+		// 			.column(6)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Follow Up
+		// 		total_suspect_followup = api
+		// 			.column(7)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect LPO Follow Up
+		// 		total_suspect_lpo_followup = api
+		// 			.column(8)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect No Answer
+		// 		total_suspect_no_answer = api
+		// 			.column(9)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect In Contact
+		// 		total_suspect_in_contact = api
+		// 			.column(10)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect In Contact
+		// 		total_prospect_in_contact = api
+		// 			.column(11)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Off Peak Pipline
+		// 		total_suspect_off_peak_pipeline = api
+		// 			.column(12)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Lost
+		// 		total_suspect_lost = api
+		// 			.column(13)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Out of Territory
+		// 		total_suspect_oot = api
+		// 			.column(14)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Customer Lost
+		// 		total_suspect_customer_lost = api
+		// 			.column(15)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Opportunity
+		// 		total_prospect_opportunity = api
+		// 			.column(16)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_prospect_qualified = api
+		// 			.column(17)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_prospect_box_sent = api
+		// 			.column(18)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Quoite Sent
+		// 		total_prospect_quote_sent = api
+		// 			.column(19)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial Pending
+		// 		total_customer_free_trial_pending = api
+		// 			.column(20)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial
+		// 		total_customer_free_trial = api
+		// 			.column(21)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Signed
+		// 		total_customer_signed = api
+		// 			.column(22)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead_v1 = api
+		// 			.column(23)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead_v2 = api
+		// 			.column(24)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Lead Count
+		// 		total_lead = api
+		// 			.column(25)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Update footer
+		// 		$(api.column(1).footer()).html(
+		// 			total_suspect_new +
+		// 				" (" +
+		// 				((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(2).footer()).html(
+		// 			total_suspect_hot_lead +
+		// 				" (" +
+		// 				((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(3).footer()).html(
+		// 			total_suspect_qualified +
+		// 				" (" +
+		// 				((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(4).footer()).html(
+		// 			total_suspect_unqualified +
+		// 				" (" +
+		// 				((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(5).footer()).html(
+		// 			total_suspect_validated +
+		// 				" (" +
+		// 				((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(6).footer()).html(
+		// 			total_suspect_reassign +
+		// 				" (" +
+		// 				((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(7).footer()).html(
+		// 			total_suspect_followup +
+		// 				" (" +
+		// 				((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(8).footer()).html(
+		// 			total_suspect_lpo_followup +
+		// 				" (" +
+		// 				((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(9).footer()).html(
+		// 			total_suspect_no_answer +
+		// 				" (" +
+		// 				((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(10).footer()).html(
+		// 			total_suspect_in_contact +
+		// 				" (" +
+		// 				((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(11).footer()).html(
+		// 			total_prospect_in_contact +
+		// 				" (" +
+		// 				((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(12).footer()).html(
+		// 			total_suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(13).footer()).html(
+		// 			total_suspect_lost +
+		// 				" (" +
+		// 				((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(14).footer()).html(
+		// 			total_suspect_oot +
+		// 				" (" +
+		// 				((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(15).footer()).html(
+		// 			total_suspect_customer_lost +
+		// 				" (" +
+		// 				((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(16).footer()).html(
+		// 			total_prospect_opportunity +
+		// 				" (" +
+		// 				((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(17).footer()).html(
+		// 			total_prospect_qualified +
+		// 				" (" +
+		// 				((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(18).footer()).html(
+		// 			total_prospect_box_sent +
+		// 				" (" +
+		// 				((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(19).footer()).html(
+		// 			total_prospect_quote_sent +
+		// 				" (" +
+		// 				((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(20).footer()).html(
+		// 			total_customer_free_trial_pending +
+		// 				" (" +
+		// 				((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 					0
+		// 				) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(21).footer()).html(
+		// 			total_customer_free_trial +
+		// 				" (" +
+		// 				((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(22).footer()).html(
+		// 			total_customer_signed +
+		// 				" (" +
+		// 				((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(23).footer()).html(
+		// 			total_lead_v1 +
+		// 				" (" +
+		// 				((total_lead_v1 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(24).footer()).html(
+		// 			total_lead_v2 +
+		// 				" (" +
+		// 				((total_lead_v2 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(25).footer()).html(total_lead);
+		// 	},
+		// });
+
+		// saveCsv(previewDataSet);
+
+		// var data = overDataSet;
+
+		// var month_year = []; // creating array for storing browser
+		// var customer_signed = [];
+		// var suspect_hot_lead = [];
+		// var suspect_reassign = [];
+		// var suspect_lost = [];
+		// var suspect_oot = [];
+		// var suspect_customer_lost = [];
+		// var suspect_off_peak_pipeline = [];
+		// var prospect_opportunity = [];
+		// var prospect_qualified = [];
+		// var prospecy_quote_sent = [];
+		// var prospecy_box_sent = [];
+		// var prospect_no_answer = [];
+		// var prospect_in_contact = [];
+		// var suspect_follow_up = [];
+		// var suspect_new = [];
+		// var suspect_qualified = [];
+		// var suspect_unqualified = [];
+		// var suspect_lpo_followup = [];
+		// var suspect_validated = [];
+		// var customer_free_trial = [];
+		// var customer_free_trial_pending = [];
+		// var susect_no_answer = [];
+		// var suspect_in_contact = [];
+		// var suspect_pre_qualification = [];
+		// var suspect_in_qualification = [];
+		// var total_leads = [];
+
+		// for (var i = 0; i < data.length; i++) {
+		// 	month_year.push(data[i][0]);
+		// 	suspect_new[data[i][0]] = data[i][1];
+		// 	suspect_hot_lead[data[i][0]] = data[i][2];
+		// 	suspect_qualified[data[i][0]] = data[i][4];
+		// 	suspect_unqualified[data[i][0]] = data[i][5];
+		// 	suspect_validated[data[i][0]] = data[i][3];
+		// 	suspect_pre_qualification[data[i][0]] = data[i][6];
+		// 	suspect_in_qualification[data[i][0]] = data[i][7];
+		// 	suspect_reassign[data[i][0]] = data[i][8];
+		// 	suspect_follow_up[data[i][0]] = data[i][9];
+		// 	suspect_lpo_followup[data[i][0]] = data[i][10];
+		// 	suspect_no_answer[data[i][0]] = data[i][11];
+		// 	suspect_in_contact[data[i][0]] = data[i][12];
+		// 	prospect_in_contact[data[i][0]] = data[i][13];
+		// 	suspect_off_peak_pipeline[data[i][0]] = data[i][14];
+		// 	suspect_lost[data[i][0]] = data[i][15];
+		// 	suspect_oot[data[i][0]] = data[i][16];
+		// 	suspect_customer_lost[data[i][0]] = data[i][17];
+		// 	prospect_opportunity[data[i][0]] = data[i][18];
+		// 	prospect_qualified[data[i][0]] = data[i][19];
+		// 	prospecy_box_sent[data[i][0]] = data[i][20];
+		// 	prospecy_quote_sent[data[i][0]] = data[i][21];
+		// 	customer_free_trial_pending[data[i][0]] = data[i][22];
+		// 	customer_free_trial[data[i][0]] = data[i][23];
+		// 	customer_signed[data[i][0]] = data[i][24];
+		// 	total_leads[data[i][0]] = data[i][25];
+		// }
+
+		// console.log("prospecy_box_sent" + prospecy_box_sent);
+
+		// var count = {}; // creating object for getting categories with
+		// // count
+		// month_year.forEach(function (i) {
+		// 	count[i] = (count[i] || 0) + 1;
+		// });
+
+		// var series_data20 = [];
+		// var series_data21 = [];
+		// var series_data22 = [];
+		// var series_data23 = [];
+		// var series_data24 = [];
+		// var series_data25 = [];
+		// var series_data26 = [];
+		// var series_data27 = [];
+		// var series_data28 = [];
+		// var series_data29 = [];
+		// var series_data30 = [];
+		// var series_data31 = [];
+		// var series_data32 = [];
+		// var series_data33 = [];
+		// var series_data34 = [];
+		// var series_data20a = [];
+		// var series_data21a = [];
+		// var series_data22a = [];
+		// var series_data23a = [];
+		// var series_data24a = [];
+		// var series_data25a = [];
+		// var series_data26a = [];
+		// var series_data27a = [];
+		// var series_data28a = [];
+		// var series_data29a = [];
+		// var series_data30a = [];
+		// var series_data31a = [];
+
+		// var categores1 = []; // creating empty array for highcharts
+		// // categories
+		// Object.keys(prospecy_quote_sent).map(function (item, key) {
+		// 	series_data20.push(parseInt(customer_signed[item]));
+		// 	series_data21.push(parseInt(suspect_hot_lead[item]));
+		// 	series_data22.push(parseInt(suspect_reassign[item]));
+		// 	series_data23.push(parseInt(suspect_lost[item]));
+		// 	series_data24.push(parseInt(suspect_customer_lost[item]));
+		// 	series_data25.push(parseInt(suspect_off_peak_pipeline[item]));
+		// 	series_data26.push(parseInt(prospecy_quote_sent[item]));
+		// 	series_data27.push(parseInt(prospect_no_answer[item]));
+		// 	series_data28.push(parseInt(prospect_in_contact[item]));
+		// 	series_data29.push(parseInt(total_leads[item]));
+		// 	series_data31.push(parseInt(prospect_opportunity[item]));
+		// 	series_data32.push(parseInt(suspect_oot[item]));
+		// 	series_data33.push(parseInt(suspect_follow_up[item]));
+		// 	series_data34.push(parseInt(suspect_new[item]));
+		// 	series_data20a.push(parseInt(suspect_qualified[item]));
+		// 	series_data28a.push(parseInt(suspect_unqualified[item]));
+		// 	series_data21a.push(parseInt(suspect_lpo_followup[item]));
+		// 	series_data22a.push(parseInt(suspect_validated[item]));
+		// 	series_data23a.push(parseInt(customer_free_trial[item]));
+		// 	series_data24a.push(parseInt(suspect_no_answer[item]));
+		// 	series_data25a.push(parseInt(suspect_in_contact[item]));
+		// 	series_data26a.push(parseInt(prospect_qualified[item]));
+		// 	series_data27a.push(parseInt(customer_free_trial_pending[item]));
+		// 	series_data29a.push(parseInt(prospecy_box_sent[item]));
+		// 	series_data30a.push(parseInt(suspect_pre_qualification[item]));
+		// 	series_data31a.push(parseInt(suspect_in_qualification[item]));
+		// 	categores1.push(item);
+		// });
+
+		// plotChartPreview(
+		// 	series_data20,
+		// 	series_data21,
+		// 	series_data22,
+		// 	series_data23,
+		// 	series_data24,
+		// 	series_data25,
+		// 	series_data26,
+		// 	series_data27,
+		// 	series_data28,
+		// 	series_data29,
+		// 	series_data31,
+		// 	series_data32,
+		// 	series_data33,
+		// 	series_data34,
+		// 	categores1,
+		// 	series_data20a,
+		// 	series_data21a,
+		// 	series_data22a,
+		// 	series_data23a,
+		// 	series_data24a,
+		// 	series_data25a,
+		// 	series_data26a,
+		// 	series_data27a,
+		// 	series_data28a,
+		// 	series_data29a,
+		// 	series_data30a,
+		// 	series_data31a
+		// );
 
 		//TODO - LPO Preview
-		if (
-			isNullorEmpty(lead_source) ||
-			isNullorEmpty(sales_campaign) ||
-			lead_source == 282083 ||
-			lead_source == 282051 ||
-			lead_source == 282085 ||
-			lead_source == 281559 ||
-			sales_campaign == 69 ||
-			sales_campaign == 76 ||
-			sales_campaign == 87
-		) {
-			if (role == 1000) {
-				// Sales Dashboard - LPO New Leads by Status - Monthly Reporting
-				var lpoLeadsListBySalesRepWeeklySearch = search.load({
-					type: "customer",
-					id: "customsearch_leads_reporting_weekly_3_2",
-				});
-			} else {
-				// Sales Dashboard - LPO New Leads by Status - Weekly Reporting
-				var lpoLeadsListBySalesRepWeeklySearch = search.load({
-					type: "customer",
-					id: "customsearch_leads_reporting_weekly_4",
-				});
-			}
-
-			lpoLeadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(cancelled_start_date) &&
-				!isNullorEmpty(cancelled_last_date)
-			) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: cancelled_start_date,
-					})
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: cancelled_last_date,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_source,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_campaign)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(parent_lpo)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				lpoLeadsListBySalesRepWeeklySearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(modified_date_from) &&
-				!isNullorEmpty(modified_date_to)
-			) {
-				var defaultSearchFilters =
-					lpoLeadsListBySalesRepWeeklySearch.filterExpression;
-
-				console.log(
-					"default search filters: " + JSON.stringify(defaultSearchFilters)
-				);
-
-				var modifiedDateFilters = [
-					[
-						["activity.date", "within", [modified_date_from, modified_date_to]],
-						"AND",
-						[
-							"activity.custevent_organiser",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-					"AND",
-					[
-						[
-							"usernotes.notedate",
-							"within",
-							[modified_date_from, modified_date_to],
-						],
-						"AND",
-						[
-							"usernotes.author",
-							"anyof",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-				];
-				console.log(
-					"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-				);
-
-				defaultSearchFilters.push("AND");
-				defaultSearchFilters.push(modifiedDateFilters);
-
-				console.log(
-					"defaultSearchFilters filters: " +
-						JSON.stringify(defaultSearchFilters)
-				);
-
-				lpoLeadsListBySalesRepWeeklySearch.filterExpression =
-					defaultSearchFilters;
-			}
-
-			var count1 = 0;
-			var oldParentLPOName = null;
-
-			var customer_signed = 0;
-			var suspect_hot_lead = 0;
-			var suspect_reassign = 0;
-			var suspect_lost = 0;
-			var suspect_oot = 0;
-			var suspect_customer_lost = 0;
-			var suspect_off_peak_pipeline = 0;
-			var prospect_opportunity = 0;
-			var prospect_qualified = 0;
-			var prospecy_quote_sent = 0;
-			var prospect_no_answer = 0;
-			var prospect_in_contact = 0;
-			var suspect_follow_up = 0;
-			var suspect_new = 0;
-
-			var suspect_lpo_followup = 0;
-			var suspect_qualified = 0;
-			var suspect_qualified = 0;
-
-			var suspect_validated = 0;
-			var customer_free_trial = 0;
-			var customer_free_trial_pending = 0;
-
-			var suspect_no_answer = 0;
-			var suspect_in_contact = 0;
-
-			lpoLeadsListBySalesRepWeeklySearch
-				.run()
-				.each(function (lpoLeadsListBySalesRepWeeklyResultSet) {
-					var prospectCount = parseInt(
-						lpoLeadsListBySalesRepWeeklyResultSet.getValue({
-							name: "internalid",
-							summary: "COUNT",
-						})
-					);
-
-					var custStatus = parseInt(
-						lpoLeadsListBySalesRepWeeklyResultSet.getValue({
-							name: "entitystatus",
-							summary: "GROUP",
-						})
-					);
-					var custStatusText = lpoLeadsListBySalesRepWeeklyResultSet.getText({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
-					var parentLPOName = lpoLeadsListBySalesRepWeeklyResultSet.getText({
-						name: "custentity_lpo_parent_account",
-						summary: "GROUP",
-					});
-
-					if (isNullorEmpty(parentLPOName)) {
-						parentLPOName = "Unassigned";
-					}
-
-					if (count1 == 0) {
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed = parseInt(prospectCount);
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead = parseInt(prospectCount);
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost = parseInt(prospectCount);
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot = parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost = parseInt(prospectCount);
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign = parseInt(prospectCount);
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent = parseInt(prospectCount);
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline = parseInt(prospectCount);
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity = parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up = parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new = parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup = parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial = parseInt(prospectCount);
-						} else if (custStatus == 71) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending = parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT - QUALIFIED
-							prospect_qualified = parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending;
-					} else if (
-						oldParentLPOName != null &&
-						oldParentLPOName == parentLPOName
-					) {
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed += prospectCount;
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead += prospectCount;
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost += prospectCount;
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot += parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost += prospectCount;
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign += prospectCount;
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent += prospectCount;
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer += prospectCount;
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact += prospectCount;
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline += prospectCount;
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity += parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up += parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new += parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified += parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup += parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated += parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial += parseInt(prospectCount);
-						} else if (custStatus == 71) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending += parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer += parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact += parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT - QUALIFIED
-							prospect_qualified += parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending;
-					} else if (oldDate1 != null && oldParentLPOName != parentLPOName) {
-						lpo_debt_set2.push({
-							lpoparentname: oldParentLPOName,
-							suspect_hot_lead: suspect_hot_lead,
-							prospecy_quote_sent: prospecy_quote_sent,
-							suspect_reassign: suspect_reassign,
-							prospect_no_answer: prospect_no_answer,
-							prospect_in_contact: prospect_in_contact,
-							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-							suspect_lost: suspect_lost,
-							suspect_customer_lost: suspect_customer_lost,
-							prospect_opportunity: prospect_opportunity,
-							customer_signed: customer_signed,
-							total_leads: total_leads,
-							suspect_oot: suspect_oot,
-							suspect_follow_up: suspect_follow_up,
-							suspect_new: suspect_new,
-							suspect_qualified: suspect_qualified,
-							suspect_lpo_followup: suspect_lpo_followup,
-							suspect_validated: suspect_validated,
-							customer_free_trial: customer_free_trial,
-							suspect_no_answer: suspect_no_answer,
-							suspect_in_contact: suspect_in_contact,
-							prospect_qualified: prospect_qualified,
-							customer_free_trial_pending: customer_free_trial_pending,
-						});
-
-						customer_signed = 0;
-						suspect_hot_lead = 0;
-						suspect_reassign = 0;
-						suspect_lost = 0;
-						suspect_customer_lost = 0;
-						suspect_off_peak_pipeline = 0;
-						prospect_opportunity = 0;
-						prospecy_quote_sent = 0;
-						prospect_no_answer = 0;
-						prospect_in_contact = 0;
-						suspect_oot = 0;
-						suspect_follow_up = 0;
-						suspect_new = 0;
-						suspect_qualified = 0;
-						suspect_lpo_followup = 0;
-						total_leads = 0;
-						prospect_qualified = 0;
-
-						suspect_validated = 0;
-						customer_free_trial = 0;
-						customer_free_trial_pending = 0;
-						suspect_no_answer = 0;
-						suspect_in_contact = 0;
-
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed = prospectCount;
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead = prospectCount;
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost = prospectCount;
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot = parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost = prospectCount;
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign = prospectCount;
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent = prospectCount;
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer = prospectCount;
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact = prospectCount;
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline = prospectCount;
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity = parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up = parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new = parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup = parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial = parseInt(prospectCount);
-						} else if (custStatus == 71) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending = parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT QUALIFIED
-							prospect_qualified = parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending;
-					}
-
-					count1++;
-					oldParentLPOName = parentLPOName;
-					return true;
-				});
-
-			if (count1 > 0) {
-				lpo_debt_set2.push({
-					lpoparentname: oldParentLPOName,
-					suspect_hot_lead: suspect_hot_lead,
-					prospecy_quote_sent: prospecy_quote_sent,
-					suspect_reassign: suspect_reassign,
-					prospect_no_answer: prospect_no_answer,
-					prospect_in_contact: prospect_in_contact,
-					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-					suspect_lost: suspect_lost,
-					suspect_customer_lost: suspect_customer_lost,
-					prospect_opportunity: prospect_opportunity,
-					customer_signed: customer_signed,
-					total_leads: total_leads,
-					suspect_oot: suspect_oot,
-					suspect_follow_up: suspect_follow_up,
-					suspect_new: suspect_new,
-					suspect_qualified: suspect_qualified,
-					suspect_lpo_followup: suspect_lpo_followup,
-					suspect_validated: suspect_validated,
-					customer_free_trial: customer_free_trial,
-					suspect_no_answer: suspect_no_answer,
-					suspect_in_contact: suspect_in_contact,
-					prospect_qualified: prospect_qualified,
-					customer_free_trial_pending: customer_free_trial_pending,
-				});
-			}
-
-			console.log("lpo_debt_set2: " + JSON.stringify(lpo_debt_set2));
-
-			lpo_previewDataSet = [];
-			lpo_csvPreviewSet = [];
-
-			var lpo_overDataSet = [];
-
-			if (!isNullorEmpty(lpo_debt_set2)) {
-				lpo_debt_set2.forEach(function (preview_row, index) {
-					var hotLeadPercentage = parseInt(
-						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-					);
-					var hotLeadCol =
-						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-					var quoteSentPercentage = parseInt(
-						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-					);
-					var quoteSentCol =
-						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-					var reassignPercentage = parseInt(
-						(preview_row.suspect_reassign / preview_row.total_leads) * 100
-					);
-					var reassignCol =
-						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-					var noAnswerPercentage = parseInt(
-						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-					);
-					var noAnswerCol =
-						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-					var inContactPercentage = parseInt(
-						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-					);
-					var inContactCol =
-						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-					var offPeakPercentage = parseInt(
-						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-							100
-					);
-					var offPeakCol =
-						preview_row.suspect_off_peak_pipeline +
-						" (" +
-						offPeakPercentage +
-						"%)";
-
-					var lostPercentage = parseInt(
-						(preview_row.suspect_lost / preview_row.total_leads) * 100
-					);
-					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-					var ootPercentage = parseInt(
-						(preview_row.suspect_oot / preview_row.total_leads) * 100
-					);
-					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-					var custLostPercentage = parseInt(
-						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-					);
-					var custLostCol =
-						preview_row.suspect_customer_lost +
-						" (" +
-						custLostPercentage +
-						"%)";
-
-					var oppPercentage = parseInt(
-						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-					);
-					var oppCol =
-						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-					var signedPercentage = parseInt(
-						(preview_row.customer_signed / preview_row.total_leads) * 100
-					);
-					var signedCol =
-						preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-					var suspectFollowUpPErcentage = parseInt(
-						(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-					);
-					var followUpCol =
-						preview_row.suspect_follow_up +
-						" (" +
-						suspectFollowUpPErcentage +
-						"%)";
-
-					var suspectNewPercentage = parseInt(
-						(preview_row.suspect_new / preview_row.total_leads) * 100
-					);
-					var suspectNewCol =
-						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-					var suspectQualifiedPercentage = parseInt(
-						(preview_row.suspect_qualified / preview_row.total_leads) * 100
-					);
-					var suspectQualifiedCol =
-						preview_row.suspect_qualified +
-						" (" +
-						suspectQualifiedPercentage +
-						"%)";
-
-					var suspectLPOFollowupPercentage = parseInt(
-						(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-					);
-					var suspectLPOFollowupwCol =
-						preview_row.suspect_lpo_followup +
-						" (" +
-						suspectLPOFollowupPercentage +
-						"%)";
-
-					var suspectValidatedPercentage = parseInt(
-						(preview_row.suspect_validated / preview_row.total_leads) * 100
-					);
-					var suspectValidatedCol =
-						preview_row.suspect_validated +
-						" (" +
-						suspectValidatedPercentage +
-						"%)";
-
-					var customerFreeTrialPercentage = parseInt(
-						(preview_row.customer_free_trial / preview_row.total_leads) * 100
-					);
-					var customerFreeTrialCol =
-						preview_row.customer_free_trial +
-						" (" +
-						customerFreeTrialPercentage +
-						"%)";
-
-					var customerFreeTrialPendingPercentage = parseInt(
-						(preview_row.customer_free_trial_pending /
-							preview_row.total_leads) *
-							100
-					);
-					var customerFreeTrialPendingCol =
-						preview_row.customer_free_trial_pending +
-						" (" +
-						customerFreeTrialPendingPercentage +
-						"%)";
-
-					var suspectNoAnswerPercentage = parseInt(
-						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-					);
-					var suspectNoAnswerCol =
-						preview_row.suspect_no_answer +
-						" (" +
-						suspectNoAnswerPercentage +
-						"%)";
-
-					var suspectInContactPercentage = parseInt(
-						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-					);
-					var suspectInContactCol =
-						preview_row.suspect_in_contact +
-						" (" +
-						suspectInContactPercentage +
-						"%)";
-
-					var prospectQualifiedPercentage = parseInt(
-						(preview_row.prospect_qualified / preview_row.total_leads) * 100
-					);
-					var prospectQualifiedCol =
-						preview_row.prospect_qualified +
-						" (" +
-						prospectQualifiedPercentage +
-						"%)";
-
-					lpo_overDataSet.push([
-						preview_row.lpoparentname,
-						preview_row.suspect_new,
-						preview_row.suspect_hot_lead,
-						preview_row.suspect_qualified,
-						preview_row.suspect_validated,
-						preview_row.suspect_reassign,
-						preview_row.suspect_follow_up,
-						preview_row.suspect_no_answer,
-						preview_row.suspect_in_contact,
-						preview_row.suspect_lpo_followup,
-						preview_row.prospect_in_contact,
-						preview_row.suspect_off_peak_pipeline,
-						preview_row.suspect_lost,
-						preview_row.suspect_oot,
-						preview_row.suspect_customer_lost,
-						preview_row.prospect_opportunity,
-						preview_row.prospect_qualified,
-						preview_row.prospecy_quote_sent,
-						preview_row.customer_free_trial_pending,
-						preview_row.customer_free_trial,
-						preview_row.customer_signed,
-						preview_row.total_leads,
-					]);
-
-					lpo_previewDataSet.push([
-						preview_row.lpoparentname,
-						suspectNewCol,
-						hotLeadCol,
-						suspectQualifiedCol,
-						suspectValidatedCol,
-						reassignCol,
-						followUpCol,
-						suspectLPOFollowupwCol,
-						suspectNoAnswerCol,
-						suspectInContactCol,
-						inContactCol,
-						offPeakCol,
-						lostCol,
-						ootCol,
-						custLostCol,
-						oppCol,
-						prospectQualifiedCol,
-						quoteSentCol,
-						customerFreeTrialPendingCol,
-						customerFreeTrialCol,
-						signedCol,
-						preview_row.total_leads,
-					]);
-				});
-			}
-
-			console.log("lpo_previewDataSet");
-			console.log(lpo_previewDataSet);
-
-			var dataTableLPOPreview = $("#mpexusage-lpo_overview").DataTable({
-				destroy: true,
-				data: lpo_previewDataSet,
-				pageLength: 1000,
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{
-						title: "LPO Name", //0
-					},
-					{
-						title: "Suspect - New", //1
-					},
-					{
-						title: "Suspect - Hot Lead", //2
-					},
-					{
-						title: "Suspect - Qualified", //3
-					},
-					{
-						title: "Suspect - Validated", //4
-					},
-					{
-						title: "Suspect - Reassign", //5
-					},
-					{
-						title: "Suspect - Follow Up", //6
-					},
-					{
-						title: "Suspect - LPO Follow Up", //7
-					},
-					{
-						title: "Suspect - No Answer", //8
-					},
-					{
-						title: "Suspect - In Contact", //9
-					},
-					{
-						title: "Prospect - In Contact", //10
-					},
-					{
-						title: "Suspect - Parking Lot", //11
-					},
-					{
-						title: "Suspect - Lost", //12
-					},
-					{
-						title: "Suspect - Out of Territory", //13
-					},
-					{
-						title: "Suspect - Customer - Lost", //14
-					},
-					{
-						title: "Prospect - Opportunity", //15
-					},
-					{
-						title: "Prospect - Qualified", //16
-					},
-					{
-						title: "Prospect - Quote Sent", //17
-					},
-					{
-						title: "Customer - Free Trial Pending", //18
-					},
-					{
-						title: "Customer - Free Trial", //19
-					},
-					{
-						title: "Customer - Signed", //20
-					},
-					{
-						title: "Total Lead Count", //21
-					},
-				],
-				columnDefs: [
-					{
-						targets: [0, 4, 17, 19, 20],
-						className: "bolded",
-					},
-				],
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					const formatter = new Intl.NumberFormat("en-AU", {
-						style: "currency",
-						currency: "AUD",
-						minimumFractionDigits: 2,
-					});
-					// Total Suspect New Lead Count
-					total_suspect_new = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Hot Lead Count
-					total_suspect_hot_lead = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Qualified Count
-					total_suspect_qualified = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Validated
-					total_suspect_validated = api
-						.column(4)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Reassign
-					total_suspect_reassign = api
-						.column(5)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Follow Up
-					total_suspect_followup = api
-						.column(6)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect LPO Follow Up
-					total_suspect_lpo_followup = api
-						.column(7)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect No Answer
-					total_suspect_no_answer = api
-						.column(8)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect In Contact
-					total_suspect_in_contact = api
-						.column(9)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect In Contact
-					total_prospect_in_contact = api
-						.column(10)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Off Peak Pipline
-					total_suspect_off_peak_pipeline = api
-						.column(11)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Lost
-					total_suspect_lost = api
-						.column(12)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Out of Territory
-					total_suspect_oot = api
-						.column(13)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Customer Lost
-					total_suspect_customer_lost = api
-						.column(14)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Opportunity
-					total_prospect_opportunity = api
-						.column(15)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_qualified = api
-						.column(16)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Quoite Sent
-					total_prospect_quote_sent = api
-						.column(17)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial Pending
-					total_customer_free_trial_pending = api
-						.column(18)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_customer_free_trial = api
-						.column(19)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_customer_signed = api
-						.column(20)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Lead Count
-					total_lead = api
-						.column(21)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Update footer
-					$(api.column(1).footer()).html(
-						total_suspect_new +
-							" (" +
-							((total_suspect_new / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(2).footer()).html(
-						total_suspect_hot_lead +
-							" (" +
-							((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(3).footer()).html(
-						total_suspect_qualified +
-							" (" +
-							((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(4).footer()).html(
-						total_suspect_validated +
-							" (" +
-							((total_suspect_validated / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(5).footer()).html(
-						total_suspect_reassign +
-							" (" +
-							((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(6).footer()).html(
-						total_suspect_followup +
-							" (" +
-							((total_suspect_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(7).footer()).html(
-						total_suspect_lpo_followup +
-							" (" +
-							((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(8).footer()).html(
-						total_suspect_no_answer +
-							" (" +
-							((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(9).footer()).html(
-						total_suspect_in_contact +
-							" (" +
-							((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(10).footer()).html(
-						total_prospect_in_contact +
-							" (" +
-							((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(11).footer()).html(
-						total_suspect_off_peak_pipeline +
-							" (" +
-							((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-					$(api.column(12).footer()).html(
-						total_suspect_lost +
-							" (" +
-							((total_suspect_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(13).footer()).html(
-						total_suspect_oot +
-							" (" +
-							((total_suspect_oot / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(14).footer()).html(
-						total_suspect_customer_lost +
-							" (" +
-							((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(15).footer()).html(
-						total_prospect_opportunity +
-							" (" +
-							((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(16).footer()).html(
-						total_prospect_qualified +
-							" (" +
-							((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(17).footer()).html(
-						total_prospect_quote_sent +
-							" (" +
-							((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(18).footer()).html(
-						total_customer_free_trial_pending +
-							" (" +
-							((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-
-					$(api.column(19).footer()).html(
-						total_customer_free_trial +
-							" (" +
-							((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(20).footer()).html(
-						total_customer_signed +
-							" (" +
-							((total_customer_signed / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(21).footer()).html(total_lead);
-				},
-			});
-
-			saveCsv(lpo_previewDataSet);
-
-			var lpo_data = lpo_overDataSet;
-
-			var lpo_month_year = []; // creating array for storing browser
-			var lpo_customer_signed = [];
-			var lpo_suspect_hot_lead = [];
-			var lpo_suspect_reassign = [];
-			var lpo_suspect_lost = [];
-			var lpo_suspect_oot = [];
-			var lpo_suspect_customer_lost = [];
-			var lpo_suspect_off_peak_pipeline = [];
-			var lpo_prospect_opportunity = [];
-			var lpo_prospect_qualified = [];
-			var lpo_prospecy_quote_sent = [];
-			var lpo_prospect_no_answer = [];
-			var lpo_prospect_in_contact = [];
-			var lpo_suspect_follow_up = [];
-			var lpo_suspect_new = [];
-			var lpo_suspect_qualified = [];
-			var lpo_suspect_lpo_followup = [];
-			var lpo_suspect_validated = [];
-			var lpo_customer_free_trial = [];
-			var lpo_customer_free_trial_pending = [];
-			var lpo_suspect_no_answer = [];
-			var lpo_suspect_in_contact = [];
-			var lpo_total_leads = [];
-
-			for (var i = 0; i < lpo_data.length; i++) {
-				lpo_month_year.push(lpo_data[i][0]);
-				lpo_suspect_new[lpo_data[i][0]] = lpo_data[i][1];
-				lpo_suspect_hot_lead[lpo_data[i][0]] = lpo_data[i][2];
-				lpo_suspect_qualified[lpo_data[i][0]] = lpo_data[i][3];
-				lpo_suspect_validated[lpo_data[i][0]] = lpo_data[i][4];
-				lpo_suspect_reassign[lpo_data[i][0]] = lpo_data[i][5];
-				lpo_suspect_follow_up[lpo_data[i][0]] = lpo_data[i][6];
-				lpo_suspect_lpo_followup[lpo_data[i][0]] = lpo_data[i][7];
-				lpo_suspect_no_answer[lpo_data[i][0]] = lpo_data[i][8];
-				lpo_suspect_in_contact[lpo_data[i][0]] = lpo_data[i][9];
-				lpo_prospect_in_contact[lpo_data[i][0]] = lpo_data[i][10];
-				lpo_suspect_off_peak_pipeline[lpo_data[i][0]] = lpo_data[i][11];
-				lpo_suspect_lost[lpo_data[i][0]] = lpo_data[i][12];
-				lpo_suspect_oot[lpo_data[i][0]] = lpo_data[i][13];
-				lpo_suspect_customer_lost[lpo_data[i][0]] = lpo_data[i][14];
-				lpo_prospect_opportunity[lpo_data[i][0]] = lpo_data[i][15];
-				lpo_prospect_qualified[lpo_data[i][0]] = lpo_data[i][16];
-				lpo_prospecy_quote_sent[lpo_data[i][0]] = lpo_data[i][17];
-				lpo_customer_free_trial_pending[lpo_data[i][0]] = lpo_data[i][18];
-				lpo_customer_free_trial[lpo_data[i][0]] = lpo_data[i][19];
-				lpo_customer_signed[lpo_data[i][0]] = lpo_data[i][20];
-				lpo_total_leads[lpo_data[i][0]] = lpo_data[i][21];
-			}
-			var lpo_count = {}; // creating object for getting categories with
-			// count
-			lpo_month_year.forEach(function (i) {
-				lpo_count[i] = (lpo_count[i] || 0) + 1;
-			});
-
-			var lpo_series_data20 = [];
-			var lpo_series_data21 = [];
-			var lpo_series_data22 = [];
-			var lpo_series_data23 = [];
-			var lpo_series_data24 = [];
-			var lpo_series_data25 = [];
-			var lpo_series_data26 = [];
-			var lpo_series_data27 = [];
-			var lpo_series_data28 = [];
-			var lpo_series_data29 = [];
-			var lpo_series_data30 = [];
-			var lpo_series_data31 = [];
-			var lpo_series_data32 = [];
-			var lpo_series_data33 = [];
-			var lpo_series_data34 = [];
-			var lpo_series_data20a = [];
-			var lpo_series_data21a = [];
-			var lpo_series_data22a = [];
-			var lpo_series_data23a = [];
-			var lpo_series_data24a = [];
-			var lpo_series_data25a = [];
-			var lpo_series_data26a = [];
-			var lpo_series_data27a = [];
-
-			var lpo_categores1 = []; // creating empty array for highcharts
-			// categories
-			Object.keys(lpo_total_leads).map(function (item, key) {
-				lpo_series_data20.push(parseInt(lpo_customer_signed[item]));
-				lpo_series_data21.push(parseInt(lpo_suspect_hot_lead[item]));
-				lpo_series_data22.push(parseInt(lpo_suspect_reassign[item]));
-				lpo_series_data23.push(parseInt(lpo_suspect_lost[item]));
-				lpo_series_data24.push(parseInt(lpo_suspect_customer_lost[item]));
-				lpo_series_data25.push(parseInt(lpo_suspect_off_peak_pipeline[item]));
-				lpo_series_data26.push(parseInt(lpo_prospecy_quote_sent[item]));
-				lpo_series_data27.push(parseInt(lpo_prospect_no_answer[item]));
-				lpo_series_data28.push(parseInt(lpo_prospect_in_contact[item]));
-				lpo_series_data29.push(parseInt(lpo_total_leads[item]));
-				lpo_series_data31.push(parseInt(lpo_prospect_opportunity[item]));
-				lpo_series_data32.push(parseInt(lpo_suspect_oot[item]));
-				lpo_series_data33.push(parseInt(lpo_suspect_follow_up[item]));
-				lpo_series_data34.push(parseInt(lpo_suspect_new[item]));
-				lpo_series_data20a.push(parseInt(lpo_suspect_qualified[item]));
-				lpo_series_data21a.push(parseInt(lpo_suspect_lpo_followup[item]));
-				lpo_series_data22a.push(parseInt(lpo_suspect_validated[item]));
-				lpo_series_data23a.push(parseInt(lpo_customer_free_trial[item]));
-				lpo_series_data24a.push(parseInt(lpo_suspect_no_answer[item]));
-				lpo_series_data25a.push(parseInt(lpo_suspect_in_contact[item]));
-				lpo_series_data26a.push(parseInt(lpo_prospect_qualified[item]));
-				lpo_series_data27a.push(
-					parseInt(lpo_customer_free_trial_pending[item])
-				);
-				lpo_categores1.push(item);
-			});
-
-			plotLPOChartPreview(
-				lpo_series_data20,
-				lpo_series_data21,
-				lpo_series_data22,
-				lpo_series_data23,
-				lpo_series_data24,
-				lpo_series_data25,
-				lpo_series_data26,
-				lpo_series_data27,
-				lpo_series_data28,
-				lpo_series_data29,
-				lpo_series_data31,
-				lpo_series_data32,
-				lpo_series_data33,
-				lpo_series_data34,
-				lpo_categores1,
-				lpo_series_data20a,
-				lpo_series_data21a,
-				lpo_series_data22a,
-				lpo_series_data23a,
-				lpo_series_data24a,
-				lpo_series_data25a,
-				lpo_series_data26a,
-				lpo_series_data27a
-			);
-		}
-
-		if (role != 1000) {
-			// TODO - Zee Preview
-
-			// Sales Dashboard - Franchisee Generated Leads by Status - Weekly Reporting
-			// var zeeLeadsByStatusWeeklySearch = search.load({
-			// 	type: "customer",
-			// 	id: "customsearch_leads_reporting_weekly_4_2",
-			// });
-
-			//Sales Dashboard - Leads by Status & Zee - Weekly Reporting
-			var zeeLeadsByStatusWeeklySearch = search.load({
-				type: "customer",
-				id: "customsearch_leads_reporting_weekly_4__5",
-			});
-
-			zeeLeadsByStatusWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.NONEOF,
-					values: [109783],
-				})
-			);
-
-			if (customer_type == "2") {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "TEST",
-					})
-				);
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTCONTAIN,
-						values: "- Parent",
-					})
-				);
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Shippit Pty Ltd ",
-					})
-				);
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "Sendle",
-					})
-				);
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "companyname",
-						join: null,
-						operator: search.Operator.DOESNOTSTARTWITH,
-						values: "SC -",
-					})
-				);
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_np_np_customer",
-						join: null,
-						operator: search.Operator.ANYOF,
-						values: "@NONE@",
-					})
-				);
-			}
-
-			if (!isNullorEmpty(leadStatus)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "entitystatus",
-						join: null,
-						operator: search.Operator.IS,
-						values: leadStatus,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_from,
-					})
-				);
-
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_entered",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_signed_up_from) &&
-				!isNullorEmpty(date_signed_up_to)
-			) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: date_signed_up_from,
-					})
-				);
-
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date_signup",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: date_signed_up_to,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
-
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "CUSTRECORD_CUSTOMER",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(cancelled_start_date) &&
-				!isNullorEmpty(cancelled_last_date)
-			) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: cancelled_start_date,
-					})
-				);
-
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity13",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: cancelled_last_date,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_source)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "leadsource",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_source,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_rep)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: sales_rep,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(lead_entered_by)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_lead_entered_by",
-						join: null,
-						operator: search.Operator.IS,
-						values: lead_entered_by,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(sales_campaign)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_campaign",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.ANYOF,
-						values: sales_campaign,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(parent_lpo)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "internalid",
-						join: "custentity_lpo_parent_account",
-						operator: search.Operator.ANYOF,
-						values: parent_lpo,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(date_quote_sent_from) &&
-				!isNullorEmpty(date_quote_sent_to)
-			) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORAFTER,
-						values: date_quote_sent_from,
-					})
-				);
-
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "custentity_date_lead_quote_sent",
-						join: null,
-						operator: search.Operator.ONORBEFORE,
-						values: date_quote_sent_to,
-					})
-				);
-			}
-
-			if (!isNullorEmpty(zee_id)) {
-				zeeLeadsByStatusWeeklySearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
-
-			if (
-				!isNullorEmpty(modified_date_from) &&
-				!isNullorEmpty(modified_date_to)
-			) {
-				var defaultSearchFilters =
-					zeeLeadsByStatusWeeklySearch.filterExpression;
-
-				console.log(
-					"default search filters: " + JSON.stringify(defaultSearchFilters)
-				);
-
-				var modifiedDateFilters = [
-					[
-						["activity.date", "within", [modified_date_from, modified_date_to]],
-						"AND",
-						[
-							"activity.custevent_organiser",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-					"AND",
-					[
-						[
-							"usernotes.notedate",
-							"within",
-							[modified_date_from, modified_date_to],
-						],
-						"AND",
-						[
-							"usernotes.author",
-							"anyof",
-							"anyof",
-							"1623053",
-							"668712",
-							"1797389",
-							"1809334",
-							"690145",
-							"1771076",
-							"1813424",
-							"696160",
-							"668711",
-							"1809382",
-							"653718",
-							"1777309",
-							"1819701",
-							"1820151",
-							"1822089",
-						],
-					],
-				];
-				console.log(
-					"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-				);
-
-				defaultSearchFilters.push("AND");
-				defaultSearchFilters.push(modifiedDateFilters);
-
-				console.log(
-					"defaultSearchFilters filters: " +
-						JSON.stringify(defaultSearchFilters)
-				);
-
-				zeeLeadsByStatusWeeklySearch.filterExpression = defaultSearchFilters;
-			}
-
-			var count1 = 0;
-			var oldZeeName = null;
-
-			var customer_signed = 0;
-			var suspect_hot_lead = 0;
-			var suspect_reassign = 0;
-			var suspect_lost = 0;
-			var suspect_oot = 0;
-			var suspect_customer_lost = 0;
-			var suspect_off_peak_pipeline = 0;
-			var prospect_opportunity = 0;
-			var prospect_qualified = 0;
-			var prospecy_quote_sent = 0;
-			var prospect_no_answer = 0;
-			var prospect_in_contact = 0;
-			var suspect_follow_up = 0;
-			var suspect_new = 0;
-
-			var suspect_lpo_followup = 0;
-			var suspect_qualified = 0;
-			var suspect_unqualified = 0;
-			var suspect_pre_qualification = 0;
-			var suspect_in_qualification = 0;
-
-			var suspect_validated = 0;
-			var customer_free_trial = 0;
-			var customer_free_trial_pending = 0;
-
-			var suspect_no_answer = 0;
-			var suspect_in_contact = 0;
-
-			zeeLeadsByStatusWeeklySearch
-				.run()
-				.each(function (zeeLeadsByStatusWeeklySearchResultSet) {
-					var prospectCount = parseInt(
-						zeeLeadsByStatusWeeklySearchResultSet.getValue({
-							name: "internalid",
-							summary: "COUNT",
-						})
-					);
-
-					var custStatus = parseInt(
-						zeeLeadsByStatusWeeklySearchResultSet.getValue({
-							name: "entitystatus",
-							summary: "GROUP",
-						})
-					);
-					var custStatusText = zeeLeadsByStatusWeeklySearchResultSet.getText({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
-					var zeeName = zeeLeadsByStatusWeeklySearchResultSet.getText({
-						name: "partner",
-						summary: "GROUP",
-					});
-
-					if (isNullorEmpty(zeeName)) {
-						zeeName = "Unassigned";
-					}
-
-					if (count1 == 0) {
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed = parseInt(prospectCount);
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead = parseInt(prospectCount);
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost = parseInt(prospectCount);
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot = parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost = parseInt(prospectCount);
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign = parseInt(prospectCount);
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent = parseInt(prospectCount);
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline = parseInt(prospectCount);
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity = parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up = parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new = parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 38) {
-							//SUSPECT - UNQUALIFIED
-							suspect_unqualified = parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup = parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending = parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT - QUALIFIED
-							prospect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 30) {
-							//PROSPECT - IN QUALIFICATION
-							suspect_in_qualification = parseInt(prospectCount);
-						} else if (custStatus == 34) {
-							//PROSPECT - PRE QUALIFICATION
-							suspect_pre_qualification = parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending +
-							suspect_unqualified +
-							suspect_pre_qualification +
-							suspect_in_qualification;
-					} else if (oldZeeName != null && oldZeeName == zeeName) {
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed += prospectCount;
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead += prospectCount;
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost += prospectCount;
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot += parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost += prospectCount;
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign += prospectCount;
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent += prospectCount;
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer += prospectCount;
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact += prospectCount;
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline += prospectCount;
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity += parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up += parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new += parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified += parseInt(prospectCount);
-						} else if (custStatus == 38) {
-							//SUSPECT - UNQUALIFIED
-							suspect_unqualified += parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup += parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated += parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial += parseInt(prospectCount);
-						} else if (custStatus == 71) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending += parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer += parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact += parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT - QUALIFIED
-							prospect_qualified += parseInt(prospectCount);
-						} else if (custStatus == 30) {
-							//PROSPECT - IN QUALIFICATION
-							suspect_in_qualification += parseInt(prospectCount);
-						} else if (custStatus == 34) {
-							//PROSPECT - PRE QUALIFICATION
-							suspect_pre_qualification += parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending +
-							suspect_unqualified +
-							suspect_pre_qualification +
-							suspect_in_qualification;
-					} else if (oldDate1 != null && oldZeeName != zeeName) {
-						zee_debt_set2.push({
-							zeeName: oldZeeName,
-							suspect_hot_lead: suspect_hot_lead,
-							prospecy_quote_sent: prospecy_quote_sent,
-							suspect_reassign: suspect_reassign,
-							prospect_no_answer: prospect_no_answer,
-							prospect_in_contact: prospect_in_contact,
-							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-							suspect_lost: suspect_lost,
-							suspect_customer_lost: suspect_customer_lost,
-							prospect_opportunity: prospect_opportunity,
-							customer_signed: customer_signed,
-							total_leads: total_leads,
-							suspect_oot: suspect_oot,
-							suspect_follow_up: suspect_follow_up,
-							suspect_new: suspect_new,
-							suspect_qualified: suspect_qualified,
-							suspect_unqualified: suspect_unqualified,
-							suspect_lpo_followup: suspect_lpo_followup,
-							suspect_validated: suspect_validated,
-							customer_free_trial: customer_free_trial,
-							suspect_no_answer: suspect_no_answer,
-							suspect_in_contact: suspect_in_contact,
-							prospect_qualified: prospect_qualified,
-							customer_free_trial_pending: customer_free_trial_pending,
-							suspect_pre_qualification: suspect_pre_qualification,
-							suspect_in_qualification: suspect_in_qualification,
-						});
-
-						customer_signed = 0;
-						suspect_hot_lead = 0;
-						suspect_reassign = 0;
-						suspect_lost = 0;
-						suspect_customer_lost = 0;
-						suspect_off_peak_pipeline = 0;
-						prospect_opportunity = 0;
-						prospecy_quote_sent = 0;
-						prospect_no_answer = 0;
-						prospect_in_contact = 0;
-						suspect_oot = 0;
-						suspect_follow_up = 0;
-						suspect_new = 0;
-						suspect_qualified = 0;
-						suspect_unqualified = 0;
-						suspect_lpo_followup = 0;
-						total_leads = 0;
-						prospect_qualified = 0;
-
-						suspect_validated = 0;
-						customer_free_trial = 0;
-						customer_free_trial_pending = 0;
-						suspect_no_answer = 0;
-						suspect_in_contact = 0;
-						suspect_pre_qualification = 0;
-						suspect_in_qualification = 0;
-
-						if (custStatus == 13 || custStatus == 66) {
-							//CUSTOMER _ SIGNED
-							customer_signed = prospectCount;
-						} else if (custStatus == 57) {
-							//SUSPECT - HOT LEAD
-							suspect_hot_lead = prospectCount;
-						} else if (custStatus == 59) {
-							//SUSPECT - LOST
-							suspect_lost = prospectCount;
-						} else if (custStatus == 64) {
-							//SUSPECT - OUT OF TERRITORY
-							suspect_oot = parseInt(prospectCount);
-						} else if (custStatus == 22) {
-							//SUSPECT - CUSTOMER - LOST
-							suspect_customer_lost = prospectCount;
-						} else if (custStatus == 60 || custStatus == 40) {
-							//SUSPECT - REP REASSIGN
-							suspect_reassign = prospectCount;
-						} else if (custStatus == 50) {
-							//PROSPECT - QUOTE SENT
-							prospecy_quote_sent = prospectCount;
-						} else if (custStatus == 35) {
-							//PROSPECT - NO ANSWER
-							prospect_no_answer = prospectCount;
-						} else if (custStatus == 8) {
-							//PROSPECT - IN CONTACT
-							prospect_in_contact = prospectCount;
-						} else if (custStatus == 62) {
-							//SUSPECT - OFF PEAK PIPELINE
-							suspect_off_peak_pipeline = prospectCount;
-						} else if (custStatus == 58) {
-							//PROSPECT - OPPORTUNITY
-							prospect_opportunity = parseInt(prospectCount);
-						} else if (custStatus == 18) {
-							//SUSPECT - FOLLOW UP
-							suspect_follow_up = parseInt(prospectCount);
-						} else if (custStatus == 6) {
-							//SUSPECT - NEW
-							suspect_new = parseInt(prospectCount);
-						} else if (custStatus == 42) {
-							//SUSPECT - QUALIFIED
-							suspect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 38) {
-							//SUSPECT - UNQUALIFIED
-							suspect_unqualified = parseInt(prospectCount);
-						} else if (custStatus == 67) {
-							//SUSPECT - LPO FOLLOW UP
-							suspect_lpo_followup = parseInt(prospectCount);
-						} else if (custStatus == 68) {
-							//SUSPECT - VALIDATED
-							suspect_validated = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL
-							customer_free_trial = parseInt(prospectCount);
-						} else if (custStatus == 32) {
-							//CUSTOMER - FREE TRIAL PENDING
-							customer_free_trial_pending = parseInt(prospectCount);
-						} else if (custStatus == 20) {
-							//SUSPECT - NO ANSWER
-							suspect_no_answer = parseInt(prospectCount);
-						} else if (custStatus == 69) {
-							//SUSPECT - IN CONTACT
-							suspect_in_contact = parseInt(prospectCount);
-						} else if (custStatus == 70) {
-							//PROSPECT QUALIFIED
-							prospect_qualified = parseInt(prospectCount);
-						} else if (custStatus == 30) {
-							//PROSPECT - IN QUALIFICATION
-							suspect_in_qualification = parseInt(prospectCount);
-						} else if (custStatus == 34) {
-							//PROSPECT - PRE QUALIFICATION
-							suspect_pre_qualification = parseInt(prospectCount);
-						}
-
-						total_leads =
-							customer_signed +
-							suspect_hot_lead +
-							suspect_lost +
-							suspect_customer_lost +
-							suspect_reassign +
-							prospecy_quote_sent +
-							prospect_no_answer +
-							prospect_in_contact +
-							suspect_off_peak_pipeline +
-							prospect_opportunity +
-							suspect_oot +
-							suspect_follow_up +
-							suspect_new +
-							suspect_qualified +
-							suspect_lpo_followup +
-							suspect_validated +
-							customer_free_trial +
-							suspect_no_answer +
-							suspect_in_contact +
-							prospect_qualified +
-							customer_free_trial_pending +
-							suspect_unqualified +
-							suspect_pre_qualification +
-							suspect_in_qualification;
-					}
-
-					count1++;
-					oldZeeName = zeeName;
-					return true;
-				});
-
-			if (count1 > 0) {
-				zee_debt_set2.push({
-					zeeName: oldZeeName,
-					suspect_hot_lead: suspect_hot_lead,
-					prospecy_quote_sent: prospecy_quote_sent,
-					suspect_reassign: suspect_reassign,
-					prospect_no_answer: prospect_no_answer,
-					prospect_in_contact: prospect_in_contact,
-					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-					suspect_lost: suspect_lost,
-					suspect_customer_lost: suspect_customer_lost,
-					prospect_opportunity: prospect_opportunity,
-					customer_signed: customer_signed,
-					total_leads: total_leads,
-					suspect_oot: suspect_oot,
-					suspect_follow_up: suspect_follow_up,
-					suspect_new: suspect_new,
-					suspect_qualified: suspect_qualified,
-					suspect_unqualified: suspect_unqualified,
-					suspect_lpo_followup: suspect_lpo_followup,
-					suspect_validated: suspect_validated,
-					customer_free_trial: customer_free_trial,
-					suspect_no_answer: suspect_no_answer,
-					suspect_in_contact: suspect_in_contact,
-					prospect_qualified: prospect_qualified,
-					customer_free_trial_pending: customer_free_trial_pending,
-					suspect_pre_qualification: suspect_pre_qualification,
-					suspect_in_qualification: suspect_in_qualification,
-				});
-			}
-
-			console.log("zee_debt_set2: " + JSON.stringify(zee_debt_set2));
-
-			zee_previewDataSet = [];
-			zee_csvPreviewSet = [];
-
-			var zee_overDataSet = [];
-
-			if (!isNullorEmpty(zee_debt_set2)) {
-				zee_debt_set2.forEach(function (preview_row, index) {
-					var hotLeadPercentage = parseInt(
-						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-					);
-					var hotLeadCol =
-						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-					var quoteSentPercentage = parseInt(
-						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-					);
-					var quoteSentCol =
-						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-					var reassignPercentage = parseInt(
-						(preview_row.suspect_reassign / preview_row.total_leads) * 100
-					);
-					var reassignCol =
-						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-					var noAnswerPercentage = parseInt(
-						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-					);
-					var noAnswerCol =
-						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-					var inContactPercentage = parseInt(
-						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-					);
-					var inContactCol =
-						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-					var offPeakPercentage = parseInt(
-						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-							100
-					);
-					var offPeakCol =
-						preview_row.suspect_off_peak_pipeline +
-						" (" +
-						offPeakPercentage +
-						"%)";
-
-					var lostPercentage = parseInt(
-						(preview_row.suspect_lost / preview_row.total_leads) * 100
-					);
-					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-					var ootPercentage = parseInt(
-						(preview_row.suspect_oot / preview_row.total_leads) * 100
-					);
-					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-					var custLostPercentage = parseInt(
-						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-					);
-					var custLostCol =
-						preview_row.suspect_customer_lost +
-						" (" +
-						custLostPercentage +
-						"%)";
-
-					var oppPercentage = parseInt(
-						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-					);
-					var oppCol =
-						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-					var signedPercentage = parseInt(
-						(preview_row.customer_signed / preview_row.total_leads) * 100
-					);
-					var signedCol =
-						preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-					var suspectFollowUpPErcentage = parseInt(
-						(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-					);
-					var followUpCol =
-						preview_row.suspect_follow_up +
-						" (" +
-						suspectFollowUpPErcentage +
-						"%)";
-
-					var suspectNewPercentage = parseInt(
-						(preview_row.suspect_new / preview_row.total_leads) * 100
-					);
-					var suspectNewCol =
-						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-					var suspectQualifiedPercentage = parseInt(
-						(preview_row.suspect_qualified / preview_row.total_leads) * 100
-					);
-					var suspectQualifiedCol =
-						preview_row.suspect_qualified +
-						" (" +
-						suspectQualifiedPercentage +
-						"%)";
-
-					var suspectUnqualifiedPercentage = parseInt(
-						(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-					);
-					var suspectUnqualifiedCol =
-						preview_row.suspect_unqualified +
-						" (" +
-						suspectUnqualifiedPercentage +
-						"%)";
-
-					var suspectLPOFollowupPercentage = parseInt(
-						(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-					);
-					var suspectLPOFollowupwCol =
-						preview_row.suspect_lpo_followup +
-						" (" +
-						suspectLPOFollowupPercentage +
-						"%)";
-
-					var suspectValidatedPercentage = parseInt(
-						(preview_row.suspect_validated / preview_row.total_leads) * 100
-					);
-					var suspectValidatedCol =
-						preview_row.suspect_validated +
-						" (" +
-						suspectValidatedPercentage +
-						"%)";
-
-					var customerFreeTrialPercentage = parseInt(
-						(preview_row.customer_free_trial / preview_row.total_leads) * 100
-					);
-					var customerFreeTrialCol =
-						preview_row.customer_free_trial +
-						" (" +
-						customerFreeTrialPercentage +
-						"%)";
-
-					var customerFreeTrialPendingPercentage = parseInt(
-						(preview_row.customer_free_trial_pending /
-							preview_row.total_leads) *
-							100
-					);
-					var customerFreeTrialPendingCol =
-						preview_row.customer_free_trial_pending +
-						" (" +
-						customerFreeTrialPendingPercentage +
-						"%)";
-
-					var suspectNoAnswerPercentage = parseInt(
-						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-					);
-					var suspectNoAnswerCol =
-						preview_row.suspect_no_answer +
-						" (" +
-						suspectNoAnswerPercentage +
-						"%)";
-
-					var suspectInContactPercentage = parseInt(
-						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-					);
-					var suspectInContactCol =
-						preview_row.suspect_in_contact +
-						" (" +
-						suspectInContactPercentage +
-						"%)";
-
-					var prospectQualifiedPercentage = parseInt(
-						(preview_row.prospect_qualified / preview_row.total_leads) * 100
-					);
-					var prospectQualifiedCol =
-						preview_row.prospect_qualified +
-						" (" +
-						prospectQualifiedPercentage +
-						"%)";
-
-					var suspectPreQualificationPercentage = parseInt(
-						(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-							100
-					);
-					var suspectPreQualificationCol =
-						preview_row.suspect_pre_qualification +
-						" (" +
-						suspectPreQualificationPercentage +
-						"%)";
-
-					var suspectInQualificationPercentage = parseInt(
-						(preview_row.suspect_in_qualification / preview_row.total_leads) *
-							100
-					);
-					var suspectInQualificationCol =
-						preview_row.suspect_in_qualification +
-						" (" +
-						suspectInQualificationPercentage +
-						"%)";
-
-					zee_overDataSet.push([
-						preview_row.zeeName,
-						preview_row.suspect_new,
-						preview_row.suspect_hot_lead,
-						preview_row.suspect_validated,
-						preview_row.suspect_qualified,
-						preview_row.suspect_unqualified,
-						preview_row.suspect_pre_qualification,
-						preview_row.suspect_in_qualification,
-						preview_row.suspect_reassign,
-						preview_row.suspect_follow_up,
-						preview_row.suspect_no_answer,
-						preview_row.suspect_in_contact,
-						preview_row.suspect_lpo_followup,
-						preview_row.prospect_in_contact,
-						preview_row.suspect_off_peak_pipeline,
-						preview_row.suspect_lost,
-						preview_row.suspect_oot,
-						preview_row.suspect_customer_lost,
-						preview_row.prospect_opportunity,
-						preview_row.prospect_qualified,
-						preview_row.prospecy_quote_sent,
-						preview_row.customer_free_trial_pending,
-						preview_row.customer_free_trial,
-						preview_row.customer_signed,
-						preview_row.total_leads,
-					]);
-
-					zee_previewDataSet.push([
-						preview_row.zeeName,
-						suspectNewCol,
-						hotLeadCol,
-						suspectValidatedCol,
-						suspectQualifiedCol,
-						suspectUnqualifiedCol,
-						suspectPreQualificationCol,
-						suspectInQualificationCol,
-						reassignCol,
-						followUpCol,
-						suspectLPOFollowupwCol,
-						suspectNoAnswerCol,
-						suspectInContactCol,
-						inContactCol,
-						offPeakCol,
-						lostCol,
-						ootCol,
-						custLostCol,
-						oppCol,
-						prospectQualifiedCol,
-						quoteSentCol,
-						customerFreeTrialPendingCol,
-						customerFreeTrialCol,
-						signedCol,
-						preview_row.total_leads,
-					]);
-				});
-			}
-
-			console.log("zee_previewDataSet");
-			console.log(zee_previewDataSet);
-
-			var dataTableZeePreview = $("#mpexusage-zee_overview").DataTable({
-				destroy: true,
-				data: zee_previewDataSet,
-				pageLength: 1000,
-				order: [24, "desc"],
-				layout: {
-					topStart: {
-						buttons: [
-							{
-								extend: "copy",
-								text: "Copy",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "csv",
-								text: "CSV",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "excel",
-								text: "Excel",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "pdf",
-								text: "PDF",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-							{
-								extend: "print",
-								text: "Print",
-								className: "btn btn-default exportButtons",
-								exportOptions: {
-									columns: ":not(.notexport)",
-								},
-							},
-						],
-					},
-				},
-				columns: [
-					{
-						title: "Franchisee", //0
-					},
-					{
-						title: "Suspect - New", //1
-					},
-					{
-						title: "Suspect - Hot Lead", //2
-					},
-					{
-						title: "Suspect - Validated", //3
-					},
-					{
-						title: "Suspect - Qualified", //4
-					},
-					{
-						title: "Suspect - Unqualified", //5
-					},
-					{
-						title: "Suspect - Pre Qualification", //6
-					},
-					{
-						title: "Suspect - In Qualification", //7
-					},
-					{
-						title: "Suspect - Reassign", //8
-					},
-					{
-						title: "Suspect - Follow Up", //9
-					},
-					{
-						title: "Suspect - LPO Follow Up", //10
-					},
-					{
-						title: "Suspect - No Answer", //11
-					},
-					{
-						title: "Suspect - In Contact", //12
-					},
-					{
-						title: "Prospect - In Contact", //13
-					},
-					{
-						title: "Suspect - Parking Lot", //14
-					},
-					{
-						title: "Suspect - Lost", //15
-					},
-					{
-						title: "Suspect - Out of Territory", //16
-					},
-					{
-						title: "Suspect - Customer - Lost", //17
-					},
-					{
-						title: "Prospect - Opportunity", //18
-					},
-					{
-						title: "Prospect - Qualified", //19
-					},
-					{
-						title: "Prospect - Quote Sent", //20
-					},
-					{
-						title: "Customer - Free Trial Pending", //21
-					},
-					{
-						title: "Customer - Free Trial", //22
-					},
-					{
-						title: "Customer - Signed", //23
-					},
-					{
-						title: "Total Lead Count", //24
-					},
-				],
-				columnDefs: [
-					{
-						targets: [0, 4, 20, 22, 23],
-						className: "bolded",
-					},
-				],
-				footerCallback: function (row, data, start, end, display) {
-					var api = this.api(),
-						data;
-
-					// Remove the formatting to get integer data for summation
-					var intVal = function (i) {
-						return parseInt(i);
-					};
-
-					const formatter = new Intl.NumberFormat("en-AU", {
-						style: "currency",
-						currency: "AUD",
-						minimumFractionDigits: 2,
-					});
-					// Total Suspect New Lead Count
-					total_suspect_new = api
-						.column(1)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Hot Lead Count
-					total_suspect_hot_lead = api
-						.column(2)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Qualified Count
-					total_suspect_qualified = api
-						.column(3)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Unqualified Count
-					total_suspect_unqualified = api
-						.column(4)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Validated
-					total_suspect_validated = api
-						.column(5)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Reassign
-					total_suspect_reassign = api
-						.column(6)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Follow Up
-					total_suspect_followup = api
-						.column(7)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect LPO Follow Up
-					total_suspect_lpo_followup = api
-						.column(8)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect No Answer
-					total_suspect_no_answer = api
-						.column(9)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect In Contact
-					total_suspect_in_contact = api
-						.column(10)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect In Contact
-					total_prospect_in_contact = api
-						.column(11)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Off Peak Pipline
-					total_suspect_off_peak_pipeline = api
-						.column(12)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Lost
-					total_suspect_lost = api
-						.column(13)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Out of Territory
-					total_suspect_oot = api
-						.column(14)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Suspect Customer Lost
-					total_suspect_customer_lost = api
-						.column(15)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Opportunity
-					total_prospect_opportunity = api
-						.column(16)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_prospect_qualified = api
-						.column(17)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Prospect Quoite Sent
-					total_prospect_quote_sent = api
-						.column(18)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial Pending
-					total_customer_free_trial_pending = api
-						.column(19)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Free Trial
-					total_customer_free_trial = api
-						.column(20)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Customer Signed
-					total_customer_signed = api
-						.column(21)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_lead_v1 = api
-						.column(22)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					total_lead_v2 = api
-						.column(23)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Total Lead Count
-					total_lead = api
-						.column(24)
-						.data()
-						.reduce(function (a, b) {
-							return intVal(a) + intVal(b);
-						}, 0);
-
-					// Update footer
-					$(api.column(1).footer()).html(
-						total_suspect_new +
-							" (" +
-							((total_suspect_new / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(2).footer()).html(
-						total_suspect_hot_lead +
-							" (" +
-							((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(3).footer()).html(
-						total_suspect_qualified +
-							" (" +
-							((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(4).footer()).html(
-						total_suspect_unqualified +
-							" (" +
-							((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(5).footer()).html(
-						total_suspect_validated +
-							" (" +
-							((total_suspect_validated / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(6).footer()).html(
-						total_suspect_reassign +
-							" (" +
-							((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(7).footer()).html(
-						total_suspect_followup +
-							" (" +
-							((total_suspect_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(8).footer()).html(
-						total_suspect_lpo_followup +
-							" (" +
-							((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(9).footer()).html(
-						total_suspect_no_answer +
-							" (" +
-							((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(10).footer()).html(
-						total_suspect_in_contact +
-							" (" +
-							((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(11).footer()).html(
-						total_prospect_in_contact +
-							" (" +
-							((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(12).footer()).html(
-						total_suspect_off_peak_pipeline +
-							" (" +
-							((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-					$(api.column(13).footer()).html(
-						total_suspect_lost +
-							" (" +
-							((total_suspect_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(14).footer()).html(
-						total_suspect_oot +
-							" (" +
-							((total_suspect_oot / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(15).footer()).html(
-						total_suspect_customer_lost +
-							" (" +
-							((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(16).footer()).html(
-						total_prospect_opportunity +
-							" (" +
-							((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(17).footer()).html(
-						total_prospect_qualified +
-							" (" +
-							((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(18).footer()).html(
-						total_prospect_quote_sent +
-							" (" +
-							((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(19).footer()).html(
-						total_customer_free_trial_pending +
-							" (" +
-							((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-								0
-							) +
-							"%)"
-					);
-
-					$(api.column(20).footer()).html(
-						total_customer_free_trial +
-							" (" +
-							((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-
-					$(api.column(21).footer()).html(
-						total_customer_signed +
-							" (" +
-							((total_customer_signed / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(22).footer()).html(
-						total_lead_v1 +
-							" (" +
-							((total_lead_v1 / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(23).footer()).html(
-						total_lead_v2 +
-							" (" +
-							((total_lead_v2 / total_lead) * 100).toFixed(0) +
-							"%)"
-					);
-					$(api.column(24).footer()).html(total_lead);
-				},
-			});
-
-			saveCsv(zee_previewDataSet);
-
-			var zee_data = zee_overDataSet;
-
-			var zee_month_year = []; // creating array for storing browser
-			var zee_customer_signed = [];
-			var zee_suspect_hot_lead = [];
-			var zee_suspect_reassign = [];
-			var zee_suspect_lost = [];
-			var zee_suspect_oot = [];
-			var zee_suspect_customer_lost = [];
-			var zee_suspect_off_peak_pipeline = [];
-			var zee_prospect_opportunity = [];
-			var zee_prospect_qualified = [];
-			var zee_prospecy_quote_sent = [];
-			var zee_prospect_no_answer = [];
-			var zee_prospect_in_contact = [];
-			var zee_suspect_follow_up = [];
-			var zee_suspect_new = [];
-			var zee_suspect_qualified = [];
-			var zee_suspect_unqualified = [];
-			var zee_suspect_lpo_followup = [];
-			var zee_suspect_validated = [];
-			var zee_customer_free_trial = [];
-			var zee_customer_free_trial_pending = [];
-			var zee_suspect_no_answer = [];
-			var zee_suspect_in_contact = [];
-			var zee_suspect_pre_qualification = [];
-			var zee_suspect_in_qualification = [];
-			var zee_total_leads = [];
-
-			for (var i = 0; i < zee_data.length; i++) {
-				zee_month_year.push(zee_data[i][0]);
-				zee_suspect_new[zee_data[i][0]] = zee_data[i][1];
-				zee_suspect_hot_lead[zee_data[i][0]] = zee_data[i][2];
-				zee_suspect_qualified[zee_data[i][0]] = zee_data[i][5];
-				zee_suspect_unqualified[zee_data[i][0]] = zee_data[i][4];
-				zee_suspect_validated[zee_data[i][0]] = zee_data[i][3];
-				zee_suspect_pre_qualification[zee_data[i][0]] = zee_data[i][6];
-				zee_suspect_in_qualification[zee_data[i][0]] = zee_data[i][7];
-				zee_suspect_reassign[zee_data[i][0]] = zee_data[i][8];
-				zee_suspect_follow_up[zee_data[i][0]] = zee_data[i][9];
-				zee_suspect_lpo_followup[zee_data[i][0]] = zee_data[i][10];
-				zee_suspect_no_answer[zee_data[i][0]] = zee_data[i][11];
-				zee_suspect_in_contact[zee_data[i][0]] = zee_data[i][12];
-				zee_prospect_in_contact[zee_data[i][0]] = zee_data[i][13];
-				zee_suspect_off_peak_pipeline[zee_data[i][0]] = zee_data[i][14];
-				zee_suspect_lost[zee_data[i][0]] = zee_data[i][15];
-				zee_suspect_oot[zee_data[i][0]] = zee_data[i][16];
-				zee_suspect_customer_lost[zee_data[i][0]] = zee_data[i][17];
-				zee_prospect_opportunity[zee_data[i][0]] = zee_data[i][18];
-				zee_prospect_qualified[zee_data[i][0]] = zee_data[i][19];
-				zee_prospecy_quote_sent[zee_data[i][0]] = zee_data[i][20];
-				zee_customer_free_trial_pending[zee_data[i][0]] = zee_data[i][21];
-				zee_customer_free_trial[zee_data[i][0]] = zee_data[i][22];
-				zee_customer_signed[zee_data[i][0]] = zee_data[i][23];
-				zee_total_leads[zee_data[i][0]] = zee_data[i][24];
-			}
-			var zee_count = {}; // creating object for getting categories with
-			// count
-			zee_month_year.forEach(function (i) {
-				zee_count[i] = (zee_count[i] || 0) + 1;
-			});
-
-			var zee_series_data20 = [];
-			var zee_series_data21 = [];
-			var zee_series_data22 = [];
-			var zee_series_data23 = [];
-			var zee_series_data24 = [];
-			var zee_series_data25 = [];
-			var zee_series_data26 = [];
-			var zee_series_data27 = [];
-			var zee_series_data28 = [];
-			var zee_series_data29 = [];
-			var zee_series_data30 = [];
-			var zee_series_data31 = [];
-			var zee_series_data32 = [];
-			var zee_series_data33 = [];
-			var zee_series_data34 = [];
-			var zee_series_data20a = [];
-			var zee_series_data21a = [];
-			var zee_series_data22a = [];
-			var zee_series_data23a = [];
-			var zee_series_data24a = [];
-			var zee_series_data25a = [];
-			var zee_series_data26a = [];
-			var zee_series_data27a = [];
-			var zee_series_data28a = [];
-			var zee_series_data29a = [];
-			var zee_series_data30a = [];
-
-			var zee_categores1 = []; // creating empty array for highcharts
-			// categories
-			Object.keys(zee_total_leads).map(function (item, key) {
-				zee_series_data20.push(parseInt(zee_customer_signed[item]));
-				zee_series_data21.push(parseInt(zee_suspect_hot_lead[item]));
-				zee_series_data22.push(parseInt(zee_suspect_reassign[item]));
-				zee_series_data23.push(parseInt(zee_suspect_lost[item]));
-				zee_series_data24.push(parseInt(zee_suspect_customer_lost[item]));
-				zee_series_data25.push(parseInt(zee_suspect_off_peak_pipeline[item]));
-				zee_series_data26.push(parseInt(zee_prospecy_quote_sent[item]));
-				zee_series_data27.push(parseInt(zee_prospect_no_answer[item]));
-				zee_series_data28.push(parseInt(zee_prospect_in_contact[item]));
-				zee_series_data29.push(parseInt(zee_total_leads[item]));
-				zee_series_data31.push(parseInt(zee_prospect_opportunity[item]));
-				zee_series_data32.push(parseInt(zee_suspect_oot[item]));
-				zee_series_data33.push(parseInt(zee_suspect_follow_up[item]));
-				zee_series_data34.push(parseInt(zee_suspect_new[item]));
-				zee_series_data20a.push(parseInt(zee_suspect_qualified[item]));
-				zee_series_data28a.push(parseInt(zee_suspect_unqualified[item]));
-				zee_series_data21a.push(parseInt(zee_suspect_lpo_followup[item]));
-				zee_series_data22a.push(parseInt(zee_suspect_validated[item]));
-				zee_series_data23a.push(parseInt(zee_customer_free_trial[item]));
-				zee_series_data24a.push(parseInt(zee_suspect_no_answer[item]));
-				zee_series_data25a.push(parseInt(zee_suspect_in_contact[item]));
-				zee_series_data26a.push(parseInt(zee_prospect_qualified[item]));
-				zee_series_data27a.push(
-					parseInt(zee_customer_free_trial_pending[item])
-				);
-				zee_series_data29a.push(parseInt(zee_suspect_pre_qualification[item]));
-				zee_series_data30a.push(parseInt(zee_suspect_in_qualification[item]));
-				zee_categores1.push(item);
-			});
-
-			plotZeeChartPreview(
-				zee_series_data20,
-				zee_series_data21,
-				zee_series_data22,
-				zee_series_data23,
-				zee_series_data24,
-				zee_series_data25,
-				zee_series_data26,
-				zee_series_data27,
-				zee_series_data28,
-				zee_series_data29,
-				zee_series_data31,
-				zee_series_data32,
-				zee_series_data33,
-				zee_series_data34,
-				zee_categores1,
-				zee_series_data20a,
-				zee_series_data21a,
-				zee_series_data22a,
-				zee_series_data23a,
-				zee_series_data24a,
-				zee_series_data25a,
-				zee_series_data26a,
-				zee_series_data27a,
-				zee_series_data28a,
-				zee_series_data29a,
-				zee_series_data30a
-			);
-		}
-
-		//TODO - Sales Rep Overview
-		// Sales Dashboard - Leads by Status - Sales Rep Reporting
-		var leadsListBySalesRepStatusSearch = search.load({
-			type: "customer",
-			id: "customsearch_leads_reporting_weekly_5",
-		});
-
-		leadsListBySalesRepStatusSearch.filters.push(
-			search.createFilter({
-				name: "custrecord_salesrep",
-				join: "CUSTRECORD_CUSTOMER",
-				operator: search.Operator.NONEOF,
-				values: [109783],
-			})
-		);
-
-		if (customer_type == "2") {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "TEST",
-				})
-			);
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTCONTAIN,
-					values: "- Parent",
-				})
-			);
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Shippit Pty Ltd ",
-				})
-			);
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Sendle",
-				})
-			);
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "SC -",
-				})
-			);
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_np_np_customer",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: "@NONE@",
-				})
-			);
-		}
-
-		if (!isNullorEmpty(leadStatus)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
-
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
-
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
-
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
-
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_source)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_source,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_rep)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_entered_by)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_campaign)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(parent_lpo)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
-
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(zee_id)) {
-			leadsListBySalesRepStatusSearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
-		) {
-			var defaultSearchFilters =
-				leadsListBySalesRepStatusSearch.filterExpression;
-
-			console.log(
-				"default search filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
-
-			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
-
-			console.log(
-				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			leadsListBySalesRepStatusSearch.filterExpression = defaultSearchFilters;
-		}
-
-		var count1 = 0;
-		var oldSalesRepAssigned = null;
-		var oldSalesRepAssignedId = null;
-
-		var customer_signed = 0;
-		var suspect_hot_lead = 0;
-		var suspect_reassign = 0;
-		var suspect_lost = 0;
-		var suspect_oot = 0;
-		var suspect_customer_lost = 0;
-		var suspect_off_peak_pipeline = 0;
-		var prospect_opportunity = 0;
-		var prospect_qualified = 0;
-		var prospecy_quote_sent = 0;
-		var prospecy_box_sent = 0;
-		var prospect_no_answer = 0;
-		var prospect_in_contact = 0;
-		var suspect_follow_up = 0;
-		var suspect_new = 0;
-
-		var suspect_lpo_followup = 0;
-		var suspect_qualified = 0;
-		var suspect_in_qualification = 0;
-		var suspect_pre_qualification = 0;
-		var suspect_unqualified = 0;
-
-		var suspect_validated = 0;
-		var customer_free_trial = 0;
-		var customer_free_trial_pending = 0;
-
-		var suspect_no_answer = 0;
-		var suspect_in_contact = 0;
-
-		leadsListBySalesRepStatusSearch
-			.run()
-			.each(function (lleadsListBySalesRepStatusResultSet) {
-				var prospectCount = parseInt(
-					lleadsListBySalesRepStatusResultSet.getValue({
-						name: "internalid",
-						summary: "COUNT",
-					})
-				);
-
-				var custStatus = parseInt(
-					lleadsListBySalesRepStatusResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					})
-				);
-				var custStatusText = lleadsListBySalesRepStatusResultSet.getText({
-					name: "entitystatus",
-					summary: "GROUP",
-				});
-				var salesRepAssigned = lleadsListBySalesRepStatusResultSet.getText({
-					name: "custrecord_sales_assigned",
-					join: "CUSTRECORD_SALES_CUSTOMER",
-					summary: "GROUP",
-				});
-
-				var salesRepAssignedId = lleadsListBySalesRepStatusResultSet.getValue({
-					name: "custrecord_sales_assigned",
-					join: "CUSTRECORD_SALES_CUSTOMER",
-					summary: "GROUP",
-				});
-
-				if (isNullorEmpty(salesRepAssigned)) {
-					salesRepAssigned = "Unassigned";
-				}
-
-				if (count1 == 0) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = parseInt(prospectCount);
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = parseInt(prospectCount);
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = parseInt(prospectCount);
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = parseInt(prospectCount);
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = parseInt(prospectCount);
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = parseInt(prospectCount);
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = parseInt(prospectCount);
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL Pending
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_in_qualification +
-						suspect_pre_qualification +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent;
-				} else if (
-					oldSalesRepAssigned != null &&
-					oldSalesRepAssigned == salesRepAssigned
-				) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed += prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead += prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost += prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot += parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost += prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign += prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent += prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent += parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer += prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact += prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline += prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity += parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up += parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new += parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified += parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup += parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated += parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial += parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending += parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer += parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact += parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification += parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification += parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_in_qualification +
-						suspect_pre_qualification +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent;
-				} else if (
-					oldDate1 != null &&
-					oldSalesRepAssigned != salesRepAssigned
-				) {
-					salesrep_debt_set2.push({
-						lpoparentnameid: oldSalesRepAssignedId,
-						lpoparentname: oldSalesRepAssigned,
-						suspect_hot_lead: suspect_hot_lead,
-						prospecy_quote_sent: prospecy_quote_sent,
-						suspect_reassign: suspect_reassign,
-						prospect_no_answer: prospect_no_answer,
-						prospect_in_contact: prospect_in_contact,
-						suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-						suspect_lost: suspect_lost,
-						suspect_customer_lost: suspect_customer_lost,
-						prospect_opportunity: prospect_opportunity,
-						customer_signed: customer_signed,
-						total_leads: total_leads,
-						suspect_oot: suspect_oot,
-						suspect_follow_up: suspect_follow_up,
-						suspect_new: suspect_new,
-						suspect_qualified: suspect_qualified,
-						suspect_unqualified: suspect_unqualified,
-						suspect_lpo_followup: suspect_lpo_followup,
-						suspect_validated: suspect_validated,
-						customer_free_trial: customer_free_trial,
-						suspect_no_answer: suspect_no_answer,
-						suspect_in_contact: suspect_in_contact,
-						prospect_qualified: prospect_qualified,
-						customer_free_trial_pending: customer_free_trial_pending,
-						prospect_box_sent: prospecy_box_sent,
-						suspect_in_qualification: suspect_in_qualification,
-						suspect_pre_qualification: suspect_pre_qualification,
-					});
-
-					customer_signed = 0;
-					suspect_hot_lead = 0;
-					suspect_reassign = 0;
-					suspect_lost = 0;
-					suspect_customer_lost = 0;
-					suspect_off_peak_pipeline = 0;
-					prospect_opportunity = 0;
-					prospecy_quote_sent = 0;
-					prospecy_box_sent = 0;
-					prospect_no_answer = 0;
-					prospect_in_contact = 0;
-					suspect_oot = 0;
-					suspect_follow_up = 0;
-					suspect_new = 0;
-					suspect_qualified = 0;
-					suspect_in_qualification = 0;
-					suspect_pre_qualification = 0;
-					suspect_unqualified = 0;
-					suspect_lpo_followup = 0;
-					total_leads = 0;
-					prospect_qualified = 0;
-
-					suspect_validated = 0;
-					customer_free_trial = 0;
-					customer_free_trial_pending = 0;
-					suspect_no_answer = 0;
-					suspect_in_contact = 0;
-
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_in_qualification +
-						suspect_pre_qualification +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent;
-				}
-
-				count1++;
-				oldSalesRepAssigned = salesRepAssigned;
-				oldSalesRepAssignedId = salesRepAssignedId;
-				return true;
-			});
-
-		if (count1 > 0) {
-			salesrep_debt_set2.push({
-				lpoparentnameid: oldSalesRepAssignedId,
-				lpoparentname: oldSalesRepAssigned,
-				suspect_hot_lead: suspect_hot_lead,
-				prospecy_quote_sent: prospecy_quote_sent,
-				suspect_reassign: suspect_reassign,
-				prospect_no_answer: prospect_no_answer,
-				prospect_in_contact: prospect_in_contact,
-				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-				suspect_lost: suspect_lost,
-				suspect_customer_lost: suspect_customer_lost,
-				prospect_opportunity: prospect_opportunity,
-				customer_signed: customer_signed,
-				total_leads: total_leads,
-				suspect_oot: suspect_oot,
-				suspect_follow_up: suspect_follow_up,
-				suspect_new: suspect_new,
-				suspect_qualified: suspect_qualified,
-				suspect_unqualified: suspect_unqualified,
-				suspect_lpo_followup: suspect_lpo_followup,
-				suspect_validated: suspect_validated,
-				customer_free_trial: customer_free_trial,
-				suspect_no_answer: suspect_no_answer,
-				suspect_in_contact: suspect_in_contact,
-				prospect_qualified: prospect_qualified,
-				customer_free_trial_pending: customer_free_trial_pending,
-				prospect_box_sent: prospecy_box_sent,
-				suspect_in_qualification: suspect_in_qualification,
-				suspect_pre_qualification: suspect_pre_qualification,
-			});
-		}
-
-		console.log("salesrep_debt_set2: " + JSON.stringify(salesrep_debt_set2));
-
-		salesrep_previewDataSet = [];
-		salesrep_csvPreviewSet = [];
-
-		var salesrep_overDataSet = [];
-
-		if (!isNullorEmpty(salesrep_debt_set2)) {
-			salesrep_debt_set2.forEach(function (preview_row, index) {
-				var hotLeadPercentage = parseInt(
-					(parseInt(preview_row.suspect_hot_lead) /
-						parseInt(preview_row.total_leads)) *
-						100
-				);
-				var hotLeadCol =
-					preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-				var quoteSentPercentage = parseInt(
-					(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-				);
-				var quoteSentCol =
-					preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-				var boxSentPercentage = parseInt(
-					(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-				);
-				var boxSentCol =
-					preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-				var reassignPercentage = parseInt(
-					(preview_row.suspect_reassign / preview_row.total_leads) * 100
-				);
-				var reassignCol =
-					preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-				var noAnswerPercentage = parseInt(
-					(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-				);
-				var noAnswerCol =
-					preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-				var inContactPercentage = parseInt(
-					(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-				);
-				var inContactCol =
-					preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-				var offPeakPercentage = parseInt(
-					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-						100
-				);
-				var offPeakCol =
-					preview_row.suspect_off_peak_pipeline +
-					" (" +
-					offPeakPercentage +
-					"%)";
-
-				var lostPercentage = parseInt(
-					(preview_row.suspect_lost / preview_row.total_leads) * 100
-				);
-				var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-				var ootPercentage = parseInt(
-					(preview_row.suspect_oot / preview_row.total_leads) * 100
-				);
-				var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-				var custLostPercentage = parseInt(
-					(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-				);
-				var custLostCol =
-					preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
-
-				var oppPercentage = parseInt(
-					(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-				);
-				var oppCol =
-					preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-				var signedPercentage = parseInt(
-					(preview_row.customer_signed / preview_row.total_leads) * 100
-				);
-				var signedCol =
-					preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-				var suspectFollowUpPErcentage = parseInt(
-					(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-				);
-				var followUpCol =
-					preview_row.suspect_follow_up +
-					" (" +
-					suspectFollowUpPErcentage +
-					"%)";
-
-				var suspectNewPercentage = parseInt(
-					(preview_row.suspect_new / preview_row.total_leads) * 100
-				);
-				var suspectNewCol =
-					preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-				var suspectQualifiedPercentage = parseInt(
-					(preview_row.suspect_qualified / preview_row.total_leads) * 100
-				);
-				var suspectQualifiedCol =
-					preview_row.suspect_qualified +
-					" (" +
-					suspectQualifiedPercentage +
-					"%)";
-
-				var suspectUnqualifiedPercentage = parseInt(
-					(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-				);
-				var suspectUnqualifiedCol =
-					preview_row.suspect_unqualified +
-					" (" +
-					suspectUnqualifiedPercentage +
-					"%)";
-
-				var suspectLPOFollowupPercentage = parseInt(
-					(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-				);
-				var suspectLPOFollowupwCol =
-					preview_row.suspect_lpo_followup +
-					" (" +
-					suspectLPOFollowupPercentage +
-					"%)";
-
-				var suspectValidatedPercentage = parseInt(
-					(preview_row.suspect_validated / preview_row.total_leads) * 100
-				);
-				var suspectValidatedCol =
-					preview_row.suspect_validated +
-					" (" +
-					suspectValidatedPercentage +
-					"%)";
-
-				var customerFreeTrialPercentage = parseInt(
-					(preview_row.customer_free_trial / preview_row.total_leads) * 100
-				);
-				var customerFreeTrialCol =
-					preview_row.customer_free_trial +
-					" (" +
-					customerFreeTrialPercentage +
-					"%)";
-
-				var customerFreeTrialPendingPercentage = parseInt(
-					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
-						100
-				);
-				var customerFreeTrialPendingCol =
-					preview_row.customer_free_trial_pending +
-					" (" +
-					customerFreeTrialPendingPercentage +
-					"%)";
-
-				var suspectNoAnswerPercentage = parseInt(
-					(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-				);
-				var suspectNoAnswerCol =
-					preview_row.suspect_no_answer +
-					" (" +
-					suspectNoAnswerPercentage +
-					"%)";
-
-				var suspectInContactPercentage = parseInt(
-					(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-				);
-				var suspectInContactCol =
-					preview_row.suspect_in_contact +
-					" (" +
-					suspectInContactPercentage +
-					"%)";
-
-				var prospectQualifiedPercentage = parseInt(
-					(preview_row.prospect_qualified / preview_row.total_leads) * 100
-				);
-				var prospectQualifiedCol =
-					preview_row.prospect_qualified +
-					" (" +
-					prospectQualifiedPercentage +
-					"%)";
-
-				var suspectInQualificationPercentage = parseInt(
-					(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
-				);
-				var suspectInQualificationCol =
-					preview_row.suspect_in_qualification +
-					" (" +
-					suspectInQualificationPercentage +
-					"%)";
-
-				var suspectPreQualificationPercentage = parseInt(
-					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-						100
-				);
-				var suspectPreQualificationCol =
-					preview_row.suspect_pre_qualification +
-					" (" +
-					suspectPreQualificationPercentage +
-					"%)";
-
-				salesrep_overDataSet.push([
-					preview_row.lpoparentname,
-					preview_row.suspect_new,
-					preview_row.suspect_hot_lead,
-					preview_row.suspect_qualified,
-					preview_row.suspect_unqualified,
-					preview_row.suspect_validated,
-					preview_row.suspect_reassign,
-					preview_row.suspect_follow_up,
-					preview_row.suspect_no_answer,
-					preview_row.suspect_in_contact,
-					preview_row.suspect_lpo_followup,
-					preview_row.prospect_in_contact,
-					preview_row.suspect_off_peak_pipeline,
-					preview_row.suspect_lost,
-					preview_row.suspect_oot,
-					preview_row.suspect_customer_lost,
-					preview_row.prospect_opportunity,
-					preview_row.prospect_qualified,
-					preview_row.prospect_box_sent,
-					preview_row.prospecy_quote_sent,
-					preview_row.customer_free_trial_pending,
-					preview_row.customer_free_trial,
-					preview_row.customer_signed,
-					preview_row.total_leads,
-					preview_row.lpoparentnameid,
-				]);
-
-				salesrep_previewDataSet.push([
-					preview_row.lpoparentname,
-					suspectNewCol,
-					hotLeadCol,
-					suspectValidatedCol,
-					suspectUnqualifiedCol,
-					suspectQualifiedCol,
-					suspectInQualificationCol,
-					suspectPreQualificationCol,
-					reassignCol,
-					followUpCol,
-					suspectLPOFollowupwCol,
-					suspectNoAnswerCol,
-					suspectInContactCol,
-					inContactCol,
-					offPeakCol,
-					lostCol,
-					ootCol,
-					custLostCol,
-					oppCol,
-					prospectQualifiedCol,
-					boxSentCol,
-					quoteSentCol,
-					customerFreeTrialPendingCol,
-					customerFreeTrialCol,
-					signedCol,
-					preview_row.total_leads,
-					'<input type="button" value="' +
-						preview_row.total_leads +
-						'" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' +
-						preview_row.lpoparentnameid +
-						'" data-name="' +
-						preview_row.lpoparentname +
-						'" style="background-color: #095C7B;border-radius: 30px">',
-					preview_row.lpoparentnameid,
-				]);
-			});
-		}
-
-		console.log("salesrep_previewDataSet");
-		console.log(salesrep_previewDataSet);
-
-		var dataTableLPOPreview = $("#mpexusage-salesrep_overview").DataTable({
-			destroy: true,
-			data: salesrep_previewDataSet,
-			pageLength: 1000,
-			order: [[21, "des"]],
-			layout: {
-				topStart: {
-					buttons: [
-						{
-							extend: "copy",
-							text: "Copy",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "csv",
-							text: "CSV",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "excel",
-							text: "Excel",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "pdf",
-							text: "PDF",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "print",
-							text: "Print",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-					],
-				},
-			},
-			columns: [
-				{
-					title: "Lead Gen/Lead Quali/BDM/Account Manager", //0
-				},
-				{
-					title: "Suspect - New", //1
-				},
-				{
-					title: "Suspect - Hot Lead", //2
-				},
-				{
-					title: "Suspect - Validated", //3
-				},
-				{
-					title: "Suspect - Unqualified", //4
-				},
-				{
-					title: "Suspect - Qualified", //5
-				},
-				{
-					title: "Suspect - Pre Qualification", //6
-				},
-				{
-					title: "Suspect - In Qualification", //7
-				},
-				{
-					title: "Suspect - Reassign", //8
-				},
-				{
-					title: "Suspect - Follow Up", //9
-				},
-				{
-					title: "Suspect - LPO Follow Up", //10
-				},
-				{
-					title: "Suspect - No Answer", //11
-				},
-				{
-					title: "Suspect - In Contact", //12
-				},
-				{
-					title: "Prospect - In Contact", //13
-				},
-				{
-					title: "Suspect - Parking Lot", //14
-				},
-				{
-					title: "Suspect - Lost", //15
-				},
-				{
-					title: "Suspect - Out of Territory", //16
-				},
-				{
-					title: "Suspect - Customer - Lost", //17
-				},
-				{
-					title: "Prospect - Opportunity", //18
-				},
-				{
-					title: "Prospect - Qualified", //19
-				},
-				{
-					title: "Prospect - Box Sent", //20
-				},
-				{
-					title: "Prospect - Quote Sent", //21
-				},
-				{
-					title: "Customer - Free Trial Pending", //22
-				},
-				{
-					title: "Customer - Free Trial", //23
-				},
-				{
-					title: "Customer - Signed", //24
-				},
-				{
-					title: "Total Lead Count", //25
-				},
-				{
-					title: "Show Leads", //26
-				},
-				{
-					title: "Sales Rep ID", //27
-				},
-			],
-			columnDefs: [
-				{
-					targets: [0, 5, 20, 23, 24, 25],
-					className: "bolded",
-				},
-				{
-					targets: [27],
-					visible: false,
-				},
-				{
-					targets: [26, 27],
-					className: "notexport",
-				},
-			],
-			footerCallback: function (row, data, start, end, display) {
-				var api = this.api(),
-					data;
-
-				// Remove the formatting to get integer data for summation
-				var intVal = function (i) {
-					return parseInt(i);
-				};
-
-				const formatter = new Intl.NumberFormat("en-AU", {
-					style: "currency",
-					currency: "AUD",
-					minimumFractionDigits: 2,
-				});
-				// Total Suspect New Lead Count
-				total_suspect_new = api
-					.column(1)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Hot Lead Count
-				total_suspect_hot_lead = api
-					.column(2)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Qualified Count
-				total_suspect_qualified = api
-					.column(3)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Unqualified Count
-				total_suspect_unqualified = api
-					.column(4)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Validated
-				total_suspect_validated = api
-					.column(5)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Reassign
-				total_suspect_reassign = api
-					.column(6)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Follow Up
-				total_suspect_followup = api
-					.column(7)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect LPO Follow Up
-				total_suspect_lpo_followup = api
-					.column(8)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect No Answer
-				total_suspect_no_answer = api
-					.column(9)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect In Contact
-				total_suspect_in_contact = api
-					.column(10)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect In Contact
-				total_prospect_in_contact = api
-					.column(11)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Off Peak Pipline
-				total_suspect_off_peak_pipeline = api
-					.column(12)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Lost
-				total_suspect_lost = api
-					.column(13)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Out of Territory
-				total_suspect_oot = api
-					.column(14)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Customer Lost
-				total_suspect_customer_lost = api
-					.column(15)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Opportunity
-				total_prospect_opportunity = api
-					.column(16)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_qualified = api
-					.column(17)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_box_sent = api
-					.column(18)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Quoite Sent
-				total_prospect_quote_sent = api
-					.column(19)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial Pending
-				total_customer_free_trial_pending = api
-					.column(20)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial
-				total_customer_free_trial = api
-					.column(21)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Signed
-				total_customer_signed = api
-					.column(22)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Lead Count
-				total_lead_v1 = api
-					.column(23)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v2 = api
-					.column(24)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead = api
-					.column(25)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Update footer
-				$(api.column(1).footer()).html(
-					total_suspect_new +
-						" (" +
-						((total_suspect_new / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(2).footer()).html(
-					total_suspect_hot_lead +
-						" (" +
-						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(3).footer()).html(
-					total_suspect_qualified +
-						" (" +
-						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(4).footer()).html(
-					total_suspect_unqualified +
-						" (" +
-						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(5).footer()).html(
-					total_suspect_validated +
-						" (" +
-						((total_suspect_validated / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(6).footer()).html(
-					total_suspect_reassign +
-						" (" +
-						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(7).footer()).html(
-					total_suspect_followup +
-						" (" +
-						((total_suspect_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(8).footer()).html(
-					total_suspect_lpo_followup +
-						" (" +
-						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(9).footer()).html(
-					total_suspect_no_answer +
-						" (" +
-						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(10).footer()).html(
-					total_suspect_in_contact +
-						" (" +
-						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(11).footer()).html(
-					total_prospect_in_contact +
-						" (" +
-						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(12).footer()).html(
-					total_suspect_off_peak_pipeline +
-						" (" +
-						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(13).footer()).html(
-					total_suspect_lost +
-						" (" +
-						((total_suspect_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(14).footer()).html(
-					total_suspect_oot +
-						" (" +
-						((total_suspect_oot / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(15).footer()).html(
-					total_suspect_customer_lost +
-						" (" +
-						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(16).footer()).html(
-					total_prospect_opportunity +
-						" (" +
-						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(17).footer()).html(
-					total_prospect_qualified +
-						" (" +
-						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(18).footer()).html(
-					total_prospect_box_sent +
-						" (" +
-						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(19).footer()).html(
-					total_prospect_quote_sent +
-						" (" +
-						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(20).footer()).html(
-					total_customer_free_trial_pending +
-						" (" +
-						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-							0
-						) +
-						"%)"
-				);
-
-				$(api.column(21).footer()).html(
-					total_customer_free_trial +
-						" (" +
-						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(22).footer()).html(
-					total_customer_signed +
-						" (" +
-						((total_customer_signed / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(23).footer()).html(
-					total_lead_v1 +
-						" (" +
-						((total_lead_v1 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(24).footer()).html(
-					total_lead_v2 +
-						" (" +
-						((total_lead_v2 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(25).footer()).html(total_lead);
-			},
-		});
-
-		saveCsv(salesrep_previewDataSet);
-
-		var salesrep_data = salesrep_overDataSet;
-
-		var salesrep_month_year = []; // creating array for storing browser
-		var salesrep_customer_signed = [];
-		var salesrep_suspect_hot_lead = [];
-		var salesrep_suspect_reassign = [];
-		var salesrep_suspect_lost = [];
-		var salesrep_suspect_oot = [];
-		var salesrep_suspect_customer_lost = [];
-		var salesrep_suspect_off_peak_pipeline = [];
-		var salesrep_prospect_opportunity = [];
-		var salesrep_prospect_qualified = [];
-		var salesrep_prospecy_quote_sent = [];
-		var salesrep_prospecy_box_sent = [];
-		var salesrep_prospect_no_answer = [];
-		var salesrep_prospect_in_contact = [];
-		var salesrep_suspect_follow_up = [];
-		var salesrep_suspect_new = [];
-		var salesrep_suspect_qualified = [];
-		var salesrep_suspect_unqualified = [];
-		var salesrep_suspect_lpo_followup = [];
-		var salesrep_suspect_validated = [];
-		var salesrep_customer_free_trial_pending = [];
-		var salesrep_customer_free_trial = [];
-		var salesrep_suspect_no_answer = [];
-		var salesrep_suspect_in_contact = [];
-		var salesrep_total_leads = [];
-
-		for (var i = 0; i < salesrep_data.length; i++) {
-			salesrep_month_year.push(salesrep_data[i][0]);
-			salesrep_suspect_new[salesrep_data[i][0]] = salesrep_data[i][1];
-			salesrep_suspect_hot_lead[salesrep_data[i][0]] = salesrep_data[i][2];
-			salesrep_suspect_qualified[salesrep_data[i][0]] = salesrep_data[i][3];
-			salesrep_suspect_unqualified[salesrep_data[i][0]] = salesrep_data[i][4];
-			salesrep_suspect_validated[salesrep_data[i][0]] = salesrep_data[i][5];
-			salesrep_suspect_reassign[salesrep_data[i][0]] = salesrep_data[i][6];
-			salesrep_suspect_follow_up[salesrep_data[i][0]] = salesrep_data[i][7];
-			salesrep_suspect_lpo_followup[salesrep_data[i][0]] = salesrep_data[i][8];
-			salesrep_suspect_no_answer[salesrep_data[i][0]] = salesrep_data[i][9];
-			salesrep_suspect_in_contact[salesrep_data[i][0]] = salesrep_data[i][10];
-			salesrep_prospect_in_contact[salesrep_data[i][0]] = salesrep_data[i][11];
-			salesrep_suspect_off_peak_pipeline[salesrep_data[i][0]] =
-				salesrep_data[i][12];
-			salesrep_suspect_lost[salesrep_data[i][0]] = salesrep_data[i][13];
-			salesrep_suspect_oot[salesrep_data[i][0]] = salesrep_data[i][14];
-			salesrep_suspect_customer_lost[salesrep_data[i][0]] =
-				salesrep_data[i][15];
-			salesrep_prospect_opportunity[salesrep_data[i][0]] = salesrep_data[i][16];
-			salesrep_prospect_qualified[salesrep_data[i][0]] = salesrep_data[i][17];
-			salesrep_prospecy_box_sent[salesrep_data[i][0]] = salesrep_data[i][18];
-			salesrep_prospecy_quote_sent[salesrep_data[i][0]] = salesrep_data[i][19];
-			salesrep_customer_free_trial_pending[salesrep_data[i][0]] =
-				salesrep_data[i][20];
-			salesrep_customer_free_trial[salesrep_data[i][0]] = salesrep_data[i][21];
-			salesrep_customer_signed[salesrep_data[i][0]] = salesrep_data[i][22];
-			salesrep_total_leads[salesrep_data[i][0]] = salesrep_data[i][23];
-		}
-		var salesrep_count = {}; // creating object for getting categories with
-		// count
-		salesrep_month_year.forEach(function (i) {
-			salesrep_count[i] = (salesrep_count[i] || 0) + 1;
-		});
-
-		var salesrep_series_data20 = [];
-		var salesrep_series_data21 = [];
-		var salesrep_series_data22 = [];
-		var salesrep_series_data23 = [];
-		var salesrep_series_data24 = [];
-		var salesrep_series_data25 = [];
-		var salesrep_series_data26 = [];
-		var salesrep_series_data27 = [];
-		var salesrep_series_data28 = [];
-		var salesrep_series_data29 = [];
-		var salesrep_series_data30 = [];
-		var salesrep_series_data31 = [];
-		var salesrep_series_data32 = [];
-		var salesrep_series_data33 = [];
-		var salesrep_series_data34 = [];
-		var salesrep_series_data20a = [];
-		var salesrep_series_data21a = [];
-		var salesrep_series_data22a = [];
-		var salesrep_series_data23a = [];
-		var salesrep_series_data24a = [];
-		var salesrep_series_data25a = [];
-		var salesrep_series_data26a = [];
-		var salesrep_series_data27a = [];
-		var salesrep_series_data28a = [];
-		var salesrep_series_data29a = [];
-
-		var salesrep_categores1 = []; // creating empty array for highcharts
-		// categories
-		Object.keys(salesrep_total_leads).map(function (item, key) {
-			salesrep_series_data20.push(parseInt(salesrep_customer_signed[item]));
-			salesrep_series_data21.push(parseInt(salesrep_suspect_hot_lead[item]));
-			salesrep_series_data22.push(parseInt(salesrep_suspect_reassign[item]));
-			salesrep_series_data23.push(parseInt(salesrep_suspect_lost[item]));
-			salesrep_series_data24.push(
-				parseInt(salesrep_suspect_customer_lost[item])
-			);
-			salesrep_series_data25.push(
-				parseInt(salesrep_suspect_off_peak_pipeline[item])
-			);
-			salesrep_series_data26.push(parseInt(salesrep_prospecy_quote_sent[item]));
-			salesrep_series_data27.push(parseInt(salesrep_prospect_no_answer[item]));
-			salesrep_series_data28.push(parseInt(salesrep_prospect_in_contact[item]));
-			salesrep_series_data29.push(parseInt(salesrep_total_leads[item]));
-			salesrep_series_data31.push(
-				parseInt(salesrep_prospect_opportunity[item])
-			);
-			salesrep_series_data32.push(parseInt(salesrep_suspect_oot[item]));
-			salesrep_series_data33.push(parseInt(salesrep_suspect_follow_up[item]));
-			salesrep_series_data34.push(parseInt(salesrep_suspect_new[item]));
-			salesrep_series_data20a.push(parseInt(salesrep_suspect_qualified[item]));
-			salesrep_series_data28a.push(
-				parseInt(salesrep_suspect_unqualified[item])
-			);
-			salesrep_series_data21a.push(
-				parseInt(salesrep_suspect_lpo_followup[item])
-			);
-			salesrep_series_data22a.push(parseInt(salesrep_suspect_validated[item]));
-			salesrep_series_data23a.push(
-				parseInt(salesrep_customer_free_trial[item])
-			);
-			salesrep_series_data24a.push(parseInt(salesrep_suspect_no_answer[item]));
-			salesrep_series_data25a.push(parseInt(salesrep_suspect_in_contact[item]));
-			salesrep_series_data26a.push(parseInt(salesrep_prospect_qualified[item]));
-			salesrep_series_data27a.push(
-				parseInt(salesrep_customer_free_trial_pending[item])
-			);
-			salesrep_series_data29a.push(parseInt(salesrep_prospecy_box_sent[item]));
-			salesrep_categores1.push(item);
-		});
-
-		plotSalesRepChartPreview(
-			salesrep_series_data20,
-			salesrep_series_data21,
-			salesrep_series_data22,
-			salesrep_series_data23,
-			salesrep_series_data24,
-			salesrep_series_data25,
-			salesrep_series_data26,
-			salesrep_series_data27,
-			salesrep_series_data28,
-			salesrep_series_data29,
-			salesrep_series_data31,
-			salesrep_series_data32,
-			salesrep_series_data33,
-			salesrep_series_data34,
-			salesrep_categores1,
-			salesrep_series_data20a,
-			salesrep_series_data21a,
-			salesrep_series_data22a,
-			salesrep_series_data23a,
-			salesrep_series_data24a,
-			salesrep_series_data25a,
-			salesrep_series_data26a,
-			salesrep_series_data27a,
-			salesrep_series_data28a,
-			salesrep_series_data29a
-		);
-
-		//? DATA CAPTURE OVERVIEW
-
-		//Sales Dashboard - Leads by Status - Data Capture Reporting
-		var leadsListByDataCaptureStatusSearch = search.load({
-			type: "customer",
-			id: "customsearch_leads_reporting_weekly_5_2",
-		});
-
-		leadsListByDataCaptureStatusSearch.filters.push(
-			search.createFilter({
-				name: "custrecord_salesrep",
-				join: "CUSTRECORD_CUSTOMER",
-				operator: search.Operator.NONEOF,
-				values: [109783],
-			})
-		);
-
-		if (customer_type == "2") {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "TEST",
-				})
-			);
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTCONTAIN,
-					values: "- Parent",
-				})
-			);
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Shippit Pty Ltd ",
-				})
-			);
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "Sendle",
-				})
-			);
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "companyname",
-					join: null,
-					operator: search.Operator.DOESNOTSTARTWITH,
-					values: "SC -",
-				})
-			);
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_np_np_customer",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: "@NONE@",
-				})
-			);
-		}
-
-		if (!isNullorEmpty(leadStatus)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
-
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
-
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
-
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
-
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_source)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_source,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_rep)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_entered_by)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_campaign)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(parent_lpo)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
-
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(zee_id)) {
-			leadsListByDataCaptureStatusSearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
-		) {
-			var defaultSearchFilters =
-				leadsListByDataCaptureStatusSearch.filterExpression;
-
-			console.log(
-				"default search filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
-
-			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
-
-			console.log(
-				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
-			);
-
-			leadsListByDataCaptureStatusSearch.filterExpression =
-				defaultSearchFilters;
-		}
-
-		var count1 = 0;
-		var oldDataCaptureAssigned = null;
-		var oldDataCaptureAssignedId = null;
-
-		var customer_signed = 0;
-		var suspect_hot_lead = 0;
-		var suspect_reassign = 0;
-		var suspect_lost = 0;
-		var suspect_oot = 0;
-		var suspect_customer_lost = 0;
-		var suspect_off_peak_pipeline = 0;
-		var prospect_opportunity = 0;
-		var prospect_qualified = 0;
-		var prospecy_quote_sent = 0;
-		var prospecy_box_sent = 0;
-		var prospect_no_answer = 0;
-		var prospect_in_contact = 0;
-		var suspect_follow_up = 0;
-		var suspect_new = 0;
-
-		var suspect_lpo_followup = 0;
-		var suspect_qualified = 0;
-		var suspect_unqualified = 0;
-		var suspect_in_qualification = 0;
-		var suspect_pre_qualification = 0;
-
-		var suspect_validated = 0;
-		var customer_free_trial = 0;
-		var customer_free_trial_pending = 0;
-
-		var suspect_no_answer = 0;
-		var suspect_in_contact = 0;
-
-		leadsListByDataCaptureStatusSearch
-			.run()
-			.each(function (leadsListByDataCaptureStatusSearchResultSet) {
-				var prospectCount = parseInt(
-					leadsListByDataCaptureStatusSearchResultSet.getValue({
-						name: "internalid",
-						summary: "COUNT",
-					})
-				);
-
-				var custStatus = parseInt(
-					leadsListByDataCaptureStatusSearchResultSet.getValue({
-						name: "entitystatus",
-						summary: "GROUP",
-					})
-				);
-				var custStatusText =
-					leadsListByDataCaptureStatusSearchResultSet.getText({
-						name: "entitystatus",
-						summary: "GROUP",
-					});
-				var dataCaptureAssigned =
-					leadsListByDataCaptureStatusSearchResultSet.getText({
-						name: "custentity_lead_entered_by",
-						summary: "GROUP",
-					});
-
-				var dataCaptureAssignedId =
-					leadsListByDataCaptureStatusSearchResultSet.getValue({
-						name: "custentity_lead_entered_by",
-						summary: "GROUP",
-					});
-
-				if (isNullorEmpty(dataCaptureAssigned)) {
-					dataCaptureAssigned = "Franchisees";
-				}
-
-				if (count1 == 0) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = parseInt(prospectCount);
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = parseInt(prospectCount);
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = parseInt(prospectCount);
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = parseInt(prospectCount);
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = parseInt(prospectCount);
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = parseInt(prospectCount);
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = parseInt(prospectCount);
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL Pending
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_in_qualification +
-						suspect_pre_qualification;
-				} else if (
-					oldDataCaptureAssigned != null &&
-					oldDataCaptureAssigned == dataCaptureAssigned
-				) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed += prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead += prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost += prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot += parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost += prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign += prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent += prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent += parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer += prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact += prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline += prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity += parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up += parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new += parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified += parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup += parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated += parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial += parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending += parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer += parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact += parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification += parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification += parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_in_qualification +
-						suspect_pre_qualification;
-				} else if (
-					oldDataCaptureAssigned != null &&
-					oldDataCaptureAssigned != dataCaptureAssigned
-				) {
-					datacapture_debt_set2.push({
-						lpoparentnameid: oldDataCaptureAssignedId,
-						lpoparentname: oldDataCaptureAssigned,
-						suspect_hot_lead: suspect_hot_lead,
-						prospecy_quote_sent: prospecy_quote_sent,
-						suspect_reassign: suspect_reassign,
-						prospect_no_answer: prospect_no_answer,
-						prospect_in_contact: prospect_in_contact,
-						suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-						suspect_lost: suspect_lost,
-						suspect_customer_lost: suspect_customer_lost,
-						prospect_opportunity: prospect_opportunity,
-						customer_signed: customer_signed,
-						total_leads: total_leads,
-						suspect_oot: suspect_oot,
-						suspect_follow_up: suspect_follow_up,
-						suspect_new: suspect_new,
-						suspect_qualified: suspect_qualified,
-						suspect_unqualified: suspect_unqualified,
-						suspect_lpo_followup: suspect_lpo_followup,
-						suspect_validated: suspect_validated,
-						customer_free_trial: customer_free_trial,
-						suspect_no_answer: suspect_no_answer,
-						suspect_in_contact: suspect_in_contact,
-						prospect_qualified: prospect_qualified,
-						customer_free_trial_pending: customer_free_trial_pending,
-						prospect_box_sent: prospecy_box_sent,
-						suspect_pre_qualification: suspect_pre_qualification,
-						suspect_in_qualification: suspect_in_qualification,
-					});
-
-					customer_signed = 0;
-					suspect_hot_lead = 0;
-					suspect_reassign = 0;
-					suspect_lost = 0;
-					suspect_customer_lost = 0;
-					suspect_off_peak_pipeline = 0;
-					prospect_opportunity = 0;
-					prospecy_quote_sent = 0;
-					prospecy_box_sent = 0;
-					prospect_no_answer = 0;
-					prospect_in_contact = 0;
-					suspect_oot = 0;
-					suspect_follow_up = 0;
-					suspect_new = 0;
-					suspect_qualified = 0;
-					suspect_unqualified = 0;
-					suspect_lpo_followup = 0;
-					total_leads = 0;
-					prospect_qualified = 0;
-
-					suspect_validated = 0;
-					customer_free_trial = 0;
-					customer_free_trial_pending = 0;
-					suspect_no_answer = 0;
-					suspect_in_contact = 0;
-					suspect_in_qualification = 0;
-					suspect_pre_qualification = 0;
-
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - BOX SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification;
-				}
-
-				count1++;
-				oldDataCaptureAssigned = dataCaptureAssigned;
-				oldDataCaptureAssignedId = dataCaptureAssignedId;
-				return true;
-			});
-
-		if (count1 > 0) {
-			datacapture_debt_set2.push({
-				lpoparentnameid: oldDataCaptureAssignedId,
-				lpoparentname: oldDataCaptureAssigned,
-				suspect_hot_lead: suspect_hot_lead,
-				prospecy_quote_sent: prospecy_quote_sent,
-				suspect_reassign: suspect_reassign,
-				prospect_no_answer: prospect_no_answer,
-				prospect_in_contact: prospect_in_contact,
-				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-				suspect_lost: suspect_lost,
-				suspect_customer_lost: suspect_customer_lost,
-				prospect_opportunity: prospect_opportunity,
-				customer_signed: customer_signed,
-				total_leads: total_leads,
-				suspect_oot: suspect_oot,
-				suspect_follow_up: suspect_follow_up,
-				suspect_new: suspect_new,
-				suspect_qualified: suspect_qualified,
-				suspect_unqualified: suspect_unqualified,
-				suspect_lpo_followup: suspect_lpo_followup,
-				suspect_validated: suspect_validated,
-				customer_free_trial: customer_free_trial,
-				suspect_no_answer: suspect_no_answer,
-				suspect_in_contact: suspect_in_contact,
-				prospect_qualified: prospect_qualified,
-				customer_free_trial_pending: customer_free_trial_pending,
-				prospect_box_sent: prospecy_box_sent,
-				suspect_pre_qualification: suspect_pre_qualification,
-				suspect_in_qualification: suspect_in_qualification,
-			});
-		}
-
-		console.log(
-			"datacapture_debt_set2: " + JSON.stringify(datacapture_debt_set2)
-		);
-
-		datacapture_previewDataSet = [];
-		datacapture_csvPreviewSet = [];
-
-		var datacapture_overDataSet = [];
-
-		if (!isNullorEmpty(datacapture_debt_set2)) {
-			datacapture_debt_set2.forEach(function (preview_row, index) {
-				var hotLeadPercentage = parseInt(
-					(parseInt(preview_row.suspect_hot_lead) /
-						parseInt(preview_row.total_leads)) *
-						100
-				);
-				var hotLeadCol =
-					preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
-
-				var quoteSentPercentage = parseInt(
-					(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-				);
-				var quoteSentCol =
-					preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-				var boxSentPercentage = parseInt(
-					(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-				);
-				var boxSentCol =
-					preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-				var reassignPercentage = parseInt(
-					(preview_row.suspect_reassign / preview_row.total_leads) * 100
-				);
-				var reassignCol =
-					preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-				var noAnswerPercentage = parseInt(
-					(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-				);
-				var noAnswerCol =
-					preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-				var inContactPercentage = parseInt(
-					(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-				);
-				var inContactCol =
-					preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-				var offPeakPercentage = parseInt(
-					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-						100
-				);
-				var offPeakCol =
-					preview_row.suspect_off_peak_pipeline +
-					" (" +
-					offPeakPercentage +
-					"%)";
-
-				var lostPercentage = parseInt(
-					(preview_row.suspect_lost / preview_row.total_leads) * 100
-				);
-				var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-				var ootPercentage = parseInt(
-					(preview_row.suspect_oot / preview_row.total_leads) * 100
-				);
-				var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-				var custLostPercentage = parseInt(
-					(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-				);
-				var custLostCol =
-					preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
-
-				var oppPercentage = parseInt(
-					(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-				);
-				var oppCol =
-					preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-				var signedPercentage = parseInt(
-					(preview_row.customer_signed / preview_row.total_leads) * 100
-				);
-				var signedCol =
-					preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-				var suspectFollowUpPErcentage = parseInt(
-					(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-				);
-				var followUpCol =
-					preview_row.suspect_follow_up +
-					" (" +
-					suspectFollowUpPErcentage +
-					"%)";
-
-				var suspectNewPercentage = parseInt(
-					(preview_row.suspect_new / preview_row.total_leads) * 100
-				);
-				var suspectNewCol =
-					preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-				var suspectQualifiedPercentage = parseInt(
-					(preview_row.suspect_qualified / preview_row.total_leads) * 100
-				);
-				var suspectQualifiedCol =
-					preview_row.suspect_qualified +
-					" (" +
-					suspectQualifiedPercentage +
-					"%)";
-
-				var suspectUnqualifiedPercentage = parseInt(
-					(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-				);
-				var suspectUnqualifiedCol =
-					preview_row.suspect_unqualified +
-					" (" +
-					suspectUnqualifiedPercentage +
-					"%)";
-
-				var suspectLPOFollowupPercentage = parseInt(
-					(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-				);
-				var suspectLPOFollowupwCol =
-					preview_row.suspect_lpo_followup +
-					" (" +
-					suspectLPOFollowupPercentage +
-					"%)";
-
-				var suspectValidatedPercentage = parseInt(
-					(preview_row.suspect_validated / preview_row.total_leads) * 100
-				);
-				var suspectValidatedCol =
-					preview_row.suspect_validated +
-					" (" +
-					suspectValidatedPercentage +
-					"%)";
-
-				var customerFreeTrialPercentage = parseInt(
-					(preview_row.customer_free_trial / preview_row.total_leads) * 100
-				);
-				var customerFreeTrialCol =
-					preview_row.customer_free_trial +
-					" (" +
-					customerFreeTrialPercentage +
-					"%)";
-
-				var customerFreeTrialPendingPercentage = parseInt(
-					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
-						100
-				);
-				var customerFreeTrialPendingCol =
-					preview_row.customer_free_trial_pending +
-					" (" +
-					customerFreeTrialPendingPercentage +
-					"%)";
-
-				var suspectNoAnswerPercentage = parseInt(
-					(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-				);
-				var suspectNoAnswerCol =
-					preview_row.suspect_no_answer +
-					" (" +
-					suspectNoAnswerPercentage +
-					"%)";
-
-				var suspectInContactPercentage = parseInt(
-					(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-				);
-				var suspectInContactCol =
-					preview_row.suspect_in_contact +
-					" (" +
-					suspectInContactPercentage +
-					"%)";
-
-				var prospectQualifiedPercentage = parseInt(
-					(preview_row.prospect_qualified / preview_row.total_leads) * 100
-				);
-				var prospectQualifiedCol =
-					preview_row.prospect_qualified +
-					" (" +
-					prospectQualifiedPercentage +
-					"%)";
-
-				var suspectPreQualificationPercentage = parseInt(
-					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-						100
-				);
-				var suspectPreQualificationCol =
-					preview_row.suspect_pre_qualification +
-					" (" +
-					suspectPreQualificationPercentage +
-					"%)";
-
-				var suspectInQualificationPercentage = parseInt(
-					(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
-				);
-				var suspectInQualificationCol =
-					preview_row.suspect_in_qualification +
-					" (" +
-					suspectInQualificationPercentage +
-					"%)";
-
-				datacapture_overDataSet.push([
-					preview_row.lpoparentname, //0
-					preview_row.suspect_new, //1
-					preview_row.suspect_hot_lead, //2
-					preview_row.suspect_qualified, //3
-					preview_row.suspect_unqualified, //4
-					preview_row.suspect_validated, //5
-					preview_row.suspect_pre_qualification, //6
-					preview_row.suspect_in_qualification, //7
-					preview_row.suspect_reassign, //8
-					preview_row.suspect_follow_up, //9
-					preview_row.suspect_no_answer, //10
-					preview_row.suspect_in_contact, //11
-					preview_row.suspect_lpo_followup, //12
-					preview_row.prospect_in_contact, //13
-					preview_row.suspect_off_peak_pipeline, //14
-					preview_row.suspect_lost, //15
-					preview_row.suspect_oot, //16
-					preview_row.suspect_customer_lost, //17
-					preview_row.prospect_opportunity, //18
-					preview_row.prospect_qualified, //19
-					preview_row.prospect_box_sent, //20
-					preview_row.prospecy_quote_sent, //21
-					preview_row.customer_free_trial_pending, //22
-					preview_row.customer_free_trial, //23
-					preview_row.customer_signed, //24
-					preview_row.total_leads, //25
-					preview_row.lpoparentnameid, //26
-				]);
-
-				datacapture_previewDataSet.push([
-					preview_row.lpoparentname,
-					suspectNewCol,
-					hotLeadCol,
-					suspectValidatedCol,
-					suspectUnqualifiedCol,
-					suspectQualifiedCol,
-					suspectPreQualificationCol,
-					suspectInQualificationCol,
-					reassignCol,
-					followUpCol,
-					suspectLPOFollowupwCol,
-					suspectNoAnswerCol,
-					suspectInContactCol,
-					inContactCol,
-					offPeakCol,
-					lostCol,
-					ootCol,
-					custLostCol,
-					oppCol,
-					prospectQualifiedCol,
-					boxSentCol,
-					quoteSentCol,
-					customerFreeTrialPendingCol,
-					customerFreeTrialCol,
-					signedCol,
-					preview_row.total_leads,
-					preview_row.lpoparentnameid,
-				]);
-			});
-		}
-
-		console.log("datacapture_previewDataSet");
-		console.log(datacapture_previewDataSet);
-
-		var dataTableLPOPreview = $("#mpexusage-datacapture_overview").DataTable({
-			destroy: true,
-			data: datacapture_previewDataSet,
-			pageLength: 1000,
-			order: [[22, "des"]],
-			layout: {
-				topStart: {
-					buttons: [
-						{
-							extend: "copy",
-							text: "Copy",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "csv",
-							text: "CSV",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "excel",
-							text: "Excel",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "pdf",
-							text: "PDF",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-						{
-							extend: "print",
-							text: "Print",
-							className: "btn btn-default exportButtons",
-							exportOptions: {
-								columns: ":not(.notexport)",
-							},
-						},
-					],
-				},
-			},
-			columns: [
-				{
-					title: "Lead Gen/Lead Quali/BDM/Account Manager", //0
-				},
-				{
-					title: "Suspect - New", //1
-				},
-				{
-					title: "Suspect - Hot Lead", //2
-				},
-				{
-					title: "Suspect - Validated", //3
-				},
-				{
-					title: "Suspect - Unqualified", //4
-				},
-				{
-					title: "Suspect - Qualified", //5
-				},
-				{
-					title: "Suspect - Pre Qualification", //6
-				},
-				{
-					title: "Suspect - In Qualification", //7
-				},
-				{
-					title: "Suspect - Reassign", //8
-				},
-				{
-					title: "Suspect - Follow Up", //9
-				},
-				{
-					title: "Suspect - LPO Follow Up", //10
-				},
-				{
-					title: "Suspect - No Answer", //11
-				},
-				{
-					title: "Suspect - In Contact", //12
-				},
-				{
-					title: "Prospect - In Contact", //13
-				},
-				{
-					title: "Suspect - Parking Lot", //14
-				},
-				{
-					title: "Suspect - Lost", //15
-				},
-				{
-					title: "Suspect - Out of Territory", //16
-				},
-				{
-					title: "Suspect - Customer - Lost", //17
-				},
-				{
-					title: "Prospect - Opportunity", //18
-				},
-				{
-					title: "Prospect - Qualified", //19
-				},
-				{
-					title: "Prospect - Box Sent", //20
-				},
-				{
-					title: "Prospect - Quote Sent", //21
-				},
-				{
-					title: "Customer - Free Trial Pending", //22
-				},
-				{
-					title: "Customer - Free Trial", //23
-				},
-				{
-					title: "Customer - Signed", //24
-				},
-				{
-					title: "Total Lead Count", //25
-				},
-				{
-					title: "Sales Rep ID", //26
-				},
-			],
-			columnDefs: [
-				{
-					targets: [0, 3, 5, 20, 23, 24, 25],
-					className: "bolded",
-				},
-				{
-					targets: [26],
-					visible: false,
-				},
-				{
-					targets: [25],
-					className: "notexport",
-				},
-			],
-			footerCallback: function (row, data, start, end, display) {
-				var api = this.api(),
-					data;
-
-				// Remove the formatting to get integer data for summation
-				var intVal = function (i) {
-					return parseInt(i);
-				};
-
-				const formatter = new Intl.NumberFormat("en-AU", {
-					style: "currency",
-					currency: "AUD",
-					minimumFractionDigits: 2,
-				});
-				// Total Suspect New Lead Count
-				total_suspect_new = api
-					.column(1)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Hot Lead Count
-				total_suspect_hot_lead = api
-					.column(2)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Qualified Count
-				total_suspect_qualified = api
-					.column(3)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Unqualified Count
-				total_suspect_unqualified = api
-					.column(4)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Validated
-				total_suspect_validated = api
-					.column(5)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Reassign
-				total_suspect_reassign = api
-					.column(6)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Follow Up
-				total_suspect_followup = api
-					.column(7)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect LPO Follow Up
-				total_suspect_lpo_followup = api
-					.column(8)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect No Answer
-				total_suspect_no_answer = api
-					.column(9)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect In Contact
-				total_suspect_in_contact = api
-					.column(10)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect In Contact
-				total_prospect_in_contact = api
-					.column(11)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Off Peak Pipline
-				total_suspect_off_peak_pipeline = api
-					.column(12)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Lost
-				total_suspect_lost = api
-					.column(13)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Out of Territory
-				total_suspect_oot = api
-					.column(14)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Customer Lost
-				total_suspect_customer_lost = api
-					.column(15)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Opportunity
-				total_prospect_opportunity = api
-					.column(16)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_qualified = api
-					.column(17)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Quoite Sent
-				total_prospect_box_sent = api
-					.column(18)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Quoite Sent
-				total_prospect_quote_sent = api
-					.column(19)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial Pending
-				total_customer_free_trial_pending = api
-					.column(20)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial
-				total_customer_free_trial = api
-					.column(21)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Signed
-				total_customer_signed = api
-					.column(22)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v1 = api
-					.column(23)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v2 = api
-					.column(24)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Lead Count
-				total_lead = api
-					.column(25)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Update footer
-				$(api.column(1).footer()).html(
-					total_suspect_new +
-						" (" +
-						((total_suspect_new / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(2).footer()).html(
-					total_suspect_hot_lead +
-						" (" +
-						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(3).footer()).html(
-					total_suspect_qualified +
-						" (" +
-						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(4).footer()).html(
-					total_suspect_unqualified +
-						" (" +
-						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(5).footer()).html(
-					total_suspect_validated +
-						" (" +
-						((total_suspect_validated / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(6).footer()).html(
-					total_suspect_reassign +
-						" (" +
-						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(7).footer()).html(
-					total_suspect_followup +
-						" (" +
-						((total_suspect_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(8).footer()).html(
-					total_suspect_lpo_followup +
-						" (" +
-						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(9).footer()).html(
-					total_suspect_no_answer +
-						" (" +
-						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(10).footer()).html(
-					total_suspect_in_contact +
-						" (" +
-						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(11).footer()).html(
-					total_prospect_in_contact +
-						" (" +
-						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(12).footer()).html(
-					total_suspect_off_peak_pipeline +
-						" (" +
-						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(13).footer()).html(
-					total_suspect_lost +
-						" (" +
-						((total_suspect_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(14).footer()).html(
-					total_suspect_oot +
-						" (" +
-						((total_suspect_oot / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(15).footer()).html(
-					total_suspect_customer_lost +
-						" (" +
-						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(16).footer()).html(
-					total_prospect_opportunity +
-						" (" +
-						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(17).footer()).html(
-					total_prospect_qualified +
-						" (" +
-						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(18).footer()).html(
-					total_prospect_box_sent +
-						" (" +
-						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(19).footer()).html(
-					total_prospect_quote_sent +
-						" (" +
-						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(20).footer()).html(
-					total_customer_free_trial_pending +
-						" (" +
-						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-							0
-						) +
-						"%)"
-				);
-
-				$(api.column(21).footer()).html(
-					total_customer_free_trial +
-						" (" +
-						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-
-				$(api.column(22).footer()).html(
-					total_customer_signed +
-						" (" +
-						((total_customer_signed / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(23).footer()).html(
-					total_lead_v1 +
-						" (" +
-						((total_lead_v1 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(24).footer()).html(
-					total_lead_v2 +
-						" (" +
-						((total_lead_v2 / total_lead) * 100).toFixed(0) +
-						"%)"
-				);
-				$(api.column(25).footer()).html(total_lead);
-			},
-		});
-
-		saveCsv(datacapture_previewDataSet);
-
-		var datacapture_data = datacapture_overDataSet;
-
-		var datacapture_month_year = []; // creating array for storing browser
-		var datacapture_customer_signed = [];
-		var datacapture_suspect_hot_lead = [];
-		var datacapture_suspect_reassign = [];
-		var datacapture_suspect_lost = [];
-		var datacapture_suspect_oot = [];
-		var datacapture_suspect_customer_lost = [];
-		var datacapture_suspect_off_peak_pipeline = [];
-		var datacapture_prospect_opportunity = [];
-		var datacapture_prospect_qualified = [];
-		var datacapture_prospecy_quote_sent = [];
-		var datacapture_prospecy_box_sent = [];
-		var datacapture_prospect_no_answer = [];
-		var datacapture_prospect_in_contact = [];
-		var datacapture_suspect_follow_up = [];
-		var datacapture_suspect_new = [];
-		var datacapture_suspect_qualified = [];
-		var datacapture_suspect_unqualified = [];
-		var datacapture_suspect_lpo_followup = [];
-		var datacapture_suspect_validated = [];
-		var datacapture_customer_free_trial_pending = [];
-		var datacapture_customer_free_trial = [];
-		var datacapture_suspect_no_answer = [];
-		var datacapture_suspect_in_contact = [];
-		var datacapture_suspect_pre_qualifcaition = [];
-		var datacapture_suspect_in_qualification = [];
-		var datacapture_total_leads = [];
-
-		for (var i = 0; i < datacapture_data.length; i++) {
-			datacapture_month_year.push(datacapture_data[i][0]);
-			datacapture_suspect_new[datacapture_data[i][0]] = datacapture_data[i][1];
-			datacapture_suspect_hot_lead[datacapture_data[i][0]] =
-				datacapture_data[i][2];
-			datacapture_suspect_validated[datacapture_data[i][0]] =
-				datacapture_data[i][5];
-			datacapture_suspect_unqualified[datacapture_data[i][0]] =
-				datacapture_data[i][4];
-			datacapture_suspect_qualified[datacapture_data[i][0]] =
-				datacapture_data[i][3];
-			datacapture_suspect_pre_qualifcaition[datacapture_data[i][0]] =
-				datacapture_data[i][6];
-			datacapture_suspect_in_qualification[datacapture_data[i][0]] =
-				datacapture_data[i][7];
-			datacapture_suspect_reassign[datacapture_data[i][0]] =
-				datacapture_data[i][8];
-			datacapture_suspect_follow_up[datacapture_data[i][0]] =
-				datacapture_data[i][9];
-			datacapture_suspect_lpo_followup[datacapture_data[i][0]] =
-				datacapture_data[i][10];
-			datacapture_suspect_no_answer[datacapture_data[i][0]] =
-				datacapture_data[i][11];
-			datacapture_suspect_in_contact[datacapture_data[i][0]] =
-				datacapture_data[i][12];
-			datacapture_prospect_in_contact[datacapture_data[i][0]] =
-				datacapture_data[i][13];
-			datacapture_suspect_off_peak_pipeline[datacapture_data[i][0]] =
-				datacapture_data[i][14];
-			datacapture_suspect_lost[datacapture_data[i][0]] =
-				datacapture_data[i][15];
-			datacapture_suspect_oot[datacapture_data[i][0]] = datacapture_data[i][16];
-			datacapture_suspect_customer_lost[datacapture_data[i][0]] =
-				datacapture_data[i][17];
-			datacapture_prospect_opportunity[datacapture_data[i][0]] =
-				datacapture_data[i][18];
-			datacapture_prospect_qualified[datacapture_data[i][0]] =
-				datacapture_data[i][19];
-			datacapture_prospecy_box_sent[datacapture_data[i][0]] =
-				datacapture_data[i][20];
-			datacapture_prospecy_quote_sent[datacapture_data[i][0]] =
-				datacapture_data[i][21];
-			datacapture_customer_free_trial_pending[datacapture_data[i][0]] =
-				datacapture_data[i][22];
-			datacapture_customer_free_trial[datacapture_data[i][0]] =
-				datacapture_data[i][23];
-			datacapture_customer_signed[datacapture_data[i][0]] =
-				datacapture_data[i][24];
-			datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][25];
-		}
-		var datacapture_count = {}; // creating object for getting categories with
-		// count
-		datacapture_month_year.forEach(function (i) {
-			datacapture_count[i] = (datacapture_count[i] || 0) + 1;
-		});
-
-		var datacapture_series_data20 = [];
-		var datacapture_series_data21 = [];
-		var datacapture_series_data22 = [];
-		var datacapture_series_data23 = [];
-		var datacapture_series_data24 = [];
-		var datacapture_series_data25 = [];
-		var datacapture_series_data26 = [];
-		var datacapture_series_data27 = [];
-		var datacapture_series_data28 = [];
-		var datacapture_series_data29 = [];
-		var datacapture_series_data30 = [];
-		var datacapture_series_data31 = [];
-		var datacapture_series_data32 = [];
-		var datacapture_series_data33 = [];
-		var datacapture_series_data34 = [];
-		var datacapture_series_data20a = [];
-		var datacapture_series_data21a = [];
-		var datacapture_series_data22a = [];
-		var datacapture_series_data23a = [];
-		var datacapture_series_data24a = [];
-		var datacapture_series_data25a = [];
-		var datacapture_series_data26a = [];
-		var datacapture_series_data27a = [];
-		var datacapture_series_data28a = [];
-		var datacapture_series_data29a = [];
-		var datacapture_series_data30a = [];
-		var datacapture_series_data31a = [];
-
-		var datacapture_categores1 = []; // creating empty array for highcharts
-		// categories
-		Object.keys(datacapture_total_leads).map(function (item, key) {
-			datacapture_series_data20.push(
-				parseInt(datacapture_customer_signed[item])
-			);
-			datacapture_series_data21.push(
-				parseInt(datacapture_suspect_hot_lead[item])
-			);
-			datacapture_series_data22.push(
-				parseInt(datacapture_suspect_reassign[item])
-			);
-			datacapture_series_data23.push(parseInt(datacapture_suspect_lost[item]));
-			datacapture_series_data24.push(
-				parseInt(datacapture_suspect_customer_lost[item])
-			);
-			datacapture_series_data25.push(
-				parseInt(datacapture_suspect_off_peak_pipeline[item])
-			);
-			datacapture_series_data26.push(
-				parseInt(datacapture_prospecy_quote_sent[item])
-			);
-			datacapture_series_data27.push(
-				parseInt(datacapture_prospect_no_answer[item])
-			);
-			datacapture_series_data28.push(
-				parseInt(datacapture_prospect_in_contact[item])
-			);
-			datacapture_series_data29.push(parseInt(datacapture_total_leads[item]));
-			datacapture_series_data31.push(
-				parseInt(datacapture_prospect_opportunity[item])
-			);
-			datacapture_series_data32.push(parseInt(datacapture_suspect_oot[item]));
-			datacapture_series_data33.push(
-				parseInt(datacapture_suspect_follow_up[item])
-			);
-			datacapture_series_data34.push(parseInt(datacapture_suspect_new[item]));
-			datacapture_series_data20a.push(
-				parseInt(datacapture_suspect_qualified[item])
-			);
-			datacapture_series_data28a.push(
-				parseInt(datacapture_suspect_unqualified[item])
-			);
-			datacapture_series_data21a.push(
-				parseInt(datacapture_suspect_lpo_followup[item])
-			);
-			datacapture_series_data22a.push(
-				parseInt(datacapture_suspect_validated[item])
-			);
-			datacapture_series_data23a.push(
-				parseInt(datacapture_customer_free_trial[item])
-			);
-			datacapture_series_data24a.push(
-				parseInt(datacapture_suspect_no_answer[item])
-			);
-			datacapture_series_data25a.push(
-				parseInt(datacapture_suspect_in_contact[item])
-			);
-			datacapture_series_data26a.push(
-				parseInt(datacapture_prospect_qualified[item])
-			);
-			datacapture_series_data27a.push(
-				parseInt(datacapture_customer_free_trial_pending[item])
-			);
-			datacapture_series_data29a.push(
-				parseInt(datacapture_prospecy_box_sent[item])
-			);
-			datacapture_series_data30a.push(
-				parseInt(datacapture_suspect_pre_qualifcaition[item])
-			);
-			datacapture_series_data31a.push(
-				parseInt(datacapture_suspect_in_qualification[item])
-			);
-			datacapture_categores1.push(item);
-		});
-
-		console.log(
-			"datacapture_categores1: " + JSON.stringify(datacapture_categores1)
-		);
-
-		plotDataCaptureChartPreview(
-			datacapture_series_data20,
-			datacapture_series_data21,
-			datacapture_series_data22,
-			datacapture_series_data23,
-			datacapture_series_data24,
-			datacapture_series_data25,
-			datacapture_series_data26,
-			datacapture_series_data27,
-			datacapture_series_data28,
-			datacapture_series_data29,
-			datacapture_series_data31,
-			datacapture_series_data32,
-			datacapture_series_data33,
-			datacapture_series_data34,
-			datacapture_categores1,
-			datacapture_series_data20a,
-			datacapture_series_data21a,
-			datacapture_series_data22a,
-			datacapture_series_data23a,
-			datacapture_series_data24a,
-			datacapture_series_data25a,
-			datacapture_series_data26a,
-			datacapture_series_data27a,
-			datacapture_series_data28a,
-			datacapture_series_data29a,
-			datacapture_series_data30a,
-			datacapture_series_data31a
-		);
-
-		//? Data Capture Grouped by Source & Campaign
+		// if (
+		// 	isNullorEmpty(lead_source) ||
+		// 	isNullorEmpty(sales_campaign) ||
+		// 	lead_source == 282083 ||
+		// 	lead_source == 282051 ||
+		// 	lead_source == 282085 ||
+		// 	lead_source == 281559 ||
+		// 	sales_campaign == 69 ||
+		// 	sales_campaign == 76 ||
+		// 	sales_campaign == 87
+		// ) {
+		// 	if (role == 1000) {
+		// 		// Sales Dashboard - LPO New Leads by Status - Monthly Reporting
+		// 		var lpoLeadsListBySalesRepWeeklySearch = search.load({
+		// 			type: "customer",
+		// 			id: "customsearch_leads_reporting_weekly_3_2",
+		// 		});
+		// 	} else {
+		// 		// Sales Dashboard - LPO New Leads by Status - Weekly Reporting
+		// 		var lpoLeadsListBySalesRepWeeklySearch = search.load({
+		// 			type: "customer",
+		// 			id: "customsearch_leads_reporting_weekly_4",
+		// 		});
+		// 	}
+
+		// 	lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(cancelled_start_date) &&
+		// 		!isNullorEmpty(cancelled_last_date)
+		// 	) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: cancelled_start_date,
+		// 			})
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: cancelled_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		lpoLeadsListBySalesRepWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(modified_date_from) &&
+		// 		!isNullorEmpty(modified_date_to)
+		// 	) {
+		// 		var defaultSearchFilters =
+		// 			lpoLeadsListBySalesRepWeeklySearch.filterExpression;
+
+		// 		console.log(
+		// 			"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 		);
+
+		// 		var modifiedDateFilters = [
+		// 			[
+		// 				["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 				"AND",
+		// 				[
+		// 					"activity.custevent_organiser",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				[
+		// 					"usernotes.notedate",
+		// 					"within",
+		// 					[modified_date_from, modified_date_to],
+		// 				],
+		// 				"AND",
+		// 				[
+		// 					"usernotes.author",
+		// 					"anyof",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 		];
+		// 		console.log(
+		// 			"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 		);
+
+		// 		defaultSearchFilters.push("AND");
+		// 		defaultSearchFilters.push(modifiedDateFilters);
+
+		// 		console.log(
+		// 			"defaultSearchFilters filters: " +
+		// 				JSON.stringify(defaultSearchFilters)
+		// 		);
+
+		// 		lpoLeadsListBySalesRepWeeklySearch.filterExpression =
+		// 			defaultSearchFilters;
+		// 	}
+
+		// 	var count1 = 0;
+		// 	var oldParentLPOName = null;
+
+		// 	var customer_signed = 0;
+		// 	var suspect_hot_lead = 0;
+		// 	var suspect_reassign = 0;
+		// 	var suspect_lost = 0;
+		// 	var suspect_oot = 0;
+		// 	var suspect_customer_lost = 0;
+		// 	var suspect_off_peak_pipeline = 0;
+		// 	var prospect_opportunity = 0;
+		// 	var prospect_qualified = 0;
+		// 	var prospecy_quote_sent = 0;
+		// 	var prospect_no_answer = 0;
+		// 	var prospect_in_contact = 0;
+		// 	var suspect_follow_up = 0;
+		// 	var suspect_new = 0;
+
+		// 	var suspect_lpo_followup = 0;
+		// 	var suspect_qualified = 0;
+		// 	var suspect_qualified = 0;
+
+		// 	var suspect_validated = 0;
+		// 	var customer_free_trial = 0;
+		// 	var customer_free_trial_pending = 0;
+
+		// 	var suspect_no_answer = 0;
+		// 	var suspect_in_contact = 0;
+
+		// 	lpoLeadsListBySalesRepWeeklySearch
+		// 		.run()
+		// 		.each(function (lpoLeadsListBySalesRepWeeklyResultSet) {
+		// 			var prospectCount = parseInt(
+		// 				lpoLeadsListBySalesRepWeeklyResultSet.getValue({
+		// 					name: "internalid",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+
+		// 			var custStatus = parseInt(
+		// 				lpoLeadsListBySalesRepWeeklyResultSet.getValue({
+		// 					name: "entitystatus",
+		// 					summary: "GROUP",
+		// 				})
+		// 			);
+		// 			var custStatusText = lpoLeadsListBySalesRepWeeklyResultSet.getText({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var parentLPOName = lpoLeadsListBySalesRepWeeklyResultSet.getText({
+		// 				name: "custentity_lpo_parent_account",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			if (isNullorEmpty(parentLPOName)) {
+		// 				parentLPOName = "Unassigned";
+		// 			}
+
+		// 			if (count1 == 0) {
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed = parseInt(prospectCount);
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead = parseInt(prospectCount);
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost = parseInt(prospectCount);
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot = parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost = parseInt(prospectCount);
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign = parseInt(prospectCount);
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent = parseInt(prospectCount);
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline = parseInt(prospectCount);
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity = parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up = parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new = parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup = parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial = parseInt(prospectCount);
+		// 				} else if (custStatus == 71) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending = parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT - QUALIFIED
+		// 					prospect_qualified = parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending;
+		// 			} else if (
+		// 				oldParentLPOName != null &&
+		// 				oldParentLPOName == parentLPOName
+		// 			) {
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed += prospectCount;
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead += prospectCount;
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost += prospectCount;
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot += parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost += prospectCount;
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign += prospectCount;
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent += prospectCount;
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer += prospectCount;
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact += prospectCount;
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline += prospectCount;
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity += parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up += parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new += parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified += parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup += parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated += parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial += parseInt(prospectCount);
+		// 				} else if (custStatus == 71) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending += parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer += parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact += parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT - QUALIFIED
+		// 					prospect_qualified += parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending;
+		// 			} else if (oldDate1 != null && oldParentLPOName != parentLPOName) {
+		// 				lpo_debt_set2.push({
+		// 					lpoparentname: oldParentLPOName,
+		// 					suspect_hot_lead: suspect_hot_lead,
+		// 					prospecy_quote_sent: prospecy_quote_sent,
+		// 					suspect_reassign: suspect_reassign,
+		// 					prospect_no_answer: prospect_no_answer,
+		// 					prospect_in_contact: prospect_in_contact,
+		// 					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 					suspect_lost: suspect_lost,
+		// 					suspect_customer_lost: suspect_customer_lost,
+		// 					prospect_opportunity: prospect_opportunity,
+		// 					customer_signed: customer_signed,
+		// 					total_leads: total_leads,
+		// 					suspect_oot: suspect_oot,
+		// 					suspect_follow_up: suspect_follow_up,
+		// 					suspect_new: suspect_new,
+		// 					suspect_qualified: suspect_qualified,
+		// 					suspect_lpo_followup: suspect_lpo_followup,
+		// 					suspect_validated: suspect_validated,
+		// 					customer_free_trial: customer_free_trial,
+		// 					suspect_no_answer: suspect_no_answer,
+		// 					suspect_in_contact: suspect_in_contact,
+		// 					prospect_qualified: prospect_qualified,
+		// 					customer_free_trial_pending: customer_free_trial_pending,
+		// 				});
+
+		// 				customer_signed = 0;
+		// 				suspect_hot_lead = 0;
+		// 				suspect_reassign = 0;
+		// 				suspect_lost = 0;
+		// 				suspect_customer_lost = 0;
+		// 				suspect_off_peak_pipeline = 0;
+		// 				prospect_opportunity = 0;
+		// 				prospecy_quote_sent = 0;
+		// 				prospect_no_answer = 0;
+		// 				prospect_in_contact = 0;
+		// 				suspect_oot = 0;
+		// 				suspect_follow_up = 0;
+		// 				suspect_new = 0;
+		// 				suspect_qualified = 0;
+		// 				suspect_lpo_followup = 0;
+		// 				total_leads = 0;
+		// 				prospect_qualified = 0;
+
+		// 				suspect_validated = 0;
+		// 				customer_free_trial = 0;
+		// 				customer_free_trial_pending = 0;
+		// 				suspect_no_answer = 0;
+		// 				suspect_in_contact = 0;
+
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed = prospectCount;
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead = prospectCount;
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost = prospectCount;
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot = parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost = prospectCount;
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign = prospectCount;
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent = prospectCount;
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer = prospectCount;
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact = prospectCount;
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline = prospectCount;
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity = parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up = parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new = parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup = parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial = parseInt(prospectCount);
+		// 				} else if (custStatus == 71) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending = parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT QUALIFIED
+		// 					prospect_qualified = parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending;
+		// 			}
+
+		// 			count1++;
+		// 			oldParentLPOName = parentLPOName;
+		// 			return true;
+		// 		});
+
+		// 	if (count1 > 0) {
+		// 		lpo_debt_set2.push({
+		// 			lpoparentname: oldParentLPOName,
+		// 			suspect_hot_lead: suspect_hot_lead,
+		// 			prospecy_quote_sent: prospecy_quote_sent,
+		// 			suspect_reassign: suspect_reassign,
+		// 			prospect_no_answer: prospect_no_answer,
+		// 			prospect_in_contact: prospect_in_contact,
+		// 			suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 			suspect_lost: suspect_lost,
+		// 			suspect_customer_lost: suspect_customer_lost,
+		// 			prospect_opportunity: prospect_opportunity,
+		// 			customer_signed: customer_signed,
+		// 			total_leads: total_leads,
+		// 			suspect_oot: suspect_oot,
+		// 			suspect_follow_up: suspect_follow_up,
+		// 			suspect_new: suspect_new,
+		// 			suspect_qualified: suspect_qualified,
+		// 			suspect_lpo_followup: suspect_lpo_followup,
+		// 			suspect_validated: suspect_validated,
+		// 			customer_free_trial: customer_free_trial,
+		// 			suspect_no_answer: suspect_no_answer,
+		// 			suspect_in_contact: suspect_in_contact,
+		// 			prospect_qualified: prospect_qualified,
+		// 			customer_free_trial_pending: customer_free_trial_pending,
+		// 		});
+		// 	}
+
+		// 	console.log("lpo_debt_set2: " + JSON.stringify(lpo_debt_set2));
+
+		// 	lpo_previewDataSet = [];
+		// 	lpo_csvPreviewSet = [];
+
+		// 	var lpo_overDataSet = [];
+
+		// 	if (!isNullorEmpty(lpo_debt_set2)) {
+		// 		lpo_debt_set2.forEach(function (preview_row, index) {
+		// 			var hotLeadPercentage = parseInt(
+		// 				(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+		// 			);
+		// 			var hotLeadCol =
+		// 				preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 			var quoteSentPercentage = parseInt(
+		// 				(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var quoteSentCol =
+		// 				preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 			var reassignPercentage = parseInt(
+		// 				(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 			);
+		// 			var reassignCol =
+		// 				preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 			var noAnswerPercentage = parseInt(
+		// 				(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var noAnswerCol =
+		// 				preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 			var inContactPercentage = parseInt(
+		// 				(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var inContactCol =
+		// 				preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 			var offPeakPercentage = parseInt(
+		// 				(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var offPeakCol =
+		// 				preview_row.suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				offPeakPercentage +
+		// 				"%)";
+
+		// 			var lostPercentage = parseInt(
+		// 				(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 			var ootPercentage = parseInt(
+		// 				(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 			);
+		// 			var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 			var custLostPercentage = parseInt(
+		// 				(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var custLostCol =
+		// 				preview_row.suspect_customer_lost +
+		// 				" (" +
+		// 				custLostPercentage +
+		// 				"%)";
+
+		// 			var oppPercentage = parseInt(
+		// 				(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 			);
+		// 			var oppCol =
+		// 				preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 			var signedPercentage = parseInt(
+		// 				(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 			);
+		// 			var signedCol =
+		// 				preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 			var suspectFollowUpPErcentage = parseInt(
+		// 				(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+		// 			);
+		// 			var followUpCol =
+		// 				preview_row.suspect_follow_up +
+		// 				" (" +
+		// 				suspectFollowUpPErcentage +
+		// 				"%)";
+
+		// 			var suspectNewPercentage = parseInt(
+		// 				(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNewCol =
+		// 				preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 			var suspectQualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectQualifiedCol =
+		// 				preview_row.suspect_qualified +
+		// 				" (" +
+		// 				suspectQualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectLPOFollowupPercentage = parseInt(
+		// 				(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectLPOFollowupwCol =
+		// 				preview_row.suspect_lpo_followup +
+		// 				" (" +
+		// 				suspectLPOFollowupPercentage +
+		// 				"%)";
+
+		// 			var suspectValidatedPercentage = parseInt(
+		// 				(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectValidatedCol =
+		// 				preview_row.suspect_validated +
+		// 				" (" +
+		// 				suspectValidatedPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPercentage = parseInt(
+		// 				(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 			);
+		// 			var customerFreeTrialCol =
+		// 				preview_row.customer_free_trial +
+		// 				" (" +
+		// 				customerFreeTrialPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPendingPercentage = parseInt(
+		// 				(preview_row.customer_free_trial_pending /
+		// 					preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var customerFreeTrialPendingCol =
+		// 				preview_row.customer_free_trial_pending +
+		// 				" (" +
+		// 				customerFreeTrialPendingPercentage +
+		// 				"%)";
+
+		// 			var suspectNoAnswerPercentage = parseInt(
+		// 				(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNoAnswerCol =
+		// 				preview_row.suspect_no_answer +
+		// 				" (" +
+		// 				suspectNoAnswerPercentage +
+		// 				"%)";
+
+		// 			var suspectInContactPercentage = parseInt(
+		// 				(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectInContactCol =
+		// 				preview_row.suspect_in_contact +
+		// 				" (" +
+		// 				suspectInContactPercentage +
+		// 				"%)";
+
+		// 			var prospectQualifiedPercentage = parseInt(
+		// 				(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var prospectQualifiedCol =
+		// 				preview_row.prospect_qualified +
+		// 				" (" +
+		// 				prospectQualifiedPercentage +
+		// 				"%)";
+
+		// 			lpo_overDataSet.push([
+		// 				preview_row.lpoparentname,
+		// 				preview_row.suspect_new,
+		// 				preview_row.suspect_hot_lead,
+		// 				preview_row.suspect_qualified,
+		// 				preview_row.suspect_validated,
+		// 				preview_row.suspect_reassign,
+		// 				preview_row.suspect_follow_up,
+		// 				preview_row.suspect_no_answer,
+		// 				preview_row.suspect_in_contact,
+		// 				preview_row.suspect_lpo_followup,
+		// 				preview_row.prospect_in_contact,
+		// 				preview_row.suspect_off_peak_pipeline,
+		// 				preview_row.suspect_lost,
+		// 				preview_row.suspect_oot,
+		// 				preview_row.suspect_customer_lost,
+		// 				preview_row.prospect_opportunity,
+		// 				preview_row.prospect_qualified,
+		// 				preview_row.prospecy_quote_sent,
+		// 				preview_row.customer_free_trial_pending,
+		// 				preview_row.customer_free_trial,
+		// 				preview_row.customer_signed,
+		// 				preview_row.total_leads,
+		// 			]);
+
+		// 			lpo_previewDataSet.push([
+		// 				preview_row.lpoparentname,
+		// 				suspectNewCol,
+		// 				hotLeadCol,
+		// 				suspectQualifiedCol,
+		// 				suspectValidatedCol,
+		// 				reassignCol,
+		// 				followUpCol,
+		// 				suspectLPOFollowupwCol,
+		// 				suspectNoAnswerCol,
+		// 				suspectInContactCol,
+		// 				inContactCol,
+		// 				offPeakCol,
+		// 				lostCol,
+		// 				ootCol,
+		// 				custLostCol,
+		// 				oppCol,
+		// 				prospectQualifiedCol,
+		// 				quoteSentCol,
+		// 				customerFreeTrialPendingCol,
+		// 				customerFreeTrialCol,
+		// 				signedCol,
+		// 				preview_row.total_leads,
+		// 			]);
+		// 		});
+		// 	}
+
+		// 	console.log("lpo_previewDataSet");
+		// 	console.log(lpo_previewDataSet);
+
+		// 	var dataTableLPOPreview = $("#mpexusage-lpo_overview").DataTable({
+		// 		destroy: true,
+		// 		data: lpo_previewDataSet,
+		// 		pageLength: 1000,
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{
+		// 				title: "LPO Name", //0
+		// 			},
+		// 			{
+		// 				title: "Suspect - New", //1
+		// 			},
+		// 			{
+		// 				title: "Suspect - Hot Lead", //2
+		// 			},
+		// 			{
+		// 				title: "Suspect - Qualified", //3
+		// 			},
+		// 			{
+		// 				title: "Suspect - Validated", //4
+		// 			},
+		// 			{
+		// 				title: "Suspect - Reassign", //5
+		// 			},
+		// 			{
+		// 				title: "Suspect - Follow Up", //6
+		// 			},
+		// 			{
+		// 				title: "Suspect - LPO Follow Up", //7
+		// 			},
+		// 			{
+		// 				title: "Suspect - No Answer", //8
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Contact", //9
+		// 			},
+		// 			{
+		// 				title: "Prospect - In Contact", //10
+		// 			},
+		// 			{
+		// 				title: "Suspect - Parking Lot", //11
+		// 			},
+		// 			{
+		// 				title: "Suspect - Lost", //12
+		// 			},
+		// 			{
+		// 				title: "Suspect - Out of Territory", //13
+		// 			},
+		// 			{
+		// 				title: "Suspect - Customer - Lost", //14
+		// 			},
+		// 			{
+		// 				title: "Prospect - Opportunity", //15
+		// 			},
+		// 			{
+		// 				title: "Prospect - Qualified", //16
+		// 			},
+		// 			{
+		// 				title: "Prospect - Quote Sent", //17
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial Pending", //18
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial", //19
+		// 			},
+		// 			{
+		// 				title: "Customer - Signed", //20
+		// 			},
+		// 			{
+		// 				title: "Total Lead Count", //21
+		// 			},
+		// 		],
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 4, 17, 19, 20],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			const formatter = new Intl.NumberFormat("en-AU", {
+		// 				style: "currency",
+		// 				currency: "AUD",
+		// 				minimumFractionDigits: 2,
+		// 			});
+		// 			// Total Suspect New Lead Count
+		// 			total_suspect_new = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Hot Lead Count
+		// 			total_suspect_hot_lead = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Qualified Count
+		// 			total_suspect_qualified = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Validated
+		// 			total_suspect_validated = api
+		// 				.column(4)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Reassign
+		// 			total_suspect_reassign = api
+		// 				.column(5)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Follow Up
+		// 			total_suspect_followup = api
+		// 				.column(6)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect LPO Follow Up
+		// 			total_suspect_lpo_followup = api
+		// 				.column(7)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect No Answer
+		// 			total_suspect_no_answer = api
+		// 				.column(8)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect In Contact
+		// 			total_suspect_in_contact = api
+		// 				.column(9)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect In Contact
+		// 			total_prospect_in_contact = api
+		// 				.column(10)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Off Peak Pipline
+		// 			total_suspect_off_peak_pipeline = api
+		// 				.column(11)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Lost
+		// 			total_suspect_lost = api
+		// 				.column(12)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Out of Territory
+		// 			total_suspect_oot = api
+		// 				.column(13)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Customer Lost
+		// 			total_suspect_customer_lost = api
+		// 				.column(14)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Opportunity
+		// 			total_prospect_opportunity = api
+		// 				.column(15)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_qualified = api
+		// 				.column(16)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Quoite Sent
+		// 			total_prospect_quote_sent = api
+		// 				.column(17)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_customer_free_trial_pending = api
+		// 				.column(18)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_customer_free_trial = api
+		// 				.column(19)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_customer_signed = api
+		// 				.column(20)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Lead Count
+		// 			total_lead = api
+		// 				.column(21)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Update footer
+		// 			$(api.column(1).footer()).html(
+		// 				total_suspect_new +
+		// 					" (" +
+		// 					((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(2).footer()).html(
+		// 				total_suspect_hot_lead +
+		// 					" (" +
+		// 					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(3).footer()).html(
+		// 				total_suspect_qualified +
+		// 					" (" +
+		// 					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(4).footer()).html(
+		// 				total_suspect_validated +
+		// 					" (" +
+		// 					((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(5).footer()).html(
+		// 				total_suspect_reassign +
+		// 					" (" +
+		// 					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(6).footer()).html(
+		// 				total_suspect_followup +
+		// 					" (" +
+		// 					((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(7).footer()).html(
+		// 				total_suspect_lpo_followup +
+		// 					" (" +
+		// 					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(8).footer()).html(
+		// 				total_suspect_no_answer +
+		// 					" (" +
+		// 					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(9).footer()).html(
+		// 				total_suspect_in_contact +
+		// 					" (" +
+		// 					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(10).footer()).html(
+		// 				total_prospect_in_contact +
+		// 					" (" +
+		// 					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(11).footer()).html(
+		// 				total_suspect_off_peak_pipeline +
+		// 					" (" +
+		// 					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(12).footer()).html(
+		// 				total_suspect_lost +
+		// 					" (" +
+		// 					((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(13).footer()).html(
+		// 				total_suspect_oot +
+		// 					" (" +
+		// 					((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(14).footer()).html(
+		// 				total_suspect_customer_lost +
+		// 					" (" +
+		// 					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(15).footer()).html(
+		// 				total_prospect_opportunity +
+		// 					" (" +
+		// 					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(16).footer()).html(
+		// 				total_prospect_qualified +
+		// 					" (" +
+		// 					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(17).footer()).html(
+		// 				total_prospect_quote_sent +
+		// 					" (" +
+		// 					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(18).footer()).html(
+		// 				total_customer_free_trial_pending +
+		// 					" (" +
+		// 					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(19).footer()).html(
+		// 				total_customer_free_trial +
+		// 					" (" +
+		// 					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(20).footer()).html(
+		// 				total_customer_signed +
+		// 					" (" +
+		// 					((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(21).footer()).html(total_lead);
+		// 		},
+		// 	});
+
+		// 	saveCsv(lpo_previewDataSet);
+
+		// 	var lpo_data = lpo_overDataSet;
+
+		// 	var lpo_month_year = []; // creating array for storing browser
+		// 	var lpo_customer_signed = [];
+		// 	var lpo_suspect_hot_lead = [];
+		// 	var lpo_suspect_reassign = [];
+		// 	var lpo_suspect_lost = [];
+		// 	var lpo_suspect_oot = [];
+		// 	var lpo_suspect_customer_lost = [];
+		// 	var lpo_suspect_off_peak_pipeline = [];
+		// 	var lpo_prospect_opportunity = [];
+		// 	var lpo_prospect_qualified = [];
+		// 	var lpo_prospecy_quote_sent = [];
+		// 	var lpo_prospect_no_answer = [];
+		// 	var lpo_prospect_in_contact = [];
+		// 	var lpo_suspect_follow_up = [];
+		// 	var lpo_suspect_new = [];
+		// 	var lpo_suspect_qualified = [];
+		// 	var lpo_suspect_lpo_followup = [];
+		// 	var lpo_suspect_validated = [];
+		// 	var lpo_customer_free_trial = [];
+		// 	var lpo_customer_free_trial_pending = [];
+		// 	var lpo_suspect_no_answer = [];
+		// 	var lpo_suspect_in_contact = [];
+		// 	var lpo_total_leads = [];
+
+		// 	for (var i = 0; i < lpo_data.length; i++) {
+		// 		lpo_month_year.push(lpo_data[i][0]);
+		// 		lpo_suspect_new[lpo_data[i][0]] = lpo_data[i][1];
+		// 		lpo_suspect_hot_lead[lpo_data[i][0]] = lpo_data[i][2];
+		// 		lpo_suspect_qualified[lpo_data[i][0]] = lpo_data[i][3];
+		// 		lpo_suspect_validated[lpo_data[i][0]] = lpo_data[i][4];
+		// 		lpo_suspect_reassign[lpo_data[i][0]] = lpo_data[i][5];
+		// 		lpo_suspect_follow_up[lpo_data[i][0]] = lpo_data[i][6];
+		// 		lpo_suspect_lpo_followup[lpo_data[i][0]] = lpo_data[i][7];
+		// 		lpo_suspect_no_answer[lpo_data[i][0]] = lpo_data[i][8];
+		// 		lpo_suspect_in_contact[lpo_data[i][0]] = lpo_data[i][9];
+		// 		lpo_prospect_in_contact[lpo_data[i][0]] = lpo_data[i][10];
+		// 		lpo_suspect_off_peak_pipeline[lpo_data[i][0]] = lpo_data[i][11];
+		// 		lpo_suspect_lost[lpo_data[i][0]] = lpo_data[i][12];
+		// 		lpo_suspect_oot[lpo_data[i][0]] = lpo_data[i][13];
+		// 		lpo_suspect_customer_lost[lpo_data[i][0]] = lpo_data[i][14];
+		// 		lpo_prospect_opportunity[lpo_data[i][0]] = lpo_data[i][15];
+		// 		lpo_prospect_qualified[lpo_data[i][0]] = lpo_data[i][16];
+		// 		lpo_prospecy_quote_sent[lpo_data[i][0]] = lpo_data[i][17];
+		// 		lpo_customer_free_trial_pending[lpo_data[i][0]] = lpo_data[i][18];
+		// 		lpo_customer_free_trial[lpo_data[i][0]] = lpo_data[i][19];
+		// 		lpo_customer_signed[lpo_data[i][0]] = lpo_data[i][20];
+		// 		lpo_total_leads[lpo_data[i][0]] = lpo_data[i][21];
+		// 	}
+		// 	var lpo_count = {}; // creating object for getting categories with
+		// 	// count
+		// 	lpo_month_year.forEach(function (i) {
+		// 		lpo_count[i] = (lpo_count[i] || 0) + 1;
+		// 	});
+
+		// 	var lpo_series_data20 = [];
+		// 	var lpo_series_data21 = [];
+		// 	var lpo_series_data22 = [];
+		// 	var lpo_series_data23 = [];
+		// 	var lpo_series_data24 = [];
+		// 	var lpo_series_data25 = [];
+		// 	var lpo_series_data26 = [];
+		// 	var lpo_series_data27 = [];
+		// 	var lpo_series_data28 = [];
+		// 	var lpo_series_data29 = [];
+		// 	var lpo_series_data30 = [];
+		// 	var lpo_series_data31 = [];
+		// 	var lpo_series_data32 = [];
+		// 	var lpo_series_data33 = [];
+		// 	var lpo_series_data34 = [];
+		// 	var lpo_series_data20a = [];
+		// 	var lpo_series_data21a = [];
+		// 	var lpo_series_data22a = [];
+		// 	var lpo_series_data23a = [];
+		// 	var lpo_series_data24a = [];
+		// 	var lpo_series_data25a = [];
+		// 	var lpo_series_data26a = [];
+		// 	var lpo_series_data27a = [];
+
+		// 	var lpo_categores1 = []; // creating empty array for highcharts
+		// 	// categories
+		// 	Object.keys(lpo_total_leads).map(function (item, key) {
+		// 		lpo_series_data20.push(parseInt(lpo_customer_signed[item]));
+		// 		lpo_series_data21.push(parseInt(lpo_suspect_hot_lead[item]));
+		// 		lpo_series_data22.push(parseInt(lpo_suspect_reassign[item]));
+		// 		lpo_series_data23.push(parseInt(lpo_suspect_lost[item]));
+		// 		lpo_series_data24.push(parseInt(lpo_suspect_customer_lost[item]));
+		// 		lpo_series_data25.push(parseInt(lpo_suspect_off_peak_pipeline[item]));
+		// 		lpo_series_data26.push(parseInt(lpo_prospecy_quote_sent[item]));
+		// 		lpo_series_data27.push(parseInt(lpo_prospect_no_answer[item]));
+		// 		lpo_series_data28.push(parseInt(lpo_prospect_in_contact[item]));
+		// 		lpo_series_data29.push(parseInt(lpo_total_leads[item]));
+		// 		lpo_series_data31.push(parseInt(lpo_prospect_opportunity[item]));
+		// 		lpo_series_data32.push(parseInt(lpo_suspect_oot[item]));
+		// 		lpo_series_data33.push(parseInt(lpo_suspect_follow_up[item]));
+		// 		lpo_series_data34.push(parseInt(lpo_suspect_new[item]));
+		// 		lpo_series_data20a.push(parseInt(lpo_suspect_qualified[item]));
+		// 		lpo_series_data21a.push(parseInt(lpo_suspect_lpo_followup[item]));
+		// 		lpo_series_data22a.push(parseInt(lpo_suspect_validated[item]));
+		// 		lpo_series_data23a.push(parseInt(lpo_customer_free_trial[item]));
+		// 		lpo_series_data24a.push(parseInt(lpo_suspect_no_answer[item]));
+		// 		lpo_series_data25a.push(parseInt(lpo_suspect_in_contact[item]));
+		// 		lpo_series_data26a.push(parseInt(lpo_prospect_qualified[item]));
+		// 		lpo_series_data27a.push(
+		// 			parseInt(lpo_customer_free_trial_pending[item])
+		// 		);
+		// 		lpo_categores1.push(item);
+		// 	});
+
+		// 	plotLPOChartPreview(
+		// 		lpo_series_data20,
+		// 		lpo_series_data21,
+		// 		lpo_series_data22,
+		// 		lpo_series_data23,
+		// 		lpo_series_data24,
+		// 		lpo_series_data25,
+		// 		lpo_series_data26,
+		// 		lpo_series_data27,
+		// 		lpo_series_data28,
+		// 		lpo_series_data29,
+		// 		lpo_series_data31,
+		// 		lpo_series_data32,
+		// 		lpo_series_data33,
+		// 		lpo_series_data34,
+		// 		lpo_categores1,
+		// 		lpo_series_data20a,
+		// 		lpo_series_data21a,
+		// 		lpo_series_data22a,
+		// 		lpo_series_data23a,
+		// 		lpo_series_data24a,
+		// 		lpo_series_data25a,
+		// 		lpo_series_data26a,
+		// 		lpo_series_data27a
+		// 	);
+		// }
+
+		// if (role != 1000) {
+		// 	// TODO - Zee Preview
+
+		// 	// Sales Dashboard - Franchisee Generated Leads by Status - Weekly Reporting
+		// 	// var zeeLeadsByStatusWeeklySearch = search.load({
+		// 	// 	type: "customer",
+		// 	// 	id: "customsearch_leads_reporting_weekly_4_2",
+		// 	// });
+
+		// 	//Sales Dashboard - Leads by Status & Zee - Weekly Reporting
+		// 	var zeeLeadsByStatusWeeklySearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_leads_reporting_weekly_4__5",
+		// 	});
+
+		// 	zeeLeadsByStatusWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.NONEOF,
+		// 			values: [109783],
+		// 		})
+		// 	);
+
+		// 	if (customer_type == "2") {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "TEST",
+		// 			})
+		// 		);
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTCONTAIN,
+		// 				values: "- Parent",
+		// 			})
+		// 		);
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Shippit Pty Ltd ",
+		// 			})
+		// 		);
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "Sendle",
+		// 			})
+		// 		);
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "companyname",
+		// 				join: null,
+		// 				operator: search.Operator.DOESNOTSTARTWITH,
+		// 				values: "SC -",
+		// 			})
+		// 		);
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_np_np_customer",
+		// 				join: null,
+		// 				operator: search.Operator.ANYOF,
+		// 				values: "@NONE@",
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(leadStatus)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "entitystatus",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: leadStatus,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_from,
+		// 			})
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_entered",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_signed_up_from) &&
+		// 		!isNullorEmpty(date_signed_up_to)
+		// 	) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_signed_up_from,
+		// 			})
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date_signup",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_signed_up_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(commencement_start_date) &&
+		// 		!isNullorEmpty(commencement_last_date)
+		// 	) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: commencement_start_date,
+		// 			})
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_comm_date",
+		// 				join: "CUSTRECORD_CUSTOMER",
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: commencement_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(cancelled_start_date) &&
+		// 		!isNullorEmpty(cancelled_last_date)
+		// 	) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: cancelled_start_date,
+		// 			})
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity13",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: cancelled_last_date,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_source)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "leadsource",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_source,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_rep)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_assigned",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.IS,
+		// 				values: sales_rep,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(lead_entered_by)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_lead_entered_by",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: lead_entered_by,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(sales_campaign)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custrecord_sales_campaign",
+		// 				join: "custrecord_sales_customer",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: sales_campaign,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(parent_lpo)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "internalid",
+		// 				join: "custentity_lpo_parent_account",
+		// 				operator: search.Operator.ANYOF,
+		// 				values: parent_lpo,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(date_quote_sent_from) &&
+		// 		!isNullorEmpty(date_quote_sent_to)
+		// 	) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORAFTER,
+		// 				values: date_quote_sent_from,
+		// 			})
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "custentity_date_lead_quote_sent",
+		// 				join: null,
+		// 				operator: search.Operator.ONORBEFORE,
+		// 				values: date_quote_sent_to,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (!isNullorEmpty(zee_id)) {
+		// 		zeeLeadsByStatusWeeklySearch.filters.push(
+		// 			search.createFilter({
+		// 				name: "partner",
+		// 				join: null,
+		// 				operator: search.Operator.IS,
+		// 				values: zee_id,
+		// 			})
+		// 		);
+		// 	}
+
+		// 	if (
+		// 		!isNullorEmpty(modified_date_from) &&
+		// 		!isNullorEmpty(modified_date_to)
+		// 	) {
+		// 		var defaultSearchFilters =
+		// 			zeeLeadsByStatusWeeklySearch.filterExpression;
+
+		// 		console.log(
+		// 			"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 		);
+
+		// 		var modifiedDateFilters = [
+		// 			[
+		// 				["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 				"AND",
+		// 				[
+		// 					"activity.custevent_organiser",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				[
+		// 					"usernotes.notedate",
+		// 					"within",
+		// 					[modified_date_from, modified_date_to],
+		// 				],
+		// 				"AND",
+		// 				[
+		// 					"usernotes.author",
+		// 					"anyof",
+		// 					"anyof",
+		// 					"1623053",
+		// 					"668712",
+		// 					"1797389",
+		// 					"1809334",
+		// 					"690145",
+		// 					"1771076",
+		// 					"1813424",
+		// 					"696160",
+		// 					"668711",
+		// 					"1809382",
+		// 					"653718",
+		// 					"1777309",
+		// 					"1819701",
+		// 					"1820151",
+		// 					"1822089",
+		// 				],
+		// 			],
+		// 		];
+		// 		console.log(
+		// 			"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 		);
+
+		// 		defaultSearchFilters.push("AND");
+		// 		defaultSearchFilters.push(modifiedDateFilters);
+
+		// 		console.log(
+		// 			"defaultSearchFilters filters: " +
+		// 				JSON.stringify(defaultSearchFilters)
+		// 		);
+
+		// 		zeeLeadsByStatusWeeklySearch.filterExpression = defaultSearchFilters;
+		// 	}
+
+		// 	var count1 = 0;
+		// 	var oldZeeName = null;
+
+		// 	var customer_signed = 0;
+		// 	var suspect_hot_lead = 0;
+		// 	var suspect_reassign = 0;
+		// 	var suspect_lost = 0;
+		// 	var suspect_oot = 0;
+		// 	var suspect_customer_lost = 0;
+		// 	var suspect_off_peak_pipeline = 0;
+		// 	var prospect_opportunity = 0;
+		// 	var prospect_qualified = 0;
+		// 	var prospecy_quote_sent = 0;
+		// 	var prospect_no_answer = 0;
+		// 	var prospect_in_contact = 0;
+		// 	var suspect_follow_up = 0;
+		// 	var suspect_new = 0;
+
+		// 	var suspect_lpo_followup = 0;
+		// 	var suspect_qualified = 0;
+		// 	var suspect_unqualified = 0;
+		// 	var suspect_pre_qualification = 0;
+		// 	var suspect_in_qualification = 0;
+
+		// 	var suspect_validated = 0;
+		// 	var customer_free_trial = 0;
+		// 	var customer_free_trial_pending = 0;
+
+		// 	var suspect_no_answer = 0;
+		// 	var suspect_in_contact = 0;
+
+		// 	zeeLeadsByStatusWeeklySearch
+		// 		.run()
+		// 		.each(function (zeeLeadsByStatusWeeklySearchResultSet) {
+		// 			var prospectCount = parseInt(
+		// 				zeeLeadsByStatusWeeklySearchResultSet.getValue({
+		// 					name: "internalid",
+		// 					summary: "COUNT",
+		// 				})
+		// 			);
+
+		// 			var custStatus = parseInt(
+		// 				zeeLeadsByStatusWeeklySearchResultSet.getValue({
+		// 					name: "entitystatus",
+		// 					summary: "GROUP",
+		// 				})
+		// 			);
+		// 			var custStatusText = zeeLeadsByStatusWeeklySearchResultSet.getText({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
+		// 			var zeeName = zeeLeadsByStatusWeeklySearchResultSet.getText({
+		// 				name: "partner",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 			if (isNullorEmpty(zeeName)) {
+		// 				zeeName = "Unassigned";
+		// 			}
+
+		// 			if (count1 == 0) {
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed = parseInt(prospectCount);
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead = parseInt(prospectCount);
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost = parseInt(prospectCount);
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot = parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost = parseInt(prospectCount);
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign = parseInt(prospectCount);
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent = parseInt(prospectCount);
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline = parseInt(prospectCount);
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity = parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up = parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new = parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 38) {
+		// 					//SUSPECT - UNQUALIFIED
+		// 					suspect_unqualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup = parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending = parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT - QUALIFIED
+		// 					prospect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 30) {
+		// 					//PROSPECT - IN QUALIFICATION
+		// 					suspect_in_qualification = parseInt(prospectCount);
+		// 				} else if (custStatus == 34) {
+		// 					//PROSPECT - PRE QUALIFICATION
+		// 					suspect_pre_qualification = parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending +
+		// 					suspect_unqualified +
+		// 					suspect_pre_qualification +
+		// 					suspect_in_qualification;
+		// 			} else if (oldZeeName != null && oldZeeName == zeeName) {
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed += prospectCount;
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead += prospectCount;
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost += prospectCount;
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot += parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost += prospectCount;
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign += prospectCount;
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent += prospectCount;
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer += prospectCount;
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact += prospectCount;
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline += prospectCount;
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity += parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up += parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new += parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified += parseInt(prospectCount);
+		// 				} else if (custStatus == 38) {
+		// 					//SUSPECT - UNQUALIFIED
+		// 					suspect_unqualified += parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup += parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated += parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial += parseInt(prospectCount);
+		// 				} else if (custStatus == 71) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending += parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer += parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact += parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT - QUALIFIED
+		// 					prospect_qualified += parseInt(prospectCount);
+		// 				} else if (custStatus == 30) {
+		// 					//PROSPECT - IN QUALIFICATION
+		// 					suspect_in_qualification += parseInt(prospectCount);
+		// 				} else if (custStatus == 34) {
+		// 					//PROSPECT - PRE QUALIFICATION
+		// 					suspect_pre_qualification += parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending +
+		// 					suspect_unqualified +
+		// 					suspect_pre_qualification +
+		// 					suspect_in_qualification;
+		// 			} else if (oldDate1 != null && oldZeeName != zeeName) {
+		// 				zee_debt_set2.push({
+		// 					zeeName: oldZeeName,
+		// 					suspect_hot_lead: suspect_hot_lead,
+		// 					prospecy_quote_sent: prospecy_quote_sent,
+		// 					suspect_reassign: suspect_reassign,
+		// 					prospect_no_answer: prospect_no_answer,
+		// 					prospect_in_contact: prospect_in_contact,
+		// 					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 					suspect_lost: suspect_lost,
+		// 					suspect_customer_lost: suspect_customer_lost,
+		// 					prospect_opportunity: prospect_opportunity,
+		// 					customer_signed: customer_signed,
+		// 					total_leads: total_leads,
+		// 					suspect_oot: suspect_oot,
+		// 					suspect_follow_up: suspect_follow_up,
+		// 					suspect_new: suspect_new,
+		// 					suspect_qualified: suspect_qualified,
+		// 					suspect_unqualified: suspect_unqualified,
+		// 					suspect_lpo_followup: suspect_lpo_followup,
+		// 					suspect_validated: suspect_validated,
+		// 					customer_free_trial: customer_free_trial,
+		// 					suspect_no_answer: suspect_no_answer,
+		// 					suspect_in_contact: suspect_in_contact,
+		// 					prospect_qualified: prospect_qualified,
+		// 					customer_free_trial_pending: customer_free_trial_pending,
+		// 					suspect_pre_qualification: suspect_pre_qualification,
+		// 					suspect_in_qualification: suspect_in_qualification,
+		// 				});
+
+		// 				customer_signed = 0;
+		// 				suspect_hot_lead = 0;
+		// 				suspect_reassign = 0;
+		// 				suspect_lost = 0;
+		// 				suspect_customer_lost = 0;
+		// 				suspect_off_peak_pipeline = 0;
+		// 				prospect_opportunity = 0;
+		// 				prospecy_quote_sent = 0;
+		// 				prospect_no_answer = 0;
+		// 				prospect_in_contact = 0;
+		// 				suspect_oot = 0;
+		// 				suspect_follow_up = 0;
+		// 				suspect_new = 0;
+		// 				suspect_qualified = 0;
+		// 				suspect_unqualified = 0;
+		// 				suspect_lpo_followup = 0;
+		// 				total_leads = 0;
+		// 				prospect_qualified = 0;
+
+		// 				suspect_validated = 0;
+		// 				customer_free_trial = 0;
+		// 				customer_free_trial_pending = 0;
+		// 				suspect_no_answer = 0;
+		// 				suspect_in_contact = 0;
+		// 				suspect_pre_qualification = 0;
+		// 				suspect_in_qualification = 0;
+
+		// 				if (custStatus == 13 || custStatus == 66) {
+		// 					//CUSTOMER _ SIGNED
+		// 					customer_signed = prospectCount;
+		// 				} else if (custStatus == 57) {
+		// 					//SUSPECT - HOT LEAD
+		// 					suspect_hot_lead = prospectCount;
+		// 				} else if (custStatus == 59) {
+		// 					//SUSPECT - LOST
+		// 					suspect_lost = prospectCount;
+		// 				} else if (custStatus == 64) {
+		// 					//SUSPECT - OUT OF TERRITORY
+		// 					suspect_oot = parseInt(prospectCount);
+		// 				} else if (custStatus == 22) {
+		// 					//SUSPECT - CUSTOMER - LOST
+		// 					suspect_customer_lost = prospectCount;
+		// 				} else if (custStatus == 60 || custStatus == 40) {
+		// 					//SUSPECT - REP REASSIGN
+		// 					suspect_reassign = prospectCount;
+		// 				} else if (custStatus == 50) {
+		// 					//PROSPECT - QUOTE SENT
+		// 					prospecy_quote_sent = prospectCount;
+		// 				} else if (custStatus == 35) {
+		// 					//PROSPECT - NO ANSWER
+		// 					prospect_no_answer = prospectCount;
+		// 				} else if (custStatus == 8) {
+		// 					//PROSPECT - IN CONTACT
+		// 					prospect_in_contact = prospectCount;
+		// 				} else if (custStatus == 62) {
+		// 					//SUSPECT - OFF PEAK PIPELINE
+		// 					suspect_off_peak_pipeline = prospectCount;
+		// 				} else if (custStatus == 58) {
+		// 					//PROSPECT - OPPORTUNITY
+		// 					prospect_opportunity = parseInt(prospectCount);
+		// 				} else if (custStatus == 18) {
+		// 					//SUSPECT - FOLLOW UP
+		// 					suspect_follow_up = parseInt(prospectCount);
+		// 				} else if (custStatus == 6) {
+		// 					//SUSPECT - NEW
+		// 					suspect_new = parseInt(prospectCount);
+		// 				} else if (custStatus == 42) {
+		// 					//SUSPECT - QUALIFIED
+		// 					suspect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 38) {
+		// 					//SUSPECT - UNQUALIFIED
+		// 					suspect_unqualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 67) {
+		// 					//SUSPECT - LPO FOLLOW UP
+		// 					suspect_lpo_followup = parseInt(prospectCount);
+		// 				} else if (custStatus == 68) {
+		// 					//SUSPECT - VALIDATED
+		// 					suspect_validated = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL
+		// 					customer_free_trial = parseInt(prospectCount);
+		// 				} else if (custStatus == 32) {
+		// 					//CUSTOMER - FREE TRIAL PENDING
+		// 					customer_free_trial_pending = parseInt(prospectCount);
+		// 				} else if (custStatus == 20) {
+		// 					//SUSPECT - NO ANSWER
+		// 					suspect_no_answer = parseInt(prospectCount);
+		// 				} else if (custStatus == 69) {
+		// 					//SUSPECT - IN CONTACT
+		// 					suspect_in_contact = parseInt(prospectCount);
+		// 				} else if (custStatus == 70) {
+		// 					//PROSPECT QUALIFIED
+		// 					prospect_qualified = parseInt(prospectCount);
+		// 				} else if (custStatus == 30) {
+		// 					//PROSPECT - IN QUALIFICATION
+		// 					suspect_in_qualification = parseInt(prospectCount);
+		// 				} else if (custStatus == 34) {
+		// 					//PROSPECT - PRE QUALIFICATION
+		// 					suspect_pre_qualification = parseInt(prospectCount);
+		// 				}
+
+		// 				total_leads =
+		// 					customer_signed +
+		// 					suspect_hot_lead +
+		// 					suspect_lost +
+		// 					suspect_customer_lost +
+		// 					suspect_reassign +
+		// 					prospecy_quote_sent +
+		// 					prospect_no_answer +
+		// 					prospect_in_contact +
+		// 					suspect_off_peak_pipeline +
+		// 					prospect_opportunity +
+		// 					suspect_oot +
+		// 					suspect_follow_up +
+		// 					suspect_new +
+		// 					suspect_qualified +
+		// 					suspect_lpo_followup +
+		// 					suspect_validated +
+		// 					customer_free_trial +
+		// 					suspect_no_answer +
+		// 					suspect_in_contact +
+		// 					prospect_qualified +
+		// 					customer_free_trial_pending +
+		// 					suspect_unqualified +
+		// 					suspect_pre_qualification +
+		// 					suspect_in_qualification;
+		// 			}
+
+		// 			count1++;
+		// 			oldZeeName = zeeName;
+		// 			return true;
+		// 		});
+
+		// 	if (count1 > 0) {
+		// 		zee_debt_set2.push({
+		// 			zeeName: oldZeeName,
+		// 			suspect_hot_lead: suspect_hot_lead,
+		// 			prospecy_quote_sent: prospecy_quote_sent,
+		// 			suspect_reassign: suspect_reassign,
+		// 			prospect_no_answer: prospect_no_answer,
+		// 			prospect_in_contact: prospect_in_contact,
+		// 			suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 			suspect_lost: suspect_lost,
+		// 			suspect_customer_lost: suspect_customer_lost,
+		// 			prospect_opportunity: prospect_opportunity,
+		// 			customer_signed: customer_signed,
+		// 			total_leads: total_leads,
+		// 			suspect_oot: suspect_oot,
+		// 			suspect_follow_up: suspect_follow_up,
+		// 			suspect_new: suspect_new,
+		// 			suspect_qualified: suspect_qualified,
+		// 			suspect_unqualified: suspect_unqualified,
+		// 			suspect_lpo_followup: suspect_lpo_followup,
+		// 			suspect_validated: suspect_validated,
+		// 			customer_free_trial: customer_free_trial,
+		// 			suspect_no_answer: suspect_no_answer,
+		// 			suspect_in_contact: suspect_in_contact,
+		// 			prospect_qualified: prospect_qualified,
+		// 			customer_free_trial_pending: customer_free_trial_pending,
+		// 			suspect_pre_qualification: suspect_pre_qualification,
+		// 			suspect_in_qualification: suspect_in_qualification,
+		// 		});
+		// 	}
+
+		// 	console.log("zee_debt_set2: " + JSON.stringify(zee_debt_set2));
+
+		// 	zee_previewDataSet = [];
+		// 	zee_csvPreviewSet = [];
+
+		// 	var zee_overDataSet = [];
+
+		// 	if (!isNullorEmpty(zee_debt_set2)) {
+		// 		zee_debt_set2.forEach(function (preview_row, index) {
+		// 			var hotLeadPercentage = parseInt(
+		// 				(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+		// 			);
+		// 			var hotLeadCol =
+		// 				preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 			var quoteSentPercentage = parseInt(
+		// 				(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 			);
+		// 			var quoteSentCol =
+		// 				preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 			var reassignPercentage = parseInt(
+		// 				(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 			);
+		// 			var reassignCol =
+		// 				preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 			var noAnswerPercentage = parseInt(
+		// 				(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var noAnswerCol =
+		// 				preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 			var inContactPercentage = parseInt(
+		// 				(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var inContactCol =
+		// 				preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 			var offPeakPercentage = parseInt(
+		// 				(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var offPeakCol =
+		// 				preview_row.suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				offPeakPercentage +
+		// 				"%)";
+
+		// 			var lostPercentage = parseInt(
+		// 				(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 			var ootPercentage = parseInt(
+		// 				(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 			);
+		// 			var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 			var custLostPercentage = parseInt(
+		// 				(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 			);
+		// 			var custLostCol =
+		// 				preview_row.suspect_customer_lost +
+		// 				" (" +
+		// 				custLostPercentage +
+		// 				"%)";
+
+		// 			var oppPercentage = parseInt(
+		// 				(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 			);
+		// 			var oppCol =
+		// 				preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 			var signedPercentage = parseInt(
+		// 				(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 			);
+		// 			var signedCol =
+		// 				preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 			var suspectFollowUpPErcentage = parseInt(
+		// 				(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+		// 			);
+		// 			var followUpCol =
+		// 				preview_row.suspect_follow_up +
+		// 				" (" +
+		// 				suspectFollowUpPErcentage +
+		// 				"%)";
+
+		// 			var suspectNewPercentage = parseInt(
+		// 				(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNewCol =
+		// 				preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 			var suspectQualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectQualifiedCol =
+		// 				preview_row.suspect_qualified +
+		// 				" (" +
+		// 				suspectQualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectUnqualifiedPercentage = parseInt(
+		// 				(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectUnqualifiedCol =
+		// 				preview_row.suspect_unqualified +
+		// 				" (" +
+		// 				suspectUnqualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectLPOFollowupPercentage = parseInt(
+		// 				(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectLPOFollowupwCol =
+		// 				preview_row.suspect_lpo_followup +
+		// 				" (" +
+		// 				suspectLPOFollowupPercentage +
+		// 				"%)";
+
+		// 			var suspectValidatedPercentage = parseInt(
+		// 				(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectValidatedCol =
+		// 				preview_row.suspect_validated +
+		// 				" (" +
+		// 				suspectValidatedPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPercentage = parseInt(
+		// 				(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 			);
+		// 			var customerFreeTrialCol =
+		// 				preview_row.customer_free_trial +
+		// 				" (" +
+		// 				customerFreeTrialPercentage +
+		// 				"%)";
+
+		// 			var customerFreeTrialPendingPercentage = parseInt(
+		// 				(preview_row.customer_free_trial_pending /
+		// 					preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var customerFreeTrialPendingCol =
+		// 				preview_row.customer_free_trial_pending +
+		// 				" (" +
+		// 				customerFreeTrialPendingPercentage +
+		// 				"%)";
+
+		// 			var suspectNoAnswerPercentage = parseInt(
+		// 				(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectNoAnswerCol =
+		// 				preview_row.suspect_no_answer +
+		// 				" (" +
+		// 				suspectNoAnswerPercentage +
+		// 				"%)";
+
+		// 			var suspectInContactPercentage = parseInt(
+		// 				(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 			);
+		// 			var suspectInContactCol =
+		// 				preview_row.suspect_in_contact +
+		// 				" (" +
+		// 				suspectInContactPercentage +
+		// 				"%)";
+
+		// 			var prospectQualifiedPercentage = parseInt(
+		// 				(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 			);
+		// 			var prospectQualifiedCol =
+		// 				preview_row.prospect_qualified +
+		// 				" (" +
+		// 				prospectQualifiedPercentage +
+		// 				"%)";
+
+		// 			var suspectPreQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var suspectPreQualificationCol =
+		// 				preview_row.suspect_pre_qualification +
+		// 				" (" +
+		// 				suspectPreQualificationPercentage +
+		// 				"%)";
+
+		// 			var suspectInQualificationPercentage = parseInt(
+		// 				(preview_row.suspect_in_qualification / preview_row.total_leads) *
+		// 					100
+		// 			);
+		// 			var suspectInQualificationCol =
+		// 				preview_row.suspect_in_qualification +
+		// 				" (" +
+		// 				suspectInQualificationPercentage +
+		// 				"%)";
+
+		// 			zee_overDataSet.push([
+		// 				preview_row.zeeName,
+		// 				preview_row.suspect_new,
+		// 				preview_row.suspect_hot_lead,
+		// 				preview_row.suspect_validated,
+		// 				preview_row.suspect_qualified,
+		// 				preview_row.suspect_unqualified,
+		// 				preview_row.suspect_pre_qualification,
+		// 				preview_row.suspect_in_qualification,
+		// 				preview_row.suspect_reassign,
+		// 				preview_row.suspect_follow_up,
+		// 				preview_row.suspect_no_answer,
+		// 				preview_row.suspect_in_contact,
+		// 				preview_row.suspect_lpo_followup,
+		// 				preview_row.prospect_in_contact,
+		// 				preview_row.suspect_off_peak_pipeline,
+		// 				preview_row.suspect_lost,
+		// 				preview_row.suspect_oot,
+		// 				preview_row.suspect_customer_lost,
+		// 				preview_row.prospect_opportunity,
+		// 				preview_row.prospect_qualified,
+		// 				preview_row.prospecy_quote_sent,
+		// 				preview_row.customer_free_trial_pending,
+		// 				preview_row.customer_free_trial,
+		// 				preview_row.customer_signed,
+		// 				preview_row.total_leads,
+		// 			]);
+
+		// 			zee_previewDataSet.push([
+		// 				preview_row.zeeName,
+		// 				suspectNewCol,
+		// 				hotLeadCol,
+		// 				suspectValidatedCol,
+		// 				suspectQualifiedCol,
+		// 				suspectUnqualifiedCol,
+		// 				suspectPreQualificationCol,
+		// 				suspectInQualificationCol,
+		// 				reassignCol,
+		// 				followUpCol,
+		// 				suspectLPOFollowupwCol,
+		// 				suspectNoAnswerCol,
+		// 				suspectInContactCol,
+		// 				inContactCol,
+		// 				offPeakCol,
+		// 				lostCol,
+		// 				ootCol,
+		// 				custLostCol,
+		// 				oppCol,
+		// 				prospectQualifiedCol,
+		// 				quoteSentCol,
+		// 				customerFreeTrialPendingCol,
+		// 				customerFreeTrialCol,
+		// 				signedCol,
+		// 				preview_row.total_leads,
+		// 			]);
+		// 		});
+		// 	}
+
+		// 	console.log("zee_previewDataSet");
+		// 	console.log(zee_previewDataSet);
+
+		// 	var dataTableZeePreview = $("#mpexusage-zee_overview").DataTable({
+		// 		destroy: true,
+		// 		data: zee_previewDataSet,
+		// 		pageLength: 1000,
+		// 		order: [24, "desc"],
+		// 		layout: {
+		// 			topStart: {
+		// 				buttons: [
+		// 					{
+		// 						extend: "copy",
+		// 						text: "Copy",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "csv",
+		// 						text: "CSV",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "excel",
+		// 						text: "Excel",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "pdf",
+		// 						text: "PDF",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 					{
+		// 						extend: "print",
+		// 						text: "Print",
+		// 						className: "btn btn-default exportButtons",
+		// 						exportOptions: {
+		// 							columns: ":not(.notexport)",
+		// 						},
+		// 					},
+		// 				],
+		// 			},
+		// 		},
+		// 		columns: [
+		// 			{
+		// 				title: "Franchisee", //0
+		// 			},
+		// 			{
+		// 				title: "Suspect - New", //1
+		// 			},
+		// 			{
+		// 				title: "Suspect - Hot Lead", //2
+		// 			},
+		// 			{
+		// 				title: "Suspect - Validated", //3
+		// 			},
+		// 			{
+		// 				title: "Suspect - Qualified", //4
+		// 			},
+		// 			{
+		// 				title: "Suspect - Unqualified", //5
+		// 			},
+		// 			{
+		// 				title: "Suspect - Pre Qualification", //6
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Qualification", //7
+		// 			},
+		// 			{
+		// 				title: "Suspect - Reassign", //8
+		// 			},
+		// 			{
+		// 				title: "Suspect - Follow Up", //9
+		// 			},
+		// 			{
+		// 				title: "Suspect - LPO Follow Up", //10
+		// 			},
+		// 			{
+		// 				title: "Suspect - No Answer", //11
+		// 			},
+		// 			{
+		// 				title: "Suspect - In Contact", //12
+		// 			},
+		// 			{
+		// 				title: "Prospect - In Contact", //13
+		// 			},
+		// 			{
+		// 				title: "Suspect - Parking Lot", //14
+		// 			},
+		// 			{
+		// 				title: "Suspect - Lost", //15
+		// 			},
+		// 			{
+		// 				title: "Suspect - Out of Territory", //16
+		// 			},
+		// 			{
+		// 				title: "Suspect - Customer - Lost", //17
+		// 			},
+		// 			{
+		// 				title: "Prospect - Opportunity", //18
+		// 			},
+		// 			{
+		// 				title: "Prospect - Qualified", //19
+		// 			},
+		// 			{
+		// 				title: "Prospect - Quote Sent", //20
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial Pending", //21
+		// 			},
+		// 			{
+		// 				title: "Customer - Free Trial", //22
+		// 			},
+		// 			{
+		// 				title: "Customer - Signed", //23
+		// 			},
+		// 			{
+		// 				title: "Total Lead Count", //24
+		// 			},
+		// 		],
+		// 		columnDefs: [
+		// 			{
+		// 				targets: [0, 4, 20, 22, 23],
+		// 				className: "bolded",
+		// 			},
+		// 		],
+		// 		footerCallback: function (row, data, start, end, display) {
+		// 			var api = this.api(),
+		// 				data;
+
+		// 			// Remove the formatting to get integer data for summation
+		// 			var intVal = function (i) {
+		// 				return parseInt(i);
+		// 			};
+
+		// 			const formatter = new Intl.NumberFormat("en-AU", {
+		// 				style: "currency",
+		// 				currency: "AUD",
+		// 				minimumFractionDigits: 2,
+		// 			});
+		// 			// Total Suspect New Lead Count
+		// 			total_suspect_new = api
+		// 				.column(1)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Hot Lead Count
+		// 			total_suspect_hot_lead = api
+		// 				.column(2)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Qualified Count
+		// 			total_suspect_qualified = api
+		// 				.column(3)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Unqualified Count
+		// 			total_suspect_unqualified = api
+		// 				.column(4)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Validated
+		// 			total_suspect_validated = api
+		// 				.column(5)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Reassign
+		// 			total_suspect_reassign = api
+		// 				.column(6)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Follow Up
+		// 			total_suspect_followup = api
+		// 				.column(7)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect LPO Follow Up
+		// 			total_suspect_lpo_followup = api
+		// 				.column(8)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect No Answer
+		// 			total_suspect_no_answer = api
+		// 				.column(9)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect In Contact
+		// 			total_suspect_in_contact = api
+		// 				.column(10)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect In Contact
+		// 			total_prospect_in_contact = api
+		// 				.column(11)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Off Peak Pipline
+		// 			total_suspect_off_peak_pipeline = api
+		// 				.column(12)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Lost
+		// 			total_suspect_lost = api
+		// 				.column(13)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Out of Territory
+		// 			total_suspect_oot = api
+		// 				.column(14)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Suspect Customer Lost
+		// 			total_suspect_customer_lost = api
+		// 				.column(15)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Opportunity
+		// 			total_prospect_opportunity = api
+		// 				.column(16)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_prospect_qualified = api
+		// 				.column(17)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Prospect Quoite Sent
+		// 			total_prospect_quote_sent = api
+		// 				.column(18)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial Pending
+		// 			total_customer_free_trial_pending = api
+		// 				.column(19)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Free Trial
+		// 			total_customer_free_trial = api
+		// 				.column(20)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Customer Signed
+		// 			total_customer_signed = api
+		// 				.column(21)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_lead_v1 = api
+		// 				.column(22)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			total_lead_v2 = api
+		// 				.column(23)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Total Lead Count
+		// 			total_lead = api
+		// 				.column(24)
+		// 				.data()
+		// 				.reduce(function (a, b) {
+		// 					return intVal(a) + intVal(b);
+		// 				}, 0);
+
+		// 			// Update footer
+		// 			$(api.column(1).footer()).html(
+		// 				total_suspect_new +
+		// 					" (" +
+		// 					((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(2).footer()).html(
+		// 				total_suspect_hot_lead +
+		// 					" (" +
+		// 					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(3).footer()).html(
+		// 				total_suspect_qualified +
+		// 					" (" +
+		// 					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(4).footer()).html(
+		// 				total_suspect_unqualified +
+		// 					" (" +
+		// 					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(5).footer()).html(
+		// 				total_suspect_validated +
+		// 					" (" +
+		// 					((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(6).footer()).html(
+		// 				total_suspect_reassign +
+		// 					" (" +
+		// 					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(7).footer()).html(
+		// 				total_suspect_followup +
+		// 					" (" +
+		// 					((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(8).footer()).html(
+		// 				total_suspect_lpo_followup +
+		// 					" (" +
+		// 					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(9).footer()).html(
+		// 				total_suspect_no_answer +
+		// 					" (" +
+		// 					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(10).footer()).html(
+		// 				total_suspect_in_contact +
+		// 					" (" +
+		// 					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(11).footer()).html(
+		// 				total_prospect_in_contact +
+		// 					" (" +
+		// 					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(12).footer()).html(
+		// 				total_suspect_off_peak_pipeline +
+		// 					" (" +
+		// 					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(13).footer()).html(
+		// 				total_suspect_lost +
+		// 					" (" +
+		// 					((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(14).footer()).html(
+		// 				total_suspect_oot +
+		// 					" (" +
+		// 					((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(15).footer()).html(
+		// 				total_suspect_customer_lost +
+		// 					" (" +
+		// 					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(16).footer()).html(
+		// 				total_prospect_opportunity +
+		// 					" (" +
+		// 					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(17).footer()).html(
+		// 				total_prospect_qualified +
+		// 					" (" +
+		// 					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(18).footer()).html(
+		// 				total_prospect_quote_sent +
+		// 					" (" +
+		// 					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(19).footer()).html(
+		// 				total_customer_free_trial_pending +
+		// 					" (" +
+		// 					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 						0
+		// 					) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(20).footer()).html(
+		// 				total_customer_free_trial +
+		// 					" (" +
+		// 					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+
+		// 			$(api.column(21).footer()).html(
+		// 				total_customer_signed +
+		// 					" (" +
+		// 					((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(22).footer()).html(
+		// 				total_lead_v1 +
+		// 					" (" +
+		// 					((total_lead_v1 / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(23).footer()).html(
+		// 				total_lead_v2 +
+		// 					" (" +
+		// 					((total_lead_v2 / total_lead) * 100).toFixed(0) +
+		// 					"%)"
+		// 			);
+		// 			$(api.column(24).footer()).html(total_lead);
+		// 		},
+		// 	});
+
+		// 	saveCsv(zee_previewDataSet);
+
+		// 	var zee_data = zee_overDataSet;
+
+		// 	var zee_month_year = []; // creating array for storing browser
+		// 	var zee_customer_signed = [];
+		// 	var zee_suspect_hot_lead = [];
+		// 	var zee_suspect_reassign = [];
+		// 	var zee_suspect_lost = [];
+		// 	var zee_suspect_oot = [];
+		// 	var zee_suspect_customer_lost = [];
+		// 	var zee_suspect_off_peak_pipeline = [];
+		// 	var zee_prospect_opportunity = [];
+		// 	var zee_prospect_qualified = [];
+		// 	var zee_prospecy_quote_sent = [];
+		// 	var zee_prospect_no_answer = [];
+		// 	var zee_prospect_in_contact = [];
+		// 	var zee_suspect_follow_up = [];
+		// 	var zee_suspect_new = [];
+		// 	var zee_suspect_qualified = [];
+		// 	var zee_suspect_unqualified = [];
+		// 	var zee_suspect_lpo_followup = [];
+		// 	var zee_suspect_validated = [];
+		// 	var zee_customer_free_trial = [];
+		// 	var zee_customer_free_trial_pending = [];
+		// 	var zee_suspect_no_answer = [];
+		// 	var zee_suspect_in_contact = [];
+		// 	var zee_suspect_pre_qualification = [];
+		// 	var zee_suspect_in_qualification = [];
+		// 	var zee_total_leads = [];
+
+		// 	for (var i = 0; i < zee_data.length; i++) {
+		// 		zee_month_year.push(zee_data[i][0]);
+		// 		zee_suspect_new[zee_data[i][0]] = zee_data[i][1];
+		// 		zee_suspect_hot_lead[zee_data[i][0]] = zee_data[i][2];
+		// 		zee_suspect_qualified[zee_data[i][0]] = zee_data[i][5];
+		// 		zee_suspect_unqualified[zee_data[i][0]] = zee_data[i][4];
+		// 		zee_suspect_validated[zee_data[i][0]] = zee_data[i][3];
+		// 		zee_suspect_pre_qualification[zee_data[i][0]] = zee_data[i][6];
+		// 		zee_suspect_in_qualification[zee_data[i][0]] = zee_data[i][7];
+		// 		zee_suspect_reassign[zee_data[i][0]] = zee_data[i][8];
+		// 		zee_suspect_follow_up[zee_data[i][0]] = zee_data[i][9];
+		// 		zee_suspect_lpo_followup[zee_data[i][0]] = zee_data[i][10];
+		// 		zee_suspect_no_answer[zee_data[i][0]] = zee_data[i][11];
+		// 		zee_suspect_in_contact[zee_data[i][0]] = zee_data[i][12];
+		// 		zee_prospect_in_contact[zee_data[i][0]] = zee_data[i][13];
+		// 		zee_suspect_off_peak_pipeline[zee_data[i][0]] = zee_data[i][14];
+		// 		zee_suspect_lost[zee_data[i][0]] = zee_data[i][15];
+		// 		zee_suspect_oot[zee_data[i][0]] = zee_data[i][16];
+		// 		zee_suspect_customer_lost[zee_data[i][0]] = zee_data[i][17];
+		// 		zee_prospect_opportunity[zee_data[i][0]] = zee_data[i][18];
+		// 		zee_prospect_qualified[zee_data[i][0]] = zee_data[i][19];
+		// 		zee_prospecy_quote_sent[zee_data[i][0]] = zee_data[i][20];
+		// 		zee_customer_free_trial_pending[zee_data[i][0]] = zee_data[i][21];
+		// 		zee_customer_free_trial[zee_data[i][0]] = zee_data[i][22];
+		// 		zee_customer_signed[zee_data[i][0]] = zee_data[i][23];
+		// 		zee_total_leads[zee_data[i][0]] = zee_data[i][24];
+		// 	}
+		// 	var zee_count = {}; // creating object for getting categories with
+		// 	// count
+		// 	zee_month_year.forEach(function (i) {
+		// 		zee_count[i] = (zee_count[i] || 0) + 1;
+		// 	});
+
+		// 	var zee_series_data20 = [];
+		// 	var zee_series_data21 = [];
+		// 	var zee_series_data22 = [];
+		// 	var zee_series_data23 = [];
+		// 	var zee_series_data24 = [];
+		// 	var zee_series_data25 = [];
+		// 	var zee_series_data26 = [];
+		// 	var zee_series_data27 = [];
+		// 	var zee_series_data28 = [];
+		// 	var zee_series_data29 = [];
+		// 	var zee_series_data30 = [];
+		// 	var zee_series_data31 = [];
+		// 	var zee_series_data32 = [];
+		// 	var zee_series_data33 = [];
+		// 	var zee_series_data34 = [];
+		// 	var zee_series_data20a = [];
+		// 	var zee_series_data21a = [];
+		// 	var zee_series_data22a = [];
+		// 	var zee_series_data23a = [];
+		// 	var zee_series_data24a = [];
+		// 	var zee_series_data25a = [];
+		// 	var zee_series_data26a = [];
+		// 	var zee_series_data27a = [];
+		// 	var zee_series_data28a = [];
+		// 	var zee_series_data29a = [];
+		// 	var zee_series_data30a = [];
+
+		// 	var zee_categores1 = []; // creating empty array for highcharts
+		// 	// categories
+		// 	Object.keys(zee_total_leads).map(function (item, key) {
+		// 		zee_series_data20.push(parseInt(zee_customer_signed[item]));
+		// 		zee_series_data21.push(parseInt(zee_suspect_hot_lead[item]));
+		// 		zee_series_data22.push(parseInt(zee_suspect_reassign[item]));
+		// 		zee_series_data23.push(parseInt(zee_suspect_lost[item]));
+		// 		zee_series_data24.push(parseInt(zee_suspect_customer_lost[item]));
+		// 		zee_series_data25.push(parseInt(zee_suspect_off_peak_pipeline[item]));
+		// 		zee_series_data26.push(parseInt(zee_prospecy_quote_sent[item]));
+		// 		zee_series_data27.push(parseInt(zee_prospect_no_answer[item]));
+		// 		zee_series_data28.push(parseInt(zee_prospect_in_contact[item]));
+		// 		zee_series_data29.push(parseInt(zee_total_leads[item]));
+		// 		zee_series_data31.push(parseInt(zee_prospect_opportunity[item]));
+		// 		zee_series_data32.push(parseInt(zee_suspect_oot[item]));
+		// 		zee_series_data33.push(parseInt(zee_suspect_follow_up[item]));
+		// 		zee_series_data34.push(parseInt(zee_suspect_new[item]));
+		// 		zee_series_data20a.push(parseInt(zee_suspect_qualified[item]));
+		// 		zee_series_data28a.push(parseInt(zee_suspect_unqualified[item]));
+		// 		zee_series_data21a.push(parseInt(zee_suspect_lpo_followup[item]));
+		// 		zee_series_data22a.push(parseInt(zee_suspect_validated[item]));
+		// 		zee_series_data23a.push(parseInt(zee_customer_free_trial[item]));
+		// 		zee_series_data24a.push(parseInt(zee_suspect_no_answer[item]));
+		// 		zee_series_data25a.push(parseInt(zee_suspect_in_contact[item]));
+		// 		zee_series_data26a.push(parseInt(zee_prospect_qualified[item]));
+		// 		zee_series_data27a.push(
+		// 			parseInt(zee_customer_free_trial_pending[item])
+		// 		);
+		// 		zee_series_data29a.push(parseInt(zee_suspect_pre_qualification[item]));
+		// 		zee_series_data30a.push(parseInt(zee_suspect_in_qualification[item]));
+		// 		zee_categores1.push(item);
+		// 	});
+
+		// 	plotZeeChartPreview(
+		// 		zee_series_data20,
+		// 		zee_series_data21,
+		// 		zee_series_data22,
+		// 		zee_series_data23,
+		// 		zee_series_data24,
+		// 		zee_series_data25,
+		// 		zee_series_data26,
+		// 		zee_series_data27,
+		// 		zee_series_data28,
+		// 		zee_series_data29,
+		// 		zee_series_data31,
+		// 		zee_series_data32,
+		// 		zee_series_data33,
+		// 		zee_series_data34,
+		// 		zee_categores1,
+		// 		zee_series_data20a,
+		// 		zee_series_data21a,
+		// 		zee_series_data22a,
+		// 		zee_series_data23a,
+		// 		zee_series_data24a,
+		// 		zee_series_data25a,
+		// 		zee_series_data26a,
+		// 		zee_series_data27a,
+		// 		zee_series_data28a,
+		// 		zee_series_data29a,
+		// 		zee_series_data30a
+		// 	);
+		// }
+
+		// //TODO - Sales Rep Overview
+		// // Sales Dashboard - Leads by Status - Sales Rep Reporting
+		// var leadsListBySalesRepStatusSearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_5",
+		// });
+
+		// leadsListBySalesRepStatusSearch.filters.push(
+		// 	search.createFilter({
+		// 		name: "custrecord_salesrep",
+		// 		join: "CUSTRECORD_CUSTOMER",
+		// 		operator: search.Operator.NONEOF,
+		// 		values: [109783],
+		// 	})
+		// );
+
+		// if (customer_type == "2") {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "TEST",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTCONTAIN,
+		// 			values: "- Parent",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Shippit Pty Ltd ",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Sendle",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "SC -",
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_np_np_customer",
+		// 			join: null,
+		// 			operator: search.Operator.ANYOF,
+		// 			values: "@NONE@",
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(leadStatus)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "entitystatus",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: leadStatus,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_signed_up_from) &&
+		// 	!isNullorEmpty(date_signed_up_to)
+		// ) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_signed_up_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_signed_up_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(commencement_start_date) &&
+		// 	!isNullorEmpty(commencement_last_date)
+		// ) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: commencement_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: commencement_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(cancelled_start_date) &&
+		// 	!isNullorEmpty(cancelled_last_date)
+		// ) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: cancelled_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: cancelled_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_source)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "leadsource",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_source,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_rep)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.IS,
+		// 			values: sales_rep,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_entered_by)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_lead_entered_by",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_entered_by,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_campaign)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_campaign",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: sales_campaign,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(parent_lpo)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "internalid",
+		// 			join: "custentity_lpo_parent_account",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: parent_lpo,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_quote_sent_from) &&
+		// 	!isNullorEmpty(date_quote_sent_to)
+		// ) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_quote_sent_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_quote_sent_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(zee_id)) {
+		// 	leadsListBySalesRepStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "partner",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: zee_id,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(modified_date_from) &&
+		// 	!isNullorEmpty(modified_date_to)
+		// ) {
+		// 	var defaultSearchFilters =
+		// 		leadsListBySalesRepStatusSearch.filterExpression;
+
+		// 	console.log(
+		// 		"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	var modifiedDateFilters = [
+		// 		[
+		// 			["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 			"AND",
+		// 			[
+		// 				"activity.custevent_organiser",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 		"AND",
+		// 		[
+		// 			[
+		// 				"usernotes.notedate",
+		// 				"within",
+		// 				[modified_date_from, modified_date_to],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				"usernotes.author",
+		// 				"anyof",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 	];
+		// 	console.log(
+		// 		"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 	);
+
+		// 	defaultSearchFilters.push("AND");
+		// 	defaultSearchFilters.push(modifiedDateFilters);
+
+		// 	console.log(
+		// 		"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	leadsListBySalesRepStatusSearch.filterExpression = defaultSearchFilters;
+		// }
+
+		// var count1 = 0;
+		// var oldSalesRepAssigned = null;
+		// var oldSalesRepAssignedId = null;
+
+		// var customer_signed = 0;
+		// var suspect_hot_lead = 0;
+		// var suspect_reassign = 0;
+		// var suspect_lost = 0;
+		// var suspect_oot = 0;
+		// var suspect_customer_lost = 0;
+		// var suspect_off_peak_pipeline = 0;
+		// var prospect_opportunity = 0;
+		// var prospect_qualified = 0;
+		// var prospecy_quote_sent = 0;
+		// var prospecy_box_sent = 0;
+		// var prospect_no_answer = 0;
+		// var prospect_in_contact = 0;
+		// var suspect_follow_up = 0;
+		// var suspect_new = 0;
+
+		// var suspect_lpo_followup = 0;
+		// var suspect_qualified = 0;
+		// var suspect_in_qualification = 0;
+		// var suspect_pre_qualification = 0;
+		// var suspect_unqualified = 0;
+
+		// var suspect_validated = 0;
+		// var customer_free_trial = 0;
+		// var customer_free_trial_pending = 0;
+
+		// var suspect_no_answer = 0;
+		// var suspect_in_contact = 0;
+
+		// leadsListBySalesRepStatusSearch
+		// 	.run()
+		// 	.each(function (lleadsListBySalesRepStatusResultSet) {
+		// 		var prospectCount = parseInt(
+		// 			lleadsListBySalesRepStatusResultSet.getValue({
+		// 				name: "internalid",
+		// 				summary: "COUNT",
+		// 			})
+		// 		);
+
+		// 		var custStatus = parseInt(
+		// 			lleadsListBySalesRepStatusResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			})
+		// 		);
+		// 		var custStatusText = lleadsListBySalesRepStatusResultSet.getText({
+		// 			name: "entitystatus",
+		// 			summary: "GROUP",
+		// 		});
+		// 		var salesRepAssigned = lleadsListBySalesRepStatusResultSet.getText({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "CUSTRECORD_SALES_CUSTOMER",
+		// 			summary: "GROUP",
+		// 		});
+
+		// 		var salesRepAssignedId = lleadsListBySalesRepStatusResultSet.getValue({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "CUSTRECORD_SALES_CUSTOMER",
+		// 			summary: "GROUP",
+		// 		});
+
+		// 		if (isNullorEmpty(salesRepAssigned)) {
+		// 			salesRepAssigned = "Unassigned";
+		// 		}
+
+		// 		if (count1 == 0) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = parseInt(prospectCount);
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = parseInt(prospectCount);
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = parseInt(prospectCount);
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = parseInt(prospectCount);
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL Pending
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_in_qualification +
+		// 				suspect_pre_qualification +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent;
+		// 		} else if (
+		// 			oldSalesRepAssigned != null &&
+		// 			oldSalesRepAssigned == salesRepAssigned
+		// 		) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed += prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead += prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost += prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot += parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost += prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign += prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent += prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent += parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer += prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact += prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline += prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity += parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up += parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new += parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup += parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated += parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial += parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending += parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer += parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact += parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification += parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification += parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_in_qualification +
+		// 				suspect_pre_qualification +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent;
+		// 		} else if (
+		// 			oldDate1 != null &&
+		// 			oldSalesRepAssigned != salesRepAssigned
+		// 		) {
+		// 			salesrep_debt_set2.push({
+		// 				lpoparentnameid: oldSalesRepAssignedId,
+		// 				lpoparentname: oldSalesRepAssigned,
+		// 				suspect_hot_lead: suspect_hot_lead,
+		// 				prospecy_quote_sent: prospecy_quote_sent,
+		// 				suspect_reassign: suspect_reassign,
+		// 				prospect_no_answer: prospect_no_answer,
+		// 				prospect_in_contact: prospect_in_contact,
+		// 				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 				suspect_lost: suspect_lost,
+		// 				suspect_customer_lost: suspect_customer_lost,
+		// 				prospect_opportunity: prospect_opportunity,
+		// 				customer_signed: customer_signed,
+		// 				total_leads: total_leads,
+		// 				suspect_oot: suspect_oot,
+		// 				suspect_follow_up: suspect_follow_up,
+		// 				suspect_new: suspect_new,
+		// 				suspect_qualified: suspect_qualified,
+		// 				suspect_unqualified: suspect_unqualified,
+		// 				suspect_lpo_followup: suspect_lpo_followup,
+		// 				suspect_validated: suspect_validated,
+		// 				customer_free_trial: customer_free_trial,
+		// 				suspect_no_answer: suspect_no_answer,
+		// 				suspect_in_contact: suspect_in_contact,
+		// 				prospect_qualified: prospect_qualified,
+		// 				customer_free_trial_pending: customer_free_trial_pending,
+		// 				prospect_box_sent: prospecy_box_sent,
+		// 				suspect_in_qualification: suspect_in_qualification,
+		// 				suspect_pre_qualification: suspect_pre_qualification,
+		// 			});
+
+		// 			customer_signed = 0;
+		// 			suspect_hot_lead = 0;
+		// 			suspect_reassign = 0;
+		// 			suspect_lost = 0;
+		// 			suspect_customer_lost = 0;
+		// 			suspect_off_peak_pipeline = 0;
+		// 			prospect_opportunity = 0;
+		// 			prospecy_quote_sent = 0;
+		// 			prospecy_box_sent = 0;
+		// 			prospect_no_answer = 0;
+		// 			prospect_in_contact = 0;
+		// 			suspect_oot = 0;
+		// 			suspect_follow_up = 0;
+		// 			suspect_new = 0;
+		// 			suspect_qualified = 0;
+		// 			suspect_in_qualification = 0;
+		// 			suspect_pre_qualification = 0;
+		// 			suspect_unqualified = 0;
+		// 			suspect_lpo_followup = 0;
+		// 			total_leads = 0;
+		// 			prospect_qualified = 0;
+
+		// 			suspect_validated = 0;
+		// 			customer_free_trial = 0;
+		// 			customer_free_trial_pending = 0;
+		// 			suspect_no_answer = 0;
+		// 			suspect_in_contact = 0;
+
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_in_qualification +
+		// 				suspect_pre_qualification +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent;
+		// 		}
+
+		// 		count1++;
+		// 		oldSalesRepAssigned = salesRepAssigned;
+		// 		oldSalesRepAssignedId = salesRepAssignedId;
+		// 		return true;
+		// 	});
+
+		// if (count1 > 0) {
+		// 	salesrep_debt_set2.push({
+		// 		lpoparentnameid: oldSalesRepAssignedId,
+		// 		lpoparentname: oldSalesRepAssigned,
+		// 		suspect_hot_lead: suspect_hot_lead,
+		// 		prospecy_quote_sent: prospecy_quote_sent,
+		// 		suspect_reassign: suspect_reassign,
+		// 		prospect_no_answer: prospect_no_answer,
+		// 		prospect_in_contact: prospect_in_contact,
+		// 		suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 		suspect_lost: suspect_lost,
+		// 		suspect_customer_lost: suspect_customer_lost,
+		// 		prospect_opportunity: prospect_opportunity,
+		// 		customer_signed: customer_signed,
+		// 		total_leads: total_leads,
+		// 		suspect_oot: suspect_oot,
+		// 		suspect_follow_up: suspect_follow_up,
+		// 		suspect_new: suspect_new,
+		// 		suspect_qualified: suspect_qualified,
+		// 		suspect_unqualified: suspect_unqualified,
+		// 		suspect_lpo_followup: suspect_lpo_followup,
+		// 		suspect_validated: suspect_validated,
+		// 		customer_free_trial: customer_free_trial,
+		// 		suspect_no_answer: suspect_no_answer,
+		// 		suspect_in_contact: suspect_in_contact,
+		// 		prospect_qualified: prospect_qualified,
+		// 		customer_free_trial_pending: customer_free_trial_pending,
+		// 		prospect_box_sent: prospecy_box_sent,
+		// 		suspect_in_qualification: suspect_in_qualification,
+		// 		suspect_pre_qualification: suspect_pre_qualification,
+		// 	});
+		// }
+
+		// console.log("salesrep_debt_set2: " + JSON.stringify(salesrep_debt_set2));
+
+		// salesrep_previewDataSet = [];
+		// salesrep_csvPreviewSet = [];
+
+		// var salesrep_overDataSet = [];
+
+		// if (!isNullorEmpty(salesrep_debt_set2)) {
+		// 	salesrep_debt_set2.forEach(function (preview_row, index) {
+		// 		var hotLeadPercentage = parseInt(
+		// 			(parseInt(preview_row.suspect_hot_lead) /
+		// 				parseInt(preview_row.total_leads)) *
+		// 				100
+		// 		);
+		// 		var hotLeadCol =
+		// 			preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 		var quoteSentPercentage = parseInt(
+		// 			(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var quoteSentCol =
+		// 			preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 		var boxSentPercentage = parseInt(
+		// 			(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var boxSentCol =
+		// 			preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+		// 		var reassignPercentage = parseInt(
+		// 			(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 		);
+		// 		var reassignCol =
+		// 			preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 		var noAnswerPercentage = parseInt(
+		// 			(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var noAnswerCol =
+		// 			preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 		var inContactPercentage = parseInt(
+		// 			(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var inContactCol =
+		// 			preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 		var offPeakPercentage = parseInt(
+		// 			(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var offPeakCol =
+		// 			preview_row.suspect_off_peak_pipeline +
+		// 			" (" +
+		// 			offPeakPercentage +
+		// 			"%)";
+
+		// 		var lostPercentage = parseInt(
+		// 			(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 		var ootPercentage = parseInt(
+		// 			(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 		);
+		// 		var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 		var custLostPercentage = parseInt(
+		// 			(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var custLostCol =
+		// 			preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
+
+		// 		var oppPercentage = parseInt(
+		// 			(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 		);
+		// 		var oppCol =
+		// 			preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 		var signedPercentage = parseInt(
+		// 			(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 		);
+		// 		var signedCol =
+		// 			preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 		var suspectFollowUpPErcentage = parseInt(
+		// 			(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+		// 		);
+		// 		var followUpCol =
+		// 			preview_row.suspect_follow_up +
+		// 			" (" +
+		// 			suspectFollowUpPErcentage +
+		// 			"%)";
+
+		// 		var suspectNewPercentage = parseInt(
+		// 			(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNewCol =
+		// 			preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 		var suspectQualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectQualifiedCol =
+		// 			preview_row.suspect_qualified +
+		// 			" (" +
+		// 			suspectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectUnqualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectUnqualifiedCol =
+		// 			preview_row.suspect_unqualified +
+		// 			" (" +
+		// 			suspectUnqualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectLPOFollowupPercentage = parseInt(
+		// 			(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectLPOFollowupwCol =
+		// 			preview_row.suspect_lpo_followup +
+		// 			" (" +
+		// 			suspectLPOFollowupPercentage +
+		// 			"%)";
+
+		// 		var suspectValidatedPercentage = parseInt(
+		// 			(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectValidatedCol =
+		// 			preview_row.suspect_validated +
+		// 			" (" +
+		// 			suspectValidatedPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPercentage = parseInt(
+		// 			(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 		);
+		// 		var customerFreeTrialCol =
+		// 			preview_row.customer_free_trial +
+		// 			" (" +
+		// 			customerFreeTrialPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPendingPercentage = parseInt(
+		// 			(preview_row.customer_free_trial_pending / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var customerFreeTrialPendingCol =
+		// 			preview_row.customer_free_trial_pending +
+		// 			" (" +
+		// 			customerFreeTrialPendingPercentage +
+		// 			"%)";
+
+		// 		var suspectNoAnswerPercentage = parseInt(
+		// 			(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNoAnswerCol =
+		// 			preview_row.suspect_no_answer +
+		// 			" (" +
+		// 			suspectNoAnswerPercentage +
+		// 			"%)";
+
+		// 		var suspectInContactPercentage = parseInt(
+		// 			(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInContactCol =
+		// 			preview_row.suspect_in_contact +
+		// 			" (" +
+		// 			suspectInContactPercentage +
+		// 			"%)";
+
+		// 		var prospectQualifiedPercentage = parseInt(
+		// 			(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var prospectQualifiedCol =
+		// 			preview_row.prospect_qualified +
+		// 			" (" +
+		// 			prospectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectInQualificationPercentage = parseInt(
+		// 			(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInQualificationCol =
+		// 			preview_row.suspect_in_qualification +
+		// 			" (" +
+		// 			suspectInQualificationPercentage +
+		// 			"%)";
+
+		// 		var suspectPreQualificationPercentage = parseInt(
+		// 			(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var suspectPreQualificationCol =
+		// 			preview_row.suspect_pre_qualification +
+		// 			" (" +
+		// 			suspectPreQualificationPercentage +
+		// 			"%)";
+
+		// 		salesrep_overDataSet.push([
+		// 			preview_row.lpoparentname,
+		// 			preview_row.suspect_new,
+		// 			preview_row.suspect_hot_lead,
+		// 			preview_row.suspect_qualified,
+		// 			preview_row.suspect_unqualified,
+		// 			preview_row.suspect_validated,
+		// 			preview_row.suspect_reassign,
+		// 			preview_row.suspect_follow_up,
+		// 			preview_row.suspect_no_answer,
+		// 			preview_row.suspect_in_contact,
+		// 			preview_row.suspect_lpo_followup,
+		// 			preview_row.prospect_in_contact,
+		// 			preview_row.suspect_off_peak_pipeline,
+		// 			preview_row.suspect_lost,
+		// 			preview_row.suspect_oot,
+		// 			preview_row.suspect_customer_lost,
+		// 			preview_row.prospect_opportunity,
+		// 			preview_row.prospect_qualified,
+		// 			preview_row.prospect_box_sent,
+		// 			preview_row.prospecy_quote_sent,
+		// 			preview_row.customer_free_trial_pending,
+		// 			preview_row.customer_free_trial,
+		// 			preview_row.customer_signed,
+		// 			preview_row.total_leads,
+		// 			preview_row.lpoparentnameid,
+		// 		]);
+
+		// 		salesrep_previewDataSet.push([
+		// 			preview_row.lpoparentname,
+		// 			suspectNewCol,
+		// 			hotLeadCol,
+		// 			suspectValidatedCol,
+		// 			suspectUnqualifiedCol,
+		// 			suspectQualifiedCol,
+		// 			suspectInQualificationCol,
+		// 			suspectPreQualificationCol,
+		// 			reassignCol,
+		// 			followUpCol,
+		// 			suspectLPOFollowupwCol,
+		// 			suspectNoAnswerCol,
+		// 			suspectInContactCol,
+		// 			inContactCol,
+		// 			offPeakCol,
+		// 			lostCol,
+		// 			ootCol,
+		// 			custLostCol,
+		// 			oppCol,
+		// 			prospectQualifiedCol,
+		// 			boxSentCol,
+		// 			quoteSentCol,
+		// 			customerFreeTrialPendingCol,
+		// 			customerFreeTrialCol,
+		// 			signedCol,
+		// 			preview_row.total_leads,
+		// 			'<input type="button" value="' +
+		// 				preview_row.total_leads +
+		// 				'" class="form-control btn btn-primary show_salesrep_status_timeline" id="" data-id="' +
+		// 				preview_row.lpoparentnameid +
+		// 				'" data-name="' +
+		// 				preview_row.lpoparentname +
+		// 				'" style="background-color: #095C7B;border-radius: 30px">',
+		// 			preview_row.lpoparentnameid,
+		// 		]);
+		// 	});
+		// }
+
+		// console.log("salesrep_previewDataSet");
+		// console.log(salesrep_previewDataSet);
+
+		// var dataTableLPOPreview = $("#mpexusage-salesrep_overview").DataTable({
+		// 	destroy: true,
+		// 	data: salesrep_previewDataSet,
+		// 	pageLength: 1000,
+		// 	order: [[21, "des"]],
+		// 	layout: {
+		// 		topStart: {
+		// 			buttons: [
+		// 				{
+		// 					extend: "copy",
+		// 					text: "Copy",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "csv",
+		// 					text: "CSV",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "excel",
+		// 					text: "Excel",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "pdf",
+		// 					text: "PDF",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "print",
+		// 					text: "Print",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 			],
+		// 		},
+		// 	},
+		// 	columns: [
+		// 		{
+		// 			title: "Lead Gen/Lead Quali/BDM/Account Manager", //0
+		// 		},
+		// 		{
+		// 			title: "Suspect - New", //1
+		// 		},
+		// 		{
+		// 			title: "Suspect - Hot Lead", //2
+		// 		},
+		// 		{
+		// 			title: "Suspect - Validated", //3
+		// 		},
+		// 		{
+		// 			title: "Suspect - Unqualified", //4
+		// 		},
+		// 		{
+		// 			title: "Suspect - Qualified", //5
+		// 		},
+		// 		{
+		// 			title: "Suspect - Pre Qualification", //6
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Qualification", //7
+		// 		},
+		// 		{
+		// 			title: "Suspect - Reassign", //8
+		// 		},
+		// 		{
+		// 			title: "Suspect - Follow Up", //9
+		// 		},
+		// 		{
+		// 			title: "Suspect - LPO Follow Up", //10
+		// 		},
+		// 		{
+		// 			title: "Suspect - No Answer", //11
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Contact", //12
+		// 		},
+		// 		{
+		// 			title: "Prospect - In Contact", //13
+		// 		},
+		// 		{
+		// 			title: "Suspect - Parking Lot", //14
+		// 		},
+		// 		{
+		// 			title: "Suspect - Lost", //15
+		// 		},
+		// 		{
+		// 			title: "Suspect - Out of Territory", //16
+		// 		},
+		// 		{
+		// 			title: "Suspect - Customer - Lost", //17
+		// 		},
+		// 		{
+		// 			title: "Prospect - Opportunity", //18
+		// 		},
+		// 		{
+		// 			title: "Prospect - Qualified", //19
+		// 		},
+		// 		{
+		// 			title: "Prospect - Box Sent", //20
+		// 		},
+		// 		{
+		// 			title: "Prospect - Quote Sent", //21
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial Pending", //22
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial", //23
+		// 		},
+		// 		{
+		// 			title: "Customer - Signed", //24
+		// 		},
+		// 		{
+		// 			title: "Total Lead Count", //25
+		// 		},
+		// 		{
+		// 			title: "Show Leads", //26
+		// 		},
+		// 		{
+		// 			title: "Sales Rep ID", //27
+		// 		},
+		// 	],
+		// 	columnDefs: [
+		// 		{
+		// 			targets: [0, 5, 20, 23, 24, 25],
+		// 			className: "bolded",
+		// 		},
+		// 		{
+		// 			targets: [27],
+		// 			visible: false,
+		// 		},
+		// 		{
+		// 			targets: [26, 27],
+		// 			className: "notexport",
+		// 		},
+		// 	],
+		// 	footerCallback: function (row, data, start, end, display) {
+		// 		var api = this.api(),
+		// 			data;
+
+		// 		// Remove the formatting to get integer data for summation
+		// 		var intVal = function (i) {
+		// 			return parseInt(i);
+		// 		};
+
+		// 		const formatter = new Intl.NumberFormat("en-AU", {
+		// 			style: "currency",
+		// 			currency: "AUD",
+		// 			minimumFractionDigits: 2,
+		// 		});
+		// 		// Total Suspect New Lead Count
+		// 		total_suspect_new = api
+		// 			.column(1)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Hot Lead Count
+		// 		total_suspect_hot_lead = api
+		// 			.column(2)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Qualified Count
+		// 		total_suspect_qualified = api
+		// 			.column(3)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Unqualified Count
+		// 		total_suspect_unqualified = api
+		// 			.column(4)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Validated
+		// 		total_suspect_validated = api
+		// 			.column(5)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Reassign
+		// 		total_suspect_reassign = api
+		// 			.column(6)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Follow Up
+		// 		total_suspect_followup = api
+		// 			.column(7)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect LPO Follow Up
+		// 		total_suspect_lpo_followup = api
+		// 			.column(8)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect No Answer
+		// 		total_suspect_no_answer = api
+		// 			.column(9)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect In Contact
+		// 		total_suspect_in_contact = api
+		// 			.column(10)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect In Contact
+		// 		total_prospect_in_contact = api
+		// 			.column(11)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Off Peak Pipline
+		// 		total_suspect_off_peak_pipeline = api
+		// 			.column(12)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Lost
+		// 		total_suspect_lost = api
+		// 			.column(13)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Out of Territory
+		// 		total_suspect_oot = api
+		// 			.column(14)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Customer Lost
+		// 		total_suspect_customer_lost = api
+		// 			.column(15)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Opportunity
+		// 		total_prospect_opportunity = api
+		// 			.column(16)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_prospect_qualified = api
+		// 			.column(17)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_prospect_box_sent = api
+		// 			.column(18)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Quoite Sent
+		// 		total_prospect_quote_sent = api
+		// 			.column(19)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial Pending
+		// 		total_customer_free_trial_pending = api
+		// 			.column(20)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial
+		// 		total_customer_free_trial = api
+		// 			.column(21)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Signed
+		// 		total_customer_signed = api
+		// 			.column(22)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Lead Count
+		// 		total_lead_v1 = api
+		// 			.column(23)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead_v2 = api
+		// 			.column(24)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead = api
+		// 			.column(25)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Update footer
+		// 		$(api.column(1).footer()).html(
+		// 			total_suspect_new +
+		// 				" (" +
+		// 				((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(2).footer()).html(
+		// 			total_suspect_hot_lead +
+		// 				" (" +
+		// 				((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(3).footer()).html(
+		// 			total_suspect_qualified +
+		// 				" (" +
+		// 				((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(4).footer()).html(
+		// 			total_suspect_unqualified +
+		// 				" (" +
+		// 				((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(5).footer()).html(
+		// 			total_suspect_validated +
+		// 				" (" +
+		// 				((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(6).footer()).html(
+		// 			total_suspect_reassign +
+		// 				" (" +
+		// 				((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(7).footer()).html(
+		// 			total_suspect_followup +
+		// 				" (" +
+		// 				((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(8).footer()).html(
+		// 			total_suspect_lpo_followup +
+		// 				" (" +
+		// 				((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(9).footer()).html(
+		// 			total_suspect_no_answer +
+		// 				" (" +
+		// 				((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(10).footer()).html(
+		// 			total_suspect_in_contact +
+		// 				" (" +
+		// 				((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(11).footer()).html(
+		// 			total_prospect_in_contact +
+		// 				" (" +
+		// 				((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(12).footer()).html(
+		// 			total_suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(13).footer()).html(
+		// 			total_suspect_lost +
+		// 				" (" +
+		// 				((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(14).footer()).html(
+		// 			total_suspect_oot +
+		// 				" (" +
+		// 				((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(15).footer()).html(
+		// 			total_suspect_customer_lost +
+		// 				" (" +
+		// 				((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(16).footer()).html(
+		// 			total_prospect_opportunity +
+		// 				" (" +
+		// 				((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(17).footer()).html(
+		// 			total_prospect_qualified +
+		// 				" (" +
+		// 				((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(18).footer()).html(
+		// 			total_prospect_box_sent +
+		// 				" (" +
+		// 				((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(19).footer()).html(
+		// 			total_prospect_quote_sent +
+		// 				" (" +
+		// 				((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(20).footer()).html(
+		// 			total_customer_free_trial_pending +
+		// 				" (" +
+		// 				((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 					0
+		// 				) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(21).footer()).html(
+		// 			total_customer_free_trial +
+		// 				" (" +
+		// 				((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(22).footer()).html(
+		// 			total_customer_signed +
+		// 				" (" +
+		// 				((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(23).footer()).html(
+		// 			total_lead_v1 +
+		// 				" (" +
+		// 				((total_lead_v1 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(24).footer()).html(
+		// 			total_lead_v2 +
+		// 				" (" +
+		// 				((total_lead_v2 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(25).footer()).html(total_lead);
+		// 	},
+		// });
+
+		// saveCsv(salesrep_previewDataSet);
+
+		// var salesrep_data = salesrep_overDataSet;
+
+		// var salesrep_month_year = []; // creating array for storing browser
+		// var salesrep_customer_signed = [];
+		// var salesrep_suspect_hot_lead = [];
+		// var salesrep_suspect_reassign = [];
+		// var salesrep_suspect_lost = [];
+		// var salesrep_suspect_oot = [];
+		// var salesrep_suspect_customer_lost = [];
+		// var salesrep_suspect_off_peak_pipeline = [];
+		// var salesrep_prospect_opportunity = [];
+		// var salesrep_prospect_qualified = [];
+		// var salesrep_prospecy_quote_sent = [];
+		// var salesrep_prospecy_box_sent = [];
+		// var salesrep_prospect_no_answer = [];
+		// var salesrep_prospect_in_contact = [];
+		// var salesrep_suspect_follow_up = [];
+		// var salesrep_suspect_new = [];
+		// var salesrep_suspect_qualified = [];
+		// var salesrep_suspect_unqualified = [];
+		// var salesrep_suspect_lpo_followup = [];
+		// var salesrep_suspect_validated = [];
+		// var salesrep_customer_free_trial_pending = [];
+		// var salesrep_customer_free_trial = [];
+		// var salesrep_suspect_no_answer = [];
+		// var salesrep_suspect_in_contact = [];
+		// var salesrep_total_leads = [];
+
+		// for (var i = 0; i < salesrep_data.length; i++) {
+		// 	salesrep_month_year.push(salesrep_data[i][0]);
+		// 	salesrep_suspect_new[salesrep_data[i][0]] = salesrep_data[i][1];
+		// 	salesrep_suspect_hot_lead[salesrep_data[i][0]] = salesrep_data[i][2];
+		// 	salesrep_suspect_qualified[salesrep_data[i][0]] = salesrep_data[i][3];
+		// 	salesrep_suspect_unqualified[salesrep_data[i][0]] = salesrep_data[i][4];
+		// 	salesrep_suspect_validated[salesrep_data[i][0]] = salesrep_data[i][5];
+		// 	salesrep_suspect_reassign[salesrep_data[i][0]] = salesrep_data[i][6];
+		// 	salesrep_suspect_follow_up[salesrep_data[i][0]] = salesrep_data[i][7];
+		// 	salesrep_suspect_lpo_followup[salesrep_data[i][0]] = salesrep_data[i][8];
+		// 	salesrep_suspect_no_answer[salesrep_data[i][0]] = salesrep_data[i][9];
+		// 	salesrep_suspect_in_contact[salesrep_data[i][0]] = salesrep_data[i][10];
+		// 	salesrep_prospect_in_contact[salesrep_data[i][0]] = salesrep_data[i][11];
+		// 	salesrep_suspect_off_peak_pipeline[salesrep_data[i][0]] =
+		// 		salesrep_data[i][12];
+		// 	salesrep_suspect_lost[salesrep_data[i][0]] = salesrep_data[i][13];
+		// 	salesrep_suspect_oot[salesrep_data[i][0]] = salesrep_data[i][14];
+		// 	salesrep_suspect_customer_lost[salesrep_data[i][0]] =
+		// 		salesrep_data[i][15];
+		// 	salesrep_prospect_opportunity[salesrep_data[i][0]] = salesrep_data[i][16];
+		// 	salesrep_prospect_qualified[salesrep_data[i][0]] = salesrep_data[i][17];
+		// 	salesrep_prospecy_box_sent[salesrep_data[i][0]] = salesrep_data[i][18];
+		// 	salesrep_prospecy_quote_sent[salesrep_data[i][0]] = salesrep_data[i][19];
+		// 	salesrep_customer_free_trial_pending[salesrep_data[i][0]] =
+		// 		salesrep_data[i][20];
+		// 	salesrep_customer_free_trial[salesrep_data[i][0]] = salesrep_data[i][21];
+		// 	salesrep_customer_signed[salesrep_data[i][0]] = salesrep_data[i][22];
+		// 	salesrep_total_leads[salesrep_data[i][0]] = salesrep_data[i][23];
+		// }
+		// var salesrep_count = {}; // creating object for getting categories with
+		// // count
+		// salesrep_month_year.forEach(function (i) {
+		// 	salesrep_count[i] = (salesrep_count[i] || 0) + 1;
+		// });
+
+		// var salesrep_series_data20 = [];
+		// var salesrep_series_data21 = [];
+		// var salesrep_series_data22 = [];
+		// var salesrep_series_data23 = [];
+		// var salesrep_series_data24 = [];
+		// var salesrep_series_data25 = [];
+		// var salesrep_series_data26 = [];
+		// var salesrep_series_data27 = [];
+		// var salesrep_series_data28 = [];
+		// var salesrep_series_data29 = [];
+		// var salesrep_series_data30 = [];
+		// var salesrep_series_data31 = [];
+		// var salesrep_series_data32 = [];
+		// var salesrep_series_data33 = [];
+		// var salesrep_series_data34 = [];
+		// var salesrep_series_data20a = [];
+		// var salesrep_series_data21a = [];
+		// var salesrep_series_data22a = [];
+		// var salesrep_series_data23a = [];
+		// var salesrep_series_data24a = [];
+		// var salesrep_series_data25a = [];
+		// var salesrep_series_data26a = [];
+		// var salesrep_series_data27a = [];
+		// var salesrep_series_data28a = [];
+		// var salesrep_series_data29a = [];
+
+		// var salesrep_categores1 = []; // creating empty array for highcharts
+		// // categories
+		// Object.keys(salesrep_total_leads).map(function (item, key) {
+		// 	salesrep_series_data20.push(parseInt(salesrep_customer_signed[item]));
+		// 	salesrep_series_data21.push(parseInt(salesrep_suspect_hot_lead[item]));
+		// 	salesrep_series_data22.push(parseInt(salesrep_suspect_reassign[item]));
+		// 	salesrep_series_data23.push(parseInt(salesrep_suspect_lost[item]));
+		// 	salesrep_series_data24.push(
+		// 		parseInt(salesrep_suspect_customer_lost[item])
+		// 	);
+		// 	salesrep_series_data25.push(
+		// 		parseInt(salesrep_suspect_off_peak_pipeline[item])
+		// 	);
+		// 	salesrep_series_data26.push(parseInt(salesrep_prospecy_quote_sent[item]));
+		// 	salesrep_series_data27.push(parseInt(salesrep_prospect_no_answer[item]));
+		// 	salesrep_series_data28.push(parseInt(salesrep_prospect_in_contact[item]));
+		// 	salesrep_series_data29.push(parseInt(salesrep_total_leads[item]));
+		// 	salesrep_series_data31.push(
+		// 		parseInt(salesrep_prospect_opportunity[item])
+		// 	);
+		// 	salesrep_series_data32.push(parseInt(salesrep_suspect_oot[item]));
+		// 	salesrep_series_data33.push(parseInt(salesrep_suspect_follow_up[item]));
+		// 	salesrep_series_data34.push(parseInt(salesrep_suspect_new[item]));
+		// 	salesrep_series_data20a.push(parseInt(salesrep_suspect_qualified[item]));
+		// 	salesrep_series_data28a.push(
+		// 		parseInt(salesrep_suspect_unqualified[item])
+		// 	);
+		// 	salesrep_series_data21a.push(
+		// 		parseInt(salesrep_suspect_lpo_followup[item])
+		// 	);
+		// 	salesrep_series_data22a.push(parseInt(salesrep_suspect_validated[item]));
+		// 	salesrep_series_data23a.push(
+		// 		parseInt(salesrep_customer_free_trial[item])
+		// 	);
+		// 	salesrep_series_data24a.push(parseInt(salesrep_suspect_no_answer[item]));
+		// 	salesrep_series_data25a.push(parseInt(salesrep_suspect_in_contact[item]));
+		// 	salesrep_series_data26a.push(parseInt(salesrep_prospect_qualified[item]));
+		// 	salesrep_series_data27a.push(
+		// 		parseInt(salesrep_customer_free_trial_pending[item])
+		// 	);
+		// 	salesrep_series_data29a.push(parseInt(salesrep_prospecy_box_sent[item]));
+		// 	salesrep_categores1.push(item);
+		// });
+
+		// plotSalesRepChartPreview(
+		// 	salesrep_series_data20,
+		// 	salesrep_series_data21,
+		// 	salesrep_series_data22,
+		// 	salesrep_series_data23,
+		// 	salesrep_series_data24,
+		// 	salesrep_series_data25,
+		// 	salesrep_series_data26,
+		// 	salesrep_series_data27,
+		// 	salesrep_series_data28,
+		// 	salesrep_series_data29,
+		// 	salesrep_series_data31,
+		// 	salesrep_series_data32,
+		// 	salesrep_series_data33,
+		// 	salesrep_series_data34,
+		// 	salesrep_categores1,
+		// 	salesrep_series_data20a,
+		// 	salesrep_series_data21a,
+		// 	salesrep_series_data22a,
+		// 	salesrep_series_data23a,
+		// 	salesrep_series_data24a,
+		// 	salesrep_series_data25a,
+		// 	salesrep_series_data26a,
+		// 	salesrep_series_data27a,
+		// 	salesrep_series_data28a,
+		// 	salesrep_series_data29a
+		// );
+
+		// //? DATA CAPTURE OVERVIEW
+
+		// //Sales Dashboard - Leads by Status - Data Capture Reporting
+		// var leadsListByDataCaptureStatusSearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_5_2",
+		// });
+
+		// leadsListByDataCaptureStatusSearch.filters.push(
+		// 	search.createFilter({
+		// 		name: "custrecord_salesrep",
+		// 		join: "CUSTRECORD_CUSTOMER",
+		// 		operator: search.Operator.NONEOF,
+		// 		values: [109783],
+		// 	})
+		// );
+
+		// if (customer_type == "2") {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "TEST",
+		// 		})
+		// 	);
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTCONTAIN,
+		// 			values: "- Parent",
+		// 		})
+		// 	);
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Shippit Pty Ltd ",
+		// 		})
+		// 	);
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "Sendle",
+		// 		})
+		// 	);
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "companyname",
+		// 			join: null,
+		// 			operator: search.Operator.DOESNOTSTARTWITH,
+		// 			values: "SC -",
+		// 		})
+		// 	);
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_np_np_customer",
+		// 			join: null,
+		// 			operator: search.Operator.ANYOF,
+		// 			values: "@NONE@",
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(leadStatus)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "entitystatus",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: leadStatus,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_signed_up_from) &&
+		// 	!isNullorEmpty(date_signed_up_to)
+		// ) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_signed_up_from,
+		// 		})
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date_signup",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_signed_up_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(commencement_start_date) &&
+		// 	!isNullorEmpty(commencement_last_date)
+		// ) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: commencement_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "CUSTRECORD_CUSTOMER",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: commencement_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(cancelled_start_date) &&
+		// 	!isNullorEmpty(cancelled_last_date)
+		// ) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: cancelled_start_date,
+		// 		})
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity13",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: cancelled_last_date,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_source)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "leadsource",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_source,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_rep)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_assigned",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.IS,
+		// 			values: sales_rep,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(lead_entered_by)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_lead_entered_by",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: lead_entered_by,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(sales_campaign)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_sales_campaign",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: sales_campaign,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(parent_lpo)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "internalid",
+		// 			join: "custentity_lpo_parent_account",
+		// 			operator: search.Operator.ANYOF,
+		// 			values: parent_lpo,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(date_quote_sent_from) &&
+		// 	!isNullorEmpty(date_quote_sent_to)
+		// ) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_quote_sent_from,
+		// 		})
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_quote_sent",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_quote_sent_to,
+		// 		})
+		// 	);
+		// }
+
+		// if (!isNullorEmpty(zee_id)) {
+		// 	leadsListByDataCaptureStatusSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "partner",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: zee_id,
+		// 		})
+		// 	);
+		// }
+
+		// if (
+		// 	!isNullorEmpty(modified_date_from) &&
+		// 	!isNullorEmpty(modified_date_to)
+		// ) {
+		// 	var defaultSearchFilters =
+		// 		leadsListByDataCaptureStatusSearch.filterExpression;
+
+		// 	console.log(
+		// 		"default search filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	var modifiedDateFilters = [
+		// 		[
+		// 			["activity.date", "within", [modified_date_from, modified_date_to]],
+		// 			"AND",
+		// 			[
+		// 				"activity.custevent_organiser",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 		"AND",
+		// 		[
+		// 			[
+		// 				"usernotes.notedate",
+		// 				"within",
+		// 				[modified_date_from, modified_date_to],
+		// 			],
+		// 			"AND",
+		// 			[
+		// 				"usernotes.author",
+		// 				"anyof",
+		// 				"anyof",
+		// 				"1623053",
+		// 				"668712",
+		// 				"1797389",
+		// 				"1809334",
+		// 				"690145",
+		// 				"1771076",
+		// 				"1813424",
+		// 				"696160",
+		// 				"668711",
+		// 				"1809382",
+		// 				"653718",
+		// 				"1777309",
+		// 				"1819701",
+		// 				"1820151",
+		// 				"1822089",
+		// 			],
+		// 		],
+		// 	];
+		// 	console.log(
+		// 		"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
+		// 	);
+
+		// 	defaultSearchFilters.push("AND");
+		// 	defaultSearchFilters.push(modifiedDateFilters);
+
+		// 	console.log(
+		// 		"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
+		// 	);
+
+		// 	leadsListByDataCaptureStatusSearch.filterExpression =
+		// 		defaultSearchFilters;
+		// }
+
+		// var count1 = 0;
+		// var oldDataCaptureAssigned = null;
+		// var oldDataCaptureAssignedId = null;
+
+		// var customer_signed = 0;
+		// var suspect_hot_lead = 0;
+		// var suspect_reassign = 0;
+		// var suspect_lost = 0;
+		// var suspect_oot = 0;
+		// var suspect_customer_lost = 0;
+		// var suspect_off_peak_pipeline = 0;
+		// var prospect_opportunity = 0;
+		// var prospect_qualified = 0;
+		// var prospecy_quote_sent = 0;
+		// var prospecy_box_sent = 0;
+		// var prospect_no_answer = 0;
+		// var prospect_in_contact = 0;
+		// var suspect_follow_up = 0;
+		// var suspect_new = 0;
+
+		// var suspect_lpo_followup = 0;
+		// var suspect_qualified = 0;
+		// var suspect_unqualified = 0;
+		// var suspect_in_qualification = 0;
+		// var suspect_pre_qualification = 0;
+
+		// var suspect_validated = 0;
+		// var customer_free_trial = 0;
+		// var customer_free_trial_pending = 0;
+
+		// var suspect_no_answer = 0;
+		// var suspect_in_contact = 0;
+
+		// leadsListByDataCaptureStatusSearch
+		// 	.run()
+		// 	.each(function (leadsListByDataCaptureStatusSearchResultSet) {
+		// 		var prospectCount = parseInt(
+		// 			leadsListByDataCaptureStatusSearchResultSet.getValue({
+		// 				name: "internalid",
+		// 				summary: "COUNT",
+		// 			})
+		// 		);
+
+		// 		var custStatus = parseInt(
+		// 			leadsListByDataCaptureStatusSearchResultSet.getValue({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			})
+		// 		);
+		// 		var custStatusText =
+		// 			leadsListByDataCaptureStatusSearchResultSet.getText({
+		// 				name: "entitystatus",
+		// 				summary: "GROUP",
+		// 			});
+		// 		var dataCaptureAssigned =
+		// 			leadsListByDataCaptureStatusSearchResultSet.getText({
+		// 				name: "custentity_lead_entered_by",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 		var dataCaptureAssignedId =
+		// 			leadsListByDataCaptureStatusSearchResultSet.getValue({
+		// 				name: "custentity_lead_entered_by",
+		// 				summary: "GROUP",
+		// 			});
+
+		// 		if (isNullorEmpty(dataCaptureAssigned)) {
+		// 			dataCaptureAssigned = "Franchisees";
+		// 		}
+
+		// 		if (count1 == 0) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = parseInt(prospectCount);
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = parseInt(prospectCount);
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = parseInt(prospectCount);
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = parseInt(prospectCount);
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = parseInt(prospectCount);
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL Pending
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_in_qualification +
+		// 				suspect_pre_qualification;
+		// 		} else if (
+		// 			oldDataCaptureAssigned != null &&
+		// 			oldDataCaptureAssigned == dataCaptureAssigned
+		// 		) {
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed += prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead += prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost += prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot += parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost += prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign += prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent += prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent += parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer += prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact += prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline += prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity += parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up += parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new += parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup += parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated += parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial += parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending += parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer += parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact += parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified += parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification += parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification += parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_in_qualification +
+		// 				suspect_pre_qualification;
+		// 		} else if (
+		// 			oldDataCaptureAssigned != null &&
+		// 			oldDataCaptureAssigned != dataCaptureAssigned
+		// 		) {
+		// 			datacapture_debt_set2.push({
+		// 				lpoparentnameid: oldDataCaptureAssignedId,
+		// 				lpoparentname: oldDataCaptureAssigned,
+		// 				suspect_hot_lead: suspect_hot_lead,
+		// 				prospecy_quote_sent: prospecy_quote_sent,
+		// 				suspect_reassign: suspect_reassign,
+		// 				prospect_no_answer: prospect_no_answer,
+		// 				prospect_in_contact: prospect_in_contact,
+		// 				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 				suspect_lost: suspect_lost,
+		// 				suspect_customer_lost: suspect_customer_lost,
+		// 				prospect_opportunity: prospect_opportunity,
+		// 				customer_signed: customer_signed,
+		// 				total_leads: total_leads,
+		// 				suspect_oot: suspect_oot,
+		// 				suspect_follow_up: suspect_follow_up,
+		// 				suspect_new: suspect_new,
+		// 				suspect_qualified: suspect_qualified,
+		// 				suspect_unqualified: suspect_unqualified,
+		// 				suspect_lpo_followup: suspect_lpo_followup,
+		// 				suspect_validated: suspect_validated,
+		// 				customer_free_trial: customer_free_trial,
+		// 				suspect_no_answer: suspect_no_answer,
+		// 				suspect_in_contact: suspect_in_contact,
+		// 				prospect_qualified: prospect_qualified,
+		// 				customer_free_trial_pending: customer_free_trial_pending,
+		// 				prospect_box_sent: prospecy_box_sent,
+		// 				suspect_pre_qualification: suspect_pre_qualification,
+		// 				suspect_in_qualification: suspect_in_qualification,
+		// 			});
+
+		// 			customer_signed = 0;
+		// 			suspect_hot_lead = 0;
+		// 			suspect_reassign = 0;
+		// 			suspect_lost = 0;
+		// 			suspect_customer_lost = 0;
+		// 			suspect_off_peak_pipeline = 0;
+		// 			prospect_opportunity = 0;
+		// 			prospecy_quote_sent = 0;
+		// 			prospecy_box_sent = 0;
+		// 			prospect_no_answer = 0;
+		// 			prospect_in_contact = 0;
+		// 			suspect_oot = 0;
+		// 			suspect_follow_up = 0;
+		// 			suspect_new = 0;
+		// 			suspect_qualified = 0;
+		// 			suspect_unqualified = 0;
+		// 			suspect_lpo_followup = 0;
+		// 			total_leads = 0;
+		// 			prospect_qualified = 0;
+
+		// 			suspect_validated = 0;
+		// 			customer_free_trial = 0;
+		// 			customer_free_trial_pending = 0;
+		// 			suspect_no_answer = 0;
+		// 			suspect_in_contact = 0;
+		// 			suspect_in_qualification = 0;
+		// 			suspect_pre_qualification = 0;
+
+		// 			if (custStatus == 13 || custStatus == 66) {
+		// 				//CUSTOMER _ SIGNED
+		// 				customer_signed = prospectCount;
+		// 			} else if (custStatus == 57) {
+		// 				//SUSPECT - HOT LEAD
+		// 				suspect_hot_lead = prospectCount;
+		// 			} else if (custStatus == 59) {
+		// 				//SUSPECT - LOST
+		// 				suspect_lost = prospectCount;
+		// 			} else if (custStatus == 64) {
+		// 				//SUSPECT - OUT OF TERRITORY
+		// 				suspect_oot = parseInt(prospectCount);
+		// 			} else if (custStatus == 22) {
+		// 				//SUSPECT - CUSTOMER - LOST
+		// 				suspect_customer_lost = prospectCount;
+		// 			} else if (custStatus == 60 || custStatus == 40) {
+		// 				//SUSPECT - REP REASSIGN
+		// 				suspect_reassign = prospectCount;
+		// 			} else if (custStatus == 50) {
+		// 				//PROSPECT - QUOTE SENT
+		// 				prospecy_quote_sent = prospectCount;
+		// 			} else if (custStatus == 72) {
+		// 				//PROSPECT - BOX SENT
+		// 				prospecy_box_sent = parseInt(prospectCount);
+		// 			} else if (custStatus == 35) {
+		// 				//PROSPECT - NO ANSWER
+		// 				prospect_no_answer = prospectCount;
+		// 			} else if (custStatus == 8) {
+		// 				//PROSPECT - IN CONTACT
+		// 				prospect_in_contact = prospectCount;
+		// 			} else if (custStatus == 62) {
+		// 				//SUSPECT - OFF PEAK PIPELINE
+		// 				suspect_off_peak_pipeline = prospectCount;
+		// 			} else if (custStatus == 58) {
+		// 				//PROSPECT - OPPORTUNITY
+		// 				prospect_opportunity = parseInt(prospectCount);
+		// 			} else if (custStatus == 18) {
+		// 				//SUSPECT - FOLLOW UP
+		// 				suspect_follow_up = parseInt(prospectCount);
+		// 			} else if (custStatus == 6) {
+		// 				//SUSPECT - NEW
+		// 				suspect_new = parseInt(prospectCount);
+		// 			} else if (custStatus == 42) {
+		// 				//SUSPECT - QUALIFIED
+		// 				suspect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 38) {
+		// 				//SUSPECT - UNQUALIFIED
+		// 				suspect_unqualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 67) {
+		// 				//SUSPECT - LPO FOLLOW UP
+		// 				suspect_lpo_followup = parseInt(prospectCount);
+		// 			} else if (custStatus == 68) {
+		// 				//SUSPECT - VALIDATED
+		// 				suspect_validated = parseInt(prospectCount);
+		// 			} else if (custStatus == 32) {
+		// 				//CUSTOMER - FREE TRIAL
+		// 				customer_free_trial = parseInt(prospectCount);
+		// 			} else if (custStatus == 71) {
+		// 				//CUSTOMER - FREE TRIAL PENDING
+		// 				customer_free_trial_pending = parseInt(prospectCount);
+		// 			} else if (custStatus == 20) {
+		// 				//SUSPECT - NO ANSWER
+		// 				suspect_no_answer = parseInt(prospectCount);
+		// 			} else if (custStatus == 69) {
+		// 				//SUSPECT - IN CONTACT
+		// 				suspect_in_contact = parseInt(prospectCount);
+		// 			} else if (custStatus == 70) {
+		// 				//PROSPECT - QUALIFIED
+		// 				prospect_qualified = parseInt(prospectCount);
+		// 			} else if (custStatus == 30) {
+		// 				//PROSPECT - IN QUALIFICATION
+		// 				suspect_in_qualification = parseInt(prospectCount);
+		// 			} else if (custStatus == 34) {
+		// 				//PROSPECT - PRE QUALIFICATION
+		// 				suspect_pre_qualification = parseInt(prospectCount);
+		// 			}
+
+		// 			total_leads =
+		// 				customer_signed +
+		// 				suspect_hot_lead +
+		// 				suspect_lost +
+		// 				suspect_customer_lost +
+		// 				suspect_reassign +
+		// 				prospecy_quote_sent +
+		// 				prospect_no_answer +
+		// 				prospect_in_contact +
+		// 				suspect_off_peak_pipeline +
+		// 				prospect_opportunity +
+		// 				suspect_oot +
+		// 				suspect_follow_up +
+		// 				suspect_new +
+		// 				suspect_qualified +
+		// 				suspect_lpo_followup +
+		// 				suspect_validated +
+		// 				customer_free_trial +
+		// 				suspect_no_answer +
+		// 				suspect_in_contact +
+		// 				prospect_qualified +
+		// 				customer_free_trial_pending +
+		// 				suspect_unqualified +
+		// 				prospecy_box_sent +
+		// 				suspect_pre_qualification +
+		// 				suspect_in_qualification;
+		// 		}
+
+		// 		count1++;
+		// 		oldDataCaptureAssigned = dataCaptureAssigned;
+		// 		oldDataCaptureAssignedId = dataCaptureAssignedId;
+		// 		return true;
+		// 	});
+
+		// if (count1 > 0) {
+		// 	datacapture_debt_set2.push({
+		// 		lpoparentnameid: oldDataCaptureAssignedId,
+		// 		lpoparentname: oldDataCaptureAssigned,
+		// 		suspect_hot_lead: suspect_hot_lead,
+		// 		prospecy_quote_sent: prospecy_quote_sent,
+		// 		suspect_reassign: suspect_reassign,
+		// 		prospect_no_answer: prospect_no_answer,
+		// 		prospect_in_contact: prospect_in_contact,
+		// 		suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+		// 		suspect_lost: suspect_lost,
+		// 		suspect_customer_lost: suspect_customer_lost,
+		// 		prospect_opportunity: prospect_opportunity,
+		// 		customer_signed: customer_signed,
+		// 		total_leads: total_leads,
+		// 		suspect_oot: suspect_oot,
+		// 		suspect_follow_up: suspect_follow_up,
+		// 		suspect_new: suspect_new,
+		// 		suspect_qualified: suspect_qualified,
+		// 		suspect_unqualified: suspect_unqualified,
+		// 		suspect_lpo_followup: suspect_lpo_followup,
+		// 		suspect_validated: suspect_validated,
+		// 		customer_free_trial: customer_free_trial,
+		// 		suspect_no_answer: suspect_no_answer,
+		// 		suspect_in_contact: suspect_in_contact,
+		// 		prospect_qualified: prospect_qualified,
+		// 		customer_free_trial_pending: customer_free_trial_pending,
+		// 		prospect_box_sent: prospecy_box_sent,
+		// 		suspect_pre_qualification: suspect_pre_qualification,
+		// 		suspect_in_qualification: suspect_in_qualification,
+		// 	});
+		// }
+
+		// console.log(
+		// 	"datacapture_debt_set2: " + JSON.stringify(datacapture_debt_set2)
+		// );
+
+		// datacapture_previewDataSet = [];
+		// datacapture_csvPreviewSet = [];
+
+		// var datacapture_overDataSet = [];
+
+		// if (!isNullorEmpty(datacapture_debt_set2)) {
+		// 	datacapture_debt_set2.forEach(function (preview_row, index) {
+		// 		var hotLeadPercentage = parseInt(
+		// 			(parseInt(preview_row.suspect_hot_lead) /
+		// 				parseInt(preview_row.total_leads)) *
+		// 				100
+		// 		);
+		// 		var hotLeadCol =
+		// 			preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+		// 		var quoteSentPercentage = parseInt(
+		// 			(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var quoteSentCol =
+		// 			preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+		// 		var boxSentPercentage = parseInt(
+		// 			(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+		// 		);
+		// 		var boxSentCol =
+		// 			preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+		// 		var reassignPercentage = parseInt(
+		// 			(preview_row.suspect_reassign / preview_row.total_leads) * 100
+		// 		);
+		// 		var reassignCol =
+		// 			preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+		// 		var noAnswerPercentage = parseInt(
+		// 			(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var noAnswerCol =
+		// 			preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+		// 		var inContactPercentage = parseInt(
+		// 			(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var inContactCol =
+		// 			preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+		// 		var offPeakPercentage = parseInt(
+		// 			(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var offPeakCol =
+		// 			preview_row.suspect_off_peak_pipeline +
+		// 			" (" +
+		// 			offPeakPercentage +
+		// 			"%)";
+
+		// 		var lostPercentage = parseInt(
+		// 			(preview_row.suspect_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+		// 		var ootPercentage = parseInt(
+		// 			(preview_row.suspect_oot / preview_row.total_leads) * 100
+		// 		);
+		// 		var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+		// 		var custLostPercentage = parseInt(
+		// 			(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+		// 		);
+		// 		var custLostCol =
+		// 			preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
+
+		// 		var oppPercentage = parseInt(
+		// 			(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+		// 		);
+		// 		var oppCol =
+		// 			preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+		// 		var signedPercentage = parseInt(
+		// 			(preview_row.customer_signed / preview_row.total_leads) * 100
+		// 		);
+		// 		var signedCol =
+		// 			preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+		// 		var suspectFollowUpPErcentage = parseInt(
+		// 			(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+		// 		);
+		// 		var followUpCol =
+		// 			preview_row.suspect_follow_up +
+		// 			" (" +
+		// 			suspectFollowUpPErcentage +
+		// 			"%)";
+
+		// 		var suspectNewPercentage = parseInt(
+		// 			(preview_row.suspect_new / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNewCol =
+		// 			preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+		// 		var suspectQualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectQualifiedCol =
+		// 			preview_row.suspect_qualified +
+		// 			" (" +
+		// 			suspectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectUnqualifiedPercentage = parseInt(
+		// 			(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectUnqualifiedCol =
+		// 			preview_row.suspect_unqualified +
+		// 			" (" +
+		// 			suspectUnqualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectLPOFollowupPercentage = parseInt(
+		// 			(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectLPOFollowupwCol =
+		// 			preview_row.suspect_lpo_followup +
+		// 			" (" +
+		// 			suspectLPOFollowupPercentage +
+		// 			"%)";
+
+		// 		var suspectValidatedPercentage = parseInt(
+		// 			(preview_row.suspect_validated / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectValidatedCol =
+		// 			preview_row.suspect_validated +
+		// 			" (" +
+		// 			suspectValidatedPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPercentage = parseInt(
+		// 			(preview_row.customer_free_trial / preview_row.total_leads) * 100
+		// 		);
+		// 		var customerFreeTrialCol =
+		// 			preview_row.customer_free_trial +
+		// 			" (" +
+		// 			customerFreeTrialPercentage +
+		// 			"%)";
+
+		// 		var customerFreeTrialPendingPercentage = parseInt(
+		// 			(preview_row.customer_free_trial_pending / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var customerFreeTrialPendingCol =
+		// 			preview_row.customer_free_trial_pending +
+		// 			" (" +
+		// 			customerFreeTrialPendingPercentage +
+		// 			"%)";
+
+		// 		var suspectNoAnswerPercentage = parseInt(
+		// 			(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectNoAnswerCol =
+		// 			preview_row.suspect_no_answer +
+		// 			" (" +
+		// 			suspectNoAnswerPercentage +
+		// 			"%)";
+
+		// 		var suspectInContactPercentage = parseInt(
+		// 			(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInContactCol =
+		// 			preview_row.suspect_in_contact +
+		// 			" (" +
+		// 			suspectInContactPercentage +
+		// 			"%)";
+
+		// 		var prospectQualifiedPercentage = parseInt(
+		// 			(preview_row.prospect_qualified / preview_row.total_leads) * 100
+		// 		);
+		// 		var prospectQualifiedCol =
+		// 			preview_row.prospect_qualified +
+		// 			" (" +
+		// 			prospectQualifiedPercentage +
+		// 			"%)";
+
+		// 		var suspectPreQualificationPercentage = parseInt(
+		// 			(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+		// 				100
+		// 		);
+		// 		var suspectPreQualificationCol =
+		// 			preview_row.suspect_pre_qualification +
+		// 			" (" +
+		// 			suspectPreQualificationPercentage +
+		// 			"%)";
+
+		// 		var suspectInQualificationPercentage = parseInt(
+		// 			(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
+		// 		);
+		// 		var suspectInQualificationCol =
+		// 			preview_row.suspect_in_qualification +
+		// 			" (" +
+		// 			suspectInQualificationPercentage +
+		// 			"%)";
+
+		// 		datacapture_overDataSet.push([
+		// 			preview_row.lpoparentname, //0
+		// 			preview_row.suspect_new, //1
+		// 			preview_row.suspect_hot_lead, //2
+		// 			preview_row.suspect_qualified, //3
+		// 			preview_row.suspect_unqualified, //4
+		// 			preview_row.suspect_validated, //5
+		// 			preview_row.suspect_pre_qualification, //6
+		// 			preview_row.suspect_in_qualification, //7
+		// 			preview_row.suspect_reassign, //8
+		// 			preview_row.suspect_follow_up, //9
+		// 			preview_row.suspect_no_answer, //10
+		// 			preview_row.suspect_in_contact, //11
+		// 			preview_row.suspect_lpo_followup, //12
+		// 			preview_row.prospect_in_contact, //13
+		// 			preview_row.suspect_off_peak_pipeline, //14
+		// 			preview_row.suspect_lost, //15
+		// 			preview_row.suspect_oot, //16
+		// 			preview_row.suspect_customer_lost, //17
+		// 			preview_row.prospect_opportunity, //18
+		// 			preview_row.prospect_qualified, //19
+		// 			preview_row.prospect_box_sent, //20
+		// 			preview_row.prospecy_quote_sent, //21
+		// 			preview_row.customer_free_trial_pending, //22
+		// 			preview_row.customer_free_trial, //23
+		// 			preview_row.customer_signed, //24
+		// 			preview_row.total_leads, //25
+		// 			preview_row.lpoparentnameid, //26
+		// 		]);
+
+		// 		datacapture_previewDataSet.push([
+		// 			preview_row.lpoparentname,
+		// 			suspectNewCol,
+		// 			hotLeadCol,
+		// 			suspectValidatedCol,
+		// 			suspectUnqualifiedCol,
+		// 			suspectQualifiedCol,
+		// 			suspectPreQualificationCol,
+		// 			suspectInQualificationCol,
+		// 			reassignCol,
+		// 			followUpCol,
+		// 			suspectLPOFollowupwCol,
+		// 			suspectNoAnswerCol,
+		// 			suspectInContactCol,
+		// 			inContactCol,
+		// 			offPeakCol,
+		// 			lostCol,
+		// 			ootCol,
+		// 			custLostCol,
+		// 			oppCol,
+		// 			prospectQualifiedCol,
+		// 			boxSentCol,
+		// 			quoteSentCol,
+		// 			customerFreeTrialPendingCol,
+		// 			customerFreeTrialCol,
+		// 			signedCol,
+		// 			preview_row.total_leads,
+		// 			preview_row.lpoparentnameid,
+		// 		]);
+		// 	});
+		// }
+
+		// console.log("datacapture_previewDataSet");
+		// console.log(datacapture_previewDataSet);
+
+		// var dataTableLPOPreview = $("#mpexusage-datacapture_overview").DataTable({
+		// 	destroy: true,
+		// 	data: datacapture_previewDataSet,
+		// 	pageLength: 1000,
+		// 	order: [[22, "des"]],
+		// 	layout: {
+		// 		topStart: {
+		// 			buttons: [
+		// 				{
+		// 					extend: "copy",
+		// 					text: "Copy",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "csv",
+		// 					text: "CSV",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "excel",
+		// 					text: "Excel",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "pdf",
+		// 					text: "PDF",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 				{
+		// 					extend: "print",
+		// 					text: "Print",
+		// 					className: "btn btn-default exportButtons",
+		// 					exportOptions: {
+		// 						columns: ":not(.notexport)",
+		// 					},
+		// 				},
+		// 			],
+		// 		},
+		// 	},
+		// 	columns: [
+		// 		{
+		// 			title: "Lead Gen/Lead Quali/BDM/Account Manager", //0
+		// 		},
+		// 		{
+		// 			title: "Suspect - New", //1
+		// 		},
+		// 		{
+		// 			title: "Suspect - Hot Lead", //2
+		// 		},
+		// 		{
+		// 			title: "Suspect - Validated", //3
+		// 		},
+		// 		{
+		// 			title: "Suspect - Unqualified", //4
+		// 		},
+		// 		{
+		// 			title: "Suspect - Qualified", //5
+		// 		},
+		// 		{
+		// 			title: "Suspect - Pre Qualification", //6
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Qualification", //7
+		// 		},
+		// 		{
+		// 			title: "Suspect - Reassign", //8
+		// 		},
+		// 		{
+		// 			title: "Suspect - Follow Up", //9
+		// 		},
+		// 		{
+		// 			title: "Suspect - LPO Follow Up", //10
+		// 		},
+		// 		{
+		// 			title: "Suspect - No Answer", //11
+		// 		},
+		// 		{
+		// 			title: "Suspect - In Contact", //12
+		// 		},
+		// 		{
+		// 			title: "Prospect - In Contact", //13
+		// 		},
+		// 		{
+		// 			title: "Suspect - Parking Lot", //14
+		// 		},
+		// 		{
+		// 			title: "Suspect - Lost", //15
+		// 		},
+		// 		{
+		// 			title: "Suspect - Out of Territory", //16
+		// 		},
+		// 		{
+		// 			title: "Suspect - Customer - Lost", //17
+		// 		},
+		// 		{
+		// 			title: "Prospect - Opportunity", //18
+		// 		},
+		// 		{
+		// 			title: "Prospect - Qualified", //19
+		// 		},
+		// 		{
+		// 			title: "Prospect - Box Sent", //20
+		// 		},
+		// 		{
+		// 			title: "Prospect - Quote Sent", //21
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial Pending", //22
+		// 		},
+		// 		{
+		// 			title: "Customer - Free Trial", //23
+		// 		},
+		// 		{
+		// 			title: "Customer - Signed", //24
+		// 		},
+		// 		{
+		// 			title: "Total Lead Count", //25
+		// 		},
+		// 		{
+		// 			title: "Sales Rep ID", //26
+		// 		},
+		// 	],
+		// 	columnDefs: [
+		// 		{
+		// 			targets: [0, 3, 5, 20, 23, 24, 25],
+		// 			className: "bolded",
+		// 		},
+		// 		{
+		// 			targets: [26],
+		// 			visible: false,
+		// 		},
+		// 		{
+		// 			targets: [25],
+		// 			className: "notexport",
+		// 		},
+		// 	],
+		// 	footerCallback: function (row, data, start, end, display) {
+		// 		var api = this.api(),
+		// 			data;
+
+		// 		// Remove the formatting to get integer data for summation
+		// 		var intVal = function (i) {
+		// 			return parseInt(i);
+		// 		};
+
+		// 		const formatter = new Intl.NumberFormat("en-AU", {
+		// 			style: "currency",
+		// 			currency: "AUD",
+		// 			minimumFractionDigits: 2,
+		// 		});
+		// 		// Total Suspect New Lead Count
+		// 		total_suspect_new = api
+		// 			.column(1)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Hot Lead Count
+		// 		total_suspect_hot_lead = api
+		// 			.column(2)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Qualified Count
+		// 		total_suspect_qualified = api
+		// 			.column(3)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Unqualified Count
+		// 		total_suspect_unqualified = api
+		// 			.column(4)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Validated
+		// 		total_suspect_validated = api
+		// 			.column(5)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Reassign
+		// 		total_suspect_reassign = api
+		// 			.column(6)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Follow Up
+		// 		total_suspect_followup = api
+		// 			.column(7)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect LPO Follow Up
+		// 		total_suspect_lpo_followup = api
+		// 			.column(8)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect No Answer
+		// 		total_suspect_no_answer = api
+		// 			.column(9)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect In Contact
+		// 		total_suspect_in_contact = api
+		// 			.column(10)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect In Contact
+		// 		total_prospect_in_contact = api
+		// 			.column(11)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Off Peak Pipline
+		// 		total_suspect_off_peak_pipeline = api
+		// 			.column(12)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Lost
+		// 		total_suspect_lost = api
+		// 			.column(13)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Out of Territory
+		// 		total_suspect_oot = api
+		// 			.column(14)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Suspect Customer Lost
+		// 		total_suspect_customer_lost = api
+		// 			.column(15)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Opportunity
+		// 		total_prospect_opportunity = api
+		// 			.column(16)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_prospect_qualified = api
+		// 			.column(17)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Quoite Sent
+		// 		total_prospect_box_sent = api
+		// 			.column(18)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Prospect Quoite Sent
+		// 		total_prospect_quote_sent = api
+		// 			.column(19)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial Pending
+		// 		total_customer_free_trial_pending = api
+		// 			.column(20)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Free Trial
+		// 		total_customer_free_trial = api
+		// 			.column(21)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Customer Signed
+		// 		total_customer_signed = api
+		// 			.column(22)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead_v1 = api
+		// 			.column(23)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		total_lead_v2 = api
+		// 			.column(24)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Total Lead Count
+		// 		total_lead = api
+		// 			.column(25)
+		// 			.data()
+		// 			.reduce(function (a, b) {
+		// 				return intVal(a) + intVal(b);
+		// 			}, 0);
+
+		// 		// Update footer
+		// 		$(api.column(1).footer()).html(
+		// 			total_suspect_new +
+		// 				" (" +
+		// 				((total_suspect_new / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(2).footer()).html(
+		// 			total_suspect_hot_lead +
+		// 				" (" +
+		// 				((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(3).footer()).html(
+		// 			total_suspect_qualified +
+		// 				" (" +
+		// 				((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(4).footer()).html(
+		// 			total_suspect_unqualified +
+		// 				" (" +
+		// 				((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(5).footer()).html(
+		// 			total_suspect_validated +
+		// 				" (" +
+		// 				((total_suspect_validated / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(6).footer()).html(
+		// 			total_suspect_reassign +
+		// 				" (" +
+		// 				((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(7).footer()).html(
+		// 			total_suspect_followup +
+		// 				" (" +
+		// 				((total_suspect_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(8).footer()).html(
+		// 			total_suspect_lpo_followup +
+		// 				" (" +
+		// 				((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(9).footer()).html(
+		// 			total_suspect_no_answer +
+		// 				" (" +
+		// 				((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(10).footer()).html(
+		// 			total_suspect_in_contact +
+		// 				" (" +
+		// 				((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(11).footer()).html(
+		// 			total_prospect_in_contact +
+		// 				" (" +
+		// 				((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(12).footer()).html(
+		// 			total_suspect_off_peak_pipeline +
+		// 				" (" +
+		// 				((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(13).footer()).html(
+		// 			total_suspect_lost +
+		// 				" (" +
+		// 				((total_suspect_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(14).footer()).html(
+		// 			total_suspect_oot +
+		// 				" (" +
+		// 				((total_suspect_oot / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(15).footer()).html(
+		// 			total_suspect_customer_lost +
+		// 				" (" +
+		// 				((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(16).footer()).html(
+		// 			total_prospect_opportunity +
+		// 				" (" +
+		// 				((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(17).footer()).html(
+		// 			total_prospect_qualified +
+		// 				" (" +
+		// 				((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(18).footer()).html(
+		// 			total_prospect_box_sent +
+		// 				" (" +
+		// 				((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(19).footer()).html(
+		// 			total_prospect_quote_sent +
+		// 				" (" +
+		// 				((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(20).footer()).html(
+		// 			total_customer_free_trial_pending +
+		// 				" (" +
+		// 				((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+		// 					0
+		// 				) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(21).footer()).html(
+		// 			total_customer_free_trial +
+		// 				" (" +
+		// 				((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+
+		// 		$(api.column(22).footer()).html(
+		// 			total_customer_signed +
+		// 				" (" +
+		// 				((total_customer_signed / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(23).footer()).html(
+		// 			total_lead_v1 +
+		// 				" (" +
+		// 				((total_lead_v1 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(24).footer()).html(
+		// 			total_lead_v2 +
+		// 				" (" +
+		// 				((total_lead_v2 / total_lead) * 100).toFixed(0) +
+		// 				"%)"
+		// 		);
+		// 		$(api.column(25).footer()).html(total_lead);
+		// 	},
+		// });
+
+		// saveCsv(datacapture_previewDataSet);
+
+		// var datacapture_data = datacapture_overDataSet;
+
+		// var datacapture_month_year = []; // creating array for storing browser
+		// var datacapture_customer_signed = [];
+		// var datacapture_suspect_hot_lead = [];
+		// var datacapture_suspect_reassign = [];
+		// var datacapture_suspect_lost = [];
+		// var datacapture_suspect_oot = [];
+		// var datacapture_suspect_customer_lost = [];
+		// var datacapture_suspect_off_peak_pipeline = [];
+		// var datacapture_prospect_opportunity = [];
+		// var datacapture_prospect_qualified = [];
+		// var datacapture_prospecy_quote_sent = [];
+		// var datacapture_prospecy_box_sent = [];
+		// var datacapture_prospect_no_answer = [];
+		// var datacapture_prospect_in_contact = [];
+		// var datacapture_suspect_follow_up = [];
+		// var datacapture_suspect_new = [];
+		// var datacapture_suspect_qualified = [];
+		// var datacapture_suspect_unqualified = [];
+		// var datacapture_suspect_lpo_followup = [];
+		// var datacapture_suspect_validated = [];
+		// var datacapture_customer_free_trial_pending = [];
+		// var datacapture_customer_free_trial = [];
+		// var datacapture_suspect_no_answer = [];
+		// var datacapture_suspect_in_contact = [];
+		// var datacapture_suspect_pre_qualifcaition = [];
+		// var datacapture_suspect_in_qualification = [];
+		// var datacapture_total_leads = [];
+
+		// for (var i = 0; i < datacapture_data.length; i++) {
+		// 	datacapture_month_year.push(datacapture_data[i][0]);
+		// 	datacapture_suspect_new[datacapture_data[i][0]] = datacapture_data[i][1];
+		// 	datacapture_suspect_hot_lead[datacapture_data[i][0]] =
+		// 		datacapture_data[i][2];
+		// 	datacapture_suspect_validated[datacapture_data[i][0]] =
+		// 		datacapture_data[i][5];
+		// 	datacapture_suspect_unqualified[datacapture_data[i][0]] =
+		// 		datacapture_data[i][4];
+		// 	datacapture_suspect_qualified[datacapture_data[i][0]] =
+		// 		datacapture_data[i][3];
+		// 	datacapture_suspect_pre_qualifcaition[datacapture_data[i][0]] =
+		// 		datacapture_data[i][6];
+		// 	datacapture_suspect_in_qualification[datacapture_data[i][0]] =
+		// 		datacapture_data[i][7];
+		// 	datacapture_suspect_reassign[datacapture_data[i][0]] =
+		// 		datacapture_data[i][8];
+		// 	datacapture_suspect_follow_up[datacapture_data[i][0]] =
+		// 		datacapture_data[i][9];
+		// 	datacapture_suspect_lpo_followup[datacapture_data[i][0]] =
+		// 		datacapture_data[i][10];
+		// 	datacapture_suspect_no_answer[datacapture_data[i][0]] =
+		// 		datacapture_data[i][11];
+		// 	datacapture_suspect_in_contact[datacapture_data[i][0]] =
+		// 		datacapture_data[i][12];
+		// 	datacapture_prospect_in_contact[datacapture_data[i][0]] =
+		// 		datacapture_data[i][13];
+		// 	datacapture_suspect_off_peak_pipeline[datacapture_data[i][0]] =
+		// 		datacapture_data[i][14];
+		// 	datacapture_suspect_lost[datacapture_data[i][0]] =
+		// 		datacapture_data[i][15];
+		// 	datacapture_suspect_oot[datacapture_data[i][0]] = datacapture_data[i][16];
+		// 	datacapture_suspect_customer_lost[datacapture_data[i][0]] =
+		// 		datacapture_data[i][17];
+		// 	datacapture_prospect_opportunity[datacapture_data[i][0]] =
+		// 		datacapture_data[i][18];
+		// 	datacapture_prospect_qualified[datacapture_data[i][0]] =
+		// 		datacapture_data[i][19];
+		// 	datacapture_prospecy_box_sent[datacapture_data[i][0]] =
+		// 		datacapture_data[i][20];
+		// 	datacapture_prospecy_quote_sent[datacapture_data[i][0]] =
+		// 		datacapture_data[i][21];
+		// 	datacapture_customer_free_trial_pending[datacapture_data[i][0]] =
+		// 		datacapture_data[i][22];
+		// 	datacapture_customer_free_trial[datacapture_data[i][0]] =
+		// 		datacapture_data[i][23];
+		// 	datacapture_customer_signed[datacapture_data[i][0]] =
+		// 		datacapture_data[i][24];
+		// 	datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][25];
+		// }
+		// var datacapture_count = {}; // creating object for getting categories with
+		// // count
+		// datacapture_month_year.forEach(function (i) {
+		// 	datacapture_count[i] = (datacapture_count[i] || 0) + 1;
+		// });
+
+		// var datacapture_series_data20 = [];
+		// var datacapture_series_data21 = [];
+		// var datacapture_series_data22 = [];
+		// var datacapture_series_data23 = [];
+		// var datacapture_series_data24 = [];
+		// var datacapture_series_data25 = [];
+		// var datacapture_series_data26 = [];
+		// var datacapture_series_data27 = [];
+		// var datacapture_series_data28 = [];
+		// var datacapture_series_data29 = [];
+		// var datacapture_series_data30 = [];
+		// var datacapture_series_data31 = [];
+		// var datacapture_series_data32 = [];
+		// var datacapture_series_data33 = [];
+		// var datacapture_series_data34 = [];
+		// var datacapture_series_data20a = [];
+		// var datacapture_series_data21a = [];
+		// var datacapture_series_data22a = [];
+		// var datacapture_series_data23a = [];
+		// var datacapture_series_data24a = [];
+		// var datacapture_series_data25a = [];
+		// var datacapture_series_data26a = [];
+		// var datacapture_series_data27a = [];
+		// var datacapture_series_data28a = [];
+		// var datacapture_series_data29a = [];
+		// var datacapture_series_data30a = [];
+		// var datacapture_series_data31a = [];
+
+		// var datacapture_categores1 = []; // creating empty array for highcharts
+		// // categories
+		// Object.keys(datacapture_total_leads).map(function (item, key) {
+		// 	datacapture_series_data20.push(
+		// 		parseInt(datacapture_customer_signed[item])
+		// 	);
+		// 	datacapture_series_data21.push(
+		// 		parseInt(datacapture_suspect_hot_lead[item])
+		// 	);
+		// 	datacapture_series_data22.push(
+		// 		parseInt(datacapture_suspect_reassign[item])
+		// 	);
+		// 	datacapture_series_data23.push(parseInt(datacapture_suspect_lost[item]));
+		// 	datacapture_series_data24.push(
+		// 		parseInt(datacapture_suspect_customer_lost[item])
+		// 	);
+		// 	datacapture_series_data25.push(
+		// 		parseInt(datacapture_suspect_off_peak_pipeline[item])
+		// 	);
+		// 	datacapture_series_data26.push(
+		// 		parseInt(datacapture_prospecy_quote_sent[item])
+		// 	);
+		// 	datacapture_series_data27.push(
+		// 		parseInt(datacapture_prospect_no_answer[item])
+		// 	);
+		// 	datacapture_series_data28.push(
+		// 		parseInt(datacapture_prospect_in_contact[item])
+		// 	);
+		// 	datacapture_series_data29.push(parseInt(datacapture_total_leads[item]));
+		// 	datacapture_series_data31.push(
+		// 		parseInt(datacapture_prospect_opportunity[item])
+		// 	);
+		// 	datacapture_series_data32.push(parseInt(datacapture_suspect_oot[item]));
+		// 	datacapture_series_data33.push(
+		// 		parseInt(datacapture_suspect_follow_up[item])
+		// 	);
+		// 	datacapture_series_data34.push(parseInt(datacapture_suspect_new[item]));
+		// 	datacapture_series_data20a.push(
+		// 		parseInt(datacapture_suspect_qualified[item])
+		// 	);
+		// 	datacapture_series_data28a.push(
+		// 		parseInt(datacapture_suspect_unqualified[item])
+		// 	);
+		// 	datacapture_series_data21a.push(
+		// 		parseInt(datacapture_suspect_lpo_followup[item])
+		// 	);
+		// 	datacapture_series_data22a.push(
+		// 		parseInt(datacapture_suspect_validated[item])
+		// 	);
+		// 	datacapture_series_data23a.push(
+		// 		parseInt(datacapture_customer_free_trial[item])
+		// 	);
+		// 	datacapture_series_data24a.push(
+		// 		parseInt(datacapture_suspect_no_answer[item])
+		// 	);
+		// 	datacapture_series_data25a.push(
+		// 		parseInt(datacapture_suspect_in_contact[item])
+		// 	);
+		// 	datacapture_series_data26a.push(
+		// 		parseInt(datacapture_prospect_qualified[item])
+		// 	);
+		// 	datacapture_series_data27a.push(
+		// 		parseInt(datacapture_customer_free_trial_pending[item])
+		// 	);
+		// 	datacapture_series_data29a.push(
+		// 		parseInt(datacapture_prospecy_box_sent[item])
+		// 	);
+		// 	datacapture_series_data30a.push(
+		// 		parseInt(datacapture_suspect_pre_qualifcaition[item])
+		// 	);
+		// 	datacapture_series_data31a.push(
+		// 		parseInt(datacapture_suspect_in_qualification[item])
+		// 	);
+		// 	datacapture_categores1.push(item);
+		// });
+
+		// console.log(
+		// 	"datacapture_categores1: " + JSON.stringify(datacapture_categores1)
+		// );
+
+		// plotDataCaptureChartPreview(
+		// 	datacapture_series_data20,
+		// 	datacapture_series_data21,
+		// 	datacapture_series_data22,
+		// 	datacapture_series_data23,
+		// 	datacapture_series_data24,
+		// 	datacapture_series_data25,
+		// 	datacapture_series_data26,
+		// 	datacapture_series_data27,
+		// 	datacapture_series_data28,
+		// 	datacapture_series_data29,
+		// 	datacapture_series_data31,
+		// 	datacapture_series_data32,
+		// 	datacapture_series_data33,
+		// 	datacapture_series_data34,
+		// 	datacapture_categores1,
+		// 	datacapture_series_data20a,
+		// 	datacapture_series_data21a,
+		// 	datacapture_series_data22a,
+		// 	datacapture_series_data23a,
+		// 	datacapture_series_data24a,
+		// 	datacapture_series_data25a,
+		// 	datacapture_series_data26a,
+		// 	datacapture_series_data27a,
+		// 	datacapture_series_data28a,
+		// 	datacapture_series_data29a,
+		// 	datacapture_series_data30a,
+		// 	datacapture_series_data31a
+		// );
+
+		// //? Data Capture Grouped by Source & Campaign
 		//Sales Dashboard - Leads by Source & Campaign - Data Capture Reporting
 		console.log(
 			"Sales Dashboard - Leads by Source & Campaign - Data Capture Reporting"
@@ -25024,384 +25207,384 @@ define([
 
 		console.log("dataCaptureTeam: " + JSON.stringify(dataCaptureTeam));
 
-		var series_data_source = [];
-		var series_data_campaign = [];
-		var series_lpo_data_source = [];
-		var series_lpo_data_campaign = [];
-		var dataCaptureTeamMemberCategories = [];
-		var dataCaptureTeamMemberLPOCategories = [];
-		var sourceLeadCount = [];
-		var sourceName = [];
-		var dataSource = new Array(dataCaptureTeam.length).fill(0);
-		var dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
-		var dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
-		var resetDataSource = new Array(dataCaptureTeam.length).fill(0);
-		for (var x = 0; x < dataCaptureTeam.length; x++) {
-			dataCaptureTeamMemberCategories[x] = dataCaptureTeam[x].name;
-			sourceLeadCount[x] = [];
-			sourceName[x] = [];
-			console.log("name: " + dataCaptureTeam[x].name);
-			console.log(
-				"details: " + JSON.stringify(dataCaptureTeam[x].details[0].source)
-			);
-			for (y = 0; y < dataCaptureTeam[x].details[0].source.length; y++) {
-				sourceLeadCount[x][y] = dataCaptureTeam[x].details[0].source[y].count;
-				sourceName[x][y] = dataCaptureTeam[x].details[0].source[y].name;
+		// var series_data_source = [];
+		// var series_data_campaign = [];
+		// var series_lpo_data_source = [];
+		// var series_lpo_data_campaign = [];
+		// var dataCaptureTeamMemberCategories = [];
+		// var dataCaptureTeamMemberLPOCategories = [];
+		// var sourceLeadCount = [];
+		// var sourceName = [];
+		// var dataSource = new Array(dataCaptureTeam.length).fill(0);
+		// var dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+		// var dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+		// var resetDataSource = new Array(dataCaptureTeam.length).fill(0);
+		// for (var x = 0; x < dataCaptureTeam.length; x++) {
+		// 	dataCaptureTeamMemberCategories[x] = dataCaptureTeam[x].name;
+		// 	sourceLeadCount[x] = [];
+		// 	sourceName[x] = [];
+		// 	console.log("name: " + dataCaptureTeam[x].name);
+		// 	console.log(
+		// 		"details: " + JSON.stringify(dataCaptureTeam[x].details[0].source)
+		// 	);
+		// 	for (y = 0; y < dataCaptureTeam[x].details[0].source.length; y++) {
+		// 		sourceLeadCount[x][y] = dataCaptureTeam[x].details[0].source[y].count;
+		// 		sourceName[x][y] = dataCaptureTeam[x].details[0].source[y].name;
 
-				console.log(
-					"Source Name: " + dataCaptureTeam[x].details[0].source[y].name
-				);
-				console.log(
-					"Source Count: " + dataCaptureTeam[x].details[0].source[y].count
-				);
+		// 		console.log(
+		// 			"Source Name: " + dataCaptureTeam[x].details[0].source[y].name
+		// 		);
+		// 		console.log(
+		// 			"Source Count: " + dataCaptureTeam[x].details[0].source[y].count
+		// 		);
 
-				console.log(
-					"before series_data_source: " + JSON.stringify(series_data_source)
-				);
-				var source_exists = false;
-				for (var j = 0; j < series_data_source.length; j++) {
-					if (series_data_source[j].name == sourceName[x][y]) {
-						source_exists = true;
-						series_data_source[j].data[x] =
-							dataCaptureTeam[x].details[0].source[y].count;
-					}
-				}
-				if (source_exists == false) {
-					dataSource = new Array(dataCaptureTeam.length).fill(0);
-					dataSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+		// 		console.log(
+		// 			"before series_data_source: " + JSON.stringify(series_data_source)
+		// 		);
+		// 		var source_exists = false;
+		// 		for (var j = 0; j < series_data_source.length; j++) {
+		// 			if (series_data_source[j].name == sourceName[x][y]) {
+		// 				source_exists = true;
+		// 				series_data_source[j].data[x] =
+		// 					dataCaptureTeam[x].details[0].source[y].count;
+		// 			}
+		// 		}
+		// 		if (source_exists == false) {
+		// 			dataSource = new Array(dataCaptureTeam.length).fill(0);
+		// 			dataSource[x] = dataCaptureTeam[x].details[0].source[y].count;
 
-					var colorCodeSource;
-					if (
-						source_list.includes(
-							dataCaptureTeam[x].details[0].source[y].id.toString()
-						) == true
-					) {
-						colorCodeSource =
-							source_list_color[
-								source_list.indexOf(
-									dataCaptureTeam[x].details[0].source[y].id.toString()
-								)
-							];
-					}
+		// 			var colorCodeSource;
+		// 			if (
+		// 				source_list.includes(
+		// 					dataCaptureTeam[x].details[0].source[y].id.toString()
+		// 				) == true
+		// 			) {
+		// 				colorCodeSource =
+		// 					source_list_color[
+		// 						source_list.indexOf(
+		// 							dataCaptureTeam[x].details[0].source[y].id.toString()
+		// 						)
+		// 					];
+		// 			}
 
-					series_data_source.push({
-						name: sourceName[x][y],
-						data: dataSource,
-						color: colorCodeSource,
-						style: {
-							fontWeight: "bold",
-						},
-					});
-				}
+		// 			series_data_source.push({
+		// 				name: sourceName[x][y],
+		// 				data: dataSource,
+		// 				color: colorCodeSource,
+		// 				style: {
+		// 					fontWeight: "bold",
+		// 				},
+		// 			});
+		// 		}
 
-				console.log(
-					"after series_data_source: " + JSON.stringify(series_data_source)
-				);
+		// 		console.log(
+		// 			"after series_data_source: " + JSON.stringify(series_data_source)
+		// 		);
 
-				for (
-					z = 0;
-					z < dataCaptureTeam[x].details[0].source[y].campaign.length;
-					z++
-				) {
-					console.log(
-						"Campaign Name: " +
-							dataCaptureTeam[x].details[0].source[y].campaign[z].name
-					);
-					console.log(
-						"Campaign Count: " +
-							dataCaptureTeam[x].details[0].source[y].campaign[z].count
-					);
+		// 		for (
+		// 			z = 0;
+		// 			z < dataCaptureTeam[x].details[0].source[y].campaign.length;
+		// 			z++
+		// 		) {
+		// 			console.log(
+		// 				"Campaign Name: " +
+		// 					dataCaptureTeam[x].details[0].source[y].campaign[z].name
+		// 			);
+		// 			console.log(
+		// 				"Campaign Count: " +
+		// 					dataCaptureTeam[x].details[0].source[y].campaign[z].count
+		// 			);
 
-					console.log(
-						"before series_data_campaign: " +
-							JSON.stringify(series_data_campaign)
-					);
+		// 			console.log(
+		// 				"before series_data_campaign: " +
+		// 					JSON.stringify(series_data_campaign)
+		// 			);
 
-					var campaign_exists = false;
-					var lpo_campaign_exists = false;
-					var lpo_source_exists = false;
-					for (var j = 0; j < series_data_campaign.length; j++) {
-						if (
-							series_data_campaign[j].name ==
-							dataCaptureTeam[x].details[0].source[y].campaign[z].name
-						) {
-							campaign_exists = true;
-							series_data_campaign[j].data[x] +=
-								dataCaptureTeam[x].details[0].source[y].campaign[z].count;
-						}
-					}
-					if (campaign_exists == false) {
-						dataSource = new Array(dataCaptureTeam.length).fill(0);
-						dataSource[x] =
-							dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+		// 			var campaign_exists = false;
+		// 			var lpo_campaign_exists = false;
+		// 			var lpo_source_exists = false;
+		// 			for (var j = 0; j < series_data_campaign.length; j++) {
+		// 				if (
+		// 					series_data_campaign[j].name ==
+		// 					dataCaptureTeam[x].details[0].source[y].campaign[z].name
+		// 				) {
+		// 					campaign_exists = true;
+		// 					series_data_campaign[j].data[x] +=
+		// 						dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+		// 				}
+		// 			}
+		// 			if (campaign_exists == false) {
+		// 				dataSource = new Array(dataCaptureTeam.length).fill(0);
+		// 				dataSource[x] =
+		// 					dataCaptureTeam[x].details[0].source[y].campaign[z].count;
 
-						var colorCodeCampaign;
-						if (
-							campaign_list.includes(
-								dataCaptureTeam[x].details[0].source[y].campaign[
-									z
-								].id.toString()
-							) == true
-						) {
-							colorCodeCampaign =
-								campaign_list_color[
-									campaign_list.indexOf(
-										dataCaptureTeam[x].details[0].source[y].campaign[
-											z
-										].id.toString()
-									)
-								];
-						}
+		// 				var colorCodeCampaign;
+		// 				if (
+		// 					campaign_list.includes(
+		// 						dataCaptureTeam[x].details[0].source[y].campaign[
+		// 							z
+		// 						].id.toString()
+		// 					) == true
+		// 				) {
+		// 					colorCodeCampaign =
+		// 						campaign_list_color[
+		// 							campaign_list.indexOf(
+		// 								dataCaptureTeam[x].details[0].source[y].campaign[
+		// 									z
+		// 								].id.toString()
+		// 							)
+		// 						];
+		// 				}
 
-						series_data_campaign.push({
-							name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
-							data: dataSource,
-							color: colorCodeCampaign,
-							style: {
-								fontWeight: "bold",
-							},
-						});
-					}
+		// 				series_data_campaign.push({
+		// 					name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
+		// 					data: dataSource,
+		// 					color: colorCodeCampaign,
+		// 					style: {
+		// 						fontWeight: "bold",
+		// 					},
+		// 				});
+		// 			}
 
-					if (
-						dataCaptureTeam[x].details[0].source[y].campaign[z].name ==
-							"LPO - BAU" ||
-						dataCaptureTeam[x].details[0].source[y].campaign[z].name == "LPO"
-					) {
-						dataCaptureTeamMemberLPOCategories[x] = dataCaptureTeam[x].name;
+		// 			if (
+		// 				dataCaptureTeam[x].details[0].source[y].campaign[z].name ==
+		// 					"LPO - BAU" ||
+		// 				dataCaptureTeam[x].details[0].source[y].campaign[z].name == "LPO"
+		// 			) {
+		// 				dataCaptureTeamMemberLPOCategories[x] = dataCaptureTeam[x].name;
 
-						for (var j = 0; j < series_lpo_data_source.length; j++) {
-							if (
-								series_lpo_data_source[j].name ==
-								dataCaptureTeam[x].details[0].source[y].name
-							) {
-								lpo_source_exists = true;
-								series_lpo_data_source[j].data[x] +=
-									dataCaptureTeam[x].details[0].source[y].count;
-							}
-						}
+		// 				for (var j = 0; j < series_lpo_data_source.length; j++) {
+		// 					if (
+		// 						series_lpo_data_source[j].name ==
+		// 						dataCaptureTeam[x].details[0].source[y].name
+		// 					) {
+		// 						lpo_source_exists = true;
+		// 						series_lpo_data_source[j].data[x] +=
+		// 							dataCaptureTeam[x].details[0].source[y].count;
+		// 					}
+		// 				}
 
-						if (lpo_source_exists == false) {
-							dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
-							dataLPOSource[x] = dataCaptureTeam[x].details[0].source[y].count;
+		// 				if (lpo_source_exists == false) {
+		// 					dataLPOSource = new Array(dataCaptureTeam.length).fill(0);
+		// 					dataLPOSource[x] = dataCaptureTeam[x].details[0].source[y].count;
 
-							var colorCodeSource;
-							if (
-								source_list.includes(
-									dataCaptureTeam[x].details[0].source[y].id.toString()
-								) == true
-							) {
-								colorCodeSource =
-									source_list_color[
-										source_list.indexOf(
-											dataCaptureTeam[x].details[0].source[y].id.toString()
-										)
-									];
-							}
+		// 					var colorCodeSource;
+		// 					if (
+		// 						source_list.includes(
+		// 							dataCaptureTeam[x].details[0].source[y].id.toString()
+		// 						) == true
+		// 					) {
+		// 						colorCodeSource =
+		// 							source_list_color[
+		// 								source_list.indexOf(
+		// 									dataCaptureTeam[x].details[0].source[y].id.toString()
+		// 								)
+		// 							];
+		// 					}
 
-							series_lpo_data_source.push({
-								name: dataCaptureTeam[x].details[0].source[y].name,
-								data: dataLPOSource,
-								color: colorCodeSource,
-								style: {
-									fontWeight: "bold",
-								},
-							});
-						}
+		// 					series_lpo_data_source.push({
+		// 						name: dataCaptureTeam[x].details[0].source[y].name,
+		// 						data: dataLPOSource,
+		// 						color: colorCodeSource,
+		// 						style: {
+		// 							fontWeight: "bold",
+		// 						},
+		// 					});
+		// 				}
 
-						for (var j = 0; j < series_lpo_data_campaign.length; j++) {
-							if (
-								series_lpo_data_campaign[j].name ==
-								dataCaptureTeam[x].details[0].source[y].campaign[z].name
-							) {
-								lpo_campaign_exists = true;
-								series_lpo_data_campaign[j].data[x] +=
-									dataCaptureTeam[x].details[0].source[y].campaign[z].count;
-							}
-						}
+		// 				for (var j = 0; j < series_lpo_data_campaign.length; j++) {
+		// 					if (
+		// 						series_lpo_data_campaign[j].name ==
+		// 						dataCaptureTeam[x].details[0].source[y].campaign[z].name
+		// 					) {
+		// 						lpo_campaign_exists = true;
+		// 						series_lpo_data_campaign[j].data[x] +=
+		// 							dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+		// 					}
+		// 				}
 
-						if (lpo_campaign_exists == false) {
-							dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
-							dataLPOCampaign[x] =
-								dataCaptureTeam[x].details[0].source[y].campaign[z].count;
+		// 				if (lpo_campaign_exists == false) {
+		// 					dataLPOCampaign = new Array(dataCaptureTeam.length).fill(0);
+		// 					dataLPOCampaign[x] =
+		// 						dataCaptureTeam[x].details[0].source[y].campaign[z].count;
 
-							var colorCodeLPOCampaign;
-							if (
-								campaign_list.indexOf(
-									dataCaptureTeam[x].details[0].source[y].campaign[
-										z
-									].id.toString()
-								) != -1
-							) {
-								colorCodeLPOCampaign =
-									campaign_list_color[
-										campaign_list.indexOf(
-											dataCaptureTeam[x].details[0].source[y].campaign[
-												z
-											].id.toString()
-										)
-									];
-							}
+		// 					var colorCodeLPOCampaign;
+		// 					if (
+		// 						campaign_list.indexOf(
+		// 							dataCaptureTeam[x].details[0].source[y].campaign[
+		// 								z
+		// 							].id.toString()
+		// 						) != -1
+		// 					) {
+		// 						colorCodeLPOCampaign =
+		// 							campaign_list_color[
+		// 								campaign_list.indexOf(
+		// 									dataCaptureTeam[x].details[0].source[y].campaign[
+		// 										z
+		// 									].id.toString()
+		// 								)
+		// 							];
+		// 					}
 
-							series_lpo_data_campaign.push({
-								name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
-								data: dataLPOCampaign,
-								color: colorCodeLPOCampaign,
-								style: {
-									fontWeight: "bold",
-								},
-							});
-						}
-					}
-				}
-				console.log(
-					"after series_data_campaign: " + JSON.stringify(series_data_campaign)
-				);
-				console.log(
-					"after series_lpo_data_source: " +
-						JSON.stringify(series_lpo_data_source)
-				);
-				console.log(
-					"after series_lpo_data_campaign: " +
-						JSON.stringify(series_lpo_data_campaign)
-				);
-			}
-		}
+		// 					series_lpo_data_campaign.push({
+		// 						name: dataCaptureTeam[x].details[0].source[y].campaign[z].name,
+		// 						data: dataLPOCampaign,
+		// 						color: colorCodeLPOCampaign,
+		// 						style: {
+		// 							fontWeight: "bold",
+		// 						},
+		// 					});
+		// 				}
+		// 			}
+		// 		}
+		// 		console.log(
+		// 			"after series_data_campaign: " + JSON.stringify(series_data_campaign)
+		// 		);
+		// 		console.log(
+		// 			"after series_lpo_data_source: " +
+		// 				JSON.stringify(series_lpo_data_source)
+		// 		);
+		// 		console.log(
+		// 			"after series_lpo_data_campaign: " +
+		// 				JSON.stringify(series_lpo_data_campaign)
+		// 		);
+		// 	}
+		// }
 
-		console.log("dataCaptureTeamMemberCategories");
-		console.log(dataCaptureTeamMemberCategories);
+		// console.log("dataCaptureTeamMemberCategories");
+		// console.log(dataCaptureTeamMemberCategories);
 
-		console.log("series_data_source");
-		console.log(series_data_source);
+		// console.log("series_data_source");
+		// console.log(series_data_source);
 
-		console.log("series_data_campaign");
-		console.log(series_data_campaign);
+		// console.log("series_data_campaign");
+		// console.log(series_data_campaign);
 
-		console.log("dataCaptureTeamMemberLPOCategories");
-		console.log(dataCaptureTeamMemberLPOCategories);
+		// console.log("dataCaptureTeamMemberLPOCategories");
+		// console.log(dataCaptureTeamMemberLPOCategories);
 
-		console.log("series_lpo_data_campaign");
-		console.log(series_lpo_data_campaign);
+		// console.log("series_lpo_data_campaign");
+		// console.log(series_lpo_data_campaign);
 
-		console.log("series_lpo_data_source");
-		console.log(series_lpo_data_source);
+		// console.log("series_lpo_data_source");
+		// console.log(series_lpo_data_source);
 
-		var removedArrayPositions = [];
-		var existingArrayPositions = [];
-		var series_new_lpo_data_campaign = [];
-		var series_new_lpo_data_source = [];
+		// var removedArrayPositions = [];
+		// var existingArrayPositions = [];
+		// var series_new_lpo_data_campaign = [];
+		// var series_new_lpo_data_source = [];
 
-		for (var i = 0; i < dataCaptureTeamMemberLPOCategories.length; i++) {
-			if (dataCaptureTeamMemberLPOCategories[i] != null) {
-				existingArrayPositions.push(i);
-			} else {
-				removedArrayPositions.push(i);
-			}
-		}
+		// for (var i = 0; i < dataCaptureTeamMemberLPOCategories.length; i++) {
+		// 	if (dataCaptureTeamMemberLPOCategories[i] != null) {
+		// 		existingArrayPositions.push(i);
+		// 	} else {
+		// 		removedArrayPositions.push(i);
+		// 	}
+		// }
 
-		console.log("dataCaptureTeamMemberLPOCategories");
-		console.log(dataCaptureTeamMemberLPOCategories);
+		// console.log("dataCaptureTeamMemberLPOCategories");
+		// console.log(dataCaptureTeamMemberLPOCategories);
 
-		console.log("removedArrayPositions");
-		console.log(removedArrayPositions);
+		// console.log("removedArrayPositions");
+		// console.log(removedArrayPositions);
 
-		var dataCaptureTeamMemberLPOCategoriesUpdated = [];
+		// var dataCaptureTeamMemberLPOCategoriesUpdated = [];
 
-		for (var t = 0; t < dataCaptureTeamMemberLPOCategories.length; t++) {
-			if (removedArrayPositions.includes(t)) {
-			} else {
-				dataCaptureTeamMemberLPOCategoriesUpdated.push(
-					dataCaptureTeamMemberLPOCategories[t]
-				);
-			}
-		}
+		// for (var t = 0; t < dataCaptureTeamMemberLPOCategories.length; t++) {
+		// 	if (removedArrayPositions.includes(t)) {
+		// 	} else {
+		// 		dataCaptureTeamMemberLPOCategoriesUpdated.push(
+		// 			dataCaptureTeamMemberLPOCategories[t]
+		// 		);
+		// 	}
+		// }
 
-		console.log("dataCaptureTeamMemberLPOCategoriesUpdated");
-		console.log(dataCaptureTeamMemberLPOCategoriesUpdated);
+		// console.log("dataCaptureTeamMemberLPOCategoriesUpdated");
+		// console.log(dataCaptureTeamMemberLPOCategoriesUpdated);
 
-		var new_lpo_campaign_count = [];
+		// var new_lpo_campaign_count = [];
 
-		for (var i = 0; i < series_lpo_data_campaign.length; i++) {
-			new_lpo_campaign_count = [];
-			for (var r = 0; r < series_lpo_data_campaign[i].data.length; r++) {
-				if (removedArrayPositions.indexOf(r) != -1) {
-				} else {
-					new_lpo_campaign_count[new_lpo_campaign_count.length] =
-						series_lpo_data_campaign[i].data[r];
-				}
-			}
-			series_new_lpo_data_campaign.push({
-				name: series_lpo_data_campaign[i].name,
-				data: new_lpo_campaign_count,
-				color: series_lpo_data_campaign[i].color,
-				style: {
-					fontWeight: "bold",
-				},
-			});
-			// series_new_lpo_data_campaign[i].data = new_lpo_campaign_count;
-		}
+		// for (var i = 0; i < series_lpo_data_campaign.length; i++) {
+		// 	new_lpo_campaign_count = [];
+		// 	for (var r = 0; r < series_lpo_data_campaign[i].data.length; r++) {
+		// 		if (removedArrayPositions.indexOf(r) != -1) {
+		// 		} else {
+		// 			new_lpo_campaign_count[new_lpo_campaign_count.length] =
+		// 				series_lpo_data_campaign[i].data[r];
+		// 		}
+		// 	}
+		// 	series_new_lpo_data_campaign.push({
+		// 		name: series_lpo_data_campaign[i].name,
+		// 		data: new_lpo_campaign_count,
+		// 		color: series_lpo_data_campaign[i].color,
+		// 		style: {
+		// 			fontWeight: "bold",
+		// 		},
+		// 	});
+		// 	// series_new_lpo_data_campaign[i].data = new_lpo_campaign_count;
+		// }
 
-		console.log("series_new_lpo_data_campaign");
-		console.log(series_new_lpo_data_campaign);
+		// console.log("series_new_lpo_data_campaign");
+		// console.log(series_new_lpo_data_campaign);
 
-		var new_lpo_source_count = [];
+		// var new_lpo_source_count = [];
 
-		for (var a = 0; a < series_lpo_data_source.length; a++) {
-			new_lpo_source_count = [];
-			for (var b = 0; b < series_lpo_data_source[a].data.length; b++) {
-				console.log("b: " + b);
-				console.log(
-					"removedArrayPositions.indexOf(b): " +
-						removedArrayPositions.indexOf(b)
-				);
-				if (removedArrayPositions.indexOf(b) != -1) {
-				} else {
-					new_lpo_source_count[new_lpo_source_count.length] =
-						series_lpo_data_source[a].data[b];
-				}
-			}
-			series_new_lpo_data_source.push({
-				name: series_lpo_data_source[a].name,
-				data: new_lpo_source_count,
-				color: series_lpo_data_source[a].color,
-				style: {
-					fontWeight: "bold",
-				},
-			});
-			// series_new_lpo_data_source[i].data = new_lpo_source_count;
-		}
+		// for (var a = 0; a < series_lpo_data_source.length; a++) {
+		// 	new_lpo_source_count = [];
+		// 	for (var b = 0; b < series_lpo_data_source[a].data.length; b++) {
+		// 		console.log("b: " + b);
+		// 		console.log(
+		// 			"removedArrayPositions.indexOf(b): " +
+		// 				removedArrayPositions.indexOf(b)
+		// 		);
+		// 		if (removedArrayPositions.indexOf(b) != -1) {
+		// 		} else {
+		// 			new_lpo_source_count[new_lpo_source_count.length] =
+		// 				series_lpo_data_source[a].data[b];
+		// 		}
+		// 	}
+		// 	series_new_lpo_data_source.push({
+		// 		name: series_lpo_data_source[a].name,
+		// 		data: new_lpo_source_count,
+		// 		color: series_lpo_data_source[a].color,
+		// 		style: {
+		// 			fontWeight: "bold",
+		// 		},
+		// 	});
+		// 	// series_new_lpo_data_source[i].data = new_lpo_source_count;
+		// }
 
-		console.log("series_new_lpo_data_source");
-		console.log(series_new_lpo_data_source);
+		// console.log("series_new_lpo_data_source");
+		// console.log(series_new_lpo_data_source);
 
-		plotChart(series_data_source, null, dataCaptureTeamMemberCategories);
-		plotChartDataCaptureOverview(
-			series_data_source,
-			null,
-			dataCaptureTeamMemberCategories
-		);
+		// plotChart(series_data_source, null, dataCaptureTeamMemberCategories);
+		// plotChartDataCaptureOverview(
+		// 	series_data_source,
+		// 	null,
+		// 	dataCaptureTeamMemberCategories
+		// );
 
-		plotChartCampaign(
-			series_data_campaign,
-			null,
-			dataCaptureTeamMemberCategories
-		);
-		plotChartDataCaptureOverviewCampaign(
-			series_data_campaign,
-			null,
-			dataCaptureTeamMemberCategories
-		);
+		// plotChartCampaign(
+		// 	series_data_campaign,
+		// 	null,
+		// 	dataCaptureTeamMemberCategories
+		// );
+		// plotChartDataCaptureOverviewCampaign(
+		// 	series_data_campaign,
+		// 	null,
+		// 	dataCaptureTeamMemberCategories
+		// );
 
-		plotChartLPOCampaign(
-			series_new_lpo_data_campaign,
-			null,
-			dataCaptureTeamMemberLPOCategoriesUpdated
-		);
-		plotChartLPOSource(
-			series_new_lpo_data_source,
-			null,
-			dataCaptureTeamMemberLPOCategoriesUpdated
-		);
+		// plotChartLPOCampaign(
+		// 	series_new_lpo_data_campaign,
+		// 	null,
+		// 	dataCaptureTeamMemberLPOCategoriesUpdated
+		// );
+		// plotChartLPOSource(
+		// 	series_new_lpo_data_source,
+		// 	null,
+		// 	dataCaptureTeamMemberLPOCategoriesUpdated
+		// );
 
 		//?BY SALES REP ASSIGNED - LEAD ENTERED BY & CAMPAIGN
 		//Sales Dashboard - Leads by Lead Entered - Sales Rep Reporting
@@ -25892,9 +26075,9 @@ define([
 				) {
 					console.log(
 						"salesRepAssignedTeam(" +
-							oldDataCaptureAssigned +
-							"): " +
-							JSON.stringify(salesRepAssignedTeam)
+						oldDataCaptureAssigned +
+						"): " +
+						JSON.stringify(salesRepAssignedTeam)
 					);
 
 					total_leads = 0;
@@ -25958,7 +26141,7 @@ define([
 			console.log("name: " + salesRepAssignedTeam[x].name);
 			console.log(
 				"details: " +
-					JSON.stringify(salesRepAssignedTeam[x].details[0].enteredBy)
+				JSON.stringify(salesRepAssignedTeam[x].details[0].enteredBy)
 			);
 			for (
 				y = 0;
@@ -25972,11 +26155,11 @@ define([
 
 				console.log(
 					"enteredBy Name: " +
-						salesRepAssignedTeam[x].details[0].enteredBy[y].name
+					salesRepAssignedTeam[x].details[0].enteredBy[y].name
 				);
 				console.log(
 					"enteredBy Count: " +
-						salesRepAssignedTeam[x].details[0].enteredBy[y].count
+					salesRepAssignedTeam[x].details[0].enteredBy[y].count
 				);
 
 				console.log(
@@ -26003,9 +26186,9 @@ define([
 					) {
 						colorCode =
 							employee_list_color[
-								employee_list.indexOf(
-									salesRepAssignedTeam[x].details[0].enteredBy[y].id
-								)
+							employee_list.indexOf(
+								salesRepAssignedTeam[x].details[0].enteredBy[y].id
+							)
 							];
 					}
 
@@ -26036,16 +26219,16 @@ define([
 				) {
 					console.log(
 						"Campaign Name: " +
-							salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].name
+						salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].name
 					);
 					console.log(
 						"Campaign Count: " +
-							salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].count
+						salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[z].count
 					);
 
 					console.log(
 						"before series_data_campaign: " +
-							JSON.stringify(series_data_campaign)
+						JSON.stringify(series_data_campaign)
 					);
 
 					var campaign_exists = false;
@@ -26076,11 +26259,11 @@ define([
 						) {
 							colorCodeCampaign =
 								campaign_list_color[
-									campaign_list.indexOf(
-										salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[
-											z
-										].id.toString()
-									)
+								campaign_list.indexOf(
+									salesRepAssignedTeam[x].details[0].enteredBy[y].campaign[
+										z
+									].id.toString()
+								)
 								];
 						}
 
@@ -26110,17 +26293,17 @@ define([
 		console.log("series_data_campaign");
 		console.log(series_data_campaign);
 
-		plotSalesRepChart(
-			series_data_entered,
-			null,
-			salesRepAssignedTeamMemberCategories
-		);
+		// plotSalesRepChart(
+		// 	series_data_entered,
+		// 	null,
+		// 	salesRepAssignedTeamMemberCategories
+		// );
 
-		plotSalesRepChartCampaign(
-			series_data_campaign,
-			null,
-			salesRepAssignedTeamMemberCategories
-		);
+		// plotSalesRepChartCampaign(
+		// 	series_data_campaign,
+		// 	null,
+		// 	salesRepAssignedTeamMemberCategories
+		// );
 
 		//?Franchisee Generated Leads Assgined to Sales Rep
 		console.log("lead_source: " + lead_source);
@@ -26462,7 +26645,7 @@ define([
 
 				console.log(
 					"defaultSearchFilters filters: " +
-						JSON.stringify(defaultSearchFilters)
+					JSON.stringify(defaultSearchFilters)
 				);
 
 				leadsListByZeeGeneratedLastAssignedSearch.filterExpression =
@@ -26638,7 +26821,7 @@ define([
 				console.log("name: " + zeeGeneratedTeam[x].name);
 				console.log(
 					"details: " +
-						JSON.stringify(zeeGeneratedTeam[x].details[0].lastAssigned)
+					JSON.stringify(zeeGeneratedTeam[x].details[0].lastAssigned)
 				);
 				for (
 					y = 0;
@@ -26652,16 +26835,16 @@ define([
 
 					console.log(
 						"lastAssigned Name: " +
-							zeeGeneratedTeam[x].details[0].lastAssigned[y].name
+						zeeGeneratedTeam[x].details[0].lastAssigned[y].name
 					);
 					console.log(
 						"lastAssigned Count: " +
-							zeeGeneratedTeam[x].details[0].lastAssigned[y].count
+						zeeGeneratedTeam[x].details[0].lastAssigned[y].count
 					);
 
 					console.log(
 						"before series_data_last_assigned: " +
-							JSON.stringify(series_data_last_assigned)
+						JSON.stringify(series_data_last_assigned)
 					);
 					var entered_by_exists = false;
 					for (var j = 0; j < series_data_last_assigned.length; j++) {
@@ -26684,9 +26867,9 @@ define([
 						) {
 							colorCode =
 								employee_list_color[
-									employee_list.indexOf(
-										zeeGeneratedTeam[x].details[0].lastAssigned[y].id.toString()
-									)
+								employee_list.indexOf(
+									zeeGeneratedTeam[x].details[0].lastAssigned[y].id.toString()
+								)
 								];
 						}
 
@@ -26708,7 +26891,7 @@ define([
 
 					console.log(
 						"after series_data_last_assigned: " +
-							JSON.stringify(series_data_last_assigned)
+						JSON.stringify(series_data_last_assigned)
 					);
 				}
 			}
@@ -26719,11 +26902,11 @@ define([
 			console.log("series_data_last_assigned");
 			console.log(series_data_last_assigned);
 
-			plotZeeGeneratedSalesRepChart(
-				series_data_last_assigned,
-				null,
-				salesRepAssignedTeamMemberCategories
-			);
+			// plotZeeGeneratedSalesRepChart(
+			// 	series_data_last_assigned,
+			// 	null,
+			// 	salesRepAssignedTeamMemberCategories
+			// );
 		}
 
 		// if (sales_activity_notes == 1) {
@@ -27082,190 +27265,2065 @@ define([
 
 		console.log(
 			"websiteSuspectsLeadsReportingSearch :" +
-				websiteSuspectsLeadsReportingSearch
+			websiteSuspectsLeadsReportingSearch
 		);
 
 		console.log(
 			"default search filters: " +
-				JSON.stringify(websiteSuspectsLeadsReportingSearch.filters)
+			JSON.stringify(websiteSuspectsLeadsReportingSearch.filters)
 		);
 
 		var websiteSuspectsLeadsReportingSearchCount =
 			websiteSuspectsLeadsReportingSearch.runPaged().count;
 
+		var val1 = currentRecord.get();
+		var page_no = val1.getValue({
+			fieldId: "custpage_page_no",
+		});
+
+
 		console.log(
 			"websiteSuspectsLeadsReportingSearchCount: " +
-				websiteSuspectsLeadsReportingSearchCount
+			websiteSuspectsLeadsReportingSearchCount
 		);
 		var count = 0;
 
-		// if (sales_activity_notes == 1) {
-		console.log("websiteSuspectsLeadsReportingSearch with activity");
-		websiteSuspectsLeadsReportingSearch
-			.run()
-			.each(function (suspectsResultSet) {
-				var custInternalID = suspectsResultSet.getValue({
+		if (websiteSuspectsLeadsReportingSearchCount < 1000) {
+			console.log("Under 1000 leads under the SUSPECTS");
+			// if (sales_activity_notes == 1) {
+			console.log("websiteSuspectsLeadsReportingSearch with activity");
+			websiteSuspectsLeadsReportingSearch
+				.run()
+				.each(function (suspectsResultSet) {
+					var custInternalID = suspectsResultSet.getValue({
+						name: "internalid",
+						summary: "GROUP",
+					});
+					var custEntityID = suspectsResultSet.getValue({
+						name: "entityid",
+						summary: "GROUP",
+					});
+					var custName = suspectsResultSet.getValue({
+						name: "companyname",
+						summary: "GROUP",
+					});
+					var zeeID = suspectsResultSet.getValue({
+						name: "partner",
+						summary: "GROUP",
+					});
+					var zeeName = suspectsResultSet.getText({
+						name: "partner",
+						summary: "GROUP",
+					});
+
+					var custStage = suspectsResultSet
+						.getText({
+							name: "stage",
+							summary: "GROUP",
+						})
+						.toUpperCase();
+
+					var custStatusId = suspectsResultSet.getValue({
+						name: "entitystatus",
+						summary: "GROUP",
+					});
+
+					var custStatus = suspectsResultSet
+						.getText({
+							name: "entitystatus",
+							summary: "GROUP",
+						})
+						.toUpperCase();
+
+					var dateLeadEntered = suspectsResultSet.getValue({
+						name: "custentity_date_lead_entered",
+						summary: "GROUP",
+					});
+
+					var quoteSentDate = suspectsResultSet.getValue({
+						name: "custentity_date_lead_quote_sent",
+						summary: "GROUP",
+					});
+
+					var dateLeadLost = suspectsResultSet.getValue({
+						name: "custentity_date_lead_lost",
+						summary: "GROUP",
+					});
+					var dateLeadinContact = suspectsResultSet.getValue({
+						name: "custentity_date_prospect_in_contact",
+						summary: "GROUP",
+					});
+
+					var dateProspectWon = suspectsResultSet.getValue({
+						name: "custentity_date_prospect_opportunity",
+						summary: "GROUP",
+					});
+
+					var dateLeadReassigned = suspectsResultSet.getValue({
+						name: "custentity_date_suspect_reassign",
+						summary: "GROUP",
+					});
+
+					var salesRepId = suspectsResultSet.getValue({
+						name: "custrecord_sales_assigned",
+						join: "CUSTRECORD_SALES_CUSTOMER",
+						summary: "GROUP",
+					});
+					var salesRepText = suspectsResultSet.getText({
+						name: "custrecord_sales_assigned",
+						join: "CUSTRECORD_SALES_CUSTOMER",
+						summary: "GROUP",
+					});
+
+					var email48h = suspectsResultSet.getText({
+						name: "custentity_48h_email_sent",
+						summary: "GROUP",
+					});
+
+					var daysOpen = suspectsResultSet.getValue({
+						name: "formulanumeric",
+						summary: "GROUP",
+					});
+
+					var cancellationReason = suspectsResultSet.getText({
+						name: "custentity_service_cancellation_reason",
+						summary: "GROUP",
+					});
+
+					var source = suspectsResultSet.getText({
+						name: "leadsource",
+						summary: "GROUP",
+					});
+
+					var productWeeklyUsage = suspectsResultSet.getText({
+						name: "custentity_form_mpex_usage_per_week",
+						summary: "GROUP",
+					});
+
+					var autoSignUp = suspectsResultSet.getValue({
+						name: "custentity_auto_sign_up",
+						summary: "GROUP",
+					});
+
+					var previousCarrier = suspectsResultSet.getText({
+						name: "custentity_previous_carrier",
+						summary: "GROUP",
+					});
+
+					var monthlyServiceValue = suspectsResultSet.getValue({
+						name: "custentity_cust_monthly_service_value",
+						summary: "GROUP",
+					});
+
+					var avgInvoiceValue = suspectsResultSet.getValue({
+						name: "total",
+						join: "transaction",
+						summary: "AVG",
+					});
+
+					var dateLPOValidated = suspectsResultSet.getValue({
+						name: "custentity_date_lpo_validated",
+						summary: "GROUP",
+					});
+
+					var tasksInternalID = suspectsResultSet.getValue({
+						name: "internalid",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskDate = suspectsResultSet.getValue({
+						name: "duedate",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskTitle = suspectsResultSet.getValue({
+						name: "title",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskAssignedTo = suspectsResultSet.getText({
+						name: "assigned",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskAssignedTo = suspectsResultSet.getText({
+						name: "assigned",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskStatus = suspectsResultSet.getText({
+						name: "status",
+						join: "task",
+						summary: "GROUP",
+					});
+					var taskComment = suspectsResultSet.getText({
+						name: "message",
+						join: "task",
+						summary: "GROUP",
+					});
+
+					// var userNotesInternalID = suspectsResultSet.getValue({
+					// 	name: "internalid",
+					// 	join: "userNotes",
+					// 	summary: "GROUP",
+					// });
+					// var userNotesTitle = suspectsResultSet.getValue({
+					// 	name: "title",
+					// 	join: "userNotes",
+					// 	summary: "GROUP",
+					// });
+					// var userNotesStartDate = suspectsResultSet.getValue({
+					// 	name: "notedate",
+					// 	join: "userNotes",
+					// 	summary: "GROUP",
+					// });
+					// if (!isNullorEmpty(userNotesStartDate)) {
+					// 	var userNotesStartDateTimeArray = userNotesStartDate.split(" ");
+					// 	var userNotesStartDateArray =
+					// 		userNotesStartDateTimeArray[0].split("/");
+					// 	if (parseInt(userNotesStartDateArray[1]) < 10) {
+					// 		userNotesStartDateArray[1] = "0" + userNotesStartDateArray[1];
+					// 	}
+
+					// 	if (parseInt(userNotesStartDateArray[0]) < 10) {
+					// 		userNotesStartDateArray[0] = "0" + userNotesStartDateArray[0];
+					// 	}
+					// 	userNotesStartDate =
+					// 		userNotesStartDateArray[2] +
+					// 		"-" +
+					// 		userNotesStartDateArray[1] +
+					// 		"-" +
+					// 		userNotesStartDateArray[0];
+					// }
+					// var userNotesOrganiser = suspectsResultSet.getText({
+					// 	name: "author",
+					// 	join: "userNotes",
+					// 	summary: "GROUP",
+					// });
+					// var userNotesMessage = suspectsResultSet.getValue({
+					// 	name: "note",
+					// 	join: "userNotes",
+					// 	summary: "GROUP",
+					// });
+
+					// console.log("userNotesInternalID: " + userNotesInternalID);
+					// console.log("userNotesTitle: " + userNotesTitle);
+					// console.log("userNotesStartDate: " + userNotesStartDate);
+					// console.log("userNotesOrganiser: " + userNotesOrganiser);
+					// console.log("userNotesMessage: " + userNotesMessage);
+					console.log("custStage: " + custStage);
+					console.log("custStatus: " + custStatus);
+
+					if (!isNullorEmpty(monthlyServiceValue)) {
+						monthlyServiceValue = financial(parseFloat(monthlyServiceValue));
+					} else {
+						monthlyServiceValue = 0.0;
+					}
+
+					if (!isNullorEmpty(avgInvoiceValue) && parseInt(avgInvoiceValue) > 0) {
+						avgInvoiceValue = financial(parseFloat(avgInvoiceValue));
+					} else {
+						avgInvoiceValue = 0.0;
+					}
+
+					var dateLeadEnteredSplit = dateLeadEntered.split("/");
+					if (parseInt(dateLeadEnteredSplit[1]) < 10) {
+						dateLeadEnteredSplit[1] = "0" + dateLeadEnteredSplit[1];
+					}
+
+					if (parseInt(dateLeadEnteredSplit[0]) < 10) {
+						dateLeadEnteredSplit[0] = "0" + dateLeadEnteredSplit[0];
+					}
+					dateLeadEntered =
+						dateLeadEnteredSplit[2] +
+						"-" +
+						dateLeadEnteredSplit[1] +
+						"-" +
+						dateLeadEnteredSplit[0];
+
+					if (!isNullorEmpty(dateLeadLost)) {
+						var dateLeadLostSplit = dateLeadLost.split("/");
+						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+						var dateEntered = new Date(
+							dateLeadEnteredSplit[2],
+							dateLeadEnteredSplit[1] - 1,
+							dateLeadEnteredSplit[0]
+						);
+						var dateLost = new Date(
+							dateLeadLostSplit[2],
+							dateLeadLostSplit[1] - 1,
+							dateLeadLostSplit[0]
+						);
+
+						var difference = dateLost.getTime() - dateEntered.getTime();
+						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+						var weeks = Math.floor(daysOpen / 7);
+						daysOpen = daysOpen - weeks * 2;
+
+						// Handle special cases
+						var startDay = dateEntered.getDay();
+						var endDay = dateLost.getDay();
+
+						// Remove weekend not previously removed.
+						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+						// Remove start day if span starts on Sunday but ends before Saturday
+						if (startDay == 0 && endDay != 6) {
+							daysOpen = daysOpen - 1;
+						}
+
+						// Remove end day if span ends on Saturday but starts after Sunday
+						if (endDay == 6 && startDay != 0) {
+							daysOpen = daysOpen - 1;
+						}
+					} else if (!isNullorEmpty(dateProspectWon)) {
+						var dateProspectWonSplit = dateProspectWon.split("/");
+
+						if (parseInt(dateProspectWonSplit[1]) < 10) {
+							dateProspectWonSplit[1] = "0" + dateProspectWonSplit[1];
+						}
+
+						if (parseInt(dateProspectWonSplit[0]) < 10) {
+							dateProspectWonSplit[0] = "0" + dateProspectWonSplit[0];
+						}
+
+						dateProspectWon =
+							dateProspectWonSplit[2] +
+							"-" +
+							dateProspectWonSplit[1] +
+							"-" +
+							dateProspectWonSplit[0];
+
+						var dateLeadLostSplit = dateLeadLost.split("/");
+						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+						var dateEntered = new Date(
+							dateLeadEnteredSplit[2],
+							dateLeadEnteredSplit[1] - 1,
+							dateLeadEnteredSplit[0]
+						);
+						dateProspectWon = new Date(
+							dateProspectWonSplit[2],
+							dateProspectWonSplit[1] - 1,
+							dateProspectWonSplit[0]
+						);
+
+						var difference = dateProspectWon.getTime() - dateEntered.getTime();
+						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+						var weeks = Math.floor(daysOpen / 7);
+						daysOpen = daysOpen - weeks * 2;
+
+						// Handle special cases
+						var startDay = dateEntered.getDay();
+						var endDay = dateProspectWon.getDay();
+
+						// Remove weekend not previously removed.
+						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+						// Remove start day if span starts on Sunday but ends before Saturday
+						if (startDay == 0 && endDay != 6) {
+							daysOpen = daysOpen - 1;
+						}
+
+						// Remove end day if span ends on Saturday but starts after Sunday
+						if (endDay == 6 && startDay != 0) {
+							daysOpen = daysOpen - 1;
+						}
+
+						dateProspectWon =
+							dateProspectWonSplit[2] +
+							"-" +
+							dateProspectWonSplit[1] +
+							"-" +
+							dateProspectWonSplit[0];
+					} else if (!isNullorEmpty(quoteSentDate)) {
+						var dateQuoteSentSplit = quoteSentDate.split("/");
+
+						if (parseInt(dateQuoteSentSplit[1]) < 10) {
+							dateQuoteSentSplit[1] = "0" + dateQuoteSentSplit[1];
+						}
+
+						if (parseInt(dateQuoteSentSplit[0]) < 10) {
+							dateQuoteSentSplit[0] = "0" + dateQuoteSentSplit[0];
+						}
+
+						quoteSentDate =
+							dateQuoteSentSplit[2] +
+							"-" +
+							dateQuoteSentSplit[1] +
+							"-" +
+							dateQuoteSentSplit[0];
+
+						var dateLeadLostSplit = dateLeadLost.split("/");
+						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+						var dateEntered = new Date(
+							dateLeadEnteredSplit[2],
+							dateLeadEnteredSplit[1] - 1,
+							dateLeadEnteredSplit[0]
+						);
+						quoteSentDate = new Date(
+							dateQuoteSentSplit[2],
+							dateQuoteSentSplit[1] - 1,
+							dateQuoteSentSplit[0]
+						);
+
+						var difference = quoteSentDate.getTime() - dateEntered.getTime();
+						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+						var weeks = Math.floor(daysOpen / 7);
+						daysOpen = daysOpen - weeks * 2;
+
+						// Handle special cases
+						var startDay = dateEntered.getDay();
+						var endDay = quoteSentDate.getDay();
+
+						// Remove weekend not previously removed.
+						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+						// Remove start day if span starts on Sunday but ends before Saturday
+						if (startDay == 0 && endDay != 6) {
+							daysOpen = daysOpen - 1;
+						}
+
+						// Remove end day if span ends on Saturday but starts after Sunday
+						if (endDay == 6 && startDay != 0) {
+							daysOpen = daysOpen - 1;
+						}
+
+						quoteSentDate =
+							dateQuoteSentSplit[2] +
+							"-" +
+							dateQuoteSentSplit[1] +
+							"-" +
+							dateQuoteSentSplit[0];
+					}
+					if (!isNullorEmpty(dateLPOValidated)) {
+						var dateLPOValidatedSplit = dateLPOValidated.split("/");
+						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+						var dateEntered = new Date(
+							dateLeadEnteredSplit[2],
+							dateLeadEnteredSplit[1] - 1,
+							dateLeadEnteredSplit[0]
+						);
+						var dateValidated = new Date(
+							dateLPOValidatedSplit[2],
+							dateLPOValidatedSplit[1] - 1,
+							dateLPOValidatedSplit[0]
+						);
+
+						var difference = dateValidated.getTime() - dateEntered.getTime();
+						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+						var weeks = Math.floor(daysOpen / 7);
+						daysOpen = daysOpen - weeks * 2;
+
+						// Handle special cases
+						var startDay = dateEntered.getDay();
+						var endDay = dateValidated.getDay();
+
+						// Remove weekend not previously removed.
+						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+						// Remove start day if span starts on Sunday but ends before Saturday
+						if (startDay == 0 && endDay != 6) {
+							daysOpen = daysOpen - 1;
+						}
+
+						// Remove end day if span ends on Saturday but starts after Sunday
+						if (endDay == 6 && startDay != 0) {
+							daysOpen = daysOpen - 1;
+						}
+					} else {
+						// var dateLeadLostSplit = dateLeadLost.split('/');
+						// var dateLeadEnteredSplit = dateLeadEntered.split('/');
+
+						var dateEntered = new Date(
+							dateLeadEnteredSplit[2],
+							dateLeadEnteredSplit[1] - 1,
+							dateLeadEnteredSplit[0]
+						);
+						var todayDate = new Date();
+
+						var difference = todayDate.getTime() - dateEntered.getTime();
+						daysOpen = Math.ceil(difference / (1000 * 3600 * 24));
+
+						var weeks = Math.floor(daysOpen / 7);
+						daysOpen = daysOpen - weeks * 2;
+
+						// Handle special cases
+						var startDay = dateEntered.getDay();
+						var endDay = todayDate.getDay();
+
+						// Remove weekend not previously removed.
+						if (startDay - endDay > 1) daysOpen = daysOpen - 2;
+
+						// Remove start day if span starts on Sunday but ends before Saturday
+						if (startDay == 0 && endDay != 6) {
+							daysOpen = daysOpen - 1;
+						}
+
+						// Remove end day if span ends on Saturday but starts after Sunday
+						if (endDay == 6 && startDay != 0) {
+							daysOpen = daysOpen - 1;
+						}
+					}
+
+					if (count == 0) {
+						console.log("inside count == 0");
+
+						if (!isNullorEmpty(tasksInternalID)) {
+							console.log("inside usernotes internal id");
+							console.log("custStage: " + custStage);
+							console.log("custStatus: " + custStatus);
+							if (
+								custStage == "SUSPECT" &&
+								custStatus != "SUSPECT-CUSTOMER - LOST" &&
+								custStatus != "SUSPECT-PARKING LOT" &&
+								custStatus != "SUSPECT-LOST" &&
+								custStatus != "SUSPECT-OUT OF TERRITORY" &&
+								custStatus != "SUSPECT-FOLLOW-UP" &&
+								custStatus != "SUSPECT-QUALIFIED" &&
+								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+								custStatus != "SUSPECT-NO ANSWER" &&
+								custStatus != "SUSPECT-IN CONTACT"
+							) {
+								console.log("inside suspect new");
+								suspectActivityCount++;
+								suspectChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+									custStatus == "SUSPECT-LOST")
+							) {
+								console.log("inside suspect lost");
+								suspectActivityCount++;
+								suspectLostChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-PARKING LOT"
+							) {
+								console.log("inside suspect parking lot");
+								suspectActivityCount++;
+								suspectOffPeakChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-OUT OF TERRITORY"
+							) {
+								console.log("inside suspect OOT");
+								suspectActivityCount++;
+								suspectOOTChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-FOLLOW-UP" ||
+									custStatus == "SUSPECT-LPO FOLLOW-UP")
+							) {
+								console.log("inside suspect follow-up");
+								suspectActivityCount++;
+								suspectFollowUpChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-QUALIFIED"
+							) {
+								console.log("inside suspect qualifeid");
+								suspectActivityCount++;
+								suspectQualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-UNQUALIFIED"
+							) {
+								console.log("inside suspect unqualifeid");
+								suspectActivityCount++;
+								suspectUnqualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-VALIDATED"
+							) {
+								console.log("inside suspect validated");
+								suspectActivityCount++;
+								suspectValidatedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-NO ANSWER"
+							) {
+								console.log("inside suspect no answer");
+								suspectActivityCount++;
+								suspectNoAnswerChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-IN CONTACT"
+							) {
+								console.log("inside SUSPECT-IN CONTACT");
+								suspectActivityCount++;
+								suspectInContactChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							}
+						}
+					} else if (count > 0 && oldcustInternalID == custInternalID) {
+						console.log(
+							"inside count > 0 && (oldcustInternalID == custInternalID)"
+						);
+
+						if (!isNullorEmpty(tasksInternalID)) {
+							console.log("inside usernotes internal id");
+							if (
+								custStage == "SUSPECT" &&
+								custStatus != "SUSPECT-CUSTOMER - LOST" &&
+								custStatus != "SUSPECT-PARKING LOT" &&
+								custStatus != "SUSPECT-LOST" &&
+								custStatus != "SUSPECT-OUT OF TERRITORY" &&
+								custStatus != "SUSPECT-FOLLOW-UP" &&
+								custStatus != "SUSPECT-QUALIFIED" &&
+								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+								custStatus != "SUSPECT-NO ANSWER" &&
+								custStatus != "SUSPECT-IN CONTACT"
+							) {
+								console.log("inside suspect new");
+								suspectActivityCount++;
+								suspectChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+									custStatus == "SUSPECT-LOST")
+							) {
+								console.log("inside suspect lost");
+								suspectActivityCount++;
+								suspectLostChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-PARKING LOT"
+							) {
+								console.log("inside suspect parking lot");
+								suspectActivityCount++;
+								suspectOffPeakChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-OUT OF TERRITORY"
+							) {
+								console.log("inside suspect OOT");
+								suspectActivityCount++;
+								suspectOOTChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-FOLLOW-UP" ||
+									custStatus == "SUSPECT-LPO FOLLOW-UP")
+							) {
+								console.log("inside suspect follow-up");
+								suspectActivityCount++;
+								suspectFollowUpChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-QUALIFIED"
+							) {
+								console.log("inside suspect qualifeid");
+								suspectActivityCount++;
+								suspectQualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-UNQUALIFIED"
+							) {
+								console.log("inside suspect unqualifeid");
+								suspectActivityCount++;
+								suspectUnqualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-VALIDATED"
+							) {
+								console.log("inside suspect validated");
+								suspectActivityCount++;
+								suspectValidatedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-NO ANSWER"
+							) {
+								console.log("inside suspect no answer");
+								suspectActivityCount++;
+								suspectNoAnswerChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-IN CONTACT"
+							) {
+								console.log("inside SUSPECT-IN CONTACT");
+								suspectActivityCount++;
+								suspectInContactChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							}
+						}
+					} else if (count > 0 && oldcustInternalID != custInternalID) {
+						if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+							oldcustStatus != "SUSPECT-PARKING LOT" &&
+							oldcustStatus != "SUSPECT-LOST" &&
+							oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+							oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+							oldcustStatus != "SUSPECT-QUALIFIED" &&
+							oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+							oldcustStatus != "SUSPECT-VALIDATED" &&
+							oldcustStatus != "SUSPECT-NO ANSWER" &&
+							oldcustStatus != "SUSPECT-IN CONTACT" &&
+							oldcustStatus != "SUSPECT-UNQUALIFIED"
+						) {
+							suspectDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldemail48h,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectChildDataSet,
+							]);
+
+							csvSuspectDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldemail48h,
+								oldDaysOpen,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+								oldcustStatus == "SUSPECT-LOST")
+						) {
+							suspectLostDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateProspectWon,
+								olddateLeadLost,
+								oldemail48h,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldAvgInvoiceValue,
+								oldsalesRepText,
+								suspectLostChildDataSet,
+							]);
+							csvSuspectLostDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateProspectWon,
+								olddateLeadLost,
+								oldemail48h,
+								oldDaysOpen,
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldAvgInvoiceValue,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-PARKING LOT"
+						) {
+							suspectOffPeakDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+								suspectOffPeakChildDataSet,
+							]);
+							csvSuspectOffPeakDataSet.push([
+								,
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								oldDaysOpen,
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+						) {
+							suspectOOTDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+								suspectOOTChildDataSet,
+							]);
+
+							csvSuspectOOTDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								oldDaysOpen,
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							(oldcustStatus == "SUSPECT-FOLLOW-UP" ||
+								oldcustStatus == "SUSPECT-LPO FOLLOW-UP")
+						) {
+							suspectFollowUpDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+								suspectFollowUpChildDataSet,
+							]);
+
+							csvSuspectFollowUpDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldProdWeeklyUsage,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldquoteSentDate,
+								olddateLeadReassigned,
+								olddateLeadLost,
+								oldemail48h,
+								oldDaysOpen,
+								oldCancellationReason,
+								oldMonthServiceValue,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-QUALIFIED"
+						) {
+							suspectQualifiedDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectQualifiedChildDataSet,
+							]);
+
+							csvSuspectQualifiedDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldDaysOpen,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-UNQUALIFIED"
+						) {
+							suspectUnqualifiedDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectQualifiedChildDataSet,
+							]);
+
+							csvSuspectQualifiedDataSet.push([
+								oldcustInternalID,
+								oldcustEntityID,
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldDaysOpen,
+								oldsalesRepText,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-VALIDATED"
+						) {
+							suspectValidatedDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldDateLPOValidated,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectQualifiedChildDataSet,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-NO ANSWER"
+						) {
+							suspectNoAnswerDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectNoAnswerChildDataSet,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-IN CONTACT"
+						) {
+							suspectInContactDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectInContactChildDataSet,
+							]);
+						}
+						prospectChildDataSet = [];
+						prospectOpportunityChildDataSet = [];
+						prospectQuoteSentChildDataSet = [];
+						prospectBoxSentChildDataSet = [];
+						suspectChildDataSet = [];
+						suspectFollowUpChildDataSet = [];
+						suspectLostChildDataSet = [];
+						suspectOOTChildDataSet = [];
+						suspectQualifiedChildDataSet = [];
+						suspectUnqualifiedChildDataSet = [];
+						suspectOffPeakChildDataSet = [];
+						suspectNoAnswerChildDataSet = [];
+						suspectInContactChildDataSet = [];
+
+						if (!isNullorEmpty(tasksInternalID)) {
+							if (
+								custStage == "SUSPECT" &&
+								custStatus != "SUSPECT-CUSTOMER - LOST" &&
+								custStatus != "SUSPECT-PARKING LOT" &&
+								custStatus != "SUSPECT-LOST" &&
+								custStatus != "SUSPECT-OUT OF TERRITORY" &&
+								custStatus != "SUSPECT-FOLLOW-UP" &&
+								custStatus != "SUSPECT-QUALIFIED" &&
+								custStatus != "SUSPECT-LPO FOLLOW-UP" &&
+								custStatus != "SUSPECT-NO ANSWER" &&
+								custStatus != "SUSPECT-IN CONTACT"
+							) {
+								suspectActivityCount++;
+								suspectChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-CUSTOMER - LOST" ||
+									custStatus == "SUSPECT-LOST")
+							) {
+								suspectActivityCount++;
+								suspectLostChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-PARKING LOT"
+							) {
+								suspectActivityCount++;
+								suspectOffPeakChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-OUT OF TERRITORY"
+							) {
+								suspectActivityCount++;
+								suspectOOTChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								(custStatus == "SUSPECT-FOLLOW-UP" ||
+									custStatus == "SUSPECT-LPO FOLLOW-UP")
+							) {
+								suspectActivityCount++;
+								suspectFollowUpChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-QUALIFIED"
+							) {
+								suspectActivityCount++;
+								suspectQualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-UNQUALIFIED"
+							) {
+								suspectActivityCount++;
+								suspectUnqualifiedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-VALIDATED"
+							) {
+								suspectActivityCount++;
+								suspectValidatedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-NO ANSWER"
+							) {
+								suspectActivityCount++;
+								suspectNoAnswerChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-IN CONTACT"
+							) {
+								suspectActivityCount++;
+								suspectInContactChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							}
+						}
+					}
+					console.log(
+						"suspectInContactChildDataSet: " + suspectInContactChildDataSet
+					);
+					oldcustInternalID = custInternalID;
+					oldcustEntityID = custEntityID;
+					oldcustName = custName;
+					oldzeeID = zeeID;
+					oldzeeName = zeeName;
+					oldcustStage = custStage;
+					oldcustStatus = custStatus;
+					oldCustStatusId = custStatusId;
+					olddateLeadEntered = dateLeadEntered;
+					oldquoteSentDate = quoteSentDate;
+					olddateLeadLost = dateLeadLost;
+					olddateLeadinContact = dateLeadinContact;
+					olddateProspectWon = dateProspectWon;
+					oldDateLPOValidated = dateLPOValidated;
+					olddateLeadReassigned = dateLeadReassigned;
+					oldsalesRepId = salesRepId;
+					oldsalesRepText = salesRepText;
+					oldemail48h = email48h;
+					oldDaysOpen = daysOpen;
+					oldCancellationReason = cancellationReason;
+					oldSource = source;
+					oldProdWeeklyUsage = productWeeklyUsage;
+					oldAutoSignUp = autoSignUp;
+					oldPreviousCarrier = previousCarrier;
+					oldMonthServiceValue = monthlyServiceValue;
+					oldAvgInvoiceValue = avgInvoiceValue;
+					count++;
+					return true;
+				});
+			console.log(
+				"suspectInContactChildDataSet: " + suspectInContactChildDataSet
+			);
+			if (count > 0) {
+				if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+					oldcustStatus != "SUSPECT-PARKING LOT" &&
+					oldcustStatus != "SUSPECT-LOST" &&
+					oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+					oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+					oldcustStatus != "SUSPECT-QUALIFIED" &&
+					oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+					oldcustStatus != "SUSPECT-VALIDATED" &&
+					oldcustStatus != "SUSPECT-NO ANSWER" &&
+					oldcustStatus != "SUSPECT-IN CONTACT" &&
+					oldcustStatus != "SUSPECT-UNQUALIFIED"
+				) {
+					suspectDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectChildDataSet,
+					]);
+
+					csvSuspectDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldemail48h,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+						oldcustStatus == "SUSPECT-LOST")
+				) {
+					suspectLostDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateProspectWon,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldAvgInvoiceValue,
+						oldsalesRepText,
+						suspectLostChildDataSet,
+					]);
+
+					csvSuspectLostDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateProspectWon,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldAvgInvoiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-PARKING LOT"
+				) {
+					suspectOffPeakDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectOffPeakChildDataSet,
+					]);
+
+					csvSuspectOffPeakDataSet.push([
+						,
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-QUALIFIED"
+				) {
+					suspectQualifiedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
+
+					csvSuspectQualifiedDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-UNQUALIFIED"
+				) {
+					suspectUnqualifiedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
+
+					csvSuspectQualifiedDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-VALIDATED"
+				) {
+					suspectValidatedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDateLPOValidated,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-NO ANSWER"
+				) {
+					suspectNoAnswerDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectNoAnswerChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-IN CONTACT"
+				) {
+					suspectInContactDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectInContactChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+				) {
+					suspectOOTDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectOOTChildDataSet,
+					]);
+
+					csvSuspectOOTDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-FOLLOW-UP"
+				) {
+					suspectFollowUpDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectFollowUpChildDataSet,
+					]);
+
+					csvSuspectFollowUpDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				}
+			}
+		} else {
+			console.log("Over 1000 leads under the SUSPECTS");
+			var val1 = currentRecord.get();
+			var page_no = val1.getValue({
+				fieldId: "custpage_page_no",
+			});
+
+			var totalPageCount = parseInt(websiteSuspectsLeadsReportingSearchCount / 1000) + 1;
+			var rangeStart = (parseInt(page_no) - 1) * 1001;
+			var rangeEnd = rangeStart + 1000;
+
+			val1.setValue({
+				fieldId: "custpage_total_page_no",
+				value: totalPageCount,
+			});
+
+			var suspectsResultSet = websiteSuspectsLeadsReportingSearch
+				.run()
+				.getRange({
+					start: rangeStart,
+					end: rangeEnd,
+				});
+
+			console.log("Over 1000 leads under the SUSPECTS: ", suspectsResultSet.length);
+
+			for (var i = 0; i < suspectsResultSet.length; i++) {
+				var custInternalID = suspectsResultSet[i].getValue({
 					name: "internalid",
 					summary: "GROUP",
 				});
-				var custEntityID = suspectsResultSet.getValue({
+				var custEntityID = suspectsResultSet[i].getValue({
 					name: "entityid",
 					summary: "GROUP",
 				});
-				var custName = suspectsResultSet.getValue({
+				var custName = suspectsResultSet[i].getValue({
 					name: "companyname",
 					summary: "GROUP",
 				});
-				var zeeID = suspectsResultSet.getValue({
+				var zeeID = suspectsResultSet[i].getValue({
 					name: "partner",
 					summary: "GROUP",
 				});
-				var zeeName = suspectsResultSet.getText({
+				var zeeName = suspectsResultSet[i].getText({
 					name: "partner",
 					summary: "GROUP",
 				});
 
-				var custStage = suspectsResultSet
+				var custStage = suspectsResultSet[i]
 					.getText({
 						name: "stage",
 						summary: "GROUP",
 					})
 					.toUpperCase();
 
-				var custStatusId = suspectsResultSet.getValue({
+				var custStatusId = suspectsResultSet[i].getValue({
 					name: "entitystatus",
 					summary: "GROUP",
 				});
 
-				var custStatus = suspectsResultSet
+				var custStatus = suspectsResultSet[i]
 					.getText({
 						name: "entitystatus",
 						summary: "GROUP",
 					})
 					.toUpperCase();
 
-				var dateLeadEntered = suspectsResultSet.getValue({
+				var dateLeadEntered = suspectsResultSet[i].getValue({
 					name: "custentity_date_lead_entered",
 					summary: "GROUP",
 				});
 
-				var quoteSentDate = suspectsResultSet.getValue({
+				var quoteSentDate = suspectsResultSet[i].getValue({
 					name: "custentity_date_lead_quote_sent",
 					summary: "GROUP",
 				});
 
-				var dateLeadLost = suspectsResultSet.getValue({
+				var dateLeadLost = suspectsResultSet[i].getValue({
 					name: "custentity_date_lead_lost",
 					summary: "GROUP",
 				});
-				var dateLeadinContact = suspectsResultSet.getValue({
+				var dateLeadinContact = suspectsResultSet[i].getValue({
 					name: "custentity_date_prospect_in_contact",
 					summary: "GROUP",
 				});
 
-				var dateProspectWon = suspectsResultSet.getValue({
+				var dateProspectWon = suspectsResultSet[i].getValue({
 					name: "custentity_date_prospect_opportunity",
 					summary: "GROUP",
 				});
 
-				var dateLeadReassigned = suspectsResultSet.getValue({
+				var dateLeadReassigned = suspectsResultSet[i].getValue({
 					name: "custentity_date_suspect_reassign",
 					summary: "GROUP",
 				});
 
-				var salesRepId = suspectsResultSet.getValue({
+				var salesRepId = suspectsResultSet[i].getValue({
 					name: "custrecord_sales_assigned",
 					join: "CUSTRECORD_SALES_CUSTOMER",
 					summary: "GROUP",
 				});
-				var salesRepText = suspectsResultSet.getText({
+				var salesRepText = suspectsResultSet[i].getText({
 					name: "custrecord_sales_assigned",
 					join: "CUSTRECORD_SALES_CUSTOMER",
 					summary: "GROUP",
 				});
 
-				var email48h = suspectsResultSet.getText({
+				var email48h = suspectsResultSet[i].getText({
 					name: "custentity_48h_email_sent",
 					summary: "GROUP",
 				});
 
-				var daysOpen = suspectsResultSet.getValue({
+				var daysOpen = suspectsResultSet[i].getValue({
 					name: "formulanumeric",
 					summary: "GROUP",
 				});
 
-				var cancellationReason = suspectsResultSet.getText({
+				var cancellationReason = suspectsResultSet[i].getText({
 					name: "custentity_service_cancellation_reason",
 					summary: "GROUP",
 				});
 
-				var source = suspectsResultSet.getText({
+				var source = suspectsResultSet[i].getText({
 					name: "leadsource",
 					summary: "GROUP",
 				});
 
-				var productWeeklyUsage = suspectsResultSet.getText({
+				var productWeeklyUsage = suspectsResultSet[i].getText({
 					name: "custentity_form_mpex_usage_per_week",
 					summary: "GROUP",
 				});
 
-				var autoSignUp = suspectsResultSet.getValue({
+				var autoSignUp = suspectsResultSet[i].getValue({
 					name: "custentity_auto_sign_up",
 					summary: "GROUP",
 				});
 
-				var previousCarrier = suspectsResultSet.getText({
+				var previousCarrier = suspectsResultSet[i].getText({
 					name: "custentity_previous_carrier",
 					summary: "GROUP",
 				});
 
-				var monthlyServiceValue = suspectsResultSet.getValue({
+				var monthlyServiceValue = suspectsResultSet[i].getValue({
 					name: "custentity_cust_monthly_service_value",
 					summary: "GROUP",
 				});
 
-				var avgInvoiceValue = suspectsResultSet.getValue({
+				var avgInvoiceValue = suspectsResultSet[i].getValue({
 					name: "total",
 					join: "transaction",
 					summary: "AVG",
 				});
 
-				var dateLPOValidated = suspectsResultSet.getValue({
+				var dateLPOValidated = suspectsResultSet[i].getValue({
 					name: "custentity_date_lpo_validated",
 					summary: "GROUP",
 				});
 
-				var tasksInternalID = suspectsResultSet.getValue({
+				var tasksInternalID = suspectsResultSet[i].getValue({
 					name: "internalid",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskDate = suspectsResultSet.getValue({
+				var taskDate = suspectsResultSet[i].getValue({
 					name: "duedate",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskTitle = suspectsResultSet.getValue({
+				var taskTitle = suspectsResultSet[i].getValue({
 					name: "title",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskAssignedTo = suspectsResultSet.getText({
+				var taskAssignedTo = suspectsResultSet[i].getText({
 					name: "assigned",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskAssignedTo = suspectsResultSet.getText({
+				var taskAssignedTo = suspectsResultSet[i].getText({
 					name: "assigned",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskStatus = suspectsResultSet.getText({
+				var taskStatus = suspectsResultSet[i].getText({
 					name: "status",
 					join: "task",
 					summary: "GROUP",
 				});
-				var taskComment = suspectsResultSet.getText({
+				var taskComment = suspectsResultSet[i].getText({
 					name: "message",
 					join: "task",
 					summary: "GROUP",
@@ -27919,10 +29977,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -27931,10 +29989,10 @@ define([
 							olddateLeadEntered,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectChildDataSet,
 						]);
@@ -27961,10 +30019,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -27977,10 +30035,10 @@ define([
 							olddateLeadLost,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldCancellationReason,
 							oldMonthServiceValue,
 							oldAvgInvoiceValue,
@@ -28015,10 +30073,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28031,10 +30089,10 @@ define([
 							olddateLeadLost,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldCancellationReason,
 							oldMonthServiceValue,
 							oldsalesRepText,
@@ -28068,10 +30126,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28084,10 +30142,10 @@ define([
 							olddateLeadLost,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldCancellationReason,
 							oldMonthServiceValue,
 							oldsalesRepText,
@@ -28122,10 +30180,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28138,10 +30196,10 @@ define([
 							olddateLeadLost,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldCancellationReason,
 							oldMonthServiceValue,
 							oldsalesRepText,
@@ -28175,10 +30233,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28186,10 +30244,10 @@ define([
 							oldPreviousCarrier,
 							olddateLeadEntered,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectQualifiedChildDataSet,
 						]);
@@ -28214,10 +30272,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28225,10 +30283,10 @@ define([
 							oldPreviousCarrier,
 							olddateLeadEntered,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectQualifiedChildDataSet,
 						]);
@@ -28253,10 +30311,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28265,10 +30323,10 @@ define([
 							olddateLeadEntered,
 							oldDateLPOValidated,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectQualifiedChildDataSet,
 						]);
@@ -28280,10 +30338,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28291,10 +30349,10 @@ define([
 							oldPreviousCarrier,
 							olddateLeadEntered,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectNoAnswerChildDataSet,
 						]);
@@ -28306,10 +30364,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -28317,10 +30375,10 @@ define([
 							oldPreviousCarrier,
 							olddateLeadEntered,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldsalesRepText,
 							suspectInContactChildDataSet,
 						]);
@@ -28513,438 +30571,438 @@ define([
 				oldMonthServiceValue = monthlyServiceValue;
 				oldAvgInvoiceValue = avgInvoiceValue;
 				count++;
-				return true;
-			});
-		console.log(
-			"suspectInContactChildDataSet: " + suspectInContactChildDataSet
-		);
-		if (count > 0) {
-			if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
-				oldcustStatus != "SUSPECT-PARKING LOT" &&
-				oldcustStatus != "SUSPECT-LOST" &&
-				oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
-				oldcustStatus != "SUSPECT-FOLLOW-UP" &&
-				oldcustStatus != "SUSPECT-QUALIFIED" &&
-				oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
-				oldcustStatus != "SUSPECT-VALIDATED" &&
-				oldcustStatus != "SUSPECT-NO ANSWER" &&
-				oldcustStatus != "SUSPECT-IN CONTACT" &&
-				oldcustStatus != "SUSPECT-UNQUALIFIED"
-			) {
-				suspectDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldemail48h,
-					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectChildDataSet,
-				]);
+			}
 
-				csvSuspectDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldemail48h,
-					oldDaysOpen,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
-					oldcustStatus == "SUSPECT-LOST")
-			) {
-				suspectLostDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+			if (count > 0) {
+				if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus != "SUSPECT-CUSTOMER - LOST" &&
+					oldcustStatus != "SUSPECT-PARKING LOT" &&
+					oldcustStatus != "SUSPECT-LOST" &&
+					oldcustStatus != "SUSPECT-OUT OF TERRITORY" &&
+					oldcustStatus != "SUSPECT-FOLLOW-UP" &&
+					oldcustStatus != "SUSPECT-QUALIFIED" &&
+					oldcustStatus != "SUSPECT-LPO FOLLOW-UP" &&
+					oldcustStatus != "SUSPECT-VALIDATED" &&
+					oldcustStatus != "SUSPECT-NO ANSWER" &&
+					oldcustStatus != "SUSPECT-IN CONTACT" &&
+					oldcustStatus != "SUSPECT-UNQUALIFIED"
+				) {
+					suspectDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateProspectWon,
-					olddateLeadLost,
-					oldemail48h,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldemail48h,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldAvgInvoiceValue,
-					oldsalesRepText,
-					suspectLostChildDataSet,
-				]);
+						oldsalesRepText,
+						suspectChildDataSet,
+					]);
 
-				csvSuspectLostDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateProspectWon,
-					olddateLeadLost,
-					oldemail48h,
-					oldDaysOpen,
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldAvgInvoiceValue,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-PARKING LOT"
-			) {
-				suspectOffPeakDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					csvSuspectDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldemail48h,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					(oldcustStatus == "SUSPECT-CUSTOMER - LOST" ||
+						oldcustStatus == "SUSPECT-LOST")
+				) {
+					suspectLostDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateProspectWon,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-					suspectOffPeakChildDataSet,
-				]);
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldAvgInvoiceValue,
+						oldsalesRepText,
+						suspectLostChildDataSet,
+					]);
 
-				csvSuspectOffPeakDataSet.push([
-					,
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					oldDaysOpen,
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-QUALIFIED"
-			) {
-				suspectQualifiedDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					csvSuspectLostDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateProspectWon,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldAvgInvoiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-PARKING LOT"
+				) {
+					suspectOffPeakDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectQualifiedChildDataSet,
-				]);
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectOffPeakChildDataSet,
+					]);
 
-				csvSuspectQualifiedDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldDaysOpen,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-UNQUALIFIED"
-			) {
-				suspectUnqualifiedDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					csvSuspectOffPeakDataSet.push([
+						,
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-QUALIFIED"
+				) {
+					suspectQualifiedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectQualifiedChildDataSet,
-				]);
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
 
-				csvSuspectQualifiedDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldDaysOpen,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-VALIDATED"
-			) {
-				suspectValidatedDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					csvSuspectQualifiedDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-UNQUALIFIED"
+				) {
+					suspectUnqualifiedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldDateLPOValidated,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectQualifiedChildDataSet,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-NO ANSWER"
-			) {
-				suspectNoAnswerDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectNoAnswerChildDataSet,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-IN CONTACT"
-			) {
-				suspectInContactDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldsalesRepText,
-					suspectInContactChildDataSet,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-OUT OF TERRITORY"
-			) {
-				suspectOOTDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-					suspectOOTChildDataSet,
-				]);
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
 
-				csvSuspectOOTDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					oldDaysOpen,
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-				]);
-			} else if (
-				oldcustStage == "SUSPECT" &&
-				oldcustStatus == "SUSPECT-FOLLOW-UP"
-			) {
-				suspectFollowUpDataSet.push([
-					"",
-					oldcustInternalID,
-					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+					csvSuspectQualifiedDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDaysOpen,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-VALIDATED"
+				) {
+					suspectValidatedDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
 						oldcustInternalID +
 						'" target="_blank" style="">' +
 						oldcustEntityID +
 						"</a>",
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					'<input type="button" value="' +
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDateLPOValidated,
+						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-					suspectFollowUpChildDataSet,
-				]);
+						oldsalesRepText,
+						suspectQualifiedChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-NO ANSWER"
+				) {
+					suspectNoAnswerDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectNoAnswerChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-IN CONTACT"
+				) {
+					suspectInContactDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectInContactChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-OUT OF TERRITORY"
+				) {
+					suspectOOTDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectOOTChildDataSet,
+					]);
 
-				csvSuspectFollowUpDataSet.push([
-					oldcustInternalID,
-					oldcustEntityID,
-					oldcustName,
-					oldzeeName,
-					oldcustStatus,
-					oldSource,
-					oldProdWeeklyUsage,
-					oldPreviousCarrier,
-					olddateLeadEntered,
-					oldquoteSentDate,
-					olddateLeadReassigned,
-					olddateLeadLost,
-					oldemail48h,
-					oldDaysOpen,
-					oldCancellationReason,
-					oldMonthServiceValue,
-					oldsalesRepText,
-				]);
+					csvSuspectOOTDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-FOLLOW-UP"
+				) {
+					suspectFollowUpDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+						suspectFollowUpChildDataSet,
+					]);
+
+					csvSuspectFollowUpDataSet.push([
+						oldcustInternalID,
+						oldcustEntityID,
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldProdWeeklyUsage,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldquoteSentDate,
+						olddateLeadReassigned,
+						olddateLeadLost,
+						oldemail48h,
+						oldDaysOpen,
+						oldCancellationReason,
+						oldMonthServiceValue,
+						oldsalesRepText,
+					]);
+				}
 			}
 		}
+
+
 		// } else {
 		// 	console.log("websiteSuspectsLeadsReportingSearch without activity");
 		// 	websiteSuspectsLeadsReportingSearch
@@ -30253,10 +32311,19 @@ define([
 		console.log("suspectInContactDataSet: " + suspectInContactDataSet);
 		console.log("suspectLostDataSet: " + suspectLostDataSet);
 
-		var websiteProspectLeadsReportingSearch = search.load({
-			type: "customer",
-			id: "customsearch_leads_reporting_5_2", //Sales Dashboard - Leads - Prospects - Reporting V2
-		});
+		//! PROSPECT LEADS REPORTING SEARCH
+		if (sales_activity_notes == 1) {
+			var websiteProspectLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2", //Sales Dashboard - Leads - Prospects - Reporting V2
+			});
+		} else {
+			var websiteProspectLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_3", //Sales Dashboard - Leads - Prospects - Reporting V2 - No Activity
+			});
+		}
+
 
 		websiteProspectLeadsReportingSearch.filters.push(
 			search.createFilter({
@@ -30637,7 +32704,7 @@ define([
 
 		console.log(
 			"websiteProspectLeadsReportingSearchCount: " +
-				websiteProspectLeadsReportingSearchCount
+			websiteProspectLeadsReportingSearchCount
 		);
 		var count = 0;
 
@@ -31478,12 +33545,12 @@ define([
 									console.log("source count (s): " + s);
 									console.log(
 										"lastAssigned[p].details[0].source[s].name: " +
-											lastAssigned[p].details[0].source[s].name
+										lastAssigned[p].details[0].source[s].name
 									);
 									console.log(
 										"lastAssigned[p].details[0].source[s].name == oldSource: " +
-											lastAssigned[p].details[0].source[s].name ==
-											oldSource
+										lastAssigned[p].details[0].source[s].name ==
+										oldSource
 									);
 									if (lastAssigned[p].details[0].source[s].name == oldSource) {
 										newRepSource = false;
@@ -31780,10 +33847,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -31794,10 +33861,10 @@ define([
 							oldquoteSentDate,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldMonthServiceValue,
 							oldsalesRepText,
 							prospectChildDataSet,
@@ -31838,10 +33905,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -31852,10 +33919,10 @@ define([
 							oldquoteSentDate,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldMonthServiceValue,
 							oldsalesRepText,
 							prospectQuoteSentChildDataSet,
@@ -31895,10 +33962,10 @@ define([
 							"",
 							oldcustInternalID,
 							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-								oldcustInternalID +
-								'" target="_blank" style="">' +
-								oldcustEntityID +
-								"</a>",
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
 							oldcustName,
 							oldzeeName,
 							oldcustStatus,
@@ -31909,10 +33976,10 @@ define([
 							oldquoteSentDate,
 							oldemail48h,
 							'<input type="button" value="' +
-								oldDaysOpen +
-								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-								oldcustInternalID +
-								'" style="background-color: #095C7B;border-radius: 30px">',
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldMonthServiceValue,
 							oldsalesRepText,
 							prospectBoxSentChildDataSet,
@@ -32137,12 +34204,12 @@ define([
 							console.log("source count (s): " + s);
 							console.log(
 								"lastAssigned[p].details[0].source[s].name: " +
-									lastAssigned[p].details[0].source[s].name
+								lastAssigned[p].details[0].source[s].name
 							);
 							console.log(
 								"lastAssigned[p].details[0].source[s].name == oldSource: " +
-									lastAssigned[p].details[0].source[s].name ==
-									oldSource
+								lastAssigned[p].details[0].source[s].name ==
+								oldSource
 							);
 							if (lastAssigned[p].details[0].source[s].name == oldSource) {
 								newRepSource = false;
@@ -32431,10 +34498,10 @@ define([
 					"",
 					oldcustInternalID,
 					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
+					oldcustInternalID +
+					'" target="_blank" style="">' +
+					oldcustEntityID +
+					"</a>",
 					oldcustName,
 					oldzeeName,
 					oldcustStatus,
@@ -32445,10 +34512,10 @@ define([
 					oldquoteSentDate,
 					oldemail48h,
 					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldDaysOpen +
+					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+					oldcustInternalID +
+					'" style="background-color: #095C7B;border-radius: 30px">',
 					oldMonthServiceValue,
 					oldsalesRepText,
 					prospectChildDataSet,
@@ -32489,10 +34556,10 @@ define([
 					"",
 					oldcustInternalID,
 					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
+					oldcustInternalID +
+					'" target="_blank" style="">' +
+					oldcustEntityID +
+					"</a>",
 					oldcustName,
 					oldzeeName,
 					oldcustStatus,
@@ -32503,10 +34570,10 @@ define([
 					oldquoteSentDate,
 					oldemail48h,
 					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldDaysOpen +
+					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+					oldcustInternalID +
+					'" style="background-color: #095C7B;border-radius: 30px">',
 					oldMonthServiceValue,
 					oldsalesRepText,
 					prospectQuoteSentChildDataSet,
@@ -32546,10 +34613,10 @@ define([
 					"",
 					oldcustInternalID,
 					'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
-						oldcustInternalID +
-						'" target="_blank" style="">' +
-						oldcustEntityID +
-						"</a>",
+					oldcustInternalID +
+					'" target="_blank" style="">' +
+					oldcustEntityID +
+					"</a>",
 					oldcustName,
 					oldzeeName,
 					oldcustStatus,
@@ -32560,10 +34627,10 @@ define([
 					oldquoteSentDate,
 					oldemail48h,
 					'<input type="button" value="' +
-						oldDaysOpen +
-						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-						oldcustInternalID +
-						'" style="background-color: #095C7B;border-radius: 30px">',
+					oldDaysOpen +
+					'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+					oldcustInternalID +
+					'" style="background-color: #095C7B;border-radius: 30px">',
 					oldMonthServiceValue,
 					oldsalesRepText,
 					prospectBoxSentChildDataSet,
@@ -32606,7 +34673,7 @@ define([
 				if (lastAssigned[x].status[0].type[y].id == 50) {
 					console.log(
 						"before series_data_quote_sent: " +
-							JSON.stringify(series_data_quote_sent)
+						JSON.stringify(series_data_quote_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_quote_sent.length; j++) {
@@ -32642,7 +34709,7 @@ define([
 				if (lastAssigned[x].status[0].type[y].id == 72) {
 					console.log(
 						"before series_data_box_sent: " +
-							JSON.stringify(series_data_box_sent)
+						JSON.stringify(series_data_box_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_box_sent.length; j++) {
@@ -32678,7 +34745,7 @@ define([
 				if (lastAssigned[x].status[0].type[y].id == 58) {
 					console.log(
 						"before series_data_opportunities: " +
-							JSON.stringify(series_data_opportunities)
+						JSON.stringify(series_data_opportunities)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_opportunities.length; j++) {
@@ -32714,7 +34781,7 @@ define([
 		}
 		console.log(
 			"lastAssignedTeamMemberCategories: " +
-				JSON.stringify(lastAssignedTeamMemberCategories)
+			JSON.stringify(lastAssignedTeamMemberCategories)
 		);
 		console.log(
 			"series_data_quote_sent: " + JSON.stringify(series_data_quote_sent)
@@ -32770,7 +34837,7 @@ define([
 				if (customerCampaign[x].status[0].type[y].id == 50) {
 					console.log(
 						"before series_data_campaign_quote_sent: " +
-							JSON.stringify(series_data_campaign_quote_sent)
+						JSON.stringify(series_data_campaign_quote_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_quote_sent.length; j++) {
@@ -32806,7 +34873,7 @@ define([
 				if (customerCampaign[x].status[0].type[y].id == 72) {
 					console.log(
 						"before series_data_campaign_box_sent: " +
-							JSON.stringify(series_data_campaign_box_sent)
+						JSON.stringify(series_data_campaign_box_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_box_sent.length; j++) {
@@ -32842,7 +34909,7 @@ define([
 				if (customerCampaign[x].status[0].type[y].id == 58) {
 					console.log(
 						"before series_data_campaign_opportunities: " +
-							JSON.stringify(series_data_campaign_opportunities)
+						JSON.stringify(series_data_campaign_opportunities)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_opportunities.length; j++) {
@@ -32925,7 +34992,7 @@ define([
 				if (customerSource[x].status[0].type[y].id == 50) {
 					console.log(
 						"before series_data_source_quote_sent: " +
-							JSON.stringify(series_data_source_quote_sent)
+						JSON.stringify(series_data_source_quote_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_quote_sent.length; j++) {
@@ -32961,7 +35028,7 @@ define([
 				if (customerSource[x].status[0].type[y].id == 72) {
 					console.log(
 						"before series_data_source_box_sent: " +
-							JSON.stringify(series_data_source_box_sent)
+						JSON.stringify(series_data_source_box_sent)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_box_sent.length; j++) {
@@ -32997,7 +35064,7 @@ define([
 				if (customerSource[x].status[0].type[y].id == 58) {
 					console.log(
 						"before series_data_source_opportunities: " +
-							JSON.stringify(series_data_source_opportunities)
+						JSON.stringify(series_data_source_opportunities)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_opportunities.length; j++) {
@@ -33402,7 +35469,7 @@ define([
 
 			console.log(
 				"signed customer defaultSearchFilters filters: " +
-					JSON.stringify(defaultSearchFilters)
+				JSON.stringify(defaultSearchFilters)
 			);
 
 			websiteCustomersReportingSearch.filterExpression = defaultSearchFilters;
@@ -34044,12 +36111,12 @@ define([
 									console.log("source count (s): " + s);
 									console.log(
 										"lastAssigned[p].details[0].source[s].name: " +
-											lastAssigned[p].details[0].source[s].name
+										lastAssigned[p].details[0].source[s].name
 									);
 									console.log(
 										"lastAssigned[p].details[0].source[s].name == oldSource: " +
-											lastAssigned[p].details[0].source[s].name ==
-											oldSource
+										lastAssigned[p].details[0].source[s].name ==
+										oldSource
 									);
 									if (lastAssigned[p].details[0].source[s].name == oldSource) {
 										newRepSource = false;
@@ -34478,10 +36545,10 @@ define([
 								oldLPOCommsToCustomer,
 								oldTrialEndDate,
 								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
 								oldMonthServiceValue,
 								oldLeadEnteredByText,
 								currentCustCampaign,
@@ -34508,10 +36575,10 @@ define([
 								oldLPOCommsToCustomer,
 								oldTrialEndDate,
 								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
 								oldMonthServiceValue,
 								oldLeadEnteredByText,
 								currentCustCampaign,
@@ -34542,10 +36609,10 @@ define([
 								// oldemail48h,
 								olddateProspectWon,
 								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
 								oldMonthServiceValue,
 								invoiceServiceTotal.toFixed(2),
 								invoiceProductsTotal.toFixed(2),
@@ -34594,10 +36661,10 @@ define([
 								// oldemail48h,
 								olddateProspectWon,
 								'<input type="button" value="' +
-									oldDaysOpen +
-									'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-									oldcustInternalID +
-									'" style="background-color: #095C7B;border-radius: 30px">',
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
 								oldMonthServiceValue,
 								invoiceServiceTotal.toFixed(2),
 								invoiceProductsTotal.toFixed(2),
@@ -34746,12 +36813,12 @@ define([
 							console.log("source count (s): " + s);
 							console.log(
 								"lastAssigned[p].details[0].source[s].name: " +
-									lastAssigned[p].details[0].source[s].name
+								lastAssigned[p].details[0].source[s].name
 							);
 							console.log(
 								"lastAssigned[p].details[0].source[s].name == oldSource: " +
-									lastAssigned[p].details[0].source[s].name ==
-									oldSource
+								lastAssigned[p].details[0].source[s].name ==
+								oldSource
 							);
 							if (lastAssigned[p].details[0].source[s].name == oldSource) {
 								newRepSource = false;
@@ -35203,10 +37270,10 @@ define([
 						oldLPOCommsToCustomer,
 						oldTrialEndDate,
 						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldMonthServiceValue,
 						oldLeadEnteredByText,
 						currentCustCampaign,
@@ -35233,10 +37300,10 @@ define([
 						oldLPOCommsToCustomer,
 						oldTrialEndDate,
 						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldMonthServiceValue,
 						oldLeadEnteredByText,
 						currentCustCampaign,
@@ -35267,10 +37334,10 @@ define([
 						// oldemail48h,
 						olddateProspectWon,
 						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldMonthServiceValue,
 						invoiceServiceTotal.toFixed(2),
 						invoiceProductsTotal.toFixed(2),
@@ -35319,10 +37386,10 @@ define([
 						// oldemail48h,
 						olddateProspectWon,
 						'<input type="button" value="' +
-							oldDaysOpen +
-							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
-							oldcustInternalID +
-							'" style="background-color: #095C7B;border-radius: 30px">',
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldMonthServiceValue,
 						invoiceServiceTotal.toFixed(2),
 						invoiceProductsTotal.toFixed(2),
@@ -35578,7 +37645,7 @@ define([
 				if (lastAssigned[x].status[0].type[y].id == 32) {
 					console.log(
 						"before series_data_free_trial: " +
-							JSON.stringify(series_data_free_trial)
+						JSON.stringify(series_data_free_trial)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_free_trial.length; j++) {
@@ -35614,7 +37681,7 @@ define([
 				if (lastAssigned[x].status[0].type[y].id == 71) {
 					console.log(
 						"before series_data_trial_pending: " +
-							JSON.stringify(series_data_trial_pending)
+						JSON.stringify(series_data_trial_pending)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_trial_pending.length; j++) {
@@ -35652,7 +37719,7 @@ define([
 		}
 		console.log(
 			"lastAssignedTeamMemberCategories: " +
-				JSON.stringify(lastAssignedTeamMemberCategories)
+			JSON.stringify(lastAssignedTeamMemberCategories)
 		);
 		console.log("series_data_signed: " + JSON.stringify(series_data_signed));
 		plotChartSignedByLastAssigned(
@@ -35706,7 +37773,7 @@ define([
 				) {
 					console.log(
 						"before series_data_campaign_signed: " +
-							JSON.stringify(series_data_campaign_signed)
+						JSON.stringify(series_data_campaign_signed)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_signed.length; j++) {
@@ -35742,7 +37809,7 @@ define([
 				if (customerCampaign[x].status[0].type[y].id == 32) {
 					console.log(
 						"before series_data_campaign_free_trial: " +
-							JSON.stringify(series_data_campaign_free_trial)
+						JSON.stringify(series_data_campaign_free_trial)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_free_trial.length; j++) {
@@ -35778,7 +37845,7 @@ define([
 				if (customerCampaign[x].status[0].type[y].id == 71) {
 					console.log(
 						"before series_data_campaign_trial_pending: " +
-							JSON.stringify(series_data_campaign_trial_pending)
+						JSON.stringify(series_data_campaign_trial_pending)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_campaign_trial_pending.length; j++) {
@@ -35863,7 +37930,7 @@ define([
 				) {
 					console.log(
 						"before series_data_source_signed: " +
-							JSON.stringify(series_data_source_signed)
+						JSON.stringify(series_data_source_signed)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_signed.length; j++) {
@@ -35899,7 +37966,7 @@ define([
 				if (customerSource[x].status[0].type[y].id == 32) {
 					console.log(
 						"before series_data_source_free_trial: " +
-							JSON.stringify(series_data_source_free_trial)
+						JSON.stringify(series_data_source_free_trial)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_free_trial.length; j++) {
@@ -35935,7 +38002,7 @@ define([
 				if (customerSource[x].status[0].type[y].id == 71) {
 					console.log(
 						"before series_data_source_trial_pending: " +
-							JSON.stringify(series_data_source_trial_pending)
+						JSON.stringify(series_data_source_trial_pending)
 					);
 					var status_exists = false;
 					for (var j = 0; j < series_data_source_trial_pending.length; j++) {
@@ -36112,8 +38179,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -36393,8 +38460,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -36554,8 +38621,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -36751,8 +38818,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -37045,8 +39112,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -37241,8 +39308,8 @@ define([
 						return typeof i === "string"
 							? i.replace(/[\$,]/g, "") * 1
 							: typeof i === "number"
-							? i
-							: 0;
+								? i
+								: 0;
 					};
 
 					const formatter = new Intl.NumberFormat("en-AU", {
@@ -37434,8 +39501,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -37606,7 +39673,7 @@ define([
 					$("td", row).css("background-color", "#FF8787");
 				}
 			},
-			footerCallback: function (row, data, start, end, display) {},
+			footerCallback: function (row, data, start, end, display) { },
 		});
 
 		dataTable3.rows().every(function () {
@@ -37738,7 +39805,7 @@ define([
 					$("td", row).css("background-color", "#FF8787");
 				}
 			},
-			footerCallback: function (row, data, start, end, display) {},
+			footerCallback: function (row, data, start, end, display) { },
 		});
 
 		dataTableQualified.rows().every(function () {
@@ -37874,7 +39941,7 @@ define([
 					$("td", row).css("background-color", "#FF8787");
 				}
 			},
-			footerCallback: function (row, data, start, end, display) {},
+			footerCallback: function (row, data, start, end, display) { },
 		});
 
 		dataTableUnqualified.rows().every(function () {
@@ -38013,7 +40080,7 @@ define([
 					$("td", row).css("background-color", "#FF8787");
 				}
 			},
-			footerCallback: function (row, data, start, end, display) {},
+			footerCallback: function (row, data, start, end, display) { },
 		});
 
 		dataTableValidated.rows().every(function () {
@@ -38315,8 +40382,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -38656,8 +40723,8 @@ define([
 					return typeof i === "string"
 						? i.replace(/[\$,]/g, "") * 1
 						: typeof i === "number"
-						? i
-						: 0;
+							? i
+							: 0;
 				};
 
 				const formatter = new Intl.NumberFormat("en-AU", {
@@ -38828,7 +40895,7 @@ define([
 						$("td", row).css("background-color", "#FF8787");
 					}
 				},
-				footerCallback: function (row, data, start, end, display) {},
+				footerCallback: function (row, data, start, end, display) { },
 			}
 		);
 
@@ -38965,7 +41032,7 @@ define([
 					$("td", row).css("background-color", "#FF8787");
 				}
 			},
-			footerCallback: function (row, data, start, end, display) {},
+			footerCallback: function (row, data, start, end, display) { },
 		});
 
 		dataTableSuspectInContact.rows().every(function () {
@@ -39102,7 +41169,7 @@ define([
 				{ title: "Invoice Status" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39145,7 +41212,7 @@ define([
 				{ title: "Invoice Status" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39186,7 +41253,7 @@ define([
 				{ title: "NEW STATUS" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39272,7 +41339,7 @@ define([
 				{ title: "Message" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39313,7 +41380,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 	function createChild3(row) {
@@ -39353,7 +41420,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39394,7 +41461,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39435,7 +41502,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39476,7 +41543,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39517,7 +41584,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -39558,7 +41625,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -41287,89 +43354,89 @@ define([
 	}
 
 	function plotChart(series_data, series_data2, categores) {
-		Highcharts.chart("container_source_preview", {
-			chart: {
-				backgroundColor: "#CFE0CE",
-				zoomType: "xy",
-				type: "column",
-			},
-			title: {
-				text: "Leads - By Lead Entered - Lead Source",
-				style: {
-					fontWeight: "bold",
-					color: "#0B2447",
-					fontSize: "12px",
-				},
-			},
-			xAxis: {
-				categories: categores,
-				crosshair: true,
-				color: "#103D39",
-				style: {
-					fontWeight: "bold",
-				},
-				labels: {
-					style: {
-						fontWeight: "bold",
-						fontSize: "10px",
-					},
-				},
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: "Total Lead Count",
-					style: {
-						fontWeight: "bold",
-						color: "#0B2447",
-						fontSize: "12px",
-					},
-				},
-				stackLabels: {
-					enabled: true,
-					style: {
-						fontWeight: "bold",
-						fontSize: "10px",
-					},
-				},
-				labels: {
-					style: {
-						fontSize: "10px",
-					},
-				},
-			},
-			tooltip: {
-				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
-				style: {
-					fontSize: "10px",
-				},
-			},
-			plotOptions: {
-				column: {
-					stacking: "normal",
-					dataLabels: {
-						enabled: true,
-					},
-				},
-				series: {
-					dataLabels: {
-						enabled: true,
-						align: "right",
-						color: "black",
-						x: -10,
-					},
-					pointPadding: 0.1,
-					groupPadding: 0,
-				},
-			},
-			tooltip: {
-				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
-			},
-			series: series_data,
-		});
+		// Highcharts.chart("container_source_preview", {
+		// 	chart: {
+		// 		backgroundColor: "#CFE0CE",
+		// 		zoomType: "xy",
+		// 		type: "column",
+		// 	},
+		// 	title: {
+		// 		text: "Leads - By Lead Entered - Lead Source",
+		// 		style: {
+		// 			fontWeight: "bold",
+		// 			color: "#0B2447",
+		// 			fontSize: "12px",
+		// 		},
+		// 	},
+		// 	xAxis: {
+		// 		categories: categores,
+		// 		crosshair: true,
+		// 		color: "#103D39",
+		// 		style: {
+		// 			fontWeight: "bold",
+		// 		},
+		// 		labels: {
+		// 			style: {
+		// 				fontWeight: "bold",
+		// 				fontSize: "10px",
+		// 			},
+		// 		},
+		// 	},
+		// 	yAxis: {
+		// 		min: 0,
+		// 		title: {
+		// 			text: "Total Lead Count",
+		// 			style: {
+		// 				fontWeight: "bold",
+		// 				color: "#0B2447",
+		// 				fontSize: "12px",
+		// 			},
+		// 		},
+		// 		stackLabels: {
+		// 			enabled: true,
+		// 			style: {
+		// 				fontWeight: "bold",
+		// 				fontSize: "10px",
+		// 			},
+		// 		},
+		// 		labels: {
+		// 			style: {
+		// 				fontSize: "10px",
+		// 			},
+		// 		},
+		// 	},
+		// 	tooltip: {
+		// 		headerFormat: "<b>{point.key}</b><br/>",
+		// 		pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+		// 		style: {
+		// 			fontSize: "10px",
+		// 		},
+		// 	},
+		// 	plotOptions: {
+		// 		column: {
+		// 			stacking: "normal",
+		// 			dataLabels: {
+		// 				enabled: true,
+		// 			},
+		// 		},
+		// 		series: {
+		// 			dataLabels: {
+		// 				enabled: true,
+		// 				align: "right",
+		// 				color: "black",
+		// 				x: -10,
+		// 			},
+		// 			pointPadding: 0.1,
+		// 			groupPadding: 0,
+		// 		},
+		// 	},
+		// 	tooltip: {
+		// 		headerFormat: "<b>{point.key}</b><br/>",
+		// 		pointFormat:
+		// 			"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+		// 	},
+		// 	series: series_data,
+		// });
 	}
 
 	function plotChartSignedByLastAssigned(series_data, series_data2, categores) {

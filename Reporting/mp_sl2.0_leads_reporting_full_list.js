@@ -149,6 +149,11 @@ define([
 			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
 
+			var page_no = context.request.parameters.page_no;
+			if (isNullorEmpty(page_no)) {
+				page_no = "1";
+			}
+
 			log.debug({
 				title: "leadStatus",
 				details: leadStatus,
@@ -331,7 +336,7 @@ define([
 							campaignArray.indexOf("72") != -1 ||
 							campaignArray.indexOf("69") != -1 ||
 							(campaignArray.indexOf("77") != -1) |
-								(campaignArray.indexOf("76") != -1) ||
+							(campaignArray.indexOf("76") != -1) ||
 							!isNullorEmpty(salesRepArray)
 						) {
 							last_date = null;
@@ -681,75 +686,106 @@ define([
 			);
 			inlineHtml += "</div></div></div></br></br>";
 
-			var showFranchiseeGeneratedLeadsPieChart = false;
-			var showCallForceTasksPieChart = false;
+			// var showFranchiseeGeneratedLeadsPieChart = false;
+			// var showCallForceTasksPieChart = false;
 
-			if (isNullorEmpty(campaign)) {
-				showFranchiseeGeneratedLeadsPieChart = true;
-				showCallForceTasksPieChart = true;
-			} else {
-				if (campaign.indexOf(",") != -1) {
-					var campaignArray = campaign.split(",");
-				} else {
-					var campaignArray = [];
-					campaignArray.push(campaign);
-				}
+			// if (isNullorEmpty(campaign)) {
+			// 	showFranchiseeGeneratedLeadsPieChart = true;
+			// 	showCallForceTasksPieChart = true;
+			// } else {
+			// 	if (campaign.indexOf(",") != -1) {
+			// 		var campaignArray = campaign.split(",");
+			// 	} else {
+			// 		var campaignArray = [];
+			// 		campaignArray.push(campaign);
+			// 	}
 
-				log.debug({
-					title: "campaignArray",
-					details: campaignArray,
-				});
-				log.debug({
-					title: "campaignArray.indexOf('87')",
-					details: campaignArray.indexOf("87"),
-				});
+			// 	log.debug({
+			// 		title: "campaignArray",
+			// 		details: campaignArray,
+			// 	});
+			// 	log.debug({
+			// 		title: "campaignArray.indexOf('87')",
+			// 		details: campaignArray.indexOf("87"),
+			// 	});
 
-				if (campaignArray.indexOf("87") != -1) {
-					showCallForceTasksPieChart = true;
-				}
+			// 	if (campaignArray.indexOf("87") != -1) {
+			// 		showCallForceTasksPieChart = true;
+			// 	}
 
-				if (campaignArray.indexOf("70") != -1) {
-					showFranchiseeGeneratedLeadsPieChart = true;
-				}
-			}
+			// 	if (campaignArray.indexOf("70") != -1) {
+			// 		showFranchiseeGeneratedLeadsPieChart = true;
+			// 	}
+			// }
 
-			if (showFranchiseeGeneratedLeadsPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml +=
-					'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
+			// if (showFranchiseeGeneratedLeadsPieChart == true) {
+			// 	inlineHtml +=
+			// 		'<div class="form-group container scorecard_percentage hide" style="">';
+			// 	inlineHtml += '<div class="row">';
+			// 	inlineHtml += '<div class="col-xs-12">';
+			// 	inlineHtml += '<article class="card">';
+			// 	inlineHtml +=
+			// 		'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
+			// 	inlineHtml +=
+			// 		'<small style="text-align:center;font-size: 12px;"></small>';
+			// 	inlineHtml +=
+			// 		'<div id="container-progress" style="height: 300px"></div>';
+			// 	inlineHtml += "</article>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// }
 
-			if (showCallForceTasksPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-callforce_progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
+			// if (showCallForceTasksPieChart == true) {
+			// 	inlineHtml +=
+			// 		'<div class="form-group container scorecard_percentage hide" style="">';
+			// 	inlineHtml += '<div class="row">';
+			// 	inlineHtml += '<div class="col-xs-12">';
+			// 	inlineHtml += '<article class="card">';
+			// 	inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
+			// 	inlineHtml +=
+			// 		'<small style="text-align:center;font-size: 12px;"></small>';
+			// 	inlineHtml +=
+			// 		'<div id="container-callforce_progress" style="height: 300px"></div>';
+			// 	inlineHtml += "</article>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// }
 
-			inlineHtml += tabsSection(campaign);
+			inlineHtml += tabsSection(page_no, campaign, source,
+				salesrep,
+				lead_entered_by,
+				customer_type,
+				start_date,
+				last_date,
+				date_signed_up_from,
+				date_signed_up_to,
+				date_quote_sent_to,
+				date_quote_sent_from,
+				commencement_start_date,
+				commencement_last_date, leadStatusArray);
 			inlineHtml += dataTable();
+
+			form
+				.addField({
+					id: "custpage_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				}).defaultValue = page_no;
+
+			form
+				.addField({
+					id: "custpage_total_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Total Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				});
 
 			form
 				.addField({
@@ -801,7 +837,7 @@ define([
 					layoutType: ui.FieldLayoutType.STARTROW,
 				}).defaultValue = inlineHtml;
 
-			form.clientScriptFileId = 6826994;
+			form.clientScriptFileId = 7500024;
 
 			context.response.writePage(form);
 		} else {
@@ -1959,8 +1995,266 @@ define([
 		return inlineHtml;
 	}
 
-	function tabsSection(campaign) {
+	function tabsSection(page_no, campaign, source,
+		sales_rep,
+		lead_entered_by,
+		customer_type,
+		date_from,
+		date_to,
+		date_signed_up_from,
+		date_signed_up_to,
+		date_quote_sent_to,
+		date_quote_sent_from,
+		commencement_start_date,
+		commencement_last_date, leadStatusArray) {
 		var inlineHtml = '<div class="tabs_section hide">';
+
+		date_from = dateISOToNetsuite(date_from);
+		date_to = dateISOToNetsuite(date_to);
+		date_signed_up_from = dateISOToNetsuite(date_signed_up_from);
+		date_signed_up_to = dateISOToNetsuite(date_signed_up_to);
+		date_quote_sent_from = dateISOToNetsuite(date_quote_sent_from);
+		date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
+		commencement_start_date = dateISOToNetsuite(commencement_start_date);
+		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+
+		if (role == 1000) {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
+			});
+		} else {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_3", //Sales Dashboard - Website Leads - Suspects with no Tasks - Reporting V6
+			});
+		}
+
+		// }
+
+		websiteSuspectsLeadsReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
+		if (customer_type == "2") {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
+		if (!isNullorEmpty(leadStatusArray)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "entitystatus",
+					join: null,
+					operator: search.Operator.IS,
+					values: leadStatusArray,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(zee)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "partner",
+					join: null,
+					operator: search.Operator.IS,
+					values: zee,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(date_signed_up_from) &&
+			!isNullorEmpty(date_signed_up_to)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: date_signed_up_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+
+		if (!isNullorEmpty(source)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "leadsource",
+					join: null,
+					operator: search.Operator.IS,
+					values: source,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(sales_rep)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_assigned",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.IS,
+					values: sales_rep,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(lead_entered_by)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_lead_entered_by",
+					join: null,
+					operator: search.Operator.IS,
+					values: lead_entered_by,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(campaign)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_campaign",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.ANYOF,
+					values: campaign,
+				})
+			);
+		}
+
+
+		if (
+			!isNullorEmpty(date_quote_sent_from) &&
+			!isNullorEmpty(date_quote_sent_to)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_quote_sent_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_quote_sent_to,
+				})
+			);
+		}
+
+		var websiteSuspectsLeadsReportingSearchCount =
+			websiteSuspectsLeadsReportingSearch.runPaged().count;
+
+		var totalPageCount = parseInt(websiteSuspectsLeadsReportingSearchCount / 1000) + 1;
+
+		var divBreak = Math.ceil(12 / totalPageCount);
 
 		// Tabs headers
 		inlineHtml +=
@@ -1972,35 +2266,35 @@ define([
 		inlineHtml +=
 			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
-		if (isNullorEmpty(campaign)) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
-		} else {
-			if (campaign.indexOf(",") != -1) {
-				var campaignArray = campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(campaign);
-			}
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
+		// if (isNullorEmpty(campaign)) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+		// } else {
+		// 	if (campaign.indexOf(",") != -1) {
+		// 		var campaignArray = campaign.split(",");
+		// 	} else {
+		// 		var campaignArray = [];
+		// 		campaignArray.push(campaign);
+		// 	}
 
-			log.debug({
-				title: "campaignArray",
-				details: campaignArray,
-			});
-			log.debug({
-				title: "campaignArray.indexOf('87')",
-				details: campaignArray.indexOf("87"),
-			});
+		// 	log.debug({
+		// 		title: "campaignArray",
+		// 		details: campaignArray,
+		// 	});
+		// 	log.debug({
+		// 		title: "campaignArray.indexOf('87')",
+		// 		details: campaignArray.indexOf("87"),
+		// 	});
 
-			if (campaignArray.indexOf("87") != -1) {
-				inlineHtml +=
-					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
-			}
-		}
+		// 	if (campaignArray.indexOf("87") != -1) {
+		// 		inlineHtml +=
+		// 			'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
+		// 	}
+		// }
 		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
 		inlineHtml +=
@@ -2018,199 +2312,199 @@ define([
 			details: campaign,
 		});
 
-		if (isNullorEmpty(campaign)) {
-			inlineHtml +=
-				'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+		// if (isNullorEmpty(campaign)) {
+		// 	inlineHtml +=
+		// 		'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
-			inlineHtml += '<figure class="highcharts-figure">';
-			inlineHtml += '<div id="container_callforcetasks"></div>';
-			inlineHtml += "</figure><br></br>";
-			inlineHtml += dataTable("callforcetasks");
-			inlineHtml += "</br>";
-			inlineHtml += dataTable("callForceDateSyncedOutcome");
-			inlineHtml += "</div>";
-		} else {
-			if (campaign.indexOf(",") != -1) {
-				var campaignArray = campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(campaign);
-			}
+		// 	inlineHtml += '<figure class="highcharts-figure">';
+		// 	inlineHtml += '<div id="container_callforcetasks"></div>';
+		// 	inlineHtml += "</figure><br></br>";
+		// 	inlineHtml += dataTable("callforcetasks");
+		// 	inlineHtml += "</br>";
+		// 	inlineHtml += dataTable("callForceDateSyncedOutcome");
+		// 	inlineHtml += "</div>";
+		// } else {
+		// 	if (campaign.indexOf(",") != -1) {
+		// 		var campaignArray = campaign.split(",");
+		// 	} else {
+		// 		var campaignArray = [];
+		// 		campaignArray.push(campaign);
+		// 	}
 
-			log.debug({
-				title: "campaignArray",
-				details: campaignArray,
-			});
-			log.debug({
-				title: "campaignArray.indexOf('87')",
-				details: campaignArray.indexOf("87"),
-			});
+		// 	log.debug({
+		// 		title: "campaignArray",
+		// 		details: campaignArray,
+		// 	});
+		// 	log.debug({
+		// 		title: "campaignArray.indexOf('87')",
+		// 		details: campaignArray.indexOf("87"),
+		// 	});
 
-			if (campaignArray.indexOf("87") != -1) {
-				inlineHtml +=
-					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+		// 	if (campaignArray.indexOf("87") != -1) {
+		// 		inlineHtml +=
+		// 			'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
-				inlineHtml +=
-					'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
-				inlineHtml += dataTable("callForceDateSyncedOutcome");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Call Force Appointments</h2>';
-				inlineHtml += dataTable("callforcetasks");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("callForceOutcomeStatus");
-				inlineHtml += "</br>";
-				inlineHtml += "</div>";
-			}
-		}
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
+		// 		inlineHtml += dataTable("callForceDateSyncedOutcome");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Call Force Appointments</h2>';
+		// 		inlineHtml += dataTable("callforcetasks");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
+		// 		inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
+		// 		inlineHtml += dataTable("callForceOutcomeStatus");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml += "</div>";
+		// 	}
+		// }
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
 
-		// Overview Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
+		// // Overview Tabs headers
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO & LPO-BAU OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
-		if (role != 1000) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
-		}
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO & LPO-BAU OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
+		// if (role != 1000) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
+		// }
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
+		// inlineHtml += '<div class="tab-content">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("preview");
-		inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("preview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("zee_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id=""></div>';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("zee_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id="container_lpo_overview"></div>';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_lpo_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_lpo_source_datacapture_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_lpo_campaign_datacapture_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("lpo_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id="container_lpo_overview"></div>';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_lpo_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_lpo_source_datacapture_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_lpo_campaign_datacapture_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("lpo_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("salesrep_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("salesrep_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("datacapture_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("datacapture_overview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
+		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="customer">';
 
 		// Customers Tabs headers
 		inlineHtml +=
@@ -2445,6 +2739,69 @@ define([
 		inlineHtml +=
 			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
 		inlineHtml += "</style>";
+
+		inlineHtml +=
+			'<div class="form-group container zee_available_buttons_section">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml +=
+			'<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' +
+			websiteSuspectsLeadsReportingSearchCount +
+			"</b> </br> Pages: </br></div>";
+
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container zee_available_buttons_section">';
+		inlineHtml += '<div class="row">';
+
+		var rangeStart = 0;
+		var rangeEnd = 0;
+
+		for (var i = 0; i < totalPageCount; i++) {
+			if (i == totalPageCount - 1 || websiteSuspectsLeadsReportingSearchCount < 1000) {
+				if (websiteSuspectsLeadsReportingSearchCount < 1000) {
+				} else {
+					rangeStart = rangeEnd;
+				}
+				rangeEnd = websiteSuspectsLeadsReportingSearchCount;
+			} else {
+				rangeStart = (parseInt(i + 1) - 1) * 1000;
+				if (rangeStart != 1000) {
+					rangeEnd = rangeStart + 1000;
+				} else {
+					rangeEnd = websiteSuspectsLeadsReportingSearchCount - rangeStart - 1;
+					if (rangeEnd > 1000) {
+						rangeEnd = parseInt(i + 1) * 1000;
+					}
+				}
+			}
+
+			if (page_no == i + 1) {
+				inlineHtml +=
+					'<div class="col-xs-' +
+					divBreak +
+					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;background-color:#095C7B !important;" value="' +
+					(i + 1) +
+					'" class="form-control btn btn-info page_number" data-id="' +
+					(i + 1) +
+					'" /></br></div>';
+			} else {
+				inlineHtml +=
+					'<div class="col-xs-' +
+					divBreak +
+					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
+					(i + 1) +
+					'" class="form-control btn btn-info page_number" data-id="' +
+					(i + 1) +
+					'" /></br></div>';
+			}
+		}
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+
 
 		inlineHtml +=
 			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
@@ -2807,18 +3164,18 @@ define([
 			const financialYearStart = moment().month(6).startOf("month"); // April 1st
 			today.isBefore(financialYearStart)
 				? returnDate.push({
-						startDate: financialYearStart
-							.subtract(1, "years")
-							.format(dateFormat), // Previous financial year
-						endDate: today.clone().endOf("month").format(dateFormat), // Last day of current month
-				  })
+					startDate: financialYearStart
+						.subtract(1, "years")
+						.format(dateFormat), // Previous financial year
+					endDate: today.clone().endOf("month").format(dateFormat), // Last day of current month
+				})
 				: returnDate.push({
-						startDate: financialYearStart,
-						endDate: financialYearStart
-							.add(1, "years")
-							.subtract(1, "days")
-							.format(dateFormat), // Last day of March next year
-				  });
+					startDate: financialYearStart,
+					endDate: financialYearStart
+						.add(1, "years")
+						.subtract(1, "days")
+						.format(dateFormat), // Last day of March next year
+				});
 		} else if (period == "lastFinancialYear") {
 			const lastFinancialYearStart = moment()
 				.month(6)
@@ -2858,6 +3215,24 @@ define([
 		} else {
 			return false;
 		}
+	}
+
+	/**
+ * Used to pass the values of `date_from` and `date_to` between the scripts and to Netsuite for the records and the search.
+ * @param   {String} date_iso       "2020-06-01"
+ * @returns {String} date_netsuite  "1/6/2020"
+ */
+	function dateISOToNetsuite(date_iso) {
+		var date_netsuite = "";
+		if (!isNullorEmpty(date_iso)) {
+			var date_utc = new Date(date_iso);
+			// var date_netsuite = nlapiDateToString(date_utc);
+			var date_netsuite = format.format({
+				value: date_utc,
+				type: format.Type.DATE,
+			});
+		}
+		return date_netsuite;
 	}
 
 	function randomHexColorCode() {
