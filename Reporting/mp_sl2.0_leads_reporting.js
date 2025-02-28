@@ -2128,6 +2128,12 @@ define([
 		inlineHtml += '<div class="">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_preview_quote_sent"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
 		inlineHtml +=
 			'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';

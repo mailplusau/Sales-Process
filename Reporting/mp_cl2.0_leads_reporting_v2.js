@@ -17734,6 +17734,1196 @@ define([
 			series_data31a
 		);
 
+		//Status by Quote Sent
+		// if (role == 1000) {
+		// 	// Sales Dashboard - Leads by Status - Monthly Reporting
+		// 	var leadsListBySalesRepWeeklySearch = search.load({
+		// 		type: "customer",
+		// 		id: "customsearch_leads_reporting_weekly_3",
+		// 	});
+		// } else {
+		// Sales Dashboard - Leads by Status - Weekly Reporting
+		var leadsListByQuoteSentWeeklySearch = search.load({
+			type: "customer",
+			id: "customsearch_leads_reporting_weekly_8",
+		});
+		// }
+
+		leadsListByQuoteSentWeeklySearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
+		if (customer_type == "2") {
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
+		if (!isNullorEmpty(leadStatus)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "entitystatus",
+					join: null,
+					operator: search.Operator.IS,
+					values: leadStatus,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_from,
+				})
+			);
+
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(date_signed_up_from) &&
+			!isNullorEmpty(date_signed_up_to)
+		) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: date_signed_up_from,
+				})
+			);
+
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(cancelled_start_date) &&
+			!isNullorEmpty(cancelled_last_date)
+		) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity13",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: cancelled_start_date,
+				})
+			);
+
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity13",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: cancelled_last_date,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(lead_source)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "leadsource",
+					join: null,
+					operator: search.Operator.IS,
+					values: lead_source,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(sales_rep)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_assigned",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.IS,
+					values: sales_rep,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(lead_entered_by)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_lead_entered_by",
+					join: null,
+					operator: search.Operator.IS,
+					values: lead_entered_by,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(sales_campaign)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_campaign",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.ANYOF,
+					values: sales_campaign,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(parent_lpo)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "internalid",
+					join: "custentity_lpo_parent_account",
+					operator: search.Operator.ANYOF,
+					values: parent_lpo,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(date_quote_sent_from) &&
+			!isNullorEmpty(date_quote_sent_to)
+		) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_quote_sent_from,
+				})
+			);
+
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_quote_sent_to,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(zee_id)) {
+			leadsListByQuoteSentWeeklySearch.filters.push(
+				search.createFilter({
+					name: "partner",
+					join: null,
+					operator: search.Operator.IS,
+					values: zee_id,
+				})
+			);
+		}
+
+		var count1 = 0;
+		var oldDate1 = null;
+
+		customer_signed = 0;
+		suspect_hot_lead = 0;
+		suspect_reassign = 0;
+		suspect_lost = 0;
+		var suspect_oot = 0;
+		suspect_customer_lost = 0;
+		suspect_off_peak_pipeline = 0;
+		var prospect_opportunity = 0;
+		prospecy_quote_sent = 0;
+		prospecy_box_sent = 0;
+		prospect_no_answer = 0;
+		prospect_in_contact = 0;
+		suspect_follow_up = 0;
+		var prospect_qualified = 0;
+		suspect_new = 0;
+
+		suspect_lpo_followup = 0;
+		suspect_qualified = 0;
+		suspect_unqualified = 0;
+		var suspect_pre_qualification = 0;
+		var suspect_in_qualification = 0;
+
+		suspect_validated = 0;
+		customer_free_trial = 0;
+		customer_free_trial_pending = 0;
+
+		suspect_no_answer = 0;
+		suspect_in_contact = 0;
+
+		var debt_set_status_by_quote_sent = []
+
+		leadsListByQuoteSentWeeklySearch
+			.run()
+			.each(function (leadsListByQuoteSentWeeklySearchResult) {
+				var prospectCount = parseInt(
+					leadsListByQuoteSentWeeklySearchResult.getValue({
+						name: "internalid",
+						summary: "COUNT",
+					})
+				);
+				var weekLeadEntered = leadsListByQuoteSentWeeklySearchResult.getValue({
+					name: "custentity_date_lead_quote_sent",
+					summary: "GROUP",
+				});
+				var custStatus = parseInt(
+					leadsListByQuoteSentWeeklySearchResult.getValue({
+						name: "entitystatus",
+						summary: "GROUP",
+					})
+				);
+				var custStatusText = leadsListByQuoteSentWeeklySearchResult.getText({
+					name: "entitystatus",
+					summary: "GROUP",
+				});
+
+				if (role == 1000) {
+					var startDate = weekLeadEntered;
+				} else {
+					if (!isNullorEmpty(weekLeadEntered)) {
+						var splitMonthV2 = weekLeadEntered.split("/");
+
+						var formattedDate = dateISOToNetsuite(
+							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+						);
+
+						var firstDay = new Date(
+							splitMonthV2[0],
+							splitMonthV2[1],
+							1
+						).getDate();
+						var lastDay = new Date(
+							splitMonthV2[0],
+							splitMonthV2[1],
+							0
+						).getDate();
+
+						if (firstDay < 10) {
+							firstDay = "0" + firstDay;
+						}
+
+						// var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+						var startDate =
+							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+						var monthsStartDate =
+							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+						// var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+						var lastDate =
+							splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+					} else {
+						var startDate = "NO DATE";
+					}
+				}
+
+				if (count1 == 0) {
+					if (custStatus == 13 || custStatus == 66) {
+						//CUSTOMER _ SIGNED
+						customer_signed = parseInt(prospectCount);
+					} else if (custStatus == 57) {
+						//SUSPECT - HOT LEAD
+						suspect_hot_lead = parseInt(prospectCount);
+					} else if (custStatus == 59) {
+						//SUSPECT - LOST
+						suspect_lost = parseInt(prospectCount);
+					} else if (custStatus == 64) {
+						//SUSPECT - OUT OF TERRITORY
+						suspect_oot = parseInt(prospectCount);
+					} else if (custStatus == 22) {
+						//SUSPECT - CUSTOMER - LOST
+						suspect_customer_lost = parseInt(prospectCount);
+					} else if (custStatus == 60 || custStatus == 40) {
+						//SUSPECT - REP REASSIGN
+						suspect_reassign = parseInt(prospectCount);
+					} else if (custStatus == 50) {
+						//PROSPECT - QUOTE SENT
+						prospecy_quote_sent = parseInt(prospectCount);
+					} else if (custStatus == 72) {
+						//PROSPECT - Box SENT
+						prospecy_box_sent = parseInt(prospectCount);
+					} else if (custStatus == 35) {
+						//PROSPECT - NO ANSWER
+						prospect_no_answer = parseInt(prospectCount);
+					} else if (custStatus == 8) {
+						//PROSPECT - IN CONTACT
+						prospect_in_contact = parseInt(prospectCount);
+					} else if (custStatus == 62) {
+						//SUSPECT - OFF PEAK PIPELINE
+						suspect_off_peak_pipeline = parseInt(prospectCount);
+					} else if (custStatus == 58) {
+						//PROSPECT - OPPORTUNITY
+						prospect_opportunity = parseInt(prospectCount);
+					} else if (custStatus == 18) {
+						//SUSPECT - FOLLOW UP
+						suspect_follow_up = parseInt(prospectCount);
+					} else if (custStatus == 6) {
+						//SUSPECT - NEW
+						suspect_new = parseInt(prospectCount);
+					} else if (custStatus == 42) {
+						//SUSPECT - QUALIFIED
+						suspect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 38) {
+						//SUSPECT - UNQUALIFIED
+						suspect_unqualified = parseInt(prospectCount);
+					} else if (custStatus == 67) {
+						//SUSPECT - LPO FOLLOW UP
+						suspect_lpo_followup = parseInt(prospectCount);
+					} else if (custStatus == 68) {
+						//SUSPECT - VALIDATED
+						suspect_validated = parseInt(prospectCount);
+					} else if (custStatus == 32) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial = parseInt(prospectCount);
+					} else if (custStatus == 71) {
+						//CUSTOMER - FREE TRIAL PENDING
+						customer_free_trial_pending = parseInt(prospectCount);
+					} else if (custStatus == 20) {
+						//SUSPECT - NO ANSWER
+						suspect_no_answer = parseInt(prospectCount);
+					} else if (custStatus == 69) {
+						//SUSPECT - IN CONTACT
+						suspect_in_contact = parseInt(prospectCount);
+					} else if (custStatus == 70) {
+						//PROSPECT - QUALIFIED
+						prospect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 30) {
+						//PROSPECT - IN QUALIFICATION
+						suspect_in_qualification = parseInt(prospectCount);
+					} else if (custStatus == 34) {
+						//PROSPECT - PRE QUALIFICATION
+						suspect_pre_qualification = parseInt(prospectCount);
+					}
+
+					total_leads =
+						customer_signed +
+						suspect_hot_lead +
+						suspect_lost +
+						suspect_customer_lost +
+						suspect_reassign +
+						prospecy_quote_sent +
+						prospect_no_answer +
+						prospect_in_contact +
+						suspect_off_peak_pipeline +
+						prospect_opportunity +
+						suspect_oot +
+						suspect_follow_up +
+						suspect_new +
+						suspect_qualified +
+						suspect_lpo_followup +
+						suspect_validated +
+						customer_free_trial +
+						suspect_no_answer +
+						suspect_in_contact +
+						prospect_qualified +
+						customer_free_trial_pending +
+						suspect_unqualified +
+						prospecy_box_sent +
+						suspect_pre_qualification +
+						suspect_in_qualification;
+				} else if (oldDate1 != null && oldDate1 == startDate) {
+					if (custStatus == 13 || custStatus == 66) {
+						//CUSTOMER _ SIGNED
+						customer_signed += prospectCount;
+					} else if (custStatus == 57) {
+						//SUSPECT - HOT LEAD
+						suspect_hot_lead += prospectCount;
+					} else if (custStatus == 59) {
+						//SUSPECT - LOST
+						suspect_lost += prospectCount;
+					} else if (custStatus == 64) {
+						//SUSPECT - OUT OF TERRITORY
+						suspect_oot += parseInt(prospectCount);
+					} else if (custStatus == 22) {
+						//SUSPECT - CUSTOMER - LOST
+						suspect_customer_lost += prospectCount;
+					} else if (custStatus == 60 || custStatus == 40) {
+						//SUSPECT - REP REASSIGN
+						suspect_reassign += prospectCount;
+					} else if (custStatus == 50) {
+						//PROSPECT - QUOTE SENT
+						prospecy_quote_sent += prospectCount;
+					} else if (custStatus == 72) {
+						//PROSPECT - Box SENT
+						prospecy_box_sent += parseInt(prospectCount);
+					} else if (custStatus == 35) {
+						//PROSPECT - NO ANSWER
+						prospect_no_answer += prospectCount;
+					} else if (custStatus == 8) {
+						//PROSPECT - IN CONTACT
+						prospect_in_contact += prospectCount;
+					} else if (custStatus == 62) {
+						//SUSPECT - OFF PEAK PIPELINE
+						suspect_off_peak_pipeline += prospectCount;
+					} else if (custStatus == 58) {
+						//PROSPECT - OPPORTUNITY
+						prospect_opportunity += parseInt(prospectCount);
+					} else if (custStatus == 18) {
+						//SUSPECT - FOLLOW UP
+						suspect_follow_up += parseInt(prospectCount);
+					} else if (custStatus == 6) {
+						//SUSPECT - NEW
+						suspect_new += parseInt(prospectCount);
+					} else if (custStatus == 42) {
+						//SUSPECT - QUALIFIED
+						suspect_qualified += parseInt(prospectCount);
+					} else if (custStatus == 38) {
+						//SUSPECT - UNQUALIFIED
+						suspect_unqualified += parseInt(prospectCount);
+					} else if (custStatus == 67) {
+						//SUSPECT - LPO FOLLOW UP
+						suspect_lpo_followup += parseInt(prospectCount);
+					} else if (custStatus == 68) {
+						//SUSPECT - VALIDATED
+						suspect_validated += parseInt(prospectCount);
+					} else if (custStatus == 32) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial += parseInt(prospectCount);
+					} else if (custStatus == 71) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial_pending += parseInt(prospectCount);
+					} else if (custStatus == 20) {
+						//SUSPECT - NO ANSWER
+						suspect_no_answer += parseInt(prospectCount);
+					} else if (custStatus == 69) {
+						//SUSPECT - IN CONTACT
+						suspect_in_contact += parseInt(prospectCount);
+					} else if (custStatus == 70) {
+						//PROSPECT - QUALIFIED
+						prospect_qualified += parseInt(prospectCount);
+					} else if (custStatus == 30) {
+						//PROSPECT - IN QUALIFICATION
+						suspect_in_qualification += parseInt(prospectCount);
+					} else if (custStatus == 34) {
+						//PROSPECT - PRE QUALIFICATION
+						suspect_pre_qualification += parseInt(prospectCount);
+					}
+
+					total_leads =
+						customer_signed +
+						suspect_hot_lead +
+						suspect_lost +
+						suspect_customer_lost +
+						suspect_reassign +
+						prospecy_quote_sent +
+						prospect_no_answer +
+						prospect_in_contact +
+						suspect_off_peak_pipeline +
+						prospect_opportunity +
+						suspect_oot +
+						suspect_follow_up +
+						suspect_new +
+						suspect_qualified +
+						suspect_lpo_followup +
+						suspect_validated +
+						customer_free_trial +
+						suspect_no_answer +
+						suspect_in_contact +
+						prospect_qualified +
+						customer_free_trial_pending +
+						suspect_unqualified +
+						prospecy_box_sent +
+						suspect_pre_qualification +
+						suspect_in_qualification;
+				} else if (oldDate1 != null && oldDate1 != startDate) {
+					debt_set_status_by_quote_sent.push({
+						dateUsed: oldDate1,
+						suspect_hot_lead: suspect_hot_lead,
+						prospecy_quote_sent: prospecy_quote_sent,
+						suspect_reassign: suspect_reassign,
+						prospect_no_answer: prospect_no_answer,
+						prospect_in_contact: prospect_in_contact,
+						suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+						suspect_lost: suspect_lost,
+						suspect_customer_lost: suspect_customer_lost,
+						prospect_opportunity: prospect_opportunity,
+						customer_signed: customer_signed,
+						total_leads: total_leads,
+						suspect_oot: suspect_oot,
+						suspect_follow_up: suspect_follow_up,
+						suspect_new: suspect_new,
+						suspect_qualified: suspect_qualified,
+						suspect_unqualified: suspect_unqualified,
+						suspect_lpo_followup: suspect_lpo_followup,
+						suspect_validated: suspect_validated,
+						customer_free_trial: customer_free_trial,
+						suspect_no_answer: suspect_no_answer,
+						suspect_in_contact: suspect_in_contact,
+						prospect_qualified: prospect_qualified,
+						customer_free_trial_pending: customer_free_trial_pending,
+						prospect_box_sent: prospecy_box_sent,
+						suspect_pre_qualification: suspect_pre_qualification,
+						suspect_in_qualification: suspect_in_qualification,
+					});
+
+					customer_signed = 0;
+					suspect_hot_lead = 0;
+					suspect_reassign = 0;
+					suspect_lost = 0;
+					suspect_customer_lost = 0;
+					suspect_off_peak_pipeline = 0;
+					prospect_opportunity = 0;
+					prospecy_quote_sent = 0;
+					prospecy_box_sent = 0;
+					prospect_no_answer = 0;
+					prospect_in_contact = 0;
+					suspect_oot = 0;
+					suspect_follow_up = 0;
+					suspect_new = 0;
+					suspect_qualified = 0;
+					suspect_unqualified = 0;
+					suspect_lpo_followup = 0;
+					total_leads = 0;
+					prospect_qualified = 0;
+
+					suspect_validated = 0;
+					customer_free_trial = 0;
+					customer_free_trial_pending = 0;
+					suspect_no_answer = 0;
+					suspect_in_contact = 0;
+					suspect_pre_qualification = 0;
+					suspect_in_qualification = 0;
+
+					if (custStatus == 13 || custStatus == 66) {
+						//CUSTOMER _ SIGNED
+						customer_signed = prospectCount;
+					} else if (custStatus == 57) {
+						//SUSPECT - HOT LEAD
+						suspect_hot_lead = prospectCount;
+					} else if (custStatus == 59) {
+						//SUSPECT - LOST
+						suspect_lost = prospectCount;
+					} else if (custStatus == 64) {
+						//SUSPECT - OUT OF TERRITORY
+						suspect_oot = parseInt(prospectCount);
+					} else if (custStatus == 22) {
+						//SUSPECT - CUSTOMER - LOST
+						suspect_customer_lost = prospectCount;
+					} else if (custStatus == 60 || custStatus == 40) {
+						//SUSPECT - REP REASSIGN
+						suspect_reassign = prospectCount;
+					} else if (custStatus == 50) {
+						//PROSPECT - QUOTE SENT
+						prospecy_quote_sent = prospectCount;
+					} else if (custStatus == 72) {
+						//PROSPECT - Box SENT
+						prospecy_box_sent = parseInt(prospectCount);
+					} else if (custStatus == 35) {
+						//PROSPECT - NO ANSWER
+						prospect_no_answer = prospectCount;
+					} else if (custStatus == 8) {
+						//PROSPECT - IN CONTACT
+						prospect_in_contact = prospectCount;
+					} else if (custStatus == 62) {
+						//SUSPECT - OFF PEAK PIPELINE
+						suspect_off_peak_pipeline = prospectCount;
+					} else if (custStatus == 58) {
+						//PROSPECT - OPPORTUNITY
+						prospect_opportunity = parseInt(prospectCount);
+					} else if (custStatus == 18) {
+						//SUSPECT - FOLLOW UP
+						suspect_follow_up = parseInt(prospectCount);
+					} else if (custStatus == 6) {
+						//SUSPECT - NEW
+						suspect_new = parseInt(prospectCount);
+					} else if (custStatus == 42) {
+						//SUSPECT - QUALIFIED
+						suspect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 38) {
+						//SUSPECT - UNQUALIFIED
+						suspect_unqualified = parseInt(prospectCount);
+					} else if (custStatus == 67) {
+						//SUSPECT - LPO FOLLOW UP
+						suspect_lpo_followup = parseInt(prospectCount);
+					} else if (custStatus == 68) {
+						//SUSPECT - VALIDATED
+						suspect_validated = parseInt(prospectCount);
+					} else if (custStatus == 32) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial = parseInt(prospectCount);
+					} else if (custStatus == 71) {
+						//CUSTOMER - FREE TRIAL PENDING
+						customer_free_trial_pending = parseInt(prospectCount);
+					} else if (custStatus == 20) {
+						//SUSPECT - NO ANSWER
+						suspect_no_answer = parseInt(prospectCount);
+					} else if (custStatus == 69) {
+						//SUSPECT - IN CONTACT
+						suspect_in_contact = parseInt(prospectCount);
+					} else if (custStatus == 70) {
+						//PROSPECT - QUALIFIED
+						prospect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 30) {
+						//PROSPECT - IN QUALIFICATION
+						suspect_in_qualification = parseInt(prospectCount);
+					} else if (custStatus == 34) {
+						//PROSPECT - PRE QUALIFICATION
+						suspect_pre_qualification = parseInt(prospectCount);
+					}
+
+					total_leads =
+						customer_signed +
+						suspect_hot_lead +
+						suspect_lost +
+						suspect_customer_lost +
+						suspect_reassign +
+						prospecy_quote_sent +
+						prospect_no_answer +
+						prospect_in_contact +
+						suspect_off_peak_pipeline +
+						prospect_opportunity +
+						suspect_oot +
+						suspect_follow_up +
+						suspect_new +
+						suspect_qualified +
+						suspect_lpo_followup +
+						suspect_validated +
+						customer_free_trial +
+						suspect_no_answer +
+						suspect_in_contact +
+						prospect_qualified +
+						customer_free_trial_pending +
+						suspect_unqualified +
+						prospecy_box_sent +
+						suspect_pre_qualification +
+						suspect_in_qualification;
+				}
+
+				count1++;
+				oldDate1 = startDate;
+				return true;
+			});
+
+		if (count1 > 0) {
+			debt_set_status_by_quote_sent.push({
+				dateUsed: oldDate1,
+				suspect_hot_lead: suspect_hot_lead,
+				prospecy_quote_sent: prospecy_quote_sent,
+				suspect_reassign: suspect_reassign,
+				prospect_no_answer: prospect_no_answer,
+				prospect_in_contact: prospect_in_contact,
+				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+				suspect_lost: suspect_lost,
+				suspect_customer_lost: suspect_customer_lost,
+				prospect_opportunity: prospect_opportunity,
+				customer_signed: customer_signed,
+				total_leads: total_leads,
+				suspect_oot: suspect_oot,
+				suspect_follow_up: suspect_follow_up,
+				suspect_new: suspect_new,
+				suspect_qualified: suspect_qualified,
+				suspect_unqualified: suspect_unqualified,
+				suspect_lpo_followup: suspect_lpo_followup,
+				suspect_validated: suspect_validated,
+				customer_free_trial: customer_free_trial,
+				suspect_no_answer: suspect_no_answer,
+				suspect_in_contact: suspect_in_contact,
+				prospect_qualified: prospect_qualified,
+				customer_free_trial_pending: customer_free_trial_pending,
+				prospect_box_sent: prospecy_box_sent,
+				suspect_pre_qualification: suspect_pre_qualification,
+				suspect_in_qualification: suspect_in_qualification,
+			});
+		}
+
+		console.log("debt_set_status_by_quote_sent: " + JSON.stringify(debt_set_status_by_quote_sent));
+
+		quoteSentByStatusDataSet = [];
+		csvPreviewSet = [];
+
+		var overQuoteSentByStatusDataSet = [];
+
+		if (!isNullorEmpty(debt_set_status_by_quote_sent)) {
+			debt_set_status_by_quote_sent.forEach(function (preview_row, index) {
+				var hotLeadPercentage = parseInt(
+					(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+				);
+				var hotLeadCol =
+					preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+				var quoteSentPercentage = parseInt(
+					(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+				);
+				var quoteSentCol =
+					preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+				var boxSentPercentage = parseInt(
+					(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+				);
+				var boxSentCol =
+					preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+				var reassignPercentage = parseInt(
+					(preview_row.suspect_reassign / preview_row.total_leads) * 100
+				);
+				var reassignCol =
+					preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+				var noAnswerPercentage = parseInt(
+					(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+				);
+				var noAnswerCol =
+					preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+				var inContactPercentage = parseInt(
+					(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+				);
+				var inContactCol =
+					preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+				var offPeakPercentage = parseInt(
+					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+					100
+				);
+				var offPeakCol =
+					preview_row.suspect_off_peak_pipeline +
+					" (" +
+					offPeakPercentage +
+					"%)";
+
+				var lostPercentage = parseInt(
+					(preview_row.suspect_lost / preview_row.total_leads) * 100
+				);
+				var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+				var ootPercentage = parseInt(
+					(preview_row.suspect_oot / preview_row.total_leads) * 100
+				);
+				var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+				var custLostPercentage = parseInt(
+					(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+				);
+				var custLostCol =
+					preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
+
+				var oppPercentage = parseInt(
+					(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+				);
+				var oppCol =
+					preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+				var signedPercentage = parseInt(
+					(preview_row.customer_signed / preview_row.total_leads) * 100
+				);
+				var signedCol =
+					preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+				var suspectFollowUpPErcentage = parseInt(
+					(preview_row.suspect_follow_up / preview_row.total_leads) * 100
+				);
+				var followUpCol =
+					preview_row.suspect_follow_up +
+					" (" +
+					suspectFollowUpPErcentage +
+					"%)";
+
+				var suspectNewPercentage = parseInt(
+					(preview_row.suspect_new / preview_row.total_leads) * 100
+				);
+				var suspectNewCol =
+					preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+				var suspectQualifiedPercentage = parseInt(
+					(preview_row.suspect_qualified / preview_row.total_leads) * 100
+				);
+				var suspectQualifiedCol =
+					preview_row.suspect_qualified +
+					" (" +
+					suspectQualifiedPercentage +
+					"%)";
+
+				var suspectUnqualifiedPercentage = parseInt(
+					(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+				);
+				var suspectUnqualifiedCol =
+					preview_row.suspect_unqualified +
+					" (" +
+					suspectUnqualifiedPercentage +
+					"%)";
+
+				var suspectLPOFollowupPercentage = parseInt(
+					(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
+				);
+				var suspectLPOFollowupwCol =
+					preview_row.suspect_lpo_followup +
+					" (" +
+					suspectLPOFollowupPercentage +
+					"%)";
+
+				var suspectValidatedPercentage = parseInt(
+					(preview_row.suspect_validated / preview_row.total_leads) * 100
+				);
+				var suspectValidatedCol =
+					preview_row.suspect_validated +
+					" (" +
+					suspectValidatedPercentage +
+					"%)";
+
+				var customerFreeTrialPercentage = parseInt(
+					(preview_row.customer_free_trial / preview_row.total_leads) * 100
+				);
+				var customerFreeTrialCol =
+					preview_row.customer_free_trial +
+					" (" +
+					customerFreeTrialPercentage +
+					"%)";
+
+				var customerFreeTrialPendingPercentage = parseInt(
+					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
+					100
+				);
+				var customerFreeTrialPendingCol =
+					preview_row.customer_free_trial_pending +
+					" (" +
+					customerFreeTrialPendingPercentage +
+					"%)";
+
+				var suspectNoAnswerPercentage = parseInt(
+					(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+				);
+				var suspectNoAnswerCol =
+					preview_row.suspect_no_answer +
+					" (" +
+					suspectNoAnswerPercentage +
+					"%)";
+
+				var suspectInContactPercentage = parseInt(
+					(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+				);
+				var suspectInContactCol =
+					preview_row.suspect_in_contact +
+					" (" +
+					suspectInContactPercentage +
+					"%)";
+
+				var prospectQualifiedPercentage = parseInt(
+					(preview_row.prospect_qualified / preview_row.total_leads) * 100
+				);
+				var prospectQualifiedCol =
+					preview_row.prospect_qualified +
+					" (" +
+					prospectQualifiedPercentage +
+					"%)";
+
+				var suspectPreQualifcationPercentage = parseInt(
+					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+					100
+				);
+				var suspectPreQualificationCol =
+					preview_row.suspect_pre_qualification +
+					" (" +
+					suspectPreQualifcationPercentage +
+					"%)";
+
+				var suspectInQualificationPercentage = parseInt(
+					(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
+				);
+				var suspectInQualificationCol =
+					preview_row.suspect_in_qualification +
+					" (" +
+					suspectInQualificationPercentage +
+					"%)";
+
+				overQuoteSentByStatusDataSet.push([
+					preview_row.dateUsed,
+					preview_row.suspect_new,
+					preview_row.suspect_hot_lead,
+					preview_row.suspect_validated,
+					preview_row.suspect_qualified,
+					preview_row.suspect_unqualified,
+					preview_row.suspect_pre_qualification,
+					preview_row.suspect_in_qualification,
+					preview_row.suspect_reassign,
+					preview_row.suspect_follow_up,
+					preview_row.suspect_no_answer,
+					preview_row.suspect_in_contact,
+					preview_row.suspect_lpo_followup,
+					preview_row.prospect_in_contact,
+					preview_row.suspect_off_peak_pipeline,
+					preview_row.suspect_lost,
+					preview_row.suspect_oot,
+					preview_row.suspect_customer_lost,
+					preview_row.prospect_opportunity,
+					preview_row.prospect_qualified,
+					preview_row.prospect_box_sent,
+					preview_row.prospecy_quote_sent,
+					preview_row.customer_free_trial_pending,
+					preview_row.customer_free_trial,
+					preview_row.customer_signed,
+					preview_row.total_leads,
+				]);
+
+				quoteSentByStatusDataSet.push([
+					preview_row.dateUsed,
+					suspectNewCol,
+					hotLeadCol,
+					suspectValidatedCol,
+					suspectQualifiedCol,
+					suspectUnqualifiedCol,
+					suspectPreQualificationCol,
+					suspectInQualificationCol,
+					reassignCol,
+					followUpCol,
+					suspectLPOFollowupwCol,
+					suspectNoAnswerCol,
+					suspectInContactCol,
+					inContactCol,
+					offPeakCol,
+					lostCol,
+					ootCol,
+					custLostCol,
+					oppCol,
+					prospectQualifiedCol,
+					boxSentCol,
+					quoteSentCol,
+					customerFreeTrialPendingCol,
+					customerFreeTrialCol,
+					signedCol,
+					preview_row.total_leads,
+				]);
+			});
+		}
+
+		console.log("quoteSentByStatusDataSet");
+		console.log(quoteSentByStatusDataSet);
+
+		saveCsv(quoteSentByStatusDataSet);
+
+		var data = overQuoteSentByStatusDataSet;
+
+		var month_year = []; // creating array for storing browser
+		var customer_signed = [];
+		var suspect_hot_lead = [];
+		var suspect_reassign = [];
+		var suspect_lost = [];
+		var suspect_oot = [];
+		var suspect_customer_lost = [];
+		var suspect_off_peak_pipeline = [];
+		var prospect_opportunity = [];
+		var prospect_qualified = [];
+		var prospecy_quote_sent = [];
+		var prospecy_box_sent = [];
+		var prospect_no_answer = [];
+		var prospect_in_contact = [];
+		var suspect_follow_up = [];
+		var suspect_new = [];
+		var suspect_qualified = [];
+		var suspect_unqualified = [];
+		var suspect_lpo_followup = [];
+		var suspect_validated = [];
+		var customer_free_trial = [];
+		var customer_free_trial_pending = [];
+		var susect_no_answer = [];
+		var suspect_in_contact = [];
+		var suspect_pre_qualification = [];
+		var suspect_in_qualification = [];
+		var total_leads = [];
+
+		for (var i = 0; i < data.length; i++) {
+			month_year.push(data[i][0]);
+			suspect_new[data[i][0]] = data[i][1];
+			suspect_hot_lead[data[i][0]] = data[i][2];
+			suspect_qualified[data[i][0]] = data[i][4];
+			suspect_unqualified[data[i][0]] = data[i][5];
+			suspect_validated[data[i][0]] = data[i][3];
+			suspect_pre_qualification[data[i][0]] = data[i][6];
+			suspect_in_qualification[data[i][0]] = data[i][7];
+			suspect_reassign[data[i][0]] = data[i][8];
+			suspect_follow_up[data[i][0]] = data[i][9];
+			suspect_lpo_followup[data[i][0]] = data[i][10];
+			suspect_no_answer[data[i][0]] = data[i][11];
+			suspect_in_contact[data[i][0]] = data[i][12];
+			prospect_in_contact[data[i][0]] = data[i][13];
+			suspect_off_peak_pipeline[data[i][0]] = data[i][14];
+			suspect_lost[data[i][0]] = data[i][15];
+			suspect_oot[data[i][0]] = data[i][16];
+			suspect_customer_lost[data[i][0]] = data[i][17];
+			prospect_opportunity[data[i][0]] = data[i][18];
+			prospect_qualified[data[i][0]] = data[i][19];
+			prospecy_box_sent[data[i][0]] = data[i][20];
+			prospecy_quote_sent[data[i][0]] = data[i][21];
+			customer_free_trial_pending[data[i][0]] = data[i][22];
+			customer_free_trial[data[i][0]] = data[i][23];
+			customer_signed[data[i][0]] = data[i][24];
+			total_leads[data[i][0]] = data[i][25];
+		}
+
+		// console.log("prospecy_box_sent" + prospecy_box_sent);
+
+		var count = {}; // creating object for getting categories with
+		// count
+		month_year.forEach(function (i) {
+			count[i] = (count[i] || 0) + 1;
+		});
+
+		var series_data20 = [];
+		var series_data21 = [];
+		var series_data22 = [];
+		var series_data23 = [];
+		var series_data24 = [];
+		var series_data25 = [];
+		var series_data26 = [];
+		var series_data27 = [];
+		var series_data28 = [];
+		var series_data29 = [];
+		var series_data30 = [];
+		var series_data31 = [];
+		var series_data32 = [];
+		var series_data33 = [];
+		var series_data34 = [];
+		var series_data20a = [];
+		var series_data21a = [];
+		var series_data22a = [];
+		var series_data23a = [];
+		var series_data24a = [];
+		var series_data25a = [];
+		var series_data26a = [];
+		var series_data27a = [];
+		var series_data28a = [];
+		var series_data29a = [];
+		var series_data30a = [];
+		var series_data31a = [];
+
+		var categores1 = []; // creating empty array for highcharts
+		// categories
+		Object.keys(prospecy_quote_sent).map(function (item, key) {
+			series_data20.push(parseInt(customer_signed[item]));
+			series_data21.push(parseInt(suspect_hot_lead[item]));
+			series_data22.push(parseInt(suspect_reassign[item]));
+			series_data23.push(parseInt(suspect_lost[item]));
+			series_data24.push(parseInt(suspect_customer_lost[item]));
+			series_data25.push(parseInt(suspect_off_peak_pipeline[item]));
+			series_data26.push(parseInt(prospecy_quote_sent[item]));
+			series_data27.push(parseInt(prospect_no_answer[item]));
+			series_data28.push(parseInt(prospect_in_contact[item]));
+			series_data29.push(parseInt(total_leads[item]));
+			series_data31.push(parseInt(prospect_opportunity[item]));
+			series_data32.push(parseInt(suspect_oot[item]));
+			series_data33.push(parseInt(suspect_follow_up[item]));
+			series_data34.push(parseInt(suspect_new[item]));
+			series_data20a.push(parseInt(suspect_qualified[item]));
+			series_data28a.push(parseInt(suspect_unqualified[item]));
+			series_data21a.push(parseInt(suspect_lpo_followup[item]));
+			series_data22a.push(parseInt(suspect_validated[item]));
+			series_data23a.push(parseInt(customer_free_trial[item]));
+			series_data24a.push(parseInt(suspect_no_answer[item]));
+			series_data25a.push(parseInt(suspect_in_contact[item]));
+			series_data26a.push(parseInt(prospect_qualified[item]));
+			series_data27a.push(parseInt(customer_free_trial_pending[item]));
+			series_data29a.push(parseInt(prospecy_box_sent[item]));
+			series_data30a.push(parseInt(suspect_pre_qualification[item]));
+			series_data31a.push(parseInt(suspect_in_qualification[item]));
+			categores1.push(item);
+		});
+
+		plotChartPreviewQuoteSentByStatus(
+			series_data20,
+			series_data21,
+			series_data22,
+			series_data23,
+			series_data24,
+			series_data25,
+			series_data26,
+			series_data27,
+			series_data28,
+			series_data29,
+			series_data31,
+			series_data32,
+			series_data33,
+			series_data34,
+			categores1,
+			series_data20a,
+			series_data21a,
+			series_data22a,
+			series_data23a,
+			series_data24a,
+			series_data25a,
+			series_data26a,
+			series_data27a,
+			series_data28a,
+			series_data29a,
+			series_data30a,
+			series_data31a
+		);
+
 		// //TODO - LPO Preview
 		// if (
 		// 	isNullorEmpty(lead_source) ||
@@ -39752,7 +40942,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -39762,6 +40952,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -39778,7 +40969,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -39841,7 +41032,7 @@ define([
 				// 	return '<b>{this.key}</b>: <b>{this.x}</b><br/>{this.series.name}: {this.y}<br/>Total: {this.stackTotal}';
 				// },
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -39851,6 +41042,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -39867,7 +41059,7 @@ define([
 			// tooltip: {
 			// 	headerFormat: "<b>{point.key}</b><br/>",
 			// 	pointFormat:
-			// 		"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+			// 		"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			// },
 			series: series_data,
 		});
@@ -39927,7 +41119,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -39937,6 +41129,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -39953,7 +41146,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -40041,7 +41234,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -40051,6 +41244,312 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
+					},
+				},
+				series: {
+					dataLabels: {
+						enabled: true,
+						align: "right",
+						color: "black",
+						style: {
+							fontSize: "12px",
+						},
+					},
+					pointPadding: 0.1,
+					groupPadding: 0,
+				},
+			},
+			series: [
+				{
+					name: "Customer - Signed",
+					data: series_data20,
+					color: "#439A97",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Customer - Free Trial",
+					data: series_data23a,
+					color: "#ADCF9F",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Customer - Free Trial Pending",
+					data: series_data27a,
+					color: "#ADCF9F",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Prospect - Quote Sent",
+					data: series_data26,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Prospect - Box Sent",
+					data: series_data29a,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Prospects - Opportunity",
+					data: series_data31,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Prospects - Qualified",
+					data: series_data26a,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Prospect - In Contact",
+					data: series_data28,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - New",
+					data: series_data34,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Hot Lead",
+					data: series_data21,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Qualified",
+					data: series_data20a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Pre Qualification",
+					data: series_data30a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - In Qualification",
+					data: series_data31a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Unqualified",
+					data: series_data28a,
+					color: "#B674EFFF",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Validated",
+					data: series_data22a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Reassign",
+					data: series_data22,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Follow Up",
+					data: series_data33,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - LPO Follow Up",
+					data: series_data21a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - No Answer",
+					data: series_data24a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - In Contact",
+					data: series_data25a,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Parking Lot",
+					data: series_data25,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Lost",
+					data: series_data23,
+					color: "#E97777",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Out of Territory",
+					data: series_data32,
+					color: "#E97777",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Customer - Lost",
+					data: series_data24,
+					color: "#e86252",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+			],
+		});
+	}
+
+	function plotChartPreviewQuoteSentByStatus(
+		series_data20,
+		series_data21,
+		series_data22,
+		series_data23,
+		series_data24,
+		series_data25,
+		series_data26,
+		series_data27,
+		series_data28,
+		series_data29,
+		series_data31,
+		series_data32,
+		series_data33,
+		series_data34,
+		categores,
+		series_data20a,
+		series_data21a,
+		series_data22a,
+		series_data23a,
+		series_data24a,
+		series_data25a,
+		series_data26a,
+		series_data27a,
+		series_data28a,
+		series_data29a,
+		series_data30a,
+		series_data31a
+	) {
+		// console.log(series_data)
+
+		Highcharts.chart("container_preview_quote_sent", {
+			chart: {
+				type: "column",
+				backgroundColor: "#CFE0CE",
+			},
+			title: {
+				text: "Leads - By Status - Week Quote Sent",
+				style: {
+					fontWeight: "bold",
+					color: "#0B2447",
+					fontSize: "12px",
+				},
+			},
+			xAxis: {
+				categories: categores,
+				crosshair: true,
+				style: {
+					fontWeight: "bold",
+				},
+				labels: {
+					style: {
+						fontWeight: "bold",
+						fontSize: "10px",
+					},
+				},
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: "Total Lead Count",
+					style: {
+						fontWeight: "bold",
+						color: "#0B2447",
+						fontSize: "12px",
+					},
+				},
+				stackLabels: {
+					enabled: true,
+					style: {
+						fontWeight: "bold",
+						fontSize: "10px",
+					},
+				},
+				labels: {
+					style: {
+						fontSize: "10px",
+					},
+				},
+			},
+			tooltip: {
+				headerFormat: "<b>{point.key}</b><br/>",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
+				style: {
+					fontSize: "10px",
+				},
+			},
+			plotOptions: {
+				column: {
+					stacking: "normal",
+					dataLabels: {
+						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -40341,7 +41840,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -40351,6 +41850,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -40612,7 +42112,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -40622,6 +42122,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -40906,7 +42407,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -40916,6 +42417,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41196,7 +42698,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41206,6 +42708,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41472,7 +42975,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41482,6 +42985,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41498,7 +43002,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -41558,7 +43062,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41568,6 +43072,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41584,7 +43089,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -41648,7 +43153,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41658,6 +43163,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41674,7 +43180,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -41738,7 +43244,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41748,6 +43254,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41764,7 +43271,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -41828,7 +43335,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41838,6 +43345,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41854,7 +43362,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -41918,7 +43426,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -41928,6 +43436,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -41944,7 +43453,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42008,7 +43517,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42018,6 +43527,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42034,7 +43544,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42094,7 +43604,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42104,6 +43614,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42120,7 +43631,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42180,7 +43691,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42190,6 +43701,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42206,7 +43718,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42266,7 +43778,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42276,6 +43788,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42292,7 +43805,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42352,7 +43865,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42362,6 +43875,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42378,7 +43892,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42442,7 +43956,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42452,6 +43966,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42468,7 +43983,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42532,7 +44047,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42542,6 +44057,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42558,7 +44074,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42618,7 +44134,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42628,6 +44144,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42644,7 +44161,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42704,7 +44221,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42714,6 +44231,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42730,7 +44248,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42790,7 +44308,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42800,6 +44318,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42816,7 +44335,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42876,7 +44395,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42886,6 +44405,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42902,7 +44422,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -42962,7 +44482,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -42972,6 +44492,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -42988,7 +44509,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43052,7 +44573,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43062,6 +44583,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43078,7 +44600,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43138,7 +44660,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43148,6 +44670,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43164,7 +44687,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43224,7 +44747,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43234,6 +44757,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43250,7 +44774,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43314,7 +44838,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43324,6 +44848,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43340,7 +44865,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43400,7 +44925,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43410,6 +44935,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43426,7 +44952,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43486,7 +45012,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43496,6 +45022,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43512,7 +45039,7 @@ define([
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
 				pointFormat:
-					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
+					"{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
 		});
@@ -43578,7 +45105,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43588,6 +45115,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43695,7 +45223,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43705,6 +45233,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 			},
@@ -43790,7 +45319,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43800,6 +45329,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43881,7 +45411,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43891,6 +45421,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -43981,7 +45512,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -43991,6 +45522,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44095,7 +45627,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44105,6 +45637,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44199,7 +45732,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44209,6 +45742,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44292,7 +45826,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44302,6 +45836,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44383,7 +45918,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44393,6 +45928,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44473,7 +46009,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44483,6 +46019,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44564,7 +46101,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44574,6 +46111,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44659,7 +46197,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44669,6 +46207,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44762,7 +46301,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44772,6 +46311,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44857,7 +46397,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44867,6 +46407,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -44968,7 +46509,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -44978,6 +46519,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -45175,7 +46717,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -45185,6 +46727,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {
@@ -45382,7 +46925,7 @@ define([
 			},
 			tooltip: {
 				headerFormat: "<b>{point.key}</b><br/>",
-				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				pointFormat: "{series.name}: {point.y}({point.percentage:.0f}%)<br/>Total: {point.stackTotal}",
 				style: {
 					fontSize: "10px",
 				},
@@ -45392,6 +46935,7 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
+						format: "{point.percentage:.0f}%",
 					},
 				},
 				series: {

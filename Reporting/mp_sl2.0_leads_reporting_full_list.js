@@ -22,6 +22,7 @@ define([
 	"N/log",
 	"N/redirect",
 	"N/url",
+	"N/format"
 ], function (
 	moment,
 	ui,
@@ -32,7 +33,8 @@ define([
 	https,
 	log,
 	redirect,
-	url
+	url,
+	format
 ) {
 	var role = 0;
 	var userId = 0;
