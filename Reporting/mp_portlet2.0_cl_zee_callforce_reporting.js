@@ -529,7 +529,7 @@ define([
 		// Sales Dashboard - Leads by Status - Monthly Reporting
 		var leadsListBySalesRepWeeklySearch = search.load({
 			type: "customer",
-			id: "customsearch_leads_reporting_weekly_3",
+			id: "customsearch_leads_reporting_weekly_3_3",
 		});
 		// } else {
 		// 	// Sales Dashboard - Leads by Status - Weekly Reporting
