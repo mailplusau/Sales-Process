@@ -2011,43 +2011,6 @@ define([
 		commencement_last_date, leadStatusArray) {
 		var inlineHtml = '<div class="tabs_section hide">';
 
-		log.debug({
-			title: 'inside tab section function',
-			details: ''
-		})
-		log.debug({
-			title: 'date_from',
-			details: date_from
-		})
-		log.debug({
-			title: 'date_to',
-			details: date_from
-		})
-		log.debug({
-			title: 'date_signed_up_from',
-			details: date_signed_up_from
-		})
-		log.debug({
-			title: 'date_signed_up_to',
-			details: date_signed_up_to
-		})
-		log.debug({
-			title: 'date_quote_sent_from',
-			details: date_quote_sent_from
-		})
-		log.debug({
-			title: 'date_quote_sent_to',
-			details: date_quote_sent_to
-		})
-		log.debug({
-			title: 'commencement_start_date',
-			details: commencement_start_date
-		})
-		log.debug({
-			title: 'commencement_last_date',
-			details: commencement_last_date
-		})
-
 		date_from = dateISOToNetsuite(date_from);
 		date_to = dateISOToNetsuite(date_to);
 		date_signed_up_from = dateISOToNetsuite(date_signed_up_from);
@@ -2056,43 +2019,6 @@ define([
 		date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
 		commencement_start_date = dateISOToNetsuite(commencement_start_date);
 		commencement_last_date = dateISOToNetsuite(commencement_last_date);
-
-		log.debug({
-			title: 'After function dateISOToNetsuite',
-			details: ''
-		})
-		log.debug({
-			title: 'date_from',
-			details: date_from
-		})
-		log.debug({
-			title: 'date_to',
-			details: date_from
-		})
-		log.debug({
-			title: 'date_signed_up_from',
-			details: date_signed_up_from
-		})
-		log.debug({
-			title: 'date_signed_up_to',
-			details: date_signed_up_to
-		})
-		log.debug({
-			title: 'date_quote_sent_from',
-			details: date_quote_sent_from
-		})
-		log.debug({
-			title: 'date_quote_sent_to',
-			details: date_quote_sent_to
-		})
-		log.debug({
-			title: 'commencement_start_date',
-			details: commencement_start_date
-		})
-		log.debug({
-			title: 'commencement_last_date',
-			details: commencement_last_date
-		})
 
 		if (role == 1000) {
 			var websiteSuspectsLeadsReportingSearch = search.load({
@@ -3300,14 +3226,6 @@ define([
  */
 	function dateISOToNetsuite(date_iso) {
 		var date_netsuite = "";
-		log.debug({
-			title: 'inside dateISOToNetsuite',
-			details: ''
-		})
-		log.debug({
-			title: 'date_iso',
-			details: date_iso
-		})
 		var split_date = date_iso.split('-');
 		if (!isNullorEmpty(date_iso)) {
 			var date_utc = new Date(split_date[0], split_date[1] - 1, split_date[2]);
