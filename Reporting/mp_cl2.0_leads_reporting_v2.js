@@ -2886,11 +2886,13 @@ define([
 			var oldCallForceDate = null;
 
 			var scheduledCallForceTasks = 0;
+			var rescheduledCallForceTasks = 0;
 			var completedCallForceTasks = 0;
 			var totalCallForceTasks = 0;
 
 			var totalCompletedTasks = 0;
 			var totalScheduledTasks = 0;
+			var totalRescheduledTasks = 0;
 
 			callForceTasksSearch.run().each(function (callForceTasksSearchResultSet) {
 				var tasksCount = parseInt(
@@ -2913,14 +2915,28 @@ define([
 					summary: "GROUP",
 				});
 
+				var taskTitle = callForceTasksSearchResultSet
+					.getValue({
+						name: "formulatext",
+						summary: "GROUP",
+						formula: "TRIM(REGEXP_SUBSTR({task.title},'^[^-]*'))",
+					})
+					.toString();
+
 				if (countCallForceTasks == 0 || taskDate == oldCallForceDate) {
-					if (taskStatus == "Completed") {
-						completedCallForceTasks = completedCallForceTasks + tasksCount;
-						totalCompletedTasks = totalCompletedTasks + tasksCount;
-					} else if (taskStatus == "Not Started") {
-						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
-						totalScheduledTasks = totalScheduledTasks + tasksCount;
+					if (taskTitle.replace(/\s+$/, "") == "Rescheduled Call Force Appointment") {
+						rescheduledCallForceTasks = rescheduledCallForceTasks + tasksCount;
+						totalRescheduledTasks = totalRescheduledTasks + tasksCount;
+					} else {
+						if (taskStatus == "Completed") {
+							completedCallForceTasks = completedCallForceTasks + tasksCount;
+							totalCompletedTasks = totalCompletedTasks + tasksCount;
+						} else if (taskStatus == "Not Started") {
+							scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+							totalScheduledTasks = totalScheduledTasks + tasksCount;
+						}
 					}
+
 					totalCallForceTasks = totalCallForceTasks + tasksCount;
 				} else if (taskDate != oldCallForceDate) {
 					var taskDueDate = convertToDateInputFormat(oldCallForceDate);
@@ -2928,20 +2944,27 @@ define([
 					callForceTasksDataSet.push([
 						taskDueDate,
 						scheduledCallForceTasks,
+						rescheduledCallForceTasks,
 						completedCallForceTasks,
 						totalCallForceTasks,
 					]);
 
 					scheduledCallForceTasks = 0;
+					rescheduledCallForceTasks = 0;
 					completedCallForceTasks = 0;
 					totalCallForceTasks = 0;
 
-					if (taskStatus == "Completed") {
-						completedCallForceTasks = completedCallForceTasks + tasksCount;
-						totalCompletedTasks = totalCompletedTasks + tasksCount;
-					} else if (taskStatus == "Not Started") {
-						scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
-						totalScheduledTasks = totalScheduledTasks + tasksCount;
+					if (taskTitle.replace(/\s+$/, "") == "Rescheduled Call Force Appointment") {
+						rescheduledCallForceTasks = rescheduledCallForceTasks + tasksCount;
+						totalRescheduledTasks = totalRescheduledTasks + tasksCount;
+					} else {
+						if (taskStatus == "Completed") {
+							completedCallForceTasks = completedCallForceTasks + tasksCount;
+							totalCompletedTasks = totalCompletedTasks + tasksCount;
+						} else if (taskStatus == "Not Started") {
+							scheduledCallForceTasks = scheduledCallForceTasks + tasksCount;
+							totalScheduledTasks = totalScheduledTasks + tasksCount;
+						}
 					}
 					totalCallForceTasks = totalCallForceTasks + tasksCount;
 				}
@@ -2957,6 +2980,7 @@ define([
 				callForceTasksDataSet.push([
 					taskDueDate,
 					scheduledCallForceTasks,
+					rescheduledCallForceTasks,
 					completedCallForceTasks,
 					totalCallForceTasks,
 				]);
@@ -3017,13 +3041,14 @@ define([
 				columns: [
 					{ title: "Task Date (Week Starting)" },
 					{ title: "Scheduled Tasks" },
+					{ title: "Rescheduled Tasks" },
 					{ title: "Completed Tasks" },
 					{ title: "Total Tasks" },
 				],
 				autoWidth: true,
 				columnDefs: [
 					{
-						targets: [0, 3],
+						targets: [0, 4],
 						className: "bolded",
 					},
 				],
@@ -3032,8 +3057,8 @@ define([
 					if (parseInt(data[1]) > 0) {
 						$(row).find("td:eq(1)").css("background-color", "#f9c67a");
 					}
-					if (parseInt(data[2]) > 0) {
-						$(row).find("td:eq(2)").css("background-color", "#439A97");
+					if (parseInt(data[3]) > 0) {
+						$(row).find("td:eq(3)").css("background-color", "#439A97");
 					}
 				},
 				footerCallback: function (row, data, start, end, display) {
@@ -3054,7 +3079,7 @@ define([
 						}, 0);
 
 					// Total Customer Free Trial
-					total_completed = api
+					total_rescheduled = api
 						.column(2)
 						.data()
 						.reduce(function (a, b) {
@@ -3062,16 +3087,24 @@ define([
 						}, 0);
 
 					// Total Customer Signed
-					total_total = api
+					total_completed = api
 						.column(3)
 						.data()
 						.reduce(function (a, b) {
 							return intVal(a) + intVal(b);
 						}, 0);
 
+					total_total = api
+						.column(4)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
 					$(api.column(1).footer()).html(total_scheduled);
-					$(api.column(2).footer()).html(total_completed);
-					$(api.column(3).footer()).html(total_total);
+					$(api.column(2).footer()).html(total_rescheduled);
+					$(api.column(3).footer()).html(total_completed);
+					$(api.column(4).footer()).html(total_total);
 				},
 			});
 
