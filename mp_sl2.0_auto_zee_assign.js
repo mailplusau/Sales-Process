@@ -147,6 +147,15 @@ define([
 				fieldId: "custentity_customer_type",
 			});
 
+			//Franchisee Visited Customer
+			var zee_visisted_customer = customerRecord.getValue({
+				fieldId: "custentity_mp_toll_zeevisit_memo",
+			});
+			//Brochure Handed Over
+			var brochure_handed_over = customerRecord.getValue({
+				fieldId: "custentity_brochure_handed_over",
+			});
+
 			if (leadSource == -4) {
 				zee_id = customerRecord.getValue({
 					fieldId: "partner",
@@ -437,7 +446,7 @@ define([
 												if (!isNullorEmpty(suburb.parent_lpo_id)) {
 													if (
 														siteAddressSuburb.toLowerCase() ==
-															suburb.suburbs.toLowerCase() &&
+														suburb.suburbs.toLowerCase() &&
 														siteAddressZipCode == suburb.post_code
 													) {
 														customerRecord.setValue({
@@ -474,40 +483,23 @@ define([
 										) {
 											salesRep = 668711; //Lee Russell
 										}
-										// if (siteAddressZipCode >= 2000 && siteAddressZipCode <= 2999) {
-										//     if (siteAddressZipCode == 2481 || siteAddressZipCode == 2482 || siteAddressZipCode == 2485 ||
-										//         siteAddressZipCode == 2486 || siteAddressZipCode == 2487 || siteAddressZipCode == 2488 || siteAddressZipCode ==
-										//         2479) {
-										//         //Lee
-										//         salesRep = 668711;
-										//     } else if (siteAddressZipCode == 2481) { //Albury
-										//         //Belinda
-										//         salesRep = 668712;
-										//     } else {
-										//         //Kerina
-										//         salesRep = 696160;
-										//     }
-										// } else {
-										//     if ((siteAddressZipCode >= 3000 && siteAddressZipCode <= 3999) || (siteAddressZipCode >= 7000 && siteAddressZipCode <= 7999)) { //VIC & SA & TAS siteAddressZipCodes
-										//         salesRep = 668712; //Belinda Urbani
-										//     } else if ((siteAddressZipCode >= 5000 &&
-										//         siteAddressZipCode <= 5999)) {
-										//         salesRep = 668712; //Belinda Urbani
-										//     } else if ((siteAddressZipCode >= 4000 && siteAddressZipCode <= 4999) || (siteAddressZipCode >= 800 &&
-										//         siteAddressZipCode <= 999) || (siteAddressZipCode >= 6000 && siteAddressZipCode <= 6999)) { //QLD & NT & WA siteAddressZipCodes
-										//         salesRep = 668711; //Lee Russell
-										//     } else { //Everything else
-										//         salesRep = 668712; //Belinda Urbani
-										//     }
-										// }
+
 									} else {
 										salesRep = salesrepid;
 									}
 									if (leadSource == -4) {
-										// customerRecord.setValue({
-										// 	fieldId: "entitystatus",
-										// 	value: 38, // SUSPECT - UNQUALIFIED
-										// });
+										if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+											customerRecord.setValue({
+												fieldId: "entitystatus",
+												value: 57, // SUSPECT - HOT LEAD
+											});
+										} else {
+											customerRecord.setValue({
+												fieldId: "entitystatus",
+												value: 68, // SUSPECT - VALIDATED
+											});
+										}
+
 									} else if (
 										!isNullorEmpty(lead_customer_type) &&
 										(leadSource == 295896 || leadSource == 296333)
@@ -741,10 +733,10 @@ define([
 							//Lead Source: Franchisee Generated
 
 							/* 
-                                Create Sales Record
-                                Assign to Liam depending on the franchisee
-                                Assign to Franchisee Generated
-                                 */
+								Create Sales Record
+								Assign to Liam depending on the franchisee
+								Assign to Franchisee Generated
+								 */
 							var salesRecord = record.create({
 								type: "customrecord_sales",
 							});
@@ -757,10 +749,18 @@ define([
 								fieldId: "custrecord_sales_campaign",
 								value: 70, // Franchisee Generated
 							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_assigned",
-								value: 1623053, //Assign to Aleyna
-							});
+							if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+								salesRecord.setValue({
+									fieldId: "custrecord_sales_assigned",
+									value: salesRep, //Assign to Sales Rep Assigned to Franchisee
+								});
+							} else {
+								salesRecord.setValue({
+									fieldId: "custrecord_sales_assigned",
+									value: 1874329, //Assign to Call Force
+								});
+							}
+
 							salesRecord.setValue({
 								fieldId: "custrecord_sales_outcome",
 								value: 20,
@@ -778,42 +778,44 @@ define([
 								ignoreMandatoryFields: true,
 							});
 
-							var subject =
-								"Sales HOT Lead - " +
-								zee_text +
-								" Franchisee Generated - " +
-								entity_id +
-								" " +
-								customer_name;
-							var cust_id_link =
-								"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
-								customerInternalId;
-							var body =
-								"New lead entered into the system by Franchisee. \n Customer Name: " +
-								entity_id +
-								" " +
-								customer_name +
-								"\nLink: " +
-								cust_id_link +
-								"\nFranchisee: " +
-								zee_text;
+							if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+								var subject =
+									"Sales HOT Lead - " +
+									zee_text +
+									" Franchisee Generated - " +
+									entity_id +
+									" " +
+									customer_name;
+								var cust_id_link =
+									"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+									customerInternalId;
+								var body =
+									"New lead entered into the system by Franchisee. \n Customer Name: " +
+									entity_id +
+									" " +
+									customer_name +
+									"\nLink: " +
+									cust_id_link +
+									"\nFranchisee: " +
+									zee_text;
 
-							// email.send({
-							// 	author: 112209,
-							// 	body: body,
-							// 	recipients: 1809382,
-							// 	subject: subject,
-							// 	cc: ["aleyna.harnett@mailplus.com.au"],
-							// 	relatedRecords: { entityId: customerInternalId },
-							// });
+								email.send({
+									author: 112209,
+									body: body,
+									recipients: 1809382,
+									subject: subject,
+									cc: ["aleyna.harnett@mailplus.com.au"],
+									relatedRecords: { entityId: customerInternalId },
+								});
+							}
 						} else if (leadSource == 285297) {
 							//Lead Source: Inbound - Head Office Generated
 
 							/* 
-                                Create Sales Record
-                                Assign to Sales Rep depending on the franchisee
-                                Assign to Field Sales
-                                 */
+								Create Sales Record
+								Assign to Sales Rep depending on the franchisee
+								Assign to Field Sales
+								 */
 							var salesRecord = record.create({
 								type: "customrecord_sales",
 							});
