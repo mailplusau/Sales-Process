@@ -35758,22 +35758,34 @@ define([
 				// console.log('d1[2]: ' + d1[2])
 				// console.log('c[2]: ' + c[2])
 
-				if (
-					isNullorEmpty(maapImplementationDate) ||
-					(d1[1] == c[1] && d1[2] == c[2])
-				) {
+
+
+				// if (
+				// 	isNullorEmpty(maapImplementationDate) ||
+				// 	(d1[1] == c[1] && d1[2] == c[2])
+				// ) {
+				// 	existingCustomer = false;
+				// } else {
+				// 	existingCustomer = true;
+				// }
+
+				
+
+				var maxCommDate = custListCommenceTodaySet.getValue({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					summary: "MAX",
+				});
+
+				console.log("maxCommDate: " + maxCommDate);
+
+				if (areDatesWithinTwoWeeks(maxCommDate, maapImplementationDate)) {
 					existingCustomer = false;
 				} else {
 					existingCustomer = true;
 				}
 
 				console.log("existingCustomer: " + existingCustomer);
-
-				var minCommDate = custListCommenceTodaySet.getValue({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					summary: "MIN",
-				});
 
 				var trialEndDate = custListCommenceTodaySet.getValue({
 					name: "custentity_customer_trial_expiry_date",
@@ -35823,23 +35835,23 @@ define([
 				//     invoiceType = 'Service'
 				// }
 
-				if (!isNullorEmpty(minCommDate)) {
-					var minCommDateSplit = minCommDate.split("/");
+				if (!isNullorEmpty(maxCommDate)) {
+					var maxCommDateSplit = maxCommDate.split("/");
 
-					if (parseInt(minCommDateSplit[1]) < 10) {
-						minCommDateSplit[1] = "0" + minCommDateSplit[1];
+					if (parseInt(maxCommDateSplit[1]) < 10) {
+						maxCommDateSplit[1] = "0" + maxCommDateSplit[1];
 					}
 
-					if (parseInt(minCommDateSplit[0]) < 10) {
-						minCommDateSplit[0] = "0" + minCommDateSplit[0];
+					if (parseInt(maxCommDateSplit[0]) < 10) {
+						maxCommDateSplit[0] = "0" + maxCommDateSplit[0];
 					}
 
-					minCommDate =
-						minCommDateSplit[2] +
+					maxCommDate =
+						maxCommDateSplit[2] +
 						"-" +
-						minCommDateSplit[1] +
+						maxCommDateSplit[1] +
 						"-" +
-						minCommDateSplit[0];
+						maxCommDateSplit[0];
 				}
 
 				var dateLeadEnteredSplit = dateLeadEntered.split("/");
@@ -36660,6 +36672,7 @@ define([
 								oldquoteSentDate,
 								// oldemail48h,
 								olddateProspectWon,
+								oldMinCommDate,
 								'<input type="button" value="' +
 								oldDaysOpen +
 								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
@@ -36769,7 +36782,7 @@ define([
 				oldMonthServiceValue = monthlyServiceValue;
 				oldMonthlyReductionServiceValue = monthlyReductionServiceValue;
 				oldMonthlyExtraServiceValue = monthlyExtraServiceValue;
-				oldMinCommDate = minCommDate;
+				oldMinCommDate = maxCommDate;
 				oldTrialEndDate = trialEndDate;
 				oldTnCAgreedDate = tncAgreedDate;
 				oldZeeVisitedDate = zeeVisitedDate;
@@ -37385,6 +37398,7 @@ define([
 						oldquoteSentDate,
 						// oldemail48h,
 						olddateProspectWon,
+						oldMinCommDate,
 						'<input type="button" value="' +
 						oldDaysOpen +
 						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
@@ -38751,16 +38765,17 @@ define([
 				{ title: "Date - Quote Sent" }, //10
 				// { title: '48h Email Sent' },
 				{ title: "Date - Prospect Won" }, //11
-				{ title: "Days Open" }, //12
-				{ title: "Expected Monthly Service" }, //13
-				{ title: "Total Service Invoice" }, //14
-				{ title: "Total Product Invoice" }, //15
-				{ title: "Total Invoice" }, //16
-				{ title: "Gift Box Activated?" }, //17
-				{ title: "Lead Entered By" }, //18
-				{ title: "Sales Campaign" }, //19
-				{ title: "Sales Rep" }, //20
-				{ title: "Auto Signed Up" }, //21
+				{ title: "Service Commencement Date" }, //12
+				{ title: "Days Open" }, //13
+				{ title: "Expected Monthly Service" }, //14
+				{ title: "Total Service Invoice" }, //15
+				{ title: "Total Product Invoice" }, //16
+				{ title: "Total Invoice" }, //17
+				{ title: "Gift Box Activated?" }, //18
+				{ title: "Lead Entered By" }, //19
+				{ title: "Sales Campaign" }, //20
+				{ title: "Sales Rep" }, //21
+				{ title: "Auto Signed Up" }, //22
 				// { title: "Child Table" }, //22
 			],
 			autoWidth: false,
@@ -38780,15 +38795,15 @@ define([
 			// ],
 			columnDefs: [
 				{
-					targets: [20],
+					targets: [21],
 					visible: false,
 				},
 				{
-					targets: [1, 2, 3, 10, 12, 13, 14, 15, 16],
+					targets: [1, 2, 3, 10, 13, 14, 15, 16, 17],
 					className: "bolded",
 				},
 				{
-					targets: [7, 11],
+					targets: [7, 12],
 					className: "notexport",
 				},
 			],
@@ -38866,23 +38881,6 @@ define([
 
 				// Total Expected Usage over all pages
 				total_monthly_service_revenue = api
-					.column(12)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Page Total Expected Usage over this page
-				page_total_monthly_service_revenue = api
-					.column(12, {
-						page: "current",
-					})
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_service_invoice_amount = api
 					.column(13)
 					.data()
 					.reduce(function (a, b) {
@@ -38890,7 +38888,7 @@ define([
 					}, 0);
 
 				// Page Total Expected Usage over this page
-				pagetotal_service_invoice_amount = api
+				page_total_monthly_service_revenue = api
 					.column(13, {
 						page: "current",
 					})
@@ -38899,7 +38897,7 @@ define([
 						return intVal(a) + intVal(b);
 					}, 0);
 
-				total_prod_nvoice_amount = api
+				total_service_invoice_amount = api
 					.column(14)
 					.data()
 					.reduce(function (a, b) {
@@ -38907,8 +38905,25 @@ define([
 					}, 0);
 
 				// Page Total Expected Usage over this page
-				pagetotal_prod_invoice_amount = api
+				pagetotal_service_invoice_amount = api
 					.column(14, {
+						page: "current",
+					})
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
+				total_prod_nvoice_amount = api
+					.column(15)
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
+				// Page Total Expected Usage over this page
+				pagetotal_prod_invoice_amount = api
+					.column(15, {
 						page: "current",
 					})
 					.data()
@@ -38918,7 +38933,7 @@ define([
 
 				// Total Expected Usage over all pages
 				total_invoice_amount = api
-					.column(15)
+					.column(16)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -38926,7 +38941,7 @@ define([
 
 				// Page Total Expected Usage over this page
 				pagetotal_invoice_amount = api
-					.column(15, {
+					.column(16, {
 						page: "current",
 					})
 					.data()
@@ -38942,22 +38957,22 @@ define([
 				// );
 
 				// Update footer
-				$(api.column(12).footer()).html(
+				$(api.column(13).footer()).html(
 					formatter.format(page_total_monthly_service_revenue)
 					// '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
 				);
 
-				$(api.column(13).footer()).html(
+				$(api.column(14).footer()).html(
 					formatter.format(pagetotal_service_invoice_amount)
 					// '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
 				);
 
-				$(api.column(14).footer()).html(
+				$(api.column(15).footer()).html(
 					formatter.format(pagetotal_prod_invoice_amount)
 					// '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
 				);
 
-				$(api.column(15).footer()).html(
+				$(api.column(16).footer()).html(
 					formatter.format(pagetotal_invoice_amount)
 					// '$' + page_total_monthly_service_revenue.toFixed(2).toLocaleString()
 				);
@@ -47561,6 +47576,26 @@ define([
 		} else {
 			return false;
 		}
+	}
+
+	function areDatesWithinTwoWeeks(date1, date2) {
+		// Helper function to parse date strings
+		function parseDate(dateStr) {
+			const [day, month, year] = dateStr.split('/').map(Number);
+			return new Date(year, month - 1, day);
+		}
+
+		const parsedDate1 = parseDate(date1);
+		const parsedDate2 = parseDate(date2);
+
+		// Calculate the difference in time
+		const timeDifference = Math.abs(parsedDate1 - parsedDate2);
+
+		// Calculate the difference in days
+		const dayDifference = timeDifference / (1000 * 3600 * 24);
+
+		// Check if the difference is within 14 days (2 weeks)
+		return dayDifference <= 14;
 	}
 
 	/**
