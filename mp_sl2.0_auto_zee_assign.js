@@ -536,6 +536,20 @@ define([
 							salesrepid = zeeSalesRepAssigned;
 							salesRep = zeeSalesRepAssigned;
 						}
+
+						if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+							customerRecord.setValue({
+								fieldId: "entitystatus",
+								value: 57, // SUSPECT - HOT LEAD
+							});
+						} else {
+							customerRecord.setValue({
+								fieldId: "entitystatus",
+								value: 68, // SUSPECT - VALIDATED
+							});
+						}
+
+
 					}
 
 					//?DEBUG DATA
@@ -745,16 +759,21 @@ define([
 								fieldId: "custrecord_sales_customer",
 								value: customerInternalId,
 							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_campaign",
-								value: 70, // Franchisee Generated
-							});
+							
 							if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
 									value: salesRep, //Assign to Sales Rep Assigned to Franchisee
 								});
+								salesRecord.setValue({
+									fieldId: "custrecord_sales_campaign",
+									value: 70, // Franchisee Generated
+								});
 							} else {
+								salesRecord.setValue({
+									fieldId: "custrecord_sales_campaign",
+									value: 87, // Call Force - 202501
+								});
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
 									value: 1874329, //Assign to Call Force
