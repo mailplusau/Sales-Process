@@ -133,6 +133,26 @@ define([
 			window.location.href = url;
 		});
 
+		$(".page_number").click(function () {
+			var page_number = $(this).attr("data-id");
+			zee = $("#zee_dropdown").val();
+			var commencement_start_date = $("#commencement_date_from").val();
+			var commencement_last_date = $("#commencement_date_to").val();
+
+			var url =
+				baseURL +
+				"/app/site/hosting/scriptlet.nl?script=1948&deploy=1&zee=" +
+				zee +
+				"&commence_date_from=" +
+				commencement_start_date +
+				"&page_no=" +
+				page_number +
+				"&commence_date_to=" +
+				commencement_last_date;
+
+			window.location.href = url;
+		});
+
 		$("#clearFilter").click(function () {
 			var url = baseURL + "/app/site/hosting/scriptlet.nl?script=1948&deploy=1";
 
@@ -1183,45 +1203,70 @@ define([
 			);
 		}
 
-		shipMateOnboardingRequiredSearch
-			.run()
-			.each(function (salesCallUpsellTasksResultSet) {
-				var custInternalID = salesCallUpsellTasksResultSet.getValue({
+		var shipMateRequiredCount = 0;
+		var shipMateRequiredCount =
+			shipMateOnboardingRequiredSearch.runPaged().count;
+
+		if (shipMateRequiredCount > 25) {
+			var val1 = currentRecord.get();
+			var page_no = val1.getValue({
+				fieldId: "custpage_page_no",
+			});
+
+			var totalPageCount = parseInt(shipMateRequiredCount / 25) + 1;
+			var rangeStart = (parseInt(page_no) - 1) * 26;
+			var rangeEnd = rangeStart + 25;
+
+			val1.setValue({
+				fieldId: "custpage_total_page_no",
+				value: totalPageCount,
+			});
+
+			console.log("start: " + rangeStart);
+			console.log("end: " + rangeEnd);
+
+			var shipMateOnboardingRequiredSearchReseultSet = shipMateOnboardingRequiredSearch.run().getRange({
+				start: rangeStart,
+				end: rangeEnd,
+			});
+
+			for (var i = 0; i < shipMateOnboardingRequiredSearchReseultSet.length; i++) {
+				var custInternalID = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "internalid",
 					summary: "GROUP",
 				});
-				var custEntityID = salesCallUpsellTasksResultSet.getValue({
+				var custEntityID = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "entityid",
 					summary: "GROUP",
 				});
-				var custName = salesCallUpsellTasksResultSet.getValue({
+				var custName = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "companyname",
 					summary: "GROUP",
 				});
-				var zeeID = salesCallUpsellTasksResultSet.getValue({
+				var zeeID = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "partner",
 					summary: "GROUP",
 				});
-				var zeeName = salesCallUpsellTasksResultSet.getText({
+				var zeeName = shipMateOnboardingRequiredSearchReseultSet[i].getText({
 					name: "partner",
 					summary: "GROUP",
 				});
 
-				var email = salesCallUpsellTasksResultSet.getValue({
+				var email = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "email",
 					summary: "GROUP",
 				});
-				var serviceEmail = salesCallUpsellTasksResultSet.getValue({
+				var serviceEmail = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "custentity_email_service",
 					summary: "GROUP",
 				});
 
-				var phone = salesCallUpsellTasksResultSet.getValue({
+				var phone = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "phone",
 					summary: "GROUP",
 				});
 
-				var salesRecordInternalID = salesCallUpsellTasksResultSet.getValue({
+				var salesRecordInternalID = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "internalid",
 					join: "CUSTRECORD_SALES_CUSTOMER",
 					summary: "MAX",
@@ -1239,7 +1284,7 @@ define([
 					var lastAssigned = "";
 				}
 
-				var commRegInternalID = salesCallUpsellTasksResultSet.getValue({
+				var commRegInternalID = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
 					name: "internalid",
 					join: "CUSTRECORD_CUSTOMER",
 					summary: "MAX",
@@ -1525,8 +1570,357 @@ define([
 					}
 				}
 
-				return true;
-			});
+			}
+		} else {
+			shipMateOnboardingRequiredSearch
+				.run()
+				.each(function (salesCallUpsellTasksResultSet) {
+					var custInternalID = salesCallUpsellTasksResultSet.getValue({
+						name: "internalid",
+						summary: "GROUP",
+					});
+					var custEntityID = salesCallUpsellTasksResultSet.getValue({
+						name: "entityid",
+						summary: "GROUP",
+					});
+					var custName = salesCallUpsellTasksResultSet.getValue({
+						name: "companyname",
+						summary: "GROUP",
+					});
+					var zeeID = salesCallUpsellTasksResultSet.getValue({
+						name: "partner",
+						summary: "GROUP",
+					});
+					var zeeName = salesCallUpsellTasksResultSet.getText({
+						name: "partner",
+						summary: "GROUP",
+					});
+
+					var email = salesCallUpsellTasksResultSet.getValue({
+						name: "email",
+						summary: "GROUP",
+					});
+					var serviceEmail = salesCallUpsellTasksResultSet.getValue({
+						name: "custentity_email_service",
+						summary: "GROUP",
+					});
+
+					var phone = salesCallUpsellTasksResultSet.getValue({
+						name: "phone",
+						summary: "GROUP",
+					});
+
+					var salesRecordInternalID = salesCallUpsellTasksResultSet.getValue({
+						name: "internalid",
+						join: "CUSTRECORD_SALES_CUSTOMER",
+						summary: "MAX",
+					});
+
+					if (isNullorEmpty(salesRecordInternalID)) {
+						var salesRecord = record.load({
+							type: "customrecord_sales",
+							id: salesRecordInternalID,
+						});
+						var lastAssigned = salesRecord.getText({
+							fieldId: "custrecord_sales_assigned",
+						});
+					} else {
+						var lastAssigned = "";
+					}
+
+					var commRegInternalID = salesCallUpsellTasksResultSet.getValue({
+						name: "internalid",
+						join: "CUSTRECORD_CUSTOMER",
+						summary: "MAX",
+					});
+
+					if (isNullorEmpty(commRegInternalID)) {
+						var commRegRecord = record.load({
+							type: "customrecord_commencement_register",
+							id: commRegInternalID,
+						});
+						var dateEffective = commRegRecord.getValue({
+							fieldId: "custrecord_comm_date",
+						});
+						var today = new Date(dateEffective);
+						today.setHours(today.getHours() + 11);
+
+						var year = today.getFullYear();
+						var month = customPadStart((today.getMonth() + 1).toString(), 2, "0"); // Months are zero-based
+						var day = customPadStart(today.getDate().toString(), 2, "0");
+
+						dateEffective = year + "-" + month + "-" + day;
+					} else {
+						var dateEffective = "";
+					}
+
+					// console.log("dateEffective", Date(c));
+					// dateEffective = convertDateToYYYYMMDD(dateEffective);
+
+					//Search Name: ShipMate Onboarding Required - Task List
+					var shipMateOnboardingRequiredTaskCreatedSearch = search.load({
+						type: "customer",
+						id: "customsearch_shipmate_onboarding_tasks_2",
+					});
+					shipMateOnboardingRequiredTaskCreatedSearch.filters.push(
+						search.createFilter({
+							name: "internalid",
+							join: null,
+							operator: search.Operator.IS,
+							values: custInternalID,
+						})
+					);
+
+					var taskInternalId = "";
+					var taskTitle = "";
+					var taskDueDate = "";
+					var taskTime = "";
+					var salesRepAssigned = "";
+					var salesRepAssignedText = "";
+					var taskStatus = "";
+					var taskCount = 0;
+					var taskNotes = "";
+					var taskCancelled = "No";
+					var mpProdWeeklyUsage = null;
+
+					var firstWeekofUsage = "";
+					var lastWeekofUsage = "";
+					var lastWeekUsageCount = 0;
+					var avgWeeklyUsageCount = 0;
+					var noOfWeeks = 0;
+					var tempTotal = 0;
+
+					shipMateOnboardingRequiredTaskCreatedSearch
+						.run()
+						.each(function (
+							shipMateOnboardingRequiredTaskCreatedSearchResultSet
+						) {
+							mpProdWeeklyUsage =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "custentity_actual_mpex_weekly_usage",
+								});
+							taskInternalId =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "internalid",
+									join: "task",
+								});
+
+							taskTitle =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "title",
+									join: "task",
+								});
+							taskDueDate =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "duedate",
+									join: "task",
+								});
+							taskDueDate = convertDateToYYYYMMDD(taskDueDate);
+
+							taskTime =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "starttime",
+									join: "task",
+								});
+							salesRepAssigned =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "assigned",
+									join: "task",
+								});
+
+							salesRepAssignedText =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getText({
+									name: "assigned",
+									join: "task",
+								});
+							taskStatus =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getText({
+									name: "status",
+									join: "task",
+								});
+							taskNotes =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "message",
+									join: "task",
+								});
+							taskCancelled =
+								shipMateOnboardingRequiredTaskCreatedSearchResultSet.getValue({
+									name: "custevent_task_cancelled",
+									join: "task",
+								});
+
+							if (taskCancelled == 1) {
+								taskCancelled = "Yes";
+							}
+
+							if (!isNullorEmpty(mpProdWeeklyUsage)) {
+								var parsedUsage = JSON.parse(mpProdWeeklyUsage);
+								noOfWeeks = parsedUsage["Usage"].length;
+								for (var x = 0; x < parsedUsage["Usage"].length; x++) {
+									var parts = parsedUsage["Usage"][x]["Week Used"].split("/");
+
+									if (x == 0) {
+										firstWeekofUsage =
+											"Week Starting: " +
+											parts[2] +
+											"-" +
+											("0" + parts[1]).slice(-2) +
+											"-" +
+											("0" + parts[0]).slice(-2) +
+											"</br> Usage: " +
+											parsedUsage["Usage"][x]["Count"];
+									}
+
+									if (x == parsedUsage["Usage"].length - 1) {
+										lastWeekofUsage =
+											"Week Starting: " +
+											parts[2] +
+											"-" +
+											("0" + parts[1]).slice(-2) +
+											"-" +
+											("0" + parts[0]).slice(-2) +
+											"</br>Usage: " +
+											parsedUsage["Usage"][x]["Count"];
+										lastWeekUsageCount = parseInt(
+											parsedUsage["Usage"][x]["Count"]
+										);
+									}
+
+									tempTotal += parseInt(parsedUsage["Usage"][x]["Count"]);
+								}
+								avgWeeklyUsageCount = parseFloat(tempTotal / noOfWeeks).toFixed(
+									2
+								);
+							}
+
+							taskCount++;
+							return true;
+						});
+
+					console.log("custInternalID: " + custInternalID);
+					console.log("custName: " + custName);
+
+					// var customer_record = record.load({
+					// 	type: "customer",
+					// 	id: parseInt(custInternalID),
+					// });
+
+					// var mpProdWeeklyUsage = customer_record.getValue({
+					// 	fieldId: "custentity_actual_mpex_weekly_usage",
+					// });
+					// console.log("mpProdWeeklyUsage: " + mpProdWeeklyUsage);
+
+					var count3 = 0;
+					var oldCustomerId = null;
+					var oldCustomerName = null;
+					var oldFranchiseeName = null;
+					var oldIntegrationText = null;
+					var express_speed_cust_usage = 0;
+					var premium_speed_cust_usage = 0;
+					var standard_speed_cust_usage = 0;
+					var sendle_au_express_cust_usage = 0;
+					var total_usage_cust_usage = 0;
+
+
+					if (taskStatus == "") {
+						debt_set_requested.push({
+							custInternalID: custInternalID,
+							custEntityID: custEntityID,
+							custName: custName,
+							zeeID: zeeID,
+							zeeName: zeeName,
+							serviceEmail: serviceEmail,
+							phone: phone,
+							lastAssigned: lastAssigned,
+							dateEffective: dateEffective,
+							taskInternalId: taskInternalId,
+							taskTitle: taskTitle,
+							taskDueDate: taskDueDate,
+							taskTime: taskTime,
+							salesRepAssigned: salesRepAssigned,
+							salesRepAssignedText: salesRepAssignedText,
+							taskStatus: taskStatus,
+							taskNotes: taskNotes,
+							taskCancelled: taskCancelled,
+							express_speed_cust_usage: express_speed_cust_usage,
+							premium_speed_cust_usage: premium_speed_cust_usage,
+							standard_speed_cust_usage: standard_speed_cust_usage,
+							total_usage_cust_usage: total_usage_cust_usage,
+							firstWeekofUsage: firstWeekofUsage,
+							lastWeekofUsage: lastWeekofUsage,
+							noOfWeeks: noOfWeeks,
+							avgWeeklyUsageCount: avgWeeklyUsageCount,
+						});
+					} else if (taskStatus == "Not Started") {
+						debt_set_scheduled.push({
+							custInternalID: custInternalID,
+							custEntityID: custEntityID,
+							custName: custName,
+							zeeID: zeeID,
+							zeeName: zeeName,
+							serviceEmail: serviceEmail,
+							phone: phone,
+							lastAssigned: lastAssigned,
+							dateEffective: dateEffective,
+							taskInternalId: taskInternalId,
+							taskTitle: taskTitle,
+							taskDueDate: taskDueDate,
+							taskTime: taskTime,
+							salesRepAssigned: salesRepAssigned,
+							salesRepAssignedText: salesRepAssignedText,
+							taskStatus: taskStatus,
+							taskNotes: taskNotes,
+							taskCancelled: taskCancelled,
+							express_speed_cust_usage: express_speed_cust_usage,
+							premium_speed_cust_usage: premium_speed_cust_usage,
+							standard_speed_cust_usage: standard_speed_cust_usage,
+							total_usage_cust_usage: total_usage_cust_usage,
+							firstWeekofUsage: firstWeekofUsage,
+							lastWeekofUsage: lastWeekofUsage,
+							noOfWeeks: noOfWeeks,
+							avgWeeklyUsageCount: avgWeeklyUsageCount,
+						});
+					} else if (taskStatus == "Completed") {
+						debt_set_completed.push({
+							custInternalID: custInternalID,
+							custEntityID: custEntityID,
+							custName: custName,
+							zeeID: zeeID,
+							zeeName: zeeName,
+							serviceEmail: serviceEmail,
+							phone: phone,
+							lastAssigned: lastAssigned,
+							dateEffective: dateEffective,
+							taskInternalId: taskInternalId,
+							taskTitle: taskTitle,
+							taskDueDate: taskDueDate,
+							taskTime: taskTime,
+							salesRepAssigned: salesRepAssigned,
+							salesRepAssignedText: salesRepAssignedText,
+							taskStatus: taskStatus,
+							taskNotes: taskNotes,
+							taskCancelled: taskCancelled,
+							express_speed_cust_usage: express_speed_cust_usage,
+							premium_speed_cust_usage: premium_speed_cust_usage,
+							standard_speed_cust_usage: standard_speed_cust_usage,
+							total_usage_cust_usage: total_usage_cust_usage,
+							firstWeekofUsage: firstWeekofUsage,
+							lastWeekofUsage: lastWeekofUsage,
+							noOfWeeks: noOfWeeks,
+							avgWeeklyUsageCount: avgWeeklyUsageCount,
+						});
+						if (taskCancelled == "Yes") {
+							taskCancelledCount++;
+						}
+					}
+
+					shipMateRequiredCount++;
+					console.log("shipMateRequiredCount: " + shipMateRequiredCount);
+					return true;
+				});
+		}
+
+		// console.log("shipMateRequiredCount: " + shipMateRequiredCount);
 		console.log("debt_set_requested:" + debt_set_requested);
 		console.log("debt_set_scheduled:" + debt_set_scheduled);
 		console.log("debt_set_completed:" + debt_set_completed);

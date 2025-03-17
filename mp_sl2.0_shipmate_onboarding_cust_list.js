@@ -42,6 +42,12 @@ define([
 				context.request.parameters.commence_date_from;
 			var commencement_last_date = context.request.parameters.commence_date_to;
 
+			var page_no = context.request.parameters.page_no;
+
+			if (isNullorEmpty(page_no)) {
+				page_no = "1";
+			}
+
 			if (isNullorEmpty(userId)) {
 				userId = null;
 			}
@@ -187,6 +193,122 @@ define([
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
 			inlineHtml += spacing();
+
+
+			//Search Name: ShipMate Onboarding Required - Customer List
+			var shipMateOnboardingRequiredSearch = search.load({
+				type: "customer",
+				id: "customsearch_shipmate_onboarding_tasks",
+			});
+
+			if (!isNullorEmpty(zee_id)) {
+				shipMateOnboardingRequiredSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(userId) && role != 3) {
+				shipMateOnboardingRequiredSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_salesrep",
+						join: "custrecord_customer",
+						operator: search.Operator.IS,
+						values: userId,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				shipMateOnboardingRequiredSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "custrecord_customer",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				shipMateOnboardingRequiredSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "custrecord_customer",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			var shipMateRequiredCount = 0;
+
+			var shipMateRequiredCount =
+				shipMateOnboardingRequiredSearch.runPaged().count;
+			var totalPageCount =
+				parseInt(shipMateRequiredCount / 50) + 1;
+
+			var divBreak = Math.ceil(12 / totalPageCount);
+
+			inlineHtml +=
+				'<div class="form-group container zee_available_buttons_section">';
+			inlineHtml += '<div class="row">';
+
+			inlineHtml +=
+				'<div class="col-xs-12" style="text-align: center;font-size: 14px">Pages: </br></div>';
+
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
+			inlineHtml +=
+				'<div class="form-group container zee_available_buttons_section">';
+			inlineHtml += '<div class="row">';
+
+			var rangeStart = 0;
+			var rangeEnd = 0;
+
+			for (var i = 0; i < totalPageCount; i++) {
+				if (
+					i == totalPageCount - 1 ||
+					shipMateRequiredCount < 50
+				) {
+					if (shipMateRequiredCount < 50) {
+					} else {
+						rangeStart = rangeEnd;
+					}
+					rangeEnd = shipMateRequiredCount;
+				} else {
+					rangeStart = (parseInt(i + 1) - 1) * 50;
+					if (rangeStart != 50) {
+						rangeEnd = rangeStart + 50;
+					} else {
+						rangeEnd = shipMateRequiredCount - rangeStart - 1;
+						if (rangeEnd > 50) {
+							rangeEnd = parseInt(i + 1) * 50;
+						}
+					}
+				}
+
+				inlineHtml +=
+					'<div class="col-xs-' +
+					divBreak +
+					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
+					(i + 1) +
+					'" class="form-control btn btn-info page_number" data-id="' +
+					(i + 1) +
+					'" /></br></div>';
+			}
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
+			var searchRangeStart = (parseInt(page_no) - 1) * 51;
+			var searchRangeEnd = searchRangeStart + 50;
+
 			inlineHtml += tabsSection();
 
 			//Button to reload the page when the filters have been selected
@@ -195,6 +317,25 @@ define([
 			//   label: 'Submit Search',
 			//   functionName: 'addFilters()'
 			// });
+
+			form
+				.addField({
+					id: "custpage_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				}).defaultValue = page_no;
+			form
+				.addField({
+					id: "custpage_total_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Total Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				});
 
 			form
 				.addField({
