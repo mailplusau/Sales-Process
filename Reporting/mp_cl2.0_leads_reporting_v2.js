@@ -18736,32 +18736,32 @@ define([
 					"%)";
 
 				overQuoteSentByStatusDataSet.push([
-					preview_row.dateUsed,
-					preview_row.suspect_new,
-					preview_row.suspect_hot_lead,
-					preview_row.suspect_validated,
-					preview_row.suspect_qualified,
-					preview_row.suspect_unqualified,
-					preview_row.suspect_pre_qualification,
-					preview_row.suspect_in_qualification,
-					preview_row.suspect_reassign,
-					preview_row.suspect_follow_up,
-					preview_row.suspect_no_answer,
-					preview_row.suspect_in_contact,
-					preview_row.suspect_lpo_followup,
-					preview_row.prospect_in_contact,
-					preview_row.suspect_off_peak_pipeline,
-					preview_row.suspect_lost,
-					preview_row.suspect_oot,
-					preview_row.suspect_customer_lost,
-					preview_row.prospect_opportunity,
-					preview_row.prospect_qualified,
-					preview_row.prospect_box_sent,
-					preview_row.prospecy_quote_sent,
-					preview_row.customer_free_trial_pending,
-					preview_row.customer_free_trial,
-					preview_row.customer_signed,
-					preview_row.total_leads,
+					preview_row.dateUsed,//0
+					preview_row.suspect_new,//1
+					preview_row.suspect_hot_lead,//2
+					preview_row.suspect_validated,//3
+					preview_row.suspect_qualified,//4
+					preview_row.suspect_unqualified,//5
+					preview_row.suspect_pre_qualification,//6
+					preview_row.suspect_in_qualification,//7
+					preview_row.suspect_reassign,//8
+					preview_row.suspect_follow_up,//9
+					preview_row.suspect_no_answer,//10
+					preview_row.suspect_in_contact,//11
+					preview_row.suspect_lpo_followup,//12
+					preview_row.prospect_in_contact,//13
+					preview_row.suspect_off_peak_pipeline,//14
+					preview_row.suspect_lost,//15
+					preview_row.suspect_oot,//16
+					preview_row.suspect_customer_lost,//17
+					preview_row.prospect_opportunity,//18
+					preview_row.prospect_qualified,//19
+					preview_row.prospect_box_sent,//20
+					preview_row.prospecy_quote_sent,//21
+					preview_row.customer_free_trial_pending,//22
+					preview_row.customer_free_trial,//23
+					preview_row.customer_signed,//24
+					preview_row.total_leads,//25
 				]);
 
 				quoteSentByStatusDataSet.push([
@@ -18794,6 +18794,9 @@ define([
 				]);
 			});
 		}
+
+		console.log("overQuoteSentByStatusDataSet");
+		console.log(JSON.stringify(overQuoteSentByStatusDataSet));
 
 		console.log("quoteSentByStatusDataSet");
 		console.log(quoteSentByStatusDataSet);
