@@ -247,7 +247,7 @@ define([
 
 	function afterSubmit() {
 		$(".zee_label_section").removeClass("hide");
-		// $(".show_buttons_section").removeClass("hide");
+		$(".show_buttons_section").removeClass("hide");
 		$(".zee_dropdown_section").removeClass("hide");
 
 		$(".lead_entered_label_section").removeClass("hide");
@@ -371,6 +371,18 @@ define([
 			$("#myModal").show();
 
 			return false;
+		});
+
+		$("#show_filter").click(function () {
+			if ($("#show_filter").val() == "SHOW DESCRIPTION") {
+				$("#show_filter").val("HIDE DESCRIPTION");
+				$("#show_filter").css("background-color", "#F0AECB");
+				$("#show_filter").css("color", "#103d39");
+			} else {
+				$("#show_filter").val("SHOW DESCRIPTION");
+				$("#show_filter").css("background-color", "#EAF044 !important");
+				$("#show_filter").css("color", "#103d39");
+			}
 		});
 
 		$("#fullReport").click(function () {
@@ -1417,7 +1429,7 @@ define([
 
 				var offPeakPercentage = parseInt(
 					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-						100
+					100
 				);
 				var offPeakCol =
 					preview_row.suspect_off_peak_pipeline +
@@ -1515,7 +1527,7 @@ define([
 
 				var customerFreeTrialPendingPercentage = parseInt(
 					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
-						100
+					100
 				);
 				var customerFreeTrialPendingCol =
 					preview_row.customer_free_trial_pending +
@@ -1552,7 +1564,7 @@ define([
 
 				var suspectPreQualifcationPercentage = parseInt(
 					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-						100
+					100
 				);
 				var suspectPreQualificationCol =
 					preview_row.suspect_pre_qualification +
@@ -1982,151 +1994,151 @@ define([
 				// Update footer
 				$(api.column(1).footer()).html(
 					total_suspect_new +
-						" (" +
-						((total_suspect_new / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_new / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(2).footer()).html(
 					total_suspect_hot_lead +
-						" (" +
-						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(3).footer()).html(
 					total_suspect_qualified +
-						" (" +
-						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(4).footer()).html(
 					total_suspect_unqualified +
-						" (" +
-						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(5).footer()).html(
 					total_suspect_validated +
-						" (" +
-						((total_suspect_validated / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_validated / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(6).footer()).html(
 					total_suspect_reassign +
-						" (" +
-						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(7).footer()).html(
 					total_suspect_followup +
-						" (" +
-						((total_suspect_followup / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_followup / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(8).footer()).html(
 					total_suspect_lpo_followup +
-						" (" +
-						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(9).footer()).html(
 					total_suspect_no_answer +
-						" (" +
-						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(10).footer()).html(
 					total_suspect_in_contact +
-						" (" +
-						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(11).footer()).html(
 					total_prospect_in_contact +
-						" (" +
-						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(12).footer()).html(
 					total_suspect_off_peak_pipeline +
-						" (" +
-						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(13).footer()).html(
 					total_suspect_lost +
-						" (" +
-						((total_suspect_lost / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_lost / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(14).footer()).html(
 					total_suspect_oot +
-						" (" +
-						((total_suspect_oot / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_oot / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(15).footer()).html(
 					total_suspect_customer_lost +
-						" (" +
-						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(16).footer()).html(
 					total_prospect_opportunity +
-						" (" +
-						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(17).footer()).html(
 					total_prospect_qualified +
-						" (" +
-						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(18).footer()).html(
 					total_prospect_box_sent +
-						" (" +
-						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(19).footer()).html(
 					total_prospect_quote_sent +
-						" (" +
-						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 
 				$(api.column(20).footer()).html(
 					total_customer_free_trial_pending +
-						" (" +
-						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-							0
-						) +
-						"%)"
+					" (" +
+					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+						0
+					) +
+					"%)"
 				);
 
 				$(api.column(21).footer()).html(
 					total_customer_free_trial +
-						" (" +
-						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(22).footer()).html(
 					total_customer_signed +
-						" (" +
-						((total_customer_signed / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_customer_signed / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(23).footer()).html(
 					total_lead_v1 +
-						" (" +
-						((total_lead_v1 / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_lead_v1 / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(24).footer()).html(
 					total_lead_v2 +
-						" (" +
-						((total_lead_v2 / total_lead) * 100).toFixed(0) +
-						"%)"
+					" (" +
+					((total_lead_v2 / total_lead) * 100).toFixed(0) +
+					"%)"
 				);
 				$(api.column(25).footer()).html(total_lead);
 			},
@@ -2381,7 +2393,7 @@ define([
 				{ title: "Invoice Status" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2424,7 +2436,7 @@ define([
 				{ title: "Invoice Status" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2465,7 +2477,7 @@ define([
 				{ title: "NEW STATUS" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2551,7 +2563,7 @@ define([
 				{ title: "Message" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2592,7 +2604,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 	function createChild3(row) {
@@ -2632,7 +2644,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2673,7 +2685,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2714,7 +2726,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2755,7 +2767,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2796,7 +2808,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 
@@ -2837,7 +2849,7 @@ define([
 				{ title: "Comment" },
 			],
 			columnDefs: [],
-			rowCallback: function (row, data) {},
+			rowCallback: function (row, data) { },
 		});
 	}
 

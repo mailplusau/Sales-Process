@@ -154,8 +154,26 @@ define([
 		inlineHtml +=
 			"<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;} .completeddot{height:25px;width:25px;background-color:#5cb3b0;border-radius:50%;display:inline-block}</style>";
 		inlineHtml += loadingSection();
-		// inlineHtml +=
-		// 	'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
+		inlineHtml +=
+			'<div class="form-group container show_buttons_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml += '<div class="col-xs-3"></div>';
+
+		inlineHtml +=
+			'<div class="col-xs-6"><input type="button" value="SHOW DESCRIPTION" class="form-control btn btn-primary" data-toggle="collapse" data-target="#collapseExample" id="show_filter" aria-expanded="false" aria-controls="collapseExample" style="background-color: #EAF044; color: #103d39; border-radius: 30px" /></div>';
+		inlineHtml += '<div class="col-xs-3"></div>';
+
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="collapse" id="collapseExample"><div class="card card-body">';
+		inlineHtml += "<div>";
+
+		inlineHtml +=
+			'<div class="container instruction_div " style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>This dashboard helps you track new customer leads and their progress over the last three months. It shows how many potential customers have been contacted, their status, and which ones have signed up based on when they were entered in netsuite.</br></br><b><u>What You Can Do Here:</u></b></br><ul><li><b>See Your Leads</b>: View all new customer leads by month for last 3-months.</li><li><b>Track Lead Progress</b>: Find out if a lead is in contact (suspect), in qualification (prospect), or has signed up (customer).</li><li><b>Identify Opportunities</b>: Spot potential customers who need follow-ups.</li><li><b>Check Lost Leads</b>: Understand why some leads didn’t convert.</li></ul>Click the "<b>Full Report</b>" button for a detailed breakdown of your leads and opportunities.</p></br>';
+
+		inlineHtml += "</div></div></div></div></br>";
 
 		inlineHtml +=
 			'<div class="form-group container filter_buttons_section hide">';
@@ -167,17 +185,17 @@ define([
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 
-		inlineHtml +=
-			'<div class="form-group container show_buttons_section hide">';
-		inlineHtml += '<div class="row">';
-		inlineHtml += '<div class="col-xs-5"></div>';
+		// inlineHtml +=
+		// 	'<div class="form-group container show_buttons_section hide">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml += '<div class="col-xs-5"></div>';
 
-		inlineHtml +=
-			'<div class="col-xs-2"><input type="button" value="SHOW FILTERS" class="form-control btn btn-primary" data-toggle="collapse" data-target="#collapseExample" id="show_filter" aria-expanded="false" aria-controls="collapseExample" style="background-color: #EAF044; color: #103d39; border-radius: 30px" /></div>';
-		inlineHtml += '<div class="col-xs-5"></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-2"><input type="button" value="SHOW FILTERS" class="form-control btn btn-primary" data-toggle="collapse" data-target="#collapseExample" id="show_filter" aria-expanded="false" aria-controls="collapseExample" style="background-color: #EAF044; color: #103d39; border-radius: 30px" /></div>';
+		// inlineHtml += '<div class="col-xs-5"></div>';
 
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 		inlineHtml +=
 			'<div class="collapse" id="collapseExample"><div class="card card-body">';
 		inlineHtml += "<div>";
