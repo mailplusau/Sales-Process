@@ -72,6 +72,7 @@ define([
 		$(".signed_up_label_section").removeClass("hide");
 		$(".signed_up_div").removeClass("hide");
 		$(".scorecard_percentage").removeClass("hide");
+		$(".zee_available_buttons_section").removeClass("hide");
 		$("#customer_benchmark_preview").show();
 
 		$(".loading_section").addClass("hide");
@@ -1158,64 +1159,67 @@ define([
 			id: "customsearch_shipmate_onboarding_tasks",
 		});
 
-		if (!isNullorEmpty(zee_id)) {
-			shipMateOnboardingRequiredSearch.filters.push(
-				search.createFilter({
-					name: "partner",
-					join: null,
-					operator: search.Operator.IS,
-					values: zee_id,
-				})
-			);
-		}
+		// if (!isNullorEmpty(zee_id)) {
+		// 	shipMateOnboardingRequiredSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "partner",
+		// 			join: null,
+		// 			operator: search.Operator.IS,
+		// 			values: zee_id,
+		// 		})
+		// 	);
+		// }
 
-		if (!isNullorEmpty(userId) && role != 3) {
-			shipMateOnboardingRequiredSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_salesrep",
-					join: "custrecord_customer",
-					operator: search.Operator.IS,
-					values: userId,
-				})
-			);
-		}
+		// if (!isNullorEmpty(userId) && role != 3) {
+		// 	shipMateOnboardingRequiredSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_salesrep",
+		// 			join: "custrecord_customer",
+		// 			operator: search.Operator.IS,
+		// 			values: userId,
+		// 		})
+		// 	);
+		// }
 
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			shipMateOnboardingRequiredSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "custrecord_customer",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
+		// if (
+		// 	!isNullorEmpty(commencement_start_date) &&
+		// 	!isNullorEmpty(commencement_last_date)
+		// ) {
+		// 	shipMateOnboardingRequiredSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "custrecord_customer",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: commencement_start_date,
+		// 		})
+		// 	);
 
-			shipMateOnboardingRequiredSearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "custrecord_customer",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
+		// 	shipMateOnboardingRequiredSearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_comm_date",
+		// 			join: "custrecord_customer",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: commencement_last_date,
+		// 		})
+		// 	);
+		// }
 
 		var shipMateRequiredCount = 0;
+		var shipMateRequiredSearchCount = 0;
 		var shipMateRequiredCount =
 			shipMateOnboardingRequiredSearch.runPaged().count;
 
-		if (shipMateRequiredCount > 25) {
+		console.log("Total ShipMate Onboarding Required Customers: " + shipMateRequiredCount);
+
+		if (shipMateRequiredCount > 50) {
 			var val1 = currentRecord.get();
 			var page_no = val1.getValue({
 				fieldId: "custpage_page_no",
 			});
 
-			var totalPageCount = parseInt(shipMateRequiredCount / 25) + 1;
-			var rangeStart = (parseInt(page_no) - 1) * 26;
-			var rangeEnd = rangeStart + 25;
+			var totalPageCount = parseInt(shipMateRequiredCount / 50) + 1;
+			var rangeStart = (parseInt(page_no) - 1) * 51;
+			var rangeEnd = rangeStart + 50;
 
 			val1.setValue({
 				fieldId: "custpage_total_page_no",
@@ -1671,6 +1675,12 @@ define([
 						})
 					);
 
+					var shipmateRequiredTaskCount =
+						shipMateOnboardingRequiredSearch.runPaged().count;
+					
+					console.log("Total ShipMate Onboarding Required Tasks: " + shipmateRequiredTaskCount);
+
+
 					var taskInternalId = "";
 					var taskTitle = "";
 					var taskDueDate = "";
@@ -1914,8 +1924,8 @@ define([
 						}
 					}
 
-					shipMateRequiredCount++;
-					console.log("shipMateRequiredCount: " + shipMateRequiredCount);
+					shipMateRequiredSearchCount++;
+					console.log("shipMateRequiredSearchCount: " + shipMateRequiredSearchCount);
 					return true;
 				});
 		}

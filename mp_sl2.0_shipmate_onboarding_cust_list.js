@@ -194,6 +194,17 @@ define([
 			inlineHtml += "</div>";
 			inlineHtml += spacing();
 
+			log.debug({
+				title: "zee_id",
+				details: zee_id,
+			});
+
+			log.debug({
+				title: "userId",
+				details: userId,
+			});
+
+
 
 			//Search Name: ShipMate Onboarding Required - Customer List
 			var shipMateOnboardingRequiredSearch = search.load({
@@ -201,62 +212,76 @@ define([
 				id: "customsearch_shipmate_onboarding_tasks",
 			});
 
-			if (!isNullorEmpty(zee_id)) {
-				shipMateOnboardingRequiredSearch.filters.push(
-					search.createFilter({
-						name: "partner",
-						join: null,
-						operator: search.Operator.IS,
-						values: zee_id,
-					})
-				);
-			}
+			// if (!isNullorEmpty(zee_id)) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "partner",
+			// 			join: null,
+			// 			operator: search.Operator.IS,
+			// 			values: zee_id,
+			// 		})
+			// 	);
+			// }
 
-			if (!isNullorEmpty(userId) && role != 3) {
-				shipMateOnboardingRequiredSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_salesrep",
-						join: "custrecord_customer",
-						operator: search.Operator.IS,
-						values: userId,
-					})
-				);
-			}
+			// if (!isNullorEmpty(userId) && role != 3) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_salesrep",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.IS,
+			// 			values: userId,
+			// 		})
+			// 	);
+			// }
 
-			if (
-				!isNullorEmpty(commencement_start_date) &&
-				!isNullorEmpty(commencement_last_date)
-			) {
-				shipMateOnboardingRequiredSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "custrecord_customer",
-						operator: search.Operator.ONORAFTER,
-						values: commencement_start_date,
-					})
-				);
+			// if (
+			// 	!isNullorEmpty(commencement_start_date) &&
+			// 	!isNullorEmpty(commencement_last_date)
+			// ) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_comm_date",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.ONORAFTER,
+			// 			values: commencement_start_date,
+			// 		})
+			// 	);
 
-				shipMateOnboardingRequiredSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_comm_date",
-						join: "custrecord_customer",
-						operator: search.Operator.ONORBEFORE,
-						values: commencement_last_date,
-					})
-				);
-			}
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_comm_date",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.ONORBEFORE,
+			// 			values: commencement_last_date,
+			// 		})
+			// 	);
+			// }
 
-			var shipMateRequiredCount = 0;
+			log.debug({
+				title: "shipMateOnboardingRequiredSearch.filters",
+				details: shipMateOnboardingRequiredSearch.filters,
+			});
 
 			var shipMateRequiredCount =
 				shipMateOnboardingRequiredSearch.runPaged().count;
+
+			log.debug({
+				title: 'shipMateRequiredCount',
+				details: shipMateRequiredCount
+			})
+
 			var totalPageCount =
 				parseInt(shipMateRequiredCount / 50) + 1;
 
 			var divBreak = Math.ceil(12 / totalPageCount);
 
+			log.debug({
+				title: 'totalPageCount',
+				details: totalPageCount
+			})
+
 			inlineHtml +=
-				'<div class="form-group container zee_available_buttons_section">';
+				'<div class="form-group container zee_available_buttons_section hide">';
 			inlineHtml += '<div class="row">';
 
 			inlineHtml +=
@@ -266,7 +291,7 @@ define([
 			inlineHtml += "</div>";
 
 			inlineHtml +=
-				'<div class="form-group container zee_available_buttons_section">';
+				'<div class="form-group container zee_available_buttons_section hide">';
 			inlineHtml += '<div class="row">';
 
 			var rangeStart = 0;
