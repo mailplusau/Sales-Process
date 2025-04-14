@@ -318,15 +318,25 @@ define([
 						}
 					}
 				}
-
-				inlineHtml +=
-					'<div class="col-xs-' +
-					divBreak +
-					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
-					(i + 1) +
-					'" class="form-control btn btn-info page_number" data-id="' +
-					(i + 1) +
-					'" /></br></div>';
+				if (page_no == i + 1) {
+					inlineHtml +=
+						'<div class="col-xs-' +
+						divBreak +
+						'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;background-color:#095C7B !important;" value="' +
+						(i + 1) +
+						'" class="form-control btn btn-info page_number" data-id="' +
+						(i + 1) +
+						'" /></br></div>';
+				} else {
+					inlineHtml +=
+						'<div class="col-xs-' +
+						divBreak +
+						'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
+						(i + 1) +
+						'" class="form-control btn btn-info page_number" data-id="' +
+						(i + 1) +
+						'" /></br></div>';
+				}
 			}
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
