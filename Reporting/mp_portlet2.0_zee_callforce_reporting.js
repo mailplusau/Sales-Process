@@ -111,7 +111,7 @@ define([
 				m--;
 			}
 			i++;
-		} while (i < 3);
+		} while (i < 2);
 
 		var firstDay = new Date(y, m, 1);
 		firstDay.setHours(0, 0, 0, 0);
@@ -184,6 +184,8 @@ define([
 		inlineHtml += '<div class="col-xs-4"></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="data-range_note  hide" style="color: red;text-align: center;font-weight: bolder;font-size: 14px;"><i>Please note, the data shown below is moving over a 3-month period.</i></div></br><div class="tab-content">';
 
 		// inlineHtml +=
 		// 	'<div class="form-group container show_buttons_section hide">';

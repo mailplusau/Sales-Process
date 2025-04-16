@@ -249,6 +249,7 @@ define([
 		$(".zee_label_section").removeClass("hide");
 		$(".show_buttons_section").removeClass("hide");
 		$(".zee_dropdown_section").removeClass("hide");
+		$(".data-range_note").removeClass("hide");
 
 		$(".lead_entered_label_section").removeClass("hide");
 		$(".lead_entered_div").removeClass("hide");
