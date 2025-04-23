@@ -38,6 +38,40 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     userId = null;
                 }
 
+                var customerRecord = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: customerInternalId,
+                    isDynamic: true
+                });
+
+                var customerStatus = customerRecord.getValue({
+                    fieldId: 'entitystatus'
+                });
+                var dayToDayPhone = customerRecord.getValue({
+                    fieldId: 'phone'
+                });
+                var websiteURL = customerRecord.getValue({
+                    fieldId: 'custentity_website_page_url'
+                });
+                var customerABN = customerRecord.getValue({
+                    fieldId: 'vatregnumber'
+                });
+                var currentCarrier = customerRecord.getValue({
+                    fieldId: 'custentity_previous_carrier'
+                });
+                var customerZee = customerRecord.getValue({
+                    fieldId: 'partner'
+                });
+
+                var partnerRecord = record.load({
+                    type: record.Type.PARTNER,
+                    id: customerZee
+                });
+
+                var salesRep = partnerRecord.getValue({
+                    fieldId: 'custentity_sales_rep_assigned'
+                })
+
                 var form = ui.createForm({
                     title: 'Reassign Sales Record - '
                 });
@@ -75,39 +109,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 })
 
 
-                var customerRecord = record.load({
-                    type: record.Type.CUSTOMER,
-                    id: customerInternalId,
-                    isDynamic: true
-                });
 
-                var customerStatus = customerRecord.getValue({
-                    fieldId: 'entitystatus'
-                });
-                var dayToDayPhone = customerRecord.getValue({
-                    fieldId: 'phone'
-                });
-                var websiteURL = customerRecord.getValue({
-                    fieldId: 'custentity_website_page_url'
-                });
-                var customerABN = customerRecord.getValue({
-                    fieldId: 'vatregnumber'
-                });
-                var currentCarrier = customerRecord.getValue({
-                    fieldId: 'custentity_previous_carrier'
-                });
-                var customerZee = customerRecord.getValue({
-                    fieldId: 'partner'
-                });
-
-                var partnerRecord = record.load({
-                    type: record.Type.PARTNER,
-                    id: customerZee
-                });
-
-                var salesRep = partnerRecord.getValue({
-                    fieldId: 'custentity_sales_rep_assigned'
-                })
 
                 //Search: SMC - Franchisees
                 var searchZees = search.load({
