@@ -147,6 +147,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                     return true;
                 });
+                
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 
@@ -200,7 +201,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                         '<option value="' + employee_id + '">' + employee_name + "</option>";
                     return true;
                 });
-
+                inlineHtml += '<option value="653718">Luke Forbes</option>';
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 
