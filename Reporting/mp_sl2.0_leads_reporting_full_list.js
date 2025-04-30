@@ -3010,7 +3010,7 @@ define([
 		}
 		if (name == "suspects_lost") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="19" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (
 			name == "prospects_quoteSent_incontact_noanswer" ||
@@ -3021,7 +3021,7 @@ define([
 		}
 		if (name == "cancellation") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="8" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="11" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		inlineHtml += "</table></div>";

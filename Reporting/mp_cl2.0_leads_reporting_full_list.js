@@ -7232,6 +7232,22 @@ define([
 						name: "custentity_service_cancellation_reason",
 						summary: "GROUP",
 					});
+
+				//New Cancellation Fields: Theme, What & Why
+				//New Cancellation Fields - Theme/What & Why
+				var cancellationTheme = customerCancellationRequesteSearchResultSet.getText({
+					name: "custentity_service_cancellation_theme",
+					summary: "GROUP",
+				});
+				var cancellationWhat = customerCancellationRequesteSearchResultSet.getText({
+					name: "custentity_service_cancellation_what",
+					summary: "GROUP",
+				});
+				var cancellationWhy = customerCancellationRequesteSearchResultSet.getText({
+					name: "custentity_service_cancellation_why",
+					summary: "GROUP",
+				});
+
 				var customerCancellationOngoing =
 					customerCancellationRequesteSearchResultSet.getText({
 						name: "custentity_cancel_ongoing",
@@ -7376,6 +7392,9 @@ define([
 					customerSaved,
 					startDateCustomerSavedDate,
 					customerCancellationReason,
+					cancellationTheme,
+					cancellationWhat,
+					cancellationWhy,
 					financial(last6MonthsAvgInvoiceValue),
 					financial(monthlyServiceRevenue),
 				]);
@@ -7434,22 +7453,25 @@ define([
 				},
 			},
 			columns: [
-				{ title: "Internal ID" },
-				{ title: "ID" },
-				{ title: "Company Name" },
-				{ title: "Franchisee" },
-				{ title: "Request Date" },
-				{ title: "On-going" },
-				{ title: "Saved" },
-				{ title: "Saved Date" },
-				{ title: "Cancellation Reason" },
-				{ title: "Avg Invoice Value - Last 6 Months" },
-				{ title: "Saved Monthly Service Value" },
+				{ title: "Internal ID" },//0
+				{ title: "ID" },//1
+				{ title: "Company Name" },//2
+				{ title: "Franchisee" },//3
+				{ title: "Request Date" },//4
+				{ title: "On-going" },//5
+				{ title: "Saved" },//6
+				{ title: "Saved Date" },//7
+				{ title: "Old Cancellation Reason" },//8
+				{ title: "Cancellation Theme" },//9
+				{ title: "Cancellation What" },//10
+				{ title: "Cancellation Why" },//11
+				{ title: "Avg Invoice Value - Last 6 Months" },//12
+				{ title: "Saved Monthly Service Value" },//13
 			],
 			autoWidth: false,
 			columnDefs: [
 				{
-					targets: [1, 2, 6, 10],
+					targets: [1, 2, 6, 13],
 					className: "bolded",
 				},
 			],
@@ -7483,7 +7505,7 @@ define([
 
 				// Total Expected Usage over all pages
 				total_avg_invoice = api
-					.column(9)
+					.column(12)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -7491,7 +7513,7 @@ define([
 
 				// Page Total Expected Usage over this page
 				page_total_avg_invoice = api
-					.column(9, {
+					.column(12, {
 						page: "current",
 					})
 					.data()
@@ -7500,12 +7522,12 @@ define([
 					}, 0);
 
 				// Update footer
-				$(api.column(9).footer()).html(
+				$(api.column(12).footer()).html(
 					formatter.format(page_total_avg_invoice)
 				);
 				// Total Expected Usage over all pages
 				total_monthly_service_revenue = api
-					.column(10)
+					.column(13)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -7513,7 +7535,7 @@ define([
 
 				// Page Total Expected Usage over this page
 				page_total_monthly_service_revenue = api
-					.column(10, {
+					.column(13, {
 						page: "current",
 					})
 					.data()
@@ -7522,7 +7544,7 @@ define([
 					}, 0);
 
 				// Update footer
-				$(api.column(10).footer()).html(
+				$(api.column(13).footer()).html(
 					formatter.format(page_total_monthly_service_revenue)
 				);
 			},
@@ -27242,6 +27264,9 @@ define([
 		var oldemail48h = null;
 		var oldDaysOpen = null;
 		var oldCancellationReason = null;
+		var oldCancellationTheme = null;
+		var oldCancellationWhat = null;
+		var oldCancellationWhy = null;
 		var oldSource = null;
 		var oldProdWeeklyUsage = null;
 		var oldAutoSignUp = null;
@@ -27387,6 +27412,20 @@ define([
 
 					var cancellationReason = suspectsResultSet.getText({
 						name: "custentity_service_cancellation_reason",
+						summary: "GROUP",
+					});
+
+					//New Cancellation Fields - Theme/What & Why
+					var cancellationTheme = suspectsResultSet.getText({
+						name: "custentity_service_cancellation_theme",
+						summary: "GROUP",
+					});
+					var cancellationWhat = suspectsResultSet.getText({
+						name: "custentity_service_cancellation_what",
+						summary: "GROUP",
+					});
+					var cancellationWhy = suspectsResultSet.getText({
+						name: "custentity_service_cancellation_why",
 						summary: "GROUP",
 					});
 
@@ -28173,6 +28212,9 @@ define([
 								oldcustInternalID +
 								'" style="background-color: #095C7B;border-radius: 30px">',
 								oldCancellationReason,
+								oldCancellationTheme,
+								oldCancellationWhat,
+								oldCancellationWhy,
 								oldMonthServiceValue,
 								oldAvgInvoiceValue,
 								oldsalesRepText,
@@ -28697,6 +28739,9 @@ define([
 					oldemail48h = email48h;
 					oldDaysOpen = daysOpen;
 					oldCancellationReason = cancellationReason;
+					oldCancellationTheme = cancellationTheme;
+					oldCancellationWhat = cancellationWhat;
+					oldCancellationWhy = cancellationWhy;
 					oldSource = source;
 					oldProdWeeklyUsage = productWeeklyUsage;
 					oldAutoSignUp = autoSignUp;
@@ -28791,6 +28836,9 @@ define([
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldCancellationReason,
+						oldCancellationTheme,
+						oldCancellationWhat,
+						oldCancellationWhy,
 						oldMonthServiceValue,
 						oldAvgInvoiceValue,
 						oldsalesRepText,
@@ -35769,7 +35817,7 @@ define([
 				// 	existingCustomer = true;
 				// }
 
-				
+
 
 				var maxCommDate = custListCommenceTodaySet.getValue({
 					name: "custrecord_comm_date",
@@ -40348,20 +40396,23 @@ define([
 				{ title: "Date - Lead Lost" }, //12
 				{ title: "48H Email Sent?" }, //13
 				{ title: "Days Open" }, //14
-				{ title: "Cancellation Reason" }, //15
-				{ title: "Monthly Service Value" }, //16
-				{ title: "Avg Invoice - Last 3 Months" }, //17
-				{ title: "Sales Rep" }, //18
-				{ title: "Child Table" }, //19
+				{ title: "Old Cancellation Reason" }, //15
+				{ title: "Cancellation Theme" }, //16
+				{ title: "Cancellation What" }, //17
+				{ title: "Cancellation Why" }, //18
+				{ title: "Monthly Service Value" }, //19
+				{ title: "Avg Invoice - Last 3 Months" }, //20
+				{ title: "Sales Rep" }, //21
+				{ title: "Child Table" }, //22
 			],
 			autoWidth: false,
 			columnDefs: [
 				{
-					targets: [19],
+					targets: [22],
 					visible: false,
 				},
 				{
-					targets: [2, 3, 4, 14, 15],
+					targets: [2, 3, 4, 14, 16, 17, 18],
 					className: "bolded",
 				},
 				{
@@ -40370,14 +40421,14 @@ define([
 				},
 			],
 			rowCallback: function (row, data, index) {
-				console.log(JSON.stringify(data[19]));
-				console.log(data[19].length);
+				console.log(JSON.stringify(data[22]));
+				console.log(data[22].length);
 
-				if (isNullorEmpty(data[19])) {
+				if (isNullorEmpty(data[22])) {
 					$("td", row).css("background-color", "#f9c67a");
 				}
 
-				if (!isNullorEmpty(data[17])) {
+				if (!isNullorEmpty(data[20])) {
 					$("td", row).css("background-color", "#E86252");
 					$("td", row).css("font-weight", "bold");
 				}
@@ -40409,7 +40460,7 @@ define([
 
 				// Total Expected Usage over all pages
 				total_monthly_service_revenue = api
-					.column(16)
+					.column(19)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -40417,7 +40468,7 @@ define([
 
 				// Page Total Expected Usage over this page
 				page_total_monthly_service_revenue = api
-					.column(16, {
+					.column(19, {
 						page: "current",
 					})
 					.data()
@@ -40426,13 +40477,13 @@ define([
 					}, 0);
 
 				// Update footer
-				$(api.column(16).footer()).html(
+				$(api.column(19).footer()).html(
 					formatter.format(page_total_monthly_service_revenue)
 				);
 
 				// Total Expected Usage over all pages
 				total_avg_monthly_service_revenue = api
-					.column(17)
+					.column(20)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -40440,7 +40491,7 @@ define([
 
 				// Page Total Expected Usage over this page
 				page_total_avg_monthly_service_revenue = api
-					.column(17, {
+					.column(20, {
 						page: "current",
 					})
 					.data()
@@ -40449,7 +40500,7 @@ define([
 					}, 0);
 
 				// Update footer
-				$(api.column(17).footer()).html(
+				$(api.column(20).footer()).html(
 					formatter.format(page_total_avg_monthly_service_revenue)
 				);
 			},
@@ -41362,7 +41413,7 @@ define([
 		// This is the table we'll convert into a DataTable
 		var table = $('<table class="display" width="50%"/>');
 		var childSet = [];
-		row.data()[19].forEach(function (el) {
+		row.data()[22].forEach(function (el) {
 			if (!isNullorEmpty(el)) {
 				childSet.push([
 					el.tasksInternalID,
