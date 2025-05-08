@@ -1293,15 +1293,20 @@ define([
 					join: "CUSTRECORD_CUSTOMER",
 					summary: "MAX",
 				});
+				var dateEffective = shipMateOnboardingRequiredSearchReseultSet[i].getValue({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					summary: "MAX",
+				});
 
-				if (isNullorEmpty(commRegInternalID)) {
-					var commRegRecord = record.load({
-						type: "customrecord_commencement_register",
-						id: commRegInternalID,
-					});
-					var dateEffective = commRegRecord.getValue({
-						fieldId: "custrecord_comm_date",
-					});
+				if (!isNullorEmpty(dateEffective)) {
+					// var commRegRecord = record.load({
+					// 	type: "customrecord_commencement_register",
+					// 	id: commRegInternalID,
+					// });
+					// var dateEffective = commRegRecord.getValue({
+					// 	fieldId: "custrecord_comm_date",
+					// });
 					var today = new Date(dateEffective);
 					today.setHours(today.getHours() + 11);
 
@@ -1311,7 +1316,7 @@ define([
 
 					dateEffective = year + "-" + month + "-" + day;
 				} else {
-					var dateEffective = "";
+					dateEffective = "";
 				}
 
 				// console.log("dateEffective", Date(c));
@@ -1330,6 +1335,11 @@ define([
 						values: custInternalID,
 					})
 				);
+
+				var shipMateOnboardingRequiredTaskCreatedSearchCount =
+					shipMateOnboardingRequiredTaskCreatedSearch.runPaged().count;
+
+				console.log("Total ShipMate Onboarding Tasks Count: " + shipMateOnboardingRequiredTaskCreatedSearchCount);
 
 				var taskInternalId = "";
 				var taskTitle = "";
@@ -1638,14 +1648,20 @@ define([
 						summary: "MAX",
 					});
 
-					if (isNullorEmpty(commRegInternalID)) {
-						var commRegRecord = record.load({
-							type: "customrecord_commencement_register",
-							id: commRegInternalID,
-						});
-						var dateEffective = commRegRecord.getValue({
-							fieldId: "custrecord_comm_date",
-						});
+					var dateEffective = salesCallUpsellTasksResultSet.getValue({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						summary: "MAX",
+					});
+
+					if (!isNullorEmpty(dateEffective)) {
+						// var commRegRecord = record.load({
+						// 	type: "customrecord_commencement_register",
+						// 	id: commRegInternalID,
+						// });
+						// var dateEffective = commRegRecord.getValue({
+						// 	fieldId: "custrecord_comm_date",
+						// });
 						var today = new Date(dateEffective);
 						today.setHours(today.getHours() + 11);
 
@@ -1655,7 +1671,7 @@ define([
 
 						dateEffective = year + "-" + month + "-" + day;
 					} else {
-						var dateEffective = "";
+						dateEffective = "";
 					}
 
 					// console.log("dateEffective", Date(c));
@@ -1677,7 +1693,7 @@ define([
 
 					var shipmateRequiredTaskCount =
 						shipMateOnboardingRequiredSearch.runPaged().count;
-					
+
 					console.log("Total ShipMate Onboarding Required Tasks: " + shipmateRequiredTaskCount);
 
 
