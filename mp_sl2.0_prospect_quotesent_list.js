@@ -1416,21 +1416,22 @@ define([
 						values: paramUserId,
 					})
 				);
-			} else if (
-				role != 3 &&
-				isNullorEmpty(paramUserId) &&
-				userId != 653718 &&
-				userId != 668711
-			) {
-				suspectsSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: userId,
-					})
-				);
 			}
+			// else if (
+			// 	role != 3 &&
+			// 	isNullorEmpty(paramUserId) &&
+			// 	userId != 653718 &&
+			// 	userId != 668711
+			// ) {
+			// 	suspectsSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_sales_assigned",
+			// 			join: "custrecord_sales_customer",
+			// 			operator: search.Operator.IS,
+			// 			values: userId,
+			// 		})
+			// 	);
+			// }
 
 			if (!isNullorEmpty(salesCampaignArray)) {
 				suspectsSearch.filters.push(
