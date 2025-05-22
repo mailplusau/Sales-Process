@@ -907,13 +907,20 @@ define([
 		if (custStage == 1) {
 			inlineHtml += '<option value="1" selected>SUSPECTS</option>';
 			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
 		} else if (custStage == 2) {
 			inlineHtml += '<option value="1">SUSPECTS</option>';
 			inlineHtml += '<option value="2" selected>PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
+		} else if (custStage == 3) {
+			inlineHtml += '<option value="1">SUSPECTS</option>';
+			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3" selected>CUSTOMERS</option>';
 		} else {
 			inlineHtml += '<option value="0"></option>';
 			inlineHtml += '<option value="1">SUSPECTS</option>';
 			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
 		}
 
 		inlineHtml += "</select>";
@@ -1038,6 +1045,14 @@ define([
 					'<option value="35" selected>PROSPECT - NO ANSWER</option>';
 			} else {
 				inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
+			}
+
+		} else if (custStage == "3") {
+			if (custStatus == "73") {
+				inlineHtml +=
+					'<option value="73" selected>CUSTOMER - SHIPMATE PENDING</option>';
+			} else {
+				inlineHtml += '<option value="73">CUSTOMER - SHIPMATE PENDING</option>';
 			}
 		}
 
@@ -1571,7 +1586,7 @@ define([
 
 			inlineHtml += dataTable("suspects");
 			// inlineHtml += '</div>';
-		} else if (custStage == 2) {
+		} else if (custStage == 2 || custStage == 3) {
 			// inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
 			// inlineHtml += '<figure class="highcharts-figure">';
 			// inlineHtml += '</figure><br></br>';
@@ -1636,6 +1651,15 @@ define([
 						join: null,
 						operator: search.Operator.IS,
 						values: custStatus,
+					})
+				);
+			} else if (custStage == 3 && custStatus == "0") {
+				custListCommenceTodayResults.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: 73,
 					})
 				);
 			}
