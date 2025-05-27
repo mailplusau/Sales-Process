@@ -160,7 +160,7 @@ define([
                 body: emailHtml,
                 recipients: contactEmail,
                 subject: templateSubject,
-                cc: [customerAccountManager],
+                cc: [customerAccountManager, 'customerservice@mailplus.com.au'],
                 relatedRecords: { entityId: customerInternalID },
             });
 
