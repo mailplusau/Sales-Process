@@ -1644,7 +1644,7 @@ define([
 			console.log("campaignArray.length: " + campaignArray.length);
 
 			for (var y = 0; y < campaignArray.length; y++) {
-				if (parseInt(campaignArray[y]) == 87) {
+				if (parseInt(campaignArray[y]) == 87 || parseInt(campaignArray[y]) == 89) {
 					showCallForceTasks = true;
 				}
 				if (parseInt(campaignArray[y]) == 70) {
@@ -3305,6 +3305,17 @@ define([
 				);
 			}
 
+			if (!isNullorEmpty(sales_campaign)) {
+				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+
 			if (!isNullorEmpty(lead_entered_by)) {
 				callForceLeadsCountBydateSyncedOutcomeSearch.filters.push(
 					search.createFilter({
@@ -4191,6 +4202,17 @@ define([
 						join: "custentity_lpo_parent_account",
 						operator: search.Operator.ANYOF,
 						values: parent_lpo,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				callForceLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
 					})
 				);
 			}
@@ -5398,6 +5420,17 @@ define([
 						join: "custentity_lpo_parent_account",
 						operator: search.Operator.ANYOF,
 						values: parent_lpo,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				callForceCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
 					})
 				);
 			}
@@ -16910,11 +16943,11 @@ define([
 			);
 		}
 
-		
+
 
 		console.log("prospects hidden");
 
-		
+
 		debt_set = [];
 		debt_set2 = [];
 	}

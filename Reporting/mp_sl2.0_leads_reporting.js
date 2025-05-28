@@ -721,7 +721,7 @@ define([
 					details: campaignArray.indexOf("87"),
 				});
 
-				if (campaignArray.indexOf("87") != -1) {
+				if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
 					showCallForceTasksPieChart = true;
 				}
 
@@ -2010,8 +2010,12 @@ define([
 				title: "campaignArray.indexOf('87')",
 				details: campaignArray.indexOf("87"),
 			});
+			log.debug({
+				title: "campaignArray.indexOf('89')",
+				details: campaignArray.indexOf("89"),
+			});
 
-			if (campaignArray.indexOf("87") != -1) {
+			if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
 				inlineHtml +=
 					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
 			}
@@ -2063,7 +2067,7 @@ define([
 				details: campaignArray.indexOf("87"),
 			});
 
-			if (campaignArray.indexOf("87") != -1) {
+			if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
 				inlineHtml +=
 					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 

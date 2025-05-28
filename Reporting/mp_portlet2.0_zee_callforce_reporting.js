@@ -41,7 +41,7 @@ define([
 
 		var portlet = params.portlet;
 
-		portlet.title = "Sales Dashboard";
+		portlet.title = "Lead Dashboard";
 
 		var baseURL = "https://system.na2.netsuite.com";
 		if (runtime.EnvType == "SANDBOX") {

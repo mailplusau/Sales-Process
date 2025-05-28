@@ -2521,6 +2521,8 @@ define([
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
 		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#shipmate_pending" style="border-radius: 30px"><b>SHIPMATE PENDING</b></a></li>';
+		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
@@ -2556,6 +2558,34 @@ define([
 		inlineHtml += "</div>";
 		inlineHtml += "</figure><br></br>";
 		inlineHtml += dataTable("customer");
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane active" id="shipmate_pending">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_shipmate_pending_customer"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_shipmate_pending_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_shipmate_pending_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_shipmate_pending_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("shipmate_pending");
 		inlineHtml += "</div>";
 
 		inlineHtml +=
@@ -2992,7 +3022,7 @@ define([
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
-		if (name == "customer") {
+		if (name == "customer" || name == "shipmate_pending") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
