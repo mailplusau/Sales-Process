@@ -498,6 +498,12 @@ define([
 												fieldId: "entitystatus",
 												value: 68, // SUSPECT - VALIDATED
 											});
+
+											//2025-05-29 08:22:56 [UPDATE] - Changing the status instead of SUSPECT - VALIDATED to SUSPECT - FRANCHISEE REVIEW
+											// customerRecord.setValue({
+											// 	fieldId: "entitystatus",
+											// 	value: 39, // SUSPECT - FRANCHISEE REVIEW
+											// });
 										}
 
 									} else if (
@@ -507,9 +513,15 @@ define([
 										//Customer Type has been selected either Service or Product
 										//Lead Source: Outsourced - Head Office Generated
 										//Lead Source: Outsourced - Head Office Validated
+										// customerRecord.setValue({
+										// 	fieldId: "entitystatus",
+										// 	value: 68, // SUSPECT - VALIDATED
+										// });
+
+										//2025-05-29 08:22:56 [UPDATE] - Changing the status instead of SUSPECT - VALIDATED to SUSPECT - FRANCHISEE REVIEW
 										customerRecord.setValue({
 											fieldId: "entitystatus",
-											value: 68, //Status to SUSPECT - VALIDATED
+											value: 39, // SUSPECT - FRANCHISEE REVIEW
 										});
 									}
 								}
@@ -759,7 +771,7 @@ define([
 								fieldId: "custrecord_sales_customer",
 								value: customerInternalId,
 							});
-							
+
 							if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
