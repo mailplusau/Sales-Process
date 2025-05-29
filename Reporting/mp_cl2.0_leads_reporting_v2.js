@@ -13565,6 +13565,7 @@ define([
 		var suspect_pre_qualification = 0;
 
 		var suspect_validated = 0;
+		var suspect_zee_review = 0;
 		var customer_free_trial = 0;
 		var customer_free_trial_pending = 0;
 		var customer_shipmate_pending = 0;
@@ -13688,6 +13689,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -13715,7 +13719,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_in_qualification +
-						suspect_pre_qualification + customer_shipmate_pending
+						suspect_pre_qualification + customer_shipmate_pending + suspect_zee_review
 				} else if (
 					oldDataCaptureAssigned != null &&
 					oldDataCaptureAssigned == dataCaptureAssigned
@@ -13798,6 +13802,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending += parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review += parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -13825,7 +13832,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_in_qualification +
-						suspect_pre_qualification + customer_shipmate_pending
+						suspect_pre_qualification + customer_shipmate_pending + suspect_zee_review;
 				} else if (
 					oldDataCaptureAssigned != null &&
 					oldDataCaptureAssigned != dataCaptureAssigned
@@ -13859,7 +13866,8 @@ define([
 						prospect_box_sent: prospecy_box_sent,
 						suspect_pre_qualification: suspect_pre_qualification,
 						suspect_in_qualification: suspect_in_qualification,
-						customer_shipmate_pending: customer_shipmate_pending
+						customer_shipmate_pending: customer_shipmate_pending,
+						suspect_zee_review: suspect_zee_review
 					});
 
 					customer_signed = 0;
@@ -13883,6 +13891,7 @@ define([
 					prospect_qualified = 0;
 
 					suspect_validated = 0;
+					suspect_zee_review = 0;
 					customer_free_trial = 0;
 					customer_free_trial_pending = 0;
 					suspect_no_answer = 0;
@@ -13969,6 +13978,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -13996,7 +14008,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification + customer_shipmate_pending
+						suspect_in_qualification + customer_shipmate_pending + suspect_zee_review;
 				}
 
 				count1++;
@@ -14035,7 +14047,8 @@ define([
 				prospect_box_sent: prospecy_box_sent,
 				suspect_pre_qualification: suspect_pre_qualification,
 				suspect_in_qualification: suspect_in_qualification,
-				customer_shipmate_pending: customer_shipmate_pending
+				customer_shipmate_pending: customer_shipmate_pending,
+				suspect_zee_review: suspect_zee_review
 			});
 		}
 
@@ -14251,41 +14264,52 @@ define([
 					customerShipMatePendingPercentage +
 					"%)";
 
+				var suspectZeeReviewPercentage = parseInt(
+					(preview_row.suspect_zee_review / preview_row.total_leads) * 100
+				);
+				var suspectZeeReviewCol =
+					preview_row.suspect_zee_review +
+					" (" +
+					suspectZeeReviewPercentage +
+					"%)";
+
 				datacapture_overDataSet.push([
 					preview_row.lpoparentname, //0
 					preview_row.suspect_new, //1
 					preview_row.suspect_hot_lead, //2
-					preview_row.suspect_qualified, //3
-					preview_row.suspect_unqualified, //4
-					preview_row.suspect_validated, //5
-					preview_row.suspect_pre_qualification, //6
-					preview_row.suspect_in_qualification, //7
-					preview_row.suspect_reassign, //8
-					preview_row.suspect_follow_up, //9
-					preview_row.suspect_no_answer, //10
-					preview_row.suspect_in_contact, //11
-					preview_row.suspect_lpo_followup, //12
-					preview_row.prospect_in_contact, //13
-					preview_row.suspect_off_peak_pipeline, //14
-					preview_row.suspect_lost, //15
-					preview_row.suspect_oot, //16
-					preview_row.suspect_customer_lost, //17
-					preview_row.prospect_opportunity, //18
-					preview_row.prospect_qualified, //19
-					preview_row.prospect_box_sent, //20
-					preview_row.prospecy_quote_sent, //21
-					preview_row.customer_free_trial_pending, //22
-					preview_row.customer_free_trial, //23
-					preview_row.customer_shipmate_pending, //24
-					preview_row.customer_signed, //25
-					preview_row.total_leads, //26
-					preview_row.lpoparentnameid, //27
+					preview_row.suspect_zee_review, //3
+					preview_row.suspect_qualified, //4
+					preview_row.suspect_unqualified, //5
+					preview_row.suspect_validated, //6
+					preview_row.suspect_pre_qualification, //7
+					preview_row.suspect_in_qualification, //8
+					preview_row.suspect_reassign, //9
+					preview_row.suspect_follow_up, //10
+					preview_row.suspect_no_answer, //11
+					preview_row.suspect_in_contact, //12
+					preview_row.suspect_lpo_followup, //13
+					preview_row.prospect_in_contact, //14
+					preview_row.suspect_off_peak_pipeline, //15
+					preview_row.suspect_lost, //16
+					preview_row.suspect_oot, //17
+					preview_row.suspect_customer_lost, //18
+					preview_row.prospect_opportunity, //19
+					preview_row.prospect_qualified, //20
+					preview_row.prospect_box_sent, //21
+					preview_row.prospecy_quote_sent, //22
+					preview_row.customer_free_trial_pending, //23
+					preview_row.customer_free_trial, //24
+					preview_row.customer_shipmate_pending, //25
+					preview_row.customer_signed, //26
+					preview_row.total_leads, //27
+					preview_row.lpoparentnameid, //28
 				]);
 
 				datacapture_previewDataSet.push([
 					preview_row.lpoparentname,
 					suspectNewCol,
 					hotLeadCol,
+					suspectZeeReviewCol,
 					suspectValidatedCol,
 					suspectUnqualifiedCol,
 					suspectQualifiedCol,
@@ -14322,7 +14346,7 @@ define([
 			destroy: true,
 			data: datacapture_previewDataSet,
 			pageLength: 1000,
-			order: [[22, "des"]],
+			order: [[23, "des"]],
 			layout: {
 				topStart: {
 					buttons: [
@@ -14380,92 +14404,95 @@ define([
 					title: "Suspect - Hot Lead", //2
 				},
 				{
-					title: "Suspect - Validated", //3
+					title: "Suspect - Franchisee Review", //3
 				},
 				{
-					title: "Suspect - Unqualified", //4
+					title: "Suspect - Validated", //4
 				},
 				{
-					title: "Suspect - Qualified", //5
+					title: "Suspect - Unqualified", //5
 				},
 				{
-					title: "Suspect - Pre Qualification", //6
+					title: "Suspect - Qualified", //6
 				},
 				{
-					title: "Suspect - In Qualification", //7
+					title: "Suspect - Pre Qualification", //7
 				},
 				{
-					title: "Suspect - Reassign", //8
+					title: "Suspect - In Qualification", //8
 				},
 				{
-					title: "Suspect - Follow Up", //9
+					title: "Suspect - Reassign", //9
 				},
 				{
-					title: "Suspect - LPO Follow Up", //10
+					title: "Suspect - Follow Up", //10
 				},
 				{
-					title: "Suspect - No Answer", //11
+					title: "Suspect - LPO Follow Up", //11
 				},
 				{
-					title: "Suspect - In Contact", //12
+					title: "Suspect - No Answer", //12
 				},
 				{
-					title: "Prospect - In Contact", //13
+					title: "Suspect - In Contact", //13
 				},
 				{
-					title: "Suspect - Parking Lot", //14
+					title: "Prospect - In Contact", //14
 				},
 				{
-					title: "Suspect - Lost", //15
+					title: "Suspect - Parking Lot", //15
 				},
 				{
-					title: "Suspect - Out of Territory", //16
+					title: "Suspect - Lost", //16
 				},
 				{
-					title: "Suspect - Customer - Lost", //17
+					title: "Suspect - Out of Territory", //17
 				},
 				{
-					title: "Prospect - Opportunity", //18
+					title: "Suspect - Customer - Lost", //18
 				},
 				{
-					title: "Prospect - Qualified", //19
+					title: "Prospect - Opportunity", //19
 				},
 				{
-					title: "Prospect - Box Sent", //20
+					title: "Prospect - Qualified", //20
 				},
 				{
-					title: "Prospect - Quote Sent", //21
+					title: "Prospect - Box Sent", //21
 				},
 				{
-					title: "Customer - Free Trial Pending", //22
+					title: "Prospect - Quote Sent", //22
 				},
 				{
-					title: "Customer - Free Trial", //23
+					title: "Customer - Free Trial Pending", //23
 				},
 				{
-					title: "Customer - ShipMate Pending", //24
+					title: "Customer - Free Trial", //24
 				},
 				{
-					title: "Customer - Signed", //25
+					title: "Customer - ShipMate Pending", //25
 				},
 				{
-					title: "Total Lead Count", //26
+					title: "Customer - Signed", //26
 				},
 				{
-					title: "Sales Rep ID", //27
+					title: "Total Lead Count", //27
+				},
+				{
+					title: "Sales Rep ID", //28
 				},
 			],
 			columnDefs: [
 				{
-					targets: [0, 3, 5, 20, 23, 24, 25, 26],
+					targets: [0, 3, 6, 21, 24, 25, 26, 27],
 					className: "bolded",
 				},
 				{
-					targets: [27],
+					targets: [28],
 					visible: false,
 				},
 				{
-					targets: [26],
+					targets: [27],
 					className: "notexport",
 				},
 			],
@@ -14499,9 +14526,17 @@ define([
 						return intVal(a) + intVal(b);
 					}, 0);
 
+				// Total Suspect Franchisee Review Count
+				total_suspect_zee_review = api
+					.column(3)
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
 				// Total Suspect Qualified Count
 				total_suspect_qualified = api
-					.column(3)
+					.column(4)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14509,7 +14544,7 @@ define([
 
 				// Total Suspect Unqualified Count
 				total_suspect_unqualified = api
-					.column(4)
+					.column(5)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14517,7 +14552,7 @@ define([
 
 				// Total Suspect Validated
 				total_suspect_validated = api
-					.column(5)
+					.column(6)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14525,7 +14560,7 @@ define([
 
 				// Total Suspect Reassign
 				total_suspect_reassign = api
-					.column(6)
+					.column(7)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14533,7 +14568,7 @@ define([
 
 				// Total Suspect Follow Up
 				total_suspect_followup = api
-					.column(7)
+					.column(8)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14541,7 +14576,7 @@ define([
 
 				// Total Suspect LPO Follow Up
 				total_suspect_lpo_followup = api
-					.column(8)
+					.column(9)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14549,7 +14584,7 @@ define([
 
 				// Total Suspect No Answer
 				total_suspect_no_answer = api
-					.column(9)
+					.column(10)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14557,7 +14592,7 @@ define([
 
 				// Total Suspect In Contact
 				total_suspect_in_contact = api
-					.column(10)
+					.column(11)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14565,7 +14600,7 @@ define([
 
 				// Total Prospect In Contact
 				total_prospect_in_contact = api
-					.column(11)
+					.column(12)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14573,7 +14608,7 @@ define([
 
 				// Total Suspect Off Peak Pipline
 				total_suspect_off_peak_pipeline = api
-					.column(12)
+					.column(13)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14581,7 +14616,7 @@ define([
 
 				// Total Suspect Lost
 				total_suspect_lost = api
-					.column(13)
+					.column(14)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14589,7 +14624,7 @@ define([
 
 				// Total Suspect Out of Territory
 				total_suspect_oot = api
-					.column(14)
+					.column(15)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14597,7 +14632,7 @@ define([
 
 				// Total Suspect Customer Lost
 				total_suspect_customer_lost = api
-					.column(15)
+					.column(16)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14605,21 +14640,13 @@ define([
 
 				// Total Prospect Opportunity
 				total_prospect_opportunity = api
-					.column(16)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_qualified = api
 					.column(17)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
 					}, 0);
 
-				// Total Prospect Quoite Sent
-				total_prospect_box_sent = api
+				total_prospect_qualified = api
 					.column(18)
 					.data()
 					.reduce(function (a, b) {
@@ -14627,8 +14654,16 @@ define([
 					}, 0);
 
 				// Total Prospect Quoite Sent
-				total_prospect_quote_sent = api
+				total_prospect_box_sent = api
 					.column(19)
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
+				// Total Prospect Quoite Sent
+				total_prospect_quote_sent = api
+					.column(20)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14636,7 +14671,7 @@ define([
 
 				// Total Customer Free Trial Pending
 				total_customer_free_trial_pending = api
-					.column(20)
+					.column(21)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14644,7 +14679,7 @@ define([
 
 				// Total Customer Free Trial
 				total_customer_free_trial = api
-					.column(21)
+					.column(22)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14652,28 +14687,28 @@ define([
 
 				// Total Customer Signed
 				total_customer_signed = api
-					.column(22)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v1 = api
 					.column(23)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
 					}, 0);
 
-				total_shipmate_pending = api
+				total_lead_v1 = api
 					.column(24)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
 					}, 0);
 
-				total_lead_v2 = api
+				total_shipmate_pending = api
 					.column(25)
+					.data()
+					.reduce(function (a, b) {
+						return intVal(a) + intVal(b);
+					}, 0);
+
+				total_lead_v2 = api
+					.column(26)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14681,7 +14716,7 @@ define([
 
 				// Total Lead Count
 				total_lead = api
-					.column(26)
+					.column(27)
 					.data()
 					.reduce(function (a, b) {
 						return intVal(a) + intVal(b);
@@ -14701,111 +14736,117 @@ define([
 					"%)"
 				);
 				$(api.column(3).footer()).html(
+					total_suspect_zee_review +
+					" (" +
+					((total_suspect_zee_review / total_lead) * 100).toFixed(0) +
+					"%)"
+				);
+				$(api.column(4).footer()).html(
 					total_suspect_qualified +
 					" (" +
 					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(4).footer()).html(
+				$(api.column(5).footer()).html(
 					total_suspect_unqualified +
 					" (" +
 					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(5).footer()).html(
+				$(api.column(6).footer()).html(
 					total_suspect_validated +
 					" (" +
 					((total_suspect_validated / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(6).footer()).html(
+				$(api.column(7).footer()).html(
 					total_suspect_reassign +
 					" (" +
 					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(7).footer()).html(
+				$(api.column(8).footer()).html(
 					total_suspect_followup +
 					" (" +
 					((total_suspect_followup / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(8).footer()).html(
+				$(api.column(9).footer()).html(
 					total_suspect_lpo_followup +
 					" (" +
 					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(9).footer()).html(
+				$(api.column(10).footer()).html(
 					total_suspect_no_answer +
 					" (" +
 					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(10).footer()).html(
+				$(api.column(11).footer()).html(
 					total_suspect_in_contact +
 					" (" +
 					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(11).footer()).html(
+				$(api.column(12).footer()).html(
 					total_prospect_in_contact +
 					" (" +
 					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(12).footer()).html(
+				$(api.column(13).footer()).html(
 					total_suspect_off_peak_pipeline +
 					" (" +
 					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(13).footer()).html(
+				$(api.column(14).footer()).html(
 					total_suspect_lost +
 					" (" +
 					((total_suspect_lost / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(14).footer()).html(
+				$(api.column(15).footer()).html(
 					total_suspect_oot +
 					" (" +
 					((total_suspect_oot / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(15).footer()).html(
+				$(api.column(16).footer()).html(
 					total_suspect_customer_lost +
 					" (" +
 					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(16).footer()).html(
+				$(api.column(17).footer()).html(
 					total_prospect_opportunity +
 					" (" +
 					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(17).footer()).html(
+				$(api.column(18).footer()).html(
 					total_prospect_qualified +
 					" (" +
 					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
 
-				$(api.column(18).footer()).html(
+				$(api.column(19).footer()).html(
 					total_prospect_box_sent +
 					" (" +
 					((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
 
-				$(api.column(19).footer()).html(
+				$(api.column(20).footer()).html(
 					total_prospect_quote_sent +
 					" (" +
 					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
 
-				$(api.column(20).footer()).html(
+				$(api.column(21).footer()).html(
 					total_customer_free_trial_pending +
 					" (" +
 					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
@@ -14814,32 +14855,32 @@ define([
 					"%)"
 				);
 
-				$(api.column(21).footer()).html(
+				$(api.column(22).footer()).html(
 					total_customer_free_trial +
 					" (" +
 					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
 
-				$(api.column(22).footer()).html(
+				$(api.column(23).footer()).html(
 					total_customer_signed +
 					" (" +
 					((total_customer_signed / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(23).footer()).html(
+				$(api.column(24).footer()).html(
 					total_lead_v1 +
 					" (" +
 					((total_lead_v1 / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(24).footer()).html(
+				$(api.column(25).footer()).html(
 					total_shipmate_pending +
 					" (" +
 					((total_shipmate_pending / total_lead) * 100).toFixed(0) +
 					"%)"
 				);
-				$(api.column(25).footer()).html(
+				$(api.column(26).footer()).html(
 					total_lead_v2 +
 					" (" +
 					((total_lead_v2 / total_lead) * 100).toFixed(0) +
@@ -14873,6 +14914,7 @@ define([
 		var datacapture_suspect_unqualified = [];
 		var datacapture_suspect_lpo_followup = [];
 		var datacapture_suspect_validated = [];
+		var datacapture_suspect_zee_review = [];
 		var datacapture_customer_free_trial_pending = [];
 		var datacapture_customer_shipmate_pending = [];
 		var datacapture_customer_free_trial = [];
@@ -14888,51 +14930,53 @@ define([
 			datacapture_suspect_hot_lead[datacapture_data[i][0]] =
 				datacapture_data[i][2];
 			datacapture_suspect_validated[datacapture_data[i][0]] =
-				datacapture_data[i][5];
-			datacapture_suspect_unqualified[datacapture_data[i][0]] =
-				datacapture_data[i][4];
-			datacapture_suspect_qualified[datacapture_data[i][0]] =
-				datacapture_data[i][3];
-			datacapture_suspect_pre_qualifcaition[datacapture_data[i][0]] =
 				datacapture_data[i][6];
-			datacapture_suspect_in_qualification[datacapture_data[i][0]] =
+			datacapture_suspect_unqualified[datacapture_data[i][0]] =
+				datacapture_data[i][5];
+			datacapture_suspect_zee_review[datacapture_data[i][0]] =
+				datacapture_data[i][3];
+			datacapture_suspect_qualified[datacapture_data[i][0]] =
+				datacapture_data[i][4];
+			datacapture_suspect_pre_qualifcaition[datacapture_data[i][0]] =
 				datacapture_data[i][7];
-			datacapture_suspect_reassign[datacapture_data[i][0]] =
+			datacapture_suspect_in_qualification[datacapture_data[i][0]] =
 				datacapture_data[i][8];
-			datacapture_suspect_follow_up[datacapture_data[i][0]] =
+			datacapture_suspect_reassign[datacapture_data[i][0]] =
 				datacapture_data[i][9];
-			datacapture_suspect_lpo_followup[datacapture_data[i][0]] =
+			datacapture_suspect_follow_up[datacapture_data[i][0]] =
 				datacapture_data[i][10];
-			datacapture_suspect_no_answer[datacapture_data[i][0]] =
+			datacapture_suspect_lpo_followup[datacapture_data[i][0]] =
 				datacapture_data[i][11];
-			datacapture_suspect_in_contact[datacapture_data[i][0]] =
+			datacapture_suspect_no_answer[datacapture_data[i][0]] =
 				datacapture_data[i][12];
-			datacapture_prospect_in_contact[datacapture_data[i][0]] =
+			datacapture_suspect_in_contact[datacapture_data[i][0]] =
 				datacapture_data[i][13];
-			datacapture_suspect_off_peak_pipeline[datacapture_data[i][0]] =
+			datacapture_prospect_in_contact[datacapture_data[i][0]] =
 				datacapture_data[i][14];
-			datacapture_suspect_lost[datacapture_data[i][0]] =
+			datacapture_suspect_off_peak_pipeline[datacapture_data[i][0]] =
 				datacapture_data[i][15];
-			datacapture_suspect_oot[datacapture_data[i][0]] = datacapture_data[i][16];
+			datacapture_suspect_lost[datacapture_data[i][0]] =
+				datacapture_data[i][16];
+			datacapture_suspect_oot[datacapture_data[i][0]] = datacapture_data[i][17];
 			datacapture_suspect_customer_lost[datacapture_data[i][0]] =
-				datacapture_data[i][17];
-			datacapture_prospect_opportunity[datacapture_data[i][0]] =
 				datacapture_data[i][18];
-			datacapture_prospect_qualified[datacapture_data[i][0]] =
+			datacapture_prospect_opportunity[datacapture_data[i][0]] =
 				datacapture_data[i][19];
-			datacapture_prospecy_box_sent[datacapture_data[i][0]] =
+			datacapture_prospect_qualified[datacapture_data[i][0]] =
 				datacapture_data[i][20];
-			datacapture_prospecy_quote_sent[datacapture_data[i][0]] =
+			datacapture_prospecy_box_sent[datacapture_data[i][0]] =
 				datacapture_data[i][21];
-			datacapture_customer_free_trial_pending[datacapture_data[i][0]] =
+			datacapture_prospecy_quote_sent[datacapture_data[i][0]] =
 				datacapture_data[i][22];
-			datacapture_customer_free_trial[datacapture_data[i][0]] =
+			datacapture_customer_free_trial_pending[datacapture_data[i][0]] =
 				datacapture_data[i][23];
-			datacapture_customer_shipmate_pending[datacapture_data[i][0]] =
+			datacapture_customer_free_trial[datacapture_data[i][0]] =
 				datacapture_data[i][24];
-			datacapture_customer_signed[datacapture_data[i][0]] =
+			datacapture_customer_shipmate_pending[datacapture_data[i][0]] =
 				datacapture_data[i][25];
-			datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][26];
+			datacapture_customer_signed[datacapture_data[i][0]] =
+				datacapture_data[i][26];
+			datacapture_total_leads[datacapture_data[i][0]] = datacapture_data[i][27];
 		}
 		var datacapture_count = {}; // creating object for getting categories with
 		// count
@@ -14968,6 +15012,7 @@ define([
 		var datacapture_series_data30a = [];
 		var datacapture_series_data31a = [];
 		var datacapture_series_data32a = [];
+		var datacapture_series_data33a = [];
 
 		var datacapture_categores1 = []; // creating empty array for highcharts
 		// categories
@@ -15045,6 +15090,9 @@ define([
 			datacapture_series_data32a.push(
 				parseInt(datacapture_customer_shipmate_pending[item])
 			);
+			datacapture_series_data33a.push(
+				parseInt(datacapture_suspect_zee_review[item])
+			);
 			datacapture_categores1.push(item);
 		});
 
@@ -15079,7 +15127,7 @@ define([
 			datacapture_series_data28a,
 			datacapture_series_data29a,
 			datacapture_series_data30a,
-			datacapture_series_data31a, datacapture_series_data32a
+			datacapture_series_data31a, datacapture_series_data32a, datacapture_series_data33a
 		);
 
 		//? Data Capture Grouped by Source & Campaign
@@ -19501,7 +19549,7 @@ define([
 		series_data28a,
 		series_data29a,
 		series_data30a,
-		series_data31a, datacapture_series_data32a
+		series_data31a, datacapture_series_data32a, datacapture_series_data33a
 	) {
 		// console.log(series_data)
 
@@ -19667,6 +19715,14 @@ define([
 				{
 					name: "Suspect - Hot Lead",
 					data: series_data21,
+					color: "#FEBE8C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Franchisee Review",
+					data: datacapture_series_data33a,
 					color: "#FEBE8C",
 					style: {
 						fontWeight: "bold",
