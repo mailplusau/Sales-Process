@@ -8626,6 +8626,7 @@ define([
 		var suspect_in_qualification = 0;
 
 		suspect_validated = 0;
+		var suspect_zee_review = 0;
 		customer_free_trial = 0;
 		customer_free_trial_pending = 0;
 		customer_shipmate_pending = 0;
@@ -8776,6 +8777,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -8803,7 +8807,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification + customer_shipmate_pending;
+						suspect_in_qualification + customer_shipmate_pending + suspect_zee_review;
 				} else if (oldDate1 != null && oldDate1 == startDate) {
 					if (custStatus == 13 || custStatus == 66) {
 						//CUSTOMER _ SIGNED
@@ -8883,6 +8887,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending += parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review += parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -8910,7 +8917,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification + customer_shipmate_pending;
+						suspect_in_qualification + customer_shipmate_pending + suspect_zee_review
 				} else if (oldDate1 != null && oldDate1 != startDate) {
 					debt_set_status_by_quote_sent.push({
 						dateUsed: oldDate1,
@@ -8940,7 +8947,8 @@ define([
 						prospect_box_sent: prospecy_box_sent,
 						suspect_pre_qualification: suspect_pre_qualification,
 						suspect_in_qualification: suspect_in_qualification,
-						customer_shipmate_pending: customer_shipmate_pending
+						customer_shipmate_pending: customer_shipmate_pending,
+						suspect_zee_review: suspect_zee_review
 					});
 
 					customer_signed = 0;
@@ -8964,6 +8972,7 @@ define([
 					prospect_qualified = 0;
 
 					suspect_validated = 0;
+					suspect_zee_review = 0;
 					customer_free_trial = 0;
 					customer_free_trial_pending = 0;
 					suspect_no_answer = 0;
@@ -9050,6 +9059,9 @@ define([
 					} else if (custStatus == 73) {
 						//CUSTOMER - SHIPMATE PENDING
 						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -9077,7 +9089,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification + customer_shipmate_pending;
+						suspect_in_qualification + customer_shipmate_pending + suspect_zee_review
 				}
 
 				count1++;
@@ -9114,7 +9126,8 @@ define([
 				prospect_box_sent: prospecy_box_sent,
 				suspect_pre_qualification: suspect_pre_qualification,
 				suspect_in_qualification: suspect_in_qualification,
-				customer_shipmate_pending: customer_shipmate_pending
+				customer_shipmate_pending: customer_shipmate_pending,
+				suspect_zee_review: suspect_zee_review
 			});
 		}
 
@@ -9327,10 +9340,20 @@ define([
 					suspectInQualificationPercentage +
 					"%)";
 
+				var suspectZeeReviewPercentage = parseInt(
+					(preview_row.suspect_zee_review / preview_row.total_leads) * 100
+				);
+				var suspectZeeReviewCol =
+					preview_row.suspect_zee_review +
+					" (" +
+					suspectZeeReviewPercentage +
+					"%)";
+
 				overQuoteSentByStatusDataSet.push([
 					preview_row.dateUsed,//0
 					preview_row.suspect_new,//1
 					preview_row.suspect_hot_lead,//2
+					preview_row.suspect_zee_review,//2
 					preview_row.suspect_validated,//3
 					preview_row.suspect_qualified,//4
 					preview_row.suspect_unqualified,//5
@@ -9361,6 +9384,7 @@ define([
 					preview_row.dateUsed,
 					suspectNewCol,
 					hotLeadCol,
+					suspectZeeReviewCol,
 					suspectValidatedCol,
 					suspectQualifiedCol,
 					suspectUnqualifiedCol,
@@ -9419,6 +9443,7 @@ define([
 		var suspect_unqualified = [];
 		var suspect_lpo_followup = [];
 		var suspect_validated = [];
+		var suspect_zee_review = [];
 		var customer_free_trial = [];
 		var customer_free_trial_pending = [];
 		var customer_shipmate_pending = [];
@@ -9432,30 +9457,31 @@ define([
 			month_year.push(data[i][0]);
 			suspect_new[data[i][0]] = data[i][1];
 			suspect_hot_lead[data[i][0]] = data[i][2];
-			suspect_qualified[data[i][0]] = data[i][4];
-			suspect_unqualified[data[i][0]] = data[i][5];
-			suspect_validated[data[i][0]] = data[i][3];
-			suspect_pre_qualification[data[i][0]] = data[i][6];
-			suspect_in_qualification[data[i][0]] = data[i][7];
-			suspect_reassign[data[i][0]] = data[i][8];
-			suspect_follow_up[data[i][0]] = data[i][9];
-			suspect_lpo_followup[data[i][0]] = data[i][10];
-			suspect_no_answer[data[i][0]] = data[i][11];
-			suspect_in_contact[data[i][0]] = data[i][12];
-			prospect_in_contact[data[i][0]] = data[i][13];
-			suspect_off_peak_pipeline[data[i][0]] = data[i][14];
-			suspect_lost[data[i][0]] = data[i][15];
-			suspect_oot[data[i][0]] = data[i][16];
-			suspect_customer_lost[data[i][0]] = data[i][17];
-			prospect_opportunity[data[i][0]] = data[i][18];
-			prospect_qualified[data[i][0]] = data[i][19];
-			prospecy_box_sent[data[i][0]] = data[i][20];
-			prospecy_quote_sent[data[i][0]] = data[i][21];
-			customer_free_trial_pending[data[i][0]] = data[i][22];
-			customer_free_trial[data[i][0]] = data[i][23];
-			customer_shipmate_pending[data[i][0]] = data[i][24];
-			customer_signed[data[i][0]] = data[i][25];
-			total_leads[data[i][0]] = data[i][26];
+			suspect_qualified[data[i][0]] = data[i][5];
+			suspect_unqualified[data[i][0]] = data[i][6];
+			suspect_zee_review[data[i][0]] = data[i][3];
+			suspect_validated[data[i][0]] = data[i][4];
+			suspect_pre_qualification[data[i][0]] = data[i][7];
+			suspect_in_qualification[data[i][0]] = data[i][8];
+			suspect_reassign[data[i][0]] = data[i][9];
+			suspect_follow_up[data[i][0]] = data[i][10];
+			suspect_lpo_followup[data[i][0]] = data[i][11];
+			suspect_no_answer[data[i][0]] = data[i][12];
+			suspect_in_contact[data[i][0]] = data[i][13];
+			prospect_in_contact[data[i][0]] = data[i][14];
+			suspect_off_peak_pipeline[data[i][0]] = data[i][15];
+			suspect_lost[data[i][0]] = data[i][16];
+			suspect_oot[data[i][0]] = data[i][17];
+			suspect_customer_lost[data[i][0]] = data[i][18];
+			prospect_opportunity[data[i][0]] = data[i][19];
+			prospect_qualified[data[i][0]] = data[i][20];
+			prospecy_box_sent[data[i][0]] = data[i][21];
+			prospecy_quote_sent[data[i][0]] = data[i][22];
+			customer_free_trial_pending[data[i][0]] = data[i][23];
+			customer_free_trial[data[i][0]] = data[i][24];
+			customer_shipmate_pending[data[i][0]] = data[i][25];
+			customer_signed[data[i][0]] = data[i][26];
+			total_leads[data[i][0]] = data[i][27];
 		}
 
 		// console.log("prospecy_box_sent" + prospecy_box_sent);
@@ -9494,6 +9520,7 @@ define([
 		var series_data30a = [];
 		var series_data31a = [];
 		var series_data32a = [];
+		var series_data33a = [];
 
 		var categores1 = []; // creating empty array for highcharts
 		// categories
@@ -9525,6 +9552,7 @@ define([
 			series_data30a.push(parseInt(suspect_pre_qualification[item]));
 			series_data31a.push(parseInt(suspect_in_qualification[item]));
 			series_data32a.push(parseInt(customer_shipmate_pending[item]));
+			series_data33a.push(parseInt(suspect_zee_review[item]));
 			categores1.push(item);
 		});
 
@@ -9556,7 +9584,7 @@ define([
 			series_data29a,
 			series_data30a,
 			series_data31a,
-			series_data32a
+			series_data32a, series_data33a
 		);
 
 		if (role != 1000) {
@@ -18229,7 +18257,7 @@ define([
 		series_data28a,
 		series_data29a,
 		series_data30a,
-		series_data31a, series_data32a
+		series_data31a, series_data32a, series_data33a
 	) {
 		// console.log(series_data)
 
@@ -18427,6 +18455,14 @@ define([
 					name: "Suspect - Unqualified",
 					data: series_data28a,
 					color: "#B674EFFF",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Suspect - Franchisee Review",
+					data: series_data33a,
+					color: "#FEBE8C",
 					style: {
 						fontWeight: "bold",
 					},
