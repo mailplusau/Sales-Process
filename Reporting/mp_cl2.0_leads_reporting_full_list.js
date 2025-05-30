@@ -197,6 +197,7 @@ define([
 	var suspectQualifiedDataSet = [];
 	var suspectUnqualifiedDataSet = [];
 	var suspectValidatedDataSet = [];
+	var suspectZeeReviewDataSet = [];
 	var suspectNoAnswerDataSet = [];
 	var suspectInContactDataSet = [];
 
@@ -15136,6 +15137,20 @@ define([
 								});
 							} else if (
 								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-FRANCHISEE REVIEW"
+							) {
+								console.log("inside suspect franchisee review");
+								suspectActivityCount++;
+								suspectZeeReviewChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
 								custStatus == "SUSPECT-NO ANSWER"
 							) {
 								console.log("inside suspect no answer");
@@ -15286,6 +15301,20 @@ define([
 								console.log("inside suspect validated");
 								suspectActivityCount++;
 								suspectValidatedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-FRANCHISEE REVIEW"
+							) {
+								console.log("inside suspect franchisee review");
+								suspectActivityCount++;
+								suspectZeeReviewChildDataSet.push({
 									tasksInternalID: tasksInternalID,
 									taskDate: taskDate,
 									taskTitle: taskTitle,
@@ -15673,6 +15702,33 @@ define([
 							]);
 						} else if (
 							oldcustStage == "SUSPECT" &&
+							oldcustStatus == "SUSPECT-FRANCHISEE REVIEW"
+						) {
+							suspectZeeReviewDataSet.push([
+								"",
+								oldcustInternalID,
+								'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+								oldcustInternalID +
+								'" target="_blank" style="">' +
+								oldcustEntityID +
+								"</a>",
+								oldcustName,
+								oldzeeName,
+								oldcustStatus,
+								oldSource,
+								oldPreviousCarrier,
+								olddateLeadEntered,
+								oldDateLPOValidated,
+								'<input type="button" value="' +
+								oldDaysOpen +
+								'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+								oldcustInternalID +
+								'" style="background-color: #095C7B;border-radius: 30px">',
+								oldsalesRepText,
+								suspectZeeReviewChildDataSet,
+							]);
+						} else if (
+							oldcustStage == "SUSPECT" &&
 							oldcustStatus == "SUSPECT-VALIDATED"
 						) {
 							suspectValidatedDataSet.push([
@@ -15764,6 +15820,8 @@ define([
 						suspectOffPeakChildDataSet = [];
 						suspectNoAnswerChildDataSet = [];
 						suspectInContactChildDataSet = [];
+						suspectZeeReviewChildDataSet = [];
+						suspectValidatedChildDataSet = [];
 
 						if (!isNullorEmpty(tasksInternalID)) {
 							if (
@@ -15873,6 +15931,20 @@ define([
 							) {
 								suspectActivityCount++;
 								suspectValidatedChildDataSet.push({
+									tasksInternalID: tasksInternalID,
+									taskDate: taskDate,
+									taskTitle: taskTitle,
+									taskAssignedTo: taskAssignedTo,
+									taskStatus: taskStatus,
+									taskComment: taskComment,
+								});
+							} else if (
+								custStage == "SUSPECT" &&
+								custStatus == "SUSPECT-FRANCHISEE REVIEW"
+							) {
+								console.log("inside suspect franchisee review");
+								suspectActivityCount++;
+								suspectZeeReviewChildDataSet.push({
 									tasksInternalID: tasksInternalID,
 									taskDate: taskDate,
 									taskTitle: taskTitle,
@@ -16219,6 +16291,33 @@ define([
 					]);
 				} else if (
 					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-FRANCHISEE REVIEW"
+				) {
+					suspectZeeReviewDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDateLPOValidated,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectZeeReviewChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
 					oldcustStatus == "SUSPECT-NO ANSWER"
 				) {
 					suspectNoAnswerDataSet.push([
@@ -16497,6 +16596,21 @@ define([
 					name: "custentity_service_cancellation_reason",
 					summary: "GROUP",
 				});
+
+				//New Cancellation Fields - Theme/What & Why
+				var cancellationTheme = suspectsResultSet[i].getText({
+					name: "custentity_service_cancellation_theme",
+					summary: "GROUP",
+				});
+				var cancellationWhat = suspectsResultSet[i].getText({
+					name: "custentity_service_cancellation_what",
+					summary: "GROUP",
+				});
+				var cancellationWhy = suspectsResultSet[i].getText({
+					name: "custentity_service_cancellation_why",
+					summary: "GROUP",
+				});
+
 
 				var source = suspectsResultSet[i].getText({
 					name: "leadsource",
@@ -17012,6 +17126,20 @@ define([
 							});
 						} else if (
 							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-FRANCHISEE REVIEW"
+						) {
+							console.log("inside suspect validated");
+							suspectActivityCount++;
+							suspectZeeReviewChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
 							custStatus == "SUSPECT-NO ANSWER"
 						) {
 							console.log("inside suspect no answer");
@@ -17171,6 +17299,20 @@ define([
 							});
 						} else if (
 							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-FRANCHISEE REVIEW"
+						) {
+							console.log("inside suspect franchisee review");
+							suspectActivityCount++;
+							suspectZeeReviewChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
 							custStatus == "SUSPECT-NO ANSWER"
 						) {
 							console.log("inside suspect no answer");
@@ -17281,6 +17423,9 @@ define([
 							oldcustInternalID +
 							'" style="background-color: #095C7B;border-radius: 30px">',
 							oldCancellationReason,
+							oldCancellationTheme,
+							oldCancellationWhat,
+							oldCancellationWhy,
 							oldMonthServiceValue,
 							oldAvgInvoiceValue,
 							oldsalesRepText,
@@ -17573,6 +17718,33 @@ define([
 						]);
 					} else if (
 						oldcustStage == "SUSPECT" &&
+						oldcustStatus == "SUSPECT-FRANCHISEE REVIEW"
+					) {
+						suspectZeeReviewDataSet.push([
+							"",
+							oldcustInternalID,
+							'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+							oldcustInternalID +
+							'" target="_blank" style="">' +
+							oldcustEntityID +
+							"</a>",
+							oldcustName,
+							oldzeeName,
+							oldcustStatus,
+							oldSource,
+							oldPreviousCarrier,
+							olddateLeadEntered,
+							oldDateLPOValidated,
+							'<input type="button" value="' +
+							oldDaysOpen +
+							'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+							oldcustInternalID +
+							'" style="background-color: #095C7B;border-radius: 30px">',
+							oldsalesRepText,
+							suspectZeeReviewChildDataSet,
+						]);
+					} else if (
+						oldcustStage == "SUSPECT" &&
 						oldcustStatus == "SUSPECT-NO ANSWER"
 					) {
 						suspectNoAnswerDataSet.push([
@@ -17637,6 +17809,8 @@ define([
 					suspectOffPeakChildDataSet = [];
 					suspectNoAnswerChildDataSet = [];
 					suspectInContactChildDataSet = [];
+					suspectZeeReviewChildDataSet = [];
+					suspectValidatedChildDataSet = [];
 
 					if (!isNullorEmpty(tasksInternalID)) {
 						if (
@@ -17755,6 +17929,19 @@ define([
 							});
 						} else if (
 							custStage == "SUSPECT" &&
+							custStatus == "SUSPECT-FRANCHISEE REVIEW"
+						) {
+							suspectActivityCount++;
+							suspectZeeReviewChildDataSet.push({
+								tasksInternalID: tasksInternalID,
+								taskDate: taskDate,
+								taskTitle: taskTitle,
+								taskAssignedTo: taskAssignedTo,
+								taskStatus: taskStatus,
+								taskComment: taskComment,
+							});
+						} else if (
+							custStage == "SUSPECT" &&
 							custStatus == "SUSPECT-NO ANSWER"
 						) {
 							suspectActivityCount++;
@@ -17811,6 +17998,9 @@ define([
 				oldPreviousCarrier = previousCarrier;
 				oldMonthServiceValue = monthlyServiceValue;
 				oldAvgInvoiceValue = avgInvoiceValue;
+				oldCancellationTheme = cancellationTheme;
+				oldCancellationWhat = cancellationWhat;
+				oldCancellationWhy = cancellationWhy;
 				count++;
 			}
 
@@ -17896,6 +18086,9 @@ define([
 						oldcustInternalID +
 						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldCancellationReason,
+						oldCancellationTheme,
+						oldCancellationWhat,
+						oldCancellationWhy,
 						oldMonthServiceValue,
 						oldAvgInvoiceValue,
 						oldsalesRepText,
@@ -18080,6 +18273,33 @@ define([
 						'" style="background-color: #095C7B;border-radius: 30px">',
 						oldsalesRepText,
 						suspectQualifiedChildDataSet,
+					]);
+				} else if (
+					oldcustStage == "SUSPECT" &&
+					oldcustStatus == "SUSPECT-FRANCHISEE REVIEW"
+				) {
+					suspectZeeReviewDataSet.push([
+						"",
+						oldcustInternalID,
+						'<a href="https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' +
+						oldcustInternalID +
+						'" target="_blank" style="">' +
+						oldcustEntityID +
+						"</a>",
+						oldcustName,
+						oldzeeName,
+						oldcustStatus,
+						oldSource,
+						oldPreviousCarrier,
+						olddateLeadEntered,
+						oldDateLPOValidated,
+						'<input type="button" value="' +
+						oldDaysOpen +
+						'" class="form-control btn btn-primary show_status_timeline" id="" data-id="' +
+						oldcustInternalID +
+						'" style="background-color: #095C7B;border-radius: 30px">',
+						oldsalesRepText,
+						suspectZeeReviewChildDataSet,
 					]);
 				} else if (
 					oldcustStage == "SUSPECT" &&
@@ -26394,13 +26614,119 @@ define([
 			footerCallback: function (row, data, start, end, display) { },
 		});
 
-		dataTableValidated.rows().every(function () {
+		var dataTableZeeReview = $("#mpexusage-suspects_zee_review").DataTable({
+			data: suspectZeeReviewDataSet,
+			pageLength: 250,
+			order: [],
+			layout: {
+				topStart: {
+					buttons: [
+						{
+							extend: "copy",
+							text: "Copy",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "csv",
+							text: "CSV",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "excel",
+							text: "Excel",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "pdf",
+							text: "PDF",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+						{
+							extend: "print",
+							text: "Print",
+							className: "btn btn-default exportButtons",
+							exportOptions: {
+								columns: ":not(.notexport)",
+							},
+						},
+					],
+				},
+			},
+			columns: [
+				{
+					title: "Expand",
+					className: "dt-control",
+					orderable: false,
+					data: null,
+					defaultContent:
+						'<button type="button" class="btn btn-primary expand-button" style="background-color: #095C7B;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>',
+				}, //0
+				{ title: "Internal ID" }, //1
+				{ title: "ID" }, //2
+				{ title: "Company Name" }, //3
+				{ title: "Franchisee" }, //4
+				{ title: "Status" }, //5
+				{ title: "Source" }, //6
+				{ title: "Previous Carrier" }, //7
+				{ title: "Date - Lead Entered" }, //8
+				{ title: "Date - LPO Validated" }, //9
+				{ title: "Days Open" }, //10
+				{ title: "Sales Rep" }, //11
+				{ title: "Child Table" }, //12
+			],
+			autoWidth: false,
+			columnDefs: [
+				{
+					targets: [12],
+					visible: false,
+				},
+				{
+					targets: [2, 3, 4, 6, 9, 10],
+					className: "bolded",
+				},
+				{
+					targets: [0, 10],
+					className: "notexport",
+				},
+			],
+			rowCallback: function (row, data, index) {
+				console.log("mpexusage-suspects_qualified");
+				console.log(JSON.stringify(data[12]));
+				console.log(data[12].length);
+
+				if (isNullorEmpty(data[12])) {
+					$("td", row).css("background-color", "#f9c67a");
+				}
+
+				if (
+					data[5].toUpperCase() == "SUSPECT-LOST" ||
+					data[5].toUpperCase() == "SUSPECT-OUT OF TERRITORY"
+				) {
+					$("td", row).css("background-color", "#FF8787");
+				}
+			},
+			footerCallback: function (row, data, start, end, display) { },
+		});
+
+		dataTableZeeReview.rows().every(function () {
 			// this.child(format(this.data())).show();
 			this.child(createChildValidated(this)); // Add Child Tables
 			this.child.hide(); // Hide Child Tables on Open
 		});
 
-		$("#mpexusage-suspects_validated tbody").on(
+		$("#mpexusage-suspects_zee_review tbody").on(
 			"click",
 			"td.dt-control",
 			function () {

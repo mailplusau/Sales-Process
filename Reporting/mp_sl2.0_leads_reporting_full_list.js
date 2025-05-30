@@ -2841,6 +2841,8 @@ define([
 		inlineHtml +=
 			'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
 		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_zee_review" style="border-radius: 30px"><b>SUSPECTS - FRANCHISEE REVIEW</b></a></li>';
+		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
 		inlineHtml +=
 			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
@@ -2871,6 +2873,14 @@ define([
 		inlineHtml += '<div id="container_suspects"></div>';
 		inlineHtml += "</figure><br></br>";
 		inlineHtml += dataTable("suspects");
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_zee_review">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_zee_review"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_zee_review");
 		inlineHtml += "</div>";
 
 		inlineHtml +=
