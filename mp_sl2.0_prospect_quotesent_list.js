@@ -67,6 +67,11 @@ define([
 
 			var page_no = context.request.parameters.page_no;
 
+			var company_name_text = context.request.parameters.company_name_text;
+			if (isNullorEmpty(company_name_text)) {
+				company_name_text = "";
+			}
+
 			if (isNullorEmpty(page_no)) {
 				page_no = "1";
 			}
@@ -362,7 +367,7 @@ define([
 				custStage,
 				source,
 				custStatus,
-				sales_activity_notes
+				sales_activity_notes, company_name_text
 			);
 
 			inlineHtml += dateFilterSection(
@@ -402,7 +407,7 @@ define([
 				start_date,
 				last_date,
 				page_no,
-				custStatus
+				custStatus, company_name_text
 			);
 
 			inlineHtml += '<div id="container"></div>';
@@ -809,7 +814,7 @@ define([
 		custStage,
 		source,
 		custStatus,
-		sales_activity_notes
+		sales_activity_notes, company_name_text
 	) {
 		log.debug({
 			title: "salesCampaign",
@@ -1058,6 +1063,27 @@ define([
 
 		inlineHtml += "</select>";
 		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container cust_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">COMPANY NAME - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container cust_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml += '<div class="col-xs-12 source_div">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="source_text">COMPANY NAME (CONTAINS)</span>';
+		inlineHtml +=
+			'<input type="text" id="company_name_text" class="form-control" style="width: 100%" value="' + company_name_text + '">';
+		inlineHtml += "</div></div>";
+		inlineHtml += "</div ></div > ";
 
 		inlineHtml +=
 			'<div class="form-group container cust_dropdown_section hide">';
@@ -1334,7 +1360,7 @@ define([
 		from_date,
 		to_date,
 		page_no,
-		custStatus
+		custStatus, company_name_text
 	) {
 		var zeeArray = [];
 		if (!isNullorEmpty(zee)) {
@@ -1410,6 +1436,16 @@ define([
 				type: "customer",
 				id: "customsearch_web_leads_suspects",
 			});
+
+			if (!isNullorEmpty(company_name_text)) {
+				suspectsSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.CONTAINS,
+						values: company_name_text,
+					}));
+			}
 
 			if (!isNullorEmpty(zeeArray)) {
 				suspectsSearch.filters.push(
@@ -1596,6 +1632,17 @@ define([
 				type: "customer",
 				id: "customsearch_web_leads_prosp_quote_sent",
 			});
+
+			if (!isNullorEmpty(company_name_text)) {
+				custListCommenceTodayResults.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.CONTAINS,
+						values: company_name_text,
+					}));
+			}
+
 
 			if (!isNullorEmpty(zee)) {
 				custListCommenceTodayResults.filters.push(

@@ -288,6 +288,7 @@ define([
 			parentLPOInternalId = $("#parent_lpo").val();
 			zee = $("#zee_dropdown").val();
 			sales_activity_notes = $("#sales_activity_notes").val();
+			var company_name_text = $("#company_name_text").val();
 
 			var date_from = $("#date_from").val();
 			var date_to = $("#date_to").val();
@@ -331,7 +332,8 @@ define([
 				"&status=" +
 				custStatus +
 				"&sales_activity_notes=" +
-				sales_activity_notes;
+				sales_activity_notes + '&company_name_text=' +
+				company_name_text;
 
 			window.location.href = url;
 		});
@@ -348,6 +350,7 @@ define([
 			parentLPOInternalId = $("#parent_lpo").val();
 			zee = $("#zee_dropdown").val();
 			sales_activity_notes = $("#sales_activity_notes").val();
+			var company_name_text = $("#company_name_text").val();
 
 			var date_from = $("#date_from").val();
 			var date_to = $("#date_to").val();
@@ -375,7 +378,8 @@ define([
 				"&status=" +
 				custStatus +
 				"&sales_activity_notes=" +
-				sales_activity_notes;
+				sales_activity_notes + '&company_name_text=' +
+				company_name_text;
 
 			window.location.href = url;
 		});
