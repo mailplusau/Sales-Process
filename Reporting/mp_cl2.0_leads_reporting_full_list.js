@@ -2223,7 +2223,7 @@ define([
 			categores_customer_cancelled_request_week
 		);
 
-		//Customer Cancellation - Requested List - All
+		//Customer Sales Dashboard - Customer Cancellation - Requested List - All
 		var customerCancellationRequesteSearch = search.load({
 			type: "customer",
 			id: "customsearch_cust_cancellation_request_2",
