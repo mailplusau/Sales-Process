@@ -64,6 +64,12 @@ define([
     }
 
     function sendEmails(demoShipMateLead1stLodgementSearch) {
+
+        var oldCustomerInternalID = null;
+        var oldCustomerEmail = null;
+        var oldCustomerAccountManager = null;
+        var barcodeCount = 0;
+
         demoShipMateLead1stLodgementSearch.run().each(function (searchResult) {
             var customerInternalID = searchResult.getValue({
                 name: "internalid",
@@ -79,6 +85,108 @@ define([
             });
             var operatorName = searchResult.getText("custrecord_cust_prod_stock_operator");
 
+            if (oldCustomerInternalID != null && oldCustomerInternalID != customerInternalID) {
+                // NetSuite Search: SALESP - Contacts
+                var searched_contacts = search.load({
+                    id: "customsearch_salesp_contacts",
+                    type: "contact",
+                });
+
+                searched_contacts.filters.push(
+                    search.createFilter({
+                        name: "internalid",
+                        join: "CUSTOMER",
+                        operator: search.Operator.ANYOF,
+                        values: oldCustomerInternalID,
+                    })
+                );
+
+                searched_contacts.filters.push(
+                    search.createFilter({
+                        name: "isinactive",
+                        operator: search.Operator.IS,
+                        values: false,
+                    })
+                );
+
+                resultSetContacts = searched_contacts.run();
+
+                var serviceContactResult = resultSetContacts.getRange({
+                    start: 0,
+                    end: 1,
+                });
+
+                var contactInternalID = serviceContactResult[0].getValue({
+                    name: "internalid",
+                });
+                var contactFirstName = serviceContactResult[0].getValue({
+                    name: "firstname",
+                });
+                var contactLastName = serviceContactResult[0].getValue({
+                    name: "lastname",
+                });
+                var contactEmail = serviceContactResult[0].getValue({
+                    name: "email",
+                });
+                var contactPhone = serviceContactResult[0].getValue({
+                    name: "phone",
+                });
+
+                //Campaign Communication Template: 202505 - Illicium T3 - Confirming FU Appointment
+                var suiteletUrl =
+                    "https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=395&deploy=1&compid=1048144&ns-at=AAEJ7tMQgAVHkxJsbXgGwQQm4xn968o7JJ9-Ym7oanOzCSkWO78&rectype=customer&template=253";
+                suiteletUrl +=
+                    "&recid=" +
+                    oldCustomerInternalID +
+                    "&salesrep=" +
+                    oldCustomerAccountManager +
+                    "&dear=" +
+                    contactFirstName +
+                    "&contactid=" +
+                    contactInternalID +
+                    "&userid=" +
+                    oldCustomerAccountManager;
+
+                var response = https.get({
+                    url: suiteletUrl,
+                });
+
+                var emailHtml = response.body;
+
+                var newLeadEmailTemplateRecord = record.load({
+                    type: "customrecord_camp_comm_template",
+                    id: 253, //Camp Communication TemplateID: 202505 - Illicium T3 - Confirming FU Appointment
+                });
+                var templateSubject = newLeadEmailTemplateRecord.getValue({
+                    fieldId: "custrecord_camp_comm_subject",
+                });
+
+
+                email.send({
+                    author: oldCustomerAccountManager,
+                    body: emailHtml,
+                    recipients: contactEmail,
+                    subject: templateSubject,
+                    cc: [oldCustomerAccountManager, 'customerservice@mailplus.com.au'],
+                    relatedRecords: { entityId: oldCustomerInternalID },
+                });
+
+                log.audit({
+                    title: "Email Sent out to:",
+                    details: contactEmail + " for customer: " + oldCustomerInternalID,
+                });
+            }
+
+
+
+            oldCustomerInternalID = customerInternalID;
+            oldCustomerEmail = customerEmail
+            oldCustomerAccountManager = customerAccountManager;
+            barcodeCount++;
+            return true;
+        });
+
+        if (barcodeCount > 0) {
             // NetSuite Search: SALESP - Contacts
             var searched_contacts = search.load({
                 id: "customsearch_salesp_contacts",
@@ -90,7 +198,7 @@ define([
                     name: "internalid",
                     join: "CUSTOMER",
                     operator: search.Operator.ANYOF,
-                    values: customerInternalID,
+                    values: oldCustomerInternalID,
                 })
             );
 
@@ -130,15 +238,15 @@ define([
                 "https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=395&deploy=1&compid=1048144&ns-at=AAEJ7tMQgAVHkxJsbXgGwQQm4xn968o7JJ9-Ym7oanOzCSkWO78&rectype=customer&template=253";
             suiteletUrl +=
                 "&recid=" +
-                customerInternalID +
+                oldCustomerInternalID +
                 "&salesrep=" +
-                customerAccountManager +
+                oldCustomerAccountManager +
                 "&dear=" +
                 contactFirstName +
                 "&contactid=" +
                 contactInternalID +
                 "&userid=" +
-                customerAccountManager;
+                oldCustomerAccountManager;
 
             var response = https.get({
                 url: suiteletUrl,
@@ -156,21 +264,19 @@ define([
 
 
             email.send({
-                author: customerAccountManager,
+                author: oldCustomerAccountManager,
                 body: emailHtml,
                 recipients: contactEmail,
                 subject: templateSubject,
-                cc: [customerAccountManager, 'customerservice@mailplus.com.au'],
-                relatedRecords: { entityId: customerInternalID },
+                cc: [oldCustomerAccountManager, 'customerservice@mailplus.com.au'],
+                relatedRecords: { entityId: oldCustomerInternalID },
             });
 
             log.audit({
                 title: "Email Sent out to:",
-                details: contactEmail + " for customer: " + customerInternalID,
+                details: contactEmail + " for customer: " + oldCustomerInternalID,
             });
-
-            return true;
-        });
+        }
 
         log.debug({
             title: "All Emails Sent Out",
