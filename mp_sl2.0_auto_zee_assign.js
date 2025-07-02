@@ -782,13 +782,23 @@ define([
 									value: 70, // Franchisee Generated
 								});
 							} else {
+								//Mopving the leads from the Call Force Campaign to the Illicium Campaign
+								// salesRecord.setValue({
+								// 	fieldId: "custrecord_sales_campaign",
+								// 	value: 87, // Call Force - 202501
+								// });
+								// salesRecord.setValue({
+								// 	fieldId: "custrecord_sales_assigned",
+								// 	value: 1874329, //Assign to Call Force
+								// });
+
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_campaign",
-									value: 87, // Call Force - 202501
+									value: 90, // Illicium - 202507
 								});
 								salesRecord.setValue({
 									fieldId: "custrecord_sales_assigned",
-									value: 1874329, //Assign to Call Force
+									value: 1917237, //Assign to Illicium X MailPlus
 								});
 							}
 
