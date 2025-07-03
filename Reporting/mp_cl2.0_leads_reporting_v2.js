@@ -218,6 +218,11 @@ define([
 	var callForceOutcomeStatusDataSet = [];
 	var callForceCompletedTasksDataSet = [];
 
+	var illiciumTasksDataSet = [];
+	var illiciumDateSyncedOutcomeDataSet = [];
+	var illiciumOutcomeStatusDataSet = [];
+	var illiciumCompletedTasksDataSet = [];
+
 	var totalSuspectCount = 0;
 	var customerActivityCount = 0;
 	var totalCustomerCount = 0;
@@ -1629,11 +1634,18 @@ define([
 
 		var showCallForceTasks = false;
 		var showFranchiseeLeadsPieChart = false;
+		var showIlliciumTasks = false;
 
 		if (isNullorEmpty(sales_campaign)) {
 			// showCallForceTasks = true;
 			// showFranchiseeLeadsPieChart = true;
 		} else {
+			
+			sales_campaign = sales_campaign.toString();
+
+			console.log("sales_campaign: " + sales_campaign);
+			console.log("sales_campaign.indexOf(,): " + sales_campaign.indexOf(","));
+
 			if (sales_campaign.indexOf(",") != -1) {
 				var campaignArray = sales_campaign.split(",");
 			} else {
@@ -1641,11 +1653,15 @@ define([
 				campaignArray.push(sales_campaign);
 			}
 
+			console.log("campaignArray: " + campaignArray);
 			console.log("campaignArray.length: " + campaignArray.length);
 
 			for (var y = 0; y < campaignArray.length; y++) {
 				if (parseInt(campaignArray[y]) == 87 || parseInt(campaignArray[y]) == 89) {
 					showCallForceTasks = true;
+				}
+				if (parseInt(campaignArray[y]) == 90) {
+					showIlliciumTasks = true;
 				}
 				if (parseInt(campaignArray[y]) == 70) {
 					showFranchiseeLeadsPieChart = true;
@@ -6026,6 +6042,4402 @@ define([
 
 			var dataTableCallForceDateSyncedOutcome = $(
 				"#mpexusage-callForceCompletedTasksCurrentStatus"
+			).DataTable({
+				data: completedTasksStatusDataSet,
+				pageLength: 250,
+				order: [],
+				responsive: true,
+				layout: {
+					topStart: {
+						buttons: [
+							{
+								extend: "copy",
+								text: "Copy",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "csv",
+								text: "CSV",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "excel",
+								text: "Excel",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "pdf",
+								text: "PDF",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "print",
+								text: "Print",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+						],
+					},
+				},
+				columns: [
+					{
+						title: "Date Appointment Completed", //0
+					},
+					{
+						title: "Suspect - New", //1
+					},
+					{
+						title: "Suspect - Hot Lead", //2
+					},
+					{
+						title: "Suspect - Franchisee Review", //3
+					},
+					{
+						title: "Suspect - Rejected", //4
+					},
+					{
+						title: "Suspect - Validated", //5
+					},
+					{
+						title: "Suspect - Unqualified", //6
+					},
+					{
+						title: "Suspect - Qualified", //7
+					},
+					{
+						title: "Suspect - Pre Qualification", //8
+					},
+					{
+						title: "Suspect - In Qualification", //9
+					},
+					{
+						title: "Suspect - Reassign", //10
+					},
+					{
+						title: "Suspect - No Answer", //11
+					},
+					{
+						title: "Suspect - In Contact", //12
+					},
+					{
+						title: "Prospect - In Contact", //13
+					},
+					{
+						title: "Suspect - Parking Lot", //14
+					},
+					{
+						title: "Suspect - Lost", //15
+					},
+					{
+						title: "Suspect - Out of Territory", //16
+					},
+					{
+						title: "Suspect - Customer - Lost", //17
+					},
+					{
+						title: "Prospect - Opportunity", //18
+					},
+					{
+						title: "Prospect - Qualified", //19
+					},
+					{
+						title: "Prospect - Box Sent", //20
+					},
+					{
+						title: "Prospect - Quote Sent", //21
+					},
+					{
+						title: "Customer - Free Trial Pending", //22
+					},
+					{
+						title: "Customer - Free Trial", //23
+					},
+					{
+						title: "Customer - ShipMate Pending", //24
+					},
+					{
+						title: "Customer - Signed", //25
+					},
+					{
+						title: "Total Lead Count", //26
+					},
+				],
+				columnDefs: [
+					{
+						targets: [0, 3, 7, 8, 9, 21, 24, 25],
+						className: "bolded",
+					},
+				],
+				footerCallback: function (row, data, start, end, display) {
+					var api = this.api(),
+						data;
+
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return parseInt(i);
+					};
+
+					const formatter = new Intl.NumberFormat("en-AU", {
+						style: "currency",
+						currency: "AUD",
+						minimumFractionDigits: 2,
+					});
+					// Total Suspect New Lead Count
+					total_suspect_new = api
+						.column(1)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Hot Lead Count
+					total_suspect_hot_lead = api
+						.column(2)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Franchisee Review Count
+					total_suspect_zee_review = api
+						.column(3)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Rejected Count
+					total_suspect_zee_rejected = api
+						.column(4)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Qualified Count
+					total_suspect_qualified = api
+						.column(5)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Unqualified Count
+					total_suspect_unqualified = api
+						.column(6)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Validated
+					total_suspect_validated = api
+						.column(7)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Reassign
+					total_suspect_reassign = api
+						.column(8)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Follow Up
+					total_suspect_followup = api
+						.column(9)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect LPO Follow Up
+					total_suspect_lpo_followup = api
+						.column(10)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect No Answer
+					total_suspect_no_answer = api
+						.column(11)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect In Contact
+					total_suspect_in_contact = api
+						.column(12)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect In Contact
+					total_prospect_in_contact = api
+						.column(13)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Off Peak Pipline
+					total_suspect_off_peak_pipeline = api
+						.column(14)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Lost
+					total_suspect_lost = api
+						.column(15)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Out of Territory
+					total_suspect_oot = api
+						.column(16)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Customer Lost
+					total_suspect_customer_lost = api
+						.column(17)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect Opportunity
+					total_prospect_opportunity = api
+						.column(18)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_prospect_qualified = api
+						.column(19)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_prospect_box_sent = api
+						.column(20)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect Quoite Sent
+					total_prospect_quote_sent = api
+						.column(21)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial Pending
+					total_customer_free_trial_pending = api
+						.column(22)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial
+					total_customer_free_trial = api
+						.column(23)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer ShipMate Pending
+					total_customer_shipmate_pending = api
+						.column(24)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_customer_signed = api
+						.column(25)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Lead Count
+					total_lead = api
+						.column(26)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Update footer
+					$(api.column(1).footer()).html(
+						total_suspect_new +
+						" (" +
+						((total_suspect_new / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(2).footer()).html(
+						total_suspect_hot_lead +
+						" (" +
+						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(3).footer()).html(
+						total_suspect_zee_review +
+						" (" +
+						((total_suspect_zee_review / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(4).footer()).html(
+						total_suspect_zee_rejected +
+						" (" +
+						((total_suspect_zee_rejected / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(5).footer()).html(
+						total_suspect_qualified +
+						" (" +
+						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(6).footer()).html(
+						total_suspect_unqualified +
+						" (" +
+						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(7).footer()).html(
+						total_suspect_validated +
+						" (" +
+						((total_suspect_validated / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(8).footer()).html(
+						total_suspect_reassign +
+						" (" +
+						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(9).footer()).html(
+						total_suspect_followup +
+						" (" +
+						((total_suspect_followup / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(10).footer()).html(
+						total_suspect_lpo_followup +
+						" (" +
+						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(11).footer()).html(
+						total_suspect_no_answer +
+						" (" +
+						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(12).footer()).html(
+						total_suspect_in_contact +
+						" (" +
+						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(13).footer()).html(
+						total_prospect_in_contact +
+						" (" +
+						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(14).footer()).html(
+						total_suspect_off_peak_pipeline +
+						" (" +
+						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+							0
+						) +
+						"%)"
+					);
+					$(api.column(15).footer()).html(
+						total_suspect_lost +
+						" (" +
+						((total_suspect_lost / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(16).footer()).html(
+						total_suspect_oot +
+						" (" +
+						((total_suspect_oot / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(17).footer()).html(
+						total_suspect_customer_lost +
+						" (" +
+						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(18).footer()).html(
+						total_prospect_opportunity +
+						" (" +
+						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(19).footer()).html(
+						total_prospect_qualified +
+						" (" +
+						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(20).footer()).html(
+						total_prospect_box_sent +
+						" (" +
+						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(21).footer()).html(
+						total_prospect_quote_sent +
+						" (" +
+						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+
+					$(api.column(22).footer()).html(
+						total_customer_free_trial_pending +
+						" (" +
+						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+							0
+						) +
+						"%)"
+					);
+
+					$(api.column(23).footer()).html(
+						total_customer_free_trial +
+						" (" +
+						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(24).footer()).html(
+						total_customer_shipmate_pending +
+						" (" +
+						((total_customer_shipmate_pending / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(25).footer()).html(
+						total_customer_signed +
+						" (" +
+						((total_customer_signed / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(26).footer()).html(total_lead);
+				},
+			});
+		}
+
+		console.log("showIlliciumTasks: " + showIlliciumTasks);
+
+		//!Creating a reporting tab based on the tasks created for the Illicium campaign.
+		if (showIlliciumTasks == true) {
+			//Get the count of the list of leads sent to Illicium
+			//Illicium Campaign - Suspect Unqualified List
+			var illiciumLeadsListSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_unqualified_list",
+			});
+
+			illiciumLeadsListSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				illiciumLeadsListSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var illiciumLeadsListSearchCount = illiciumLeadsListSearch.runPaged().count;
+
+			//Get the count of leads that is Qualified but with No Appointment
+			//NetSuite Search:Illicium Campaign - Suspect Qualified List - With No Tasks
+			var qualifiedLeadsListWithNoTasksSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_quali_list_no_task",
+			});
+
+			qualifiedLeadsListWithNoTasksSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				qualifiedLeadsListWithNoTasksSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var totalQualifiedLeadWithNoTasks = 0;
+
+			qualifiedLeadsListWithNoTasksSearch
+				.run()
+				.each(function (qualifiedLeadsListSearchResult) {
+					var custInternalID = qualifiedLeadsListSearchResult.getValue({
+						name: "internalid",
+						summary: "GROUP",
+					});
+					//NetSuite Search: Illicium Tasks - All
+					var illiciumAllTasksSearch = search.load({
+						type: "task",
+						id: "customsearch_illicium_tasks",
+					});
+					illiciumAllTasksSearch.filters.push(
+						search.createFilter({
+							name: "internalid",
+							join: "companyCustomer",
+							operator: search.Operator.IS,
+							values: custInternalID,
+						})
+					);
+
+					var illiciumAllTasksSearchCount =
+						illiciumAllTasksSearch.runPaged().count;
+
+					if (illiciumAllTasksSearchCount == 0) {
+						totalQualifiedLeadWithNoTasks++;
+					}
+					return true;
+				});
+
+			//Sales Reporting - Illicium Campaign - With Tasks
+			var illiciumTasksSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_leads_with_tasks",
+			});
+
+			illiciumTasksSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "TEST",
+					})
+				);
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+			if (!isNullorEmpty(sales_campaign)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+			if (!isNullorEmpty(parent_lpo)) {
+				illiciumTasksSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var countIlliciumTasks = 0;
+			var oldIlliciumDate = null;
+
+			var scheduledIlliciumTasks = 0;
+			var rescheduledIlliciumTasks = 0;
+			var completedIlliciumTasks = 0;
+			var totalIlliciumTasks = 0;
+
+			var totalCompletedTasks = 0;
+			var totalScheduledTasks = 0;
+			var totalRescheduledTasks = 0;
+
+			illiciumTasksSearch.run().each(function (illiciumTasksSearchResultSet) {
+				var tasksCount = parseInt(
+					illiciumTasksSearchResultSet.getValue({
+						name: "internalid",
+						join: "task",
+						summary: "COUNT",
+					})
+				);
+
+				var taskDate = illiciumTasksSearchResultSet.getValue({
+					name: "duedate",
+					join: "task",
+					summary: "GROUP",
+				});
+
+				var taskStatus = illiciumTasksSearchResultSet.getText({
+					name: "status",
+					join: "task",
+					summary: "GROUP",
+				});
+
+				var taskTitle = illiciumTasksSearchResultSet
+					.getValue({
+						name: "formulatext",
+						summary: "GROUP",
+						formula: "TRIM(REGEXP_SUBSTR({task.title},'^[^-]*'))",
+					})
+					.toString();
+
+				if (countIlliciumTasks == 0 || taskDate == oldIlliciumDate) {
+					if (taskTitle.replace(/\s+$/, "") == "Rescheduled Illicium Appointment") {
+						rescheduledIlliciumTasks = rescheduledIlliciumTasks + tasksCount;
+						totalRescheduledTasks = totalRescheduledTasks + tasksCount;
+					} else {
+						if (taskStatus == "Completed") {
+							completedIlliciumTasks = completedIlliciumTasks + tasksCount;
+							totalCompletedTasks = totalCompletedTasks + tasksCount;
+						} else if (taskStatus == "Not Started") {
+							scheduledIlliciumTasks = scheduledIlliciumTasks + tasksCount;
+							totalScheduledTasks = totalScheduledTasks + tasksCount;
+						}
+					}
+
+					totalIlliciumTasks = totalIlliciumTasks + tasksCount;
+				} else if (taskDate != oldIlliciumDate) {
+					var taskDueDate = convertToDateInputFormat(oldIlliciumDate);
+
+					illiciumTasksDataSet.push([
+						taskDueDate,
+						scheduledIlliciumTasks,
+						rescheduledIlliciumTasks,
+						completedIlliciumTasks,
+						totalIlliciumTasks,
+					]);
+
+					scheduledIlliciumTasks = 0;
+					rescheduledIlliciumTasks = 0;
+					completedIlliciumTasks = 0;
+					totalIlliciumTasks = 0;
+
+					if (taskTitle.replace(/\s+$/, "") == "Rescheduled Illicium Appointment") {
+						rescheduledIlliciumTasks = rescheduledIlliciumTasks + tasksCount;
+						totalRescheduledTasks = totalRescheduledTasks + tasksCount;
+					} else {
+						if (taskStatus == "Completed") {
+							completedIlliciumTasks = completedIlliciumTasks + tasksCount;
+							totalCompletedTasks = totalCompletedTasks + tasksCount;
+						} else if (taskStatus == "Not Started") {
+							scheduledIlliciumTasks = scheduledIlliciumTasks + tasksCount;
+							totalScheduledTasks = totalScheduledTasks + tasksCount;
+						}
+					}
+					totalIlliciumTasks = totalIlliciumTasks + tasksCount;
+				}
+
+				oldIlliciumDate = taskDate;
+				countIlliciumTasks++;
+				return true;
+			});
+
+			if (countIlliciumTasks > 0) {
+				var taskDueDate = convertToDateInputFormat(oldIlliciumDate);
+
+				illiciumTasksDataSet.push([
+					taskDueDate,
+					scheduledIlliciumTasks,
+					rescheduledIlliciumTasks,
+					completedIlliciumTasks,
+					totalIlliciumTasks,
+				]);
+			}
+
+			console.log("illiciumTasksDataSet" + illiciumTasksDataSet);
+
+			var dataTable3 = $("#mpexusage-illiciumtasks").DataTable({
+				data: illiciumTasksDataSet,
+				pageLength: 250,
+				order: [],
+				layout: {
+					topStart: {
+						buttons: [
+							{
+								extend: "copy",
+								text: "Copy",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "csv",
+								text: "CSV",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "excel",
+								text: "Excel",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "pdf",
+								text: "PDF",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "print",
+								text: "Print",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+						],
+					},
+				},
+				columns: [
+					{ title: "Task Date (Week Starting)" },
+					{ title: "Scheduled Tasks" },
+					{ title: "Rescheduled Tasks" },
+					{ title: "Completed Tasks" },
+					{ title: "Total Tasks" },
+				],
+				autoWidth: true,
+				columnDefs: [
+					{
+						targets: [0, 4],
+						className: "bolded",
+					},
+				],
+				rowCallback: function (row, data, index) {
+					var row_color = "";
+					if (parseInt(data[1]) > 0) {
+						$(row).find("td:eq(1)").css("background-color", "#f9c67a");
+					}
+					if (parseInt(data[3]) > 0) {
+						$(row).find("td:eq(3)").css("background-color", "#439A97");
+					}
+				},
+				footerCallback: function (row, data, start, end, display) {
+					var api = this.api(),
+						data;
+
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return parseInt(i);
+					};
+
+					// Total Customer Free Trial Pending
+					total_scheduled = api
+						.column(1)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial
+					total_rescheduled = api
+						.column(2)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_completed = api
+						.column(3)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_total = api
+						.column(4)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					$(api.column(1).footer()).html(total_scheduled);
+					$(api.column(2).footer()).html(total_rescheduled);
+					$(api.column(3).footer()).html(total_completed);
+					$(api.column(4).footer()).html(total_total);
+				},
+			});
+
+			// Create the pie chart for Call Force Tasks & Leads
+			Highcharts.chart("container-illicium_progress", {
+				chart: {
+					type: "pie",
+					backgroundColor: "#CFE0CE",
+				},
+				title: {
+					text: "",
+				},
+				accessibility: {
+					announceNewData: {
+						enabled: true,
+					},
+					point: {
+						valueSuffix: "",
+					},
+				},
+
+				plotOptions: {
+					pie: {
+						allowPointSelect: true,
+						borderWidth: 2,
+						cursor: "pointer",
+						dataLabels: {
+							enabled: true,
+							format: "<b>{point.name}</b><br>{point.y:.0f}",
+							distance: 20,
+							style: {
+								textOutline: "none",
+								opacity: 0.7,
+							},
+						},
+					},
+				},
+				tooltip: {
+					headerFormat: "",
+					pointFormat:
+						'<span style="color:{point.color}">\u25cf</span> ' +
+						"{point.name}: <b>{point.y:.0f}</b>",
+				},
+				series: [
+					{
+						name: "Leads",
+						colorByPoint: true,
+						animation: {
+							duration: 2000,
+						},
+						data: [
+							{
+								name: "Qualified Leads - Completed Appointment",
+								y: totalCompletedTasks,
+								sliced: true,
+								selected: true,
+								color: "#5cb3b0",
+							},
+							{
+								name: "Unqualified Leads - Sent to Call Force",
+								y: callForceLeadsListCount,
+								sliced: false,
+								color: "#7FCAFFFF",
+							},
+							{
+								name: "Qualified Leads - Scheduled Appointment",
+								y: totalScheduledTasks,
+								sliced: false,
+								color: "#FEBE8C",
+							},
+							{
+								name: "Qualified Leads - No Appointment",
+								y: totalQualifiedLeadWithNoTasks,
+								sliced: false,
+								color: "#F5F0F0FF",
+							},
+						],
+					},
+				],
+			});
+
+			//Illicium Campaign - Count by Date Synced and Outcome
+			var illiciumLeadsCountBydateSyncedOutcomeSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_count_sync_outcome",
+			});
+
+			illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				// illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "companyname",
+				// 		join: null,
+				// 		operator: search.Operator.DOESNOTSTARTWITH,
+				// 		values: "TEST",
+				// 	})
+				// );
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(parent_lpo)) {
+				illiciumLeadsCountBydateSyncedOutcomeSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			var oldIlliciumSyncDate = null;
+			var countIlliciumSyncDateCount = 0;
+
+			var total_no_outcome = 0;
+			var total_not_interested = 0;
+			var total_no_answer = 0;
+			var total_voicemail = 0;
+			var total_wrong_number = 0;
+			var total_disconnected = 0;
+			var total_remove_from_list = 0;
+			var total_busy = 0;
+			var total_callback = 0;
+			var total_email_interested = 0;
+			var total_email_brush_off = 0;
+			var total_interested = 0;
+			var total_leads = 0;
+
+			illiciumLeadsCountBydateSyncedOutcomeSearch
+				.run()
+				.each(function (illiciumLeadsCountBydateSyncedOutcomeSearchResultSet) {
+					var illiciumLeadCount = parseInt(
+						illiciumLeadsCountBydateSyncedOutcomeSearchResultSet.getValue({
+							name: "internalid",
+							summary: "COUNT",
+						})
+					);
+
+					var illiciumSyncDate =
+						illiciumLeadsCountBydateSyncedOutcomeSearchResultSet.getValue({
+							name: "custrecord_cf_date_sent",
+							join: "CUSTRECORD_SALES_CUSTOMER",
+							summary: "GROUP",
+						});
+
+					var illiciumSyncDateSplit = illiciumSyncDate.split("/");
+					illiciumSyncDate =
+						illiciumSyncDateSplit[2] +
+						"-" +
+						illiciumSyncDateSplit[1] +
+						"-" +
+						illiciumSyncDateSplit[0];
+
+					var illiciumOutcome = illiciumLeadsCountBydateSyncedOutcomeSearchResultSet
+						.getValue({
+							name: "custrecord_cf_call_outcome",
+							join: "CUSTRECORD_SALES_CUSTOMER",
+							summary: "GROUP",
+						})
+						.toLowerCase();
+
+					console.log("illiciumSyncDate: " + illiciumSyncDate);
+					console.log("illiciumOutcome: " + illiciumOutcome);
+					console.log("illiciumLeadCount: " + illiciumLeadCount);
+
+					if (
+						countIlliciumSyncDateCount != 0 &&
+						illiciumSyncDate != oldIlliciumSyncDate
+					) {
+						var totalNoOutcomePercentage = parseInt(
+							(total_no_outcome / total_leads) * 100
+						);
+						var totalNoOutcomeCol =
+							total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+						var totalNotInterestedPercentage = parseInt(
+							(total_not_interested / total_leads) * 100
+						);
+						var totalNotInterestedCol =
+							total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+						var totalNoAnswerPercentage = parseInt(
+							(total_no_answer / total_leads) * 100
+						);
+						var totalNoAnswerCol =
+							total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+						var totalVoicemailPercentage = parseInt(
+							(total_voicemail / total_leads) * 100
+						);
+						var totalVoicemailCol =
+							total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+						var totalWrongNumberPercentage = parseInt(
+							(total_wrong_number / total_leads) * 100
+						);
+						var totalWrongNumberCol =
+							total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+						var totalDisconnectedPercentage = parseInt(
+							(total_disconnected / total_leads) * 100
+						);
+						var totalDisconnectedCol =
+							total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+						var totalRemoveFromListPercentage = parseInt(
+							(total_remove_from_list / total_leads) * 100
+						);
+						var totalRemoveFromListCol =
+							total_remove_from_list +
+							" (" +
+							totalRemoveFromListPercentage +
+							"%)";
+
+						var totalBusyPercentage = parseInt(
+							(total_busy / total_leads) * 100
+						);
+						var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+						var totalCallBackPercentage = parseInt(
+							(total_callback / total_leads) * 100
+						);
+						var totalCallBackCol =
+							total_callback + " (" + totalCallBackPercentage + "%)";
+
+						var totalEmailInterestedPercentage = parseInt(
+							(total_email_interested / total_leads) * 100
+						);
+						var totalEmailInterestedCol =
+							total_email_interested +
+							" (" +
+							totalEmailInterestedPercentage +
+							"%)";
+
+						var totalEmailBrushOffPercentage = parseInt(
+							(total_email_brush_off / total_leads) * 100
+						);
+						var totalEmailBrushOffCol =
+							total_email_brush_off +
+							" (" +
+							totalEmailBrushOffPercentage +
+							"%)";
+
+						var totalInterestedPercentage = parseInt(
+							(total_interested / total_leads) * 100
+						);
+						var totalInterestedCol =
+							total_interested + " (" + totalInterestedPercentage + "%)";
+
+						illiciumDateSyncedOutcomeDataSet.push([
+							oldIlliciumSyncDate,
+							totalNoOutcomeCol,
+							totalNotInterestedCol,
+							totalNoAnswerCol,
+							totalVoicemailCol,
+							totalWrongNumberCol,
+							totalDisconnectedCol,
+							totalRemoveFromListCol,
+							totalBusyCol,
+							totalCallBackCol,
+							totalEmailInterestedCol,
+							totalEmailBrushOffCol,
+							totalInterestedCol,
+							total_leads,
+						]);
+
+						total_no_outcome = 0;
+						total_not_interested = 0;
+						total_no_answer = 0;
+						total_voicemail = 0;
+						total_wrong_number = 0;
+						total_disconnected = 0;
+						total_remove_from_list = 0;
+						total_busy = 0;
+						total_callback = 0;
+						total_email_interested = 0;
+						total_email_brush_off = 0;
+						total_interested = 0;
+						total_leads = 0;
+					}
+
+					if (illiciumOutcome == "not_interested") {
+						total_not_interested += illiciumLeadCount;
+					} else if (illiciumOutcome == "no_answer") {
+						total_no_answer += illiciumLeadCount;
+					} else if (illiciumOutcome == "voicemail") {
+						total_voicemail += illiciumLeadCount;
+					} else if (illiciumOutcome == "wrong_number") {
+						total_wrong_number += illiciumLeadCount;
+					} else if (illiciumOutcome == "disconnected") {
+						total_disconnected += illiciumLeadCount;
+					} else if (illiciumOutcome == "remove_from_list") {
+						total_remove_from_list += illiciumLeadCount;
+					} else if (illiciumOutcome == "busy") {
+						total_busy += illiciumLeadCount;
+					} else if (illiciumOutcome == "callback") {
+						total_callback += illiciumLeadCount;
+					} else if (illiciumOutcome == "email_interested") {
+						total_email_interested += illiciumLeadCount;
+					} else if (illiciumOutcome == "email_brush_off") {
+						total_email_brush_off += illiciumLeadCount;
+					} else if (illiciumOutcome == "interested") {
+						total_interested += illiciumLeadCount;
+					} else {
+						total_no_outcome += illiciumLeadCount;
+					}
+
+					total_leads += illiciumLeadCount;
+
+					oldIlliciumSyncDate = illiciumSyncDate;
+					countIlliciumSyncDateCount++;
+					return true;
+				});
+
+			console.log(
+				"countIlliciumSyncDateCount: " + countIlliciumSyncDateCount
+			);
+			if (countIlliciumSyncDateCount > 0) {
+				var totalNoOutcomePercentage = parseInt(
+					(total_no_outcome / total_leads) * 100
+				).toFixed(0);
+				var totalNoOutcomeCol =
+					total_no_outcome + " (" + totalNoOutcomePercentage + "%)";
+
+				var totalNotInterestedPercentage = parseInt(
+					(total_not_interested / total_leads) * 100
+				).toFixed(0);
+				var totalNotInterestedCol =
+					total_not_interested + " (" + totalNotInterestedPercentage + "%)";
+
+				var totalNoAnswerPercentage = parseInt(
+					(total_no_answer / total_leads) * 100
+				).toFixed(0);
+				var totalNoAnswerCol =
+					total_no_answer + " (" + totalNoAnswerPercentage + "%)";
+
+				var totalVoicemailPercentage = parseInt(
+					(total_voicemail / total_leads) * 100
+				).toFixed(0);
+				var totalVoicemailCol =
+					total_voicemail + " (" + totalVoicemailPercentage + "%)";
+
+				var totalWrongNumberPercentage = parseInt(
+					(total_wrong_number / total_leads) * 100
+				).toFixed(0);
+				var totalWrongNumberCol =
+					total_wrong_number + " (" + totalWrongNumberPercentage + "%)";
+
+				var totalDisconnectedPercentage = parseInt(
+					(total_disconnected / total_leads) * 100
+				).toFixed(0);
+				var totalDisconnectedCol =
+					total_disconnected + " (" + totalDisconnectedPercentage + "%)";
+
+				var totalRemoveFromListPercentage = parseInt(
+					(total_remove_from_list / total_leads) * 100
+				).toFixed(0);
+				var totalRemoveFromListCol =
+					total_remove_from_list + " (" + totalRemoveFromListPercentage + "%)";
+
+				var totalBusyPercentage = parseInt(
+					(total_busy / total_leads) * 100
+				).toFixed(0);
+				var totalBusyCol = total_busy + " (" + totalBusyPercentage + "%)";
+
+				var totalCallBackPercentage = parseInt(
+					(total_callback / total_leads) * 100
+				).toFixed(0);
+				var totalCallBackCol =
+					total_callback + " (" + totalCallBackPercentage + "%)";
+
+				var totalEmailInterestedPercentage = parseInt(
+					(total_email_interested / total_leads) * 100
+				).toFixed(0);
+				var totalEmailInterestedCol =
+					total_email_interested + " (" + totalEmailInterestedPercentage + "%)";
+
+				var totalEmailBrushOffPercentage = parseInt(
+					(total_email_brush_off / total_leads) * 100
+				).toFixed(0);
+				var totalEmailBrushOffCol =
+					total_email_brush_off + " (" + totalEmailBrushOffPercentage + "%)";
+
+				var totalInterestedPercentage = parseInt(
+					(total_interested / total_leads) * 100
+				).toFixed(0);
+				var totalInterestedCol =
+					total_interested + " (" + totalInterestedPercentage + "%)";
+
+				illiciumDateSyncedOutcomeDataSet.push([
+					oldIlliciumSyncDate,
+					totalNoOutcomeCol,
+					totalNotInterestedCol,
+					totalNoAnswerCol,
+					totalVoicemailCol,
+					totalWrongNumberCol,
+					totalDisconnectedCol,
+					totalRemoveFromListCol,
+					totalBusyCol,
+					totalCallBackCol,
+					totalEmailInterestedCol,
+					totalEmailBrushOffCol,
+					totalInterestedCol,
+					total_leads,
+				]);
+			}
+
+			console.log(
+				"illiciumDateSyncedOutcomeDataSet" + illiciumDateSyncedOutcomeDataSet
+			);
+
+			var dataTableIlliciumDateSyncedOutcome = $(
+				"#mpexusage-illiciumDateSyncedOutcome"
+			).DataTable({
+				data: illiciumDateSyncedOutcomeDataSet,
+				pageLength: 250,
+				order: [],
+				responsive: true,
+				layout: {
+					topStart: {
+						buttons: [
+							{
+								extend: "copy",
+								text: "Copy",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "csv",
+								text: "CSV",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "excel",
+								text: "Excel",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "pdf",
+								text: "PDF",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "print",
+								text: "Print",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+						],
+					},
+				},
+				columns: [
+					{ title: "Period" }, //0
+					{ title: "No Outcome" }, //1
+					{ title: "Not Interested" }, //2
+					{ title: "No Answer" }, //3
+					{ title: "Voicemail" }, //4
+					{ title: "Wrong Number" }, //5
+					{ title: "Disconnected" }, //6
+					{ title: "Remove From List" }, //7
+					{ title: "Busy" }, //8
+					{ title: "Call Back" }, //9
+					{ title: "Email Interested" }, //10
+					{ title: "Email Brush Off" }, //11
+					{ title: "Interested" }, //12
+					{ title: "Total" }, //13
+				],
+				autoWidth: true,
+				columnDefs: [
+					{
+						targets: [0, 10, 11, 12],
+						className: "bolded",
+					},
+				],
+				rowCallback: function (row, data, index) {
+					var row_color = ""
+					$(row).find("td:eq(10)").css("background-color", "#b1ecc7");
+					$(row).find("td:eq(11)").css("background-color", "#f9c67a");
+					$(row).find("td:eq(12)").css("background-color", "#439A97");
+
+				},
+				footerCallback: function (row, data, start, end, display) {
+					var api = this.api(),
+						data;
+
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return parseInt(i);
+					};
+
+					// Total Customer Free Trial Pending
+					total_no_outcome = api
+						.column(1)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_not_interested = api
+						.column(2)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial
+					total_no_answer = api
+						.column(3)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_voicemail = api
+						.column(4)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_wrong_number = api
+						.column(5)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_disconnected = api
+						.column(6)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_remove_from_list = api
+						.column(7)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_busy = api
+						.column(8)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_callback = api
+						.column(9)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_email_interested = api
+						.column(10)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_email_brush_off = api
+						.column(11)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_interested = api
+						.column(12)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+					total_leads = api
+						.column(13)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					$(api.column(1).footer()).html(
+						total_no_outcome +
+						" (" +
+						((total_no_outcome / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(2).footer()).html(
+						total_not_interested +
+						" (" +
+						((total_not_interested / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(3).footer()).html(
+						total_no_answer +
+						" (" +
+						((total_no_answer / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(4).footer()).html(
+						total_voicemail +
+						" (" +
+						((total_voicemail / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(5).footer()).html(
+						total_wrong_number +
+						" (" +
+						((total_wrong_number / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(6).footer()).html(
+						total_disconnected +
+						" (" +
+						((total_disconnected / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(7).footer()).html(
+						total_remove_from_list +
+						" (" +
+						((total_remove_from_list / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(8).footer()).html(
+						total_busy +
+						" (" +
+						((total_busy / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(9).footer()).html(
+						total_callback +
+						" (" +
+						((total_callback / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(10).footer()).html(
+						total_email_interested +
+						" (" +
+						((total_email_interested / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(11).footer()).html(
+						total_email_brush_off +
+						" (" +
+						((total_email_brush_off / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(12).footer()).html(
+						total_interested +
+						" (" +
+						((total_interested / total_leads) * 100).toFixed(0) +
+						"%)"
+					);
+
+					// $(api.column(1).footer()).html(total_no_outcome);
+					// $(api.column(2).footer()).html(total_not_interested);
+					// $(api.column(3).footer()).html(total_no_answer);
+					// $(api.column(4).footer()).html(total_voicemail);
+					// $(api.column(5).footer()).html(total_wrong_number);
+					// $(api.column(6).footer()).html(total_disconnected);
+					// $(api.column(7).footer()).html(total_remove_from_list);
+					// $(api.column(8).footer()).html(total_busy);
+					// $(api.column(9).footer()).html(total_callback);
+					// $(api.column(10).footer()).html(total_email_interested);
+					// $(api.column(11).footer()).html(total_email_brush_off);
+					// $(api.column(12).footer()).html(total_interested);
+					$(api.column(13).footer()).html(total_leads);
+				},
+			});
+
+			//Illicium Campaign - Count by Outcome & Lead Status
+			var illiciumLeadsCountByOutcomeStatusSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_count_outcome_stat",
+			});
+
+			illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				// callForceLeadsCountByOutcomeStatusSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "companyname",
+				// 		join: null,
+				// 		operator: search.Operator.DOESNOTSTARTWITH,
+				// 		values: "TEST",
+				// 	})
+				// );
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				callForceLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(parent_lpo)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				illiciumLeadsCountByOutcomeStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+
+			var oldIlliciumOutcome = null;
+			var countIlliciumSyncOutcomeCount = 0;
+
+			var customer_signed = 0;
+			var customer_shipmate_pending = 0;
+			var suspect_hot_lead = 0;
+			var suspect_reassign = 0;
+			var suspect_lost = 0;
+			var suspect_customer_lost = 0;
+			var suspect_off_peak_pipeline = 0;
+			var prospect_opportunity = 0;
+			var prospecy_quote_sent = 0;
+			var prospecy_box_sent = 0;
+			var prospect_no_answer = 0;
+			var prospect_in_contact = 0;
+			var suspect_oot = 0;
+			var suspect_pre_qualification = 0;
+			var suspect_new = 0;
+			var suspect_qualified = 0;
+			var suspect_pre_qualification = 0;
+			var suspect_in_qualification = 0;
+			var suspect_unqualified = 0;
+			var suspect_in_qualification = 0;
+			var total_leads = 0;
+			var prospect_qualified = 0;
+
+			var suspect_validated = 0;
+			var suspect_zee_review = 0;
+			var suspect_zee_rejected = 0;
+			var customer_free_trial = 0;
+			var customer_free_trial_pending = 0;
+			var suspect_no_answer = 0;
+			var suspect_in_contact = 0;
+
+			illiciumLeadsCountByOutcomeStatusSearch
+				.run()
+				.each(function (illiciumLeadsCountByOutcomeStatusSearchResultSet) {
+					var prospectCount = parseInt(
+						illiciumLeadsCountByOutcomeStatusSearchResultSet.getValue({
+							name: "internalid",
+							summary: "COUNT",
+						})
+					);
+
+					var custStatus = illiciumLeadsCountByOutcomeStatusSearchResultSet.getValue(
+						{
+							name: "entitystatus",
+							summary: "GROUP",
+						}
+					);
+
+					var illiciumOutcome =
+						illiciumLeadsCountByOutcomeStatusSearchResultSet.getValue({
+							name: "custrecord_cf_call_outcome",
+							join: "CUSTRECORD_SALES_CUSTOMER",
+							summary: "GROUP",
+						});
+
+					console.log("prospectCount: " + prospectCount);
+					console.log("custStatus: " + custStatus);
+					console.log("illiciumOutcome: " + illiciumOutcome);
+
+					if (
+						countIlliciumSyncOutcomeCount != 0 &&
+						illiciumOutcome != oldIlliciumOutcome
+					) {
+						illiciumOutcomeStatusDataSet.push({
+							callOutcome: oldIlliciumOutcome,
+							suspect_hot_lead: suspect_hot_lead,
+							prospecy_quote_sent: prospecy_quote_sent,
+							suspect_reassign: suspect_reassign,
+							prospect_no_answer: prospect_no_answer,
+							prospect_in_contact: prospect_in_contact,
+							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+							suspect_lost: suspect_lost,
+							suspect_customer_lost: suspect_customer_lost,
+							prospect_opportunity: prospect_opportunity,
+							customer_signed: customer_signed,
+							total_leads: total_leads,
+							suspect_oot: suspect_oot,
+							suspect_pre_qualification: suspect_pre_qualification,
+							suspect_new: suspect_new,
+							suspect_qualified: suspect_qualified,
+							suspect_unqualified: suspect_unqualified,
+							suspect_in_qualification: suspect_in_qualification,
+							suspect_validated: suspect_validated,
+							suspect_zee_review: suspect_zee_review,
+							suspect_zee_rejected: suspect_zee_rejected,
+							customer_free_trial: customer_free_trial,
+							suspect_no_answer: suspect_no_answer,
+							suspect_in_contact: suspect_in_contact,
+							prospect_qualified: prospect_qualified,
+							customer_free_trial_pending: customer_free_trial_pending,
+							customer_shipmate_pending: customer_shipmate_pending,
+							prospect_box_sent: prospecy_box_sent,
+						});
+
+						customer_signed = 0;
+						suspect_hot_lead = 0;
+						suspect_reassign = 0;
+						suspect_lost = 0;
+						suspect_customer_lost = 0;
+						suspect_off_peak_pipeline = 0;
+						prospect_opportunity = 0;
+						prospecy_quote_sent = 0;
+						prospecy_box_sent = 0;
+						prospect_no_answer = 0;
+						prospect_in_contact = 0;
+						suspect_oot = 0;
+						suspect_pre_qualification = 0;
+						suspect_new = 0;
+						suspect_qualified = 0;
+						suspect_pre_qualification = 0;
+						suspect_in_qualification = 0;
+						suspect_unqualified = 0;
+						suspect_in_qualification = 0;
+						total_leads = 0;
+						prospect_qualified = 0;
+						customer_shipmate_pending = 0;
+
+						suspect_validated = 0;
+						suspect_zee_review = 0;
+						suspect_zee_rejected = 0
+						customer_free_trial = 0;
+						customer_free_trial_pending = 0;
+						suspect_no_answer = 0;
+						suspect_in_contact = 0;
+					}
+
+					if (custStatus == 13 || custStatus == 66) {
+						//CUSTOMER _ SIGNED
+						customer_signed = prospectCount;
+					} else if (custStatus == 57) {
+						//SUSPECT - HOT LEAD
+						suspect_hot_lead = prospectCount;
+					} else if (custStatus == 59) {
+						//SUSPECT - LOST
+						suspect_lost = prospectCount;
+					} else if (custStatus == 64) {
+						//SUSPECT - OUT OF TERRITORY
+						suspect_oot = parseInt(prospectCount);
+					} else if (custStatus == 22) {
+						//SUSPECT - CUSTOMER - LOST
+						suspect_customer_lost = prospectCount;
+					} else if (custStatus == 60 || custStatus == 40) {
+						//SUSPECT - REP REASSIGN
+						suspect_reassign = prospectCount;
+					} else if (custStatus == 50) {
+						//PROSPECT - QUOTE SENT
+						prospecy_quote_sent = prospectCount;
+					} else if (custStatus == 72) {
+						//PROSPECT - Box SENT
+						prospecy_box_sent = parseInt(prospectCount);
+					} else if (custStatus == 35) {
+						//PROSPECT - NO ANSWER
+						prospect_no_answer = prospectCount;
+					} else if (custStatus == 8) {
+						//PROSPECT - IN CONTACT
+						prospect_in_contact = prospectCount;
+					} else if (custStatus == 62) {
+						//SUSPECT - OFF PEAK PIPELINE
+						suspect_off_peak_pipeline = prospectCount;
+					} else if (custStatus == 58) {
+						//PROSPECT - OPPORTUNITY
+						prospect_opportunity = parseInt(prospectCount);
+					} else if (custStatus == 34) {
+						//SUSPECT - PRE QUALIFICATION
+						suspect_pre_qualification = parseInt(prospectCount);
+					} else if (custStatus == 6) {
+						//SUSPECT - NEW
+						suspect_new = parseInt(prospectCount);
+					} else if (custStatus == 42) {
+						//SUSPECT - QUALIFIED
+						suspect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 38) {
+						//SUSPECT - UNQUALIFIED
+						suspect_unqualified = parseInt(prospectCount);
+					} else if (custStatus == 30) {
+						//SUSPECT - IN QUALIFICATION
+						suspect_in_qualification = parseInt(prospectCount);
+					} else if (custStatus == 68) {
+						//SUSPECT - VALIDATED
+						suspect_validated = parseInt(prospectCount);
+					} else if (custStatus == 32) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial = parseInt(prospectCount);
+					} else if (custStatus == 71) {
+						//CUSTOMER - FREE TRIAL PENDING
+						customer_free_trial_pending = parseInt(prospectCount);
+					} else if (custStatus == 20) {
+						//SUSPECT - NO ANSWER
+						suspect_no_answer = parseInt(prospectCount);
+					} else if (custStatus == 69) {
+						//SUSPECT - IN CONTACT
+						suspect_in_contact = parseInt(prospectCount);
+					} else if (custStatus == 70) {
+						//PROSPECT - QUALIFIED
+						prospect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 73) {
+						//CUSTOMER - SHIPMATE PENDING
+						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
+					} else if (custStatus == 7) {
+						//SUSPECT - REJECTED
+						suspect_zee_rejected = parseInt(prospectCount);
+					}
+
+					total_leads =
+						customer_signed +
+						suspect_hot_lead +
+						suspect_lost +
+						suspect_customer_lost +
+						suspect_reassign +
+						prospecy_quote_sent +
+						prospect_no_answer +
+						prospect_in_contact +
+						suspect_off_peak_pipeline +
+						prospect_opportunity +
+						suspect_oot +
+						suspect_pre_qualification +
+						suspect_new +
+						suspect_qualified +
+						suspect_in_qualification +
+						suspect_validated +
+						customer_free_trial +
+						suspect_no_answer +
+						suspect_in_contact +
+						prospect_qualified +
+						customer_free_trial_pending +
+						suspect_unqualified +
+						prospecy_box_sent + customer_shipmate_pending + suspect_zee_review + suspect_zee_rejected;
+
+					oldIlliciumOutcome = illiciumOutcome;
+					countIlliciumSyncOutcomeCount++;
+					return true;
+				});
+
+			console.log(
+				"countIlliciumSyncOutcomeCount: " + countIlliciumSyncOutcomeCount
+			);
+			if (countIlliciumSyncOutcomeCount > 0) {
+				illiciumOutcomeStatusDataSet.push({
+					callOutcome: oldIlliciumOutcome,
+					suspect_hot_lead: suspect_hot_lead,
+					prospecy_quote_sent: prospecy_quote_sent,
+					suspect_reassign: suspect_reassign,
+					prospect_no_answer: prospect_no_answer,
+					prospect_in_contact: prospect_in_contact,
+					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+					suspect_lost: suspect_lost,
+					suspect_customer_lost: suspect_customer_lost,
+					prospect_opportunity: prospect_opportunity,
+					customer_signed: customer_signed,
+					total_leads: total_leads,
+					suspect_oot: suspect_oot,
+					suspect_pre_qualification: suspect_pre_qualification,
+					suspect_new: suspect_new,
+					suspect_qualified: suspect_qualified,
+					suspect_unqualified: suspect_unqualified,
+					suspect_in_qualification: suspect_in_qualification,
+					suspect_validated: suspect_validated,
+					suspect_zee_review: suspect_zee_review,
+					suspect_zee_rejected: suspect_zee_rejected,
+					customer_free_trial: customer_free_trial,
+					suspect_no_answer: suspect_no_answer,
+					suspect_in_contact: suspect_in_contact,
+					prospect_qualified: prospect_qualified,
+					customer_free_trial_pending: customer_free_trial_pending,
+					customer_shipmate_pending: customer_shipmate_pending,
+					prospect_box_sent: prospecy_box_sent,
+				});
+			}
+
+			console.log(
+				"illiciumOutcomeStatusDataSet" + illiciumOutcomeStatusDataSet
+			);
+
+			outcomeStatusDataSet = [];
+			if (!isNullorEmpty(illiciumOutcomeStatusDataSet)) {
+				illiciumOutcomeStatusDataSet.forEach(function (preview_row, index) {
+					var hotLeadPercentage = parseInt(
+						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+					);
+					var hotLeadCol =
+						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+					var quoteSentPercentage = parseInt(
+						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+					);
+					var quoteSentCol =
+						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+					var boxSentPercentage = parseInt(
+						(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+					);
+					var boxSentCol =
+						preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+					var reassignPercentage = parseInt(
+						(preview_row.suspect_reassign / preview_row.total_leads) * 100
+					);
+					var reassignCol =
+						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+					var noAnswerPercentage = parseInt(
+						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+					);
+					var noAnswerCol =
+						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+					var inContactPercentage = parseInt(
+						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+					);
+					var inContactCol =
+						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+					var offPeakPercentage = parseInt(
+						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+						100
+					);
+					var offPeakCol =
+						preview_row.suspect_off_peak_pipeline +
+						" (" +
+						offPeakPercentage +
+						"%)";
+
+					var lostPercentage = parseInt(
+						(preview_row.suspect_lost / preview_row.total_leads) * 100
+					);
+					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+					var ootPercentage = parseInt(
+						(preview_row.suspect_oot / preview_row.total_leads) * 100
+					);
+					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+					var custLostPercentage = parseInt(
+						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+					);
+					var custLostCol =
+						preview_row.suspect_customer_lost +
+						" (" +
+						custLostPercentage +
+						"%)";
+
+					var oppPercentage = parseInt(
+						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+					);
+					var oppCol =
+						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+					var signedPercentage = parseInt(
+						(preview_row.customer_signed / preview_row.total_leads) * 100
+					);
+					var signedCol =
+						preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+					var suspectPreQualificationPercentage = parseInt(
+						(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+						100
+					);
+					var preQualiCol =
+						preview_row.suspect_pre_qualification +
+						" (" +
+						suspectPreQualificationPercentage +
+						"%)";
+
+					var suspectNewPercentage = parseInt(
+						(preview_row.suspect_new / preview_row.total_leads) * 100
+					);
+					var suspectNewCol =
+						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+					var suspectQualifiedPercentage = parseInt(
+						(preview_row.suspect_qualified / preview_row.total_leads) * 100
+					);
+					var suspectQualifiedCol =
+						preview_row.suspect_qualified +
+						" (" +
+						suspectQualifiedPercentage +
+						"%)";
+
+					var suspectUnqualifiedPercentage = parseInt(
+						(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+					);
+					var suspectUnqualifiedCol =
+						preview_row.suspect_unqualified +
+						" (" +
+						suspectUnqualifiedPercentage +
+						"%)";
+
+					var suspectInQualificationPercentage = parseInt(
+						(preview_row.suspect_in_qualification / preview_row.total_leads) *
+						100
+					);
+					var inQualiCol =
+						preview_row.suspect_in_qualification +
+						" (" +
+						suspectInQualificationPercentage +
+						"%)";
+
+					var suspectValidatedPercentage = parseInt(
+						(preview_row.suspect_validated / preview_row.total_leads) * 100
+					);
+					var suspectValidatedCol =
+						preview_row.suspect_validated +
+						" (" +
+						suspectValidatedPercentage +
+						"%)";
+
+					var customerFreeTrialPercentage = parseInt(
+						(preview_row.customer_free_trial / preview_row.total_leads) * 100
+					);
+					var customerFreeTrialCol =
+						preview_row.customer_free_trial +
+						" (" +
+						customerFreeTrialPercentage +
+						"%)";
+
+					var customerShipMatePendingPercentage = parseInt(
+						(preview_row.customer_shipmate_pending / preview_row.total_leads) * 100
+					);
+					var customerShipMatePendingCol =
+						preview_row.customer_shipmate_pending +
+						" (" +
+						customerShipMatePendingPercentage +
+						"%)";
+
+					var customerFreeTrialPendingPercentage = parseInt(
+						(preview_row.customer_free_trial_pending /
+							preview_row.total_leads) *
+						100
+					);
+					var customerFreeTrialPendingCol =
+						preview_row.customer_free_trial_pending +
+						" (" +
+						customerFreeTrialPendingPercentage +
+						"%)";
+
+					var suspectNoAnswerPercentage = parseInt(
+						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+					);
+					var suspectNoAnswerCol =
+						preview_row.suspect_no_answer +
+						" (" +
+						suspectNoAnswerPercentage +
+						"%)";
+
+					var suspectInContactPercentage = parseInt(
+						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+					);
+					var suspectInContactCol =
+						preview_row.suspect_in_contact +
+						" (" +
+						suspectInContactPercentage +
+						"%)";
+
+					var prospectQualifiedPercentage = parseInt(
+						(preview_row.prospect_qualified / preview_row.total_leads) * 100
+					);
+					var prospectQualifiedCol =
+						preview_row.prospect_qualified +
+						" (" +
+						prospectQualifiedPercentage +
+						"%)";
+
+					var suspectZeeReviewPercentage = parseInt(
+						(preview_row.suspect_zee_review / preview_row.total_leads) * 100
+					);
+					var suspectZeeReviewCol =
+						preview_row.suspect_zee_review +
+						" (" +
+						suspectZeeReviewPercentage +
+						"%)";
+
+					var suspectZeeRejectedPercentage = parseInt(
+						(preview_row.suspect_zee_rejected / preview_row.total_leads) * 100
+					);
+					var suspectZeeRejectedCol =
+						preview_row.suspect_zee_rejected +
+						" (" +
+						suspectZeeRejectedPercentage +
+						"%)";
+
+					outcomeStatusDataSet.push([
+						preview_row.callOutcome,
+						suspectNewCol,
+						hotLeadCol,
+						suspectZeeReviewCol,
+						suspectZeeRejectedCol,
+						suspectValidatedCol,
+						suspectUnqualifiedCol,
+						suspectQualifiedCol,
+						preQualiCol,
+						inQualiCol,
+						reassignCol,
+						suspectNoAnswerCol,
+						suspectInContactCol,
+						inContactCol,
+						offPeakCol,
+						lostCol,
+						ootCol,
+						custLostCol,
+						oppCol,
+						prospectQualifiedCol,
+						boxSentCol,
+						quoteSentCol,
+						customerFreeTrialPendingCol,
+						customerFreeTrialCol,
+						customerShipMatePendingCol,
+						signedCol,
+						preview_row.total_leads,
+					]);
+				});
+			}
+
+			var dataTableIlliciumDateSyncedOutcome = $(
+				"#mpexusage-illiciumOutcomeStatus"
+			).DataTable({
+				data: outcomeStatusDataSet,
+				pageLength: 250,
+				order: [25, "desc"],
+				responsive: true,
+				layout: {
+					topStart: {
+						buttons: [
+							{
+								extend: "copy",
+								text: "Copy",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "csv",
+								text: "CSV",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "excel",
+								text: "Excel",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "pdf",
+								text: "PDF",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+							{
+								extend: "print",
+								text: "Print",
+								className: "btn btn-default exportButtons",
+								exportOptions: {
+									columns: ":not(.notexport)",
+								},
+							},
+						],
+					},
+				},
+				columns: [
+					{
+						title: "Outcome", //0
+					},
+					{
+						title: "Suspect - New", //1
+					},
+					{
+						title: "Suspect - Hot Lead", //2
+					},
+					{
+						title: "Suspect - Franchisee Review", //3
+					},
+					{
+						title: "Suspect - Rejected", //4
+					},
+					{
+						title: "Suspect - Validated", //5
+					},
+					{
+						title: "Suspect - Unqualified", //6
+					},
+					{
+						title: "Suspect - Qualified", //7
+					},
+					{
+						title: "Suspect - Pre Qualification", //8
+					},
+					{
+						title: "Suspect - In Qualification", //9
+					},
+					{
+						title: "Suspect - Reassign", //10
+					},
+					{
+						title: "Suspect - No Answer", //11
+					},
+					{
+						title: "Suspect - In Contact", //12
+					},
+					{
+						title: "Prospect - In Contact", //13
+					},
+					{
+						title: "Suspect - Parking Lot", //14
+					},
+					{
+						title: "Suspect - Lost", //15
+					},
+					{
+						title: "Suspect - Out of Territory", //16
+					},
+					{
+						title: "Suspect - Customer - Lost", //17
+					},
+					{
+						title: "Prospect - Opportunity", //18
+					},
+					{
+						title: "Prospect - Qualified", //19
+					},
+					{
+						title: "Prospect - Box Sent", //20
+					},
+					{
+						title: "Prospect - Quote Sent", //21
+					},
+					{
+						title: "Customer - Free Trial Pending", //22
+					},
+					{
+						title: "Customer - Free Trial", //23
+					},
+					{
+						title: "Customer - ShipMate Pending", //24
+					},
+					{
+						title: "Customer - Signed", //25
+					},
+					{
+						title: "Total Lead Count", //26
+					},
+				],
+				columnDefs: [
+					{
+						targets: [0, 3, 7, 8, 9, 19, 21, 24, 25],
+						className: "bolded",
+					},
+				],
+				rowCallback: function (row, data, index) {
+					var row_color = "";
+					if (data[0] == "Interested") {
+						$(row).css("background-color", "#439A97");
+					}
+					if (data[0] == "Email_Interested") {
+						$(row).css("background-color", "#B0ECC6FF");
+					}
+					if (data[0] == "Email_Brush_off") {
+						$(row).css("background-color", "#fdbe8c");
+					}
+
+				},
+				footerCallback: function (row, data, start, end, display) {
+					var api = this.api(),
+						data;
+
+					// Remove the formatting to get integer data for summation
+					var intVal = function (i) {
+						return parseInt(i);
+					};
+
+					const formatter = new Intl.NumberFormat("en-AU", {
+						style: "currency",
+						currency: "AUD",
+						minimumFractionDigits: 2,
+					});
+					// Total Suspect New Lead Count
+					total_suspect_new = api
+						.column(1)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Hot Lead Count
+					total_suspect_hot_lead = api
+						.column(2)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Franchisee Review Count
+					total_suspect_zee_review = api
+						.column(3)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Rejected Count
+					total_suspect_zee_rejected = api
+						.column(4)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Qualified Count
+					total_suspect_qualified = api
+						.column(5)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Unqualified Count
+					total_suspect_unqualified = api
+						.column(6)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Validated
+					total_suspect_validated = api
+						.column(7)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Reassign
+					total_suspect_reassign = api
+						.column(8)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Follow Up
+					total_suspect_followup = api
+						.column(9)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect LPO Follow Up
+					total_suspect_lpo_followup = api
+						.column(10)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect No Answer
+					total_suspect_no_answer = api
+						.column(11)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect In Contact
+					total_suspect_in_contact = api
+						.column(12)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect In Contact
+					total_prospect_in_contact = api
+						.column(13)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Off Peak Pipline
+					total_suspect_off_peak_pipeline = api
+						.column(14)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Lost
+					total_suspect_lost = api
+						.column(15)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Out of Territory
+					total_suspect_oot = api
+						.column(16)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Suspect Customer Lost
+					total_suspect_customer_lost = api
+						.column(17)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect Opportunity
+					total_prospect_opportunity = api
+						.column(18)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_prospect_qualified = api
+						.column(19)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					total_prospect_box_sent = api
+						.column(20)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Prospect Quoite Sent
+					total_prospect_quote_sent = api
+						.column(21)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial Pending
+					total_customer_free_trial_pending = api
+						.column(22)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Free Trial
+					total_customer_free_trial = api
+						.column(23)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_customer_shipmate_pending = api
+						.column(24)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Customer Signed
+					total_customer_signed = api
+						.column(25)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Total Lead Count
+					total_lead = api
+						.column(26)
+						.data()
+						.reduce(function (a, b) {
+							return intVal(a) + intVal(b);
+						}, 0);
+
+					// Update footer
+					$(api.column(1).footer()).html(
+						total_suspect_new +
+						" (" +
+						((total_suspect_new / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(2).footer()).html(
+						total_suspect_hot_lead +
+						" (" +
+						((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(3).footer()).html(
+						total_suspect_zee_review +
+						" (" +
+						((total_suspect_zee_review / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(4).footer()).html(
+						total_suspect_zee_rejected +
+						" (" +
+						((total_suspect_zee_rejected / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(5).footer()).html(
+						total_suspect_qualified +
+						" (" +
+						((total_suspect_qualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(6).footer()).html(
+						total_suspect_unqualified +
+						" (" +
+						((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(7).footer()).html(
+						total_suspect_validated +
+						" (" +
+						((total_suspect_validated / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(8).footer()).html(
+						total_suspect_reassign +
+						" (" +
+						((total_suspect_reassign / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(9).footer()).html(
+						total_suspect_followup +
+						" (" +
+						((total_suspect_followup / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(10).footer()).html(
+						total_suspect_lpo_followup +
+						" (" +
+						((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(11).footer()).html(
+						total_suspect_no_answer +
+						" (" +
+						((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(12).footer()).html(
+						total_suspect_in_contact +
+						" (" +
+						((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(13).footer()).html(
+						total_prospect_in_contact +
+						" (" +
+						((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(14).footer()).html(
+						total_suspect_off_peak_pipeline +
+						" (" +
+						((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(
+							0
+						) +
+						"%)"
+					);
+					$(api.column(15).footer()).html(
+						total_suspect_lost +
+						" (" +
+						((total_suspect_lost / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(16).footer()).html(
+						total_suspect_oot +
+						" (" +
+						((total_suspect_oot / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(17).footer()).html(
+						total_suspect_customer_lost +
+						" (" +
+						((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(18).footer()).html(
+						total_prospect_opportunity +
+						" (" +
+						((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(19).footer()).html(
+						total_prospect_qualified +
+						" (" +
+						((total_prospect_qualified / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(20).footer()).html(
+						total_prospect_box_sent +
+						" (" +
+						((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(21).footer()).html(
+						total_prospect_quote_sent +
+						" (" +
+						((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+
+					$(api.column(22).footer()).html(
+						total_customer_free_trial_pending +
+						" (" +
+						((total_customer_free_trial_pending / total_lead) * 100).toFixed(
+							0
+						) +
+						"%)"
+					);
+
+					$(api.column(23).footer()).html(
+						total_customer_free_trial +
+						" (" +
+						((total_customer_free_trial / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(24).footer()).html(
+						total_customer_shipmate_pending +
+						" (" +
+						((total_customer_shipmate_pending / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(25).footer()).html(
+						total_customer_signed +
+						" (" +
+						((total_customer_signed / total_lead) * 100).toFixed(0) +
+						"%)"
+					);
+					$(api.column(26).footer()).html(total_lead);
+				},
+			});
+
+			//Sales Reporting - Illicium Campaign - Completed Tasks
+			var illiciumCompletedTasksCurrentStatusSearch = search.load({
+				type: "customer",
+				id: "customsearch_illicium_completed_tasks",
+			});
+
+			illiciumCompletedTasksCurrentStatusSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_salesrep",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.NONEOF,
+					values: [109783],
+				})
+			);
+
+			if (customer_type == "2") {
+				// illiciumCompletedTasksCurrentStatusSearch.filters.push(
+				// 	search.createFilter({
+				// 		name: "companyname",
+				// 		join: null,
+				// 		operator: search.Operator.DOESNOTSTARTWITH,
+				// 		values: "TEST",
+				// 	})
+				// );
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTCONTAIN,
+						values: "- Parent",
+					})
+				);
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Shippit Pty Ltd ",
+					})
+				);
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "Sendle",
+					})
+				);
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.DOESNOTSTARTWITH,
+						values: "SC -",
+					})
+				);
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_np_np_customer",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: "@NONE@",
+					})
+				);
+			}
+
+			if (!isNullorEmpty(leadStatus)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: leadStatus,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(zee_id)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "partner",
+						join: null,
+						operator: search.Operator.IS,
+						values: zee_id,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_from,
+					})
+				);
+
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_entered",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_rep)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_assigned",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.IS,
+						values: sales_rep,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_entered_by)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_lead_entered_by",
+						join: null,
+						operator: search.Operator.IS,
+						values: lead_entered_by,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_signed_up_from) &&
+				!isNullorEmpty(date_signed_up_to)
+			) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: date_signed_up_from,
+					})
+				);
+
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date_signup",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: date_signed_up_to,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(commencement_start_date) &&
+				!isNullorEmpty(commencement_last_date)
+			) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORAFTER,
+						values: commencement_start_date,
+					})
+				);
+
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_comm_date",
+						join: "CUSTRECORD_CUSTOMER",
+						operator: search.Operator.ONORBEFORE,
+						values: commencement_last_date,
+					})
+				);
+			}
+
+			if (
+				!isNullorEmpty(date_quote_sent_from) &&
+				!isNullorEmpty(date_quote_sent_to)
+			) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORAFTER,
+						values: date_quote_sent_from,
+					})
+				);
+
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custentity_date_lead_quote_sent",
+						join: null,
+						operator: search.Operator.ONORBEFORE,
+						values: date_quote_sent_to,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(lead_source)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "leadsource",
+						join: null,
+						operator: search.Operator.ANYOF,
+						values: lead_source,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(parent_lpo)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "internalid",
+						join: "custentity_lpo_parent_account",
+						operator: search.Operator.ANYOF,
+						values: parent_lpo,
+					})
+				);
+			}
+
+			if (!isNullorEmpty(sales_campaign)) {
+				illiciumCompletedTasksCurrentStatusSearch.filters.push(
+					search.createFilter({
+						name: "custrecord_sales_campaign",
+						join: "custrecord_sales_customer",
+						operator: search.Operator.ANYOF,
+						values: sales_campaign,
+					})
+				);
+			}
+
+			var oldCompletedTaskDate = null;
+			var countCompletedTasks = 0;
+
+			var customer_signed = 0;
+			var suspect_hot_lead = 0;
+			var suspect_reassign = 0;
+			var suspect_lost = 0;
+			var suspect_customer_lost = 0;
+			var suspect_off_peak_pipeline = 0;
+			var prospect_opportunity = 0;
+			var prospecy_quote_sent = 0;
+			var prospecy_box_sent = 0;
+			var prospect_no_answer = 0;
+			var prospect_in_contact = 0;
+			var suspect_oot = 0;
+			var suspect_pre_qualification = 0;
+			var suspect_new = 0;
+			var suspect_qualified = 0;
+			var suspect_pre_qualification = 0;
+			var suspect_in_qualification = 0;
+			var suspect_unqualified = 0;
+			var suspect_in_qualification = 0;
+			var total_leads = 0;
+			var prospect_qualified = 0;
+
+			var suspect_validated = 0;
+			var suspect_zee_review = 0;
+			var suspect_zee_rejected = 0;
+			var customer_free_trial = 0;
+			var customer_free_trial_pending = 0;
+			var customer_shipmate_pending = 0;
+			var suspect_no_answer = 0;
+			var suspect_in_contact = 0;
+
+			illiciumCompletedTasksCurrentStatusSearch
+				.run()
+				.each(function (illiciumCompletedTasksCurrentStatusSearchResultSet) {
+					var prospectCount = parseInt(
+						illiciumCompletedTasksCurrentStatusSearchResultSet.getValue({
+							name: "internalid",
+							join: "task",
+							summary: "COUNT",
+						})
+					);
+
+					var custStatus = illiciumCompletedTasksCurrentStatusSearchResultSet.getValue(
+						{
+							name: "entitystatus",
+							summary: "GROUP",
+						}
+					);
+
+					var completedTaskDate =
+						illiciumCompletedTasksCurrentStatusSearchResultSet.getValue({
+							name: "completeddate",
+							join: "task",
+							summary: "GROUP",
+						});
+
+					var callforceCompletedDateSplit = completedTaskDate.split("/");
+					completedTaskDate =
+						callforceCompletedDateSplit[2] +
+						"-" +
+						callforceCompletedDateSplit[1] +
+						"-" +
+						callforceCompletedDateSplit[0];
+
+					if (
+						countCompletedTasks != 0 &&
+						completedTaskDate != oldCompletedTaskDate
+					) {
+						illiciumCompletedTasksDataSet.push({
+							callOutcome: oldCompletedTaskDate,
+							suspect_hot_lead: suspect_hot_lead,
+							prospecy_quote_sent: prospecy_quote_sent,
+							suspect_reassign: suspect_reassign,
+							prospect_no_answer: prospect_no_answer,
+							prospect_in_contact: prospect_in_contact,
+							suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+							suspect_lost: suspect_lost,
+							suspect_customer_lost: suspect_customer_lost,
+							prospect_opportunity: prospect_opportunity,
+							customer_signed: customer_signed,
+							total_leads: total_leads,
+							suspect_oot: suspect_oot,
+							suspect_pre_qualification: suspect_pre_qualification,
+							suspect_new: suspect_new,
+							suspect_qualified: suspect_qualified,
+							suspect_unqualified: suspect_unqualified,
+							suspect_in_qualification: suspect_in_qualification,
+							suspect_validated: suspect_validated,
+							suspect_zee_review: suspect_zee_review,
+							suspect_zee_rejected: suspect_zee_rejected,
+							customer_free_trial: customer_free_trial,
+							suspect_no_answer: suspect_no_answer,
+							suspect_in_contact: suspect_in_contact,
+							prospect_qualified: prospect_qualified,
+							customer_free_trial_pending: customer_free_trial_pending,
+							prospect_box_sent: prospecy_box_sent,
+							customer_shipmate_pending: customer_shipmate_pending
+						});
+
+						customer_signed = 0;
+						suspect_hot_lead = 0;
+						suspect_reassign = 0;
+						suspect_lost = 0;
+						suspect_customer_lost = 0;
+						suspect_off_peak_pipeline = 0;
+						prospect_opportunity = 0;
+						prospecy_quote_sent = 0;
+						prospecy_box_sent = 0;
+						prospect_no_answer = 0;
+						prospect_in_contact = 0;
+						suspect_oot = 0;
+						suspect_pre_qualification = 0;
+						suspect_new = 0;
+						suspect_qualified = 0;
+						suspect_pre_qualification = 0;
+						suspect_in_qualification = 0;
+						suspect_unqualified = 0;
+						suspect_in_qualification = 0;
+						total_leads = 0;
+						prospect_qualified = 0;
+
+						suspect_validated = 0;
+						suspect_zee_review = 0;
+						suspect_zee_rejected = 0;
+						customer_free_trial = 0;
+						customer_free_trial_pending = 0;
+						suspect_no_answer = 0;
+						suspect_in_contact = 0;
+						customer_shipmate_pending = 0;
+					}
+
+					if (custStatus == 13 || custStatus == 66) {
+						//CUSTOMER _ SIGNED
+						customer_signed = prospectCount;
+					} else if (custStatus == 57) {
+						//SUSPECT - HOT LEAD
+						suspect_hot_lead = prospectCount;
+					} else if (custStatus == 59) {
+						//SUSPECT - LOST
+						suspect_lost = prospectCount;
+					} else if (custStatus == 64) {
+						//SUSPECT - OUT OF TERRITORY
+						suspect_oot = parseInt(prospectCount);
+					} else if (custStatus == 22) {
+						//SUSPECT - CUSTOMER - LOST
+						suspect_customer_lost = prospectCount;
+					} else if (custStatus == 60 || custStatus == 40) {
+						//SUSPECT - REP REASSIGN
+						suspect_reassign = prospectCount;
+					} else if (custStatus == 50) {
+						//PROSPECT - QUOTE SENT
+						prospecy_quote_sent = prospectCount;
+					} else if (custStatus == 72) {
+						//PROSPECT - Box SENT
+						prospecy_box_sent = parseInt(prospectCount);
+					} else if (custStatus == 35) {
+						//PROSPECT - NO ANSWER
+						prospect_no_answer = prospectCount;
+					} else if (custStatus == 8) {
+						//PROSPECT - IN CONTACT
+						prospect_in_contact = prospectCount;
+					} else if (custStatus == 62) {
+						//SUSPECT - OFF PEAK PIPELINE
+						suspect_off_peak_pipeline = prospectCount;
+					} else if (custStatus == 58) {
+						//PROSPECT - OPPORTUNITY
+						prospect_opportunity = parseInt(prospectCount);
+					} else if (custStatus == 34) {
+						//SUSPECT - PRE QUALIFICATION
+						suspect_pre_qualification = parseInt(prospectCount);
+					} else if (custStatus == 6) {
+						//SUSPECT - NEW
+						suspect_new = parseInt(prospectCount);
+					} else if (custStatus == 42) {
+						//SUSPECT - QUALIFIED
+						suspect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 38) {
+						//SUSPECT - UNQUALIFIED
+						suspect_unqualified = parseInt(prospectCount);
+					} else if (custStatus == 30) {
+						//SUSPECT - IN QUALIFICATION
+						suspect_in_qualification = parseInt(prospectCount);
+					} else if (custStatus == 68) {
+						//SUSPECT - VALIDATED
+						suspect_validated = parseInt(prospectCount);
+					} else if (custStatus == 32) {
+						//CUSTOMER - FREE TRIAL
+						customer_free_trial = parseInt(prospectCount);
+					} else if (custStatus == 71) {
+						//CUSTOMER - FREE TRIAL PENDING
+						customer_free_trial_pending = parseInt(prospectCount);
+					} else if (custStatus == 20) {
+						//SUSPECT - NO ANSWER
+						suspect_no_answer = parseInt(prospectCount);
+					} else if (custStatus == 69) {
+						//SUSPECT - IN CONTACT
+						suspect_in_contact = parseInt(prospectCount);
+					} else if (custStatus == 70) {
+						//PROSPECT - QUALIFIED
+						prospect_qualified = parseInt(prospectCount);
+					} else if (custStatus == 73) {
+						//CUSTOMER - SHIPMATE PENDING
+						customer_shipmate_pending = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_zee_review = parseInt(prospectCount);
+					} else if (custStatus == 7) {
+						//SUSPECT - REVIEW
+						suspect_zee_rejected = parseInt(prospectCount);
+					}
+
+					total_leads =
+						customer_signed +
+						suspect_hot_lead +
+						suspect_lost +
+						suspect_customer_lost +
+						suspect_reassign +
+						prospecy_quote_sent +
+						prospect_no_answer +
+						prospect_in_contact +
+						suspect_off_peak_pipeline +
+						prospect_opportunity +
+						suspect_oot +
+						suspect_pre_qualification +
+						suspect_new +
+						suspect_qualified +
+						suspect_in_qualification +
+						suspect_validated +
+						customer_free_trial +
+						suspect_no_answer +
+						suspect_in_contact +
+						prospect_qualified +
+						customer_free_trial_pending +
+						suspect_unqualified +
+						prospecy_box_sent + customer_shipmate_pending + suspect_zee_review + suspect_zee_rejected;
+
+					oldCompletedTaskDate = completedTaskDate;
+					countCompletedTasks++;
+					return true;
+				});
+
+			console.log("countCompletedTasks: " + countCompletedTasks);
+			if (countCompletedTasks > 0) {
+				illiciumCompletedTasksDataSet.push({
+					callOutcome: oldCompletedTaskDate,
+					suspect_hot_lead: suspect_hot_lead,
+					prospecy_quote_sent: prospecy_quote_sent,
+					suspect_reassign: suspect_reassign,
+					prospect_no_answer: prospect_no_answer,
+					prospect_in_contact: prospect_in_contact,
+					suspect_off_peak_pipeline: suspect_off_peak_pipeline,
+					suspect_lost: suspect_lost,
+					suspect_customer_lost: suspect_customer_lost,
+					prospect_opportunity: prospect_opportunity,
+					customer_signed: customer_signed,
+					total_leads: total_leads,
+					suspect_oot: suspect_oot,
+					suspect_pre_qualification: suspect_pre_qualification,
+					suspect_new: suspect_new,
+					suspect_qualified: suspect_qualified,
+					suspect_unqualified: suspect_unqualified,
+					suspect_in_qualification: suspect_in_qualification,
+					suspect_validated: suspect_validated,
+					suspect_zee_review: suspect_zee_review,
+					suspect_zee_rejected: suspect_zee_rejected,
+					customer_free_trial: customer_free_trial,
+					suspect_no_answer: suspect_no_answer,
+					suspect_in_contact: suspect_in_contact,
+					prospect_qualified: prospect_qualified,
+					customer_free_trial_pending: customer_free_trial_pending,
+					prospect_box_sent: prospecy_box_sent,
+					customer_shipmate_pending: customer_shipmate_pending
+				});
+			}
+
+			console.log(
+				"illiciumCompletedTasksDataSet" + illiciumCompletedTasksDataSet
+			);
+
+			completedTasksStatusDataSet = [];
+			if (!isNullorEmpty(illiciumCompletedTasksDataSet)) {
+				illiciumCompletedTasksDataSet.forEach(function (preview_row, index) {
+					var hotLeadPercentage = parseInt(
+						(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
+					);
+					var hotLeadCol =
+						preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
+
+					var quoteSentPercentage = parseInt(
+						(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
+					);
+					var quoteSentCol =
+						preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
+
+					var boxSentPercentage = parseInt(
+						(preview_row.prospect_box_sent / preview_row.total_leads) * 100
+					);
+					var boxSentCol =
+						preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
+
+					var reassignPercentage = parseInt(
+						(preview_row.suspect_reassign / preview_row.total_leads) * 100
+					);
+					var reassignCol =
+						preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
+
+					var noAnswerPercentage = parseInt(
+						(preview_row.prospect_no_answer / preview_row.total_leads) * 100
+					);
+					var noAnswerCol =
+						preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
+
+					var inContactPercentage = parseInt(
+						(preview_row.prospect_in_contact / preview_row.total_leads) * 100
+					);
+					var inContactCol =
+						preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
+
+					var offPeakPercentage = parseInt(
+						(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
+						100
+					);
+					var offPeakCol =
+						preview_row.suspect_off_peak_pipeline +
+						" (" +
+						offPeakPercentage +
+						"%)";
+
+					var lostPercentage = parseInt(
+						(preview_row.suspect_lost / preview_row.total_leads) * 100
+					);
+					var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
+
+					var ootPercentage = parseInt(
+						(preview_row.suspect_oot / preview_row.total_leads) * 100
+					);
+					var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
+
+					var custLostPercentage = parseInt(
+						(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
+					);
+					var custLostCol =
+						preview_row.suspect_customer_lost +
+						" (" +
+						custLostPercentage +
+						"%)";
+
+					var oppPercentage = parseInt(
+						(preview_row.prospect_opportunity / preview_row.total_leads) * 100
+					);
+					var oppCol =
+						preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
+
+					var signedPercentage = parseInt(
+						(preview_row.customer_signed / preview_row.total_leads) * 100
+					);
+					var signedCol =
+						preview_row.customer_signed + " (" + signedPercentage + "%)";
+
+					var suspectPreQualificationPercentage = parseInt(
+						(preview_row.suspect_pre_qualification / preview_row.total_leads) *
+						100
+					);
+					var preQualiCol =
+						preview_row.suspect_pre_qualification +
+						" (" +
+						suspectPreQualificationPercentage +
+						"%)";
+
+					var suspectNewPercentage = parseInt(
+						(preview_row.suspect_new / preview_row.total_leads) * 100
+					);
+					var suspectNewCol =
+						preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
+
+					var suspectQualifiedPercentage = parseInt(
+						(preview_row.suspect_qualified / preview_row.total_leads) * 100
+					);
+					var suspectQualifiedCol =
+						preview_row.suspect_qualified +
+						" (" +
+						suspectQualifiedPercentage +
+						"%)";
+
+					var suspectUnqualifiedPercentage = parseInt(
+						(preview_row.suspect_unqualified / preview_row.total_leads) * 100
+					);
+					var suspectUnqualifiedCol =
+						preview_row.suspect_unqualified +
+						" (" +
+						suspectUnqualifiedPercentage +
+						"%)";
+
+					var suspectInQualificationPercentage = parseInt(
+						(preview_row.suspect_in_qualification / preview_row.total_leads) *
+						100
+					);
+					var inQualiCol =
+						preview_row.suspect_in_qualification +
+						" (" +
+						suspectInQualificationPercentage +
+						"%)";
+
+					var suspectValidatedPercentage = parseInt(
+						(preview_row.suspect_validated / preview_row.total_leads) * 100
+					);
+					var suspectValidatedCol =
+						preview_row.suspect_validated +
+						" (" +
+						suspectValidatedPercentage +
+						"%)";
+
+					var customerFreeTrialPercentage = parseInt(
+						(preview_row.customer_free_trial / preview_row.total_leads) * 100
+					);
+					var customerFreeTrialCol =
+						preview_row.customer_free_trial +
+						" (" +
+						customerFreeTrialPercentage +
+						"%)";
+
+					var customerShipMatePendingPercentage = parseInt(
+						(preview_row.customer_shipmate_pending / preview_row.total_leads) * 100
+					);
+					var customerShipMatePendingCol =
+						preview_row.customer_shipmate_pending +
+						" (" +
+						customerShipMatePendingPercentage +
+						"%)";
+
+					var customerFreeTrialPendingPercentage = parseInt(
+						(preview_row.customer_free_trial_pending /
+							preview_row.total_leads) *
+						100
+					);
+					var customerFreeTrialPendingCol =
+						preview_row.customer_free_trial_pending +
+						" (" +
+						customerFreeTrialPendingPercentage +
+						"%)";
+
+					var suspectNoAnswerPercentage = parseInt(
+						(preview_row.suspect_no_answer / preview_row.total_leads) * 100
+					);
+					var suspectNoAnswerCol =
+						preview_row.suspect_no_answer +
+						" (" +
+						suspectNoAnswerPercentage +
+						"%)";
+
+					var suspectInContactPercentage = parseInt(
+						(preview_row.suspect_in_contact / preview_row.total_leads) * 100
+					);
+					var suspectInContactCol =
+						preview_row.suspect_in_contact +
+						" (" +
+						suspectInContactPercentage +
+						"%)";
+
+					var prospectQualifiedPercentage = parseInt(
+						(preview_row.prospect_qualified / preview_row.total_leads) * 100
+					);
+					var prospectQualifiedCol =
+						preview_row.prospect_qualified +
+						" (" +
+						prospectQualifiedPercentage +
+						"%)";
+
+					var suspectZeeReviewPercentage = parseInt(
+						(preview_row.suspect_zee_review / preview_row.total_leads) * 100
+					);
+					var suspectZeeReviewCol =
+						preview_row.suspect_zee_review +
+						" (" +
+						suspectZeeReviewPercentage +
+						"%)";
+
+					var suspectZeeRejectedPercentage = parseInt(
+						(preview_row.suspect_zee_rejected / preview_row.total_leads) * 100
+					);
+					var suspectZeeRejectedCol =
+						preview_row.suspect_zee_rejected +
+						" (" +
+						suspectZeeRejectedPercentage +
+						"%)";
+
+					completedTasksStatusDataSet.push([
+						preview_row.callOutcome,
+						suspectNewCol,
+						hotLeadCol,
+						suspectZeeReviewCol,
+						suspectZeeRejectedCol,
+						suspectValidatedCol,
+						suspectUnqualifiedCol,
+						suspectQualifiedCol,
+						preQualiCol,
+						inQualiCol,
+						reassignCol,
+						suspectNoAnswerCol,
+						suspectInContactCol,
+						inContactCol,
+						offPeakCol,
+						lostCol,
+						ootCol,
+						custLostCol,
+						oppCol,
+						prospectQualifiedCol,
+						boxSentCol,
+						quoteSentCol,
+						customerFreeTrialPendingCol,
+						customerFreeTrialCol,
+						customerShipMatePendingCol,
+						signedCol,
+						preview_row.total_leads,
+					]);
+				});
+			}
+
+			var dataTableIlliciumDateSyncedOutcome = $(
+				"#mpexusage-illiciumCompletedTasksCurrentStatus"
 			).DataTable({
 				data: completedTasksStatusDataSet,
 				pageLength: 250,

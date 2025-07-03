@@ -700,10 +700,12 @@ define([
 
 			var showFranchiseeGeneratedLeadsPieChart = false;
 			var showCallForceTasksPieChart = false;
+			var showIlliciumTasksPieChart = false;
 
 			if (isNullorEmpty(campaign)) {
 				showFranchiseeGeneratedLeadsPieChart = true;
 				showCallForceTasksPieChart = true;
+				showIlliciumTasksPieChart = true;
 			} else {
 				if (campaign.indexOf(",") != -1) {
 					var campaignArray = campaign.split(",");
@@ -723,6 +725,10 @@ define([
 
 				if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
 					showCallForceTasksPieChart = true;
+				}
+
+				if (campaignArray.indexOf("90") != -1) {
+					showIlliciumTasksPieChart = true;
 				}
 
 				if (campaignArray.indexOf("70") != -1) {
@@ -759,6 +765,23 @@ define([
 					'<small style="text-align:center;font-size: 12px;"></small>';
 				inlineHtml +=
 					'<div id="container-callforce_progress" style="height: 300px"></div>';
+				inlineHtml += "</article>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+			}
+
+			if (showIlliciumTasksPieChart == true) {
+				inlineHtml +=
+					'<div class="form-group container scorecard_percentage hide" style="">';
+				inlineHtml += '<div class="row">';
+				inlineHtml += '<div class="col-xs-12">';
+				inlineHtml += '<article class="card">';
+				inlineHtml += '<h2 style="text-align:center;">Illicium Report</h2>';
+				inlineHtml +=
+					'<small style="text-align:center;font-size: 12px;"></small>';
+				inlineHtml +=
+					'<div id="container-illicium_progress" style="height: 300px"></div>';
 				inlineHtml += "</article>";
 				inlineHtml += "</div>";
 				inlineHtml += "</div>";
@@ -1994,6 +2017,8 @@ define([
 		if (isNullorEmpty(campaign)) {
 			inlineHtml +=
 				'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+			inlineHtml +=
+				'<li role="presentation" class=""><a data-toggle="tab" href="#illiciumtasks" style="border-radius: 30px"><b>ILLICIUM - TASKS</b></a></li>';
 		} else {
 			if (campaign.indexOf(",") != -1) {
 				var campaignArray = campaign.split(",");
@@ -2018,6 +2043,11 @@ define([
 			if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
 				inlineHtml +=
 					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
+			}
+
+			if (campaignArray.indexOf("90") != -1) {
+				inlineHtml +=
+					'<li role="presentation" class=""><a data-toggle="tab" href="#illiciumtasks" style="border-radius: 30px"><b>ILLICIUM</b></a></li>';
 			}
 		}
 		// inlineHtml +=
@@ -2049,6 +2079,17 @@ define([
 			inlineHtml += dataTable("callforcetasks");
 			inlineHtml += "</br>";
 			inlineHtml += dataTable("callForceDateSyncedOutcome");
+			inlineHtml += "</div>";
+
+			inlineHtml +=
+				'<div role="tabpanel" class="tab-pane" id="illiciumtasks">';
+
+			inlineHtml += '<figure class="highcharts-figure">';
+			inlineHtml += '<div id="container_illiciumtasks"></div>';
+			inlineHtml += "</figure><br></br>";
+			inlineHtml += dataTable("illiciumtasks");
+			inlineHtml += "</br>";
+			inlineHtml += dataTable("illiciumDateSyncedOutcome");
 			inlineHtml += "</div>";
 		} else {
 			if (campaign.indexOf(",") != -1) {
@@ -2086,6 +2127,29 @@ define([
 				inlineHtml +=
 					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
 				inlineHtml += dataTable("callForceOutcomeStatus");
+				inlineHtml += "</br>";
+				inlineHtml += "</div>";
+			}
+
+			if (campaignArray.indexOf("90") != -1) {
+				inlineHtml +=
+					'<div role="tabpanel" class="tab-pane" id="illiciumtasks">';
+
+				inlineHtml +=
+					'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
+				inlineHtml += dataTable("illiciumDateSyncedOutcome");
+				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Illicium Appointments</h2>';
+				inlineHtml += dataTable("illiciumtasks");
+				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
+				inlineHtml += dataTable("illiciumCompletedTasksCurrentStatus");
+				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
+				inlineHtml += dataTable("illiciumOutcomeStatus");
 				inlineHtml += "</br>";
 				inlineHtml += "</div>";
 			}
@@ -2620,19 +2684,20 @@ define([
 
 		inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
-		if (name == "callforcetasks") {
+		if (name == "callforcetasks" || name == "illiciumtasks") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
-		if (name == "callForceDateSyncedOutcome") {
+		if (name == "callForceDateSyncedOutcome" || name == "illiciumDateSyncedOutcome") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (
 			name == "callForceOutcomeStatus" ||
-			name == "callForceCompletedTasksCurrentStatus"
+			name == "callForceCompletedTasksCurrentStatus" || name == "illiciumOutcomeStatus" ||
+			name == "illiciumCompletedTasksCurrentStatus"
 		) {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
