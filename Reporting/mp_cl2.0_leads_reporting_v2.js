@@ -16586,7 +16586,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent + customer_shipmate_pending
 				} else if (
-					oldDate1 != null &&
+					oldSalesRepAssigned != null &&
 					oldSalesRepAssigned != salesRepAssigned
 				) {
 					salesrep_debt_set2.push({
