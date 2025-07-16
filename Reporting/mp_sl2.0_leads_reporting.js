@@ -2151,6 +2151,10 @@ define([
 					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
 				inlineHtml += dataTable("illiciumOutcomeStatus");
 				inlineHtml += "</br>";
+				inlineHtml +=
+					'<h2 style="text-align:center;">Industry Sub-Category vs Current NetSuite Status</h2>';
+				inlineHtml += dataTable("illiciumIndustrySubCategoryStatus");
+				inlineHtml += "</br>";
 				inlineHtml += "</div>";
 			}
 		}
@@ -2697,7 +2701,7 @@ define([
 		if (
 			name == "callForceOutcomeStatus" ||
 			name == "callForceCompletedTasksCurrentStatus" || name == "illiciumOutcomeStatus" ||
-			name == "illiciumCompletedTasksCurrentStatus"
+			name == "illiciumCompletedTasksCurrentStatus" || name == "illiciumIndustrySubCategoryStatus"
 		) {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
