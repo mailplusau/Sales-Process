@@ -49,6 +49,7 @@ define([
 
 	var mainLeadStatusArray = [
 		"13",
+		"73",
 		"66",
 		"32",
 		"71",
@@ -73,6 +74,7 @@ define([
 	];
 	var mainLeadStatusNameArray = [
 		"CUSTOMER - SIGNED",
+		"CUSTOMER - SHIPMATE PENDING",
 		"CUSTOMER - To Be Finalised",
 		"CUSTOMER - Free Trail",
 		"CUSTOMER - Free Trail Pending",

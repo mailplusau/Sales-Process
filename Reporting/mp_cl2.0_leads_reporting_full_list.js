@@ -4451,7 +4451,7 @@ define([
 			customer_shipmate_pending_source_field_salescount[customerShipMatePendingDataSet[i][0]] =
 				customerShipMatePendingDataSet[i][3];
 			customer_shipmate_pending_source_websitecount[customerShipMatePendingDataSet[i][0]] =
-				customerSignedDataSet[i][4];
+				customerShipMatePendingDataSet[i][4];
 			customer_shipmate_pending_total_source_countcount[customerShipMatePendingDataSet[i][0]] =
 				customerShipMatePendingDataSet[i][16];
 			customer_shipmate_pending_source_additional_services[customerShipMatePendingDataSet[i][0]] =

@@ -51,10 +51,12 @@ define([
 
 	var mainLeadStatusArray = [
 		"13",
+		"73",
 		"66",
 		"32",
 		"71",
 		"22",
+		"59",
 		"57",
 		"38",
 		"42",
@@ -75,10 +77,12 @@ define([
 	];
 	var mainLeadStatusNameArray = [
 		"CUSTOMER - SIGNED",
+		"CUSTOMER - SHIPMATE PENDING",
 		"CUSTOMER - To Be Finalised",
 		"CUSTOMER - Free Trail",
 		"CUSTOMER - Free Trail Pending",
 		"SUSPECT - Customer - Lost",
+		"SUSPECT - LOST",
 		"SUSPECT - HOT LEAD",
 		"SUSPECT - UNQUALIFIED",
 		"SUSPECT - QUALIFIED",
