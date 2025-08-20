@@ -70,7 +70,17 @@ define([
         var oldCustomerAccountManager = null;
         var barcodeCount = 0;
 
+        var connoteNumberArray = [];
+
         demoShipMateLead1stLodgementSearch.run().each(function (searchResult) {
+            var connoteNumber = searchResult.getValue({
+                name: "custrecord_connote_number",
+            });
+            var barcode = searchResult.getValue({
+                name: "name",
+            });
+
+
             var customerInternalID = searchResult.getValue({
                 name: "internalid",
                 join: "CUSTRECORD_CUST_PROD_STOCK_CUSTOMER",
@@ -175,6 +185,37 @@ define([
                     title: "Email Sent out to:",
                     details: contactEmail + " for customer: " + oldCustomerInternalID,
                 });
+
+
+                //Email Sent to Customer Service with List of Barcodes
+                var customerRecord = record.load({
+                    type: record.Type.CUSTOMER,
+                    id: oldCustomerInternalID
+                });
+                var customerEntityID = customerRecord.getValue({
+                    fieldId: "entityid"
+                });
+                var customerName = customerRecord.getValue({
+                    fieldId: "companyname"
+                });
+
+                var emailBarcodeListBody = 'Hi Customer Service, \n\nBelow is the list of barcodes that have been processed:\n\n';
+                emailBarcodeListBody += connoteNumberArray.toString().join('\n');
+
+                email.send({
+                    author: oldCustomerAccountManager,
+                    body: emailBarcodeListBody,
+                    recipients: ['customerservice@mailplus.com.au'],
+                    subject: 'Processed Barcodes List - ' + customerEntityID + ' - ' + customerName,
+                    cc: [oldCustomerAccountManager],
+                    relatedRecords: { entityId: oldCustomerInternalID },
+                });
+
+                connoteNumberArray = [];
+                connoteNumberArray.push(connoteNumber);
+
+            } else if (oldCustomerInternalID == null || oldCustomerInternalID == customerInternalID) {
+                connoteNumberArray.push(connoteNumber);
             }
 
 
@@ -275,6 +316,30 @@ define([
             log.audit({
                 title: "Email Sent out to:",
                 details: contactEmail + " for customer: " + oldCustomerInternalID,
+            });
+
+            //Email Sent to Customer Service with List of Barcodes
+            var customerRecord = record.load({
+                type: record.Type.CUSTOMER,
+                id: oldCustomerInternalID
+            });
+            var customerEntityID = customerRecord.getValue({
+                fieldId: "entityid"
+            });
+            var customerName = customerRecord.getValue({
+                fieldId: "companyname"
+            });
+
+            var emailBarcodeListBody = 'Hi Customer Service, \n\nBelow is the list of barcodes that have been processed for customer ' + customerEntityID + ' - ' + customerName + ':\n\n';
+            emailBarcodeListBody += connoteNumberArray.toString().join('\n');
+
+            email.send({
+                author: oldCustomerAccountManager,
+                body: emailBarcodeListBody,
+                recipients: ['customerservice@mailplus.com.au'],
+                subject: 'Processed Barcodes List - ' + customerEntityID + ' - ' + customerName,
+                cc: [oldCustomerAccountManager],
+                relatedRecords: { entityId: oldCustomerInternalID },
             });
         }
 
