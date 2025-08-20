@@ -2309,7 +2309,7 @@ define([
 				});
 				console.log(debt_set4);
 			}
-		} else if (custStage == "2") {
+		} else if (custStage == "2" || custStage == "3") {
 			//Website Leads - Prospect Quote Sent
 			var custListCommenceTodayResults = search.load({
 				type: "customer",
