@@ -200,7 +200,7 @@ define([
                 });
 
                 var emailBarcodeListBody = 'Hi Customer Service, \n\nBelow is the list of barcodes that have been processed:\n\n';
-                emailBarcodeListBody += connoteNumberArray.toString().join('\n');
+                emailBarcodeListBody += connoteNumberArray.toString();
 
                 email.send({
                     author: oldCustomerAccountManager,
@@ -331,7 +331,7 @@ define([
             });
 
             var emailBarcodeListBody = 'Hi Customer Service, \n\nBelow is the list of barcodes that have been processed for customer ' + customerEntityID + ' - ' + customerName + ':\n\n';
-            emailBarcodeListBody += connoteNumberArray.toString().join('\n');
+            emailBarcodeListBody += connoteNumberArray.toString();
 
             email.send({
                 author: oldCustomerAccountManager,

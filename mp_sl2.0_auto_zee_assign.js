@@ -47,6 +47,10 @@ define([
 		});
 
 		if (context.request.method === "GET") {
+			log.debug({
+				title: "context.request.parameters",
+				details: context.request.parameters,
+			});
 			var customerInternalId = context.request.parameters.custid;
 			//Campaign ID
 			var campaignid = context.request.parameters.campaignid;
