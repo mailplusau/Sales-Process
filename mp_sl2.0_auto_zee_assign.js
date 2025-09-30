@@ -20,11 +20,14 @@ define([
 	"N/http",
 	"N/log",
 	"N/redirect",
-	"N/format",
-], function (ui, email, runtime, search, record, http, log, redirect, format) {
+	"N/format", "N/https",
+], function (ui, email, runtime, search, record, http, log, redirect, format, https) {
 	var role = 0;
 	var userId = 0;
 	var zee = 0;
+
+	var salesRepsEmployeeIDs = [668712, 696160, 668711, 1862659]
+	var salesRepsNames = ["Belinda Urbani", "Kerina Helliwell", "Lee Russell", "Leonie Feata"];
 
 	function onRequest(context) {
 		var baseURL = "https://system.na2.netsuite.com";
@@ -171,6 +174,8 @@ define([
 				title: "lead_customer_type",
 				details: lead_customer_type,
 			});
+
+			var zee_text = "";
 
 			if (role != 1032) {
 				//IF THE SITE ADDRESS IS NOT EMPTY
@@ -354,6 +359,9 @@ define([
 								id: zee_id,
 							});
 
+							zee_text = partnerRecord.getValue({
+								fieldId: "companyname",
+							});
 							var lpoSuburbMappingJSON = partnerRecord.getValue({
 								fieldId: "custentity_ap_suburbs_json",
 							});
@@ -565,9 +573,13 @@ define([
 							type: record.Type.PARTNER,
 							id: zee_id,
 						});
+						zee_text = partnerRecord.getValue({
+							fieldId: "companyname",
+						});
 						var zeeSalesRepAssigned = partnerRecord.getValue({
 							fieldId: "custentity_sales_rep_assigned",
 						});
+
 						var lpoSuburbMappingJSON = partnerRecord.getValue({
 							fieldId: "custentity_ap_suburbs_json",
 						});
@@ -636,24 +648,6 @@ define([
 						details: role,
 					});
 
-					customerRecord.setValue({
-						fieldId: "custentity_mp_toll_salesrep",
-						value: salesRep,
-					});
-
-					var newCustomerRecordId = customerRecord.save({
-						ignoreMandatoryFields: true,
-					});
-
-					var newCustomerRecord = record.load({
-						type: record.Type.CUSTOMER,
-						id: newCustomerRecordId,
-						isDynamic: true,
-					});
-					var zee_text = newCustomerRecord.getText({
-						fieldId: "partner",
-					});
-
 					//ASSIGN SALES REP NAME AND EMAIL TO THE VARIABLES FOR EMAILS
 					if (salesRep == 668712) {
 						salesRepEmail = "belinda.urbani@mailplus.com.au";
@@ -672,210 +666,62 @@ define([
 						salesRepName = "Luke Forbes";
 					}
 
+					var subject = "";
+					var body = "";
+					var salesRecordInternalID = null;
+					var salesRecord = record.create({
+						type: "customrecord_sales",
+					});
 
-					if (
+					salesRecord.setValue({
+						fieldId: "custrecord_sales_customer",
+						value: customerInternalId,
+					});
+					salesRecord.setValue({
+						fieldId: "custrecord_sales_outcome",
+						value: 20,
+					});
+					salesRecord.setValue({
+						fieldId: "custrecord_sales_callbackdate",
+						value: date_now,
+					});
+					salesRecord.setValue({
+						fieldId: "custrecord_sales_callbacktime",
+						value: time_now,
+					});
+					if (!isNullorEmpty(campaignid) && (
 						leadSource == 97943 ||
 						leadSource == 295896 ||
 						leadSource == 296333
-					) {
-						//Lead Source: Head Office Generated
-						//Lead Source: Outsourced - Head Office Generated
-						//Lead Source: Outsourced - Head Office Validated
-
-						//Update 2024-08-01T01:54:36.751Z - Lead Entered by HO, the user will need to select the Campaign & Sales Rep from the Prospect Capture Form itself
-
-						if (!isNullorEmpty(campaignid)) {
-							/* 
-								Create Sales Record
-								Assign to Sales Rep selected in the Prospect Capture Form
-								Assign to Campaign selected in the Prospect Capture Form
-								 */
-							var salesRecord = record.create({
-								type: "customrecord_sales",
-							});
-
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_customer",
-								value: customerInternalId,
-							});
-							// if (leadSource == 295896 || leadSource == 296333) {
-							// 	if (isNullorEmpty(lead_customer_type)) {
-							// 		salesRecord.setValue({
-							// 			fieldId: "custrecord_sales_campaign",
-							// 			value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
-							// 		});
-							// 	} else if (lead_customer_type == 5) {
-							// 		// Service Customer
-							// 		salesRecord.setValue({
-							// 			fieldId: "custrecord_sales_campaign",
-							// 			value: 87, //Allocate to the Call Force - 202501 campaign
-							// 		});
-							// 	} else if (lead_customer_type == 6) {
-							// 		//Product Customer
-							// 		salesRecord.setValue({
-							// 			fieldId: "custrecord_sales_campaign",
-							// 			value: 87, //Allocate to the Call Force - 202501 campaign
-							// 		});
-							// 	}
-							// } else {
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_campaign",
-								value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
-							});
-							// }
-
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_assigned",
-								value: salesRep, //Assign to the Sales Rep selected from the Prospect Capture Form
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_outcome",
-								value: 20,
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_callbackdate",
-								value: date_now,
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_callbacktime",
-								value: time_now,
-							});
-
-							salesRecord.save({
-								ignoreMandatoryFields: true,
-							});
-
-							var cust_id_link =
-								"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
-								customerInternalId;
-							var body =
-								"New lead entered into the system. \n Customer Name: " +
-								entity_id +
-								" " +
-								customer_name +
-								"\nLink: " +
-								cust_id_link;
-
-							//HEAD OFFICE GENERATED
-							if (leadSource == 97943) {
-								var subject =
-									"Sales Head Office Generated Lead - " +
-									entity_id +
-									" " +
-									customer_name;
-								email.send({
-									author: 112209,
-									body: body,
-									recipients: salesRep,
-									subject: subject,
-									cc: [
-										"luke.forbes@mailplus.com.au",
-										"lee.russell@mailplus.com.au",
-									],
-									relatedRecords: { entityId: customerInternalId },
-								});
-							} else if (
-								leadSource == 295896 &&
-								lead_customer_type == 5 &&
-								salesRep != 1874329
-							) {
-								var subject =
-									"Sales Outsourced - Head Office Generated Lead - " +
-									entity_id +
-									" " +
-									customer_name;
-								email.send({
-									author: 112209,
-									body: body,
-									recipients: salesRep,
-									subject: subject,
-									cc: [
-										"luke.forbes@mailplus.com.au",
-										"lee.russell@mailplus.com.au",
-									],
-									relatedRecords: { entityId: customerInternalId },
-								});
-							} else if (
-								leadSource == 296333 &&
-								lead_customer_type == 5 &&
-								salesRep != 1874329
-							) {
-								var subject =
-									"Sales Outsourced - Head Office Validated Lead - " +
-									entity_id +
-									" " +
-									customer_name;
-								email.send({
-									author: 112209,
-									body: body,
-									recipients: salesRep,
-									subject: subject,
-									cc: [
-										"luke.forbes@mailplus.com.au",
-										"lee.russell@mailplus.com.au",
-									],
-									relatedRecords: { entityId: customerInternalId },
-								});
-							}
-						}
-					} else if (leadSource == -4) {
-						//Lead Source: Franchisee Generated
-
-						/* 
-							Create Sales Record
-							Assign to Liam depending on the franchisee
-							Assign to Franchisee Generated
-							 */
-						var salesRecord = record.create({
-							type: "customrecord_sales",
-						});
-
+					)) {
 						salesRecord.setValue({
-							fieldId: "custrecord_sales_customer",
-							value: customerInternalId,
+							fieldId: "custrecord_sales_campaign",
+							value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
 						});
+						var cust_id_link =
+							"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+							customerInternalId;
+						body =
+							"New lead entered into the system. \n Customer Name: " +
+							entity_id +
+							" " +
+							customer_name +
+							"\nLink: " +
+							cust_id_link;
+						subject =
+							"Sales Head Office Generated Lead - " +
+							entity_id +
+							" " +
+							customer_name;
 
+					} else if (leadSource == -4) {
 						if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_assigned",
-								value: salesRep, //Assign to Sales Rep Assigned to Franchisee
-							});
 							salesRecord.setValue({
 								fieldId: "custrecord_sales_campaign",
 								value: 70, // Franchisee Generated
 							});
-						} else {
 
-
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_campaign",
-								value: 90, // Illicium - 202507
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_assigned",
-								value: 1917237, //Assign to Illicium X MailPlus
-							});
-						}
-
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_outcome",
-							value: 20,
-						});
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_callbackdate",
-							value: date_now,
-						});
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_callbacktime",
-							value: time_now,
-						});
-
-						salesRecord.save({
-							ignoreMandatoryFields: true,
-						});
-
-						if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
-							var subject =
+							subject =
 								"Sales HOT Lead - " +
 								zee_text +
 								" Franchisee Generated - " +
@@ -885,7 +731,7 @@ define([
 							var cust_id_link =
 								"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
 								customerInternalId;
-							var body =
+							body =
 								"New lead entered into the system by Franchisee. \n Customer Name: " +
 								entity_id +
 								" " +
@@ -895,31 +741,21 @@ define([
 								"\nFranchisee: " +
 								zee_text;
 
-							email.send({
-								author: 112209,
-								body: body,
-								recipients: 1809382,
-								subject: subject,
-								cc: ["aleyna.harnett@mailplus.com.au"],
-								relatedRecords: { entityId: customerInternalId },
+						} else {
+							salesRecord.setValue({
+								fieldId: "custrecord_sales_campaign",
+								value: 90, // Illicium - 202507
 							});
 						}
 					} else if (leadSource == 285297) {
 						//Lead Source: Inbound - Head Office Generated
 
-						/* 
+						/*
 							Create Sales Record
 							Assign to Sales Rep depending on the franchisee
 							Assign to Field Sales
 							 */
-						var salesRecord = record.create({
-							type: "customrecord_sales",
-						});
 
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_customer",
-							value: customerInternalId,
-						});
 						if (isNullorEmpty(campaignid)) {
 							salesRecord.setValue({
 								fieldId: "custrecord_sales_campaign",
@@ -932,28 +768,7 @@ define([
 							});
 						}
 
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_assigned",
-							value: salesRep,
-						});
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_outcome",
-							value: 20,
-						});
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_callbackdate",
-							value: date_now,
-						});
-						salesRecord.setValue({
-							fieldId: "custrecord_sales_callbacktime",
-							value: time_now,
-						});
-
-						salesRecord.save({
-							ignoreMandatoryFields: true,
-						});
-
-						var subject =
+						subject =
 							"Sales Head Office Generated - " +
 							entity_id +
 							" " +
@@ -961,7 +776,7 @@ define([
 						var cust_id_link =
 							"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
 							customerInternalId;
-						var body =
+						body =
 							"New lead entered into the system by Head Office. \n Customer Name: " +
 							entity_id +
 							" " +
@@ -970,94 +785,514 @@ define([
 							cust_id_link +
 							"\nFranchisee: " +
 							zee_text;
-
-						email.send({
-							author: 112209,
-							body: body,
-							recipients: salesRep,
-							subject: subject,
-							cc: [
-								"luke.forbes@mailplus.com.au",
-								"lee.russell@mailplus.com.au",
-							],
-							relatedRecords: { entityId: customerInternalId },
-						});
 					} else {
-						if (!isNullorEmpty(campaignid)) {
-							/* 
-								Create Sales Record
-								Assign to Sales Rep depending on the franchisee
-								Assign to Digital Lead Campaign 
-								 */
-							var salesRecord = record.create({
-								type: "customrecord_sales",
-							});
-
+						if (isNullorEmpty(campaignid)) {
 							salesRecord.setValue({
-								fieldId: "custrecord_sales_customer",
-								value: customerInternalId,
+								fieldId: "custrecord_sales_campaign",
+								value: 67, //Digital Lead Campaign
 							});
-							if (isNullorEmpty(campaignid)) {
-								salesRecord.setValue({
-									fieldId: "custrecord_sales_campaign",
-									value: 67, //Digital Lead Campaign
-								});
-							} else {
-								salesRecord.setValue({
-									fieldId: "custrecord_sales_campaign",
-									value: campaignid, //Assign to campaign selected from the Prospect Capture Paage
-								});
-							}
-
+						} else {
 							salesRecord.setValue({
-								fieldId: "custrecord_sales_assigned",
-								value: salesRep,
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_outcome",
-								value: 20,
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_callbackdate",
-								value: date_now,
-							});
-							salesRecord.setValue({
-								fieldId: "custrecord_sales_callbacktime",
-								value: time_now,
-							});
-
-							salesRecord.save({
-								ignoreMandatoryFields: true,
-							});
-
-							var subject =
-								"Sales HOT Lead - " + entity_id + " " + customer_name;
-							var cust_id_link =
-								"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
-								customerInternalId;
-							var body =
-								"New lead entered into the system. \n Customer Name: " +
-								entity_id +
-								" " +
-								customer_name +
-								"\nLink: " +
-								cust_id_link +
-								"\nFranchisee: " +
-								zee_text;
-
-							email.send({
-								author: 112209,
-								body: body,
-								recipients: salesRep,
-								subject: subject,
-								cc: [
-									"luke.forbes@mailplus.com.au",
-									"lee.russell@mailplus.com.au",
-								],
-								relatedRecords: { entityId: customerInternalId },
+								fieldId: "custrecord_sales_campaign",
+								value: campaignid, //Assign to campaign selected from the Prospect Capture Paage
 							});
 						}
+
+						subject =
+							"Sales HOT Lead - " + entity_id + " " + customer_name;
+						var cust_id_link =
+							"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+							customerInternalId;
+						body =
+							"New lead entered into the system. \n Customer Name: " +
+							entity_id +
+							" " +
+							customer_name +
+							"\nLink: " +
+							cust_id_link +
+							"\nFranchisee: " +
+							zee_text;
+
 					}
+
+					salesRecordInternalID = salesRecord.save({
+						ignoreMandatoryFields: true,
+					});
+
+
+					var newCustomerRecordId = customerRecord.save({
+						ignoreMandatoryFields: true,
+					});
+
+					// if (
+					// 	leadSource == 97943 ||
+					// 	leadSource == 295896 ||
+					// 	leadSource == 296333
+					// ) {
+					// 	//Lead Source: Head Office Generated
+					// 	//Lead Source: Outsourced - Head Office Generated
+					// 	//Lead Source: Outsourced - Head Office Validated
+
+					// 	//Update 2024-08-01T01:54:36.751Z - Lead Entered by HO, the user will need to select the Campaign & Sales Rep from the Prospect Capture Form itself
+
+					// 	if (!isNullorEmpty(campaignid)) {
+					// 		/* 
+					// 			Create Sales Record
+					// 			Assign to Sales Rep selected in the Prospect Capture Form
+					// 			Assign to Campaign selected in the Prospect Capture Form
+					// 			 */
+					// 		var salesRecord = record.create({
+					// 			type: "customrecord_sales",
+					// 		});
+
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_customer",
+					// 			value: customerInternalId,
+					// 		});
+					// 		// if (leadSource == 295896 || leadSource == 296333) {
+					// 		// 	if (isNullorEmpty(lead_customer_type)) {
+					// 		// 		salesRecord.setValue({
+					// 		// 			fieldId: "custrecord_sales_campaign",
+					// 		// 			value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+					// 		// 		});
+					// 		// 	} else if (lead_customer_type == 5) {
+					// 		// 		// Service Customer
+					// 		// 		salesRecord.setValue({
+					// 		// 			fieldId: "custrecord_sales_campaign",
+					// 		// 			value: 87, //Allocate to the Call Force - 202501 campaign
+					// 		// 		});
+					// 		// 	} else if (lead_customer_type == 6) {
+					// 		// 		//Product Customer
+					// 		// 		salesRecord.setValue({
+					// 		// 			fieldId: "custrecord_sales_campaign",
+					// 		// 			value: 87, //Allocate to the Call Force - 202501 campaign
+					// 		// 		});
+					// 		// 	}
+					// 		// } else {
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_campaign",
+					// 			value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
+					// 		});
+					// 		// }
+
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_assigned",
+					// 			value: salesRep, //Assign to the Sales Rep selected from the Prospect Capture Form
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_outcome",
+					// 			value: 20,
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_callbackdate",
+					// 			value: date_now,
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_callbacktime",
+					// 			value: time_now,
+					// 		});
+
+					// 		salesRecordInternalID = salesRecord.save({
+					// 			ignoreMandatoryFields: true,
+					// 		});
+
+					// 		var cust_id_link =
+					// 			"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+					// 			customerInternalId;
+					// 		var body =
+					// 			"New lead entered into the system. \n Customer Name: " +
+					// 			entity_id +
+					// 			" " +
+					// 			customer_name +
+					// 			"\nLink: " +
+					// 			cust_id_link;
+
+					// 		//HEAD OFFICE GENERATED
+					// 		if (leadSource == 97943) {
+					// 			var subject =
+					// 				"Sales Head Office Generated Lead - " +
+					// 				entity_id +
+					// 				" " +
+					// 				customer_name;
+					// 			email.send({
+					// 				author: 112209,
+					// 				body: body,
+					// 				recipients: salesRep,
+					// 				subject: subject,
+					// 				cc: [
+					// 					"luke.forbes@mailplus.com.au",
+					// 					"lee.russell@mailplus.com.au",
+					// 				],
+					// 				relatedRecords: { entityId: customerInternalId },
+					// 			});
+					// 		} else if (
+					// 			leadSource == 295896 &&
+					// 			lead_customer_type == 5 &&
+					// 			salesRep != 1874329
+					// 		) {
+					// 			var subject =
+					// 				"Sales Outsourced - Head Office Generated Lead - " +
+					// 				entity_id +
+					// 				" " +
+					// 				customer_name;
+					// 			email.send({
+					// 				author: 112209,
+					// 				body: body,
+					// 				recipients: salesRep,
+					// 				subject: subject,
+					// 				cc: [
+					// 					"luke.forbes@mailplus.com.au",
+					// 					"lee.russell@mailplus.com.au",
+					// 				],
+					// 				relatedRecords: { entityId: customerInternalId },
+					// 			});
+					// 		} else if (
+					// 			leadSource == 296333 &&
+					// 			lead_customer_type == 5 &&
+					// 			salesRep != 1874329
+					// 		) {
+					// 			var subject =
+					// 				"Sales Outsourced - Head Office Validated Lead - " +
+					// 				entity_id +
+					// 				" " +
+					// 				customer_name;
+					// 			email.send({
+					// 				author: 112209,
+					// 				body: body,
+					// 				recipients: salesRep,
+					// 				subject: subject,
+					// 				cc: [
+					// 					"luke.forbes@mailplus.com.au",
+					// 					"lee.russell@mailplus.com.au",
+					// 				],
+					// 				relatedRecords: { entityId: customerInternalId },
+					// 			});
+					// 		}
+					// 	}
+					// } else if (leadSource == -4) {
+					// 	//Lead Source: Franchisee Generated
+
+					// 	/* 
+					// 		Create Sales Record
+					// 		Assign to Liam depending on the franchisee
+					// 		Assign to Franchisee Generated
+					// 		 */
+					// 	var salesRecord = record.create({
+					// 		type: "customrecord_sales",
+					// 	});
+
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_customer",
+					// 		value: customerInternalId,
+					// 	});
+
+					// 	if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_assigned",
+					// 			value: salesRep, //Assign to Sales Rep Assigned to Franchisee
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_campaign",
+					// 			value: 70, // Franchisee Generated
+					// 		});
+					// 	} else {
+
+
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_campaign",
+					// 			value: 90, // Illicium - 202507
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_assigned",
+					// 			value: 1917237, //Assign to Illicium X MailPlus
+					// 		});
+					// 	}
+
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_outcome",
+					// 		value: 20,
+					// 	});
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_callbackdate",
+					// 		value: date_now,
+					// 	});
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_callbacktime",
+					// 		value: time_now,
+					// 	});
+
+					// 	salesRecordInternalID = salesRecord.save({
+					// 		ignoreMandatoryFields: true,
+					// 	});
+
+					// 	if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
+					// 		var subject =
+					// 			"Sales HOT Lead - " +
+					// 			zee_text +
+					// 			" Franchisee Generated - " +
+					// 			entity_id +
+					// 			" " +
+					// 			customer_name;
+					// 		var cust_id_link =
+					// 			"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+					// 			customerInternalId;
+					// 		var body =
+					// 			"New lead entered into the system by Franchisee. \n Customer Name: " +
+					// 			entity_id +
+					// 			" " +
+					// 			customer_name +
+					// 			"\nLink: " +
+					// 			cust_id_link +
+					// 			"\nFranchisee: " +
+					// 			zee_text;
+
+					// 		email.send({
+					// 			author: 112209,
+					// 			body: body,
+					// 			recipients: 1809382,
+					// 			subject: subject,
+					// 			cc: ["aleyna.harnett@mailplus.com.au"],
+					// 			relatedRecords: { entityId: customerInternalId },
+					// 		});
+					// 	}
+					// } else if (leadSource == 285297) {
+					// 	//Lead Source: Inbound - Head Office Generated
+
+					// 	/* 
+					// 		Create Sales Record
+					// 		Assign to Sales Rep depending on the franchisee
+					// 		Assign to Field Sales
+					// 		 */
+					// 	var salesRecord = record.create({
+					// 		type: "customrecord_sales",
+					// 	});
+
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_customer",
+					// 		value: customerInternalId,
+					// 	});
+					// 	if (isNullorEmpty(campaignid)) {
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_campaign",
+					// 			value: 62, //Field Sales
+					// 		});
+					// 	} else {
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_campaign",
+					// 			value: campaignid, //Assign to the campaign selected from the Prospect Capture Page
+					// 		});
+					// 	}
+
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_assigned",
+					// 		value: salesRep,
+					// 	});
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_outcome",
+					// 		value: 20,
+					// 	});
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_callbackdate",
+					// 		value: date_now,
+					// 	});
+					// 	salesRecord.setValue({
+					// 		fieldId: "custrecord_sales_callbacktime",
+					// 		value: time_now,
+					// 	});
+
+					// 	salesRecordInternalID = salesRecord.save({
+					// 		ignoreMandatoryFields: true,
+					// 	});
+
+					// 	var subject =
+					// 		"Sales Head Office Generated - " +
+					// 		entity_id +
+					// 		" " +
+					// 		customer_name;
+					// 	var cust_id_link =
+					// 		"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+					// 		customerInternalId;
+					// 	var body =
+					// 		"New lead entered into the system by Head Office. \n Customer Name: " +
+					// 		entity_id +
+					// 		" " +
+					// 		customer_name +
+					// 		"\nLink: " +
+					// 		cust_id_link +
+					// 		"\nFranchisee: " +
+					// 		zee_text;
+
+					// 	email.send({
+					// 		author: 112209,
+					// 		body: body,
+					// 		recipients: salesRep,
+					// 		subject: subject,
+					// 		cc: [
+					// 			"luke.forbes@mailplus.com.au",
+					// 			"lee.russell@mailplus.com.au",
+					// 		],
+					// 		relatedRecords: { entityId: customerInternalId },
+					// 	});
+					// } else {
+					// 	if (!isNullorEmpty(campaignid)) {
+					// 		/* 
+					// 			Create Sales Record
+					// 			Assign to Sales Rep depending on the franchisee
+					// 			Assign to Digital Lead Campaign 
+					// 			 */
+					// 		var salesRecord = record.create({
+					// 			type: "customrecord_sales",
+					// 		});
+
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_customer",
+					// 			value: customerInternalId,
+					// 		});
+					// 		if (isNullorEmpty(campaignid)) {
+					// 			salesRecord.setValue({
+					// 				fieldId: "custrecord_sales_campaign",
+					// 				value: 67, //Digital Lead Campaign
+					// 			});
+					// 		} else {
+					// 			salesRecord.setValue({
+					// 				fieldId: "custrecord_sales_campaign",
+					// 				value: campaignid, //Assign to campaign selected from the Prospect Capture Paage
+					// 			});
+					// 		}
+
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_assigned",
+					// 			value: salesRep,
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_outcome",
+					// 			value: 20,
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_callbackdate",
+					// 			value: date_now,
+					// 		});
+					// 		salesRecord.setValue({
+					// 			fieldId: "custrecord_sales_callbacktime",
+					// 			value: time_now,
+					// 		});
+
+					// 		salesRecordInternalID = salesRecord.save({
+					// 			ignoreMandatoryFields: true,
+					// 		});
+
+					// 		var subject =
+					// 			"Sales HOT Lead - " + entity_id + " " + customer_name;
+					// 		var cust_id_link =
+					// 			"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+					// 			customerInternalId;
+					// 		var body =
+					// 			"New lead entered into the system. \n Customer Name: " +
+					// 			entity_id +
+					// 			" " +
+					// 			customer_name +
+					// 			"\nLink: " +
+					// 			cust_id_link +
+					// 			"\nFranchisee: " +
+					// 			zee_text;
+
+					// 		email.send({
+					// 			author: 112209,
+					// 			body: body,
+					// 			recipients: salesRep,
+					// 			subject: subject,
+					// 			cc: [
+					// 				"luke.forbes@mailplus.com.au",
+					// 				"lee.russell@mailplus.com.au",
+					// 			],
+					// 			relatedRecords: { entityId: customerInternalId },
+					// 		});
+					// 	}
+					// }
+
+					log.audit({
+						title: 'customerInternalId',
+						details: customerInternalId
+					})
+
+					log.audit({
+						title: 'salesRecordInternalID',
+						details: salesRecordInternalID
+					})
+
+
+					if (role != 1062 && role != 3 && role != 1032) { //If the user creating the lead is not a Sales Rep or System Admin or Administrator
+						var leadSalesReppToAssignJSON = {
+							"customerId": parseInt(customerInternalId),
+							"salesRecordId": parseInt(salesRecordInternalID)
+						}
+
+						//!Call Tim's script to assign the lead to a sales rep randomly. 
+						var leadSalesRepAssignedJSON = https.get({
+							url: 'https://1048144.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=2160&deploy=2&compid=1048144&ns-at=AAEJ7tMQ3VfSfXZtokK6wuyERCw4vIJ8YBmkKwc8nxv2kzikwgg&operation=assignCustomerToSalesRepsWithLeastLeads&requestParams=' + JSON.stringify(leadSalesReppToAssignJSON),
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json',
+							}
+						});
+
+						log.audit({
+							title: 'leadSalesRepAssignedJSON',
+							details: leadSalesRepAssignedJSON
+						})
+
+						leadSalesRepAssignedJSON = JSON.parse(leadSalesRepAssignedJSON.body);
+
+						log.audit({
+							title: 'New Lead Sales Rep Assigned JSON',
+							details: leadSalesRepAssignedJSON
+						})
+
+						salesRep = leadSalesRepAssignedJSON.internalid;
+						var leadSalesRepAssignedName = leadSalesRepAssignedJSON.entityid;
+						var leadSalesRepAssignedEmail = leadSalesRepAssignedJSON.email;
+					}
+
+					log.audit({
+						title: 'salesRep Assigned',
+						details: salesRep
+					})
+
+					//Update the Sales Record with the assigned sales rep
+					var updateSalesRecord = record.load({
+						type: 'customrecord_sales',
+						id: salesRecordInternalID
+					});
+					updateSalesRecord.setValue({
+						fieldId: 'custrecord_sales_assigned',
+						value: parseInt(salesRep)
+					});
+					lpoMainSubCustomerSalesRecordInternalId = updateSalesRecord.save();
+
+
+					var newCustomerRecord = record.load({
+						type: record.Type.LEAD,
+						id: newCustomerRecordId,
+						isDynamic: true,
+					});
+					newCustomerRecord.setValue({
+						fieldId: "custentity_mp_toll_salesrep",
+						value: salesRep,
+					});
+					newCustomerRecord.save({ ignoreMandatoryFields: true });
+
+
+					email.send({
+						author: 112209,
+						body: body,
+						recipients: salesRep,
+						subject: subject,
+						cc: [
+							"luke.forbes@mailplus.com.au",
+							"lee.russell@mailplus.com.au",
+						],
+						relatedRecords: { entityId: customerInternalId },
+					});
 
 				}
 			}
