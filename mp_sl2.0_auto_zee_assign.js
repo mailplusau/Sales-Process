@@ -694,25 +694,33 @@ define([
 						leadSource == 295896 ||
 						leadSource == 296333
 					)) {
+						//Lead Source: Head Office Generated
+						//Lead Source: Outsourced - Head Office Generated
+						//Lead Source: Outsourced - Head Office Validated
+
+						//Update 2024-08-01T01:54:36.751Z - Lead Entered by HO, the user will need to select the Campaign & Sales Rep from the Prospect Capture Form itself
+
 						salesRecord.setValue({
 							fieldId: "custrecord_sales_campaign",
 							value: campaignid, //Allocate to the campaign the user has selected from the Prospect Capture Form
 						});
-						var cust_id_link =
-							"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
-							customerInternalId;
-						body =
-							"New lead entered into the system. \n Customer Name: " +
-							entity_id +
-							" " +
-							customer_name +
-							"\nLink: " +
-							cust_id_link;
-						subject =
-							"Sales Head Office Generated Lead - " +
-							entity_id +
-							" " +
-							customer_name;
+						if (leadSource == 97943) {
+							var cust_id_link =
+								"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+								customerInternalId;
+							body =
+								"New lead entered into the system. \n Customer Name: " +
+								entity_id +
+								" " +
+								customer_name +
+								"\nLink: " +
+								cust_id_link;
+							subject =
+								"Sales Head Office Generated Lead - " +
+								entity_id +
+								" " +
+								customer_name;
+						}
 
 					} else if (leadSource == -4) {
 						if (!isNullorEmpty(zee_visisted_customer) || brochure_handed_over == 1) {
@@ -1282,17 +1290,19 @@ define([
 					newCustomerRecord.save({ ignoreMandatoryFields: true });
 
 
-					email.send({
-						author: 112209,
-						body: body,
-						recipients: salesRep,
-						subject: subject,
-						cc: [
-							"luke.forbes@mailplus.com.au",
-							"lee.russell@mailplus.com.au",
-						],
-						relatedRecords: { entityId: customerInternalId },
-					});
+					if (!isNullorEmpty(salesRep) && !isNullorEmpty(body) && !isNullorEmpty(subject)) {
+						email.send({
+							author: 112209,
+							body: body,
+							recipients: salesRep,
+							subject: subject,
+							cc: [
+								"luke.forbes@mailplus.com.au",
+								"lee.russell@mailplus.com.au",
+							],
+							relatedRecords: { entityId: customerInternalId },
+						});
+					}
 
 				}
 			}
