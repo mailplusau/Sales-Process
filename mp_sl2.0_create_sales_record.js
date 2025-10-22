@@ -214,6 +214,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     return true;
                 });
                 inlineHtml += '<option value="653718">Luke Forbes</option>';
+                inlineHtml += '<option value="1623053">Aleyna A Harnett</option>';
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 
@@ -251,14 +252,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                     var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                    if (salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70 || salesCampaignInternalId == 82 || salesCampaignInternalId == 90) {
+                    // if (salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70 || salesCampaignInternalId == 82 || salesCampaignInternalId == 90) {
                         if(existingCampaign == salesCampaignInternalId){
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" selected="selected">' + salesCampaignName + '</option>';
                         } else {
                             inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
                         }
                         // inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
-                    }
+                    // }
 
 
                     return true;

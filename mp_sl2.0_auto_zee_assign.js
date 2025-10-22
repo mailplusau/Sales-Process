@@ -26,8 +26,8 @@ define([
 	var userId = 0;
 	var zee = 0;
 
-	var salesRepsEmployeeIDs = [668712, 696160, 668711, 1862659]
-	var salesRepsNames = ["Belinda Urbani", "Kerina Helliwell", "Lee Russell", "Leonie Feata"];
+	var salesRepsEmployeeIDs = [668712, 696160, 668711]
+	var salesRepsNames = ["Belinda Urbani", "Kerina Helliwell", "Lee Russell"];
 
 	function onRequest(context) {
 		var baseURL = "https://system.na2.netsuite.com";
@@ -322,7 +322,7 @@ define([
 									siteAddressState == "ACT" ||
 									siteAddressState == "SA"
 								) {
-									salesRep = 1862659; //Leonie Feata
+									salesRep = 696160; //Kerina Helliwell
 								} else if (siteAddressState == "NSW") {
 									salesRep = 696160; //Kerina Helliwell
 								} else if (
@@ -507,7 +507,7 @@ define([
 										siteAddressState == "ACT" ||
 										siteAddressState == "SA"
 									) {
-										salesRep = 1862659; //Leonie Feata
+										salesRep = 696160; //Kerina Helliwell
 									} else if (siteAddressState == "NSW") {
 										salesRep = 696160; //Kerina Helliwell
 									} else if (
