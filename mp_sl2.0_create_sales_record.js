@@ -30,41 +30,13 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
             role = runtime.getCurrentUser().role;
 
             if (context.request.method === 'GET') {
-                var customerInternalId = context.request.parameters.recid;
+                var customerInternalId = context.request.parameters.customerId;
+                var salesRecordInternalId = context.request.parameters.salesRecordId;
                 var cust = context.request.parameters.cust;
 
                 if (isNullorEmpty(userId)) {
                     userId = null;
                 }
-
-                var form = ui.createForm({
-                    title: 'Internal Qualification Process'
-                });
-
-
-                var inlineHtml =
-                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/highcharts-more.js"></script><script src="https://code.highcharts.com/modules/solid-gauge.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}</style > ';
-
-                inlineHtml += loadingSection();
-                inlineHtml +=
-                    '<div class="container" style="padding-top: 3%;"><div id="alert" class="alert alert-danger fade in"></div>';
-
-                form.addField({
-                    id: 'custpage_customer_internal_id',
-                    type: ui.FieldType.TEXT,
-                    label: 'Table CSV'
-                }).updateDisplayType({
-                    displayType: ui.FieldDisplayType.HIDDEN
-                }).defaultValue = customerInternalId;
-
-                form.addField({
-                    id: 'custpage_button_clicked',
-                    type: ui.FieldType.TEXT,
-                    label: 'Table CSV'
-                }).updateDisplayType({
-                    displayType: ui.FieldDisplayType.HIDDEN
-                })
-
 
                 var customerRecord = record.load({
                     type: record.Type.CUSTOMER,
@@ -72,6 +44,9 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     isDynamic: true
                 });
 
+                var customerName = customerRecord.getValue({
+                    fieldId: 'companyname'
+                });
                 var customerStatus = customerRecord.getValue({
                     fieldId: 'entitystatus'
                 });
@@ -99,6 +74,54 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 var salesRep = partnerRecord.getValue({
                     fieldId: 'custentity_sales_rep_assigned'
                 })
+
+                var form = ui.createForm({
+                    title: 'Reassign Sales Record - ' + customerName
+                });
+
+                var salesRecord = record.load({
+                    type: 'customrecord_sales',
+                    id: salesRecordInternalId,
+                });
+
+                var existingCampaign = salesRecord.getValue({
+                    fieldId: 'custrecord_sales_campaign'
+                })
+
+
+                var inlineHtml =
+                    '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/highcharts-more.js"></script><script src="https://code.highcharts.com/modules/solid-gauge.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}</style > ';
+
+                inlineHtml += loadingSection();
+                inlineHtml +=
+                    '<div class="container" style=""><div id="alert" class="alert alert-danger fade in"></div>';
+
+                form.addField({
+                    id: 'custpage_customer_internal_id',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = customerInternalId;
+
+                form.addField({
+                    id: 'custpage_sales_record_internal_id',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                }).defaultValue = salesRecordInternalId;
+
+                form.addField({
+                    id: 'custpage_button_clicked',
+                    type: ui.FieldType.TEXT,
+                    label: 'Table CSV'
+                }).updateDisplayType({
+                    displayType: ui.FieldDisplayType.HIDDEN
+                })
+
+
+
 
                 //Search: SMC - Franchisees
                 var searchZees = search.load({
@@ -136,6 +159,7 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
 
                     return true;
                 });
+
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 
@@ -147,33 +171,50 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 inlineHtml += '<select id="sales_rep" class="form-control">';
                 inlineHtml += '<option></option>';
 
-                if (salesRep == '668711') {
-                    inlineHtml += '<option value="668711" selected>Lee Russell</option>';
-                    inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                    inlineHtml += '<option value="690145">David Gdanski</option>';
-                    inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                } else if (salesRep == '696160') {
-                    inlineHtml += '<option value="668711">Lee Russell</option>';
-                    inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
-                    inlineHtml += '<option value="690145">David Gdanski</option>';
-                    inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                } else if (salesRep == '690145') {
-                    inlineHtml += '<option value="668711">Lee Russell</option>';
-                    inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                    inlineHtml += '<option value="690145" selected>David Gdanski</option>';
-                    inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                } else if (salesRep == '668712') {
-                    inlineHtml += '<option value="668711">Lee Russell</option>';
-                    inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                    inlineHtml += '<option value="690145">David Gdanski</option>';
-                    inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
-                } else {
-                    inlineHtml += '<option value="668711">Lee Russell</option>';
-                    inlineHtml += '<option value="696160">Kerina Helliwell</option>';
-                    inlineHtml += '<option value="690145">David Gdanski</option>';
-                    inlineHtml += '<option value="668712">Belinda Urbani</option>';
-                }
+                // if (salesRep == '668711') {
+                //     inlineHtml += '<option value="668711" selected>Lee Russell</option>';
+                //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                //     inlineHtml += '<option value="690145">David Gdanski</option>';
+                //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                // } else if (salesRep == '696160') {
+                //     inlineHtml += '<option value="668711">Lee Russell</option>';
+                //     inlineHtml += '<option value="696160" selected>Kerina Helliwell</option>';
+                //     inlineHtml += '<option value="690145">David Gdanski</option>';
+                //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                // } else if (salesRep == '690145') {
+                //     inlineHtml += '<option value="668711">Lee Russell</option>';
+                //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                //     inlineHtml += '<option value="690145" selected>David Gdanski</option>';
+                //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                // } else if (salesRep == '668712') {
+                //     inlineHtml += '<option value="668711">Lee Russell</option>';
+                //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                //     inlineHtml += '<option value="690145">David Gdanski</option>';
+                //     inlineHtml += '<option value="668712" selected>Belinda Urbani</option>';
+                // } else {
+                //     inlineHtml += '<option value="668711">Lee Russell</option>';
+                //     inlineHtml += '<option value="696160">Kerina Helliwell</option>';
+                //     inlineHtml += '<option value="690145">David Gdanski</option>';
+                //     inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                // }
 
+                var searchedSalesTeam = search.load({
+                    id: "customsearch_active_employees_3",
+                });
+
+                searchedSalesTeam.run().each(function (searchResult_sales) {
+                    employee_id = searchResult_sales.getValue({
+                        name: "internalid",
+                    });
+                    employee_name = searchResult_sales.getValue({
+                        name: "entityid",
+                    });
+                    inlineHtml +=
+                        '<option value="' + employee_id + '">' + employee_name + "</option>";
+                    return true;
+                });
+                inlineHtml += '<option value="653718">Luke Forbes</option>';
+                inlineHtml += '<option value="1623053">Aleyna A Harnett</option>';
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 
@@ -211,9 +252,14 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                     var salesCampaignInternalId = salesCampaignSearchResultSet.getValue('internalid');
                     var salesCampaignName = salesCampaignSearchResultSet.getValue('name');
 
-                    if (salesCampaignInternalId == 69 || salesCampaignInternalId == 67 || salesCampaignInternalId == 62) {
-                        inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
-                    }
+                    // if (salesCampaignInternalId == 67 || salesCampaignInternalId == 62 || salesCampaignInternalId == 70 || salesCampaignInternalId == 82 || salesCampaignInternalId == 90) {
+                        if(existingCampaign == salesCampaignInternalId){
+                            inlineHtml += '<option value="' + salesCampaignInternalId + '" selected="selected">' + salesCampaignName + '</option>';
+                        } else {
+                            inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
+                        }
+                        // inlineHtml += '<option value="' + salesCampaignInternalId + '" >' + salesCampaignName + '</option>';
+                    // }
 
 
                     return true;
@@ -223,68 +269,69 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 inlineHtml += '</div></div></div></div>';
 
 
-                inlineHtml += '<div class="form-group container additional_lead_header_section hide">';
-                inlineHtml += '<div class="row">';
-                inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">Additional Lead Information</span></h4></div>';
-                inlineHtml += '</div>';
-                inlineHtml += '</div>';
+                // inlineHtml += '<div class="form-group container additional_lead_header_section hide">';
+                // inlineHtml += '<div class="row">';
+                // inlineHtml += '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">Additional Lead Information</span></h4></div>';
+                // inlineHtml += '</div>';
+                // inlineHtml += '</div>';
 
-                inlineHtml += '<div class="form-group container additional_lead_section hide">';
-                inlineHtml += '<div class="row">';
-                inlineHtml +=
-                    '<div class="col-xs-3 bau_div">';
-                inlineHtml += '<div class="input-group">';
-                inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">ABN</span>';
-                inlineHtml += '<input type="text" id="abn" class="form-control " value="' + customerABN + '" /></div></div>';
+                // inlineHtml += '<div class="form-group container additional_lead_section hide">';
+                // inlineHtml += '<div class="row">';
+                // inlineHtml +=
+                //     '<div class="col-xs-3 bau_div">';
+                // inlineHtml += '<div class="input-group">';
+                // inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">ABN</span>';
+                // inlineHtml += '<input type="text" id="abn" class="form-control " value="' + customerABN + '" /></div></div>';
 
-                inlineHtml +=
-                    '<div class="col-xs-3 lpo_div">';
-                inlineHtml += '<div class="input-group">';
-                inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">WEBSITE</span>';
-                inlineHtml += '<input type="url" id="website" class="form-control "  value="' + websiteURL + '"/></div></div>';
+                // inlineHtml +=
+                //     '<div class="col-xs-3 lpo_div">';
+                // inlineHtml += '<div class="input-group">';
+                // inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">WEBSITE</span>';
+                // inlineHtml += '<input type="url" id="website" class="form-control "  value="' + websiteURL + '"/></div></div>';
 
-                inlineHtml +=
-                    '<div class="col-xs-3 decline_div">';
-                inlineHtml += '<div class="input-group">';
-                inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">PHONE</span>';
-                inlineHtml += '<input type="phone" id="phone" class="form-control "  value="' + dayToDayPhone + '"/></div></div>';
+                // inlineHtml +=
+                //     '<div class="col-xs-3 decline_div">';
+                // inlineHtml += '<div class="input-group">';
+                // inlineHtml += '<span class="input-group-addon" id="date_signed_up_from_text">PHONE</span>';
+                // inlineHtml += '<input type="phone" id="phone" class="form-control "  value="' + dayToDayPhone + '"/></div></div>';
 
-                inlineHtml += '<div class="col-xs-3 carrier_div">';
-                inlineHtml += '<div class="input-group">';
-                inlineHtml +=
-                    '<span class="input-group-addon" id="carrier_text">CARRIER</span>';
-                inlineHtml += '<select id="carrier" class="form-control">';
-                inlineHtml += '<option></option>';
-                var carrierList = search.create({
-                    type: 'customlist_carrier',
-                    columns: [
-                        { name: 'internalId' },
-                        { name: 'name' }
-                    ]
-                });
+                // inlineHtml += '<div class="col-xs-3 carrier_div">';
+                // inlineHtml += '<div class="input-group">';
+                // inlineHtml +=
+                //     '<span class="input-group-addon" id="carrier_text">CARRIER</span>';
+                // inlineHtml += '<select id="carrier" class="form-control">';
+                // inlineHtml += '<option></option>';
+                // var carrierList = search.create({
+                //     type: 'customlist_carrier',
+                //     columns: [
+                //         { name: 'internalId' },
+                //         { name: 'name' }
+                //     ]
+                // });
 
-                carrierList.run().each(function (
-                    carrierListResultSet) {
+                // carrierList.run().each(function (
+                //     carrierListResultSet) {
 
-                    var carrierInternalId = carrierListResultSet.getValue('internalId');
-                    var carrierName = carrierListResultSet.getValue('name');
+                //     var carrierInternalId = carrierListResultSet.getValue('internalId');
+                //     var carrierName = carrierListResultSet.getValue('name');
 
-                    inlineHtml += '<option value="' + carrierInternalId + '" >' + carrierName + '</option>';
+                //     inlineHtml += '<option value="' + carrierInternalId + '" >' + carrierName + '</option>';
 
-                    return true;
-                });
-                inlineHtml += '</select>';
-                inlineHtml += '</div></div></div></div></br></br>';
+                //     return true;
+                // });
+                // inlineHtml += '</select>';
+                // inlineHtml += '</div></div></div></div></br></br>';
 
 
                 inlineHtml += '<div class="form-group container qualification_buttons hide">';
                 inlineHtml += '<div class="row">';
                 inlineHtml +=
-                    '<div class="col-xs-4 bau_div" style="text-align: center;"><input type="button" id="bau" class="form-control callback btn btn-success" value="BAU" /></div>';
+                    '<div class="col-xs-4 lpo_div" style="text-align: center;"></div>';
                 inlineHtml +=
-                    '<div class="col-xs-4 lpo_div" style="text-align: center;"><input type="button" id="lpo" class="form-control callback btn btn-success" value="LPO" /><p style="font-size: 12px;margin-top: 0px !important;">LPO Campaign will be automatically assigned to this lead.</p></div>';
+                    '<div class="col-xs-4 bau_div" style="text-align: center;"><input type="button" id="updateSalesRecord" class="form-control callback btn btn-success" value="UPDATE SALES RECORD" /></div>';
+
                 inlineHtml +=
-                    '<div class="col-xs-4 decline_div" style="text-align: center;"><input type="button" id="decline" class="form-control callback btn btn-danger" value="DECLINE" /><p style="font-size: 12px;margin-top: 0px !important;">Email will be sent with Decline Reason to Franchisee or LPO.</p></div>';
+                    '<div class="col-xs-4 decline_div" style="text-align: center;"></div>';
                 inlineHtml += '</div>';
                 inlineHtml += '</div>';
 
@@ -305,9 +352,20 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 context.response.writePage(form);
             } else {
                 var customer_id = context.request.parameters.custpage_customer_internal_id;
+                var sales_record_id = context.request.parameters.custpage_sales_record_internal_id;
                 var button_clicked = context.request.parameters.custpage_button_clicked;
 
+                var params = {
+                    customerId: parseInt(customer_id),
+                    callCenter: "T",
+                    salesRecordId: sales_record_id,
+                };
 
+                redirect.toSuitelet({
+                    scriptId: "customscript_sl_update_customer_tn_vue3",
+                    deploymentId: "customdeploy_sl_update_customer_tn_vue3",
+                    parameters: params
+                });
 
             }
         }

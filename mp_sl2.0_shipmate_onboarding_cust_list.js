@@ -42,6 +42,12 @@ define([
 				context.request.parameters.commence_date_from;
 			var commencement_last_date = context.request.parameters.commence_date_to;
 
+			var page_no = context.request.parameters.page_no;
+
+			if (isNullorEmpty(page_no)) {
+				page_no = "1";
+			}
+
 			if (isNullorEmpty(userId)) {
 				userId = null;
 			}
@@ -77,6 +83,8 @@ define([
 				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Create User Note</title><g id='notebook_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#000102FF' d='M8 2v19H6c-1.054 0-2-.95-2-2V4c0-1.054.95-2 2-2zm9 0c1.598 0 3 1.3 3 3v13c0 1.7-1.4 3-3 3h-7V2z'/></g></svg>";
 			var cancelTask =
 				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Cancel Customer</title><g id='close_circle_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#000102FF' d='M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2M9.879 8.464a1 1 0 0 0-1.498 1.32l.084.095 2.12 2.12-2.12 2.122a1 1 0 0 0 1.32 1.498l.094-.083L12 13.414l2.121 2.122a1 1 0 0 0 1.498-1.32l-.083-.095L13.414 12l2.122-2.121a1 1 0 0 0-1.32-1.498l-.095.083L12 10.586z'/></g></svg>";
+			var taskCancel =
+				"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Cancel Onboarding Task</title><g id='delete_2_fill' fill='none' fill-rule='evenodd'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#000102FF' d='M14.28 2a2 2 0 0 1 1.897 1.368L16.72 5H20a1 1 0 1 1 0 2l-.003.071-.867 12.143A3 3 0 0 1 16.138 22H7.862a3 3 0 0 1-2.992-2.786L4.003 7.07A1.01 1.01 0 0 1 4 7a1 1 0 0 1 0-2h3.28l.543-1.632A2 2 0 0 1 9.721 2zM9 10a1 1 0 0 0-.993.883L8 11v6a1 1 0 0 0 1.993.117L10 17v-6a1 1 0 0 0-1-1m6 0a1 1 0 0 0-1 1v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-1-1m-.72-6H9.72l-.333 1h5.226z'/></g></svg>";
 
 			inlineHtml +=
 				'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br>This page displays a list of customers who need to be onboarded to ShipMate.</br></br><b><u>For each customer, you can:</u></b><ul><li><b>' +
@@ -88,8 +96,10 @@ define([
 				" EDIT TASK</b>: Click this button to reschedule an existing onboarding call to a different date or time.</li><li><b>" +
 				completeTaskIcon +
 				" COMPLETED</b>: Click this button once you have finished the onboarding session with the customer.</li><li><b>" +
+				taskCancel +
+				" CANCEL TASK</b>: Click this button when the Onboarding session has been cancelled by the customer.</li><li><b>" +
 				cancelTask +
-				" CANCEL TASK</b>: Click this button to process the cancellation of the customer.</li></ul></div></br>";
+				" CANCEL CUSTOMER</b>: Click this button to process the cancellation of the customer.</li></ul></div></br>";
 
 			form
 				.addField({
@@ -104,6 +114,7 @@ define([
 			//Display the modal pop-up to edit the customer details
 			inlineHtml += updateCustomerModal();
 			inlineHtml += addUserNotesModal();
+			inlineHtml += cancelOnBoardingModal();
 
 			//Loading Section that gets displayed when the page is being loaded
 			inlineHtml += loadingSection();
@@ -126,12 +137,12 @@ define([
 				'<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
 			if (isNullorEmpty(commencement_start_date)) {
 				inlineHtml +=
-					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" style="width: 100%;position: initial;"/>';
 			} else {
 				inlineHtml +=
 					'<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
 					commencement_start_date +
-					'"/>';
+					'" style="width: 100%;position: initial;"/>';
 			}
 
 			inlineHtml += "</div></div>";
@@ -142,12 +153,12 @@ define([
 				'<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
 			if (isNullorEmpty(commencement_last_date)) {
 				inlineHtml +=
-					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" style="width: 100%;position: initial;">';
 			} else {
 				inlineHtml +=
 					'<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
 					commencement_last_date +
-					'">';
+					'" style="width: 100%;position: initial;">';
 			}
 
 			inlineHtml += "</div></div></div></div>";
@@ -182,6 +193,157 @@ define([
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
 			inlineHtml += spacing();
+
+			log.debug({
+				title: "zee_id",
+				details: zee_id,
+			});
+
+			log.debug({
+				title: "userId",
+				details: userId,
+			});
+
+
+
+			//Search Name: ShipMate Onboarding Required - Customer List
+			var shipMateOnboardingRequiredSearch = search.load({
+				type: "customer",
+				id: "customsearch_shipmate_onboarding_tasks",
+			});
+
+			// if (!isNullorEmpty(zee_id)) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "partner",
+			// 			join: null,
+			// 			operator: search.Operator.IS,
+			// 			values: zee_id,
+			// 		})
+			// 	);
+			// }
+
+			// if (!isNullorEmpty(userId) && role != 3) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_salesrep",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.IS,
+			// 			values: userId,
+			// 		})
+			// 	);
+			// }
+
+			// if (
+			// 	!isNullorEmpty(commencement_start_date) &&
+			// 	!isNullorEmpty(commencement_last_date)
+			// ) {
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_comm_date",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.ONORAFTER,
+			// 			values: commencement_start_date,
+			// 		})
+			// 	);
+
+			// 	shipMateOnboardingRequiredSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_comm_date",
+			// 			join: "custrecord_customer",
+			// 			operator: search.Operator.ONORBEFORE,
+			// 			values: commencement_last_date,
+			// 		})
+			// 	);
+			// }
+
+			log.debug({
+				title: "shipMateOnboardingRequiredSearch.filters",
+				details: shipMateOnboardingRequiredSearch.filters,
+			});
+
+			var shipMateRequiredCount =
+				shipMateOnboardingRequiredSearch.runPaged().count;
+
+			log.debug({
+				title: 'shipMateRequiredCount',
+				details: shipMateRequiredCount
+			})
+
+			var totalPageCount =
+				parseInt(shipMateRequiredCount / 50) + 1;
+
+			var divBreak = Math.ceil(12 / totalPageCount);
+
+			log.debug({
+				title: 'totalPageCount',
+				details: totalPageCount
+			})
+
+			inlineHtml +=
+				'<div class="form-group container zee_available_buttons_section hide">';
+			inlineHtml += '<div class="row">';
+
+			inlineHtml +=
+				'<div class="col-xs-12" style="text-align: center;font-size: 14px">Pages: </br></div>';
+
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
+			inlineHtml +=
+				'<div class="form-group container zee_available_buttons_section hide">';
+			inlineHtml += '<div class="row">';
+
+			var rangeStart = 0;
+			var rangeEnd = 0;
+
+			for (var i = 0; i < totalPageCount; i++) {
+				if (
+					i == totalPageCount - 1 ||
+					shipMateRequiredCount < 50
+				) {
+					if (shipMateRequiredCount < 50) {
+					} else {
+						rangeStart = rangeEnd;
+					}
+					rangeEnd = shipMateRequiredCount;
+				} else {
+					rangeStart = (parseInt(i + 1) - 1) * 50;
+					if (rangeStart != 50) {
+						rangeEnd = rangeStart + 50;
+					} else {
+						rangeEnd = shipMateRequiredCount - rangeStart - 1;
+						if (rangeEnd > 50) {
+							rangeEnd = parseInt(i + 1) * 50;
+						}
+					}
+				}
+				if (page_no == i + 1) {
+					inlineHtml +=
+						'<div class="col-xs-' +
+						divBreak +
+						'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;background-color:#095C7B !important;" value="' +
+						(i + 1) +
+						'" class="form-control btn btn-info page_number" data-id="' +
+						(i + 1) +
+						'" /></br></div>';
+				} else {
+					inlineHtml +=
+						'<div class="col-xs-' +
+						divBreak +
+						'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
+						(i + 1) +
+						'" class="form-control btn btn-info page_number" data-id="' +
+						(i + 1) +
+						'" /></br></div>';
+				}
+			}
+			inlineHtml += "</div>";
+			inlineHtml += "</div>";
+
+			var searchRangeStart = (parseInt(page_no) - 1) * 51;
+			var searchRangeEnd = searchRangeStart + 50;
+
 			inlineHtml += tabsSection();
 
 			//Button to reload the page when the filters have been selected
@@ -190,6 +352,25 @@ define([
 			//   label: 'Submit Search',
 			//   functionName: 'addFilters()'
 			// });
+
+			form
+				.addField({
+					id: "custpage_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				}).defaultValue = page_no;
+			form
+				.addField({
+					id: "custpage_total_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Total Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				});
 
 			form
 				.addField({
@@ -219,8 +400,6 @@ define([
 			'<div id="myModal" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888;/* width: 80%; */left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h3 class="modal-title" id="modal-title">ShipMate Onboarding Task</h3></div>';
 
 		inlineHtml += '<div class="modal-body" style="padding: 2px 16px;">';
-
-		inlineHtml += spacing();
 
 		inlineHtml += '<div class="form-group container row_call_back">';
 		inlineHtml += '<div class="row">';
@@ -279,6 +458,42 @@ define([
 
 		inlineHtml +=
 			'</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="Save User Notes" class="form-control btn-primary" id="createNote" style="background-color: #095C7B; border-radius: 30px;"/></div></div></div>';
+
+		return inlineHtml;
+	}
+
+	/*
+	 * PURPOSE : HTML code to generate the Modal Pop-up
+	 *  PARAMS :  -
+	 * RETURNS : HTML
+	 *   NOTES :
+	 */
+	function cancelOnBoardingModal() {
+		var inlineHtml =
+			'<div id="myModalCancelOnboarding" class="modal" style="display: none; position: fixed; z-index: 1; padding-top: 100px;left: 0;top: 0;width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); "><div class="modal-content" style="position: absolute;transform: translate(-50%, -50%);background-color: #fefefe;/* margin: auto; *//* padding: 0; */border: 1px solid #888;/* width: 80%; */left: 50%;top: 50%;/* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */-webkit-animation-name: animatetop;-webkit-animation-duration: 0.4s;animation-name: animatetop;animation-duration: 0.4s;"><div class="modal-header" style="padding: 2px 16px;text-align: center;"><span class="close" style="color: black;float: right;font-size: 28px;font-weight: bold;"">&times;</span><h3 class="modal-title" id="modal-title">Cancel Onboarding</h3></div>';
+
+		inlineHtml += '<div class="modal-body" style="padding: 2px 16px;">';
+
+		inlineHtml += '<div class="form-group container row_call_back">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml +=
+			'<input type="text" id="task_id" value="" hidden/><input type="text" id="customer_id" value="" hidden/>';
+
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div class="form-group container row_call_back">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml +=
+			'<div class="col-xs-12 task_notes"><div class="input-group"><span class="input-group-addon">NOTES </span><textarea class="form-control cancelOnboardingNotes" rows="4" cols="50"></textarea></div></div>';
+
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'</div><div class="modal-footer" style="padding: 2px 16px;"><input type="button" value="Cancel Onboarding" class="form-control btn-danger" id="cancelOnBoarding" style="border-radius: 30px;"/></div></div></div>';
 
 		return inlineHtml;
 	}

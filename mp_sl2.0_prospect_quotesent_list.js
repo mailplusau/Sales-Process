@@ -67,6 +67,11 @@ define([
 
 			var page_no = context.request.parameters.page_no;
 
+			var company_name_text = context.request.parameters.company_name_text;
+			if (isNullorEmpty(company_name_text)) {
+				company_name_text = "";
+			}
+
 			if (isNullorEmpty(page_no)) {
 				page_no = "1";
 			}
@@ -362,7 +367,7 @@ define([
 				custStage,
 				source,
 				custStatus,
-				sales_activity_notes
+				sales_activity_notes, company_name_text
 			);
 
 			inlineHtml += dateFilterSection(
@@ -402,7 +407,7 @@ define([
 				start_date,
 				last_date,
 				page_no,
-				custStatus
+				custStatus, company_name_text
 			);
 
 			inlineHtml += '<div id="container"></div>';
@@ -718,7 +723,7 @@ define([
 		inlineHtml += '<div class="col-xs-6 date_from">';
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
-			'<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM <span class="mandatory" style="font-size: 16px">*</span></span>';
+			'<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM </span>';
 		if (isNullorEmpty(start_date)) {
 			inlineHtml +=
 				'<input id="date_from" class="form-control date_from" type="date" />';
@@ -734,7 +739,7 @@ define([
 		inlineHtml += '<div class="col-xs-6 date_to">';
 		inlineHtml += '<div class="input-group">';
 		inlineHtml +=
-			'<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO <span class="mandatory" style="font-size: 16px">*</span></span>';
+			'<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO </span>';
 		if (isNullorEmpty(last_date)) {
 			inlineHtml +=
 				'<input id="date_to" class="form-control date_to" type="date">';
@@ -809,7 +814,7 @@ define([
 		custStage,
 		source,
 		custStatus,
-		sales_activity_notes
+		sales_activity_notes, company_name_text
 	) {
 		log.debug({
 			title: "salesCampaign",
@@ -907,13 +912,20 @@ define([
 		if (custStage == 1) {
 			inlineHtml += '<option value="1" selected>SUSPECTS</option>';
 			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
 		} else if (custStage == 2) {
 			inlineHtml += '<option value="1">SUSPECTS</option>';
 			inlineHtml += '<option value="2" selected>PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
+		} else if (custStage == 3) {
+			inlineHtml += '<option value="1">SUSPECTS</option>';
+			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3" selected>CUSTOMERS</option>';
 		} else {
 			inlineHtml += '<option value="0"></option>';
 			inlineHtml += '<option value="1">SUSPECTS</option>';
 			inlineHtml += '<option value="2">PROSPECTS</option>';
+			inlineHtml += '<option value="3">CUSTOMERS</option>';
 		}
 
 		inlineHtml += "</select>";
@@ -1039,10 +1051,39 @@ define([
 			} else {
 				inlineHtml += '<option value="35">PROSPECT - NO ANSWER</option>';
 			}
+
+		} else if (custStage == "3") {
+			if (custStatus == "73") {
+				inlineHtml +=
+					'<option value="73" selected>CUSTOMER - SHIPMATE PENDING</option>';
+			} else {
+				inlineHtml += '<option value="73">CUSTOMER - SHIPMATE PENDING</option>';
+			}
 		}
 
 		inlineHtml += "</select>";
 		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml +=
+			'<div class="form-group container cust_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;font-size: 12px;border-radius: 30px;">COMPANY NAME - FILTER</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container cust_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml += '<div class="col-xs-12 source_div">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="source_text">COMPANY NAME (CONTAINS)</span>';
+		inlineHtml +=
+			'<input type="text" id="company_name_text" class="form-control" style="width: 100%" value="' + company_name_text + '">';
+		inlineHtml += "</div></div>";
+		inlineHtml += "</div ></div > ";
 
 		inlineHtml +=
 			'<div class="form-group container cust_dropdown_section hide">';
@@ -1319,7 +1360,7 @@ define([
 		from_date,
 		to_date,
 		page_no,
-		custStatus
+		custStatus, company_name_text
 	) {
 		var zeeArray = [];
 		if (!isNullorEmpty(zee)) {
@@ -1396,6 +1437,16 @@ define([
 				id: "customsearch_web_leads_suspects",
 			});
 
+			if (!isNullorEmpty(company_name_text)) {
+				suspectsSearch.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.CONTAINS,
+						values: company_name_text,
+					}));
+			}
+
 			if (!isNullorEmpty(zeeArray)) {
 				suspectsSearch.filters.push(
 					search.createFilter({
@@ -1416,21 +1467,22 @@ define([
 						values: paramUserId,
 					})
 				);
-			} else if (
-				role != 3 &&
-				isNullorEmpty(paramUserId) &&
-				userId != 653718 &&
-				userId != 668711
-			) {
-				suspectsSearch.filters.push(
-					search.createFilter({
-						name: "custrecord_sales_assigned",
-						join: "custrecord_sales_customer",
-						operator: search.Operator.IS,
-						values: userId,
-					})
-				);
 			}
+			// else if (
+			// 	role != 3 &&
+			// 	isNullorEmpty(paramUserId) &&
+			// 	userId != 653718 &&
+			// 	userId != 668711
+			// ) {
+			// 	suspectsSearch.filters.push(
+			// 		search.createFilter({
+			// 			name: "custrecord_sales_assigned",
+			// 			join: "custrecord_sales_customer",
+			// 			operator: search.Operator.IS,
+			// 			values: userId,
+			// 		})
+			// 	);
+			// }
 
 			if (!isNullorEmpty(salesCampaignArray)) {
 				suspectsSearch.filters.push(
@@ -1553,12 +1605,12 @@ define([
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
-						'" style="background-color: #eaf143; color: #103D39;"/></br></div>';
+						'" style="background-color: #eaf143; color: #103D39;border-radius:30px;"/></br></div>';
 				} else {
 					inlineHtml +=
 						'<div class="col-xs-' +
 						divBreak +
-						'" style="text-align: center;"><input type="button" value="' +
+						'" style="text-align: center;"><input type="button" style="border-radius:30px;" value="' +
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
@@ -1570,7 +1622,7 @@ define([
 
 			inlineHtml += dataTable("suspects");
 			// inlineHtml += '</div>';
-		} else if (custStage == 2) {
+		} else if (custStage == 2 || custStage == 3) {
 			// inlineHtml += '<div role="tabpanel" class="tab-pane active" id="prospects">';
 			// inlineHtml += '<figure class="highcharts-figure">';
 			// inlineHtml += '</figure><br></br>';
@@ -1580,6 +1632,17 @@ define([
 				type: "customer",
 				id: "customsearch_web_leads_prosp_quote_sent",
 			});
+
+			if (!isNullorEmpty(company_name_text)) {
+				custListCommenceTodayResults.filters.push(
+					search.createFilter({
+						name: "companyname",
+						join: null,
+						operator: search.Operator.CONTAINS,
+						values: company_name_text,
+					}));
+			}
+
 
 			if (!isNullorEmpty(zee)) {
 				custListCommenceTodayResults.filters.push(
@@ -1635,6 +1698,15 @@ define([
 						join: null,
 						operator: search.Operator.IS,
 						values: custStatus,
+					})
+				);
+			} else if (custStage == 3 && custStatus == "0") {
+				custListCommenceTodayResults.filters.push(
+					search.createFilter({
+						name: "entitystatus",
+						join: null,
+						operator: search.Operator.IS,
+						values: 73,
 					})
 				);
 			}
@@ -1739,12 +1811,12 @@ define([
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +
-						'" style="background-color: #eaf143; color: #103D39;"/></br></div>';
+						'" style="background-color: #eaf143; color: #103D39;border-radius:30px;"/></br></div>';
 				} else {
 					inlineHtml +=
 						'<div class="col-xs-' +
 						divBreak +
-						'" style="text-align: center;"><input type="button" value="' +
+						'" style="text-align: center;"><input type="button" style="border-radius:30px;" value="' +
 						(i + 1) +
 						'" class="form-control btn btn-info page_number" data-id="' +
 						(i + 1) +

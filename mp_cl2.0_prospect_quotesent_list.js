@@ -134,7 +134,7 @@ define([
 		$(".lead_entered_label_section").removeClass("hide");
 		$(".lead_entered_div").removeClass("hide");
 		$(".modified_date_div").removeClass("hide");
-		$(".salesactivitynotes_div").removeClass("hide");
+		// $(".salesactivitynotes_div").removeClass("hide");
 
 		$(".loading_section").addClass("hide");
 
@@ -288,6 +288,7 @@ define([
 			parentLPOInternalId = $("#parent_lpo").val();
 			zee = $("#zee_dropdown").val();
 			sales_activity_notes = $("#sales_activity_notes").val();
+			var company_name_text = $("#company_name_text").val();
 
 			var date_from = $("#date_from").val();
 			var date_to = $("#date_to").val();
@@ -331,7 +332,8 @@ define([
 				"&status=" +
 				custStatus +
 				"&sales_activity_notes=" +
-				sales_activity_notes;
+				sales_activity_notes + '&company_name_text=' +
+				company_name_text;
 
 			window.location.href = url;
 		});
@@ -348,6 +350,7 @@ define([
 			parentLPOInternalId = $("#parent_lpo").val();
 			zee = $("#zee_dropdown").val();
 			sales_activity_notes = $("#sales_activity_notes").val();
+			var company_name_text = $("#company_name_text").val();
 
 			var date_from = $("#date_from").val();
 			var date_to = $("#date_to").val();
@@ -375,7 +378,8 @@ define([
 				"&status=" +
 				custStatus +
 				"&sales_activity_notes=" +
-				sales_activity_notes;
+				sales_activity_notes + '&company_name_text=' +
+				company_name_text;
 
 			window.location.href = url;
 		});
@@ -1339,7 +1343,7 @@ define([
 			scrollCollapse: true,
 			// scrollY: '200px',
 			pageLength: 1000,
-			order: [[12, "des"]],
+			order: [[11, "des"]],
 			layout: {
 				topStart: {
 					buttons: [
@@ -1387,14 +1391,13 @@ define([
 				},
 			},
 			columns: [
-				{
-					title: "Expand",
-					className: "dt-control",
-					orderable: false,
-					data: null,
-					defaultContent:
-						'<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
-				},
+				// {
+				// 	title: "Expand",
+				// 	className: "dt-control",
+				// 	orderable: false,
+				// 	data: null,
+				// 	defaultContent: "", //0
+				// },
 				{
 					title: "LINK", //1
 				},
@@ -1464,23 +1467,20 @@ define([
 				{
 					title: "Premium Activated", //23
 				},
-				{
-					title: "Child", //24
-				},
+				// {
+				// 	title: "Child", //24
+				// },
 			],
 			columnDefs: [
 				{
-					targets: [3, 4, 5, 6, 7, 8, 12, 13, 14, 21, 22, 23],
+					targets: [2, 3, 4, 5, 6, 7, 11, 12, 13, 20, 21, 22],
 					className: "bolded",
 				},
 				{
-					targets: [2, 15, 16, 17, 18, 19, 20, 24],
+					targets: [1, 14, 15, 16, 17, 18, 19],
 					visible: false,
 				},
-				{
-					targets: [0, 1],
-					className: "col-xs-2",
-				},
+
 			],
 			rowCallback: function (row, data, index) {
 				// if (!isNullorEmpty(data[10])) {
@@ -1515,7 +1515,7 @@ define([
 			pageLength: 1000,
 			scrollCollapse: true,
 			// scrollY: '200px',
-			order: [[2, "asc"]],
+			order: [[1, "asc"]],
 			layout: {
 				topStart: {
 					buttons: [
@@ -1563,14 +1563,13 @@ define([
 				},
 			},
 			columns: [
-				{
-					title: "Expand",
-					className: "dt-control",
-					orderable: false,
-					data: null,
-					defaultContent:
-						'<button type="button" class="btn btn-primary expand-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z"><path></svg></button>', //0
-				},
+				// {
+				// 	title: "Expand",
+				// 	className: "dt-control",
+				// 	orderable: false,
+				// 	data: null,
+				// 	defaultContent: "", //0
+				// },
 				{
 					title: "LINK", //1
 				},
@@ -1637,21 +1636,17 @@ define([
 				{
 					title: "Premium Activated", //22
 				},
-				{
-					title: "Child", //23
-				},
+				// {
+				// 	title: "Child", //23
+				// },
 			],
 			columnDefs: [
 				{
-					targets: [5],
-					className: "col-xs-2",
-				},
-				{
-					targets: [2, 4, 5, 6, 7, 8, 9, 20, 21, 22],
+					targets: [1, 3, 4, 5, 6, 7, 8, 19, 20, 21],
 					className: "bolded",
 				},
 				{
-					targets: [3, 13, 18, 15, 16, 17, 19, 23],
+					targets: [2, 12, 17, 14, 15, 16, 18],
 					visible: false,
 				},
 			],
@@ -1964,89 +1959,89 @@ define([
 						join: "partner",
 					});
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Suspects - Activity List
-						var suspectActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_9",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Suspects - Activity List
+					// 	var suspectActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_9",
+					// 	});
 
-						suspectActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	suspectActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var suspectChildDataSet = [];
+					// 	var suspectChildDataSet = [];
 
-						suspectActivityListSearch
-							.run()
-							.each(function (suspectActivityListSearchResultSet) {
-								var activityInternalID =
-									suspectActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									suspectActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle = suspectActivityListSearchResultSet.getValue(
-									{
-										name: "title",
-										join: "activity",
-									}
-								);
-								if (
-									isNullorEmpty(
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	suspectActivityListSearch
+					// 		.run()
+					// 		.each(function (suspectActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle = suspectActivityListSearchResultSet.getValue(
+					// 				{
+					// 					name: "title",
+					// 					join: "activity",
+					// 				}
+					// 			);
+					// 			if (
+					// 				isNullorEmpty(
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									suspectActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								if (!isNullorEmpty(activityTitle)) {
-									suspectChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				suspectChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								return true;
-							});
-					} else {
-						var suspectChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var suspectChildDataSet = [];
+					// }
 
-					console.log(
-						"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
-					);
+					// console.log(
+					// 	"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
+					// );
 
 					debt_set4.push({
 						custInternalID: custInternalID,
@@ -2075,7 +2070,7 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: suspectChildDataSet,
+						// child: suspectChildDataSet,
 					});
 				}
 			} else {
@@ -2196,89 +2191,89 @@ define([
 						join: "partner",
 					});
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Suspects - Activity List
-						var suspectActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_9",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Suspects - Activity List
+					// 	var suspectActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_9",
+					// 	});
 
-						suspectActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	suspectActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var suspectChildDataSet = [];
+					// 	var suspectChildDataSet = [];
 
-						suspectActivityListSearch
-							.run()
-							.each(function (suspectActivityListSearchResultSet) {
-								var activityInternalID =
-									suspectActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									suspectActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle = suspectActivityListSearchResultSet.getValue(
-									{
-										name: "title",
-										join: "activity",
-									}
-								);
-								if (
-									isNullorEmpty(
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										suspectActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	suspectActivityListSearch
+					// 		.run()
+					// 		.each(function (suspectActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle = suspectActivityListSearchResultSet.getValue(
+					// 				{
+					// 					name: "title",
+					// 					join: "activity",
+					// 				}
+					// 			);
+					// 			if (
+					// 				isNullorEmpty(
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					suspectActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									suspectActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				suspectActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								if (!isNullorEmpty(activityTitle)) {
-									suspectChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				suspectChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								return true;
-							});
-					} else {
-						var suspectChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var suspectChildDataSet = [];
+					// }
 
-					console.log(
-						"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
-					);
+					// console.log(
+					// 	"suspectChildDataSet: " + JSON.stringify(suspectChildDataSet)
+					// );
 
 					debt_set4.push({
 						custInternalID: custInternalID,
@@ -2307,14 +2302,14 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: suspectChildDataSet,
+						// child: suspectChildDataSet,
 					});
 
 					return true;
 				});
 				console.log(debt_set4);
 			}
-		} else if (custStage == "2") {
+		} else if (custStage == "2" || custStage == "3") {
 			//Website Leads - Prospect Quote Sent
 			var custListCommenceTodayResults = search.load({
 				type: "customer",
@@ -2591,98 +2586,98 @@ define([
 					}
 					// }
 
-					if (sales_activity_notes == 1) {
-						//Website Leads - Prospect Quote Sent - Activity List
-						var prospectQuoteSentActivityListSearch = search.load({
-							type: "customer",
-							id: "customsearch_web_leads_prosp_quote_sen_8",
-						});
+					// if (sales_activity_notes == 1) {
+					// 	//Website Leads - Prospect Quote Sent - Activity List
+					// 	var prospectQuoteSentActivityListSearch = search.load({
+					// 		type: "customer",
+					// 		id: "customsearch_web_leads_prosp_quote_sen_8",
+					// 	});
 
-						prospectQuoteSentActivityListSearch.filters.push(
-							search.createFilter({
-								name: "internalid",
-								join: null,
-								operator: search.Operator.ANYOF,
-								values: custInternalID,
-							})
-						);
+					// 	prospectQuoteSentActivityListSearch.filters.push(
+					// 		search.createFilter({
+					// 			name: "internalid",
+					// 			join: null,
+					// 			operator: search.Operator.ANYOF,
+					// 			values: custInternalID,
+					// 		})
+					// 	);
 
-						var prospectQuoteChildDataSet = [];
+					// 	var prospectQuoteChildDataSet = [];
 
-						prospectQuoteSentActivityListSearch
-							.run()
-							.each(function (prospectQuoteSentActivityListSearchResultSet) {
-								var activityInternalID =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "internalid",
-										join: "activity",
-									});
-								var activityStartDate =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "startdate",
-										join: "activity",
-									});
-								var activityTitle =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "title",
-										join: "activity",
-									});
-								if (
-									isNullorEmpty(
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										})
-									)
-								) {
-									var activityOrganiser =
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "assigned",
-											join: "activity",
-										});
-								} else {
-									var activityOrganiser =
-										prospectQuoteSentActivityListSearchResultSet.getText({
-											name: "custevent_organiser",
-											join: "activity",
-										});
-								}
+					// 	prospectQuoteSentActivityListSearch
+					// 		.run()
+					// 		.each(function (prospectQuoteSentActivityListSearchResultSet) {
+					// 			var activityInternalID =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "internalid",
+					// 					join: "activity",
+					// 				});
+					// 			var activityStartDate =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "startdate",
+					// 					join: "activity",
+					// 				});
+					// 			var activityTitle =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "title",
+					// 					join: "activity",
+					// 				});
+					// 			if (
+					// 				isNullorEmpty(
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					})
+					// 				)
+					// 			) {
+					// 				var activityOrganiser =
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "assigned",
+					// 						join: "activity",
+					// 					});
+					// 			} else {
+					// 				var activityOrganiser =
+					// 					prospectQuoteSentActivityListSearchResultSet.getText({
+					// 						name: "custevent_organiser",
+					// 						join: "activity",
+					// 					});
+					// 			}
 
-								var activityMessage =
-									prospectQuoteSentActivityListSearchResultSet.getValue({
-										name: "message",
-										join: "activity",
-									});
+					// 			var activityMessage =
+					// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+					// 					name: "message",
+					// 					join: "activity",
+					// 				});
 
-								console.log("activityInternalID: " + activityInternalID);
-								console.log("activityTitle: " + activityTitle);
-								console.log("activityMessage: " + activityMessage);
+					// 			console.log("activityInternalID: " + activityInternalID);
+					// 			console.log("activityTitle: " + activityTitle);
+					// 			console.log("activityMessage: " + activityMessage);
 
-								if (!isNullorEmpty(activityTitle)) {
-									prospectQuoteChildDataSet.push({
-										activityInternalID: activityInternalID,
-										activityStartDate: activityStartDate,
-										activityTitle: activityTitle,
-										activityOrganiser: activityOrganiser,
-										activityMessage: activityMessage,
-									});
-								}
+					// 			if (!isNullorEmpty(activityTitle)) {
+					// 				prospectQuoteChildDataSet.push({
+					// 					activityInternalID: activityInternalID,
+					// 					activityStartDate: activityStartDate,
+					// 					activityTitle: activityTitle,
+					// 					activityOrganiser: activityOrganiser,
+					// 					activityMessage: activityMessage,
+					// 				});
+					// 			}
 
-								console.log(
-									"prospectQuoteChildDataSet: " +
-										JSON.stringify(prospectQuoteChildDataSet)
-								);
+					// 			console.log(
+					// 				"prospectQuoteChildDataSet: " +
+					// 					JSON.stringify(prospectQuoteChildDataSet)
+					// 			);
 
-								return true;
-							});
-					} else {
-						var prospectQuoteChildDataSet = [];
-					}
+					// 			return true;
+					// 		});
+					// } else {
+					// 	var prospectQuoteChildDataSet = [];
+					// }
 
-					console.log(
-						"prospectQuoteChildDataSet: " +
-							JSON.stringify(prospectQuoteChildDataSet)
-					);
+					// console.log(
+					// 	"prospectQuoteChildDataSet: " +
+					// 		JSON.stringify(prospectQuoteChildDataSet)
+					// );
 
 					debt_set.push({
 						custInternalID: custInternalID,
@@ -2712,7 +2707,7 @@ define([
 						zeeMpExpActivated: zeeMpExpActivated,
 						zeeMPStdActivated: zeeMPStdActivated,
 						zeeMPPrmActivated: zeeMPPrmActivated,
-						child: prospectQuoteChildDataSet,
+						// child: prospectQuoteChildDataSet,
 					});
 				}
 			} else {
@@ -2857,98 +2852,98 @@ define([
 						}
 						// }
 
-						if (sales_activity_notes == 1) {
-							//Website Leads - Prospect Quote Sent - Activity List
-							var prospectQuoteSentActivityListSearch = search.load({
-								type: "customer",
-								id: "customsearch_web_leads_prosp_quote_sen_8",
-							});
+						// if (sales_activity_notes == 1) {
+						// 	//Website Leads - Prospect Quote Sent - Activity List
+						// 	var prospectQuoteSentActivityListSearch = search.load({
+						// 		type: "customer",
+						// 		id: "customsearch_web_leads_prosp_quote_sen_8",
+						// 	});
 
-							prospectQuoteSentActivityListSearch.filters.push(
-								search.createFilter({
-									name: "internalid",
-									join: null,
-									operator: search.Operator.ANYOF,
-									values: custInternalID,
-								})
-							);
+						// 	prospectQuoteSentActivityListSearch.filters.push(
+						// 		search.createFilter({
+						// 			name: "internalid",
+						// 			join: null,
+						// 			operator: search.Operator.ANYOF,
+						// 			values: custInternalID,
+						// 		})
+						// 	);
 
-							var prospectQuoteChildDataSet = [];
+						// 	var prospectQuoteChildDataSet = [];
 
-							prospectQuoteSentActivityListSearch
-								.run()
-								.each(function (prospectQuoteSentActivityListSearchResultSet) {
-									var activityInternalID =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "internalid",
-											join: "activity",
-										});
-									var activityStartDate =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "startdate",
-											join: "activity",
-										});
-									var activityTitle =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "title",
-											join: "activity",
-										});
-									if (
-										isNullorEmpty(
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "custevent_organiser",
-												join: "activity",
-											})
-										)
-									) {
-										var activityOrganiser =
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "assigned",
-												join: "activity",
-											});
-									} else {
-										var activityOrganiser =
-											prospectQuoteSentActivityListSearchResultSet.getText({
-												name: "custevent_organiser",
-												join: "activity",
-											});
-									}
+						// 	prospectQuoteSentActivityListSearch
+						// 		.run()
+						// 		.each(function (prospectQuoteSentActivityListSearchResultSet) {
+						// 			var activityInternalID =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "internalid",
+						// 					join: "activity",
+						// 				});
+						// 			var activityStartDate =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "startdate",
+						// 					join: "activity",
+						// 				});
+						// 			var activityTitle =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "title",
+						// 					join: "activity",
+						// 				});
+						// 			if (
+						// 				isNullorEmpty(
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "custevent_organiser",
+						// 						join: "activity",
+						// 					})
+						// 				)
+						// 			) {
+						// 				var activityOrganiser =
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "assigned",
+						// 						join: "activity",
+						// 					});
+						// 			} else {
+						// 				var activityOrganiser =
+						// 					prospectQuoteSentActivityListSearchResultSet.getText({
+						// 						name: "custevent_organiser",
+						// 						join: "activity",
+						// 					});
+						// 			}
 
-									var activityMessage =
-										prospectQuoteSentActivityListSearchResultSet.getValue({
-											name: "message",
-											join: "activity",
-										});
+						// 			var activityMessage =
+						// 				prospectQuoteSentActivityListSearchResultSet.getValue({
+						// 					name: "message",
+						// 					join: "activity",
+						// 				});
 
-									console.log("activityInternalID: " + activityInternalID);
-									console.log("activityTitle: " + activityTitle);
-									console.log("activityMessage: " + activityMessage);
+						// 			console.log("activityInternalID: " + activityInternalID);
+						// 			console.log("activityTitle: " + activityTitle);
+						// 			console.log("activityMessage: " + activityMessage);
 
-									if (!isNullorEmpty(activityTitle)) {
-										prospectQuoteChildDataSet.push({
-											activityInternalID: activityInternalID,
-											activityStartDate: activityStartDate,
-											activityTitle: activityTitle,
-											activityOrganiser: activityOrganiser,
-											activityMessage: activityMessage,
-										});
-									}
+						// 			if (!isNullorEmpty(activityTitle)) {
+						// 				prospectQuoteChildDataSet.push({
+						// 					activityInternalID: activityInternalID,
+						// 					activityStartDate: activityStartDate,
+						// 					activityTitle: activityTitle,
+						// 					activityOrganiser: activityOrganiser,
+						// 					activityMessage: activityMessage,
+						// 				});
+						// 			}
 
-									console.log(
-										"prospectQuoteChildDataSet: " +
-											JSON.stringify(prospectQuoteChildDataSet)
-									);
+						// 			console.log(
+						// 				"prospectQuoteChildDataSet: " +
+						// 					JSON.stringify(prospectQuoteChildDataSet)
+						// 			);
 
-									return true;
-								});
-						} else {
-							var prospectQuoteChildDataSet = [];
-						}
+						// 			return true;
+						// 		});
+						// } else {
+						// 	var prospectQuoteChildDataSet = [];
+						// }
 
-						console.log(
-							"prospectQuoteChildDataSet: " +
-								JSON.stringify(prospectQuoteChildDataSet)
-						);
+						// console.log(
+						// 	"prospectQuoteChildDataSet: " +
+						// 		JSON.stringify(prospectQuoteChildDataSet)
+						// );
 
 						debt_set.push({
 							custInternalID: custInternalID,
@@ -2978,7 +2973,7 @@ define([
 							zeeMpExpActivated: zeeMpExpActivated,
 							zeeMPStdActivated: zeeMPStdActivated,
 							zeeMPPrmActivated: zeeMPPrmActivated,
-							child: prospectQuoteChildDataSet,
+							// child: prospectQuoteChildDataSet,
 						});
 
 						return true;
@@ -2999,15 +2994,20 @@ define([
 		debtDataSet2 = [];
 		csvSet2 = [];
 
+		var callCenterPage =
+			"<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='vertical-align: middle;'><title>Call Center</title><g id='phone_call_fill' fill='none'><path d='M24 0v24H0V0zM12.593 23.258l-.011.002-.071.035-.02.004-.014-.004-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113-.013.002-.185.093-.01.01-.003.011.018.43.005.012.008.007.201.093c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.004-.011.017-.43-.003-.012-.01-.01z'/><path fill='#09244BFF' d='M6.857 2.445C8 3.278 8.89 4.415 9.65 5.503l.442.644.417.615a1.504 1.504 0 0 1-.256 1.986l-1.951 1.449a.48.48 0 0 0-.142.616c.442.803 1.228 1.999 2.128 2.899.901.9 2.153 1.738 3.012 2.23a.483.483 0 0 0 .644-.162l1.27-1.933a1.503 1.503 0 0 1 2.056-.332l.663.459c1.239.86 2.57 1.837 3.588 3.14a1.47 1.47 0 0 1 .189 1.484c-.837 1.953-2.955 3.616-5.158 3.535l-.3-.017-.233-.02-.258-.03-.281-.038-.305-.05a11.66 11.66 0 0 1-.16-.03l-.336-.072a12.399 12.399 0 0 1-.176-.04l-.366-.094-.385-.11-.402-.13c-1.846-.626-4.189-1.856-6.593-4.26-2.403-2.403-3.633-4.746-4.259-6.592l-.13-.402-.11-.385-.094-.366-.078-.346a11.79 11.79 0 0 1-.063-.326l-.05-.305-.04-.281-.029-.258-.02-.233-.016-.3c-.081-2.196 1.6-4.329 3.544-5.162a1.47 1.47 0 0 1 1.445.159m8.135 3.595.116.013a3.5 3.5 0 0 1 2.858 2.96 1 1 0 0 1-1.958.393l-.023-.115a1.5 1.5 0 0 0-1.07-1.233l-.155-.035a1 1 0 0 1 .232-1.983M15 3a6 6 0 0 1 6 6 1 1 0 0 1-1.993.117L19 9a3.998 3.998 0 0 0-3.738-3.991L15 5a1 1 0 1 1 0-2'/></g></svg>";
+
 		if (!isNullorEmpty(debt_rows)) {
 			debt_rows.forEach(function (debt_row, index) {
 				if (!isNullorEmpty(debt_row.salesRecordId)) {
 					var linkURL =
-						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' +
+						'<a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' +
 						debt_row.custInternalID +
 						"&salesRecordId=" +
 						debt_row.salesRecordId +
-						'&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
+						'&refresh=tasks" target="_blank" class="form-control btn btn-xs btn-primary" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						callCenterPage +
+						"</a>";
 				} else {
 					var linkURL =
 						'<input type="button" id="" data-id="' +
@@ -3051,8 +3051,10 @@ define([
 					type: format.Type.DATE,
 				});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row.phone + ')">' + debt_row.phone + '</a>'
+
 				debtDataSet.push([
-					"",
+					// "",
 					linkURL,
 					debt_row.custInternalID,
 					customerIDLink,
@@ -3063,7 +3065,7 @@ define([
 					debt_row.linkedLPOName,
 					debt_row.contactName,
 					debt_row.serviceEmail,
-					debt_row.phone,
+					clickToDialNumber,
 					commDateFormatted,
 					debt_row.email48h,
 					debt_row.salesRepName,
@@ -3076,7 +3078,7 @@ define([
 					debt_row.zeeMpExpActivated,
 					debt_row.zeeMPStdActivated,
 					debt_row.zeeMPPrmActivated,
-					debt_row.child,
+					// debt_row.child,
 				]);
 			});
 		}
@@ -3086,34 +3088,34 @@ define([
 		datatable.rows.add(debtDataSet);
 		datatable.draw();
 
-		datatable.rows().every(function () {
-			// this.child(format(this.data())).show();
-			this.child(createChild(this)); // Add Child Tables
-			this.child.hide(); // Hide Child Tables on Open
-		});
+		// datatable.rows().every(function () {
+		// 	// this.child(format(this.data())).show();
+		// 	this.child(createChild(this)); // Add Child Tables
+		// 	this.child.hide(); // Hide Child Tables on Open
+		// });
 
-		$("#mpexusage-prospects tbody").on("click", "td.dt-control", function () {
-			var tr = $(this).closest("tr");
-			var row = datatable.row(tr);
+		// $("#mpexusage-prospects tbody").on("click", "td.dt-control", function () {
+		// 	var tr = $(this).closest("tr");
+		// 	var row = datatable.row(tr);
 
-			if (row.child.isShown()) {
-				// This row is already open - close it
-				destroyChild(row);
-				tr.removeClass("shown");
-				tr.removeClass("parent");
+		// 	if (row.child.isShown()) {
+		// 		// This row is already open - close it
+		// 		destroyChild(row);
+		// 		tr.removeClass("shown");
+		// 		tr.removeClass("parent");
 
-				$(".expand-button").addClass("btn-primary");
-				$(".expand-button").removeClass("btn-light");
-			} else {
-				// Open this row
-				row.child.show();
-				tr.addClass("shown");
-				tr.addClass("parent");
+		// 		$(".expand-button").addClass("btn-primary");
+		// 		$(".expand-button").removeClass("btn-light");
+		// 	} else {
+		// 		// Open this row
+		// 		row.child.show();
+		// 		tr.addClass("shown");
+		// 		tr.addClass("parent");
 
-				$(".expand-button").removeClass("btn-primary");
-				$(".expand-button").addClass("btn-light");
-			}
-		});
+		// 		$(".expand-button").removeClass("btn-primary");
+		// 		$(".expand-button").addClass("btn-light");
+		// 	}
+		// });
 
 		// if (!isNullorEmpty(debt_rows2)) {
 		//     debt_rows2.forEach(function (debt_row2, index) {
@@ -3408,11 +3410,13 @@ define([
 			debt_rows4.forEach(function (debt_row4, index) {
 				if (!isNullorEmpty(debt_row4.salesRecordId)) {
 					var linkURL =
-						'<button class="form-control btn btn-xs btn-primary" style="cursor: not-allowed !important;width: fit-content;"><a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' +
+						'<a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1900&deploy=1&compid=1048144&callCenter=T&customerId=' +
 						debt_row4.custInternalID +
 						"&salesRecordId=" +
 						debt_row4.salesRecordId +
-						'&refresh=tasks" target="_blank" class="" style="cursor: pointer !important;color: white;border-radius: 25px">CALL CENTER</a></button>';
+						'&refresh=tasks" target="_blank" class="form-control btn btn-xs btn-primary" style="cursor: pointer !important;color: white;border-radius: 30px;">' +
+						callCenterPage +
+						"</a>";
 				} else {
 					var linkURL =
 						'<input type="button" id="" data-id="' +
@@ -3503,8 +3507,10 @@ define([
 					type: format.Type.DATE,
 				});
 
+				var clickToDialNumber = '<a href="javascript:NLDial(' + debt_row4.phone + ')">' + debt_row4.phone + '</a>'
+
 				debtDataSet4.push([
-					"",
+					// "",
 					linkURL,
 					newDate,
 					debt_row4.custInternalID,
@@ -3516,7 +3522,7 @@ define([
 					debt_row4.linkedLPOName,
 					debt_row4.contactName,
 					debt_row4.serviceEmail,
-					debt_row4.phone,
+					clickToDialNumber,
 					debt_row4.servicesOfInterest,
 					debt_row4.salesRepName,
 					debt_row4.dateFirstNoContact,
@@ -3527,7 +3533,7 @@ define([
 					debt_row4.zeeMpExpActivated,
 					debt_row4.zeeMPStdActivated,
 					debt_row4.zeeMPPrmActivated,
-					debt_row4.child,
+					// debt_row4.child,
 				]);
 			});
 		}
@@ -3537,34 +3543,34 @@ define([
 		datatable4.rows.add(debtDataSet4);
 		datatable4.draw();
 
-		datatable4.rows().every(function () {
-			// this.child(format(this.data())).show();
-			this.child(createChild3(this)); // Add Child Tables
-			this.child.hide(); // Hide Child Tables on Open
-		});
+		// datatable4.rows().every(function () {
+		// 	// this.child(format(this.data())).show();
+		// 	this.child(createChild3(this)); // Add Child Tables
+		// 	this.child.hide(); // Hide Child Tables on Open
+		// });
 
-		$("#mpexusage-suspects tbody").on("click", "td.dt-control", function () {
-			var tr = $(this).closest("tr");
-			var row = datatable4.row(tr);
+		// $("#mpexusage-suspects tbody").on("click", "td.dt-control", function () {
+		// 	var tr = $(this).closest("tr");
+		// 	var row = datatable4.row(tr);
 
-			if (row.child.isShown()) {
-				// This row is already open - close it
-				destroyChild(row);
-				tr.removeClass("shown");
-				tr.removeClass("parent");
+		// 	if (row.child.isShown()) {
+		// 		// This row is already open - close it
+		// 		destroyChild(row);
+		// 		tr.removeClass("shown");
+		// 		tr.removeClass("parent");
 
-				$(".expand-button").addClass("btn-primary");
-				$(".expand-button").removeClass("btn-light");
-			} else {
-				// Open this row
-				row.child.show();
-				tr.addClass("shown");
-				tr.addClass("parent");
+		// 		$(".expand-button").addClass("btn-primary");
+		// 		$(".expand-button").removeClass("btn-light");
+		// 	} else {
+		// 		// Open this row
+		// 		row.child.show();
+		// 		tr.addClass("shown");
+		// 		tr.addClass("parent");
 
-				$(".expand-button").removeClass("btn-primary");
-				$(".expand-button").addClass("btn-light");
-			}
-		});
+		// 		$(".expand-button").removeClass("btn-primary");
+		// 		$(".expand-button").addClass("btn-light");
+		// 	}
+		// });
 
 		return true;
 	}

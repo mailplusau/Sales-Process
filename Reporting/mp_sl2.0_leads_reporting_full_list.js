@@ -22,6 +22,7 @@ define([
 	"N/log",
 	"N/redirect",
 	"N/url",
+	"N/format"
 ], function (
 	moment,
 	ui,
@@ -32,7 +33,8 @@ define([
 	https,
 	log,
 	redirect,
-	url
+	url,
+	format
 ) {
 	var role = 0;
 	var userId = 0;
@@ -54,6 +56,7 @@ define([
 		"32",
 		"71",
 		"22",
+		"59",
 		"57",
 		"38",
 		"42",
@@ -79,6 +82,7 @@ define([
 		"CUSTOMER - Free Trail",
 		"CUSTOMER - Free Trail Pending",
 		"SUSPECT - Customer - Lost",
+		"SUSPECT - LOST",
 		"SUSPECT - HOT LEAD",
 		"SUSPECT - UNQUALIFIED",
 		"SUSPECT - QUALIFIED",
@@ -150,10 +154,11 @@ define([
 			var sales_activity_notes = context.request.parameters.salesactivitynotes;
 			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
-			var syncWithProspectPlus = context.request.parameters.syncWithPP;
 
-			var start_synced_date = context.request.parameters.start_synced_date;
-			var last_synced_date = context.request.parameters.last_synced_date;
+			var page_no = context.request.parameters.page_no;
+			if (isNullorEmpty(page_no)) {
+				page_no = "1";
+			}
 
 			log.debug({
 				title: "leadStatus",
@@ -408,38 +413,12 @@ define([
 				}
 			}
 
-
-			if ((syncWithProspectPlus == '1' || syncWithProspectPlus == 1) && isNullorEmpty(start_synced_date) && isNullorEmpty(last_synced_date) && role != 1000) {
-				start_synced_date = firstDay;
-				last_synced_date = lastDay;
-			}
-
-			log.debug({
-				title: "start_date",
-				details: start_date,
-			});
-
-			log.debug({
-				title: "last_date",
-				details: last_date,
-			});
-			log.debug({
-				title: "start_synced_date",
-				details: start_synced_date,
-			});
-
-			log.debug({
-				title: "last_synced_date",
-				details: last_synced_date,
-			});
-
-
 			if (isNullorEmpty(userId)) {
 				userId = null;
 			}
 
 			var form = ui.createForm({
-				title: "Sales Dashboard",
+				title: "Sales Dashboard - Detailed List of Leads",
 			});
 
 			//Assign Color Codes to employees
@@ -656,9 +635,6 @@ define([
 
 			inlineHtml += stepByStepGuideModal();
 
-			inlineHtml +=
-				'<div class="container instruction_div hide" style="background-color: #98F6B2FF;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b>**UPDATE: Detailed Customer, Prospect, and Suspect Report Now Available!**</b></br></br>The development of the detailed report page is now complete! You can now access a full, comprehensive list of your Customers, Prospects, and Suspects. To view the detailed report, simply click the <b>"SHOW DETAIL REPORT"</b> button.</br></br>This page will continue to provide the overall overview and summary numbers.</div></br>';
-
 			// inlineHtml +=
 			// 	'<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><b><u>Instructions</u></b></br><ol><li>To search for lead results within a specific time frame, use the "Date Lead Entered - Filter" and select the desired date range. After that, click on "Apply Filter". </br><b>Note:</b> This refers to the date when a lead was entered into Netsuite, either by yourself, your Sales Rep, or generated from the website/social media campaigns.</li><li>To search for new customer results, use the "Date Signed Up - Filter" and select the desired date range. Then click on "Apply Filter".</li></ol><b><u>Overview:</u></b></br>The far-left “Overview” button above the graph represents a filter that provides an overview of three lead statuses: Customer, Prospect and Suspect.</br></br><b><u>Additional filters:</u></b></br>The buttons following "Overview" on the graph allow you to further refine your search based on each lead status.</br></br><b><u>Customers:</u></b></br>This filter enables you to filter new customers and existing customers who have added a new service.</br></br><b><u>Prospects:</u></b></br>This filter allows you to delve deeper and determine if a lead is unresponsive to calls/emails or has become a genuine opportunity after an initial discussion.</br></br><b><u>Suspects:</u></b></br>This filter provides insights into different categories of suspect leads. Click on the specific status to view data on it: <ol><li>"Hot Lead" - a lead that has yet to be determined as a prospecting opportunity.</li><li>"Follow up" - a lead that we are currently unable to serve but may be able to in the future.</li><li>"Off Peak Pipeline" - a lead that has shown interest in Standard shipping, but a consolidated hub has not been opened yet.</li><li>"Lost" - leads that have been contacted but ultimately lost, for example, because the product is not suitable for their business.</li></ol></br><b><u>Cancellations:</u></b></br>This filter displays all customers who have cancelled within the selected period.</p><div class="form-group container"><div class="row"><div class="col-xs-4"></div><div class="col-xs-4"><input type="button" value="CLICK FOR USER GUIDE" class="form-control btn btn-primary" id="showGuide" style="background-color: #095C7B; border-radius: 30px;border-radius: 30px" /></div><div class="col-xs-4"></div></div></div></div></br>';
 
@@ -673,20 +649,6 @@ define([
 
 			inlineHtml += "</div>";
 			inlineHtml += "</div>";
-
-
-			inlineHtml +=
-				'<div class="form-group container show_buttons_section hide">';
-			inlineHtml += '<div class="row">';
-			inlineHtml += '<div class="col-xs-4"></div>';
-
-			inlineHtml +=
-				'<div class="col-xs-4"><input type="button" value="SHOW DETAIL REPORT" class="form-control btn btn-primary" id="full_report" aria-expanded="false" style="background-color: #095C7B; color: #ECF0F0FF; border-radius: 30px" /></div>';
-			inlineHtml += '<div class="col-xs-4"></div>';
-
-			inlineHtml += "</div>";
-			inlineHtml += "</div>";
-
 			inlineHtml +=
 				'<div class="collapse" id="collapseExample"><div class="card card-body">';
 			inlineHtml += "<div>";
@@ -698,7 +660,6 @@ define([
 			var resultSetZees = searchZees.run();
 
 			inlineHtml += franchiseeDropdownSection(resultSetZees, context);
-			inlineHtml += syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date)
 			inlineHtml += leadStatusDropdown(leadStatusArray);
 			inlineHtml += leadSourceFilterSection(
 				source,
@@ -731,122 +692,106 @@ define([
 			);
 			inlineHtml += "</div></div></div></br></br>";
 
-			var showFranchiseeGeneratedLeadsPieChart = false;
-			var showCallForceTasksPieChart = false;
-			var showIlliciumTasksPieChart = false;
-			var showProspectPlusTasksPieChart = false;
+			// var showFranchiseeGeneratedLeadsPieChart = false;
+			// var showCallForceTasksPieChart = false;
 
-			if (isNullorEmpty(campaign)) {
-				showFranchiseeGeneratedLeadsPieChart = true;
-				showCallForceTasksPieChart = true;
-				if (syncWithProspectPlus != 1 || syncWithProspectPlus != '1') {
-					showIlliciumTasksPieChart = true;
-				}
-			} else {
-				if (campaign.indexOf(",") != -1) {
-					var campaignArray = campaign.split(",");
-				} else {
-					var campaignArray = [];
-					campaignArray.push(campaign);
-				}
+			// if (isNullorEmpty(campaign)) {
+			// 	showFranchiseeGeneratedLeadsPieChart = true;
+			// 	showCallForceTasksPieChart = true;
+			// } else {
+			// 	if (campaign.indexOf(",") != -1) {
+			// 		var campaignArray = campaign.split(",");
+			// 	} else {
+			// 		var campaignArray = [];
+			// 		campaignArray.push(campaign);
+			// 	}
 
-				log.debug({
-					title: "campaignArray",
-					details: campaignArray,
-				});
-				log.debug({
-					title: "campaignArray.indexOf('87')",
-					details: campaignArray.indexOf("87"),
-				});
+			// 	log.debug({
+			// 		title: "campaignArray",
+			// 		details: campaignArray,
+			// 	});
+			// 	log.debug({
+			// 		title: "campaignArray.indexOf('87')",
+			// 		details: campaignArray.indexOf("87"),
+			// 	});
 
-				if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
-					showCallForceTasksPieChart = true;
-				}
+			// 	if (campaignArray.indexOf("87") != -1) {
+			// 		showCallForceTasksPieChart = true;
+			// 	}
 
-				if (campaignArray.indexOf("90") != -1) {
-					showIlliciumTasksPieChart = true;
-				}
+			// 	if (campaignArray.indexOf("70") != -1) {
+			// 		showFranchiseeGeneratedLeadsPieChart = true;
+			// 	}
+			// }
 
-				if (campaignArray.indexOf("70") != -1) {
-					showFranchiseeGeneratedLeadsPieChart = true;
-				}
-			}
+			// if (showFranchiseeGeneratedLeadsPieChart == true) {
+			// 	inlineHtml +=
+			// 		'<div class="form-group container scorecard_percentage hide" style="">';
+			// 	inlineHtml += '<div class="row">';
+			// 	inlineHtml += '<div class="col-xs-12">';
+			// 	inlineHtml += '<article class="card">';
+			// 	inlineHtml +=
+			// 		'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
+			// 	inlineHtml +=
+			// 		'<small style="text-align:center;font-size: 12px;"></small>';
+			// 	inlineHtml +=
+			// 		'<div id="container-progress" style="height: 300px"></div>';
+			// 	inlineHtml += "</article>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// }
 
-			if (syncWithProspectPlus == 1 || syncWithProspectPlus == '1') {
-				showProspectPlusTasksPieChart = true;
-			}
+			// if (showCallForceTasksPieChart == true) {
+			// 	inlineHtml +=
+			// 		'<div class="form-group container scorecard_percentage hide" style="">';
+			// 	inlineHtml += '<div class="row">';
+			// 	inlineHtml += '<div class="col-xs-12">';
+			// 	inlineHtml += '<article class="card">';
+			// 	inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
+			// 	inlineHtml +=
+			// 		'<small style="text-align:center;font-size: 12px;"></small>';
+			// 	inlineHtml +=
+			// 		'<div id="container-callforce_progress" style="height: 300px"></div>';
+			// 	inlineHtml += "</article>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// 	inlineHtml += "</div>";
+			// }
 
-			if (showFranchiseeGeneratedLeadsPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml +=
-					'<h2 style="text-align:center;">Franchisee Generated Leads - By Stage</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
-
-			if (showCallForceTasksPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml += '<h2 style="text-align:center;">Call Force Report</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-callforce_progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
-
-			if (showIlliciumTasksPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml += '<h2 style="text-align:center;">Illicium Report</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-illicium_progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
-
-			if (showProspectPlusTasksPieChart == true) {
-				inlineHtml +=
-					'<div class="form-group container scorecard_percentage hide" style="">';
-				inlineHtml += '<div class="row">';
-				inlineHtml += '<div class="col-xs-12">';
-				inlineHtml += '<article class="card">';
-				inlineHtml += '<h2 style="text-align:center;">ProspectPlus Report</h2>';
-				inlineHtml +=
-					'<small style="text-align:center;font-size: 12px;"></small>';
-				inlineHtml +=
-					'<div id="container-prospectplus_progress" style="height: 300px"></div>';
-				inlineHtml += "</article>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-				inlineHtml += "</div>";
-			}
-
-			inlineHtml += tabsSection(campaign, syncWithProspectPlus);
+			inlineHtml += tabsSection(page_no, campaign, source,
+				salesrep,
+				lead_entered_by,
+				customer_type,
+				start_date,
+				last_date,
+				date_signed_up_from,
+				date_signed_up_to,
+				date_quote_sent_to,
+				date_quote_sent_from,
+				commencement_start_date,
+				commencement_last_date, leadStatusArray);
 			inlineHtml += dataTable();
+
+			form
+				.addField({
+					id: "custpage_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				}).defaultValue = page_no;
+
+			form
+				.addField({
+					id: "custpage_total_page_no",
+					type: ui.FieldType.TEXT,
+					label: "Total Page Number",
+				})
+				.updateDisplayType({
+					displayType: ui.FieldDisplayType.HIDDEN,
+				});
 
 			form
 				.addField({
@@ -898,7 +843,7 @@ define([
 					layoutType: ui.FieldLayoutType.STARTROW,
 				}).defaultValue = inlineHtml;
 
-			form.clientScriptFileId = 6826994;
+			form.clientScriptFileId = 7500024;
 
 			context.response.writePage(form);
 		} else {
@@ -979,76 +924,6 @@ define([
 			return true;
 		});
 		inlineHtml += "</select>";
-		inlineHtml += "</div></div></div></div>";
-
-		return inlineHtml;
-	}
-
-	function syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date) {
-		var inlineHtml =
-			'<div class="form-group container status_dropdown_section hide">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PROSPECTPLUS SYNC</span></h4></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-
-		inlineHtml +=
-			'<div class="form-group container status_dropdown_section hide">';
-		inlineHtml += '<div class="row">';
-		// Period dropdown field
-		inlineHtml += '<div class="col-xs-12 pp_sync_div">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="pp_sync_text">PROSPECTPLUS SYNC</span>';
-		inlineHtml +=
-			'<select id="pp_sync" class="form-control" style="width: 100%">';
-		inlineHtml += '<option value="0"></option>';
-		if (syncWithProspectPlus == "1" || syncWithProspectPlus == 1) {
-			inlineHtml +=
-				'<option value="1" selected>YES</option>';
-		} else if (syncWithProspectPlus == "2" || syncWithProspectPlus == 2) {
-			inlineHtml += '<option value="2">NO</option>';
-		} else {
-			inlineHtml += '<option value="1">YES</option>';
-			inlineHtml += '<option value="2">NO</option>';
-		}
-		inlineHtml += "</select>";
-		inlineHtml += "</div></div></div></div>";
-
-		inlineHtml += '<div class="form-group container lead_entered_div hide">';
-		inlineHtml += '<div class="row">';
-		// Date from field
-		inlineHtml += '<div class="col-xs-6 date_from">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="date_from_text">DATE LEAD SYNCED - FROM</span>';
-		if (isNullorEmpty(start_synced_date)) {
-			inlineHtml +=
-				'<input id="date_synced_from" class="form-control date_from" type="date" />';
-		} else {
-			inlineHtml +=
-				'<input id="date_synced_from" class="form-control date_from" type="date" value="' +
-				start_synced_date +
-				'"/>';
-		}
-
-		inlineHtml += "</div></div>";
-		// Date to field
-		inlineHtml += '<div class="col-xs-6 date_to">';
-		inlineHtml += '<div class="input-group">';
-		inlineHtml +=
-			'<span class="input-group-addon" id="date_to_text">DATE LEAD SYNCED - TO</span>';
-		if (isNullorEmpty(last_synced_date)) {
-			inlineHtml +=
-				'<input id="date_synced_to" class="form-control date_to" type="date">';
-		} else {
-			inlineHtml +=
-				'<input id="date_synced_to" class="form-control date_to" type="date" value="' +
-				last_synced_date +
-				'">';
-		}
-
 		inlineHtml += "</div></div></div></div>";
 
 		return inlineHtml;
@@ -2126,8 +2001,266 @@ define([
 		return inlineHtml;
 	}
 
-	function tabsSection(campaign, syncWithProspectPlus) {
+	function tabsSection(page_no, campaign, source,
+		sales_rep,
+		lead_entered_by,
+		customer_type,
+		date_from,
+		date_to,
+		date_signed_up_from,
+		date_signed_up_to,
+		date_quote_sent_to,
+		date_quote_sent_from,
+		commencement_start_date,
+		commencement_last_date, leadStatusArray) {
 		var inlineHtml = '<div class="tabs_section hide">';
+
+		date_from = dateISOToNetsuite(date_from);
+		date_to = dateISOToNetsuite(date_to);
+		date_signed_up_from = dateISOToNetsuite(date_signed_up_from);
+		date_signed_up_to = dateISOToNetsuite(date_signed_up_to);
+		date_quote_sent_from = dateISOToNetsuite(date_quote_sent_from);
+		date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
+		commencement_start_date = dateISOToNetsuite(commencement_start_date);
+		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+
+		if (role == 1000) {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_2", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
+			});
+		} else {
+			var websiteSuspectsLeadsReportingSearch = search.load({
+				type: "customer",
+				id: "customsearch_leads_reporting_5_2_2_2_3_3", //Sales Dashboard - Website Leads - Suspects with no Tasks - Reporting V6
+			});
+		}
+
+		// }
+
+		websiteSuspectsLeadsReportingSearch.filters.push(
+			search.createFilter({
+				name: "custrecord_salesrep",
+				join: "CUSTRECORD_CUSTOMER",
+				operator: search.Operator.NONEOF,
+				values: [109783],
+			})
+		);
+
+		if (customer_type == "2") {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "TEST",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTCONTAIN,
+					values: "- Parent",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Shippit Pty Ltd ",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "Sendle",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "companyname",
+					join: null,
+					operator: search.Operator.DOESNOTSTARTWITH,
+					values: "SC -",
+				})
+			);
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_np_np_customer",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: "@NONE@",
+				})
+			);
+		}
+
+		if (!isNullorEmpty(leadStatusArray)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "entitystatus",
+					join: null,
+					operator: search.Operator.IS,
+					values: leadStatusArray,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(zee)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "partner",
+					join: null,
+					operator: search.Operator.IS,
+					values: zee,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_entered",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(date_signed_up_from) &&
+			!isNullorEmpty(date_signed_up_to)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: date_signed_up_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date_signup",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: date_signed_up_to,
+				})
+			);
+		}
+
+		if (
+			!isNullorEmpty(commencement_start_date) &&
+			!isNullorEmpty(commencement_last_date)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORAFTER,
+					values: commencement_start_date,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_comm_date",
+					join: "CUSTRECORD_CUSTOMER",
+					operator: search.Operator.ONORBEFORE,
+					values: commencement_last_date,
+				})
+			);
+		}
+
+
+		if (!isNullorEmpty(source)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "leadsource",
+					join: null,
+					operator: search.Operator.IS,
+					values: source,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(sales_rep)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_assigned",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.IS,
+					values: sales_rep,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(lead_entered_by)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_lead_entered_by",
+					join: null,
+					operator: search.Operator.IS,
+					values: lead_entered_by,
+				})
+			);
+		}
+
+		if (!isNullorEmpty(campaign)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_sales_campaign",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.ANYOF,
+					values: campaign,
+				})
+			);
+		}
+
+
+		if (
+			!isNullorEmpty(date_quote_sent_from) &&
+			!isNullorEmpty(date_quote_sent_to)
+		) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORAFTER,
+					values: date_quote_sent_from,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custentity_date_lead_quote_sent",
+					join: null,
+					operator: search.Operator.ONORBEFORE,
+					values: date_quote_sent_to,
+				})
+			);
+		}
+
+		var websiteSuspectsLeadsReportingSearchCount =
+			websiteSuspectsLeadsReportingSearch.runPaged().count;
+
+		var totalPageCount = parseInt(websiteSuspectsLeadsReportingSearchCount / 1000) + 1;
+
+		var divBreak = Math.ceil(12 / totalPageCount);
 
 		// Tabs headers
 		inlineHtml +=
@@ -2139,57 +2272,41 @@ define([
 		inlineHtml +=
 			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
+		// if (isNullorEmpty(campaign)) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
+		// } else {
+		// 	if (campaign.indexOf(",") != -1) {
+		// 		var campaignArray = campaign.split(",");
+		// 	} else {
+		// 		var campaignArray = [];
+		// 		campaignArray.push(campaign);
+		// 	}
+
+		// 	log.debug({
+		// 		title: "campaignArray",
+		// 		details: campaignArray,
+		// 	});
+		// 	log.debug({
+		// 		title: "campaignArray.indexOf('87')",
+		// 		details: campaignArray.indexOf("87"),
+		// 	});
+
+		// 	if (campaignArray.indexOf("87") != -1) {
+		// 		inlineHtml +=
+		// 			'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
+		// 	}
+		// }
 		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#overview" style="border-radius: 30px"><b>OVERVIEW</b></a></li>';
-		if (isNullorEmpty(campaign)) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE - TASKS</b></a></li>';
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#illiciumtasks" style="border-radius: 30px"><b>ILLICIUM - TASKS</b></a></li>';
-		} else {
-			if (campaign.indexOf(",") != -1) {
-				var campaignArray = campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(campaign);
-			}
-
-			log.debug({
-				title: "campaignArray",
-				details: campaignArray,
-			});
-			log.debug({
-				title: "campaignArray.indexOf('87')",
-				details: campaignArray.indexOf("87"),
-			});
-			log.debug({
-				title: "campaignArray.indexOf('89')",
-				details: campaignArray.indexOf("89"),
-			});
-
-			if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
-				inlineHtml +=
-					'<li role="presentation" class=""><a data-toggle="tab" href="#callforcetasks" style="border-radius: 30px"><b>CALL FORCE</b></a></li>';
-			}
-
-			if (campaignArray.indexOf("90") != -1) {
-				inlineHtml +=
-					'<li role="presentation" class=""><a data-toggle="tab" href="#illiciumtasks" style="border-radius: 30px"><b>ILLICIUM</b></a></li>';
-			}
-		}
-
-		if (syncWithProspectPlus == 1 || syncWithProspectPlus == "1") {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#prospectplustasks" style="border-radius: 30px"><b>PROSPECTPLUS</b></a></li>';
-		}
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects" style="border-radius: 30px"><b>PROSPECTS</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects" style="border-radius: 30px"><b>SUSPECTS</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#cancellation" style="border-radius: 30px"><b>CANCELLATIONS</b></a></li>';
 
 		inlineHtml += "</ul></div>";
 
@@ -2201,201 +2318,128 @@ define([
 			details: campaign,
 		});
 
-		if (isNullorEmpty(campaign)) {
-			inlineHtml +=
-				'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+		// if (isNullorEmpty(campaign)) {
+		// 	inlineHtml +=
+		// 		'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
-			inlineHtml += '<figure class="highcharts-figure">';
-			inlineHtml += '<div id="container_callforcetasks"></div>';
-			inlineHtml += "</figure><br></br>";
-			inlineHtml += dataTable("callforcetasks");
-			inlineHtml += "</br>";
-			inlineHtml += dataTable("callForceDateSyncedOutcome");
-			inlineHtml += "</div>";
+		// 	inlineHtml += '<figure class="highcharts-figure">';
+		// 	inlineHtml += '<div id="container_callforcetasks"></div>';
+		// 	inlineHtml += "</figure><br></br>";
+		// 	inlineHtml += dataTable("callforcetasks");
+		// 	inlineHtml += "</br>";
+		// 	inlineHtml += dataTable("callForceDateSyncedOutcome");
+		// 	inlineHtml += "</div>";
+		// } else {
+		// 	if (campaign.indexOf(",") != -1) {
+		// 		var campaignArray = campaign.split(",");
+		// 	} else {
+		// 		var campaignArray = [];
+		// 		campaignArray.push(campaign);
+		// 	}
 
-			inlineHtml +=
-				'<div role="tabpanel" class="tab-pane" id="illiciumtasks">';
+		// 	log.debug({
+		// 		title: "campaignArray",
+		// 		details: campaignArray,
+		// 	});
+		// 	log.debug({
+		// 		title: "campaignArray.indexOf('87')",
+		// 		details: campaignArray.indexOf("87"),
+		// 	});
 
-			inlineHtml += '<figure class="highcharts-figure">';
-			inlineHtml += '<div id="container_illiciumtasks"></div>';
-			inlineHtml += "</figure><br></br>";
-			inlineHtml += dataTable("illiciumtasks");
-			inlineHtml += "</br>";
-			inlineHtml += dataTable("illiciumDateSyncedOutcome");
-			inlineHtml += "</div>";
-		} else {
-			if (campaign.indexOf(",") != -1) {
-				var campaignArray = campaign.split(",");
-			} else {
-				var campaignArray = [];
-				campaignArray.push(campaign);
-			}
+		// 	if (campaignArray.indexOf("87") != -1) {
+		// 		inlineHtml +=
+		// 			'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
 
-			log.debug({
-				title: "campaignArray",
-				details: campaignArray,
-			});
-			log.debug({
-				title: "campaignArray.indexOf('87')",
-				details: campaignArray.indexOf("87"),
-			});
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
+		// 		inlineHtml += dataTable("callForceDateSyncedOutcome");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Call Force Appointments</h2>';
+		// 		inlineHtml += dataTable("callforcetasks");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
+		// 		inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml +=
+		// 			'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
+		// 		inlineHtml += dataTable("callForceOutcomeStatus");
+		// 		inlineHtml += "</br>";
+		// 		inlineHtml += "</div>";
+		// 	}
+		// }
 
-			if (campaignArray.indexOf("87") != -1 || campaignArray.indexOf("89") != -1) {
-				inlineHtml +=
-					'<div role="tabpanel" class="tab-pane" id="callforcetasks">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
 
-				inlineHtml +=
-					'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
-				inlineHtml += dataTable("callForceDateSyncedOutcome");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Call Force Appointments</h2>';
-				inlineHtml += dataTable("callforcetasks");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("callForceCompletedTasksCurrentStatus");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("callForceOutcomeStatus");
-				inlineHtml += "</br>";
-				inlineHtml += "</div>";
-			}
+		// // Overview Tabs headers
+		// inlineHtml +=
+		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		// inlineHtml +=
+		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		// inlineHtml += "</style>";
 
-			if (campaignArray.indexOf("90") != -1) {
-				inlineHtml +=
-					'<div role="tabpanel" class="tab-pane" id="illiciumtasks">';
+		// inlineHtml +=
+		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-				inlineHtml +=
-					'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
-				inlineHtml += dataTable("illiciumDateSyncedOutcome");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Illicium Appointments</h2>';
-				inlineHtml += dataTable("illiciumtasks");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("illiciumCompletedTasksCurrentStatus");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("illiciumOutcomeStatus");
-				inlineHtml += "</br>";
-				inlineHtml +=
-					'<h2 style="text-align:center;">Industry Sub-Category vs Current NetSuite Status</h2>';
-				inlineHtml += dataTable("illiciumIndustrySubCategoryStatus");
-				inlineHtml += "</br>";
-				inlineHtml += "</div>";
-			}
-		}
-
-		if (syncWithProspectPlus == 1 || syncWithProspectPlus == "1") {
-
-			inlineHtml +=
-				'<div role="tabpanel" class="tab-pane" id="prospectplustasks">';
-
-			inlineHtml +=
-				'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
-			inlineHtml += dataTable("prospectplusDateSyncedOutcome");
-			inlineHtml += "</br>";
-			inlineHtml +=
-				'<h2 style="text-align:center;">Prospect Plus Appointments</h2>';
-			inlineHtml += dataTable("prospectplustasks");
-			inlineHtml += "</br>";
-			inlineHtml +=
-				'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
-			inlineHtml += dataTable("prospectplusCompletedTasksCurrentStatus");
-			inlineHtml += "</br>";
-			inlineHtml +=
-				'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
-			inlineHtml += dataTable("prospectplusOutcomeStatus");
-			inlineHtml += "</br>";
-			inlineHtml +=
-				'<h2 style="text-align:center;">Industry Sub-Category vs Current NetSuite Status</h2>';
-			inlineHtml += dataTable("prospectplusIndustrySubCategoryStatus");
-			inlineHtml += "</br>";
-			inlineHtml += "</div>";
-
-		}
-
-		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
-
-		// Overview Tabs headers
-		inlineHtml +=
-			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		inlineHtml +=
-			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		inlineHtml += "</style>";
-
-		inlineHtml +=
-			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-
-		inlineHtml +=
-			'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#complete_overview" style="border-radius: 30px"><b>COMPLETE OVERVIEW</b></a></li>';
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#datacapture_overview" style="border-radius: 30px"><b>DATA CAPTURE OVERVIEW</b></a></li>';
 		// inlineHtml +=
 		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#lpo_overview" style="border-radius: 30px"><b>LPO & LPO-BAU OVERVIEW</b></a></li>';
-		inlineHtml +=
-			'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
-		if (role != 1000) {
-			inlineHtml +=
-				'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
-		}
+		// inlineHtml +=
+		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#salesrep_overview" style="border-radius: 30px"><b>SALES REP OVERVIEW</b></a></li>';
+		// if (role != 1000) {
+		// 	inlineHtml +=
+		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#zee_overview" style="border-radius: 30px"><b>FRANCHISEE OVERVIEW</b></a></li>';
+		// }
 
-		inlineHtml += "</ul></div>";
+		// inlineHtml += "</ul></div>";
 
-		inlineHtml += '<div class="tab-content">';
-		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
+		// inlineHtml += '<div class="tab-content">';
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane active" id="complete_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_preview_quote_sent"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
-		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_source_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
 
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("preview");
-		inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("preview");
+		// inlineHtml += "</div>";
 
-		inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
+		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="zee_overview">';
 
-		inlineHtml += '<figure class="highcharts-figure">';
-		inlineHtml += '<div id=""></div>';
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += '<div class="">';
-		inlineHtml += '<div class="row">';
-		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
-		inlineHtml += "</div>";
-		inlineHtml += "</div>";
-		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("zee_overview");
-		inlineHtml += "</div>";
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div id=""></div>';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_zee_overview_last_assigned"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("zee_overview");
+		// inlineHtml += "</div>";
 
 		// inlineHtml += '<div role="tabpanel" class="tab-pane " id="lpo_overview">';
 
@@ -2419,405 +2463,508 @@ define([
 		// inlineHtml += dataTable("lpo_overview");
 		// inlineHtml += "</div>";
 
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
+
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("salesrep_overview");
+		// inlineHtml += "</div>";
+
+		// inlineHtml +=
+		// 	'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
+
+		// inlineHtml += '<figure class="highcharts-figure">';
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += '<div class="">';
+		// inlineHtml += '<div class="row">';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
+		// inlineHtml +=
+		// 	'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+		// inlineHtml += "</figure><br></br>";
+		// inlineHtml += dataTable("datacapture_overview");
+		// inlineHtml += "</div>";
+
+		// inlineHtml += "</div>";
+		// inlineHtml += "</div>";
+
+		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="customer">';
+
+		// Customers Tabs headers
 		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="salesrep_overview">';
+			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		inlineHtml +=
+			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		inlineHtml += "</style>";
+
+		inlineHtml +=
+			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+		inlineHtml +=
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#shipmate_pending" style="border-radius: 30px"><b>SHIPMATE PENDING</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
+
+		inlineHtml += "</ul></div>";
+
+		inlineHtml += '<div class="tab-content">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div class="">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_salesrep_overview"></div></div>';
+			'<div class="col-xs-12"><div id="container_customer"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 		inlineHtml += '<div class="">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_entered_sales_rep_preview"></div></div>';
+			'<div class="col-xs-12"><div id="container_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_sales_rep_preview"></div></div>';
+			'<div class="col-xs-6"><div id="container_signed_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_signed_campaign"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("salesrep_overview");
+		inlineHtml += dataTable("customer");
 		inlineHtml += "</div>";
 
 		inlineHtml +=
-			'<div role="tabpanel" class="tab-pane " id="datacapture_overview">';
+			'<div role="tabpanel" class="tab-pane active" id="shipmate_pending">';
 
 		inlineHtml += '<figure class="highcharts-figure">';
 		inlineHtml += '<div class="">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-12"><div id="container_datacapture_overview"></div></div>';
+			'<div class="col-xs-12"><div id="container_shipmate_pending_customer"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 		inlineHtml += '<div class="">';
 		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_source_datacapture_preview"></div></div>';
+			'<div class="col-xs-12"><div id="container_shipmate_pending_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
 		inlineHtml +=
-			'<div class="col-xs-6"><div id="container_campaign_datacapture_preview"></div></div>';
+			'<div class="col-xs-6"><div id="container_shipmate_pending_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_shipmate_pending_campaign"></div></div>';
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 		inlineHtml += "</figure><br></br>";
-		inlineHtml += dataTable("datacapture_overview");
+		inlineHtml += dataTable("shipmate_pending");
 		inlineHtml += "</div>";
 
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane " id="trial_customers">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id=""></div>';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_trial_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_trial_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_trial_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("trial_customers");
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id=""></div>';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_trial_pending_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_trial_pending_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_trial_pending_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("trial_pending_customers");
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane " id="existing_customers">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_existing_customers"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("existing_customers");
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
+
+		// Prospects Tabs headers
+		inlineHtml +=
+			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		inlineHtml +=
+			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		inlineHtml += "</style>";
+
+		inlineHtml +=
+			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		inlineHtml +=
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_box" style="border-radius: 30px"><b>PROSPECTS - BOX SENT</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+
+		inlineHtml += "</ul></div>";
+
+		inlineHtml += '<div class="tab-content">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_quoteSent_incontact_noanswer"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_prospect_opportunity_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_opportunity_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_opportunity_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("prospects_quoteSent_incontact_noanswer");
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_prospect_box_sent_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_box_sent_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_box_sent_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("prospects_box_sent");
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
+
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_prospects_opportunites"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12"><div id="container_prospect_quote_sent_last_assigned"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += '<div class="">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_quote_sent_source"></div></div>';
+		inlineHtml +=
+			'<div class="col-xs-6"><div id="container_prospect_quote_sent_campaign"></div></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("prospects_opportunites");
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
+
+		// Suspects Tabs headers
+		inlineHtml +=
+			"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+		inlineHtml +=
+			".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+		inlineHtml += "</style>";
+
+		inlineHtml +=
+			'<div class="form-group container zee_available_buttons_section">';
+		inlineHtml += '<div class="row">';
+
+		inlineHtml +=
+			'<div class="col-xs-12" style="text-align: center;font-size: 14px"><b>Total Lead Count: ' +
+			websiteSuspectsLeadsReportingSearchCount +
+			"</b> </br> Pages: </br></div>";
+
 		inlineHtml += "</div>";
 		inlineHtml += "</div>";
 
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="customer">';
+		inlineHtml +=
+			'<div class="form-group container zee_available_buttons_section">';
+		inlineHtml += '<div class="row">';
 
-		// // Customers Tabs headers
-		// inlineHtml +=
-		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		// inlineHtml +=
-		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		// inlineHtml += "</style>";
+		var rangeStart = 0;
+		var rangeEnd = 0;
 
-		// inlineHtml +=
-		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+		for (var i = 0; i < totalPageCount; i++) {
+			if (i == totalPageCount - 1 || websiteSuspectsLeadsReportingSearchCount < 1000) {
+				if (websiteSuspectsLeadsReportingSearchCount < 1000) {
+				} else {
+					rangeStart = rangeEnd;
+				}
+				rangeEnd = websiteSuspectsLeadsReportingSearchCount;
+			} else {
+				rangeStart = (parseInt(i + 1) - 1) * 1000;
+				if (rangeStart != 1000) {
+					rangeEnd = rangeStart + 1000;
+				} else {
+					rangeEnd = websiteSuspectsLeadsReportingSearchCount - rangeStart - 1;
+					if (rangeEnd > 1000) {
+						rangeEnd = parseInt(i + 1) * 1000;
+					}
+				}
+			}
 
-		// inlineHtml +=
-		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#new_customers" style="border-radius: 30px"><b>NEW CUSTOMERS</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#trial_customers" style="border-radius: 30px"><b>FREE TRIALS</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#trial_pending_customers" style="border-radius: 30px"><b>FREE TRIALS PENDING</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#existing_customers" style="border-radius: 30px"><b>EXISTING CUSTOMERS</b></a></li>';
+			if (page_no == i + 1) {
+				inlineHtml +=
+					'<div class="col-xs-' +
+					divBreak +
+					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;background-color:#095C7B !important;" value="' +
+					(i + 1) +
+					'" class="form-control btn btn-info page_number" data-id="' +
+					(i + 1) +
+					'" /></br></div>';
+			} else {
+				inlineHtml +=
+					'<div class="col-xs-' +
+					divBreak +
+					'" style="text-align: center;"><input type="button" style="border-radius: 30px !important;" value="' +
+					(i + 1) +
+					'" class="form-control btn btn-info page_number" data-id="' +
+					(i + 1) +
+					'" /></br></div>';
+			}
+		}
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
 
-		// inlineHtml += "</ul></div>";
 
-		// inlineHtml += '<div class="tab-content">';
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane active" id="new_customers">';
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_customer"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_signed_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_signed_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("customer");
-		// inlineHtml += "</div>";
+		inlineHtml +=
+			'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane " id="trial_customers">';
+		inlineHtml +=
+			'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_zee_review" style="border-radius: 30px"><b>SUSPECTS - FRANCHISEE REVIEW</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
+		inlineHtml +=
+			'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
+		if (role != 1000) {
+			inlineHtml +=
+				'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
+		}
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id=""></div>';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_trial_customers"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_trial_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_trial_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_trial_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("trial_customers");
-		// inlineHtml += "</div>";
+		inlineHtml += "</ul></div>";
 
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane " id="trial_pending_customers">';
+		inlineHtml += '<div class="tab-content">';
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id=""></div>';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_trial_pending_customers"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_trial_pending_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_trial_pending_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_trial_pending_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("trial_pending_customers");
-		// inlineHtml += "</div>";
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects");
+		inlineHtml += "</div>";
 
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane " id="existing_customers">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_zee_review">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_zee_review"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_zee_review");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_existing_customers"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("existing_customers");
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_no_answer"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_no_answer");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_in_contact"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_in_contact");
+		inlineHtml += "</div>";
 
-		// // Prospects Tabs headers
-		// inlineHtml +=
-		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		// inlineHtml +=
-		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		// inlineHtml += "</style>";
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_qualified"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_qualified");
+		inlineHtml += "</div>";
 
-		// inlineHtml +=
-		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-		// inlineHtml +=
-		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#prospects_opportunites" style="border-radius: 30px"><b>PROSPECTS - QUOTE SENT</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_box" style="border-radius: 30px"><b>PROSPECTS - BOX SENT</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#prospects_quoteSent_incontact_noanswer" style="border-radius: 30px"><b>PROSPECTS - IN CONTACT/OPPORTUNITY</b></a></li>';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_unqualified"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_unqualified");
+		inlineHtml += "</div>";
 
-		// inlineHtml += "</ul></div>";
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_validated">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_validated"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_validated");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<div class="tab-content">';
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="prospects_quoteSent_incontact_noanswer">';
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_followup">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_followup"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_followup");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_quoteSent_incontact_noanswer"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_prospect_opportunity_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_opportunity_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_opportunity_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_quoteSent_incontact_noanswer");
-		// inlineHtml += "</div>";
+		inlineHtml +=
+			'<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_off_peak_pipeline");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="prospects_box">';
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_lost"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_lost");
+		inlineHtml += "</div>";
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_prospects_box"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_prospect_box_sent_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_box_sent_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_box_sent_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_box_sent");
-		// inlineHtml += "</div>";
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_suspects_oot"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("suspects_oot");
+		inlineHtml += "</div>";
+		inlineHtml += "</div></div>";
 
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane active" id="prospects_opportunites">';
+		inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
 
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_prospects_opportunites"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-12"><div id="container_prospect_quote_sent_last_assigned"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += '<div class="">';
-		// inlineHtml += '<div class="row">';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_quote_sent_source"></div></div>';
-		// inlineHtml +=
-		// 	'<div class="col-xs-6"><div id="container_prospect_quote_sent_campaign"></div></div>';
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("prospects_opportunites");
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div>";
-
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects">';
-
-		// // Suspects Tabs headers
-		// inlineHtml +=
-		// 	"<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
-		// inlineHtml +=
-		// 	".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
-		// inlineHtml += "</style>";
-
-		// inlineHtml +=
-		// 	'<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-
-		// inlineHtml +=
-		// 	'<li role="presentation" class="active"><a data-toggle="tab" href="#suspects_leads" style="border-radius: 30px"><b>SUSPECTS - HOT/NEW LEAD/REASSIGN</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_validated" style="border-radius: 30px"><b>SUSPECTS - VALIDATED</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_unqualified" style="border-radius: 30px"><b>SUSPECTS - UNQUALIFIED</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_qualified" style="border-radius: 30px"><b>SUSPECTS - QUALIFIED</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_no_answer" style="border-radius: 30px"><b>SUSPECTS - NO ANSWER</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_in_contact" style="border-radius: 30px"><b>SUSPECTS - IN CONTACT</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_followup" style="border-radius: 30px"><b>SUSPECTS - FOLLOW UP</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_off_peak_pipeline" style="border-radius: 30px"><b>SUSPECTS - PARKING LOT</b></a></li>';
-		// inlineHtml +=
-		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_lost" style="border-radius: 30px"><b>SUSPECTS - LOST</b></a></li>';
-		// if (role != 1000) {
-		// 	inlineHtml +=
-		// 		'<li role="presentation" class=""><a data-toggle="tab" href="#suspects_oot" style="border-radius: 30px"><b>SUSPECTS - OUT OF TERRITORY</b></a></li>';
-		// }
-
-		// inlineHtml += "</ul></div>";
-
-		// inlineHtml += '<div class="tab-content">';
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane active" id="suspects_leads">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_no_answer">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_no_answer"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_no_answer");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_in_contact">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_in_contact"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_in_contact");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_qualified">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_qualified"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_qualified");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_unqualified">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_unqualified"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_unqualified");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_validated">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_validated"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_validated");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_followup">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_followup"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_followup");
-		// inlineHtml += "</div>";
-
-		// inlineHtml +=
-		// 	'<div role="tabpanel" class="tab-pane" id="suspects_off_peak_pipeline">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_off_peak_pipeline"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_off_peak_pipeline");
-		// inlineHtml += "</div>";
-
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_lost">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_lost"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_lost");
-		// inlineHtml += "</div>";
-
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="suspects_oot">';
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_suspects_oot"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("suspects_oot");
-		// inlineHtml += "</div>";
-		// inlineHtml += "</div></div>";
-
-		// inlineHtml += '<div role="tabpanel" class="tab-pane" id="cancellation">';
-
-		// inlineHtml += '<figure class="highcharts-figure">';
-		// inlineHtml += '<div id="container_cancellation"></div>';
-		// inlineHtml += "</figure><br></br>";
-		// inlineHtml += dataTable("cancellation");
-		// inlineHtml += "</div>";
+		inlineHtml += '<figure class="highcharts-figure">';
+		inlineHtml += '<div id="container_cancellation"></div>';
+		inlineHtml += "</figure><br></br>";
+		inlineHtml += dataTable("cancellation");
+		inlineHtml += "</div>";
 
 		return inlineHtml;
 	}
@@ -2849,32 +2996,31 @@ define([
 
 		inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
-		if (name == "callforcetasks" || name == "illiciumtasks" || name == "prospectplustasks") {
+		if (name == "callforcetasks") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
-		if (name == "callForceDateSyncedOutcome" || name == "illiciumDateSyncedOutcome") {
+		if (name == "callForceDateSyncedOutcome") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (
 			name == "callForceOutcomeStatus" ||
-			name == "callForceCompletedTasksCurrentStatus" || name == "illiciumOutcomeStatus" ||
-			name == "illiciumCompletedTasksCurrentStatus" || name == "illiciumIndustrySubCategoryStatus"
+			name == "callForceCompletedTasksCurrentStatus"
 		) {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		if (name == "preview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "zee_overview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "lpo_overview") {
 			inlineHtml +=
@@ -2883,14 +3029,18 @@ define([
 
 		if (name == "salesrep_overview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (name == "datacapture_overview") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
-		if (name == "customer" || name == "existing_customers") {
+		if (name == "customer" || name == "shipmate_pending") {
+			inlineHtml +=
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+		}
+		if (name == "existing_customers") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="7"></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align:right"></th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
@@ -2904,7 +3054,7 @@ define([
 		}
 		if (name == "suspects_lost") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="16" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="19" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
 		}
 		if (
 			name == "prospects_quoteSent_incontact_noanswer" ||
@@ -2915,7 +3065,7 @@ define([
 		}
 		if (name == "cancellation") {
 			inlineHtml +=
-				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="8" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
+				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th colspan="11" style="text-align:right">Total:</th><th></th><th></th><th></th></tr></tfoot>';
 		}
 
 		inlineHtml += "</table></div>";
@@ -3115,6 +3265,25 @@ define([
 		} else {
 			return false;
 		}
+	}
+
+	/**
+ * Used to pass the values of `date_from` and `date_to` between the scripts and to Netsuite for the records and the search.
+ * @param   {String} date_iso       "2020-06-01"
+ * @returns {String} date_netsuite  "1/6/2020"
+ */
+	function dateISOToNetsuite(date_iso) {
+		var date_netsuite = "";
+		var split_date = date_iso.split('-');
+		if (!isNullorEmpty(date_iso)) {
+			var date_utc = new Date(split_date[0], split_date[1] - 1, split_date[2]);
+			// var date_netsuite = nlapiDateToString(date_utc);
+			var date_netsuite = format.format({
+				value: date_utc,
+				type: format.Type.DATE,
+			});
+		}
+		return date_netsuite;
 	}
 
 	function randomHexColorCode() {

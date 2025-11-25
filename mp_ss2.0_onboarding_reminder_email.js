@@ -164,24 +164,24 @@ define([
 					details: contactPhone + " for customer: " + customerInternalID,
 				});
 			} else {
-				email.send({
-					author: 112209,
-					body:
-						"SMS not sent to: " +
-						contactPhone +
-						" for customer: " +
-						customerID +
-						" - " +
-						customerCompanyName,
-					recipients: ["liam.pike@mailplus.com.au"],
-					subject:
-						"Onboarding Reminder SMS not sent - " +
-						customerID +
-						" - " +
-						customerCompanyName,
-					cc: ["portalsupport@mailplus.com.au"],
-					relatedRecords: { entityId: customerInternalID },
-				});
+				// email.send({
+				// 	author: 112209,
+				// 	body:
+				// 		"SMS not sent to: " +
+				// 		contactPhone +
+				// 		" for customer: " +
+				// 		customerID +
+				// 		" - " +
+				// 		customerCompanyName,
+				// 	recipients: ["liam.pike@mailplus.com.au"],
+				// 	subject:
+				// 		"Onboarding Reminder SMS not sent - " +
+				// 		customerID +
+				// 		" - " +
+				// 		customerCompanyName,
+				// 	cc: ["portalsupport@mailplus.com.au"],
+				// 	relatedRecords: { entityId: customerInternalID },
+				// });
 			}
 
 			return true;

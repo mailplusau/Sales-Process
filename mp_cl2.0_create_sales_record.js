@@ -47,25 +47,25 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 $(this).parent().hide();
             });
 
-            $(document).on('click', '#bau', function (e) {
-                buttonClicked = 'bau';
+            $(document).on('click', '#updateSalesRecord', function (e) {
+                buttonClicked = 'update';
                 $('#submitter').trigger('click');
             });
 
-            $(document).on('click', '#lpo', function (e) {
-                buttonClicked = 'lpo';
-                $('#submitter').trigger('click');
-            });
+            // $(document).on('click', '#lpo', function (e) {
+            //     buttonClicked = 'lpo';
+            //     $('#submitter').trigger('click');
+            // });
 
-            $(document).on('click', '#decline', function (e) {
-                buttonClicked = 'decline';
-                var val1 = currentRecord.get();
-                var customerInternalId = val1.getValue({
-                    fieldId: 'custpage_customer_internal_id'
-                });
-                var convertLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1722&deploy=1&compid=1048144&custid=' + parseInt(customerInternalId);
-                window.location.href = convertLink;
-            });
+            // $(document).on('click', '#decline', function (e) {
+            //     buttonClicked = 'decline';
+            //     var val1 = currentRecord.get();
+            //     var customerInternalId = val1.getValue({
+            //         fieldId: 'custpage_customer_internal_id'
+            //     });
+            //     var convertLink = 'https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=1722&deploy=1&compid=1048144&custid=' + parseInt(customerInternalId);
+            //     window.location.href = convertLink;
+            // });
 
         }
 
@@ -100,6 +100,9 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
             var customerInternalId = val1.getValue({
                 fieldId: 'custpage_customer_internal_id'
             });
+            var salesRecordInternalId = val1.getValue({
+                fieldId: 'custpage_sales_record_internal_id'
+            });
 
             if (isNullorEmpty(salesRep)) {
                 showAlert(
@@ -107,48 +110,49 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 );
                 return false;
             }
-
-            verify_abn(abn);
-            validatePhone(phone);
-
-            if (isNullorEmpty(website)) {
+            if (isNullorEmpty(campaign)) {
                 showAlert(
-                    'Please enter the Website URL'
+                    'Please Select Campaign'
                 );
                 return false;
             }
 
-            if (isNullorEmpty(carrier)) {
-                showAlert(
-                    'Please Select the current Carrier'
-                );
-                return false;
-            }
+            // verify_abn(abn);
+            // validatePhone(phone);
+
+            // if (isNullorEmpty(website)) {
+            //     showAlert(
+            //         'Please enter the Website URL'
+            //     );
+            //     return false;
+            // }
+
+            // if (isNullorEmpty(carrier)) {
+            //     showAlert(
+            //         'Please Select the current Carrier'
+            //     );
+            //     return false;
+            // }
 
 
-            if (buttonClicked == 'bau') {
+            if (buttonClicked == 'update') {
                 val1.setValue({
                     fieldId: 'custpage_button_clicked',
-                    value: 'bau'
+                    value: 'update'
                 });
-                if (isNullorEmpty(campaign)) {
-                    showAlert(
-                        'Please Select Campaign'
-                    );
-                    return false;
-                }
-            } else if (buttonClicked == 'decline') {
-                val1.setValue({
-                    fieldId: 'custpage_button_clicked',
-                    value: 'decline'
-                });
-            } else if (buttonClicked == 'lpo') {
-                val1.setValue({
-                    fieldId: 'custpage_button_clicked',
-                    value: 'lpo'
-                });
-                campaign = 69;
             }
+            // } else if (buttonClicked == 'decline') {
+            //     val1.setValue({
+            //         fieldId: 'custpage_button_clicked',
+            //         value: 'decline'
+            //     });
+            // } else if (buttonClicked == 'lpo') {
+            //     val1.setValue({
+            //         fieldId: 'custpage_button_clicked',
+            //         value: 'lpo'
+            //     });
+            //     campaign = 69;
+            // }
 
             var date = new Date();
             var date_now = format.parse({
@@ -160,14 +164,11 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 type: format.Type.TIMEOFDAY
             });
 
-            var salesRecord = record.create({
-                type: 'customrecord_sales'
+            var salesRecord = record.load({
+                type: 'customrecord_sales',
+                id: salesRecordInternalId,
             });
 
-            salesRecord.setValue({
-                fieldId: 'custrecord_sales_customer',
-                value: customerInternalId,
-            })
             salesRecord.setValue({
                 fieldId: 'custrecord_sales_campaign',
                 value: campaign,
@@ -176,25 +177,13 @@ define(['N/email', 'N/runtime', 'N/search', 'N/record', 'N/http', 'N/log',
                 fieldId: 'custrecord_sales_assigned',
                 value: salesRep,
             })
-            salesRecord.setValue({
-                fieldId: 'custrecord_sales_outcome',
-                value: 20,
-            })
-            salesRecord.setValue({
-                fieldId: 'custrecord_sales_callbackdate',
-                value: date_now,
-            })
-            salesRecord.setValue({
-                fieldId: 'custrecord_sales_callbacktime',
-                value: time_now,
-            })
 
             salesRecord.save({
                 ignoreMandatoryFields: true
             });
 
 
-            // return true;
+            return true;
         }
 
         /**

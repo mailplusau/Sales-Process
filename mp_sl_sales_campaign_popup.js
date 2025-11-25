@@ -1,11 +1,11 @@
 /**
  * Module Description
- * 
- * NSVersion    Date                    Author         
- * 1.00         2018-04-10 14:47:39         Ankith 
  *
- * Remarks:         
- * 
+ * NSVersion    Date                    Author
+ * 1.00         2018-04-10 14:47:39         Ankith
+ *
+ * Remarks:
+ *
  * @Last Modified by:   mailplusar
  * @Last Modified time: 2018-04-11 09:11:31
  *
@@ -13,141 +13,220 @@
 var ctx = nlapiGetContext();
 
 function main(request, response) {
-    if (request.getMethod() == 'GET') {
+	if (request.getMethod() == "GET") {
+		var customerRecordId = request.getParameter("recid");
+		var pdt = request.getParameter("pdt");
+		var cust = request.getParameter("cust");
+		var sales_record_id = request.getParameter("sales_record_id");
 
-        var customerRecordId = request.getParameter('recid');
-        var pdt = request.getParameter('pdt');
-        var cust = request.getParameter('cust');
-        var sales_record_id = request.getParameter('sales_record_id');
+		var userRole = parseInt(nlapiGetRole());
 
-        var userRole = parseInt(nlapiGetRole());
+		var form = nlapiCreateForm("Select Campaign Type");
 
-        var form = nlapiCreateForm('Select Campaign Type');
+		var customerRecord = nlapiLoadRecord("customer", customerRecordId);
 
-        var customerRecord = nlapiLoadRecord('customer', customerRecordId);
+		var customerStatus = customerRecord.getFieldValue("entitystatus");
+		var source = customerRecord.getFieldValue("leadsource");
+		var partner = customerRecord.getFieldValue("partner");
 
-        var customerStatus = customerRecord.getFieldValue('entitystatus');
-        var source = customerRecord.getFieldValue('leadsource');
-        var partner = customerRecord.getFieldValue('partner');
+		var salesRepId = nlapiGetUser();
+		if (!isNullorEmpty(sales_record_id)) {
+			if (partner != 435) {
+				var partnerRecord = nlapiLoadRecord("partner", partner);
+				salesRepId = partnerRecord.getFieldValue(
+					"custentity_sales_rep_assigned"
+				);
+			}
+		}
 
-        var salesRepId = nlapiGetUser()
-        if (!isNullorEmpty(sales_record_id)) {
-            if (partner != 435) {
-                var partnerRecord = nlapiLoadRecord('partner', partner);
-                salesRepId = partnerRecord.getFieldValue('custentity_sales_rep_assigned');
-            }
-        }
+		form
+			.addField("custpage_id", "text", "ID")
+			.setDisplayType("hidden")
+			.setDefaultValue(customerRecordId);
 
-        form.addField('custpage_id', 'text', 'ID').setDisplayType('hidden').setDefaultValue(customerRecordId);
+		var searched_salescampaign = nlapiLoadSearch(
+			"customrecord_salescampaign",
+			"customsearch_sales_button_campaign"
+		);
 
-        var searched_salescampaign = nlapiLoadSearch('customrecord_salescampaign', 'customsearch_sales_button_campaign');
+		var filters = new Array();
 
-        var filters = new Array();
+		if (customerStatus == 13) {
+			filters[filters.length] = new nlobjSearchFilter(
+				"custrecord_salescampaign_recordtype",
+				null,
+				"is",
+				1
+			);
+		} else {
+			filters[filters.length] = new nlobjSearchFilter(
+				"custrecord_salescampaign_recordtype",
+				null,
+				"is",
+				2
+			);
+		}
 
-        if (customerStatus == 13) {
-            filters[filters.length] = new nlobjSearchFilter('custrecord_salescampaign_recordtype', null, 'is', 1);
-        } else {
-            filters[filters.length] = new nlobjSearchFilter('custrecord_salescampaign_recordtype', null, 'is', 2);
-        }
+		form
+			.addField("subject", "text", "subject")
+			.setDisplayType("hidden")
+			.setDefaultValue("New Sales Record");
+		form
+			.addField("body", "text", "body")
+			.setDisplayType("hidden")
+			.setDefaultValue("New Sales Record");
+		form
+			.addField("sales_record_id", "text", "sales_record_id")
+			.setDisplayType("hidden")
+			.setDefaultValue(sales_record_id);
 
+		form.addField("salesrep", "text", "salesrep").setDisplayType("hidden");
 
-        form.addField('subject', 'text', 'subject').setDisplayType('hidden').setDefaultValue('New Sales Record');
-        form.addField('body', 'text', 'body').setDisplayType('hidden').setDefaultValue('New Sales Record');
-        form.addField('sales_record_id', 'text', 'sales_record_id').setDisplayType('hidden').setDefaultValue(sales_record_id);
+		searched_salescampaign.addFilters(filters);
 
-        form.addField('salesrep', 'text', 'salesrep').setDisplayType('hidden');
+		var resultSet = searched_salescampaign.runSearch();
 
-        searched_salescampaign.addFilters(filters);
+		var salesCampaignResult = resultSet.getResults(0, 1);
 
-        var resultSet = searched_salescampaign.runSearch();
+		// if (userRole != 1005) {
+		form
+			.addField("sales_rep", "select", "Sales Rep", "employee")
+			.setLayoutType("startrow")
+			.setMandatory(true)
+			.setDefaultValue(salesRepId);
+		// }
 
-        var salesCampaignResult = resultSet.getResults(0, 1);
+		form
+			.addField("franchisee", "select", "Franchisee", "partner")
+			.setLayoutType("startrow")
+			.setMandatory(true);
+		form
+			.addField(
+				"industry",
+				"select",
+				"Industry",
+				"customlist_industry_category"
+			)
+			.setLayoutType("startrow")
+			.setMandatory(true);
+		var sales_campagin_select = form
+			.addField("campaign_type", "select", "Sales Campaign")
+			.setMandatory(true);
 
-        // if (userRole != 1005) {
-        form.addField('sales_rep', 'select', 'Sales Rep', 'employee').setLayoutType('startrow').setMandatory(true).setDefaultValue(salesRepId);
-        // }
+		if (
+			source == 281559 ||
+			source == 282051 ||
+			source == 282083 ||
+			source == 282085
+		) {
+			sales_campagin_select.addSelectOption(69, "LPO");
+		} else if (source == 295896 || source == 296333) {
+			// Source is Either Outsourced - Head Office Generated or Outsourced - Head Office Validated
+			sales_campagin_select.addSelectOption(87, "Call Force - 202501");
+		} else if (source == -4) {
+			sales_campagin_select.addSelectOption(70, "Franchisee Generated");
+		}
+		var i;
 
-        form.addField('franchisee', 'select', 'Franchisee', 'partner').setLayoutType('startrow').setMandatory(true);
-        form.addField('industry', 'select', 'Industry', 'customlist_industry_category').setLayoutType('startrow').setMandatory(true);
-        var sales_campagin_select = form.addField('campaign_type', 'select', 'Sales Campaign').setMandatory(true);
+		// if (!isNullorEmpty(sales_campaign)) {
+		resultSet.forEachResult(function (searchResult) {
+			sales_campagin_select.addSelectOption(
+				searchResult.getValue("internalid"),
+				searchResult.getValue("name")
+			);
+			return true;
+		});
+		// }
 
-        if (source == 281559 || source == 282051 || source == 282083 || source == 282085) {
-            sales_campagin_select.addSelectOption(69, 'LPO');
-        } else if (source == -4) {
-            sales_campagin_select.addSelectOption(70, 'Franchisee Generated');
-        }
-        var i;
+		form.addSubmitButton("Submit");
+		form.setScript("customscript_cl_sales_campaign_popup");
+		response.writePage(form);
+	} else {
+		var subject = request.getParameter("subject");
+		var body = request.getParameter("body");
+		var custId = request.getParameter("custpage_id");
+		var salesrep = request.getParameter("salesrep");
 
-        // if (!isNullorEmpty(sales_campaign)) {
-        resultSet.forEachResult(function (searchResult) {
-            sales_campagin_select.addSelectOption(searchResult.getValue('internalid'), searchResult.getValue('name'));
-            return true;
-        });
-        // }
+		var customer_record = nlapiLoadRecord("customer", custId);
+		var status = customer_record.getFieldValue("entitystatus");
+		var leadSource = customer_record.getFieldText("leadsource");
+		var zee_text = customer_record.getFieldText("partner");
+		var sales_record_id = request.getParameter("sales_record_id");
 
+		nlapiLogExecution("DEBUG", "sales_record_id", sales_record_id);
+		var sales_record = nlapiLoadRecord("customrecord_sales", sales_record_id);
+		var sales_campaign_text = sales_record.getFieldText(
+			"custrecord_sales_campaign"
+		);
 
-        form.addSubmitButton("Submit");
-        form.setScript('customscript_cl_sales_campaign_popup');
-        response.writePage(form);
+		if (nlapiGetUser() == 1777309) {
+			var cust_id_link =
+				"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+				custId;
 
-    } else {
+			body =
+				"New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \nCampaign: " +
+				sales_campaign_text +
+				" \n Link: " +
+				cust_id_link +
+				"\n Franchisee: " +
+				zee_text;
 
-        var subject = request.getParameter('subject');
-        var body = request.getParameter('body');
-        var custId = request.getParameter('custpage_id');
-        var salesrep = request.getParameter('salesrep');
+			nlapiSendEmail(
+				112209,
+				salesrep,
+				"Sales Coordinator Qualified HOT Lead",
+				body,
+				["luke.forbes@mailplus.com.au"]
+			);
+		} else if (
+			parseInt(nlapiGetRole()) != 1032 &&
+			parseInt(nlapiGetRole()) != 3
+		) {
+			var cust_id_link =
+				"https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=" +
+				custId;
 
-        var customer_record = nlapiLoadRecord('customer', custId);
-        var status = customer_record.getFieldValue('entitystatus');
-        var leadSource = customer_record.getFieldText('leadsource');
-        var zee_text = customer_record.getFieldText('partner');
-        var sales_record_id = request.getParameter('sales_record_id');
+			body =
+				"New sales record has been created. \n You have been assigned a lead.\nCampaign: " +
+				sales_campaign_text +
+				" \n Link: " +
+				cust_id_link +
+				"\n Franchisee: " +
+				zee_text;
 
-        nlapiLogExecution('DEBUG', "sales_record_id", sales_record_id);
-        var sales_record = nlapiLoadRecord('customrecord_sales', sales_record_id);
-        var sales_campaign_text = sales_record.getFieldText('custrecord_sales_campaign')
+			if (salesrep == 1809382) {
+				nlapiSendEmail(112209, salesrep, leadSource + " - Sales Lead", body, [
+					"luke.forbes@mailplus.com.au",
+					"lee.russell@mailplus.com.au",
+				]);
+			} else {
+				nlapiSendEmail(112209, salesrep, leadSource + " - Sales Lead", body, [
+					"luke.forbes@mailplus.com.au",
+				]);
+			}
+		}
 
-
-
-        if (nlapiGetUser() == 1777309) {
-            var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
-
-            body = 'New lead qualified by the Sales Coordinator. New sales record has been created. \n You have been assigned a lead. \nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
-
-            nlapiSendEmail(112209, salesrep, 'Sales Coordinator Qualified HOT Lead', body, ['luke.forbes@mailplus.com.au']);
-        } else if (parseInt(nlapiGetRole()) != 1032 && parseInt(nlapiGetRole()) != 3) {
-            var cust_id_link = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + custId;
-
-            body = 'New sales record has been created. \n You have been assigned a lead.\nCampaign: ' + sales_campaign_text + ' \n Link: ' + cust_id_link + '\n Franchisee: ' + zee_text;
-
-            if (salesrep == 1809382) {
-                nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au', 'lee.russell@mailplus.com.au']);
-            } else {
-                nlapiSendEmail(112209, salesrep, leadSource + ' - Sales Lead', body, ['luke.forbes@mailplus.com.au']);
-            }
-
-        }
-
-        if (!isNullorEmpty(sales_record_id)) {
-            var params = {
-                customerId: parseInt(custId),
-                callCenter: 'T',
-                salesRecordId: sales_record_id
-            }
-            nlapiSetRedirectURL('SUITELET', 'customscript_sl_update_customer_tn_vue3', 'customdeploy_sl_update_customer_tn_vue3', null, params);
-        } else {
-            response.sendRedirect('RECORD', 'customer', custId, false);
-        }
-
-
-    }
-
-
+		if (!isNullorEmpty(sales_record_id)) {
+			var params = {
+				customerId: parseInt(custId),
+				callCenter: "T",
+				salesRecordId: sales_record_id,
+			};
+			nlapiSetRedirectURL(
+				"SUITELET",
+				"customscript_sl_update_customer_tn_vue3",
+				"customdeploy_sl_update_customer_tn_vue3",
+				null,
+				params
+			);
+		} else {
+			response.sendRedirect("RECORD", "customer", custId, false);
+		}
+	}
 }
-
-
 
 Date.prototype.addHours = function (h) {
-    this.setHours(this.getHours() + h);
-    return this;
-}
+	this.setHours(this.getHours() + h);
+	return this;
+};
