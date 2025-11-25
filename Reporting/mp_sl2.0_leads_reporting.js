@@ -150,6 +150,10 @@ define([
 			var sales_activity_notes = context.request.parameters.salesactivitynotes;
 			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
+			var syncWithProspectPlus = context.request.parameters.syncWithPP;
+
+			var start_synced_date = context.request.parameters.start_synced_date;
+			var last_synced_date = context.request.parameters.last_synced_date;
 
 			log.debug({
 				title: "leadStatus",
@@ -403,6 +407,32 @@ define([
 					}
 				}
 			}
+
+
+			if ((syncWithProspectPlus == '1' || syncWithProspectPlus == 1) && isNullorEmpty(start_synced_date) && isNullorEmpty(last_synced_date) && role != 1000) {
+				start_synced_date = firstDay;
+				last_synced_date = lastDay;
+			}
+
+			log.debug({
+				title: "start_date",
+				details: start_date,
+			});
+
+			log.debug({
+				title: "last_date",
+				details: last_date,
+			});
+			log.debug({
+				title: "start_synced_date",
+				details: start_synced_date,
+			});
+
+			log.debug({
+				title: "last_synced_date",
+				details: last_synced_date,
+			});
+
 
 			if (isNullorEmpty(userId)) {
 				userId = null;
@@ -668,6 +698,7 @@ define([
 			var resultSetZees = searchZees.run();
 
 			inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+			inlineHtml += syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date)
 			inlineHtml += leadStatusDropdown(leadStatusArray);
 			inlineHtml += leadSourceFilterSection(
 				source,
@@ -703,11 +734,14 @@ define([
 			var showFranchiseeGeneratedLeadsPieChart = false;
 			var showCallForceTasksPieChart = false;
 			var showIlliciumTasksPieChart = false;
+			var showProspectPlusTasksPieChart = false;
 
 			if (isNullorEmpty(campaign)) {
 				showFranchiseeGeneratedLeadsPieChart = true;
 				showCallForceTasksPieChart = true;
-				showIlliciumTasksPieChart = true;
+				if (syncWithProspectPlus != 1 || syncWithProspectPlus != '1') {
+					showIlliciumTasksPieChart = true;
+				}
 			} else {
 				if (campaign.indexOf(",") != -1) {
 					var campaignArray = campaign.split(",");
@@ -736,6 +770,10 @@ define([
 				if (campaignArray.indexOf("70") != -1) {
 					showFranchiseeGeneratedLeadsPieChart = true;
 				}
+			}
+
+			if (syncWithProspectPlus == 1 || syncWithProspectPlus == '1') {
+				showProspectPlusTasksPieChart = true;
 			}
 
 			if (showFranchiseeGeneratedLeadsPieChart == true) {
@@ -790,7 +828,24 @@ define([
 				inlineHtml += "</div>";
 			}
 
-			inlineHtml += tabsSection(campaign);
+			if (showProspectPlusTasksPieChart == true) {
+				inlineHtml +=
+					'<div class="form-group container scorecard_percentage hide" style="">';
+				inlineHtml += '<div class="row">';
+				inlineHtml += '<div class="col-xs-12">';
+				inlineHtml += '<article class="card">';
+				inlineHtml += '<h2 style="text-align:center;">ProspectPlus Report</h2>';
+				inlineHtml +=
+					'<small style="text-align:center;font-size: 12px;"></small>';
+				inlineHtml +=
+					'<div id="container-prospectplus_progress" style="height: 300px"></div>';
+				inlineHtml += "</article>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+				inlineHtml += "</div>";
+			}
+
+			inlineHtml += tabsSection(campaign, syncWithProspectPlus);
 			inlineHtml += dataTable();
 
 			form
@@ -924,6 +979,76 @@ define([
 			return true;
 		});
 		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
+
+		return inlineHtml;
+	}
+
+	function syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date) {
+		var inlineHtml =
+			'<div class="form-group container status_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PROSPECTPLUS SYNC</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container status_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		// Period dropdown field
+		inlineHtml += '<div class="col-xs-12 pp_sync_div">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="pp_sync_text">PROSPECTPLUS SYNC</span>';
+		inlineHtml +=
+			'<select id="pp_sync" class="form-control" style="width: 100%">';
+		inlineHtml += '<option value="0"></option>';
+		if (syncWithProspectPlus == "1" || syncWithProspectPlus == 1) {
+			inlineHtml +=
+				'<option value="1" selected>YES</option>';
+		} else if (syncWithProspectPlus == "2" || syncWithProspectPlus == 2) {
+			inlineHtml += '<option value="2">NO</option>';
+		} else {
+			inlineHtml += '<option value="1">YES</option>';
+			inlineHtml += '<option value="2">NO</option>';
+		}
+		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml += '<div class="form-group container lead_entered_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_from_text">DATE LEAD SYNCED - FROM</span>';
+		if (isNullorEmpty(start_synced_date)) {
+			inlineHtml +=
+				'<input id="date_synced_from" class="form-control date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="date_synced_from" class="form-control date_from" type="date" value="' +
+				start_synced_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_to_text">DATE LEAD SYNCED - TO</span>';
+		if (isNullorEmpty(last_synced_date)) {
+			inlineHtml +=
+				'<input id="date_synced_to" class="form-control date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="date_synced_to" class="form-control date_to" type="date" value="' +
+				last_synced_date +
+				'">';
+		}
+
 		inlineHtml += "</div></div></div></div>";
 
 		return inlineHtml;
@@ -2001,7 +2126,7 @@ define([
 		return inlineHtml;
 	}
 
-	function tabsSection(campaign) {
+	function tabsSection(campaign, syncWithProspectPlus) {
 		var inlineHtml = '<div class="tabs_section hide">';
 
 		// Tabs headers
@@ -2051,6 +2176,11 @@ define([
 				inlineHtml +=
 					'<li role="presentation" class=""><a data-toggle="tab" href="#illiciumtasks" style="border-radius: 30px"><b>ILLICIUM</b></a></li>';
 			}
+		}
+
+		if (syncWithProspectPlus == 1 || syncWithProspectPlus == "1") {
+			inlineHtml +=
+				'<li role="presentation" class=""><a data-toggle="tab" href="#prospectplustasks" style="border-radius: 30px"><b>PROSPECTPLUS</b></a></li>';
 		}
 		// inlineHtml +=
 		// 	'<li role="presentation" class=""><a data-toggle="tab" href="#customer" style="border-radius: 30px"><b>CUSTOMERS</b></a></li>';
@@ -2159,6 +2289,35 @@ define([
 				inlineHtml += "</br>";
 				inlineHtml += "</div>";
 			}
+		}
+
+		if (syncWithProspectPlus == 1 || syncWithProspectPlus == "1") {
+
+			inlineHtml +=
+				'<div role="tabpanel" class="tab-pane" id="prospectplustasks">';
+
+			inlineHtml +=
+				'<h2 style="text-align:center;">Week Lead Synced vs Outcome</h2>';
+			inlineHtml += dataTable("prospectplusDateSyncedOutcome");
+			inlineHtml += "</br>";
+			inlineHtml +=
+				'<h2 style="text-align:center;">Prospect Plus Appointments</h2>';
+			inlineHtml += dataTable("prospectplustasks");
+			inlineHtml += "</br>";
+			inlineHtml +=
+				'<h2 style="text-align:center;">Completed Tasks vs Current NetSuite Status</h2>';
+			inlineHtml += dataTable("prospectplusCompletedTasksCurrentStatus");
+			inlineHtml += "</br>";
+			inlineHtml +=
+				'<h2 style="text-align:center;">Outcome vs Current NetSuite Status</h2>';
+			inlineHtml += dataTable("prospectplusOutcomeStatus");
+			inlineHtml += "</br>";
+			inlineHtml +=
+				'<h2 style="text-align:center;">Industry Sub-Category vs Current NetSuite Status</h2>';
+			inlineHtml += dataTable("prospectplusIndustrySubCategoryStatus");
+			inlineHtml += "</br>";
+			inlineHtml += "</div>";
+
 		}
 
 		inlineHtml += '<div role="tabpanel" class="tab-pane active" id="overview">';
@@ -2690,7 +2849,7 @@ define([
 
 		inlineHtml += '<tbody id="result_usage_' + name + '" ></tbody>';
 
-		if (name == "callforcetasks" || name == "illiciumtasks") {
+		if (name == "callforcetasks" || name == "illiciumtasks" || name == "prospectplustasks") {
 			inlineHtml +=
 				'<tfoot style="font-size: larger;"><tr style="background-color: #085c7b2e;border: 2px solid;"><th>TOTAL: </th><th></th><th></th><th></th><th></th></tr></tfoot>';
 		}
