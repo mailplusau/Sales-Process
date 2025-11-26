@@ -154,6 +154,9 @@ define([
 			var sales_activity_notes = context.request.parameters.salesactivitynotes;
 			var customer_type = context.request.parameters.customertype;
 			var leadStatus = context.request.parameters.status;
+			var syncWithProspectPlus = context.request.parameters.syncWithPP;
+			var start_synced_date = context.request.parameters.start_synced_date;
+			var last_synced_date = context.request.parameters.last_synced_date;
 
 			var page_no = context.request.parameters.page_no;
 			if (isNullorEmpty(page_no)) {
@@ -413,6 +416,11 @@ define([
 				}
 			}
 
+			if ((syncWithProspectPlus == '1' || syncWithProspectPlus == 1) && isNullorEmpty(start_synced_date) && isNullorEmpty(last_synced_date) && role != 1000) {
+				start_synced_date = firstDay;
+				last_synced_date = lastDay;
+			}
+
 			if (isNullorEmpty(userId)) {
 				userId = null;
 			}
@@ -660,6 +668,7 @@ define([
 			var resultSetZees = searchZees.run();
 
 			inlineHtml += franchiseeDropdownSection(resultSetZees, context);
+			inlineHtml += syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date)
 			inlineHtml += leadStatusDropdown(leadStatusArray);
 			inlineHtml += leadSourceFilterSection(
 				source,
@@ -770,7 +779,7 @@ define([
 				date_quote_sent_to,
 				date_quote_sent_from,
 				commencement_start_date,
-				commencement_last_date, leadStatusArray);
+				commencement_last_date, leadStatusArray, start_synced_date, last_synced_date);
 			inlineHtml += dataTable();
 
 			form
@@ -924,6 +933,76 @@ define([
 			return true;
 		});
 		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
+
+		return inlineHtml;
+	}
+
+	function syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date) {
+		var inlineHtml =
+			'<div class="form-group container status_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		inlineHtml +=
+			'<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PROSPECTPLUS SYNC</span></h4></div>';
+		inlineHtml += "</div>";
+		inlineHtml += "</div>";
+
+		inlineHtml +=
+			'<div class="form-group container status_dropdown_section hide">';
+		inlineHtml += '<div class="row">';
+		// Period dropdown field
+		inlineHtml += '<div class="col-xs-12 pp_sync_div">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="pp_sync_text">PROSPECTPLUS SYNC</span>';
+		inlineHtml +=
+			'<select id="pp_sync" class="form-control" style="width: 100%">';
+		inlineHtml += '<option value="0"></option>';
+		if (syncWithProspectPlus == "1" || syncWithProspectPlus == 1) {
+			inlineHtml +=
+				'<option value="1" selected>YES</option>';
+		} else if (syncWithProspectPlus == "2" || syncWithProspectPlus == 2) {
+			inlineHtml += '<option value="2">NO</option>';
+		} else {
+			inlineHtml += '<option value="1">YES</option>';
+			inlineHtml += '<option value="2">NO</option>';
+		}
+		inlineHtml += "</select>";
+		inlineHtml += "</div></div></div></div>";
+
+		inlineHtml += '<div class="form-group container lead_entered_div hide">';
+		inlineHtml += '<div class="row">';
+		// Date from field
+		inlineHtml += '<div class="col-xs-6 date_from">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_from_text">DATE LEAD SYNCED - FROM</span>';
+		if (isNullorEmpty(start_synced_date)) {
+			inlineHtml +=
+				'<input id="date_synced_from" class="form-control date_from" type="date" />';
+		} else {
+			inlineHtml +=
+				'<input id="date_synced_from" class="form-control date_from" type="date" value="' +
+				start_synced_date +
+				'"/>';
+		}
+
+		inlineHtml += "</div></div>";
+		// Date to field
+		inlineHtml += '<div class="col-xs-6 date_to">';
+		inlineHtml += '<div class="input-group">';
+		inlineHtml +=
+			'<span class="input-group-addon" id="date_to_text">DATE LEAD SYNCED - TO</span>';
+		if (isNullorEmpty(last_synced_date)) {
+			inlineHtml +=
+				'<input id="date_synced_to" class="form-control date_to" type="date">';
+		} else {
+			inlineHtml +=
+				'<input id="date_synced_to" class="form-control date_to" type="date" value="' +
+				last_synced_date +
+				'">';
+		}
+
 		inlineHtml += "</div></div></div></div>";
 
 		return inlineHtml;
@@ -2012,7 +2091,7 @@ define([
 		date_quote_sent_to,
 		date_quote_sent_from,
 		commencement_start_date,
-		commencement_last_date, leadStatusArray) {
+		commencement_last_date, leadStatusArray, start_synced_date, last_synced_date) {
 		var inlineHtml = '<div class="tabs_section hide">';
 
 		date_from = dateISOToNetsuite(date_from);
@@ -2023,6 +2102,8 @@ define([
 		date_quote_sent_to = dateISOToNetsuite(date_quote_sent_to);
 		commencement_start_date = dateISOToNetsuite(commencement_start_date);
 		commencement_last_date = dateISOToNetsuite(commencement_last_date);
+		start_synced_date = dateISOToNetsuite(start_synced_date);
+		last_synced_date = dateISOToNetsuite(last_synced_date);
 
 		if (role == 1000) {
 			var websiteSuspectsLeadsReportingSearch = search.load({
@@ -2197,6 +2278,27 @@ define([
 				})
 			);
 		}
+
+		if (!isNullorEmpty(start_synced_date) && !isNullorEmpty(last_synced_date)) {
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_cf_date_sent",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.ONORAFTER,
+					values: start_synced_date,
+				})
+			);
+
+			websiteSuspectsLeadsReportingSearch.filters.push(
+				search.createFilter({
+					name: "custrecord_cf_date_sent",
+					join: "custrecord_sales_customer",
+					operator: search.Operator.ONORBEFORE,
+					values: last_synced_date,
+				})
+			);
+		}
+
 
 		if (!isNullorEmpty(sales_rep)) {
 			websiteSuspectsLeadsReportingSearch.filters.push(

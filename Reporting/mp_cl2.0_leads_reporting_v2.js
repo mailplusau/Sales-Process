@@ -594,6 +594,9 @@ define([
 			var date_from = $("#date_from").val();
 			var date_to = $("#date_to").val();
 
+			var date_synced_from = $("#date_synced_from").val();
+			var date_synced_to = $("#date_synced_to").val();
+
 			var modified_date_from = $("#modified_date_from").val();
 			var modified_date_to = $("#modified_date_to").val();
 
@@ -705,7 +708,9 @@ define([
 				"&salesactivitynotes=" +
 				sales_activity_notes +
 				"&customertype=" +
-				customer_type + "&syncWithPP=" + pp_sync;
+				customer_type + "&syncWithPP=" + pp_sync + "&start_synced_date=" + date_synced_from + "&last_synced_date=" + date_synced_to;
+
+			console.log(url);
 
 			window.open(url, "_blank");
 			// window.location.href = url;
@@ -18315,6 +18320,14 @@ define([
 		}
 
 		if (!isNullorEmpty(date_synced_from) && !isNullorEmpty(date_synced_to)) {
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custentity_lead_synced_to_firebase",
+					join: null,
+					operator: search.Operator.ANYOF,
+					values: 1,
+				})
+			);
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
 					name: "custrecord_cf_date_sent",
