@@ -391,11 +391,7 @@ define([
 			var date_to = $("#date_to").val();
 			var url =
 				baseURL +
-				"/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=" +
-				date_from +
-				"&last_date=" +
-				date_to +
-				"&usage_date_from=2025-02-01&usage_date_to=2025-02-28&date_signed_up_from=&date_signed_up_to=&commence_date_from=&commence_date_to=&cancel_date_from=&cancel_date_to=&source=-4,254557,295896,296333&date_quote_sent_from=&date_quote_sent_to=&sales_rep=null&zee=null&calcprodusage=2&invoice_date_from=&invoice_date_to=&campaign=null&lpo=null&lead_entered_by=null&modified_date_from=undefined&modified_date_to=undefined&status=null&salesactivitynotes=undefined&customertype=2";
+				"/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=&last_date=&usage_date_from=2025-02-01&usage_date_to=2025-02-28&date_signed_up_from=&date_signed_up_to=&commence_date_from=&commence_date_to=&cancel_date_from=&cancel_date_to=&source==null&date_quote_sent_from=&date_quote_sent_to=&sales_rep=null&zee=null&calcprodusage=2&invoice_date_from=&invoice_date_to=&campaign=null&lpo=null&lead_entered_by=null&modified_date_from=undefined&modified_date_to=undefined&status=null&salesactivitynotes=undefined&customertype=2" + "&syncWithPP=1" + "&start_synced_date=" + date_from + "&last_synced_date=" + date_to;
 			window.open(url, "_blank");
 			// window.location.href = url;
 		});
@@ -540,9 +536,14 @@ define([
 		}
 
 		// Sales Dashboard - Leads by Status - Monthly Reporting
+		// var leadsListBySalesRepWeeklySearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_3_3",
+		// });
+		// Sales Dashboard for Zee - Leads by Status - Monthly Reporting by Date Synced with ProspectPlus
 		var leadsListBySalesRepWeeklySearch = search.load({
 			type: "customer",
-			id: "customsearch_leads_reporting_weekly_3_3",
+			id: "customsearch_leads_reporting_weekly_3_10",
 		});
 		// } else {
 		// 	// Sales Dashboard - Leads by Status - Weekly Reporting
@@ -626,8 +627,16 @@ define([
 		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_date_lead_entered",
+					name: "custentity_lead_synced_to_firebase",
 					join: null,
+					operator: search.Operator.ANYOF,
+					values: 1,
+				})
+			);
+			leadsListBySalesRepWeeklySearch.filters.push(
+				search.createFilter({
+					name: "custrecord_cf_date_sent",
+					join: "custrecord_sales_customer",
 					operator: search.Operator.ONORAFTER,
 					values: date_from,
 				})
@@ -635,13 +644,33 @@ define([
 
 			leadsListBySalesRepWeeklySearch.filters.push(
 				search.createFilter({
-					name: "custentity_date_lead_entered",
-					join: null,
+					name: "custrecord_cf_date_sent",
+					join: "custrecord_sales_customer",
 					operator: search.Operator.ONORBEFORE,
 					values: date_to,
 				})
 			);
 		}
+
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
+
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_date_lead_entered",
+		// 			join: null,
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
 
 		if (
 			!isNullorEmpty(date_signed_up_from) &&
@@ -921,8 +950,13 @@ define([
 						summary: "COUNT",
 					})
 				);
+				// var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+				// 	name: "custentity_date_lead_entered",
+				// 	summary: "GROUP",
+				// });
 				var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-					name: "custentity_date_lead_entered",
+					name: "custrecord_cf_date_sent",
+					join: "CUSTRECORD_SALES_CUSTOMER",
 					summary: "GROUP",
 				});
 				var custStatus = parseInt(
@@ -3155,7 +3189,7 @@ define([
 				backgroundColor: "#CFE0CE",
 			},
 			title: {
-				text: "Leads - By Status - Month Entered",
+				text: "Leads - By Status - Month Synced with ProspectPlus",
 				style: {
 					fontWeight: "bold",
 					color: "#0B2447",
@@ -3292,6 +3326,23 @@ define([
 					},
 				},
 				{
+					name: "Qualified Appointments",
+					data: series_data20a,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+						fontSize: "10px",
+					},
+				},
+				{
+					name: "Synced with ProspectPlus",
+					data: series_data28a,
+					color: "#B674EFFF",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
 					name: "Suspect - New",
 					data: series_data34,
 					color: "#FEBE8C",
@@ -3302,14 +3353,6 @@ define([
 				{
 					name: "Suspect - Hot Lead",
 					data: series_data21,
-					color: "#FEBE8C",
-					style: {
-						fontWeight: "bold",
-					},
-				},
-				{
-					name: "Suspect - Qualified",
-					data: series_data20a,
 					color: "#FEBE8C",
 					style: {
 						fontWeight: "bold",
@@ -3327,14 +3370,6 @@ define([
 					name: "Suspect - In Qualification",
 					data: series_data31a,
 					color: "#FEBE8C",
-					style: {
-						fontWeight: "bold",
-					},
-				},
-				{
-					name: "Suspect - Unqualified",
-					data: series_data28a,
-					color: "#B674EFFF",
 					style: {
 						fontWeight: "bold",
 					},
