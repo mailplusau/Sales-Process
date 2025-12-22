@@ -536,15 +536,15 @@ define([
 		}
 
 		// Sales Dashboard - Leads by Status - Monthly Reporting
-		// var leadsListBySalesRepWeeklySearch = search.load({
-		// 	type: "customer",
-		// 	id: "customsearch_leads_reporting_weekly_3_3",
-		// });
-		// Sales Dashboard for Zee - Leads by Status - Monthly Reporting by Date Synced with ProspectPlus
 		var leadsListBySalesRepWeeklySearch = search.load({
 			type: "customer",
-			id: "customsearch_leads_reporting_weekly_3_10",
+			id: "customsearch_leads_reporting_weekly_3_3",
 		});
+		// Sales Dashboard for Zee - Leads by Status - Monthly Reporting by Date Synced with ProspectPlus
+		// var leadsListBySalesRepWeeklySearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_3_10",
+		// });
 		// } else {
 		// 	// Sales Dashboard - Leads by Status - Weekly Reporting
 		// 	var leadsListBySalesRepWeeklySearch = search.load({
@@ -613,44 +613,33 @@ define([
 			);
 		}
 
-		if (!isNullorEmpty(leadStatus)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "entitystatus",
-					join: null,
-					operator: search.Operator.IS,
-					values: leadStatus,
-				})
-			);
-		}
+		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custentity_lead_synced_to_firebase",
+		// 			join: null,
+		// 			operator: search.Operator.ANYOF,
+		// 			values: 1,
+		// 		})
+		// 	);
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_cf_date_sent",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ONORAFTER,
+		// 			values: date_from,
+		// 		})
+		// 	);
 
-		if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_synced_to_firebase",
-					join: null,
-					operator: search.Operator.ANYOF,
-					values: 1,
-				})
-			);
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_cf_date_sent",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ONORAFTER,
-					values: date_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_cf_date_sent",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ONORBEFORE,
-					values: date_to,
-				})
-			);
-		}
+		// 	leadsListBySalesRepWeeklySearch.filters.push(
+		// 		search.createFilter({
+		// 			name: "custrecord_cf_date_sent",
+		// 			join: "custrecord_sales_customer",
+		// 			operator: search.Operator.ONORBEFORE,
+		// 			values: date_to,
+		// 		})
+		// 	);
+		// }
 
 		// if (!isNullorEmpty(date_from) && !isNullorEmpty(date_to)) {
 		// 	leadsListBySalesRepWeeklySearch.filters.push(
@@ -672,152 +661,6 @@ define([
 		// 	);
 		// }
 
-		if (
-			!isNullorEmpty(date_signed_up_from) &&
-			!isNullorEmpty(date_signed_up_to)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: date_signed_up_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date_signup",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: date_signed_up_to,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(commencement_start_date) &&
-			!isNullorEmpty(commencement_last_date)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORAFTER,
-					values: commencement_start_date,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_comm_date",
-					join: "CUSTRECORD_CUSTOMER",
-					operator: search.Operator.ONORBEFORE,
-					values: commencement_last_date,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(cancelled_start_date) &&
-			!isNullorEmpty(cancelled_last_date)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: cancelled_start_date,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity13",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: cancelled_last_date,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_source)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "leadsource",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_source,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_rep)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_assigned",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.IS,
-					values: sales_rep,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(lead_entered_by)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_lead_entered_by",
-					join: null,
-					operator: search.Operator.IS,
-					values: lead_entered_by,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(sales_campaign)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custrecord_sales_campaign",
-					join: "custrecord_sales_customer",
-					operator: search.Operator.ANYOF,
-					values: sales_campaign,
-				})
-			);
-		}
-
-		if (!isNullorEmpty(parent_lpo)) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "internalid",
-					join: "custentity_lpo_parent_account",
-					operator: search.Operator.ANYOF,
-					values: parent_lpo,
-				})
-			);
-		}
-
-		if (
-			!isNullorEmpty(date_quote_sent_from) &&
-			!isNullorEmpty(date_quote_sent_to)
-		) {
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORAFTER,
-					values: date_quote_sent_from,
-				})
-			);
-
-			leadsListBySalesRepWeeklySearch.filters.push(
-				search.createFilter({
-					name: "custentity_date_lead_quote_sent",
-					join: null,
-					operator: search.Operator.ONORBEFORE,
-					values: date_quote_sent_to,
-				})
-			);
-		}
 
 		if (!isNullorEmpty(zee_id)) {
 			leadsListBySalesRepWeeklySearch.filters.push(
@@ -831,8 +674,8 @@ define([
 		}
 
 		if (
-			!isNullorEmpty(modified_date_from) &&
-			!isNullorEmpty(modified_date_to)
+			!isNullorEmpty(date_from) &&
+			!isNullorEmpty(date_to)
 		) {
 			var defaultSearchFilters =
 				leadsListBySalesRepWeeklySearch.filterExpression;
@@ -841,66 +684,14 @@ define([
 				"default search filters: " + JSON.stringify(defaultSearchFilters)
 			);
 
-			var modifiedDateFilters = [
-				[
-					["activity.date", "within", [modified_date_from, modified_date_to]],
-					"AND",
-					[
-						"activity.custevent_organiser",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
-				"AND",
-				[
-					[
-						"usernotes.notedate",
-						"within",
-						[modified_date_from, modified_date_to],
-					],
-					"AND",
-					[
-						"usernotes.author",
-						"anyof",
-						"anyof",
-						"1623053",
-						"668712",
-						"1797389",
-						"1809334",
-						"690145",
-						"1771076",
-						"1813424",
-						"696160",
-						"668711",
-						"1809382",
-						"653718",
-						"1777309",
-						"1819701",
-						"1820151",
-						"1822089",
-					],
-				],
+			var customAdditionalFilters = [
+				[["custentity_date_lead_entered", "within", [date_from, date_to]], "OR", [["custrecord_sales_customer.custrecord_cf_date_sent", "within", [date_from, date_to]], "AND", ["custrecord_sales_customer.custrecord_sales_campaign", "anyof", "96", "94", "90", "70", "92"]]]
 			];
-			console.log(
-				"modifiedDateFilters filters: " + JSON.stringify(modifiedDateFilters)
-			);
+
+
 
 			defaultSearchFilters.push("AND");
-			defaultSearchFilters.push(modifiedDateFilters);
+			defaultSearchFilters.push(customAdditionalFilters);
 
 			console.log(
 				"defaultSearchFilters filters: " + JSON.stringify(defaultSearchFilters)
@@ -940,6 +731,7 @@ define([
 
 		suspect_no_answer = 0;
 		suspect_in_contact = 0;
+		suspect_franchisee_review = 0;
 
 		leadsListBySalesRepWeeklySearch
 			.run()
@@ -950,15 +742,15 @@ define([
 						summary: "COUNT",
 					})
 				);
-				// var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-				// 	name: "custentity_date_lead_entered",
-				// 	summary: "GROUP",
-				// });
 				var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-					name: "custrecord_cf_date_sent",
-					join: "CUSTRECORD_SALES_CUSTOMER",
+					name: "custentity_date_lead_entered",
 					summary: "GROUP",
 				});
+				// var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+				// 	name: "custrecord_cf_date_sent",
+				// 	join: "CUSTRECORD_SALES_CUSTOMER",
+				// 	summary: "GROUP",
+				// });
 				var custStatus = parseInt(
 					prospectListBySalesRepWeeklyResultSet.getValue({
 						name: "entitystatus",
@@ -1084,6 +876,9 @@ define([
 					} else if (custStatus == 34) {
 						//PROSPECT - PRE QUALIFICATION
 						suspect_pre_qualification = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_franchisee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -1111,7 +906,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification;
+						suspect_in_qualification + suspect_franchisee_review;
 				} else if (oldDate1 != null && oldDate1 == startDate) {
 					if (custStatus == 13 || custStatus == 66) {
 						//CUSTOMER _ SIGNED
@@ -1188,6 +983,9 @@ define([
 					} else if (custStatus == 34) {
 						//PROSPECT - PRE QUALIFICATION
 						suspect_pre_qualification += parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_franchisee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -1215,7 +1013,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification;
+						suspect_in_qualification + suspect_franchisee_review;
 				} else if (oldDate1 != null && oldDate1 != startDate) {
 					debt_set2.push({
 						dateUsed: oldDate1,
@@ -1245,6 +1043,7 @@ define([
 						prospect_box_sent: prospecy_box_sent,
 						suspect_pre_qualification: suspect_pre_qualification,
 						suspect_in_qualification: suspect_in_qualification,
+						suspect_franchisee_review: suspect_franchisee_review,
 					});
 
 					customer_signed = 0;
@@ -1274,6 +1073,7 @@ define([
 					suspect_in_contact = 0;
 					suspect_pre_qualification = 0;
 					suspect_in_qualification = 0;
+					suspect_franchisee_review = 0;
 
 					if (custStatus == 13 || custStatus == 66) {
 						//CUSTOMER _ SIGNED
@@ -1350,6 +1150,9 @@ define([
 					} else if (custStatus == 34) {
 						//PROSPECT - PRE QUALIFICATION
 						suspect_pre_qualification = parseInt(prospectCount);
+					} else if (custStatus == 39) {
+						//SUSPECT - FRANCHISEE REVIEW
+						suspect_franchisee_review = parseInt(prospectCount);
 					}
 
 					total_leads =
@@ -1377,7 +1180,7 @@ define([
 						suspect_unqualified +
 						prospecy_box_sent +
 						suspect_pre_qualification +
-						suspect_in_qualification;
+						suspect_in_qualification + suspect_franchisee_review;
 				}
 
 				count1++;
@@ -1414,6 +1217,7 @@ define([
 				prospect_box_sent: prospecy_box_sent,
 				suspect_pre_qualification: suspect_pre_qualification,
 				suspect_in_qualification: suspect_in_qualification,
+				suspect_franchisee_review: suspect_franchisee_review,
 			});
 		}
 
@@ -1643,6 +1447,7 @@ define([
 					preview_row.customer_free_trial,
 					preview_row.customer_signed,
 					preview_row.total_leads,
+					preview_row.suspect_franchisee_review,
 				]);
 
 				previewDataSet.push([
@@ -2210,6 +2015,8 @@ define([
 		var suspect_pre_qualification = [];
 		var suspect_in_qualification = [];
 		var total_leads = [];
+		var suspect_franchisee_review = [];
+
 
 		for (var i = 0; i < data.length; i++) {
 			month_year.push(data[i][0]);
@@ -2238,6 +2045,7 @@ define([
 			customer_free_trial[data[i][0]] = data[i][23];
 			customer_signed[data[i][0]] = data[i][24];
 			total_leads[data[i][0]] = data[i][25];
+			suspect_franchisee_review[data[i][0]] = data[i][26];
 		}
 
 		console.log("prospecy_box_sent" + prospecy_box_sent);
@@ -2278,6 +2086,15 @@ define([
 
 		var categores1 = []; // creating empty array for highcharts
 		// categories
+
+		var leadReviewQ = [];
+		var priorityInboundQ = [];
+		var syncQ = [];
+		var activeOutreachQ = [];
+		var qualifiedQ = [];
+		var convertedC = [];
+		var closedQ = [];
+
 		Object.keys(prospecy_quote_sent).map(function (item, key) {
 			series_data20.push(parseInt(customer_signed[item]));
 			series_data21.push(parseInt(suspect_hot_lead[item]));
@@ -2306,37 +2123,58 @@ define([
 			series_data30a.push(parseInt(suspect_pre_qualification[item]));
 			series_data31a.push(parseInt(suspect_in_qualification[item]));
 			categores1.push(item);
+
+			leadReviewQ.push(parseInt(suspect_new[item]) + parseInt(suspect_franchisee_review[item]));
+			priorityInboundQ.push(parseInt(suspect_hot_lead[item]));
+			syncQ.push(parseInt(suspect_validated[item]) + parseInt(suspect_unqualified[item]));
+			activeOutreachQ.push(parseInt(suspect_pre_qualification[item]) + parseInt(suspect_in_qualification[item]) + parseInt(suspect_reassign[item]) + parseInt(suspect_follow_up[item]) + parseInt(suspect_lpo_followup[item]) + parseInt(suspect_no_answer[item]) + parseInt(suspect_in_contact[item]) + parseInt(prospect_in_contact[item]) + parseInt(prospect_no_answer[item]));
+			qualifiedQ.push(parseInt(prospect_opportunity[item]) + parseInt(prospect_qualified[item]) + parseInt(prospecy_box_sent[item]) + parseInt(prospecy_quote_sent[item]) + parseInt(customer_free_trial_pending[item]) + parseInt(customer_free_trial[item]));
+			convertedC.push(parseInt(customer_signed[item]) + parseInt(suspect_qualified[item]));
+			closedQ.push(parseInt(suspect_lost[item]) + parseInt(suspect_oot[item]) + parseInt(suspect_customer_lost[item]) + parseInt(suspect_off_peak_pipeline[item]));
 		});
 
-		plotChartPreview(
-			series_data20,
-			series_data21,
-			series_data22,
-			series_data23,
-			series_data24,
-			series_data25,
-			series_data26,
-			series_data27,
-			series_data28,
-			series_data29,
-			series_data31,
-			series_data32,
-			series_data33,
-			series_data34,
-			categores1,
-			series_data20a,
-			series_data21a,
-			series_data22a,
-			series_data23a,
-			series_data24a,
-			series_data25a,
-			series_data26a,
-			series_data27a,
-			series_data28a,
-			series_data29a,
-			series_data30a,
-			series_data31a
-		);
+		console.log("categores1: " + categores1);
+		console.log("leadReviewQ: " + leadReviewQ);
+		console.log("priorityInboundQ: " + priorityInboundQ);
+		console.log("syncQ: " + syncQ);
+		console.log("activeOutreachQ: " + activeOutreachQ);
+		console.log("qualifiedQ: " + qualifiedQ);
+		console.log("convertedC: " + convertedC);
+		console.log("closedQ: " + closedQ);
+
+
+		plotChartConsolidatedStatuses(leadReviewQ, priorityInboundQ, syncQ, activeOutreachQ, qualifiedQ, convertedC, closedQ, categores1);
+
+
+		// plotChartPreview(
+		// 	series_data20,
+		// 	series_data21,
+		// 	series_data22,
+		// 	series_data23,
+		// 	series_data24,
+		// 	series_data25,
+		// 	series_data26,
+		// 	series_data27,
+		// 	series_data28,
+		// 	series_data29,
+		// 	series_data31,
+		// 	series_data32,
+		// 	series_data33,
+		// 	series_data34,
+		// 	categores1,
+		// 	series_data20a,
+		// 	series_data21a,
+		// 	series_data22a,
+		// 	series_data23a,
+		// 	series_data24a,
+		// 	series_data25a,
+		// 	series_data26a,
+		// 	series_data27a,
+		// 	series_data28a,
+		// 	series_data29a,
+		// 	series_data30a,
+		// 	series_data31a
+		// );
 
 		debt_set = [];
 		debt_set2 = [];
@@ -3148,6 +2986,146 @@ define([
 					"{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Total",
 			},
 			series: series_data,
+		});
+	}
+
+	//!Sales Dashboard Charts on NetSuite Homepage for Franchisees consolidated
+	function plotChartConsolidatedStatuses(leadReviewQ, priorityInboundQ, syncQ, activeOutreachQ, qualifiedQ, convertedC, closedQ, categores1) {
+		Highcharts.chart("container_preview", {
+			chart: {
+				type: "column",
+				backgroundColor: "#CFE0CE",
+			},
+			title: {
+				text: "Monthly Lead Lifecycle & Conversion Pipeline",
+				style: {
+					fontWeight: "bold",
+					color: "#0B2447",
+					fontSize: "12px",
+				},
+			},
+			xAxis: {
+				categories: categores1,
+				crosshair: true,
+				style: {
+					fontWeight: "bold",
+				},
+				labels: {
+					style: {
+						fontWeight: "bold",
+						fontSize: "10px",
+					},
+				},
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: "Total Lead Count",
+					style: {
+						fontWeight: "bold",
+						color: "#0B2447",
+						fontSize: "12px",
+					},
+				},
+				stackLabels: {
+					enabled: true,
+					style: {
+						fontWeight: "bold",
+						fontSize: "10px",
+					},
+				},
+				labels: {
+					style: {
+						fontSize: "10px",
+					},
+				},
+			},
+			tooltip: {
+				headerFormat: "<b>{point.key}</b><br/>",
+				pointFormat: "{series.name}: {point.y}<br/>Total: {point.stackTotal}",
+				style: {
+					fontSize: "10px",
+				},
+			},
+			plotOptions: {
+				column: {
+					stacking: "normal",
+					dataLabels: {
+						enabled: true,
+						format: "{point.percentage:.0f}%",
+					},
+				},
+				series: {
+					dataLabels: {
+						enabled: true,
+						align: "right",
+						color: "black",
+						style: {
+							fontSize: "10px",
+						},
+					},
+					pointPadding: 0.1,
+					groupPadding: 0,
+				},
+			},
+			series: [
+				{
+					name: "Lead Review & Processing",
+					data: leadReviewQ,
+					color: "#37474F",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Priority Inbound (Immediate Sales Action)",
+					data: priorityInboundQ,
+					color: "#3F51B5",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Field & Phone Inventory (Ready for Outreach)",
+					data: syncQ,
+					color: "#B674EFFF",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Active Outreach (Engaged)",
+					data: activeOutreachQ,
+					color: "#1976D2",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Qualified Pipeline",
+					data: qualifiedQ,
+					color: "#3E6D9C",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Converted Customers",
+					data: convertedC,
+					color: "#439A97",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+				{
+					name: "Closed",
+					data: closedQ,
+					color: "#e86252",
+					style: {
+						fontWeight: "bold",
+					},
+				},
+			],
 		});
 	}
 
