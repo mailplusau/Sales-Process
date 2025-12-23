@@ -554,10 +554,22 @@ define([
 									// });
 
 									//2025-05-29 08:22:56 [UPDATE] - Changing the status instead of SUSPECT - VALIDATED to SUSPECT - FRANCHISEE REVIEW
-									customerRecord.setValue({
-										fieldId: "entitystatus",
-										value: 39, // SUSPECT - FRANCHISEE REVIEW
-									});
+
+
+									//2025-12-22T22:19:45.679Z - If the campaign is Door-to-Door Field Sales, set the status to SUSPECT - VALIDATED
+									if (campaignid == 96) {
+
+										//Door-to-Door Field Sales Campaign
+										customerRecord.setValue({
+											fieldId: "entitystatus",
+											value: 68, // SUSPECT - VALIDATED
+										});
+									} else {
+										customerRecord.setValue({
+											fieldId: "entitystatus",
+											value: 39, // SUSPECT - FRANCHISEE REVIEW
+										});
+									}
 								}
 							}
 
