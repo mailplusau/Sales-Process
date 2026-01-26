@@ -535,11 +535,17 @@ define([
 			return false;
 		}
 
-		// Sales Dashboard - Leads by Status - Monthly Reporting
+		//Sales Dashboard for Zee - Leads by Status
 		var leadsListBySalesRepWeeklySearch = search.load({
 			type: "customer",
-			id: "customsearch_leads_reporting_weekly_3_3",
+			id: "customsearch_leads_reporting_weekly_3_11",
 		});
+
+		// Sales Dashboard - Leads by Status - Monthly Reporting
+		// var leadsListBySalesRepWeeklySearch = search.load({
+		// 	type: "customer",
+		// 	id: "customsearch_leads_reporting_weekly_3_3",
+		// });
 		// Sales Dashboard for Zee - Leads by Status - Monthly Reporting by Date Synced with ProspectPlus
 		// var leadsListBySalesRepWeeklySearch = search.load({
 		// 	type: "customer",
@@ -702,6 +708,8 @@ define([
 
 		var count1 = 0;
 		var oldDate1 = null;
+		var oldStatus = null;
+		var oldStatusText = null;
 
 		customer_signed = 0;
 		suspect_hot_lead = 0;
@@ -742,10 +750,10 @@ define([
 						summary: "COUNT",
 					})
 				);
-				var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-					name: "custentity_date_lead_entered",
-					summary: "GROUP",
-				});
+				// var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+				// 	name: "custentity_date_lead_entered",
+				// 	summary: "GROUP",
+				// });
 				// var weekLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
 				// 	name: "custrecord_cf_date_sent",
 				// 	join: "CUSTRECORD_SALES_CUSTOMER",
@@ -763,7 +771,7 @@ define([
 				});
 
 				// if (role == 1000) {
-				var startDate = weekLeadEntered;
+				// var startDate = weekLeadEntered;
 				// } else {
 				// 	if (!isNullorEmpty(weekLeadEntered)) {
 				// 		var splitMonthV2 = weekLeadEntered.split("/");
@@ -800,424 +808,34 @@ define([
 				// 	}
 				// }
 
-				if (count1 == 0) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = parseInt(prospectCount);
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = parseInt(prospectCount);
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = parseInt(prospectCount);
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = parseInt(prospectCount);
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = parseInt(prospectCount);
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = parseInt(prospectCount);
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = parseInt(prospectCount);
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					} else if (custStatus == 39) {
-						//SUSPECT - FRANCHISEE REVIEW
-						suspect_franchisee_review = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification + suspect_franchisee_review;
-				} else if (oldDate1 != null && oldDate1 == startDate) {
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed += prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead += prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost += prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot += parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost += prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign += prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent += prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent += parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer += prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact += prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline += prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity += parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up += parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new += parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified += parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup += parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated += parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial += parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial_pending += parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer += parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact += parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified += parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification += parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification += parseInt(prospectCount);
-					} else if (custStatus == 39) {
-						//SUSPECT - FRANCHISEE REVIEW
-						suspect_franchisee_review = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification + suspect_franchisee_review;
-				} else if (oldDate1 != null && oldDate1 != startDate) {
+				if (count1 == 0 || (oldStatus != null && oldStatus == custStatus)) {
+					total_leads += prospectCount
+				} else if (oldStatus != null && oldStatus != custStatus) {
 					debt_set2.push({
-						dateUsed: oldDate1,
-						suspect_hot_lead: suspect_hot_lead,
-						prospecy_quote_sent: prospecy_quote_sent,
-						suspect_reassign: suspect_reassign,
-						prospect_no_answer: prospect_no_answer,
-						prospect_in_contact: prospect_in_contact,
-						suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-						suspect_lost: suspect_lost,
-						suspect_customer_lost: suspect_customer_lost,
-						prospect_opportunity: prospect_opportunity,
-						customer_signed: customer_signed,
+						// dateUsed: oldDate1,
+						custStatus: oldStatus,
+						custStatusText: oldStatusText,
 						total_leads: total_leads,
-						suspect_oot: suspect_oot,
-						suspect_follow_up: suspect_follow_up,
-						suspect_new: suspect_new,
-						suspect_qualified: suspect_qualified,
-						suspect_unqualified: suspect_unqualified,
-						suspect_lpo_followup: suspect_lpo_followup,
-						suspect_validated: suspect_validated,
-						customer_free_trial: customer_free_trial,
-						suspect_no_answer: suspect_no_answer,
-						suspect_in_contact: suspect_in_contact,
-						prospect_qualified: prospect_qualified,
-						customer_free_trial_pending: customer_free_trial_pending,
-						prospect_box_sent: prospecy_box_sent,
-						suspect_pre_qualification: suspect_pre_qualification,
-						suspect_in_qualification: suspect_in_qualification,
-						suspect_franchisee_review: suspect_franchisee_review,
 					});
 
-					customer_signed = 0;
-					suspect_hot_lead = 0;
-					suspect_reassign = 0;
-					suspect_lost = 0;
-					suspect_customer_lost = 0;
-					suspect_off_peak_pipeline = 0;
-					prospect_opportunity = 0;
-					prospecy_quote_sent = 0;
-					prospecy_box_sent = 0;
-					prospect_no_answer = 0;
-					prospect_in_contact = 0;
-					suspect_oot = 0;
-					suspect_follow_up = 0;
-					suspect_new = 0;
-					suspect_qualified = 0;
-					suspect_unqualified = 0;
-					suspect_lpo_followup = 0;
 					total_leads = 0;
-					prospect_qualified = 0;
 
-					suspect_validated = 0;
-					customer_free_trial = 0;
-					customer_free_trial_pending = 0;
-					suspect_no_answer = 0;
-					suspect_in_contact = 0;
-					suspect_pre_qualification = 0;
-					suspect_in_qualification = 0;
-					suspect_franchisee_review = 0;
 
-					if (custStatus == 13 || custStatus == 66) {
-						//CUSTOMER _ SIGNED
-						customer_signed = prospectCount;
-					} else if (custStatus == 57) {
-						//SUSPECT - HOT LEAD
-						suspect_hot_lead = prospectCount;
-					} else if (custStatus == 59) {
-						//SUSPECT - LOST
-						suspect_lost = prospectCount;
-					} else if (custStatus == 64) {
-						//SUSPECT - OUT OF TERRITORY
-						suspect_oot = parseInt(prospectCount);
-					} else if (custStatus == 22) {
-						//SUSPECT - CUSTOMER - LOST
-						suspect_customer_lost = prospectCount;
-					} else if (custStatus == 60 || custStatus == 40) {
-						//SUSPECT - REP REASSIGN
-						suspect_reassign = prospectCount;
-					} else if (custStatus == 50) {
-						//PROSPECT - QUOTE SENT
-						prospecy_quote_sent = prospectCount;
-					} else if (custStatus == 72) {
-						//PROSPECT - Box SENT
-						prospecy_box_sent = parseInt(prospectCount);
-					} else if (custStatus == 35) {
-						//PROSPECT - NO ANSWER
-						prospect_no_answer = prospectCount;
-					} else if (custStatus == 8) {
-						//PROSPECT - IN CONTACT
-						prospect_in_contact = prospectCount;
-					} else if (custStatus == 62) {
-						//SUSPECT - OFF PEAK PIPELINE
-						suspect_off_peak_pipeline = prospectCount;
-					} else if (custStatus == 58) {
-						//PROSPECT - OPPORTUNITY
-						prospect_opportunity = parseInt(prospectCount);
-					} else if (custStatus == 18) {
-						//SUSPECT - FOLLOW UP
-						suspect_follow_up = parseInt(prospectCount);
-					} else if (custStatus == 6) {
-						//SUSPECT - NEW
-						suspect_new = parseInt(prospectCount);
-					} else if (custStatus == 42) {
-						//SUSPECT - QUALIFIED
-						suspect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 38) {
-						//SUSPECT - UNQUALIFIED
-						suspect_unqualified = parseInt(prospectCount);
-					} else if (custStatus == 67) {
-						//SUSPECT - LPO FOLLOW UP
-						suspect_lpo_followup = parseInt(prospectCount);
-					} else if (custStatus == 68) {
-						//SUSPECT - VALIDATED
-						suspect_validated = parseInt(prospectCount);
-					} else if (custStatus == 32) {
-						//CUSTOMER - FREE TRIAL
-						customer_free_trial = parseInt(prospectCount);
-					} else if (custStatus == 71) {
-						//CUSTOMER - FREE TRIAL PENDING
-						customer_free_trial_pending = parseInt(prospectCount);
-					} else if (custStatus == 20) {
-						//SUSPECT - NO ANSWER
-						suspect_no_answer = parseInt(prospectCount);
-					} else if (custStatus == 69) {
-						//SUSPECT - IN CONTACT
-						suspect_in_contact = parseInt(prospectCount);
-					} else if (custStatus == 70) {
-						//PROSPECT - QUALIFIED
-						prospect_qualified = parseInt(prospectCount);
-					} else if (custStatus == 30) {
-						//PROSPECT - IN QUALIFICATION
-						suspect_in_qualification = parseInt(prospectCount);
-					} else if (custStatus == 34) {
-						//PROSPECT - PRE QUALIFICATION
-						suspect_pre_qualification = parseInt(prospectCount);
-					} else if (custStatus == 39) {
-						//SUSPECT - FRANCHISEE REVIEW
-						suspect_franchisee_review = parseInt(prospectCount);
-					}
-
-					total_leads =
-						customer_signed +
-						suspect_hot_lead +
-						suspect_lost +
-						suspect_customer_lost +
-						suspect_reassign +
-						prospecy_quote_sent +
-						prospect_no_answer +
-						prospect_in_contact +
-						suspect_off_peak_pipeline +
-						prospect_opportunity +
-						suspect_oot +
-						suspect_follow_up +
-						suspect_new +
-						suspect_qualified +
-						suspect_lpo_followup +
-						suspect_validated +
-						customer_free_trial +
-						suspect_no_answer +
-						suspect_in_contact +
-						prospect_qualified +
-						customer_free_trial_pending +
-						suspect_unqualified +
-						prospecy_box_sent +
-						suspect_pre_qualification +
-						suspect_in_qualification + suspect_franchisee_review;
+					total_leads += prospectCount;
 				}
 
 				count1++;
-				oldDate1 = startDate;
+				// oldDate1 = startDate;
+				oldStatus = custStatus;
+				oldStatusText = custStatusText;
 				return true;
 			});
 
 		if (count1 > 0) {
 			debt_set2.push({
-				dateUsed: oldDate1,
-				suspect_hot_lead: suspect_hot_lead,
-				prospecy_quote_sent: prospecy_quote_sent,
-				suspect_reassign: suspect_reassign,
-				prospect_no_answer: prospect_no_answer,
-				prospect_in_contact: prospect_in_contact,
-				suspect_off_peak_pipeline: suspect_off_peak_pipeline,
-				suspect_lost: suspect_lost,
-				suspect_customer_lost: suspect_customer_lost,
-				prospect_opportunity: prospect_opportunity,
-				customer_signed: customer_signed,
+				custStatus: oldStatus,
+				custStatusText: oldStatusText,
 				total_leads: total_leads,
-				suspect_oot: suspect_oot,
-				suspect_follow_up: suspect_follow_up,
-				suspect_new: suspect_new,
-				suspect_qualified: suspect_qualified,
-				suspect_unqualified: suspect_unqualified,
-				suspect_lpo_followup: suspect_lpo_followup,
-				suspect_validated: suspect_validated,
-				customer_free_trial: customer_free_trial,
-				suspect_no_answer: suspect_no_answer,
-				suspect_in_contact: suspect_in_contact,
-				prospect_qualified: prospect_qualified,
-				customer_free_trial_pending: customer_free_trial_pending,
-				prospect_box_sent: prospecy_box_sent,
-				suspect_pre_qualification: suspect_pre_qualification,
-				suspect_in_qualification: suspect_in_qualification,
-				suspect_franchisee_review: suspect_franchisee_review,
 			});
 		}
 
@@ -1230,252 +848,17 @@ define([
 
 		if (!isNullorEmpty(debt_set2)) {
 			debt_set2.forEach(function (preview_row, index) {
-				var hotLeadPercentage = parseInt(
-					(preview_row.suspect_hot_lead / preview_row.total_leads) * 100
-				);
-				var hotLeadCol =
-					preview_row.suspect_hot_lead + " (" + hotLeadPercentage + "%)";
 
-				var quoteSentPercentage = parseInt(
-					(preview_row.prospecy_quote_sent / preview_row.total_leads) * 100
-				);
-				var quoteSentCol =
-					preview_row.prospecy_quote_sent + " (" + quoteSentPercentage + "%)";
-
-				var boxSentPercentage = parseInt(
-					(preview_row.prospect_box_sent / preview_row.total_leads) * 100
-				);
-				var boxSentCol =
-					preview_row.prospect_box_sent + " (" + boxSentPercentage + "%)";
-
-				var reassignPercentage = parseInt(
-					(preview_row.suspect_reassign / preview_row.total_leads) * 100
-				);
-				var reassignCol =
-					preview_row.suspect_reassign + " (" + reassignPercentage + "%)";
-
-				var noAnswerPercentage = parseInt(
-					(preview_row.prospect_no_answer / preview_row.total_leads) * 100
-				);
-				var noAnswerCol =
-					preview_row.prospect_no_answer + " (" + noAnswerPercentage + "%)";
-
-				var inContactPercentage = parseInt(
-					(preview_row.prospect_in_contact / preview_row.total_leads) * 100
-				);
-				var inContactCol =
-					preview_row.prospect_in_contact + " (" + inContactPercentage + "%)";
-
-				var offPeakPercentage = parseInt(
-					(preview_row.suspect_off_peak_pipeline / preview_row.total_leads) *
-					100
-				);
-				var offPeakCol =
-					preview_row.suspect_off_peak_pipeline +
-					" (" +
-					offPeakPercentage +
-					"%)";
-
-				var lostPercentage = parseInt(
-					(preview_row.suspect_lost / preview_row.total_leads) * 100
-				);
-				var lostCol = preview_row.suspect_lost + " (" + lostPercentage + "%)";
-
-				var ootPercentage = parseInt(
-					(preview_row.suspect_oot / preview_row.total_leads) * 100
-				);
-				var ootCol = preview_row.suspect_oot + " (" + ootPercentage + "%)";
-
-				var custLostPercentage = parseInt(
-					(preview_row.suspect_customer_lost / preview_row.total_leads) * 100
-				);
-				var custLostCol =
-					preview_row.suspect_customer_lost + " (" + custLostPercentage + "%)";
-
-				var oppPercentage = parseInt(
-					(preview_row.prospect_opportunity / preview_row.total_leads) * 100
-				);
-				var oppCol =
-					preview_row.prospect_opportunity + " (" + oppPercentage + "%)";
-
-				var signedPercentage = parseInt(
-					(preview_row.customer_signed / preview_row.total_leads) * 100
-				);
-				var signedCol =
-					preview_row.customer_signed + " (" + signedPercentage + "%)";
-
-				var suspectFollowUpPErcentage = parseInt(
-					(preview_row.suspect_follow_up / preview_row.total_leads) * 100
-				);
-				var followUpCol =
-					preview_row.suspect_follow_up +
-					" (" +
-					suspectFollowUpPErcentage +
-					"%)";
-
-				var suspectNewPercentage = parseInt(
-					(preview_row.suspect_new / preview_row.total_leads) * 100
-				);
-				var suspectNewCol =
-					preview_row.suspect_new + " (" + suspectNewPercentage + "%)";
-
-				var suspectQualifiedPercentage = parseInt(
-					(preview_row.suspect_qualified / preview_row.total_leads) * 100
-				);
-				var suspectQualifiedCol =
-					preview_row.suspect_qualified +
-					" (" +
-					suspectQualifiedPercentage +
-					"%)";
-
-				var suspectUnqualifiedPercentage = parseInt(
-					(preview_row.suspect_unqualified / preview_row.total_leads) * 100
-				);
-				var suspectUnqualifiedCol =
-					preview_row.suspect_unqualified +
-					" (" +
-					suspectUnqualifiedPercentage +
-					"%)";
-
-				var suspectLPOFollowupPercentage = parseInt(
-					(preview_row.suspect_lpo_followup / preview_row.total_leads) * 100
-				);
-				var suspectLPOFollowupwCol =
-					preview_row.suspect_lpo_followup +
-					" (" +
-					suspectLPOFollowupPercentage +
-					"%)";
-
-				var suspectValidatedPercentage = parseInt(
-					(preview_row.suspect_validated / preview_row.total_leads) * 100
-				);
-				var suspectValidatedCol =
-					preview_row.suspect_validated +
-					" (" +
-					suspectValidatedPercentage +
-					"%)";
-
-				var customerFreeTrialPercentage = parseInt(
-					(preview_row.customer_free_trial / preview_row.total_leads) * 100
-				);
-				var customerFreeTrialCol =
-					preview_row.customer_free_trial +
-					" (" +
-					customerFreeTrialPercentage +
-					"%)";
-
-				var customerFreeTrialPendingPercentage = parseInt(
-					(preview_row.customer_free_trial_pending / preview_row.total_leads) *
-					100
-				);
-				var customerFreeTrialPendingCol =
-					preview_row.customer_free_trial_pending +
-					" (" +
-					customerFreeTrialPendingPercentage +
-					"%)";
-
-				var suspectNoAnswerPercentage = parseInt(
-					(preview_row.suspect_no_answer / preview_row.total_leads) * 100
-				);
-				var suspectNoAnswerCol =
-					preview_row.suspect_no_answer +
-					" (" +
-					suspectNoAnswerPercentage +
-					"%)";
-
-				var suspectInContactPercentage = parseInt(
-					(preview_row.suspect_in_contact / preview_row.total_leads) * 100
-				);
-				var suspectInContactCol =
-					preview_row.suspect_in_contact +
-					" (" +
-					suspectInContactPercentage +
-					"%)";
-
-				var prospectQualifiedPercentage = parseInt(
-					(preview_row.prospect_qualified / preview_row.total_leads) * 100
-				);
-				var prospectQualifiedCol =
-					preview_row.prospect_qualified +
-					" (" +
-					prospectQualifiedPercentage +
-					"%)";
-
-				var suspectPreQualifcationPercentage = parseInt(
-					(preview_row.suspect_pre_qualification / preview_row.total_leads) *
-					100
-				);
-				var suspectPreQualificationCol =
-					preview_row.suspect_pre_qualification +
-					" (" +
-					suspectPreQualifcationPercentage +
-					"%)";
-
-				var suspectInQualificationPercentage = parseInt(
-					(preview_row.suspect_in_qualification / preview_row.total_leads) * 100
-				);
-				var suspectInQualificationCol =
-					preview_row.suspect_in_qualification +
-					" (" +
-					suspectInQualificationPercentage +
-					"%)";
 
 				overDataSet.push([
-					preview_row.dateUsed,
-					preview_row.suspect_new,
-					preview_row.suspect_hot_lead,
-					preview_row.suspect_validated,
-					preview_row.suspect_qualified, //4
-					preview_row.suspect_unqualified, //5
-					preview_row.suspect_pre_qualification,
-					preview_row.suspect_in_qualification,
-					preview_row.suspect_reassign,
-					preview_row.suspect_follow_up,
-					preview_row.suspect_no_answer,
-					preview_row.suspect_in_contact,
-					preview_row.suspect_lpo_followup,
-					preview_row.prospect_in_contact,
-					preview_row.suspect_off_peak_pipeline,
-					preview_row.suspect_lost,
-					preview_row.suspect_oot,
-					preview_row.suspect_customer_lost,
-					preview_row.prospect_opportunity,
-					preview_row.prospect_qualified,
-					preview_row.prospect_box_sent,
-					preview_row.prospecy_quote_sent,
-					preview_row.customer_free_trial_pending,
-					preview_row.customer_free_trial,
-					preview_row.customer_signed,
+					preview_row.custStatus,
+					preview_row.custStatusText,
 					preview_row.total_leads,
-					preview_row.suspect_franchisee_review,
 				]);
 
 				previewDataSet.push([
-					preview_row.dateUsed,
-					suspectNewCol,
-					hotLeadCol,
-					suspectValidatedCol,
-					suspectQualifiedCol,
-					suspectUnqualifiedCol,
-					suspectPreQualificationCol,
-					suspectInQualificationCol,
-					reassignCol,
-					followUpCol,
-					suspectLPOFollowupwCol,
-					suspectNoAnswerCol,
-					suspectInContactCol,
-					inContactCol,
-					offPeakCol,
-					lostCol,
-					ootCol,
-					custLostCol,
-					oppCol,
-					prospectQualifiedCol,
-					boxSentCol,
-					quoteSentCol,
-					customerFreeTrialPendingCol,
-					customerFreeTrialCol,
-					signedCol,
+					preview_row.custStatus,
+					preview_row.custStatusText,
 					preview_row.total_leads,
 				]);
 			});
@@ -1537,450 +920,23 @@ define([
 			},
 			columns: [
 				{
-					title: "Period", //0
+					title: "Status ID", //0
 				},
 				{
-					title: "Suspect - New", //1
+					title: "Status Text", //1
 				},
 				{
-					title: "Suspect - Hot Lead", //2
-				},
-				{
-					title: "Suspect - Validated", //3
-				},
-				{
-					title: "Suspect - Qualified", //4
-				},
-				{
-					title: "Suspect - Unqualified", //5
-				},
-				{
-					title: "Suspect - Pre Qualification", //6
-				},
-				{
-					title: "Suspect - In Qualification", //7
-				},
-				{
-					title: "Suspect - Reassign", //8
-				},
-				{
-					title: "Suspect - Follow Up", //9
-				},
-				{
-					title: "Suspect - LPO Follow Up", //10
-				},
-				{
-					title: "Suspect - No Answer", //11
-				},
-				{
-					title: "Suspect - In Contact", //12
-				},
-				{
-					title: "Prospect - In Contact", //13
-				},
-				{
-					title: "Suspect - Parking Lot", //14
-				},
-				{
-					title: "Suspect - Lost", //15
-				},
-				{
-					title: "Suspect - Out of Territory", //16
-				},
-				{
-					title: "Suspect - Customer - Lost", //17
-				},
-				{
-					title: "Prospect - Opportunity", //18
-				},
-				{
-					title: "Prospect - Qualified", //19
-				},
-				{
-					title: "Prospect - Box Sent", //20
-				},
-				{
-					title: "Prospect - Quote Sent", //21
-				},
-				{
-					title: "Customer - Free Trial Pending", //22
-				},
-				{
-					title: "Customer - Free Trial", //23
-				},
-				{
-					title: "Customer - Signed", //24
-				},
-				{
-					title: "Total Lead Count", //25
-				},
+					title: "Total Lead Count", //2
+				}
 			],
 			columnDefs: [
 				{
-					targets: [0, 5, 19, 23, 24],
+					targets: [1, 2],
 					className: "bolded",
 				},
 			],
 			footerCallback: function (row, data, start, end, display) {
-				var api = this.api(),
-					data;
 
-				// Remove the formatting to get integer data for summation
-				var intVal = function (i) {
-					return parseInt(i);
-				};
-
-				const formatter = new Intl.NumberFormat("en-AU", {
-					style: "currency",
-					currency: "AUD",
-					minimumFractionDigits: 2,
-				});
-				// Total Suspect New Lead Count
-				total_suspect_new = api
-					.column(1)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Hot Lead Count
-				total_suspect_hot_lead = api
-					.column(2)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Qualified Count
-				total_suspect_qualified = api
-					.column(3)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Unqualified Count
-				total_suspect_unqualified = api
-					.column(4)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Validated
-				total_suspect_validated = api
-					.column(5)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Reassign
-				total_suspect_reassign = api
-					.column(6)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Follow Up
-				total_suspect_followup = api
-					.column(7)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect LPO Follow Up
-				total_suspect_lpo_followup = api
-					.column(8)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect No Answer
-				total_suspect_no_answer = api
-					.column(9)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect In Contact
-				total_suspect_in_contact = api
-					.column(10)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect In Contact
-				total_prospect_in_contact = api
-					.column(11)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Off Peak Pipline
-				total_suspect_off_peak_pipeline = api
-					.column(12)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Lost
-				total_suspect_lost = api
-					.column(13)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Out of Territory
-				total_suspect_oot = api
-					.column(14)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Suspect Customer Lost
-				total_suspect_customer_lost = api
-					.column(15)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Opportunity
-				total_prospect_opportunity = api
-					.column(16)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_qualified = api
-					.column(17)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_prospect_box_sent = api
-					.column(18)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Prospect Quoite Sent
-				total_prospect_quote_sent = api
-					.column(19)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial Pending
-				total_customer_free_trial_pending = api
-					.column(20)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Free Trial
-				total_customer_free_trial = api
-					.column(21)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Customer Signed
-				total_customer_signed = api
-					.column(22)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v1 = api
-					.column(23)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				total_lead_v2 = api
-					.column(24)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Total Lead Count
-				total_lead = api
-					.column(25)
-					.data()
-					.reduce(function (a, b) {
-						return intVal(a) + intVal(b);
-					}, 0);
-
-				// Update footer
-				$(api.column(1).footer()).html(
-					total_suspect_new +
-					" (" +
-					((total_suspect_new / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(2).footer()).html(
-					total_suspect_hot_lead +
-					" (" +
-					((total_suspect_hot_lead / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(3).footer()).html(
-					total_suspect_qualified +
-					" (" +
-					((total_suspect_qualified / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(4).footer()).html(
-					total_suspect_unqualified +
-					" (" +
-					((total_suspect_unqualified / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(5).footer()).html(
-					total_suspect_validated +
-					" (" +
-					((total_suspect_validated / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(6).footer()).html(
-					total_suspect_reassign +
-					" (" +
-					((total_suspect_reassign / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(7).footer()).html(
-					total_suspect_followup +
-					" (" +
-					((total_suspect_followup / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(8).footer()).html(
-					total_suspect_lpo_followup +
-					" (" +
-					((total_suspect_lpo_followup / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(9).footer()).html(
-					total_suspect_no_answer +
-					" (" +
-					((total_suspect_no_answer / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(10).footer()).html(
-					total_suspect_in_contact +
-					" (" +
-					((total_suspect_in_contact / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(11).footer()).html(
-					total_prospect_in_contact +
-					" (" +
-					((total_prospect_in_contact / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(12).footer()).html(
-					total_suspect_off_peak_pipeline +
-					" (" +
-					((total_suspect_off_peak_pipeline / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(13).footer()).html(
-					total_suspect_lost +
-					" (" +
-					((total_suspect_lost / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(14).footer()).html(
-					total_suspect_oot +
-					" (" +
-					((total_suspect_oot / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(15).footer()).html(
-					total_suspect_customer_lost +
-					" (" +
-					((total_suspect_customer_lost / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(16).footer()).html(
-					total_prospect_opportunity +
-					" (" +
-					((total_prospect_opportunity / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(17).footer()).html(
-					total_prospect_qualified +
-					" (" +
-					((total_prospect_qualified / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(18).footer()).html(
-					total_prospect_box_sent +
-					" (" +
-					((total_prospect_box_sent / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(19).footer()).html(
-					total_prospect_quote_sent +
-					" (" +
-					((total_prospect_quote_sent / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-
-				$(api.column(20).footer()).html(
-					total_customer_free_trial_pending +
-					" (" +
-					((total_customer_free_trial_pending / total_lead) * 100).toFixed(
-						0
-					) +
-					"%)"
-				);
-
-				$(api.column(21).footer()).html(
-					total_customer_free_trial +
-					" (" +
-					((total_customer_free_trial / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(22).footer()).html(
-					total_customer_signed +
-					" (" +
-					((total_customer_signed / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(23).footer()).html(
-					total_lead_v1 +
-					" (" +
-					((total_lead_v1 / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(24).footer()).html(
-					total_lead_v2 +
-					" (" +
-					((total_lead_v2 / total_lead) * 100).toFixed(0) +
-					"%)"
-				);
-				$(api.column(25).footer()).html(total_lead);
 			},
 		});
 
@@ -1988,150 +944,121 @@ define([
 
 		var data = overDataSet;
 
-		var month_year = []; // creating array for storing browser
-		var customer_signed = [];
-		var suspect_hot_lead = [];
-		var suspect_reassign = [];
-		var suspect_lost = [];
-		var suspect_oot = [];
-		var suspect_customer_lost = [];
-		var suspect_off_peak_pipeline = [];
-		var prospect_opportunity = [];
-		var prospect_qualified = [];
-		var prospecy_quote_sent = [];
-		var prospecy_box_sent = [];
-		var prospect_no_answer = [];
-		var prospect_in_contact = [];
-		var suspect_follow_up = [];
-		var suspect_new = [];
-		var suspect_qualified = [];
-		var suspect_unqualified = [];
-		var suspect_lpo_followup = [];
-		var suspect_validated = [];
-		var customer_free_trial = [];
-		var customer_free_trial_pending = [];
-		var susect_no_answer = [];
-		var suspect_in_contact = [];
-		var suspect_pre_qualification = [];
-		var suspect_in_qualification = [];
+		var status_text = [];
+		var status_id = [];
 		var total_leads = [];
-		var suspect_franchisee_review = [];
 
 
 		for (var i = 0; i < data.length; i++) {
-			month_year.push(data[i][0]);
-			suspect_new[data[i][0]] = data[i][1];
-			suspect_hot_lead[data[i][0]] = data[i][2];
-			suspect_qualified[data[i][0]] = data[i][4];
-			suspect_unqualified[data[i][0]] = data[i][5];
-			suspect_validated[data[i][0]] = data[i][3];
-			suspect_pre_qualification[data[i][0]] = data[i][6];
-			suspect_in_qualification[data[i][0]] = data[i][7];
-			suspect_reassign[data[i][0]] = data[i][8];
-			suspect_follow_up[data[i][0]] = data[i][9];
-			suspect_lpo_followup[data[i][0]] = data[i][10];
-			suspect_no_answer[data[i][0]] = data[i][11];
-			suspect_in_contact[data[i][0]] = data[i][12];
-			prospect_in_contact[data[i][0]] = data[i][13];
-			suspect_off_peak_pipeline[data[i][0]] = data[i][14];
-			suspect_lost[data[i][0]] = data[i][15];
-			suspect_oot[data[i][0]] = data[i][16];
-			suspect_customer_lost[data[i][0]] = data[i][17];
-			prospect_opportunity[data[i][0]] = data[i][18];
-			prospect_qualified[data[i][0]] = data[i][19];
-			prospecy_box_sent[data[i][0]] = data[i][20];
-			prospecy_quote_sent[data[i][0]] = data[i][21];
-			customer_free_trial_pending[data[i][0]] = data[i][22];
-			customer_free_trial[data[i][0]] = data[i][23];
-			customer_signed[data[i][0]] = data[i][24];
-			total_leads[data[i][0]] = data[i][25];
-			suspect_franchisee_review[data[i][0]] = data[i][26];
+			status_text.push(data[i][1]);
+			status_id[data[i][1]] = data[i][0];
+			total_leads[data[i][1]] = data[i][2];
+
 		}
 
-		console.log("prospecy_box_sent" + prospecy_box_sent);
+		console.log("total_leads" + total_leads);
 
 		var count = {}; // creating object for getting categories with
 		// count
-		month_year.forEach(function (i) {
+		status_text.forEach(function (i) {
 			count[i] = (count[i] || 0) + 1;
 		});
 
-		var series_data20 = [];
-		var series_data21 = [];
-		var series_data22 = [];
-		var series_data23 = [];
-		var series_data24 = [];
-		var series_data25 = [];
-		var series_data26 = [];
-		var series_data27 = [];
-		var series_data28 = [];
-		var series_data29 = [];
-		var series_data30 = [];
-		var series_data31 = [];
-		var series_data32 = [];
-		var series_data33 = [];
-		var series_data34 = [];
-		var series_data20a = [];
-		var series_data21a = [];
-		var series_data22a = [];
-		var series_data23a = [];
-		var series_data24a = [];
-		var series_data25a = [];
-		var series_data26a = [];
-		var series_data27a = [];
-		var series_data28a = [];
-		var series_data29a = [];
-		var series_data30a = [];
 		var series_data31a = [];
 
-		var categores1 = []; // creating empty array for highcharts
+		var categores1 = [
+			'Lead Review & Processing',
+			'Priority Inbound (Immediate Sales Action)',
+			'Field & Phone Inventory (Ready for Outreach)',
+			'Active Outreach (Engaged)',
+			'Qualified Pipeline',
+			'Converted Customers',
+			'Closed/Lost'
+		]; // creating empty array for highcharts
 		// categories
 
 		var leadReviewQ = [];
+		var leadReviewQCount = 0;
 		var priorityInboundQ = [];
+		var priorityInboundQCount = 0;
 		var syncQ = [];
+		var syncQCount = 0;
 		var activeOutreachQ = [];
+		var activeOutreachQCount = 0;
 		var qualifiedQ = [];
+		var qualifiedQCount = 0;
 		var convertedC = [];
+		var convertedCCount = 0;
 		var closedQ = [];
+		var closedQCount = 0;
 
-		Object.keys(prospecy_quote_sent).map(function (item, key) {
-			series_data20.push(parseInt(customer_signed[item]));
-			series_data21.push(parseInt(suspect_hot_lead[item]));
-			series_data22.push(parseInt(suspect_reassign[item]));
-			series_data23.push(parseInt(suspect_lost[item]));
-			series_data24.push(parseInt(suspect_customer_lost[item]));
-			series_data25.push(parseInt(suspect_off_peak_pipeline[item]));
-			series_data26.push(parseInt(prospecy_quote_sent[item]));
-			series_data27.push(parseInt(prospect_no_answer[item]));
-			series_data28.push(parseInt(prospect_in_contact[item]));
-			series_data29.push(parseInt(total_leads[item]));
-			series_data31.push(parseInt(prospect_opportunity[item]));
-			series_data32.push(parseInt(suspect_oot[item]));
-			series_data33.push(parseInt(suspect_follow_up[item]));
-			series_data34.push(parseInt(suspect_new[item]));
-			series_data20a.push(parseInt(suspect_qualified[item]));
-			series_data28a.push(parseInt(suspect_unqualified[item]));
-			series_data21a.push(parseInt(suspect_lpo_followup[item]));
-			series_data22a.push(parseInt(suspect_validated[item]));
-			series_data23a.push(parseInt(customer_free_trial[item]));
-			series_data24a.push(parseInt(suspect_no_answer[item]));
-			series_data25a.push(parseInt(suspect_in_contact[item]));
-			series_data26a.push(parseInt(prospect_qualified[item]));
-			series_data27a.push(parseInt(customer_free_trial_pending[item]));
-			series_data29a.push(parseInt(prospecy_box_sent[item]));
-			series_data30a.push(parseInt(suspect_pre_qualification[item]));
-			series_data31a.push(parseInt(suspect_in_qualification[item]));
-			categores1.push(item);
+		Object.keys(total_leads).map(function (item, key) {
 
-			leadReviewQ.push(parseInt(suspect_new[item]) + parseInt(suspect_franchisee_review[item]));
-			priorityInboundQ.push(parseInt(suspect_hot_lead[item]));
-			syncQ.push(parseInt(suspect_validated[item]) + parseInt(suspect_unqualified[item]));
-			activeOutreachQ.push(parseInt(suspect_pre_qualification[item]) + parseInt(suspect_in_qualification[item]) + parseInt(suspect_reassign[item]) + parseInt(suspect_follow_up[item]) + parseInt(suspect_lpo_followup[item]) + parseInt(suspect_no_answer[item]) + parseInt(suspect_in_contact[item]) + parseInt(prospect_in_contact[item]) + parseInt(prospect_no_answer[item]));
-			qualifiedQ.push(parseInt(prospect_opportunity[item]) + parseInt(prospect_qualified[item]) + parseInt(prospecy_box_sent[item]) + parseInt(prospecy_quote_sent[item]) + parseInt(customer_free_trial_pending[item]) + parseInt(customer_free_trial[item]));
-			convertedC.push(parseInt(customer_signed[item]) + parseInt(suspect_qualified[item]));
-			closedQ.push(parseInt(suspect_lost[item]) + parseInt(suspect_oot[item]) + parseInt(suspect_customer_lost[item]) + parseInt(suspect_off_peak_pipeline[item]));
+			series_data31a.push(parseInt(total_leads[item]));
+			// categores1.push(item);
+
+
+			if (status_id[item] == 6 || status_id[item] == 39) {
+				// Lead Review & Processing - New & Franchisee Review
+				leadReviewQCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 57) {
+				// Priority Inbound (Immediate Sales Action) - Hot Lead
+				priorityInboundQCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 68 || status_id[item] == 38) {
+				// Field & Phone Inventory (Ready for Outreach) - Validated & Unqualified
+				syncQCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 34 || status_id[item] == 30 || status_id[item] == 60 || status_id[item] == 18 || status_id[item] == 67 || status_id[item] == 20 || status_id[item] == 69 || status_id[item] == 8) {
+				// Active Outreach (Engaged) - Pre-Qualification, In-Qualification, Re-assign, Follow-up, LPO Follow-up, No Answer, In Contact
+				activeOutreachQCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 58 || status_id[item] == 70 || status_id[item] == 72 || status_id[item] == 50 || status_id[item] == 32 || status_id[item] == 71 || status_id[item] == 42) {
+				// Qualified Pipeline - Opportunity, Qualified, Box Sent, Quote Sent, Free Trial Pending, Free Trial
+				qualifiedQCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 13 || status_id[item] == 66) {
+				// Converted Customers - Signed & Customer To Be Finalised
+				convertedCCount += parseInt(total_leads[item]);
+			}
+
+			if (status_id[item] == 59 || status_id[item] == 64 || status_id[item] == 22 || status_id[item] == 62) {
+				// Closed/Lost - Lost, OOT, Customer Lost, Off Peak Pipeline
+				closedQCount += parseInt(total_leads[item]);
+			}
+
+
 		});
+
+		console.log("leadReviewQCount: " + leadReviewQCount);
+		console.log("priorityInboundQCount: " + priorityInboundQCount);
+		console.log("syncQCount: " + syncQCount);
+		console.log("activeOutreachQCount: " + activeOutreachQCount);
+		console.log("qualifiedQCount: " + qualifiedQCount);
+		console.log("convertedCCount: " + convertedCCount);
+		console.log("closedQCount: " + closedQCount);
+
+		leadReviewQ = [leadReviewQCount, 0, 0, 0, 0, 0, 0];
+		priorityInboundQ = [0, priorityInboundQCount, 0, 0, 0, 0, 0];
+		syncQ = [0, 0, syncQCount, 0, 0, 0, 0];
+		activeOutreachQ = [0, 0, 0, activeOutreachQCount, 0, 0, 0];
+		qualifiedQ = [0, 0, 0, 0, qualifiedQCount, 0, 0];
+		convertedC = [0, 0, 0, 0, 0, convertedCCount, 0];
+		closedQ = [0, 0, 0, 0, 0, 0, closedQCount];
+
+		// leadReviewQ.push(parseInt(suspect_new[item]) + parseInt(suspect_franchisee_review[item]));
+		// priorityInboundQ.push(parseInt(suspect_hot_lead[item]));
+		// syncQ.push(parseInt(suspect_validated[item]) + parseInt(suspect_unqualified[item]));
+		// activeOutreachQ.push(parseInt(suspect_pre_qualification[item]) + parseInt(suspect_in_qualification[item]) + parseInt(suspect_reassign[item]) + parseInt(suspect_follow_up[item]) + parseInt(suspect_lpo_followup[item]) + parseInt(suspect_no_answer[item]) + parseInt(suspect_in_contact[item]) + parseInt(prospect_in_contact[item]) + parseInt(prospect_no_answer[item]));
+		// qualifiedQ.push(parseInt(prospect_opportunity[item]) + parseInt(prospect_qualified[item]) + parseInt(prospecy_box_sent[item]) + parseInt(prospecy_quote_sent[item]) + parseInt(customer_free_trial_pending[item]) + parseInt(customer_free_trial[item]));
+		// convertedC.push(parseInt(customer_signed[item]) + parseInt(suspect_qualified[item]));
+		// closedQ.push(parseInt(suspect_lost[item]) + parseInt(suspect_oot[item]) + parseInt(suspect_customer_lost[item]) + parseInt(suspect_off_peak_pipeline[item]));
 
 		console.log("categores1: " + categores1);
 		console.log("leadReviewQ: " + leadReviewQ);
@@ -2997,7 +1924,7 @@ define([
 				backgroundColor: "#CFE0CE",
 			},
 			title: {
-				text: "Monthly Lead Lifecycle & Conversion Pipeline",
+				text: "Lead Lifecycle & Conversion Pipeline",
 				style: {
 					fontWeight: "bold",
 					color: "#0B2447",
@@ -3027,13 +1954,13 @@ define([
 						fontSize: "12px",
 					},
 				},
-				stackLabels: {
-					enabled: true,
-					style: {
-						fontWeight: "bold",
-						fontSize: "10px",
-					},
-				},
+				// stackLabels: {
+				// 	enabled: true,
+				// 	style: {
+				// 		fontWeight: "bold",
+				// 		fontSize: "10px",
+				// 	},
+				// },
 				labels: {
 					style: {
 						fontSize: "10px",
@@ -3052,7 +1979,8 @@ define([
 					stacking: "normal",
 					dataLabels: {
 						enabled: true,
-						format: "{point.percentage:.0f}%",
+						inside: true, // Inside the columns
+						format: '{y}' // Display the exact value
 					},
 				},
 				series: {
