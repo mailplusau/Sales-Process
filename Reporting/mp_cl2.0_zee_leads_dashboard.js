@@ -299,6 +299,9 @@ define([
         // }
         $(".scorecard_percentage").removeClass("hide");
         $(".status_dropdown_section").removeClass("hide");
+        $(".leadsCount").removeClass("hide");
+        $(".tabsDiv").removeClass("hide");
+        $(".leadReviewProcessingLegendContainer").removeClass("hide");
 
         $(".loading_section").addClass("hide");
     }
@@ -418,6 +421,9 @@ define([
         });
 
         $("#applyFilter").click(function () {
+
+            console.log("Apply Filter Clicked");
+
             var date_from = $("#date_from").val();
             var date_to = $("#date_to").val();
 
@@ -459,6 +465,9 @@ define([
             pp_sync = $("#pp_sync").val();
 
             zee = $("#zee_dropdown").val();
+
+            console.log("date_from: " + date_from);
+            console.log("date_to: " + date_to);
 
             if (
                 !isNullorEmpty(invoice_date_from) &&
@@ -1819,6 +1828,9 @@ define([
                     title: "PP SALES BDR", //7
                 },
                 {
+                    title: "DATE QUOTE SENT", //7
+                },
+                {
                     title: "INDUSTRY CATEGORY", //7
                 },
                 {
@@ -1927,6 +1939,9 @@ define([
                     title: "PP SALES BDR", //7
                 },
                 {
+                    title: "DATE QUOTE SENT", //7
+                },
+                {
                     title: "INDUSTRY CATEGORY", //7
                 },
                 {
@@ -2033,6 +2048,9 @@ define([
                 },
                 {
                     title: "PP SALES BDR", //7
+                },
+                {
+                    title: "DATE QUOTE SENT", //7
                 },
                 {
                     title: "CANCELLATION DATE", //8
