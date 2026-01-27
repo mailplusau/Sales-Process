@@ -152,7 +152,9 @@ define([
             var salesrep = context.request.parameters.sales_rep;
             var lead_entered_by = context.request.parameters.lead_entered_by;
 
-            zee = context.request.parameters.zee;
+            if (role != 1000 && isNullorEmpty(zee)) {
+                zee = context.request.parameters.zee;
+            }
             // zee = "1818654" //Alexandria Testing Franchisee ID
             // zee = "1631957" //Brisbane Testing Franchisee ID
             userId = context.request.parameters.user_id;
@@ -452,7 +454,9 @@ define([
             inlineHtml += stepByStepGuideModal();
 
             inlineHtml +=
-                '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"></div></br>';
+                '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><h3 style="text-align: center;">Welcome to Your Sales Dashboard!</h3><br>This dashboard is designed to provide you with a comprehensive, real-time overview of your sales pipeline. It helps you track every lead from the moment it enters the system until it becomes a signed customer, ensuring you can manage your territory effectively and focus your efforts where they matter most.</p>';
+            inlineHtml += '<!-- Filters Section --> <div style="background-color: #fff; border: 1px dashed #cbd5e0; padding: 20px; border-radius: 8px;"> <h3 style="margin-top: 0; font-size: 1.1rem; color: #2d3748;">Finding Specific Leads</h3> <p style="margin-bottom: 10px;">Click the <span style="background-color: #eef281; padding: 2px 8px; border-radius: 15px; border: 1px solid #d4d444; font-size: 0.8rem; font-weight: bold;">SHOW FILTERS</span> button to narrow your search by:</p> <ul style="padding-left: 20px; margin-bottom: 0;"> <li><strong>Date Ranges:</strong> Entry date, ProspectPlus sync date, quote date, or commencement date.</li> <li><strong>Attributes:</strong> Search by Campaign, Source, Sales Rep, or specific Account Manager.</li> <li><strong>Status:</strong> Filter for specific sub-statuses like "Suspect - No Answer" or "Prospect - Quote Sent".</li> </ul> <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem; color: #718096;"> <strong>Pro Tip:</strong> Use the "Search" box directly above the table for quick keyword searches on company names or IDs without refreshing the page. </p> </div>';
+            inlineHtml += '</div></br>';
 
             inlineHtml +=
                 '<div class="form-group container show_buttons_section hide">';
@@ -468,7 +472,7 @@ define([
             inlineHtml +=
                 '<div class="collapse" id="collapseExample"><div class="card card-body">';
             inlineHtml += "<div>";
-            //Dropdown to Select the Fracnhisee
+            //Dropdown to Select the Franchisee
             //Search: SMC - Franchisees
             var searchZees = search.load({
                 id: "customsearch_smc_franchisee",
@@ -628,7 +632,7 @@ define([
         inlineHtml +=
             '<span class="input-group-addon" id="zee_dropdown_text">Franchisee</span>';
         inlineHtml +=
-            '<select id="zee_dropdown" class="js-example-basic-multiple js-states form-control" style="width: 100%" multiple="multiple">';
+            '<select id="zee_dropdown" class="js-states form-control" style="width: 100%">';
         inlineHtml += '<option value=""></option>';
         resultSetZees.each(function (searchResult_zee) {
             zee_id = searchResult_zee.getValue("internalid");
@@ -1141,126 +1145,127 @@ define([
             '<select id="sales_rep" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
         inlineHtml += "<option></option>";
 
-        if(role != 1)
-        //Search: Sales Record - Last Assigned List
-        var salesRecordLastAssignedListListSearch = search.load({
-            id: "customsearch8649",
-            type: "customrecord_sales",
-        });
-        var salesRecordLastAssignedListListSearchResultSet =
-            salesRecordLastAssignedListListSearch.run();
-
-        salesRecordLastAssignedListListSearchResultSet.each(function (
-            salesRecordLastAssignedListListResultSet
-        ) {
-            var employeeId = salesRecordLastAssignedListListResultSet.getValue({
-                name: "custrecord_sales_assigned",
-                summary: "GROUP",
+        if (role != 1000) {
+            //Search: Sales Record - Last Assigned List
+            var salesRecordLastAssignedListListSearch = search.load({
+                id: "customsearch8649",
+                type: "customrecord_sales",
             });
-            var employeeText = salesRecordLastAssignedListListResultSet.getText({
-                name: "custrecord_sales_assigned",
-                summary: "GROUP",
-            });
+            var salesRecordLastAssignedListListSearchResultSet =
+                salesRecordLastAssignedListListSearch.run();
 
-            if (isNullorEmpty(salesrep)) {
-                inlineHtml +=
-                    '<option value="' + employeeId + '">' + employeeText + "</option>";
-            } else {
-                if (salesrep.indexOf(",") != -1) {
-                    var salesrepArray = salesrep.split(",");
-                } else {
-                    var salesrepArray = [];
-                    salesrepArray.push(salesrep);
-                }
+            salesRecordLastAssignedListListSearchResultSet.each(function (
+                salesRecordLastAssignedListListResultSet
+            ) {
+                var employeeId = salesRecordLastAssignedListListResultSet.getValue({
+                    name: "custrecord_sales_assigned",
+                    summary: "GROUP",
+                });
+                var employeeText = salesRecordLastAssignedListListResultSet.getText({
+                    name: "custrecord_sales_assigned",
+                    summary: "GROUP",
+                });
 
-                if (salesrepArray.indexOf(employeeId) != -1) {
-                    inlineHtml +=
-                        '<option value="' +
-                        employeeId +
-                        '" selected="selected">' +
-                        employeeText +
-                        "</option>";
-                } else {
+                if (isNullorEmpty(salesrep)) {
                     inlineHtml +=
                         '<option value="' + employeeId + '">' + employeeText + "</option>";
-                }
-            }
-
-            return true;
-        });
-
-        inlineHtml += "</select>";
-        inlineHtml += "</div></div>";
-
-        inlineHtml += '<div class="col-xs-6 sales_rep_div">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="source_text">LEAD ENTERED BY</span>';
-        inlineHtml +=
-            '<select id="lead_entered_by" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
-        inlineHtml += "<option></option>";
-
-        //Search: Leads Entered By List
-        var leadEnteredByListSearch = search.load({
-            id: "customsearch_lead_entered_by_list",
-            type: "customer",
-        });
-        var leadEnteredByListSearchResultSet = leadEnteredByListSearch.run();
-
-        leadEnteredByListSearchResultSet.each(function (
-            leadEnteredByListResultSet
-        ) {
-            var employeeId = leadEnteredByListResultSet.getValue({
-                name: "custentity_lead_entered_by",
-                summary: "GROUP",
-            });
-            var employeeText = leadEnteredByListResultSet.getText({
-                name: "custentity_lead_entered_by",
-                summary: "GROUP",
-            });
-
-            if (isNullorEmpty(lead_entered_by)) {
-                inlineHtml +=
-                    '<option value="' + employeeId + '">' + employeeText + "</option>";
-            } else {
-                if (lead_entered_by.indexOf(",") != -1) {
-                    var lead_entered_byArray = lead_entered_by.split(",");
                 } else {
-                    var lead_entered_byArray = [];
-                    lead_entered_byArray.push(lead_entered_by);
+                    if (salesrep.indexOf(",") != -1) {
+                        var salesrepArray = salesrep.split(",");
+                    } else {
+                        var salesrepArray = [];
+                        salesrepArray.push(salesrep);
+                    }
+
+                    if (salesrepArray.indexOf(employeeId) != -1) {
+                        inlineHtml +=
+                            '<option value="' +
+                            employeeId +
+                            '" selected="selected">' +
+                            employeeText +
+                            "</option>";
+                    } else {
+                        inlineHtml +=
+                            '<option value="' + employeeId + '">' + employeeText + "</option>";
+                    }
                 }
 
-                if (lead_entered_byArray.indexOf(employeeId) != -1) {
-                    inlineHtml +=
-                        '<option value="' +
-                        employeeId +
-                        '" selected="selected">' +
-                        employeeText +
-                        "</option>";
-                } else {
+                return true;
+            });
+
+            inlineHtml += "</select>";
+            inlineHtml += "</div></div>";
+
+            inlineHtml += '<div class="col-xs-6 sales_rep_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">LEAD ENTERED BY</span>';
+            inlineHtml +=
+                '<select id="lead_entered_by" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
+            inlineHtml += "<option></option>";
+
+            //Search: Leads Entered By List
+            var leadEnteredByListSearch = search.load({
+                id: "customsearch_lead_entered_by_list",
+                type: "customer",
+            });
+            var leadEnteredByListSearchResultSet = leadEnteredByListSearch.run();
+
+            leadEnteredByListSearchResultSet.each(function (
+                leadEnteredByListResultSet
+            ) {
+                var employeeId = leadEnteredByListResultSet.getValue({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+                var employeeText = leadEnteredByListResultSet.getText({
+                    name: "custentity_lead_entered_by",
+                    summary: "GROUP",
+                });
+
+                if (isNullorEmpty(lead_entered_by)) {
                     inlineHtml +=
                         '<option value="' + employeeId + '">' + employeeText + "</option>";
+                } else {
+                    if (lead_entered_by.indexOf(",") != -1) {
+                        var lead_entered_byArray = lead_entered_by.split(",");
+                    } else {
+                        var lead_entered_byArray = [];
+                        lead_entered_byArray.push(lead_entered_by);
+                    }
+
+                    if (lead_entered_byArray.indexOf(employeeId) != -1) {
+                        inlineHtml +=
+                            '<option value="' +
+                            employeeId +
+                            '" selected="selected">' +
+                            employeeText +
+                            "</option>";
+                    } else {
+                        inlineHtml +=
+                            '<option value="' + employeeId + '">' + employeeText + "</option>";
+                    }
                 }
-            }
 
-            // if (lead_entered_by == employeeId) {
-            // 	inlineHtml +=
-            // 		'<option value="' +
-            // 		employeeId +
-            // 		'" selected="selected">' +
-            // 		employeeText +
-            // 		"</option>";
-            // } else {
-            // 	inlineHtml +=
-            // 		'<option value="' + employeeId + '">' + employeeText + "</option>";
-            // }
+                // if (lead_entered_by == employeeId) {
+                // 	inlineHtml +=
+                // 		'<option value="' +
+                // 		employeeId +
+                // 		'" selected="selected">' +
+                // 		employeeText +
+                // 		"</option>";
+                // } else {
+                // 	inlineHtml +=
+                // 		'<option value="' + employeeId + '">' + employeeText + "</option>";
+                // }
 
-            return true;
-        });
+                return true;
+            });
 
-        inlineHtml += "</select>";
-        inlineHtml += "</div ></div > ";
-        inlineHtml += "</div ></div > ";
+            inlineHtml += "</select>";
+            inlineHtml += "</div ></div > ";
+            inlineHtml += "</div ></div > ";
+        }
 
         // inlineHtml += '<div class="form-group container parent_lpo_label_section">';
         // inlineHtml += '<div class="row">';
@@ -1827,7 +1832,7 @@ define([
         return inlineHtml;
     }
 
-    function tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent) {
+    function tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent) {
         // Create a table row string with the provided parameters
 
         var leadURL = 'https://1048144.app.netsuite.com/app/common/entity/custjob.nl?id=' + leadInternalID;
@@ -1844,6 +1849,10 @@ define([
             '<td>' + (salesRepAssignedText !== undefined ? salesRepAssignedText : '') + '</td>' +
             '<td>' + (dateSyncedWithPP !== undefined ? dateSyncedWithPP : '') + '</td>' +
             '<td>' + (ppSalesAgent !== undefined ? ppSalesAgent : '') + '</td>'
+
+        if (leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42 || leadStatusID == 13 || leadStatusID == 66 || leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62) {
+            tableRowString += '<td>' + (leadDateQuoteSent !== undefined ? leadDateQuoteSent : '') + '</td>'
+        }
 
         if (leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62) {
             tableRowString += '<td>' + (leadServiceCancellationDate !== undefined ? leadServiceCancellationDate : '') + '</td>' +
@@ -1908,10 +1917,10 @@ define([
         // start_synced_date = dateISOToNetsuite(start_synced_date);
         // last_synced_date = dateISOToNetsuite(last_synced_date);
 
-
+        //Reporting - All Suspects, Prospects & Customers - Franchisee Reporting Page
         var leadsListBySalesRepWeeklySearch = search.load({
             type: "customer",
-            id: "customsearch_all_lead_zee_reporting_page", //Sales Dashboard - Website Leads - Suspects with Tasks - Reporting V6
+            id: "customsearch_all_lead_zee_reporting_page",
         });
 
         leadsListBySalesRepWeeklySearch.filters.push(
@@ -2114,6 +2123,35 @@ define([
         var convertedRow = '';
         var closedRow = '';
 
+        inlineHtml +=
+            '<div class="form-group container leadsCount hide">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-2"></div>';
+
+        inlineHtml +=
+            '<div class="col-xs-8" style="text-align: center;"> <!-- Default Logic Notification --> <p style="margin: 0 0 15px 0; font-size: 1.05rem; color: #d45d3a; font-weight: bold; text-align: center;"> By default, the page displays leads from the last 6 months that have been entered into the system or synced with ProspectPlus for appointment setting and field sales activities. </p> <!-- Summary Stats Mockup --> <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 8px; text-align: center;"> <div style="min-width: 200px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Current Date Range</small> <span style="font-weight: bold; font-size: 1.1rem;">1/8/2025 to 31/1/2026</span> </div> <div style="min-width: 200px; border-left: 1px solid #cbd5e0; padding-left: 20px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Total Lead/Customer Count</small> <span style="font-weight: bold; font-size: 1.1rem;">207</span> </div> </div> <p style="margin: 15px 0 0 0; font-size: 0.9rem; text-align: center; color: #4a5568;"> <em>This summary bar at the top of your list always shows the context of the data you are currently viewing.</em> </p></div>';
+        inlineHtml += '<div class="col-xs-2"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
+
+        // inlineHtml +=
+        //     '<div class="form-group container leadsCount hide">';
+        // inlineHtml += '<div class="row">';
+        // inlineHtml += '<div class="col-xs-3"></div>';
+
+        // inlineHtml +=
+        //     '<div class="col-xs-6" style="text-align: center;"><h2><b>Total Lead/Customer Count: ' + leadsListBySalesRepWeeklySearchCount + '</b></h2></div>';
+        // inlineHtml += '<div class="col-xs-3"></div>';
+        // inlineHtml += "</div>";
+        // inlineHtml += "</div>";
+        // inlineHtml += "</div>";
+
+        inlineHtml +=
+            '<div class="form-group container leadsCount hide">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
+
         leadsListBySalesRepWeeklySearch
             .run()
             .each(function (prospectListBySalesRepWeeklyResultSet) {
@@ -2174,6 +2212,11 @@ define([
                 });
                 var leadIndustrySubCategory = prospectListBySalesRepWeeklyResultSet.getText({
                     name: "custentity_industry_sub_category",
+                    summary: "GROUP",
+                });
+
+                var leadDateQuoteSent = prospectListBySalesRepWeeklyResultSet.getValue({
+                    name: "custentity_date_lead_quote_sent",
                     summary: "GROUP",
                 });
 
@@ -2241,34 +2284,68 @@ define([
                     var startDate = "NO DATE";
                 }
 
+                if (!isNullorEmpty(leadDateQuoteSent)) {
+                    var splitMonthV2 = leadDateQuoteSent.split("/");
+
+                    var formattedDate = dateISOToNetsuite(
+                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+                    );
+
+                    var firstDay = new Date(
+                        splitMonthV2[0],
+                        splitMonthV2[1],
+                        1
+                    ).getDate();
+                    var lastDay = new Date(
+                        splitMonthV2[0],
+                        splitMonthV2[1],
+                        0
+                    ).getDate();
+
+                    if (firstDay < 10) {
+                        firstDay = "0" + firstDay;
+                    }
+
+                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    leadDateQuoteSent =
+                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+                    var monthsStartDate =
+                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                    var lastDate =
+                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+                } else {
+                    leadDateQuoteSent = "NO DATE";
+                }
+
                 if (leadStatusID == 6 || leadStatusID == 39) {
                     // Lead Review & Processing - New & Franchisee Review
-                    leadReviewRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    leadReviewRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 57) {
                     // Priority Inbound (Immediate Sales Action) - Hot Lead
-                    priorityInboundRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    priorityInboundRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 68 || leadStatusID == 38) {
                     // Field & Phone Inventory (Ready for Outreach) - Validated & Unqualified
-                    syncRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    syncRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) {
                     // Active Outreach (Engaged) - Pre-Qualification, In-Qualification, Re-assign, Follow-up, LPO Follow-up, No Answer, In Contact
-                    activeOutreachRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    activeOutreachRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42) {
                     // Qualified Pipeline - Opportunity, Qualified, Box Sent, Quote Sent, Free Trial Pending, Free Trial
-                    qualifiedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    qualifiedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 13 || leadStatusID == 66) {
                     // Converted Customers - Signed & Customer To Be Finalised
-                    convertedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    convertedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 if (leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62) {
@@ -2310,7 +2387,7 @@ define([
 
 
 
-                    closedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent);
+                    closedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
                 }
 
                 return true;
@@ -2318,28 +2395,28 @@ define([
 
         // Tabs headers
         inlineHtml +=
-            "<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #fff }";
+            "<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #ffffff }";
         inlineHtml +=
-            ".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #095C7B; }";
+            ".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #ffffff; }";
         inlineHtml += "</style>";
 
         inlineHtml +=
-            '<div style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+            '<div class="tabsDiv hide" style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
 
         inlineHtml +=
-            '<li role="presentation" class="active"><a data-toggle="tab" href="#leadReviewProcessing" style="border-radius: 30px"><b>Lead Review & Processing</b></a></li>';
+            '<li role="presentation" class="active" style=""><a data-toggle="tab" href="#leadReviewProcessing" style="border-radius: 30px; background-color: #37474F !important"><b>Lead Review & Processing</b></br>Initial processing of new entries & leads waiting to be reviewed by Business Owner.</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#priorityInbound" style="border-radius: 30px"><b>Priority Inbound</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#priorityInbound" style="border-radius: 30px; background-color: #3F51B5 !important"><b>Priority Inbound</b></br>Hot leads originating directly from website inquiries.</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#fieldPhoneInventory" style="border-radius: 30px"><b>Field & Phone Inventory</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#fieldPhoneInventory" style="border-radius: 30px; background-color: #B674EFFF !important"><b>Field & Phone Inventory</b></br>Validated leads ready for ProspectPlus sync.</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#activeOutreach" style="border-radius: 30px"><b>Active Outreach</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#activeOutreach" style="border-radius: 30px; background-color: #1976D2 !important"><b>Active Outreach</b></br>Leads currently in contact or active qualification.</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#qualifiedPipeline" style="border-radius: 30px"><b>Qualified Pipeline</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#qualifiedPipeline" style="border-radius: 30px; background-color: #3E6D9C !important;"><b>Qualified Pipeline</b></br>Leads with quotes sent or pending trial status.</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#convertedCustomers" style="border-radius: 30px"><b>Converted Customers</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#convertedCustomers" style="border-radius: 30px; background-color: #439A97 !important"><b>Converted Customers</b></br>Successful conversions (Status: CUSTOMER - SIGNED).</a></li>';
         inlineHtml +=
-            '<li role="presentation" class=""><a data-toggle="tab" href="#closedLost" style="border-radius: 30px"><b>Closed/Lost</b></a></li>';
+            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#closedLost" style="border-radius: 30px; background-color: #e86252 !important"><b>Closed/Lost</b></br>Leads that did not proceed or are out of territory.</a></li>';
 
 
         inlineHtml += "</ul></div>";
@@ -2355,6 +2432,15 @@ define([
 
 
         inlineHtml += '<div role="tabpanel" class="tab-pane active" id="leadReviewProcessing">';
+        inlineHtml +=
+            '<div class="form-group container leadReviewProcessingLegendContainer hide">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml +=
+            '<div class="col-xs-6"><div class=leadReviewProcessingLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Lead Review & Processing stage.<ul><li>SUSPECT - NEW</li><li>SUSPECT - FRANCHISEE REVIEW<ul><li>Leads that need to be reviewed by the franchisee to filter out leads that are unserviceable, so the Sales Team time is only spent on genuine opportunities. You can now view and manage leads via the link: <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=2121&deploy=1" target="_blank">Lead Review Page</a></li></ul></li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_leadReviewProcessing"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2362,6 +2448,15 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="priorityInbound">';
+        inlineHtml +=
+            '<div class="form-group container priorityInboundContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml +=
+            '<div class="col-xs-6"><div class=priorityInboundLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Priority Inbound stage.<ul><li>SUSPECT - HOT LEAD<ul><li>Inbound leads that have come directly from the website.</ul></li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_priorityInbound"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2369,6 +2464,15 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="fieldPhoneInventory">';
+        inlineHtml +=
+            '<div class="form-group container fieldPhoneInventoryContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml +=
+            '<div class="col-xs-6"><div class=fieldPhoneInventoryLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Field Phone Inventory stage.<ul><li>SUSPECT - VALIDATED<ul><li>Leads that have been validated by the franchisee and by the Lead Generation team and waiting to be synced with ProspectPlus.</li></ul></li><li>SUSPECT - UNQUALIFIED<ul><li>Leads that have been synced with ProspectPlus but waiting for the Field Sales or the appointment setters to qualify the leads for Sales Consultants. </li></ul></li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_fieldPhoneInventory"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2376,6 +2480,16 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="activeOutreach">';
+        //if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) 
+        inlineHtml +=
+            '<div class="form-group container activeOutreachContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml +=
+            '<div class="col-xs-6"><div class=activeOutreachLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Active Outreach stage.<ul><li>SUSPECT - VALIDATED</li><li>SUSPECT - PRE-QUALIFICATION</li><li>SUSPECT - IN QUALIFICATION</li><li>SUSPECT - REP REASSIGN</li><li>SUSPECT - FOLLOW UP</li><li>SUSPECT - LPO FOLLOW UP</li><li>SUSPECT - NO ANSWER</li><li>SUSPECT - IN CONTACT</li><li>PROSPECT - IN CONTACT</ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-3"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_activeOutreach"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2383,6 +2497,16 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="qualifiedPipeline">';
+        //(leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42)
+        inlineHtml +=
+            '<div class="form-group container qualifiedPipelineContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml +=
+            '<div class="col-xs-4"><div class=qualifiedPipelineLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Qualified Pipeline stage.<ul><li>SUSPECT - QUALIFIED</li><li>PROSPECT - QUALIFIED</li><li>PROSPECT - OPPORTUNITY</li><li>PROSPECT - BOX SENT</li><li>PROSPECT - QUOTE SENT</li><li>CUSTOMER - FREE TRIAL</li><li>CUSTOMER - FREE TRIAL PENDING</li><li>SUSPECT - IN CONTACT</li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_qualifiedPipeline"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2390,6 +2514,15 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="convertedCustomers">';
+        inlineHtml +=
+            '<div class="form-group container convertedCustomersContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml +=
+            '<div class="col-xs-4"><div class=convertedCustomersLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Converted Customers stage.<ul><li>CUSTOMER - SIGNED</li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_convertedCustomers"></div>';
         inlineHtml += "</figure><br></br>";
@@ -2397,6 +2530,16 @@ define([
         inlineHtml += "</div>";
 
         inlineHtml += '<div role="tabpanel" class="tab-pane" id="closedLost">';
+        //(leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62)
+        inlineHtml +=
+            '<div class="form-group container closedLostContainer">';
+        inlineHtml += '<div class="row">';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml +=
+            '<div class="col-xs-4"><div class=closedLostLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Closed Lost stage.<ul><li>SUSPECT - CUSTOMER - LOST</li><li>SUSPECT- LOST</li><li>SUSPECT - OUT OF TERRITORY</li><li>SUSPECT - PARKING LOT</li></ul></p></div></div>';
+        inlineHtml += '<div class="col-xs-4"></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
         inlineHtml += '<figure class="highcharts-figure">';
         inlineHtml += '<div id="container_closedLost"></div>';
         inlineHtml += "</figure><br></br>";
