@@ -122,6 +122,57 @@ define([
             var start_date = context.request.parameters.start_date;
             var last_date = context.request.parameters.last_date;
 
+            var date = new Date();
+            var y = date.getFullYear();
+            var m = date.getMonth();
+
+            log.debug({
+                title: "start_date",
+                details: start_date,
+            });
+            log.debug({
+                title: "last_date",
+                details: last_date,
+            });
+
+
+            if (isNullorEmpty(start_date) || isNullorEmpty(last_date)) {
+                dateFilterApplied = false;
+
+
+                //Last 6 months rolling
+                var i = 0;
+                var lastDay = new Date(y, m + 1, 0);
+                do {
+                    if (m == 1) {
+                        m = 12;
+                        y--;
+                    } else {
+                        m--;
+                    }
+                    i++;
+                } while (i < 5);
+
+                var firstDay = new Date(y, m, 1);
+                firstDay.setHours(0, 0, 0, 0);
+                lastDay.setHours(0, 0, 0, 0);
+
+                start_date = GetFormattedDate(firstDay);
+                last_date = GetFormattedDate(lastDay);
+
+
+            }
+
+
+            log.debug({
+                title: "start_date",
+                details: start_date,
+            });
+            log.debug({
+                title: "last_date",
+                details: last_date,
+            });
+
             var modified_start_date = context.request.parameters.modified_date_from;
             var modified_last_date = context.request.parameters.modified_date_to;
 
@@ -164,6 +215,8 @@ define([
             var customer_type = context.request.parameters.customertype;
             var leadStatus = context.request.parameters.status;
             var syncWithProspectPlus = context.request.parameters.syncWithPP;
+            var start_entered_date = context.request.parameters.start_entered_date;
+            var last_entered_date = context.request.parameters.last_entered_date;
             var start_synced_date = context.request.parameters.start_synced_date;
             var last_synced_date = context.request.parameters.last_synced_date;
 
@@ -194,39 +247,6 @@ define([
                 title: "zee",
                 details: zee
             })
-
-            var date = new Date();
-            var y = date.getFullYear();
-            var m = date.getMonth();
-
-            //Last 3 months rolling
-            var i = 0;
-            var lastDay = new Date(y, m + 1, 0);
-            do {
-                if (m == 1) {
-                    m = 12;
-                    y--;
-                } else {
-                    m--;
-                }
-                i++;
-            } while (i < 5);
-
-            var firstDay = new Date(y, m, 1);
-            firstDay.setHours(0, 0, 0, 0);
-            lastDay.setHours(0, 0, 0, 0);
-
-            start_date = GetFormattedDate(firstDay);
-            last_date = GetFormattedDate(lastDay);
-
-            log.debug({
-                title: "start_date",
-                details: start_date,
-            });
-            log.debug({
-                title: "last_date",
-                details: last_date,
-            });
 
             var form = ui.createForm({
                 title: "Sales Dashboard - Detailed List of Leads",
@@ -288,7 +308,7 @@ define([
                 '<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>';
 
             inlineHtml +=
-                "<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}</style>";
+                "<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}.netsuite-notice-box{background-color:#fffaf0;border:1px solid #feebc8;border-radius:10px;padding:1.25rem;margin-top:1rem;margin-bottom:1.5rem}.btn-netsuite{background-color:#f6ad55;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-netsuite:hover{background-color:#ed8936;color:#fff}.btn-email-it{background-color:#4a90e2;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-email-it:hover{background-color:#357abd;color:#fff}</style>";
 
             form
                 .addField({
@@ -455,7 +475,8 @@ define([
 
             inlineHtml +=
                 '<div class="container instruction_div hide" style="background-color: lightblue;font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p><h3 style="text-align: center;">Welcome to Your Sales Dashboard!</h3><br>This dashboard is designed to provide you with a comprehensive, real-time overview of your sales pipeline. It helps you track every lead from the moment it enters the system until it becomes a signed customer, ensuring you can manage your territory effectively and focus your efforts where they matter most.</p>';
-            inlineHtml += '<!-- Filters Section --> <div style="background-color: #fff; border: 1px dashed #cbd5e0; padding: 20px; border-radius: 8px;"> <h3 style="margin-top: 0; font-size: 1.1rem; color: #2d3748;">Finding Specific Leads</h3> <p style="margin-bottom: 10px;">Click the <span style="background-color: #eef281; padding: 2px 8px; border-radius: 15px; border: 1px solid #d4d444; font-size: 0.8rem; font-weight: bold;">SHOW FILTERS</span> button to narrow your search by:</p> <ul style="padding-left: 20px; margin-bottom: 0;"> <li><strong>Date Ranges:</strong> Entry date, ProspectPlus sync date, quote date, or commencement date.</li> <li><strong>Attributes:</strong> Search by Campaign, Source, Sales Rep, or specific Account Manager.</li> <li><strong>Status:</strong> Filter for specific sub-statuses like "Suspect - No Answer" or "Prospect - Quote Sent".</li> </ul> <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem; color: #718096;"> <strong>Pro Tip:</strong> Use the "Search" box directly above the table for quick keyword searches on company names or IDs without refreshing the page. </p> </div>';
+            inlineHtml += '<!-- Default Logic Notification --> <p style="margin: 0 0 15px 0; font-size: 1.0rem; color: #d45d3a; font-weight: bold;" > By default, the page displays leads from the last 6 months that have been entered into the system or synced with ProspectPlus for appointment setting and field sales activities. Please note only 450 leads can be shown at one time.</p>'
+            inlineHtml += '<!-- Filters Section --> <div style="background-color: #fff; border: 1px dashed #cbd5e0; padding: 20px; border-radius: 8px;"> <h3 style="margin-top: 0; font-size: 1.1rem; color: #2d3748;">Finding Specific Leads</h3> <p style="margin-bottom: 10px;">Click the <span style="background-color: #eef281; padding: 2px 8px; border-radius: 15px; border: 1px solid #d4d444; font-size: 0.8rem; font-weight: bold;">SHOW FILTERS</span> button to narrow your search by:</p> <ul style="padding-left: 20px; margin-bottom: 0;"> <li><strong>Date Ranges:</strong> Entry date or ProspectPlus sync date, quote date, or commencement date.</li> <li><strong>Attributes:</strong> Search by Campaign, Source, Sales Rep, or specific Account Manager.</li> <li><strong>Status:</strong> Filter for specific sub-statuses like "Suspect - No Answer" or "Prospect - Quote Sent".</li> </ul> <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem; color: #718096;"> <strong>Pro Tip:</strong> Use the "Search" box directly above the table for quick keyword searches on company names or IDs without refreshing the page. </p> </div>';
             inlineHtml += '</div></br>';
 
             inlineHtml +=
@@ -480,7 +501,7 @@ define([
             var resultSetZees = searchZees.run();
 
             inlineHtml += franchiseeDropdownSection(resultSetZees, context);
-            inlineHtml += syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date)
+            // inlineHtml += syncedWithProspectPlusDropdown(syncWithProspectPlus, start_synced_date, last_synced_date)
             inlineHtml += leadStatusDropdown(leadStatusArray);
             inlineHtml += leadSourceFilterSection(
                 source,
@@ -509,7 +530,11 @@ define([
                 commencement_start_date,
                 commencement_last_date,
                 cancelled_start_date,
-                cancelled_last_date
+                cancelled_last_date,
+                start_entered_date,
+                last_entered_date,
+                start_synced_date,
+                last_synced_date
             );
             inlineHtml += "</div></div></div></br></br>";
 
@@ -1400,7 +1425,11 @@ define([
         commencement_start_date,
         commencement_last_date,
         cancelled_start_date,
-        cancelled_last_date
+        cancelled_last_date,
+        start_entered_date,
+        last_entered_date,
+        start_synced_date,
+        last_synced_date
     ) {
         // var inlineHtml =
         // 	'<div class="form-group container lead_entered_label_section hide">';
@@ -1469,12 +1498,27 @@ define([
         // }
         // inlineHtml += "</select>";
         // inlineHtml += "</div></div></div></div>";
+        // var inlineHtml = '<div class="form-group container lead_entered_label_section hide">';
+        // inlineHtml += '<div class="row">';
+        // inlineHtml += '<!-- 1. BROAD SEARCH (OR LOGIC) --> <div class="logic-box-or"> <div class="d-flex align-items-start gap-3 mb-3"> <div class="text-primary mt-1"><i class="fa-solid fa-layer-group fa-lg"></i></div> <div> <h6 class="mb-0 fw-bold text-primary">Broad Activity Search (OR Logic)</h6> <p class="text-muted mb-0" style="font-size: 11px;">Finds any lead entered OR synced during this specific date range.</p> </div> </div> <div class="row g-3"> <div class="col-md-6"> <label class="label-custom">DATE LEAD ENTERED OR SYNCED WITH PP - FROM</label> <input type="date" class="form-control form-control-custom"> </div> <div class="col-md-6"> <label class="label-custom">DATE LEAD ENTERED OR SYNCED WITH PP - TO</label> <input type="date" class="form-control form-control-custom"> </div> </div> </div>';
+        // inlineHtml += '</div>';
+        // inlineHtml += '</div>';
 
-        var inlineHtml =
+        var inlineHtml = "";
+
+        inlineHtml +=
             '<div class="form-group container lead_entered_label_section hide">';
         inlineHtml += '<div class="row">';
         inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED - FILTER</span></h4></div>';
+            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE LEAD ENTERED OR SYNCED WITH PP- FILTER</span></h4></div>';
+        inlineHtml += "</div>";
+        inlineHtml += "</div>";
+
+        inlineHtml +=
+            '<div class="form-group container lead_entered_label_section hide">';
+        inlineHtml += '<div class="row">';
+        inlineHtml +=
+            '<div class="col-xs-12 heading1" style="text-align: center;"><div> <h3 class="mb-0 fw-bold text-primary">Broad Activity Search (OR Logic)</h3> <p class="text-muted mb-0" style="font-size: 11px;">Finds any lead entered OR synced during this specific date range.</p> </div></div>';
         inlineHtml += "</div>";
         inlineHtml += "</div>";
 
@@ -1484,7 +1528,7 @@ define([
         inlineHtml += '<div class="col-xs-6 date_from">';
         inlineHtml += '<div class="input-group">';
         inlineHtml +=
-            '<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED - FROM</span>';
+            '<span class="input-group-addon" id="date_from_text">DATE LEAD ENTERED OR SYNCED WITH PP - FROM</span>';
         if (isNullorEmpty(start_date)) {
             inlineHtml +=
                 '<input id="date_from" class="form-control date_from" type="date" />';
@@ -1500,7 +1544,7 @@ define([
         inlineHtml += '<div class="col-xs-6 date_to">';
         inlineHtml += '<div class="input-group">';
         inlineHtml +=
-            '<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED - TO</span>';
+            '<span class="input-group-addon" id="date_to_text">DATE LEAD ENTERED OR SYNCED WITH PP - TO</span>';
         if (isNullorEmpty(last_date)) {
             inlineHtml +=
                 '<input id="date_to" class="form-control date_to" type="date">';
@@ -1750,71 +1794,71 @@ define([
 
         // inlineHtml += "</div></div></div></div>";
 
-        inlineHtml +=
-            '<div class="form-group container invoice_label_section hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">INVOICE FILTERS</span></h4></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
+        // inlineHtml +=
+        //     '<div class="form-group container invoice_label_section hide">';
+        // inlineHtml += '<div class="row">';
+        // inlineHtml +=
+        //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">INVOICE FILTERS</span></h4></div>';
+        // inlineHtml += "</div>";
+        // inlineHtml += "</div>";
 
-        inlineHtml +=
-            '<div class="form-group container invoice_date_type_div hide">';
-        inlineHtml += '<div class="row">';
-        // Date from field
-        inlineHtml += '<div class="col-xs-4 date_from">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="invoice_date_from_text">INVOICE DATE - FROM</span>';
-        if (isNullorEmpty(invoice_date_from)) {
-            inlineHtml +=
-                '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" />';
-        } else {
-            inlineHtml +=
-                '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" value="' +
-                invoice_date_from +
-                '"/>';
-        }
+        // inlineHtml +=
+        //     '<div class="form-group container invoice_date_type_div hide">';
+        // inlineHtml += '<div class="row">';
+        // // Date from field
+        // inlineHtml += '<div class="col-xs-4 date_from">';
+        // inlineHtml += '<div class="input-group">';
+        // inlineHtml +=
+        //     '<span class="input-group-addon" id="invoice_date_from_text">INVOICE DATE - FROM</span>';
+        // if (isNullorEmpty(invoice_date_from)) {
+        //     inlineHtml +=
+        //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" />';
+        // } else {
+        //     inlineHtml +=
+        //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" value="' +
+        //         invoice_date_from +
+        //         '"/>';
+        // }
 
-        inlineHtml += "</div></div>";
-        // Date to field
-        inlineHtml += '<div class="col-xs-4 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="invoice_date_to_text">INVOICE DATE - TO</span>';
-        if (isNullorEmpty(invoice_date_to)) {
-            inlineHtml +=
-                '<input id="invoice_date_to" class="form-control invoice_date_to" type="date">';
-        } else {
-            inlineHtml +=
-                '<input id="invoice_date_to" class="form-control invoice_date_to" type="date" value="' +
-                invoice_date_to +
-                '">';
-        }
+        // inlineHtml += "</div></div>";
+        // // Date to field
+        // inlineHtml += '<div class="col-xs-4 usage_date_to">';
+        // inlineHtml += '<div class="input-group">';
+        // inlineHtml +=
+        //     '<span class="input-group-addon" id="invoice_date_to_text">INVOICE DATE - TO</span>';
+        // if (isNullorEmpty(invoice_date_to)) {
+        //     inlineHtml +=
+        //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date">';
+        // } else {
+        //     inlineHtml +=
+        //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date" value="' +
+        //         invoice_date_to +
+        //         '">';
+        // }
 
-        inlineHtml += "</div></div>";
+        // inlineHtml += "</div></div>";
 
-        inlineHtml += '<div class="col-xs-4 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="zee_dropdown_text">INVOICE TYPE</span>';
-        inlineHtml += '<select id="invoice_type" class="form-control">';
-        if (invoice_type == "1") {
-            inlineHtml += '<option value=""></option>';
-            inlineHtml += '<option value="1" selected>Service</option>';
-            inlineHtml += '<option value="2">MP Products</option>';
-        } else if (invoice_type == "2") {
-            inlineHtml += '<option value=""></option>';
-            inlineHtml += '<option value="1">Service</option>';
-            inlineHtml += '<option value="2" selected>MP Products</option>';
-        } else {
-            inlineHtml += '<option value=""></option>';
-            inlineHtml += '<option value="1">Service</option>';
-            inlineHtml += '<option value="2">MP Products</option>';
-        }
+        // inlineHtml += '<div class="col-xs-4 usage_date_to">';
+        // inlineHtml += '<div class="input-group">';
+        // inlineHtml +=
+        //     '<span class="input-group-addon" id="zee_dropdown_text">INVOICE TYPE</span>';
+        // inlineHtml += '<select id="invoice_type" class="form-control">';
+        // if (invoice_type == "1") {
+        //     inlineHtml += '<option value=""></option>';
+        //     inlineHtml += '<option value="1" selected>Service</option>';
+        //     inlineHtml += '<option value="2">MP Products</option>';
+        // } else if (invoice_type == "2") {
+        //     inlineHtml += '<option value=""></option>';
+        //     inlineHtml += '<option value="1">Service</option>';
+        //     inlineHtml += '<option value="2" selected>MP Products</option>';
+        // } else {
+        //     inlineHtml += '<option value=""></option>';
+        //     inlineHtml += '<option value="1">Service</option>';
+        //     inlineHtml += '<option value="2">MP Products</option>';
+        // }
 
-        inlineHtml += "</select>";
-        inlineHtml += "</div></div></div></div>";
+        // inlineHtml += "</select>";
+        // inlineHtml += "</div></div></div></div>";
 
         inlineHtml +=
             '<div class="form-group container filter_buttons_section hide">';
@@ -2111,248 +2155,209 @@ define([
         var leadsListBySalesRepWeeklySearchCount =
             leadsListBySalesRepWeeklySearch.runPaged().count;
 
-        var totalPageCount = parseInt(leadsListBySalesRepWeeklySearchCount / 1000) + 1;
+        log.audit({
+            title: 'Total Leads Count',
+            details: leadsListBySalesRepWeeklySearchCount
+        })
 
-        var divBreak = Math.ceil(12 / totalPageCount);
+        if (leadsListBySalesRepWeeklySearchCount > 450) {
 
-        var leadReviewRow = '';
-        var priorityInboundRow = '';
-        var syncRow = '';
-        var activeOutreachRow = '';
-        var qualifiedRow = '';
-        var convertedRow = '';
-        var closedRow = '';
+            log.audit({
+                title: 'Leads Count Exceeded',
+                details: 'Leads Count: ' + leadsListBySalesRepWeeklySearchCount
+            });
 
-        inlineHtml +=
-            '<div class="form-group container leadsCount hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-2"></div>';
 
-        inlineHtml +=
-            '<div class="col-xs-8" style="text-align: center;"> <!-- Default Logic Notification --> <p style="margin: 0 0 15px 0; font-size: 1.05rem; color: #d45d3a; font-weight: bold; text-align: center;"> By default, the page displays leads from the last 6 months that have been entered into the system or synced with ProspectPlus for appointment setting and field sales activities. </p> <!-- Summary Stats Mockup --> <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 8px; text-align: center;"> <div style="min-width: 200px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Current Date Range</small> <span style="font-weight: bold; font-size: 1.1rem;">1/8/2025 to 31/1/2026</span> </div> <div style="min-width: 200px; border-left: 1px solid #cbd5e0; padding-left: 20px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Total Lead/Customer Count</small> <span style="font-weight: bold; font-size: 1.1rem;">207</span> </div> </div> <p style="margin: 15px 0 0 0; font-size: 0.9rem; text-align: center; color: #4a5568;"> <em>This summary bar at the top of your list always shows the context of the data you are currently viewing.</em> </p></div>';
-        inlineHtml += '<div class="col-xs-2"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
+            inlineHtml +=
+                '<div class="col-xs-8" style="text-align: center;"> <!-- Default Logic Notification --> <p style="margin: 0 0 15px 0; font-size: 1.0rem; color: #d45d3a; font-weight: bold; text-align: center;"> Unable to display leads because the count exceeds the maximum limit. Please refine your filters. </p><!-- Summary Stats Mockup --> <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 8px; text-align: center;"> <div style="min-width: 200px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Current Date Range</small> <span style="font-weight: bold; font-size: 1.1rem;">' + date_from + ' to ' + date_to + '</span> </div> <div style="min-width: 200px; border-left: 1px solid #cbd5e0; padding-left: 20px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Total Lead/Customer Count</small> <span style="font-weight: bold; font-size: 1.1rem;">' + leadsListBySalesRepWeeklySearchCount + '</span> </div> </div> <p style="margin: 15px 0 0 0; font-size: 0.9rem; text-align: center; color: #4a5568;"> </p></div></div>';
+            inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
 
-        // inlineHtml +=
-        //     '<div class="form-group container leadsCount hide">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml += '<!-- 4. NETSUITE DATA EXPORT --> <div class="netsuite-notice-box"> <div class="row align-items-center"> <div class="col-lg-8"> <div class="d-flex align-items-center gap-2 mb-2"> <i class="fa-solid fa-database text-warning"></i> <strong class="text-dark">Accessing Large Datasets</strong> </div> <p class="mb-lg-0 text-muted" style="font-size: 12px;"> Search results are too extensive to be displayed on this page, please use the button to the right to view the <strong>NetSuite Search Page</strong>. From there, you can export the full raw data to Excel or CSV for deep analysis. Alternatively, you can send an email to MailPlus IT to retrieve detailed information based on your currently selected filters. </p> </div> <div class="col-lg-4 text-lg-end">';
+            if (role == 1000) {
+                inlineHtml += ' <a href="https://1048144.app.netsuite.com/app/common/search/searchresults.nl?scrollid=9441&searchid=9454&whence=" target="_blank" class="btn btn-netsuite"> <i class="fa-solid fa-up-right-from-square"></i> View Raw Data in NetSuite </a>';
+            } else {
+                inlineHtml += ' <a href="https://1048144.app.netsuite.com/app/common/search/searchresults.nl?searchid=9441&saverun=T&whence=" target="_blank" class="btn btn-netsuite"> <i class="fa-solid fa-up-right-from-square"></i> View Raw Data in NetSuite </a>';
+            }
+            inlineHtml += ' <button type="button" class="btn btn-email-it emailIT"> <i class="fa-solid fa-envelope"></i> Email MailPlus IT </button> </div> </div> </div>';
+            inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
 
-        // inlineHtml +=
-        //     '<div class="col-xs-6" style="text-align: center;"><h2><b>Total Lead/Customer Count: ' + leadsListBySalesRepWeeklySearchCount + '</b></h2></div>';
-        // inlineHtml += '<div class="col-xs-3"></div>';
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
 
-        inlineHtml +=
-            '<div class="form-group container leadsCount hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-
-        leadsListBySalesRepWeeklySearch
-            .run()
-            .each(function (prospectListBySalesRepWeeklyResultSet) {
-
-                var dateLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "custentity_date_lead_entered",
-                    summary: "GROUP",
-                });
-
-                var leadInternalID = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "internalid",
-                    summary: "GROUP",
-                });
-                var leadID = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "entityid",
-                    summary: "GROUP",
-                });
-
-                var leadCompanyName = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "companyname",
-                    summary: "GROUP",
-                });
-                var leadZeeID = parseInt(prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "partner",
-                    summary: "GROUP",
-                }));
-                var leadZeeText = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "partner",
-                    summary: "GROUP",
-                });
-                var leadSourceText = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "leadsource",
-                    summary: "GROUP",
-                });
-                var leadStatusID = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "entitystatus",
-                    summary: "GROUP",
-                });
-                var leadStatusText = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "entitystatus",
-                    summary: "GROUP",
-                });
-                var leadServiceCancellationDate = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "custentity13",
-                    summary: "GROUP",
-                });
-                var leadServiceCancellationTheme = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "custentity_service_cancellation_theme",
-                    summary: "GROUP",
-                });
-                var leadServiceCancellationCategory = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "custentity_service_cancellation_what",
-                    summary: "GROUP",
-                });
-                var leadIndustryCategory = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "custentity_industry_category",
-                    summary: "GROUP",
-                });
-                var leadIndustrySubCategory = prospectListBySalesRepWeeklyResultSet.getText({
-                    name: "custentity_industry_sub_category",
-                    summary: "GROUP",
-                });
-
-                var leadDateQuoteSent = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "custentity_date_lead_quote_sent",
-                    summary: "GROUP",
-                });
-
-                var leadSalesRecordIntenalID = prospectListBySalesRepWeeklyResultSet.getValue({
-                    name: "internalid",
-                    join: "CUSTRECORD_SALES_CUSTOMER",
-                    summary: "MAX",
-                });
-
-                //Load Sales Record
-                var salesRecord = record.load({
-                    type: "customrecord_sales",
-                    id: leadSalesRecordIntenalID,
-                });
-                var salesCampaignText = salesRecord.getText({
-                    fieldId: "custrecord_sales_campaign",
-                });
-                var salesRepAssignedText = salesRecord.getText({
-                    fieldId: "custrecord_sales_assigned",
-                });
-                var dateSyncedWithPP = salesRecord.getValue({
-                    fieldId: "custrecord_cf_date_sent",
-                });
-                var ppSalesAgent = salesRecord.getText({
-                    fieldId: "custrecord_cf_agent_name",
-                });
-
-                if (!isNullorEmpty(dateSyncedWithPP)) {
-                    dateSyncedWithPP = formatDateString(dateSyncedWithPP);
+            var date = new Date();
+            var y = date.getFullYear();
+            var m = date.getMonth();
+            //Last 5 months rolling
+            var i = 0;
+            var lastDay = new Date(y, m + 1, 0);
+            do {
+                if (m == 1) {
+                    m = 12;
+                    y--;
                 } else {
-                    dateSyncedWithPP = "NOT SYNCED WITH PP"
+                    m--;
                 }
+                i++;
+            } while (i < 4);
 
-                if (!isNullorEmpty(dateLeadEntered)) {
-                    var splitMonthV2 = dateLeadEntered.split("/");
+            var firstDay = new Date(y, m, 1);
+            firstDay.setHours(0, 0, 0, 0);
+            lastDay.setHours(0, 0, 0, 0);
 
-                    var formattedDate = dateISOToNetsuite(
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
-                    );
+            start_date = GetFormattedDate(firstDay);
+            last_date = GetFormattedDate(lastDay);
 
-                    var firstDay = new Date(
-                        splitMonthV2[0],
-                        splitMonthV2[1],
-                        1
-                    ).getDate();
-                    var lastDay = new Date(
-                        splitMonthV2[0],
-                        splitMonthV2[1],
-                        0
-                    ).getDate();
+        } else {
 
-                    if (firstDay < 10) {
-                        firstDay = "0" + firstDay;
+            var leadReviewRow = '';
+            var priorityInboundRow = '';
+            var syncRow = '';
+            var activeOutreachRow = '';
+            var qualifiedRow = '';
+            var convertedRow = '';
+            var closedRow = '';
+
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-2"></div>';
+
+            inlineHtml +=
+                '<div class="col-xs-8" style="text-align: center;">  <!-- Summary Stats Mockup --> <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 8px; text-align: center;"> <div style="min-width: 200px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Current Date Range</small> <span style="font-weight: bold; font-size: 1.1rem;">' + date_from + ' to ' + date_to + '</span> </div> <div style="min-width: 200px; border-left: 1px solid #cbd5e0; padding-left: 20px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Total Lead/Customer Count</small> <span style="font-weight: bold; font-size: 1.1rem;">' + leadsListBySalesRepWeeklySearchCount + '</span> </div> </div> <p style="margin: 15px 0 0 0; font-size: 0.9rem; text-align: center; color: #4a5568;"> <em>This summary bar at the top of your list always shows the context of the data you are currently viewing.</em> </p></div>';
+            inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            var leadCount = 0;
+
+            leadsListBySalesRepWeeklySearch
+                .run()
+                .each(function (prospectListBySalesRepWeeklyResultSet) {
+
+                    var dateLeadEntered = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "custentity_date_lead_entered",
+                        summary: "GROUP",
+                    });
+
+                    var leadInternalID = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "internalid",
+                        summary: "GROUP",
+                    });
+                    var leadID = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "entityid",
+                        summary: "GROUP",
+                    });
+
+                    var leadCompanyName = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "companyname",
+                        summary: "GROUP",
+                    });
+                    var leadZeeID = parseInt(prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "partner",
+                        summary: "GROUP",
+                    }));
+                    var leadZeeText = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "partner",
+                        summary: "GROUP",
+                    });
+                    var leadSourceText = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "leadsource",
+                        summary: "GROUP",
+                    });
+                    var leadStatusID = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "entitystatus",
+                        summary: "GROUP",
+                    });
+                    var leadStatusText = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "entitystatus",
+                        summary: "GROUP",
+                    });
+                    var leadServiceCancellationDate = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "custentity13",
+                        summary: "GROUP",
+                    });
+                    var leadServiceCancellationTheme = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "custentity_service_cancellation_theme",
+                        summary: "GROUP",
+                    });
+                    var leadServiceCancellationCategory = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "custentity_service_cancellation_what",
+                        summary: "GROUP",
+                    });
+                    var leadIndustryCategory = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "custentity_industry_category",
+                        summary: "GROUP",
+                    });
+                    var leadIndustrySubCategory = prospectListBySalesRepWeeklyResultSet.getText({
+                        name: "custentity_industry_sub_category",
+                        summary: "GROUP",
+                    });
+
+                    var leadDateQuoteSent = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "custentity_date_lead_quote_sent",
+                        summary: "GROUP",
+                    });
+
+                    var leadSalesRecordIntenalID = prospectListBySalesRepWeeklyResultSet.getValue({
+                        name: "internalid",
+                        join: "CUSTRECORD_SALES_CUSTOMER",
+                        summary: "MAX",
+                    });
+
+                    if (!isNullorEmpty(leadSalesRecordIntenalID)) {
+                        //Load Sales Record
+                        var salesRecord = record.load({
+                            type: "customrecord_sales",
+                            id: leadSalesRecordIntenalID,
+                        });
+                        var salesCampaignText = salesRecord.getText({
+                            fieldId: "custrecord_sales_campaign",
+                        });
+                        var salesRepAssignedText = salesRecord.getText({
+                            fieldId: "custrecord_sales_assigned",
+                        });
+                        var dateSyncedWithPP = salesRecord.getValue({
+                            fieldId: "custrecord_cf_date_sent",
+                        });
+                        var ppSalesAgent = salesRecord.getText({
+                            fieldId: "custrecord_cf_agent_name",
+                        });
+                    } else {
+                        var salesCampaignText = "";
+                        var salesRepAssignedText = "";
+                        var dateSyncedWithPP = "";
+                        var ppSalesAgent = "";
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var startDate =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
-                    var monthsStartDate =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
-                } else {
-                    var startDate = "NO DATE";
-                }
-
-                if (!isNullorEmpty(leadDateQuoteSent)) {
-                    var splitMonthV2 = leadDateQuoteSent.split("/");
-
-                    var formattedDate = dateISOToNetsuite(
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
-                    );
-
-                    var firstDay = new Date(
-                        splitMonthV2[0],
-                        splitMonthV2[1],
-                        1
-                    ).getDate();
-                    var lastDay = new Date(
-                        splitMonthV2[0],
-                        splitMonthV2[1],
-                        0
-                    ).getDate();
-
-                    if (firstDay < 10) {
-                        firstDay = "0" + firstDay;
+                    if (!isNullorEmpty(dateSyncedWithPP)) {
+                        dateSyncedWithPP = formatDateString(dateSyncedWithPP);
+                    } else {
+                        dateSyncedWithPP = "NOT SYNCED WITH PP"
                     }
 
-                    // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    leadDateQuoteSent =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
-                    var monthsStartDate =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
-                    // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                    var lastDate =
-                        splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
-                } else {
-                    leadDateQuoteSent = "NO DATE";
-                }
-
-                if (leadStatusID == 6 || leadStatusID == 39) {
-                    // Lead Review & Processing - New & Franchisee Review
-                    leadReviewRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 57) {
-                    // Priority Inbound (Immediate Sales Action) - Hot Lead
-                    priorityInboundRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 68 || leadStatusID == 38) {
-                    // Field & Phone Inventory (Ready for Outreach) - Validated & Unqualified
-                    syncRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) {
-                    // Active Outreach (Engaged) - Pre-Qualification, In-Qualification, Re-assign, Follow-up, LPO Follow-up, No Answer, In Contact
-                    activeOutreachRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42) {
-                    // Qualified Pipeline - Opportunity, Qualified, Box Sent, Quote Sent, Free Trial Pending, Free Trial
-                    qualifiedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 13 || leadStatusID == 66) {
-                    // Converted Customers - Signed & Customer To Be Finalised
-                    convertedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
-
-                if (leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62) {
-                    // Closed/Lost - Lost, OOT, Customer Lost, Off Peak Pipeline
-
-                    if (!isNullorEmpty(leadServiceCancellationDate)) {
-                        var splitMonthV2 = leadServiceCancellationDate.split("/");
+                    if (!isNullorEmpty(dateLeadEntered)) {
+                        var splitMonthV2 = dateLeadEntered.split("/");
 
                         var formattedDate = dateISOToNetsuite(
                             splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
@@ -2374,7 +2379,7 @@ define([
                         }
 
                         // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
-                        leadServiceCancellationDate =
+                        var startDate =
                             splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
                         var monthsStartDate =
                             splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
@@ -2382,170 +2387,279 @@ define([
                         var lastDate =
                             splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
                     } else {
-                        leadServiceCancellationDate = "NO DATE";
+                        var startDate = "NO DATE";
                     }
 
+                    if (!isNullorEmpty(leadDateQuoteSent)) {
+                        var splitMonthV2 = leadDateQuoteSent.split("/");
+
+                        var formattedDate = dateISOToNetsuite(
+                            splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+                        );
+
+                        var firstDay = new Date(
+                            splitMonthV2[0],
+                            splitMonthV2[1],
+                            1
+                        ).getDate();
+                        var lastDay = new Date(
+                            splitMonthV2[0],
+                            splitMonthV2[1],
+                            0
+                        ).getDate();
+
+                        if (firstDay < 10) {
+                            firstDay = "0" + firstDay;
+                        }
+
+                        // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        leadDateQuoteSent =
+                            splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+                        var monthsStartDate =
+                            splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+                        // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                        var lastDate =
+                            splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+                    } else {
+                        leadDateQuoteSent = "NO DATE";
+                    }
+
+                    if (leadStatusID == 6 || leadStatusID == 39) {
+                        // Lead Review & Processing - New & Franchisee Review
+                        leadReviewRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 57) {
+                        // Priority Inbound (Immediate Sales Action) - Hot Lead
+                        priorityInboundRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 68 || leadStatusID == 38) {
+                        // Field & Phone Inventory (Ready for Outreach) - Validated & Unqualified
+                        syncRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) {
+                        // Active Outreach (Engaged) - Pre-Qualification, In-Qualification, Re-assign, Follow-up, LPO Follow-up, No Answer, In Contact
+                        activeOutreachRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42) {
+                        // Qualified Pipeline - Opportunity, Qualified, Box Sent, Quote Sent, Free Trial Pending, Free Trial
+                        qualifiedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 13 || leadStatusID == 66) {
+                        // Converted Customers - Signed & Customer To Be Finalised
+                        convertedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    if (leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62) {
+                        // Closed/Lost - Lost, OOT, Customer Lost, Off Peak Pipeline
+
+                        if (!isNullorEmpty(leadServiceCancellationDate)) {
+                            var splitMonthV2 = leadServiceCancellationDate.split("/");
+
+                            var formattedDate = dateISOToNetsuite(
+                                splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0]
+                            );
+
+                            var firstDay = new Date(
+                                splitMonthV2[0],
+                                splitMonthV2[1],
+                                1
+                            ).getDate();
+                            var lastDay = new Date(
+                                splitMonthV2[0],
+                                splitMonthV2[1],
+                                0
+                            ).getDate();
+
+                            if (firstDay < 10) {
+                                firstDay = "0" + firstDay;
+                            }
+
+                            // var startDate = firstDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                            leadServiceCancellationDate =
+                                splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + splitMonthV2[0];
+                            var monthsStartDate =
+                                splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + firstDay;
+                            // var lastDate = lastDay + '/' + splitMonth[1] + '/' + splitMonth[0]
+                            var lastDate =
+                                splitMonthV2[2] + "-" + splitMonthV2[1] + "-" + lastDay;
+                        } else {
+                            leadServiceCancellationDate = "NO DATE";
+                        }
 
 
-                    closedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
-                }
 
-                return true;
+                        closedRow += tableRow(page_no, leadInternalID, leadID, leadCompanyName, leadZeeID, leadZeeText, leadSourceText, leadStatusID, leadStatusText, startDate, leadSalesRecordIntenalID, leadServiceCancellationDate, leadServiceCancellationTheme, leadServiceCancellationCategory, leadIndustryCategory, leadIndustrySubCategory, salesCampaignText, salesRepAssignedText, dateSyncedWithPP, ppSalesAgent, leadDateQuoteSent);
+                    }
+
+                    leadCount++;
+                    log.audit({
+                        title: 'Processing Lead Count: ' + leadCount,
+                        details: 'Lead Internal ID: ' + leadInternalID + ', Lead Status ID: ' + leadStatusID
+                    })
+                    return true;
+                });
+
+            // Tabs headers
+            inlineHtml +=
+                "<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #001F2B !important; color: #ffffff }";
+            inlineHtml +=
+                ".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #ffffff; }";
+            inlineHtml += "</style>";
+
+            inlineHtml +=
+                '<div class="tabsDiv hide" style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
+
+            inlineHtml +=
+                '<li role="presentation" class="active" style=""><a data-toggle="tab" href="#leadReviewProcessing" style="border-radius: 30px; background-color: #37474F !important"><b>Lead Review & Processing</b></br>Initial processing of new leads & leads waiting to be reviewed by Business Owner.</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#priorityInbound" style="border-radius: 30px; background-color: #3F51B5 !important"><b>Priority Inbound</b></br>Hot leads originating directly from website inquiries.</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#fieldPhoneInventory" style="border-radius: 30px; background-color: #B674EFFF !important"><b>Field & Phone Inventory</b></br>Validated leads ready for ProspectPlus sync.</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#activeOutreach" style="border-radius: 30px; background-color: #1976D2 !important"><b>Active Outreach</b></br>Leads currently in contact or active qualification.</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#qualifiedPipeline" style="border-radius: 30px; background-color: #3E6D9C !important;"><b>Qualified Pipeline</b></br>Leads with quotes sent or pending trial status.</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#convertedCustomers" style="border-radius: 30px; background-color: #439A97 !important"><b>Converted Customers</b></br>Successful conversions (Status: CUSTOMER - SIGNED).</a></li>';
+            inlineHtml +=
+                '<li role="presentation" class="" style=""><a data-toggle="tab" href="#closedLost" style="border-radius: 30px; background-color: #e86252 !important"><b>Closed/Lost</b></br>Leads that did not proceed or are out of territory.</a></li>';
+
+
+            inlineHtml += "</ul></div>";
+
+            // Tabs content
+            inlineHtml += '<div class="tab-content">';
+
+            log.debug({
+                title: "Inside Tabs Section Function",
+                details: campaign,
             });
 
-        // Tabs headers
-        inlineHtml +=
-            "<style>.nav > li.active > a, .nav > li.active > a:focus, .nav > li.active > a:hover { background-color: #095C7B; color: #ffffff }";
-        inlineHtml +=
-            ".nav > li > a, .nav > li > a:focus, .nav > li > a:hover { margin-left: 5px; margin-right: 5px; border: 2px solid #095C7B; color: #ffffff; }";
-        inlineHtml += "</style>";
-
-        inlineHtml +=
-            '<div class="tabsDiv hide" style="width: 95%; margin:auto; margin-bottom: 30px"><ul class="nav nav-pills nav-justified main-tabs-sections " style="margin:0%; ">';
-
-        inlineHtml +=
-            '<li role="presentation" class="active" style=""><a data-toggle="tab" href="#leadReviewProcessing" style="border-radius: 30px; background-color: #37474F !important"><b>Lead Review & Processing</b></br>Initial processing of new entries & leads waiting to be reviewed by Business Owner.</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#priorityInbound" style="border-radius: 30px; background-color: #3F51B5 !important"><b>Priority Inbound</b></br>Hot leads originating directly from website inquiries.</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#fieldPhoneInventory" style="border-radius: 30px; background-color: #B674EFFF !important"><b>Field & Phone Inventory</b></br>Validated leads ready for ProspectPlus sync.</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#activeOutreach" style="border-radius: 30px; background-color: #1976D2 !important"><b>Active Outreach</b></br>Leads currently in contact or active qualification.</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#qualifiedPipeline" style="border-radius: 30px; background-color: #3E6D9C !important;"><b>Qualified Pipeline</b></br>Leads with quotes sent or pending trial status.</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#convertedCustomers" style="border-radius: 30px; background-color: #439A97 !important"><b>Converted Customers</b></br>Successful conversions (Status: CUSTOMER - SIGNED).</a></li>';
-        inlineHtml +=
-            '<li role="presentation" class="" style=""><a data-toggle="tab" href="#closedLost" style="border-radius: 30px; background-color: #e86252 !important"><b>Closed/Lost</b></br>Leads that did not proceed or are out of territory.</a></li>';
 
 
-        inlineHtml += "</ul></div>";
+            inlineHtml += '<div role="tabpanel" class="tab-pane active" id="leadReviewProcessing">';
+            inlineHtml +=
+                '<div class="form-group container leadReviewProcessingLegendContainer hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml +=
+                '<div class="col-xs-6"><div class=leadReviewProcessingLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Lead Review & Processing</b> stage.<ul><li>SUSPECT - NEW</li><li>SUSPECT - FRANCHISEE REVIEW<ul><li>Leads that need to be reviewed by the franchisee to filter out leads that are unserviceable, so the Sales Team time is only spent on genuine opportunities. You can now view and manage leads via the link: <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=2121&deploy=1" target="_blank">Lead Review Page</a></li></ul></li></ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_leadReviewProcessing"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("leadReviewProcessing", leadReviewRow);
+            inlineHtml += "</div>";
 
-        // Tabs content
-        inlineHtml += '<div class="tab-content">';
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="priorityInbound">';
+            inlineHtml +=
+                '<div class="form-group container priorityInboundContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml +=
+                '<div class="col-xs-6"><div class=priorityInboundLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Priority Inbound</b> stage.<ul><li>SUSPECT - HOT LEAD<ul><li>Inbound leads that have come directly from the website.</ul></li></ul><em style="color: #e97777;">The lead is highlighted red if it has been in this status for more than 3 days.</em></p></div></div>';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_priorityInbound"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("priorityInbound", priorityInboundRow);
+            inlineHtml += "</div>";
 
-        log.debug({
-            title: "Inside Tabs Section Function",
-            details: campaign,
-        });
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="fieldPhoneInventory">';
+            inlineHtml +=
+                '<div class="form-group container fieldPhoneInventoryContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml +=
+                '<div class="col-xs-6"><div class=fieldPhoneInventoryLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Field Phone Inventory</b> stage.<ul><li>SUSPECT - VALIDATED<ul><li>Leads that have been validated by the franchisee and by the Lead Generation team and waiting to be synced with ProspectPlus.</li></ul></li><li>SUSPECT - UNQUALIFIED<ul><li>Leads that have been synced with ProspectPlus but waiting for the Field Sales or the appointment setters to qualify the leads for Sales Consultants. </li></ul></li></ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_fieldPhoneInventory"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("fieldPhoneInventory", syncRow);
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="activeOutreach">';
+            //if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) 
+            inlineHtml +=
+                '<div class="form-group container activeOutreachContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml +=
+                '<div class="col-xs-6"><div class=activeOutreachLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Active Outreach</b> stage.<ul><li>SUSPECT - VALIDATED</li><li>SUSPECT - PRE-QUALIFICATION</li><li>SUSPECT - IN QUALIFICATION</li><li>SUSPECT - REP REASSIGN</li><li>SUSPECT - FOLLOW UP</li><li>SUSPECT - LPO FOLLOW UP</li><li>SUSPECT - NO ANSWER</li><li>SUSPECT - IN CONTACT</li><li>PROSPECT - IN CONTACT</ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-3"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_activeOutreach"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("activeOutreach", activeOutreachRow);
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="qualifiedPipeline">';
+            //(leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42)
+            inlineHtml +=
+                '<div class="form-group container qualifiedPipelineContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml +=
+                '<div class="col-xs-4"><div class=qualifiedPipelineLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Qualified Pipeline</b> stage.<ul><li>SUSPECT - QUALIFIED</li><li>PROSPECT - QUALIFIED</li><li>PROSPECT - OPPORTUNITY</li><li>PROSPECT - BOX SENT</li><li>PROSPECT - QUOTE SENT</li><li>CUSTOMER - FREE TRIAL</li><li>CUSTOMER - FREE TRIAL PENDING</li><li>SUSPECT - IN CONTACT</li></ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_qualifiedPipeline"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("qualifiedPipeline", qualifiedRow);
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="convertedCustomers">';
+            inlineHtml +=
+                '<div class="form-group container convertedCustomersContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml +=
+                '<div class="col-xs-4"><div class=convertedCustomersLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Converted Customers</b> stage.<ul><li>CUSTOMER - SIGNED</li></ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_convertedCustomers"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("convertedCustomers", convertedRow);
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div role="tabpanel" class="tab-pane" id="closedLost">';
+            //(leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62)
+            inlineHtml +=
+                '<div class="form-group container closedLostContainer">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml +=
+                '<div class="col-xs-4"><div class=closedLostLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Closed Lost</b> stage.<ul><li>SUSPECT - CUSTOMER - LOST</li><li>SUSPECT- LOST</li><li>SUSPECT - OUT OF TERRITORY</li><li>SUSPECT - PARKING LOT</li></ul></p></div></div>';
+            inlineHtml += '<div class="col-xs-4"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+            inlineHtml += '<figure class="highcharts-figure">';
+            inlineHtml += '<div id="container_closedLost"></div>';
+            inlineHtml += "</figure><br></br>";
+            inlineHtml += dataTable("closedLost", closedRow);
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+        }
 
 
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane active" id="leadReviewProcessing">';
-        inlineHtml +=
-            '<div class="form-group container leadReviewProcessingLegendContainer hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml +=
-            '<div class="col-xs-6"><div class=leadReviewProcessingLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Lead Review & Processing stage.<ul><li>SUSPECT - NEW</li><li>SUSPECT - FRANCHISEE REVIEW<ul><li>Leads that need to be reviewed by the franchisee to filter out leads that are unserviceable, so the Sales Team time is only spent on genuine opportunities. You can now view and manage leads via the link: <a href="https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=2121&deploy=1" target="_blank">Lead Review Page</a></li></ul></li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_leadReviewProcessing"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("leadReviewProcessing", leadReviewRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="priorityInbound">';
-        inlineHtml +=
-            '<div class="form-group container priorityInboundContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml +=
-            '<div class="col-xs-6"><div class=priorityInboundLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Priority Inbound stage.<ul><li>SUSPECT - HOT LEAD<ul><li>Inbound leads that have come directly from the website.</ul></li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_priorityInbound"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("priorityInbound", priorityInboundRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="fieldPhoneInventory">';
-        inlineHtml +=
-            '<div class="form-group container fieldPhoneInventoryContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml +=
-            '<div class="col-xs-6"><div class=fieldPhoneInventoryLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Field Phone Inventory stage.<ul><li>SUSPECT - VALIDATED<ul><li>Leads that have been validated by the franchisee and by the Lead Generation team and waiting to be synced with ProspectPlus.</li></ul></li><li>SUSPECT - UNQUALIFIED<ul><li>Leads that have been synced with ProspectPlus but waiting for the Field Sales or the appointment setters to qualify the leads for Sales Consultants. </li></ul></li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_fieldPhoneInventory"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("fieldPhoneInventory", syncRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="activeOutreach">';
-        //if (leadStatusID == 34 || leadStatusID == 30 || leadStatusID == 60 || leadStatusID == 18 || leadStatusID == 67 || leadStatusID == 20 || leadStatusID == 69 || leadStatusID == 8) 
-        inlineHtml +=
-            '<div class="form-group container activeOutreachContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml +=
-            '<div class="col-xs-6"><div class=activeOutreachLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Active Outreach stage.<ul><li>SUSPECT - VALIDATED</li><li>SUSPECT - PRE-QUALIFICATION</li><li>SUSPECT - IN QUALIFICATION</li><li>SUSPECT - REP REASSIGN</li><li>SUSPECT - FOLLOW UP</li><li>SUSPECT - LPO FOLLOW UP</li><li>SUSPECT - NO ANSWER</li><li>SUSPECT - IN CONTACT</li><li>PROSPECT - IN CONTACT</ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-3"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_activeOutreach"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("activeOutreach", activeOutreachRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="qualifiedPipeline">';
-        //(leadStatusID == 58 || leadStatusID == 70 || leadStatusID == 72 || leadStatusID == 50 || leadStatusID == 32 || leadStatusID == 71 || leadStatusID == 42)
-        inlineHtml +=
-            '<div class="form-group container qualifiedPipelineContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml +=
-            '<div class="col-xs-4"><div class=qualifiedPipelineLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Qualified Pipeline stage.<ul><li>SUSPECT - QUALIFIED</li><li>PROSPECT - QUALIFIED</li><li>PROSPECT - OPPORTUNITY</li><li>PROSPECT - BOX SENT</li><li>PROSPECT - QUOTE SENT</li><li>CUSTOMER - FREE TRIAL</li><li>CUSTOMER - FREE TRIAL PENDING</li><li>SUSPECT - IN CONTACT</li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_qualifiedPipeline"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("qualifiedPipeline", qualifiedRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="convertedCustomers">';
-        inlineHtml +=
-            '<div class="form-group container convertedCustomersContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml +=
-            '<div class="col-xs-4"><div class=convertedCustomersLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Converted Customers stage.<ul><li>CUSTOMER - SIGNED</li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_convertedCustomers"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("convertedCustomers", convertedRow);
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div role="tabpanel" class="tab-pane" id="closedLost">';
-        //(leadStatusID == 59 || leadStatusID == 64 || leadStatusID == 22 || leadStatusID == 62)
-        inlineHtml +=
-            '<div class="form-group container closedLostContainer">';
-        inlineHtml += '<div class="row">';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml +=
-            '<div class="col-xs-4"><div class=closedLostLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the Closed Lost stage.<ul><li>SUSPECT - CUSTOMER - LOST</li><li>SUSPECT- LOST</li><li>SUSPECT - OUT OF TERRITORY</li><li>SUSPECT - PARKING LOT</li></ul></p></div></div>';
-        inlineHtml += '<div class="col-xs-4"></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-        inlineHtml += '<figure class="highcharts-figure">';
-        inlineHtml += '<div id="container_closedLost"></div>';
-        inlineHtml += "</figure><br></br>";
-        inlineHtml += dataTable("closedLost", closedRow);
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
 
         return inlineHtml;
     }

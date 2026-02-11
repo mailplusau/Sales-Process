@@ -310,6 +310,8 @@ define([
         $("#NS_MENU_ID0-item0").css("background-color", "#CFE0CE");
         $("#NS_MENU_ID0-item0 a").css("background-color", "#CFE0CE");
         $("#body").css("background-color", "#CFE0CE");
+        $('.uir-page-title').css('display', 'none');
+        $('.uir-header-buttons').css('display', 'none');
         // pageLoad();
         $(".ui.dropdown").dropdown();
 
@@ -427,8 +429,12 @@ define([
             var date_from = $("#date_from").val();
             var date_to = $("#date_to").val();
 
+            var date_entered_to = $("#date_entered_to").val();
+            var date_entered_from = $("#date_entered_from").val();
             var date_synced_from = $("#date_synced_from").val();
             var date_synced_to = $("#date_synced_to").val();
+            var date_from = $("#date_from").val();
+            var date_to = $("#date_to").val();
 
             var modified_date_from = $("#modified_date_from").val();
             var modified_date_to = $("#modified_date_to").val();
@@ -469,86 +475,157 @@ define([
             console.log("date_from: " + date_from);
             console.log("date_to: " + date_to);
 
-            if (
-                !isNullorEmpty(invoice_date_from) &&
-                !isNullorEmpty(invoice_date_to)
-            ) {
-                if (
-                    isNullorEmpty(date_signed_up_from) ||
-                    isNullorEmpty(date_signed_up_to)
-                ) {
-                    alert("Please enter the date signed up filter");
-                    return false;
-                }
-            } else if (
-                (isNullorEmpty(date_to) || isNullorEmpty(date_from)) &&
-                (isNullorEmpty(usage_date_from) || isNullorEmpty(usage_date_to)) &&
-                (isNullorEmpty(date_signed_up_from) || isNullorEmpty(date_signed_up_to))
-            ) {
-                alert("Please enter the date filter");
+            if (isNullorEmpty(date_from) && isNullorEmpty(date_to) && isNullorEmpty(date_synced_from) && isNullorEmpty(date_synced_to) && isNullorEmpty(date_entered_from) && isNullorEmpty(date_entered_to)) {
+                alert("Please select a date range in either the Broad Activity Search.");
                 return false;
+            } else {
+                var url =
+                    baseURL +
+                    "/app/site/hosting/scriptlet.nl?script=2411&deploy=1&start_date=" +
+                    date_from +
+                    "&last_date=" +
+                    date_to +
+                    "&date_signed_up_from=" +
+                    date_signed_up_from +
+                    "&date_signed_up_to=" +
+                    date_signed_up_to +
+                    "&commence_date_from=" +
+                    commencement_start_date +
+                    "&commence_date_to=" +
+                    commencement_last_date +
+                    "&cancel_date_from=" +
+                    cancelled_start_date +
+                    "&cancel_date_to=" +
+                    cancelled_last_date +
+                    "&source=" +
+                    source +
+                    "&date_quote_sent_from=" +
+                    date_quote_sent_from +
+                    "&date_quote_sent_to=" +
+                    date_quote_sent_to +
+                    "&sales_rep=" +
+                    sales_rep +
+                    "&zee=" +
+                    zee +
+                    "&campaign=" +
+                    sales_campaign +
+                    "&lead_entered_by=" +
+                    lead_entered_by +
+                    "&status=" +
+                    leadStatus +
+                    "&date_synced_from=" +
+                    date_synced_from +
+                    "&date_synced_to=" +
+                    date_synced_to +
+                    "&date_entered_from=" +
+                    date_entered_from +
+                    "&date_entered_to=" +
+                    date_entered_to;
+
+
+                window.location.href = url;
             }
 
-            if (!(isNullorEmpty(usage_date_from) && !isNullorEmpty(usage_date_to))) {
+
+        });
+
+        $(".emailIT").click(function () {
+
+            console.log("Email IT Clicked");
+
+            var date_from = $("#date_from").val();
+            var date_to = $("#date_to").val();
+
+            var date_entered_to = $("#date_entered_to").val();
+            var date_entered_from = $("#date_entered_from").val();
+            var date_synced_from = $("#date_synced_from").val();
+            var date_synced_to = $("#date_synced_to").val();
+            var date_from = $("#date_from").val();
+            var date_to = $("#date_to").val();
+
+            var date_signed_up_from = $("#date_signed_up_from").val();
+            var date_signed_up_to = $("#date_signed_up_to").val();
+
+            var commencement_start_date = $("#commencement_date_from").val();
+            var commencement_last_date = $("#commencement_date_to").val();
+            var cancelled_start_date = $("#cancellation_date_from").val();
+            var cancelled_last_date = $("#cancellation_date_to").val();
+
+            var date_quote_sent_from = $("#date_quote_sent_from").val();
+            var date_quote_sent_to = $("#date_quote_sent_to").val();
+
+            var invoice_date_from = $("#invoice_date_from").val();
+            var invoice_date_to = $("#invoice_date_to").val();
+            var invoice_type = $("#invoice_type").val();
+            var source = $("#lead_source").val();
+            var sales_campaign = $("#sales_campaign").val();
+            var parent_lpo = $("#parent_lpo").val();
+
+            var sales_rep = $("#sales_rep").val();
+            var lead_entered_by = $("#lead_entered_by").val();
+            calcprodusage = $("#calc_prod_usage").val();
+            sales_activity_notes = $("#sales_activity_notes").val();
+            customer_type = $("#customer_type").val();
+
+            leadStatus = $("#cust_status").val();
+
+            pp_sync = $("#pp_sync").val();
+
+            zee = $("#zee_dropdown").val();
+
+            console.log("date_from: " + date_from);
+            console.log("date_to: " + date_to);
+
+            //Send Email to IT with the filters applied and the link to the current page
+            var emailBody = 'Hi MailPlus IT,<br><br>Please extract the data with the following filters applied:<br><br>The filters are as follows:<br>';
+            if (!isNullorEmpty(date_entered_from) || !isNullorEmpty(date_entered_to)) {
+                emailBody += 'Date From: ' + date_from + '<br>';
+                emailBody += 'Date To: ' + date_to + '<br>';
             }
+            if (!isNullorEmpty(date_signed_up_from) || !isNullorEmpty(date_signed_up_to)) {
+                emailBody += 'Date Signed Up From: ' + date_signed_up_from + '<br>';
+                emailBody += 'Date Signed Up To: ' + date_signed_up_to + '<br>';
+            }
+            if (!isNullorEmpty(commencement_start_date) || !isNullorEmpty(commencement_last_date)) {
+                emailBody += 'Commencement Start Date: ' + commencement_start_date + '<br>';
+                emailBody += 'Commencement Last Date: ' + commencement_last_date + '<br>';
+            }
+            if (!isNullorEmpty(cancelled_start_date) || !isNullorEmpty(cancelled_last_date)) {
+                emailBody += 'Cancelled Start Date: ' + cancelled_start_date + '<br>';
+                emailBody += 'Cancelled Last Date: ' + cancelled_last_date + '<br>';
+            }
+            if (!isNullorEmpty(date_quote_sent_from) || !isNullorEmpty(date_quote_sent_to)) {
+                emailBody += 'Date Quote Sent From: ' + date_quote_sent_from + '<br>';
+                emailBody += 'Date Quote Sent To: ' + date_quote_sent_to + '<br>';
+            }
+            if (!isNullorEmpty(source)) {
+                emailBody += 'Source: ' + source + '<br>';
+            }
+            if (!isNullorEmpty(sales_campaign)) {
+                emailBody += 'Sales Campaign: ' + sales_campaign + '<br>';
+            }
+            if (!isNullorEmpty(sales_rep)) {
+                emailBody += 'Sales Rep: ' + sales_rep + '<br>';
+            }
+            if (!isNullorEmpty(leadStatus)) {
+                emailBody += 'Lead Status: ' + leadStatus + '<br>';
+            }
+            if (!isNullorEmpty(zee)) {
+                emailBody += 'Zee ID: ' + zee + '<br>';
+            }
+            emailBody += '<br>The link to the search to be used to extract with the above filters: <a href="https://1048144.app.netsuite.com/app/common/search/searchresults.nl?searchid=9441&saverun=T&whence=">Reporting - All Suspects, Prospects & Customers - Franchisee Reporting Page</a><br><br>';
+            emailBody += 'Please extract the data accordingly.<br><br>Best Regards,<br>' + userName;
 
-            var url =
-                baseURL +
-                "/app/site/hosting/scriptlet.nl?script=2411&deploy=1&start_date=" +
-                date_from +
-                "&last_date=" +
-                date_to +
-                "&usage_date_from=" +
-                usage_date_from +
-                "&usage_date_to=" +
-                usage_date_to +
-                "&date_signed_up_from=" +
-                date_signed_up_from +
-                "&date_signed_up_to=" +
-                date_signed_up_to +
-                "&commence_date_from=" +
-                commencement_start_date +
-                "&commence_date_to=" +
-                commencement_last_date +
-                "&cancel_date_from=" +
-                cancelled_start_date +
-                "&cancel_date_to=" +
-                cancelled_last_date +
-                "&source=" +
-                source +
-                "&date_quote_sent_from=" +
-                date_quote_sent_from +
-                "&date_quote_sent_to=" +
-                date_quote_sent_to +
-                "&sales_rep=" +
-                sales_rep +
-                "&zee=" +
-                zee +
-                "&calcprodusage=" +
-                calcprodusage +
-                "&invoice_date_from=" +
-                invoice_date_from +
-                "&invoice_date_to=" +
-                invoice_date_to +
-                "&campaign=" +
-                sales_campaign +
-                "&lpo=" +
-                parent_lpo +
-                "&lead_entered_by=" +
-                lead_entered_by +
-                "&modified_date_from=" +
-                modified_date_from +
-                "&modified_date_to=" +
-                modified_date_to +
-                "&status=" +
-                leadStatus +
-                "&salesactivitynotes=" +
-                sales_activity_notes +
-                "&customertype=" +
-                customer_type + "&syncWithPP=" + pp_sync + "&start_synced_date=" + date_synced_from + "&last_synced_date=" + date_synced_to;
+            email.send({
+                author: 112209, //MailPlus team
+                body: emailBody,
+                // recipients: 'ankith.ravindran@mailplus.com.au',
+                recipients: 'mailplusit@mailplus.com.au',
+                subject: userName + ' Requested  Sales Dashboard Report',
+                cc: ['luke.forbes@mailplus.com.au', 'ankith.ravindran@mailplus.com.au']
+            })
 
 
-            window.location.href = url;
         });
 
 
@@ -689,6 +766,36 @@ define([
 
         $(".closeModal").click(function () {
             $("#leadStatusModal").hide();
+        });
+
+        $("#date_from").click(function () {
+            $("#date_entered_to").val('');
+            $("#date_entered_from").val('');
+            $("#date_synced_from").val('');
+            $("#date_synced_to").val('');
+        });
+        $("#date_to").click(function () {
+            $("#date_entered_to").val('');
+            $("#date_entered_from").val('');
+            $("#date_synced_from").val('');
+            $("#date_synced_to").val('');
+        });
+
+        $("#date_entered_to").click(function () {
+            $("#date_from").val('');
+            $("#date_to").val('');
+        });
+        $("#date_entered_from").click(function () {
+            $("#date_from").val('');
+            $("#date_to").val('');
+        });
+        $("#date_synced_from").click(function () {
+            $("#date_from").val('');
+            $("#date_to").val('');
+        });
+        $("#date_synced_to").click(function () {
+            $("#date_from").val('');
+            $("#date_to").val('');
         });
 
         $(".show_salesrep_status_timeline").click(function () {
@@ -1518,14 +1625,12 @@ define([
             ],
             rowCallback: function (row, data, index) {
                 // var row_color = "";
-                // if (
-                //     data[4] == "SUSPECT-Customer - Lost" ||
-                //     data[4] == "SUSPECT-Lost"
-                // ) {
-                //     $("td", row).css("background-color", "#e97777");
-                // } else if (data[4] == "CUSTOMER-Signed") {
-                //     $("td", row).css("background-color", "#ADCF9F");
-                // }
+
+                if (isMoreThanOneDayOld(data[0])) {
+                    $("td", row).css("background-color", "#e97777");
+                } else {
+                    $("td", row).css("background-color", "#F2F2EF");
+                }
             },
             footerCallback: function (row, data, start, end, display) { },
         });
@@ -1844,15 +1949,12 @@ define([
                 },
             ],
             rowCallback: function (row, data, index) {
-                // var row_color = "";
-                // if (
-                //     data[4] == "SUSPECT-Customer - Lost" ||
-                //     data[4] == "SUSPECT-Lost"
-                // ) {
-                //     $("td", row).css("background-color", "#e97777");
-                // } else if (data[4] == "CUSTOMER-Signed") {
-                //     $("td", row).css("background-color", "#ADCF9F");
-                // }
+                var row_color = "";
+                if (data[4] == "PROSPECT-Quote Sent") {
+                    $("td", row).css("background-color", "#B5DFA5");
+                } else {
+                    $("td", row).css("background-color", "#F2F2EF");
+                }
             },
             footerCallback: function (row, data, start, end, display) { },
         });
@@ -2327,6 +2429,24 @@ define([
             time = time.replace(hours, hours + 12);
         }
         return time.replace(/( AM| PM)/, "");
+    }
+
+    function isMoreThanOneDayOld(dateStr) {
+
+        var dateLeadEntered = dateStr.split('-');
+        dateLeadEntered = new Date(dateLeadEntered[0], dateLeadEntered[1] - 1, dateLeadEntered[2]);
+
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        dateLeadEntered.setHours(0, 0, 0, 0);
+
+        console.log("dateLeadEntered: " + dateLeadEntered);
+        console.log("today: " + today);
+
+
+        var diffInMs = today - dateLeadEntered;
+        var diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+        return diffInDays > 3;
     }
 
     return {
