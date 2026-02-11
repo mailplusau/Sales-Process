@@ -677,6 +677,9 @@ define([
 					} else if (salesRep == 653718) {
 						salesRepEmail = "luke.forbes@mailplus.com.au";
 						salesRepName = "Luke Forbes";
+					} else if (salesRep == 755585) { 
+						salesRepEmail = "yassine.moukadam@mailplus.com.au";
+						salesRepName = "Yassine Moukadam";
 					}
 
 					var subject = "";
