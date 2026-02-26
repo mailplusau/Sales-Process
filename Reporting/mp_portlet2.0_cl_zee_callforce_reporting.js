@@ -391,7 +391,7 @@ define([
 			var date_to = $("#date_to").val();
 			var url =
 				baseURL +
-				"/app/site/hosting/scriptlet.nl?script=1678&deploy=1&start_date=&last_date=&usage_date_from=2025-02-01&usage_date_to=2025-02-28&date_signed_up_from=&date_signed_up_to=&commence_date_from=&commence_date_to=&cancel_date_from=&cancel_date_to=&source==null&date_quote_sent_from=&date_quote_sent_to=&sales_rep=null&zee=null&calcprodusage=2&invoice_date_from=&invoice_date_to=&campaign=null&lpo=null&lead_entered_by=null&modified_date_from=undefined&modified_date_to=undefined&status=null&salesactivitynotes=undefined&customertype=2" + "&syncWithPP=1" + "&start_synced_date=" + date_from + "&last_synced_date=" + date_to;
+				"/app/site/hosting/scriptlet.nl?script=2411&deploy=1&start_date=&last_date=&usage_date_from=2025-02-01&usage_date_to=2025-02-28&date_signed_up_from=&date_signed_up_to=&commence_date_from=&commence_date_to=&cancel_date_from=&cancel_date_to=&source==null&date_quote_sent_from=&date_quote_sent_to=&sales_rep=null&zee=null&calcprodusage=2&invoice_date_from=&invoice_date_to=&campaign=null&lpo=null&lead_entered_by=null&modified_date_from=undefined&modified_date_to=undefined&status=null&salesactivitynotes=undefined&customertype=2" + "&syncWithPP=1" + "&start_synced_date=" + date_from + "&last_synced_date=" + date_to;
 			window.open(url, "_blank");
 			// window.location.href = url;
 		});
