@@ -215,6 +215,8 @@ define(['N/ui/serverWidget', 'N/email', 'N/runtime', 'N/search', 'N/record',
                 });
                 inlineHtml += '<option value="653718">Luke Forbes</option>';
                 inlineHtml += '<option value="1623053">Aleyna A Harnett</option>';
+                inlineHtml += '<option value="668712">Belinda Urbani</option>';
+                inlineHtml += '<option value="1973163">Raine Giderson</option>';
                 inlineHtml += '</select>';
                 inlineHtml += '</div></div>';
 

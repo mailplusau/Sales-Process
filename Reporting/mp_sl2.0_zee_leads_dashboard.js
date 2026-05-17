@@ -119,6 +119,7 @@ define([
         }
 
         if (context.request.method === "GET") {
+            //https://1048144.app.netsuite.com/app/site/hosting/scriptlet.nl?script=2411&deploy=1&start_date=2025-10-01&last_date=2026-03-31&date_signed_up_from=&date_signed_up_to=&commence_date_from=&commence_date_to=&cancel_date_from=&cancel_date_to=&source=null&date_quote_sent_from=&date_quote_sent_to=&sales_rep=null&zee=1934037&campaign=67,70&lead_entered_by=null&status=null&date_synced_from=undefined&date_synced_to=undefined&date_entered_from=undefined&date_entered_to=undefined
             var start_date = context.request.parameters.start_date;
             var last_date = context.request.parameters.last_date;
 
@@ -255,10 +256,26 @@ define([
 
             if (!isNullorEmpty(salesrep)) {
                 if (salesrep.indexOf(",") != -1) {
-                    var salesRepArray = campaign.split(",");
+                    var salesRepArray = salesrep.split(",");
                 } else {
                     var salesRepArray = [];
                     salesRepArray.push(salesrep);
+                }
+            }
+            if (!isNullorEmpty(campaign)) {
+                if (campaign.indexOf(",") != -1) {
+                    var campaignArray = campaign.split(",");
+                } else {
+                    var campaignArray = [];
+                    campaignArray.push(campaign);
+                }
+            }
+            if (!isNullorEmpty(source)) {
+                if (source.indexOf(",") != -1) {
+                    var sourceArray = source.split(",");
+                } else {
+                    var sourceArray = [];
+                    sourceArray.push(source);
                 }
             }
 
@@ -294,7 +311,7 @@ define([
             // });
 
             var inlineHtml =
-                '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css"><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA92XGDo8rx11izPYT7z2L-YPMMJ6Ih1s0&callback=initMap&libraries=places"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script>';
+                '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css"><link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css"><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script><script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script><link href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"><script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA92XGDo8rx11izPYT7z2L-YPMMJ6Ih1s0&callback=initMap&libraries=places"></script><link rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2060796&c=1048144&h=9ee6accfd476c9cae718&_xt=.css"/><script src="https://system.na2.netsuite.com/core/media/media.nl?id=2060797&c=1048144&h=ef2cda20731d146b5e98&_xt=.js"></script><link type="text/css" rel="stylesheet" href="https://system.na2.netsuite.com/core/media/media.nl?id=2090583&c=1048144&h=a0ef6ac4e28f91203dfe&_xt=.css"><script src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"><script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script></script><script src="https://code.highcharts.com/highcharts.js"></script><script src="https://code.highcharts.com/modules/data.js"></script><script src="https://code.highcharts.com/modules/drilldown.js"></script><script src="https://code.highcharts.com/modules/exporting.js"></script><script src="https://code.highcharts.com/modules/export-data.js"></script><script src="https://code.highcharts.com/modules/accessibility.js"></script><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">';
             inlineHtml +=
                 '<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /><script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>';
             inlineHtml +=
@@ -308,7 +325,7 @@ define([
                 '<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>';
 
             inlineHtml +=
-                "<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}.netsuite-notice-box{background-color:#fffaf0;border:1px solid #feebc8;border-radius:10px;padding:1.25rem;margin-top:1rem;margin-bottom:1.5rem}.btn-netsuite{background-color:#f6ad55;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-netsuite:hover{background-color:#ed8936;color:#fff}.btn-email-it{background-color:#4a90e2;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-email-it:hover{background-color:#357abd;color:#fff}</style>";
+                "<style>.mandatory{color:red;} .body{background-color: #CFE0CE !important;}.wrapper{position:fixed;height:2em;width:2em;overflow:show;margin:auto;top:0;left:0;bottom:0;right:0;justify-content: center; align-items: center; display: -webkit-inline-box;} .ball{width: 22px; height: 22px; border-radius: 11px; margin: 0 10px; animation: 2s bounce ease infinite;} .blue{background-color: #0f3d39; }.red{background-color: #095C7B; animation-delay: .25s;}.yellow{background-color: #387081; animation-delay: .5s}.green{background-color: #d0e0cf; animation-delay: .75s}@keyframes bounce{50%{transform: translateY(25px);}}.select2-selection__choice{ background-color: #095C7B !important; color: white !important}.select2-selection__choice__remove{color: red !important;}.netsuite-notice-box{background-color:#fffaf0;border:1px solid #feebc8;border-radius:10px;padding:1.25rem;margin-top:1rem;margin-bottom:1.5rem}.btn-netsuite{background-color:#f6ad55;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-netsuite:hover{background-color:#ed8936;color:#fff}.btn-email-it{background-color:#4a90e2;color:#fff;font-weight:700;font-size:.75rem;text-transform:uppercase;padding:8px 20px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s;border:none}.btn-email-it:hover{background-color:#357abd;color:#fff}.priority-banner{background-color:#FFF7F5;border-left:6px solid var(--accent-red);box-shadow:0 4px 15px rgba(0,0,0,.05);max-width:800px;}.icon-circle{background-color:#C35F47;width:44px;height:44px}.text-content{color:#7D2D1E}</style>";
 
             form
                 .addField({
@@ -479,6 +496,8 @@ define([
             inlineHtml += '<!-- Filters Section --> <div style="background-color: #fff; border: 1px dashed #cbd5e0; padding: 20px; border-radius: 8px;"> <h3 style="margin-top: 0; font-size: 1.1rem; color: #2d3748;">Finding Specific Leads</h3> <p style="margin-bottom: 10px;">Click the <span style="background-color: #eef281; padding: 2px 8px; border-radius: 15px; border: 1px solid #d4d444; font-size: 0.8rem; font-weight: bold;">SHOW FILTERS</span> button to narrow your search by:</p> <ul style="padding-left: 20px; margin-bottom: 0;"> <li><strong>Date Ranges:</strong> Entry date or ProspectPlus sync date, quote date, or commencement date.</li> <li><strong>Attributes:</strong> Search by Campaign, Source, Sales Rep, or specific Account Manager.</li> <li><strong>Status:</strong> Filter for specific sub-statuses like "Suspect - No Answer" or "Prospect - Quote Sent".</li> </ul> <p style="margin-top: 15px; font-style: italic; font-size: 0.9rem; color: #718096;"> <strong>Pro Tip:</strong> Use the "Search" box directly above the table for quick keyword searches on company names or IDs without refreshing the page. </p> </div>';
             inlineHtml += '</div></br>';
 
+
+
             inlineHtml +=
                 '<div class="form-group container show_buttons_section hide">';
             inlineHtml += '<div class="row">';
@@ -541,8 +560,8 @@ define([
 
             if (!isNullorEmpty(zee)) {
 
-                inlineHtml += tabsSection(page_no, campaign, source,
-                    salesrep,
+                inlineHtml += tabsSection(page_no, campaignArray, sourceArray,
+                    salesRepArray,
                     lead_entered_by,
                     customer_type,
                     start_date,
@@ -1029,6 +1048,15 @@ define([
             id: "customsearch_sales_button_campaign",
         });
 
+        salesCampaignSearch.filters.push(
+            search.createFilter({
+                name: "internalid",
+                join: null,
+                operator: search.Operator.ANYOF,
+                values: [70, 96, 67, 69, 95],
+            })
+        );
+
         salesCampaignSearch.run().each(function (salesCampaignSearchResultSet) {
             var salesCampaignInternalId =
                 salesCampaignSearchResultSet.getValue("internalid");
@@ -1040,6 +1068,8 @@ define([
             if (isNullorEmpty(campaignColorCode)) {
                 campaignColorCode = "#F5F7F8";
             }
+
+
 
             campaign_list.push(salesCampaignInternalId);
             campaign_list_color.push(campaignColorCode);
@@ -1103,6 +1133,15 @@ define([
             id: "customsearch_lead_source",
         });
 
+        leadSourceSearch.filters.push(
+            search.createFilter({
+                name: "internalid",
+                join: null,
+                operator: search.Operator.ANYOF,
+                values: [-4, 254557, 239030, 437098, 295896, 282083, 282051, 282085],
+            })
+        );
+
         leadSourceSearch.run().each(function (leadSourceResultSet) {
             var leadsourceid = leadSourceResultSet.getValue({
                 name: "internalid",
@@ -1157,20 +1196,20 @@ define([
         inlineHtml += "</select>";
         inlineHtml += "</div></div>";
         inlineHtml += "</div></div>";
-
-        inlineHtml +=
-            '<div class="form-group container source_salesrep_section hide">';
-        inlineHtml += '<div class="row">';
-
-        inlineHtml += '<div class="col-xs-6 sales_rep_div">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="source_text">SALES REP</span>';
-        inlineHtml +=
-            '<select id="sales_rep" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
-        inlineHtml += "<option></option>";
-
         if (role != 1000) {
+            inlineHtml +=
+                '<div class="form-group container source_salesrep_section hide">';
+            inlineHtml += '<div class="row">';
+
+            inlineHtml += '<div class="col-xs-6 sales_rep_div">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="source_text">SALES REP</span>';
+            inlineHtml +=
+                '<select id="sales_rep" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
+            inlineHtml += "<option></option>";
+
+
             //Search: Sales Record - Last Assigned List
             var salesRecordLastAssignedListListSearch = search.load({
                 id: "customsearch8649",
@@ -1292,110 +1331,6 @@ define([
             inlineHtml += "</div ></div > ";
         }
 
-        // inlineHtml += '<div class="form-group container parent_lpo_label_section">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml +=
-        //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">SECURE CASH CUSTOMER - FILTER</span></h4></div>';
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
-
-        // inlineHtml +=
-        //     '<div class="form-group container invoice_date_type_div hide">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml += '<div class="col-xs-12 usage_date_to">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="zee_dropdown_text">CUSTOMER TYPE</span>';
-        // inlineHtml += '<select id="customer_type" class="form-control">';
-        // if (customer_type == "1") {
-        //     inlineHtml += '<option value="1" selected>All Customers</option>';
-        //     inlineHtml +=
-        //         '<option value="2">All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
-        // } else if (customer_type == "2") {
-        //     inlineHtml += '<option value="1" >All Customers</option>';
-        //     inlineHtml +=
-        //         '<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
-        // } else {
-        //     inlineHtml += '<option value="1">All Customers</option>';
-        //     inlineHtml +=
-        //         '<option value="2" selected>All Customers (exc SC, Shippit, Sendle, Parent Customers)</option>';
-        // }
-
-        // inlineHtml += "</select>";
-        // inlineHtml += "</div></div></div></div>";
-
-        // if (campaign == 69) {
-        // inlineHtml += '<div class="form-group container parent_lpo_label_section">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml +=
-        //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">PARENT LPO - FILTER</span></h4></div>';
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
-
-        // inlineHtml += '<div class="form-group container parent_lpo_section">';
-        // inlineHtml += '<div class="row">';
-
-        // inlineHtml += '<div class="col-xs-12 parent_lpo_div">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="parent_lpo_text">PARENT LPO</span>';
-        // inlineHtml +=
-        //     '<select id="parent_lpo" class="js-example-basic-multiple form-control" style="width: 100%" multiple="multiple">';
-        // inlineHtml += "<option></option>";
-
-        // var parentLPOSearch = search.load({
-        //     type: "customer",
-        //     id: "customsearch_parent_lpo_customers",
-        // });
-
-        // parentLPOSearch.run().each(function (parentLPOSearchResultSet) {
-        //     var parentLPOInternalId = parentLPOSearchResultSet.getValue({
-        //         name: "internalid",
-        //         summary: "GROUP",
-        //     });
-        //     var parentLPOName = parentLPOSearchResultSet.getValue({
-        //         name: "companyname",
-        //         summary: "GROUP",
-        //     });
-
-        //     if (isNullorEmpty(parentLPO)) {
-        //         inlineHtml +=
-        //             '<option value="' +
-        //             parentLPOInternalId +
-        //             '" >' +
-        //             parentLPOName +
-        //             "</option>";
-        //     } else {
-        //         if (parentLPO.indexOf(",") != -1) {
-        //             var parentLPOArray = parentLPO.split(",");
-        //         } else {
-        //             var parentLPOArray = [];
-        //             parentLPOArray.push(parentLPO);
-        //         }
-        //         // var parentLPOArray = parentLPO.split(',');
-        //         if (parentLPOArray.indexOf(parentLPOInternalId) != -1) {
-        //             inlineHtml +=
-        //                 '<option value="' +
-        //                 parentLPOInternalId +
-        //                 '" selected>' +
-        //                 parentLPOName +
-        //                 "</option>";
-        //         } else {
-        //             inlineHtml +=
-        //                 '<option value="' +
-        //                 parentLPOInternalId +
-        //                 '" >' +
-        //                 parentLPOName +
-        //                 "</option>";
-        //         }
-        //     }
-
-        //     return true;
-        // });
-
-        // inlineHtml += "</select>";
-        // inlineHtml += "</div></div></div></div>";
-        // }
 
         return inlineHtml;
     }
@@ -1557,308 +1492,310 @@ define([
 
         inlineHtml += "</div></div></div></div>";
 
-        inlineHtml +=
-            '<div class="form-group container quote_sent_label_section hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE QUOTE SENT - FILTER</span></h4></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
+        if (role != 1000) {
+            inlineHtml +=
+                '<div class="form-group container quote_sent_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE QUOTE SENT - FILTER</span></h4></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
 
-        inlineHtml += '<div class="form-group container quote_sent_div hide">';
-        inlineHtml += '<div class="row">';
-        // Date from field
-        inlineHtml += '<div class="col-xs-6 date_from">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_quote_sent_from_text">DATE QUOTE SENT - FROM</span>';
-        if (isNullorEmpty(date_quote_sent_from)) {
+            inlineHtml += '<div class="form-group container quote_sent_div hide">';
+            inlineHtml += '<div class="row">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
             inlineHtml +=
-                '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" />';
-        } else {
+                '<span class="input-group-addon" id="date_quote_sent_from_text">DATE QUOTE SENT - FROM</span>';
+            if (isNullorEmpty(date_quote_sent_from)) {
+                inlineHtml +=
+                    '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" />';
+            } else {
+                inlineHtml +=
+                    '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" value="' +
+                    date_quote_sent_from +
+                    '"/>';
+            }
+
+            inlineHtml += "</div></div>";
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            inlineHtml += '<div class="input-group">';
             inlineHtml +=
-                '<input id="date_quote_sent_from" class="form-control date_quote_sent_from" type="date" value="' +
-                date_quote_sent_from +
-                '"/>';
+                '<span class="input-group-addon" id="date_quote_sent_to_text">DATE QUOTE SENT - TO</span>';
+            if (isNullorEmpty(date_quote_sent_to)) {
+                inlineHtml +=
+                    '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date">';
+            } else {
+                inlineHtml +=
+                    '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date" value="' +
+                    date_quote_sent_to +
+                    '">';
+            }
+
+            inlineHtml += "</div></div></div></div>";
+
+            inlineHtml +=
+                '<div class="form-group container signed_up_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE SIGNED UP - FILTER</span></h4></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div class="form-group container signed_up_div hide">';
+            inlineHtml += '<div class="row">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_from_text">DATE SIGNED UP - FROM</span>';
+            if (isNullorEmpty(date_signed_up_from)) {
+                inlineHtml +=
+                    '<input id="date_signed_up_from" class="form-control date_signed_up_from" type="date" />';
+            } else {
+                inlineHtml +=
+                    '<input id="date_signed_up_from" class="form-control date_signed_up_from" type="date" value="' +
+                    date_signed_up_from +
+                    '"/>';
+            }
+
+            inlineHtml += "</div></div>";
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_to_text">DATE SIGNED UP - TO</span>';
+            if (isNullorEmpty(date_signed_up_to)) {
+                inlineHtml +=
+                    '<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date">';
+            } else {
+                inlineHtml +=
+                    '<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date" value="' +
+                    date_signed_up_to +
+                    '">';
+            }
+
+            inlineHtml += "</div></div></div></div>";
+
+            inlineHtml +=
+                '<div class="form-group container signed_up_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">COMMENCEMENT DATE - FILTER</span></h4></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div class="form-group container signed_up_div hide">';
+            inlineHtml += '<div class="row">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
+            if (isNullorEmpty(commencement_start_date)) {
+                inlineHtml +=
+                    '<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
+            } else {
+                inlineHtml +=
+                    '<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
+                    commencement_start_date +
+                    '"/>';
+            }
+
+            inlineHtml += "</div></div>";
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
+            if (isNullorEmpty(commencement_last_date)) {
+                inlineHtml +=
+                    '<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
+            } else {
+                inlineHtml +=
+                    '<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
+                    commencement_last_date +
+                    '">';
+            }
+
+            inlineHtml += "</div></div></div></div>";
+
+            inlineHtml +=
+                '<div class="form-group container signed_up_label_section hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml +=
+                '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            inlineHtml += '<div class="form-group container signed_up_div hide">';
+            inlineHtml += '<div class="row">';
+            // Date from field
+            inlineHtml += '<div class="col-xs-6 date_from">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
+            if (isNullorEmpty(cancelled_start_date)) {
+                inlineHtml +=
+                    '<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
+            } else {
+                inlineHtml +=
+                    '<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
+                    cancelled_start_date +
+                    '"/>';
+            }
+
+            inlineHtml += "</div></div>";
+            // Date to field
+            inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            inlineHtml += '<div class="input-group">';
+            inlineHtml +=
+                '<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
+            if (isNullorEmpty(cancelled_last_date)) {
+                inlineHtml +=
+                    '<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
+            } else {
+                inlineHtml +=
+                    '<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
+                    cancelled_last_date +
+                    '">';
+            }
+
+            inlineHtml += "</div></div></div></div>";
+
+            // inlineHtml += '<div class="form-group container usage_label_section hide">';
+            // inlineHtml += '<div class="row">';
+            // inlineHtml +=
+            //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">MP PRODUCT USAGE DATE - FILTER</span></h4></div>';
+            // inlineHtml += "</div>";
+            // inlineHtml += "</div>";
+
+            // inlineHtml += '<div class="form-group container calcprodusage_div hide">';
+            // inlineHtml += '<div class="row">';
+
+            // inlineHtml += '<div class="col-xs-12 calcprodusage">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="calcprodusage_text">CALCULATE MP PRODUCT USAGE?</span>';
+            // inlineHtml += '<select id="calc_prod_usage" class="form-control">';
+            // inlineHtml += "<option></option>";
+
+            // if (calcprodusage == "1") {
+            //     inlineHtml += '<option value="1" selected>Yes</option>';
+            //     inlineHtml += '<option value="2">No</option>';
+            // } else if (calcprodusage == "2") {
+            //     inlineHtml += '<option value="1" >Yes</option>';
+            //     inlineHtml += '<option value="2" selected>No</option>';
+            // } else {
+            //     inlineHtml += '<option value="1">Yes</option>';
+            //     inlineHtml += '<option value="2" selected>No</option>';
+            // }
+            // inlineHtml += "</select>";
+            // inlineHtml += "</div></div></div></div>";
+
+            // inlineHtml += '<div class="form-group container usage_date_div hide">';
+            // inlineHtml += '<div class="row">';
+            // // Date from field
+            // inlineHtml += '<div class="col-xs-6 date_from">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="usage_date_from_text">USAGE DATE - FROM</span>';
+            // if (isNullorEmpty(usage_date_from)) {
+            //     inlineHtml +=
+            //         '<input id="usage_date_from" class="form-control usage_date_from" type="date" />';
+            // } else {
+            //     inlineHtml +=
+            //         '<input id="usage_date_from" class="form-control usage_date_from" type="date" value="' +
+            //         usage_date_from +
+            //         '"/>';
+            // }
+
+            // inlineHtml += "</div></div>";
+            // // Date to field
+            // inlineHtml += '<div class="col-xs-6 usage_date_to">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="usage_date_to_text">USAGE DATE - TO</span>';
+            // if (isNullorEmpty(usage_date_to)) {
+            //     inlineHtml +=
+            //         '<input id="usage_date_to" class="form-control usage_date_to" type="date">';
+            // } else {
+            //     inlineHtml +=
+            //         '<input id="usage_date_to" class="form-control usage_date_to" type="date" value="' +
+            //         usage_date_to +
+            //         '">';
+            // }
+
+            // inlineHtml += "</div></div></div></div>";
+
+            // inlineHtml +=
+            //     '<div class="form-group container invoice_label_section hide">';
+            // inlineHtml += '<div class="row">';
+            // inlineHtml +=
+            //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">INVOICE FILTERS</span></h4></div>';
+            // inlineHtml += "</div>";
+            // inlineHtml += "</div>";
+
+            // inlineHtml +=
+            //     '<div class="form-group container invoice_date_type_div hide">';
+            // inlineHtml += '<div class="row">';
+            // // Date from field
+            // inlineHtml += '<div class="col-xs-4 date_from">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="invoice_date_from_text">INVOICE DATE - FROM</span>';
+            // if (isNullorEmpty(invoice_date_from)) {
+            //     inlineHtml +=
+            //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" />';
+            // } else {
+            //     inlineHtml +=
+            //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" value="' +
+            //         invoice_date_from +
+            //         '"/>';
+            // }
+
+            // inlineHtml += "</div></div>";
+            // // Date to field
+            // inlineHtml += '<div class="col-xs-4 usage_date_to">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="invoice_date_to_text">INVOICE DATE - TO</span>';
+            // if (isNullorEmpty(invoice_date_to)) {
+            //     inlineHtml +=
+            //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date">';
+            // } else {
+            //     inlineHtml +=
+            //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date" value="' +
+            //         invoice_date_to +
+            //         '">';
+            // }
+
+            // inlineHtml += "</div></div>";
+
+            // inlineHtml += '<div class="col-xs-4 usage_date_to">';
+            // inlineHtml += '<div class="input-group">';
+            // inlineHtml +=
+            //     '<span class="input-group-addon" id="zee_dropdown_text">INVOICE TYPE</span>';
+            // inlineHtml += '<select id="invoice_type" class="form-control">';
+            // if (invoice_type == "1") {
+            //     inlineHtml += '<option value=""></option>';
+            //     inlineHtml += '<option value="1" selected>Service</option>';
+            //     inlineHtml += '<option value="2">MP Products</option>';
+            // } else if (invoice_type == "2") {
+            //     inlineHtml += '<option value=""></option>';
+            //     inlineHtml += '<option value="1">Service</option>';
+            //     inlineHtml += '<option value="2" selected>MP Products</option>';
+            // } else {
+            //     inlineHtml += '<option value=""></option>';
+            //     inlineHtml += '<option value="1">Service</option>';
+            //     inlineHtml += '<option value="2">MP Products</option>';
+            // }
+
+            // inlineHtml += "</select>";
+            // inlineHtml += "</div></div></div></div>";
         }
-
-        inlineHtml += "</div></div>";
-        // Date to field
-        inlineHtml += '<div class="col-xs-6 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_quote_sent_to_text">DATE QUOTE SENT - TO</span>';
-        if (isNullorEmpty(date_quote_sent_to)) {
-            inlineHtml +=
-                '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date">';
-        } else {
-            inlineHtml +=
-                '<input id="date_quote_sent_to" class="form-control date_quote_sent_to" type="date" value="' +
-                date_quote_sent_to +
-                '">';
-        }
-
-        inlineHtml += "</div></div></div></div>";
-
-        inlineHtml +=
-            '<div class="form-group container signed_up_label_section hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">DATE SIGNED UP - FILTER</span></h4></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div class="form-group container signed_up_div hide">';
-        inlineHtml += '<div class="row">';
-        // Date from field
-        inlineHtml += '<div class="col-xs-6 date_from">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_from_text">DATE SIGNED UP - FROM</span>';
-        if (isNullorEmpty(date_signed_up_from)) {
-            inlineHtml +=
-                '<input id="date_signed_up_from" class="form-control date_signed_up_from" type="date" />';
-        } else {
-            inlineHtml +=
-                '<input id="date_signed_up_from" class="form-control date_signed_up_from" type="date" value="' +
-                date_signed_up_from +
-                '"/>';
-        }
-
-        inlineHtml += "</div></div>";
-        // Date to field
-        inlineHtml += '<div class="col-xs-6 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_to_text">DATE SIGNED UP - TO</span>';
-        if (isNullorEmpty(date_signed_up_to)) {
-            inlineHtml +=
-                '<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date">';
-        } else {
-            inlineHtml +=
-                '<input id="date_signed_up_to" class="form-control date_signed_up_to" type="date" value="' +
-                date_signed_up_to +
-                '">';
-        }
-
-        inlineHtml += "</div></div></div></div>";
-
-        inlineHtml +=
-            '<div class="form-group container signed_up_label_section hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">COMMENCEMENT DATE - FILTER</span></h4></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div class="form-group container signed_up_div hide">';
-        inlineHtml += '<div class="row">';
-        // Date from field
-        inlineHtml += '<div class="col-xs-6 date_from">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_from_text">COMMENCEMENT DATE - FROM</span>';
-        if (isNullorEmpty(commencement_start_date)) {
-            inlineHtml +=
-                '<input id="commencement_date_from" class="form-control commencement_date_from" type="date" />';
-        } else {
-            inlineHtml +=
-                '<input id="commencement_date_from" class="form-control commencement_date_from" type="date" value="' +
-                commencement_start_date +
-                '"/>';
-        }
-
-        inlineHtml += "</div></div>";
-        // Date to field
-        inlineHtml += '<div class="col-xs-6 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_to_text">COMMENCEMENT DATE - TO</span>';
-        if (isNullorEmpty(commencement_last_date)) {
-            inlineHtml +=
-                '<input id="commencement_date_to" class="form-control commencement_date_to" type="date">';
-        } else {
-            inlineHtml +=
-                '<input id="commencement_date_to" class="form-control commencement_date_to" type="date" value="' +
-                commencement_last_date +
-                '">';
-        }
-
-        inlineHtml += "</div></div></div></div>";
-
-        inlineHtml +=
-            '<div class="form-group container signed_up_label_section hide">';
-        inlineHtml += '<div class="row">';
-        inlineHtml +=
-            '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">CANCELLATION DATE - FILTER</span></h4></div>';
-        inlineHtml += "</div>";
-        inlineHtml += "</div>";
-
-        inlineHtml += '<div class="form-group container signed_up_div hide">';
-        inlineHtml += '<div class="row">';
-        // Date from field
-        inlineHtml += '<div class="col-xs-6 date_from">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_from_text">CANCELLATION DATE - FROM</span>';
-        if (isNullorEmpty(cancelled_start_date)) {
-            inlineHtml +=
-                '<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" />';
-        } else {
-            inlineHtml +=
-                '<input id="cancellation_date_from" class="form-control cancellation_date_from" type="date" value="' +
-                cancelled_start_date +
-                '"/>';
-        }
-
-        inlineHtml += "</div></div>";
-        // Date to field
-        inlineHtml += '<div class="col-xs-6 usage_date_to">';
-        inlineHtml += '<div class="input-group">';
-        inlineHtml +=
-            '<span class="input-group-addon" id="date_signed_up_to_text">CANCELLATION DATE - TO</span>';
-        if (isNullorEmpty(cancelled_last_date)) {
-            inlineHtml +=
-                '<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date">';
-        } else {
-            inlineHtml +=
-                '<input id="cancellation_date_to" class="form-control cancellation_date_to" type="date" value="' +
-                cancelled_last_date +
-                '">';
-        }
-
-        inlineHtml += "</div></div></div></div>";
-
-        // inlineHtml += '<div class="form-group container usage_label_section hide">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml +=
-        //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">MP PRODUCT USAGE DATE - FILTER</span></h4></div>';
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
-
-        // inlineHtml += '<div class="form-group container calcprodusage_div hide">';
-        // inlineHtml += '<div class="row">';
-
-        // inlineHtml += '<div class="col-xs-12 calcprodusage">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="calcprodusage_text">CALCULATE MP PRODUCT USAGE?</span>';
-        // inlineHtml += '<select id="calc_prod_usage" class="form-control">';
-        // inlineHtml += "<option></option>";
-
-        // if (calcprodusage == "1") {
-        //     inlineHtml += '<option value="1" selected>Yes</option>';
-        //     inlineHtml += '<option value="2">No</option>';
-        // } else if (calcprodusage == "2") {
-        //     inlineHtml += '<option value="1" >Yes</option>';
-        //     inlineHtml += '<option value="2" selected>No</option>';
-        // } else {
-        //     inlineHtml += '<option value="1">Yes</option>';
-        //     inlineHtml += '<option value="2" selected>No</option>';
-        // }
-        // inlineHtml += "</select>";
-        // inlineHtml += "</div></div></div></div>";
-
-        // inlineHtml += '<div class="form-group container usage_date_div hide">';
-        // inlineHtml += '<div class="row">';
-        // // Date from field
-        // inlineHtml += '<div class="col-xs-6 date_from">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="usage_date_from_text">USAGE DATE - FROM</span>';
-        // if (isNullorEmpty(usage_date_from)) {
-        //     inlineHtml +=
-        //         '<input id="usage_date_from" class="form-control usage_date_from" type="date" />';
-        // } else {
-        //     inlineHtml +=
-        //         '<input id="usage_date_from" class="form-control usage_date_from" type="date" value="' +
-        //         usage_date_from +
-        //         '"/>';
-        // }
-
-        // inlineHtml += "</div></div>";
-        // // Date to field
-        // inlineHtml += '<div class="col-xs-6 usage_date_to">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="usage_date_to_text">USAGE DATE - TO</span>';
-        // if (isNullorEmpty(usage_date_to)) {
-        //     inlineHtml +=
-        //         '<input id="usage_date_to" class="form-control usage_date_to" type="date">';
-        // } else {
-        //     inlineHtml +=
-        //         '<input id="usage_date_to" class="form-control usage_date_to" type="date" value="' +
-        //         usage_date_to +
-        //         '">';
-        // }
-
-        // inlineHtml += "</div></div></div></div>";
-
-        // inlineHtml +=
-        //     '<div class="form-group container invoice_label_section hide">';
-        // inlineHtml += '<div class="row">';
-        // inlineHtml +=
-        //     '<div class="col-xs-12 heading1"><h4><span class="label label-default col-xs-12" style="background-color: #095C7B;">INVOICE FILTERS</span></h4></div>';
-        // inlineHtml += "</div>";
-        // inlineHtml += "</div>";
-
-        // inlineHtml +=
-        //     '<div class="form-group container invoice_date_type_div hide">';
-        // inlineHtml += '<div class="row">';
-        // // Date from field
-        // inlineHtml += '<div class="col-xs-4 date_from">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="invoice_date_from_text">INVOICE DATE - FROM</span>';
-        // if (isNullorEmpty(invoice_date_from)) {
-        //     inlineHtml +=
-        //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" />';
-        // } else {
-        //     inlineHtml +=
-        //         '<input id="invoice_date_from" class="form-control invoice_date_from" type="date" value="' +
-        //         invoice_date_from +
-        //         '"/>';
-        // }
-
-        // inlineHtml += "</div></div>";
-        // // Date to field
-        // inlineHtml += '<div class="col-xs-4 usage_date_to">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="invoice_date_to_text">INVOICE DATE - TO</span>';
-        // if (isNullorEmpty(invoice_date_to)) {
-        //     inlineHtml +=
-        //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date">';
-        // } else {
-        //     inlineHtml +=
-        //         '<input id="invoice_date_to" class="form-control invoice_date_to" type="date" value="' +
-        //         invoice_date_to +
-        //         '">';
-        // }
-
-        // inlineHtml += "</div></div>";
-
-        // inlineHtml += '<div class="col-xs-4 usage_date_to">';
-        // inlineHtml += '<div class="input-group">';
-        // inlineHtml +=
-        //     '<span class="input-group-addon" id="zee_dropdown_text">INVOICE TYPE</span>';
-        // inlineHtml += '<select id="invoice_type" class="form-control">';
-        // if (invoice_type == "1") {
-        //     inlineHtml += '<option value=""></option>';
-        //     inlineHtml += '<option value="1" selected>Service</option>';
-        //     inlineHtml += '<option value="2">MP Products</option>';
-        // } else if (invoice_type == "2") {
-        //     inlineHtml += '<option value=""></option>';
-        //     inlineHtml += '<option value="1">Service</option>';
-        //     inlineHtml += '<option value="2" selected>MP Products</option>';
-        // } else {
-        //     inlineHtml += '<option value=""></option>';
-        //     inlineHtml += '<option value="1">Service</option>';
-        //     inlineHtml += '<option value="2">MP Products</option>';
-        // }
-
-        // inlineHtml += "</select>";
-        // inlineHtml += "</div></div></div></div>";
 
         inlineHtml +=
             '<div class="form-group container filter_buttons_section hide">';
@@ -2182,13 +2119,13 @@ define([
                 '<div class="form-group container leadsCount hide">';
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-2"></div>';
-            inlineHtml += '<!-- 4. NETSUITE DATA EXPORT --> <div class="netsuite-notice-box"> <div class="row align-items-center"> <div class="col-lg-8"> <div class="d-flex align-items-center gap-2 mb-2"> <i class="fa-solid fa-database text-warning"></i> <strong class="text-dark">Accessing Large Datasets</strong> </div> <p class="mb-lg-0 text-muted" style="font-size: 12px;"> Search results are too extensive to be displayed on this page, please use the button to the right to view the <strong>NetSuite Search Page</strong>. From there, you can export the full raw data to Excel or CSV for deep analysis. Alternatively, you can send an email to MailPlus IT to retrieve detailed information based on your currently selected filters. </p> </div> <div class="col-lg-4 text-lg-end">';
+            inlineHtml += '<!-- 4. NETSUITE DATA EXPORT --> <div class="netsuite-notice-box"> <div class="row align-items-center"> <div class="col-lg-8"> <div class="d-flex align-items-center gap-2 mb-2"> <i class="fa-solid fa-database text-warning"></i> <strong class="text-dark">Accessing Large Datasets</strong> </div> <p class="mb-lg-0 text-muted" style="font-size: 12px;"> Search results are too extensive to be displayed on this page, please use the button to the right to view the <strong>NetSuite Search Page</strong>. From there, you can export the full raw data to Excel or CSV for deep analysis. Alternatively, you can send an email to Aleyna to retrieve detailed information based on your currently selected filters. </p> </div> <div class="col-lg-4 text-lg-end">';
             if (role == 1000) {
                 inlineHtml += ' <a href="https://1048144.app.netsuite.com/app/common/search/searchresults.nl?scrollid=9441&searchid=9454&whence=" target="_blank" class="btn btn-netsuite"> <i class="fa-solid fa-up-right-from-square"></i> View Raw Data in NetSuite </a>';
             } else {
                 inlineHtml += ' <a href="https://1048144.app.netsuite.com/app/common/search/searchresults.nl?searchid=9441&saverun=T&whence=" target="_blank" class="btn btn-netsuite"> <i class="fa-solid fa-up-right-from-square"></i> View Raw Data in NetSuite </a>';
             }
-            inlineHtml += ' <button type="button" class="btn btn-email-it emailIT"> <i class="fa-solid fa-envelope"></i> Email MailPlus IT </button> </div> </div> </div>';
+            inlineHtml += ' <button type="button" class="btn btn-email-it emailIT"> <i class="fa-solid fa-envelope"></i> Email Aleyna </button> </div> </div> </div>';
             inlineHtml += '<div class="col-xs-2"></div>';
             inlineHtml += "</div>";
             inlineHtml += "</div>";
@@ -2239,6 +2176,17 @@ define([
 
             inlineHtml +=
                 '<div class="col-xs-8" style="text-align: center;">  <!-- Summary Stats Mockup --> <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; background: rgba(255,255,255,0.4); padding: 15px; border-radius: 8px; text-align: center;"> <div style="min-width: 200px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Current Date Range</small> <span style="font-weight: bold; font-size: 1.1rem;">' + date_from + ' to ' + date_to + '</span> </div> <div style="min-width: 200px; border-left: 1px solid #cbd5e0; padding-left: 20px;"> <small style="display: block; color: #4a5568; text-transform: uppercase; font-weight: bold; font-size: 0.7rem; letter-spacing: 0.5px; margin-bottom: 4px;">Total Lead/Customer Count</small> <span style="font-weight: bold; font-size: 1.1rem;">' + leadsListBySalesRepWeeklySearchCount + '</span> </div> </div> <p style="margin: 15px 0 0 0; font-size: 0.9rem; text-align: center; color: #4a5568;"> <em>This summary bar at the top of your list always shows the context of the data you are currently viewing.</em> </p></div>';
+            inlineHtml += '<div class="col-xs-2"></div>';
+            inlineHtml += "</div>";
+            inlineHtml += "</div>";
+
+            inlineHtml +=
+                '<div class="form-group container leadsCount hide">';
+            inlineHtml += '<div class="row">';
+            inlineHtml += '<div class="col-xs-2"></div>';
+
+            inlineHtml +=
+                '<div class="col-xs-8" style="text-align: center;"> <div class="priority-banner rounded-lg p-5 flex items-start sm:items-center space-x-5"><div class="flex-shrink-0"><div class="icon-circle rounded-full flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div></div><div class="text-content"><h2 class="font-bold text-base tracking-wide uppercase mb-0.5"> Priority Action: Hot Leads </h2><p class="text-[14.5px] leading-relaxed opacity-90"> HOT Leads from the website (Inbound) or Franchisee brochure drops are sent directly to the Account Manager to action as a priority. </p></div></div></div>';
             inlineHtml += '<div class="col-xs-2"></div>';
             inlineHtml += "</div>";
             inlineHtml += "</div>";
@@ -2497,10 +2445,10 @@ define([
                     }
 
                     leadCount++;
-                    log.audit({
-                        title: 'Processing Lead Count: ' + leadCount,
-                        details: 'Lead Internal ID: ' + leadInternalID + ', Lead Status ID: ' + leadStatusID
-                    })
+                    // log.audit({
+                    //     title: 'Processing Lead Count: ' + leadCount,
+                    //     details: 'Lead Internal ID: ' + leadInternalID + ', Lead Status ID: ' + leadStatusID
+                    // })
                     return true;
                 });
 
@@ -2564,7 +2512,7 @@ define([
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-3"></div>';
             inlineHtml +=
-                '<div class="col-xs-6"><div class=priorityInboundLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Priority Inbound</b> stage.<ul><li>SUSPECT - HOT LEAD<ul><li>Inbound leads that have come directly from the website.</ul></li></ul><em style="color: #e97777;">The lead is highlighted red if it has been in this status for more than 3 days.</em></p></div></div>';
+                '<div class="col-xs-6"><div class=priorityInboundLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Priority Inbound</b> stage.<ul><li>SUSPECT - HOT LEAD<ul><li>HOT Leads from the website (Inbound) or Franchisee brochure drops are sent directly to the Account Manager to action as a priority.</li></ul></li></ul><em style="color: #e97777;">Website leads are highlighted red if they have been in this status for more than 3 days. Franchisee Generated leads where a brochure has been dropped off are highlighted red if they have been in this status for more than 7 days</em></p></div></div>';
             inlineHtml += '<div class="col-xs-3"></div>';
             inlineHtml += "</div>";
             inlineHtml += "</div>";
@@ -2614,7 +2562,7 @@ define([
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-4"></div>';
             inlineHtml +=
-                '<div class="col-xs-4"><div class=qualifiedPipelineLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Qualified Pipeline</b> stage.<ul><li>SUSPECT - QUALIFIED</li><li>PROSPECT - QUALIFIED</li><li>PROSPECT - OPPORTUNITY</li><li>PROSPECT - BOX SENT</li><li>PROSPECT - QUOTE SENT</li><li>CUSTOMER - FREE TRIAL</li><li>CUSTOMER - FREE TRIAL PENDING</li><li>SUSPECT - IN CONTACT</li></ul></p></div></div>';
+                '<div class="col-xs-4"><div class=qualifiedPipelineLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Qualified Pipeline</b> stage.<ul><li>SUSPECT - QUALIFIED</li><li>PROSPECT - OPPORTUNITY</li><li>PROSPECT - BOX SENT</li><li>PROSPECT - QUOTE SENT</li><li>CUSTOMER - FREE TRIAL</li><li>CUSTOMER - FREE TRIAL PENDING</li></ul></p></div></div>';
             inlineHtml += '<div class="col-xs-4"></div>';
             inlineHtml += "</div>";
             inlineHtml += "</div>";
@@ -2647,7 +2595,7 @@ define([
             inlineHtml += '<div class="row">';
             inlineHtml += '<div class="col-xs-4"></div>';
             inlineHtml +=
-                '<div class="col-xs-4"><div class=closedLostLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Closed Lost</b> stage.<ul><li>SUSPECT - CUSTOMER - LOST</li><li>SUSPECT- LOST</li><li>SUSPECT - OUT OF TERRITORY</li><li>SUSPECT - PARKING LOT</li></ul></p></div></div>';
+                '<div class="col-xs-4"><div class=closedLostLegend" style="font-size: 14px;padding: 15px;border-radius: 10px;border: 1px solid;box-shadow: 0px 1px 26px -10px white;"><p>Below are the list of statuses that belong to the <b>Closed Lost</b> stage.<ul><li>SUSPECT - CUSTOMER - LOST</li><li>SUSPECT- LOST</li><li>SUSPECT - PARKING LOT</li></ul></p></div></div>';
             inlineHtml += '<div class="col-xs-4"></div>';
             inlineHtml += "</div>";
             inlineHtml += "</div>";

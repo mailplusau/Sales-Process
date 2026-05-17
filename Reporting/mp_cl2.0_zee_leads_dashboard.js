@@ -577,7 +577,7 @@ define([
             console.log("date_to: " + date_to);
 
             //Send Email to IT with the filters applied and the link to the current page
-            var emailBody = 'Hi MailPlus IT,<br><br>Please extract the data with the following filters applied:<br><br>The filters are as follows:<br>';
+            var emailBody = 'Hi Aleyna,<br><br>Please extract the data with the following filters applied:<br><br>The filters are as follows:<br>';
             if (!isNullorEmpty(date_entered_from) || !isNullorEmpty(date_entered_to)) {
                 emailBody += 'Date From: ' + date_from + '<br>';
                 emailBody += 'Date To: ' + date_to + '<br>';
@@ -620,7 +620,7 @@ define([
                 author: 112209, //MailPlus team
                 body: emailBody,
                 // recipients: 'ankith.ravindran@mailplus.com.au',
-                recipients: 'mailplusit@mailplus.com.au',
+                recipients: 'aleyna.harnett@mailplus.com.au',
                 subject: userName + ' Requested  Sales Dashboard Report',
                 cc: ['luke.forbes@mailplus.com.au', 'ankith.ravindran@mailplus.com.au']
             })
